@@ -2,32 +2,39 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Viewport zoptymalizowany pod przeglądarki in-app (TikTok, IG, FB) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     
-    <!-- === OPTYMALIZACJA SEO & MARKETING === -->
+    <!-- === OPTYMALIZACJA SEO & TIKTOK/IG/FB MARKETING === -->
     <title>BeautyPolisa | Ubezpieczenie OC dla Salonów Beauty i Kosmetologów</title>
     <meta name="description" content="Ekskluzywne ubezpieczenie OC dla salonów beauty, kosmetologów, fryzjerów i podologów. Zabezpiecz swój biznes na sumę do 300 000 zł. Oblicz składkę online w 2 minuty!">
-    <meta name="keywords" content="OC kosmetyczki, ubezpieczenie salonu kosmetycznego, OC kosmetologa, ubezpieczenie podologa, BeautyPolisa, ubezpieczenie fryzjera, OC zawodowe beauty, Beauty Razem, ubezpieczenia medycyna estetyczna, ubezpieczenie tatuażysty">
+    <meta name="keywords" content="OC kosmetyczki, ubezpieczenie salonu kosmetycznego, OC kosmetologa, ubezpieczenie podologa, BeautyPolisa, ubezpieczenie fryzjera, OC zawodowe beauty, Beauty Razem, ubezpieczenia medycyna estetyczna">
     <meta name="author" content="Aura Consulting">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://twojadomena.pl/beautypolisa.html">
+    <meta name="theme-color" content="#2a3b69">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="BeautyPolisa">
+    <meta name="application-name" content="BeautyPolisa">
     
-    <!-- Open Graph (Facebook, Instagram, LinkedIn) -->
+    <!-- Open Graph (Facebook, Instagram, LinkedIn, TikTok) -->
     <meta property="og:locale" content="pl_PL">
     <meta property="og:type" content="website">
     <meta property="og:title" content="BeautyPolisa | Ubezpieczenie OC dla Branży Beauty">
-    <meta property="og:description" content="Poznaj dedykowaną taryfę ubezpieczeniową dla swojego salonu. 100% online, ochrona do 300 tys. zł, wsparcie doświadczonego eksperta przy likwidacji szkód.">
+    <meta property="og:description" content="Poznaj dedykowaną taryfę ubezpieczeniową dla swojego salonu. 100% online, ochrona do 300 tys. zł, wsparcie doświadczonego brokera.">
     <meta property="og:url" content="https://twojadomena.pl/beautypolisa.html">
     <meta property="og:site_name" content="BeautyPolisa">
     <meta property="og:image" content="BeautyPolisa_logo_podstawowe_poziome.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="BeautyPolisa | Ochrona dla Salonów Beauty">
-    <meta name="twitter:description" content="Zabezpiecz swój salon online. Dedykowane ubezpieczenie OC dla członków Beauty Razem.">
+    <meta name="twitter:description" content="Zabezpiecz swój salon online w 2 minuty. Dedykowane ubezpieczenie OC dla członków Beauty Razem.">
     <meta name="twitter:image" content="BeautyPolisa_logo_podstawowe_poziome.png">
 
-    <!-- JSON-LD (Rich Snippets dla Google) -->
+    <!-- JSON-LD (Rich Snippets dla algorytmów Google) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -42,16 +49,17 @@
         "postalCode": "01-466",
         "addressCountry": "PL"
       },
+      "telephone": "+48500502702",
       "offers": {
         "@type": "Offer",
         "name": "Ubezpieczenie OC dla Salonu Beauty",
-        "description": "Suma gwarancyjna do 300 000 zł, ochrona karno-skarbowa, dedykowane pakiety Beauty Razem."
+        "description": "Suma gwarancyjna do 300 000 zł, ochrona karno-skarbowa, dedykowane pakiety dla branży beauty."
       }
     }
     </script>
     <!-- === KONIEC OPTYMALIZACJI === -->
 
-    <!-- Google tag (gtag.js) - Wskazany przez użytkownika -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJWP7XYCF1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -384,7 +392,7 @@
                 </div>
 
                 <div class="mt-12 flex justify-center">
-                    <button onclick="openContactModal()" class="flex items-center gap-2 text-slate-500 hover:text-beauty-pink font-medium transition-colors text-sm bg-white border border-slate-200 px-8 py-3 rounded-full shadow-sm">
+                    <button onclick="openModal('modal-contact')" class="flex items-center gap-2 text-slate-500 hover:text-beauty-pink font-medium transition-colors text-sm bg-white border border-slate-200 px-8 py-3 rounded-full shadow-sm">
                         Masz pytania? Zostaw kontakt, odezwiemy się
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </button>
@@ -394,7 +402,7 @@
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer z linkami RODO i Informacjami o dystrybutorze -->
     <footer class="bg-white border-t border-slate-200 pt-12 pb-8 text-sm text-slate-500">
         <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 mb-8">
             <div>
@@ -405,6 +413,10 @@
             <div class="text-[10px] text-slate-400 md:text-right flex flex-col justify-center leading-relaxed">
                 <p class="mb-2">Niniejszy kalkulator oraz wyliczenia mają charakter wyłącznie informacyjny i nie stanowią oferty w rozumieniu art. 66 Kodeksu Cywilnego.</p>
                 <p>Ostateczna wysokość składki oraz możliwość zawarcia ochrony ubezpieczeniowej uzależniona jest od weryfikacji ryzyka i ostatecznej akceptacji przez Towarzystwo Ubezpieczeń ERGO Hestia.</p>
+                <div class="mt-4 flex flex-col md:items-end gap-2 text-xs font-semibold">
+                    <button onclick="openModal('modal-dystrybutor')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Informacja o dystrybutorze ubezpieczeniowym</button>
+                    <button onclick="openModal('modal-rodo')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Nota informacyjna RODO (Polityka Prywatności)</button>
+                </div>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 text-center border-t border-slate-100 pt-6 text-[10px] tracking-widest uppercase font-semibold text-slate-400">
@@ -412,7 +424,7 @@
         </div>
     </footer>
 
-    <!-- MODAL 1: Wniosek/Ankieta -->
+    <!-- MODAL 1: Wniosek/Ankieta (z blokadą PDF) -->
     <div id="modal-offer" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden relative max-h-[90vh] overflow-y-auto custom-scrollbar">
             <button onclick="closeModal('modal-offer')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-3xl leading-none">&times;</button>
@@ -425,7 +437,7 @@
             
             <form id="offer-form" onsubmit="submitOffer(event)" class="p-8 space-y-5">
                 
-                <!-- KLUCZ API -->
+                <!-- NOWY KLUCZ API -->
                 <input type="hidden" name="access_key" value="44ce55c2-c91f-48f0-a899-eb436353a204">
                 <input type="hidden" name="subject" value="Nowy Wniosek: Kalkulator BeautyPolisa">
                 <input type="hidden" name="from_name" value="System BeautyPolisa">
@@ -472,7 +484,8 @@
                             <span class="text-[11px] text-amber-900 font-medium">Oświadczam, że zapoznałem/am się z wymogiem dołączenia dyplomu kosmetologa oraz zaświadczeń ze szkoleń.</span>
                         </label>
                         
-                        <a href="Ankieta_BeautyPolisa.pdf" target="_blank" id="download-ankieta-btn" onclick="trackDownload()" class="mt-4 block w-full bg-slate-300 text-slate-500 text-center font-bold py-3 rounded-lg transition-colors shadow-sm text-xs uppercase tracking-wider pointer-events-none" disabled>
+                        <!-- Zaktualizowany link do pliku AnkietaBPEH.pdf -->
+                        <a href="AnkietaBPEH.pdf" target="_blank" id="download-ankieta-btn" onclick="trackDownload()" class="mt-4 block w-full bg-slate-300 text-slate-500 text-center font-bold py-3 rounded-lg transition-colors shadow-sm text-xs uppercase tracking-wider pointer-events-none" disabled>
                             📥 POBIERZ DRUK ANKIETY (PDF)
                         </a>
                     </div>
@@ -518,6 +531,69 @@
                     Proszę o kontakt
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Informacja o dystrybutorze (z PDF Z001) -->
+    <div id="modal-dystrybutor" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-8">
+            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-3xl leading-none">&times;</button>
+            <h3 class="font-heading font-bold text-xl text-beauty-navy mb-4">Informacje dotyczące agenta ubezpieczeniowego</h3>
+            <div class="text-xs text-slate-600 space-y-4 leading-relaxed">
+                <p>Działając na podstawie art. 22 ust. 1 pkt 2-6 oraz ust. 2-4 ustawy z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń (Dz.U. z 2017 r., poz. 2486 ze zm.) (dalej „Ustawa”) niniejszym przekazujemy następujące informacje dotyczące Aura Expert spółka z ograniczoną odpowiedzialnością („Agent”):</p>
+                <ol class="list-decimal pl-5 space-y-3">
+                    <li>Agent jest agentem ubezpieczeniowym w rozumieniu Ustawy.</li>
+                    <li>Agent wykonuje działalność agencyjną pod firmą: Aura Expert sp. z o.o.</li>
+                    <li>Adres siedziby Agenta: ul. Bolkowska 2A/28, 01-466 Warszawa</li>
+                    <li>Adres korespondencyjny Agenta: ul. Bolkowska 2A/28, 01-466 Warszawa. E-mail: zarzad@auraexpert.pl, tel: +48 504 400 901</li>
+                    <li>Agent jest wpisany do rejestru przedsiębiorców KRS pod nr 0000599840, NIP 5242793544, REGON 363673048, kapitał zakładowy 5.000 zł.</li>
+                    <li>Agent jest wpisany do rejestru agentów KNF pod nr 11229690/A.</li>
+                    <li>Agent nie posiada akcji ani udziałów żadnego zakładu ubezpieczeń uprawniających co najmniej do 10% głosów na walnym zgromadzeniu.</li>
+                    <li>Agent wykonuje działalność agencyjną na rzecz zakładów ubezpieczeń: m.in. Generali, UNIQA, Lloyd's, SALTUS, ERGO Hestia, WARTA, Colonnade.</li>
+                    <li>W związku z proponowanym zawarciem umowy Agent otrzymuje od zakładu ubezpieczeń prowizję uwzględnioną w kwocie składki.</li>
+                    <li>Klient może złożyć reklamację w formie pisemnej, telefonicznej lub e-mailowej (reklamacje@auraexpert.pl).</li>
+                    <li>Spór pomiędzy osobą fizyczną będącą klientem a Agentem może być zakończony w drodze pozasądowego postępowania przed Rzecznikiem Finansowym (www.rf.gov.pl).</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: RODO (z PDF Z002) -->
+    <div id="modal-rodo" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-8">
+            <button onclick="closeModal('modal-rodo')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-3xl leading-none">&times;</button>
+            <h3 class="font-heading font-bold text-xl text-beauty-navy mb-4">Nota informacyjna RODO</h3>
+            <div class="text-xs text-slate-600 space-y-4 leading-relaxed">
+                <p>Zgodnie z art. 13-14 ogólnego rozporządzenia o ochronie danych osobowych z dnia 27 kwietnia 2016 r.</p>
+                <p>Administratorem danych osobowych jest <strong>Aura Expert spółka z ograniczoną odpowiedzialnością</strong> z siedzibą w Warszawie, przy ul. Bolkowskiej 2A lok 28, 01-466 Warszawa.</p>
+                
+                <p class="font-bold text-slate-800 mt-4">Aura Expert przetwarza dane osobowe m.in. w związku z:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>wykonywaniem czynności agencyjnych,</li>
+                    <li>udostępnieniem klientom narzędzi informatycznych do komunikacji,</li>
+                    <li>obsługą reklamacji i zapytań kierowanych przez strony internetowe.</li>
+                </ul>
+
+                <p class="font-bold text-slate-800 mt-4">Aura Expert zbiera dane osobowe:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>bezpośrednio od osób fizycznych poprzez formularze elektroniczne i e-mail,</li>
+                    <li>od pracodawców osób fizycznych, innych dystrybutorów oraz klientów zgodnie z umową powierzenia.</li>
+                </ul>
+
+                <p class="font-bold text-slate-800 mt-4">Aura Expert udostępnia dane:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>zakładom ubezpieczeń i współpracującym dystrybutorom,</li>
+                    <li>podmiotom świadczącym usługi lecznicze w zakresie obsługi szkód,</li>
+                    <li>innym instytucjom ustawowo upoważnionym.</li>
+                </ul>
+
+                <p>Osobom, których dane dotyczą, przysługują prawa dostępu, sprostowania, usunięcia, ograniczenia przetwarzania, przenoszenia, wniesienia sprzeciwu, cofnięcia zgody oraz skargi do organu nadzorczego.</p>
+                
+                <div class="bg-slate-50 p-4 rounded-lg mt-4 border border-slate-200">
+                    <p class="font-bold mb-2">Kontakt z Inspektorem Ochrony Danych:</p>
+                    <p>E-mail: iod@auraexpert.pl | Tel: +48 504 400 901<br>Adres: ul. Bolkowska 2A/28, 01-466 Warszawa</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -570,7 +646,7 @@
         function trackDownload() {
             if (typeof gtag === 'function') {
                 gtag('event', 'file_download', {
-                    'file_name': 'Ankieta_BeautyPolisa.pdf',
+                    'file_name': 'AnkietaBPEH.pdf', // Zaktualizowana nazwa dla statystyk Google
                     'event_category': 'Engagement'
                 });
             }
@@ -648,6 +724,7 @@
                 if(!confettiFired && checkedCount > 0 && !hasHighRisk && !document.getElementById('emp-9').checked) fireConfetti();
             }, 100);
 
+            // LOGIKA NAZEWNICTWA
             let finalTier = 1;
             let taryfaName = "";
 
@@ -678,6 +755,7 @@
             
             document.getElementById('detected-tier-msg').innerHTML = `<span class="text-beauty-navy">${taryfaName}</span>`;
 
+            // JEŚLI WYSOKIE RYZYKO LUB +9 OSÓB
             if (empValue === 'ind' || hasHighRisk) {
                 cardsContainer.classList.add('hidden');
                 indMsg.classList.remove('hidden');
@@ -712,6 +790,11 @@
             }
         }
 
+        // Globalna funkcja otwierania Modali z identyfikatorami
+        function openModal(modalId) { 
+            document.getElementById(modalId).classList.add('active'); 
+        }
+
         function openOfferModal(variant, price, taryfaName) {
             document.getElementById('modal-chosen-variant').innerText = variant;
             document.getElementById('modal-chosen-price').innerText = price;
@@ -720,7 +803,7 @@
             document.getElementById('form-hidden-price').value = price;
             document.getElementById('form-hidden-taryfa').value = taryfaName;
 
-            document.getElementById('modal-offer').classList.add('active');
+            openModal('modal-offer');
             
             if(variant.includes('Ankiety') || variant.includes('Indywidualna')) {
                 document.getElementById('modal-ankieta-warning').classList.remove('hidden');
@@ -729,7 +812,7 @@
             }
         }
 
-        function openContactModal() { document.getElementById('modal-contact').classList.add('active'); }
+        function openContactModal() { openModal('modal-contact'); }
         
         function closeModal(modalId) { 
             document.getElementById(modalId).classList.remove('active'); 
