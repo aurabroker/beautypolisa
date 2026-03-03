@@ -4,26 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- OPTYMALIZACJA SEO -->
-    <title>BeautyPolisa | Butik Ubezpieczeniowy dla Branży Beauty</title>
-    <meta name="description" content="Zabezpiecz swój salon kosmetyczny, fryzjerski lub podologiczny. Polisa OC stworzona dla członków BeautyRazem. Szybka wycena online i ekspercka likwidacja szkód.">
-    <meta name="keywords" content="ubezpieczenie salonu kosmetycznego, OC kosmetyczki, OC kosmetologa, ubezpieczenie fryzjera, BeautyPolisa, Beauty Razem, ubezpieczenie podologa, polisa dla salonu beauty, Aura Consulting">
+    <!-- === OPTYMALIZACJA SEO & MARKETING === -->
+    <title>BeautyPolisa | Ubezpieczenie OC dla Salonów Beauty i Kosmetologów</title>
+    <meta name="description" content="Ekskluzywne ubezpieczenie OC dla salonów beauty, kosmetologów, fryzjerów i podologów. Zabezpiecz swój biznes na sumę do 300 000 zł. Oblicz składkę online w 2 minuty!">
+    <meta name="keywords" content="OC kosmetyczki, ubezpieczenie salonu kosmetycznego, OC kosmetologa, ubezpieczenie podologa, BeautyPolisa, ubezpieczenie fryzjera, OC zawodowe beauty, Beauty Razem, ubezpieczenia medycyna estetyczna, ubezpieczenie tatuażysty">
     <meta name="author" content="Aura Consulting">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://twojadomena.pl/beautypolisa.html">
     
-    <!-- Open Graph (Wygląd linku na Facebook/LinkedIn) -->
-    <meta property="og:title" content="BeautyPolisa | Dedykowane Ubezpieczenia dla Beauty">
-    <meta property="og:description" content="Sprawdź składkę OC dla Twojego salonu w 2 minuty. Wybierz zabiegi, poznaj cenę i zyskaj pełne bezpieczeństwo.">
+    <!-- Open Graph (Facebook, Instagram, LinkedIn) -->
+    <meta property="og:locale" content="pl_PL">
     <meta property="og:type" content="website">
+    <meta property="og:title" content="BeautyPolisa | Ubezpieczenie OC dla Branży Beauty">
+    <meta property="og:description" content="Poznaj dedykowaną taryfę ubezpieczeniową dla swojego salonu. 100% online, ochrona do 300 tys. zł, wsparcie doświadczonego eksperta przy likwidacji szkód.">
+    <meta property="og:url" content="https://twojadomena.pl/beautypolisa.html">
+    <meta property="og:site_name" content="BeautyPolisa">
     <meta property="og:image" content="BeautyPolisa_logo_podstawowe_poziome.png">
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GDEW6G7KB0"></script>
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BeautyPolisa | Ochrona dla Salonów Beauty">
+    <meta name="twitter:description" content="Zabezpiecz swój salon online. Dedykowane ubezpieczenie OC dla członków Beauty Razem.">
+    <meta name="twitter:image" content="BeautyPolisa_logo_podstawowe_poziome.png">
+
+    <!-- JSON-LD (Rich Snippets dla Google) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "InsuranceAgency",
+      "name": "BeautyPolisa obsługiwana przez Aura Consulting",
+      "image": "https://twojadomena.pl/BeautyPolisa_logo_podstawowe_poziome.png",
+      "description": "Butik ubezpieczeniowy dedykowany branży beauty. Ubezpieczenia OC dla salonów kosmetycznych, fryzjerskich, kosmetologów i podologów.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "ul. Bolkowska 2A/28",
+        "addressLocality": "Warszawa",
+        "postalCode": "01-466",
+        "addressCountry": "PL"
+      },
+      "offers": {
+        "@type": "Offer",
+        "name": "Ubezpieczenie OC dla Salonu Beauty",
+        "description": "Suma gwarancyjna do 300 000 zł, ochrona karno-skarbowa, dedykowane pakiety Beauty Razem."
+      }
+    }
+    </script>
+    <!-- === KONIEC OPTYMALIZACJI === -->
+
+    <!-- Google tag (gtag.js) - Wskazany przez użytkownika -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJWP7XYCF1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-GDEW6G7KB0');
+      gtag('config', 'G-HJWP7XYCF1');
     </script>
     
     <!-- Tailwind CSS & Confetti & Google Fonts -->
@@ -46,21 +80,15 @@
         .hero-gradient { background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 50%, #ffffff 100%); position: relative; }
 
         /* Checkboxy zabiegów */
-        .procedure-checkbox {
-            display: flex; align-items: flex-start; padding: 0.5rem; border-radius: 0.5rem; transition: all 0.2s ease-in-out; cursor: pointer; border: 1px solid transparent;
-        }
+        .procedure-checkbox { display: flex; align-items: flex-start; padding: 0.5rem; border-radius: 0.5rem; transition: all 0.2s ease-in-out; cursor: pointer; border: 1px solid transparent; }
         .procedure-checkbox:hover { background-color: #fff1f2; border-color: #ffe4e6; }
         .procedure-checkbox input[type="checkbox"] { margin-top: 0.3rem; margin-right: 0.75rem; width: 1.15rem; height: 1.15rem; accent-color: #e11d48; cursor: pointer; }
         .procedure-checkbox span { font-size: 0.8rem; line-height: 1.25rem; color: #475569; flex-grow: 1; }
 
         /* Przyciski Radio (Zatrudnienie) */
         .radio-card input[type="radio"] { display: none; }
-        .radio-card label {
-            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.2rem 1rem; border: 2px solid #e2e8f0; border-radius: 1rem; cursor: pointer; transition: all 0.3s; background: white; height: 100%; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .radio-card input[type="radio"]:checked + label {
-            border-color: #2a3b69; background-color: #f8fafc; box-shadow: 0 10px 15px -3px rgba(42, 59, 105, 0.15); transform: translateY(-3px);
-        }
+        .radio-card label { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.2rem 1rem; border: 2px solid #e2e8f0; border-radius: 1rem; cursor: pointer; transition: all 0.3s; background: white; height: 100%; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .radio-card input[type="radio"]:checked + label { border-color: #2a3b69; background-color: #f8fafc; box-shadow: 0 10px 15px -3px rgba(42, 59, 105, 0.15); transform: translateY(-3px); }
 
         .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; border-radius: 4px; }
@@ -81,7 +109,7 @@
 <body class="antialiased min-h-screen flex flex-col selection:bg-beauty-pink selection:text-white">
 
     <!-- Top Menu (Produkty) -->
-    <nav class="bg-slate-900 text-slate-300 text-[11px] md:text-xs py-2 font-semibold tracking-wide border-b border-slate-800 z-50 relative">
+    <nav class="bg-slate-900 text-slate-300 text-[11px] md:text-xs py-2.5 font-semibold tracking-wide border-b border-slate-800 z-50 relative">
         <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start">
             <a href="#" class="hover:text-white transition-colors">OC</a>
             <a href="#" class="hover:text-white transition-colors">Ochrona karno-skarbowa</a>
@@ -92,7 +120,7 @@
     </nav>
 
     <!-- Nagłówek główny -->
-    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 border-b border-slate-100">
+    <header class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-40 border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-5">
                 <img src="BeautyPolisa_logo_podstawowe_poziome.png" alt="Logo BeautyPolisa" class="h-10 md:h-12 object-contain">
@@ -160,7 +188,7 @@
                 
                 <div class="grid lg:grid-cols-3 gap-8">
                     <!-- Lista 1 -->
-                    <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white">
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white shadow-sm">
                         <div class="bg-slate-50 p-4 border-b border-slate-200 flex justify-between items-center">
                             <div>
                                 <h3 class="font-bold text-beauty-navy">Grupa 1</h3>
@@ -172,7 +200,7 @@
                     </div>
 
                     <!-- Lista 2 -->
-                    <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white">
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white shadow-sm">
                         <div class="bg-slate-50 p-4 border-b border-slate-200 flex justify-between items-center">
                             <div>
                                 <h3 class="font-bold text-beauty-navy">Grupa 2</h3>
@@ -184,7 +212,7 @@
                     </div>
 
                     <!-- Lista 3 -->
-                    <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white">
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white shadow-sm">
                         <div class="bg-slate-50 p-4 border-b border-slate-200 flex justify-between items-center">
                             <div>
                                 <h3 class="font-bold text-beauty-navy">Grupa 3</h3>
@@ -351,7 +379,7 @@
                         Ze względu na wybrane parametry przygotujemy dla Ciebie taryfę szytą na miarę. Wypełnij ankietę, a nasz broker wynegocjuje dla Ciebie optymalną stawkę w ERGO Hestia.
                     </p>
                     <button id="btn-ind" class="bg-white text-beauty-navy hover:bg-slate-100 font-bold py-4 px-10 rounded-full transition-colors text-sm shadow-lg relative z-10">
-                        Pobierz i uzupełnij Ankietę
+                        Odbierz Ankietę na e-mail
                     </button>
                 </div>
 
@@ -384,7 +412,7 @@
         </div>
     </footer>
 
-    <!-- MODAL 1: Wniosek/Ankieta (z blokadą PDF) -->
+    <!-- MODAL 1: Wniosek/Ankieta -->
     <div id="modal-offer" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden relative max-h-[90vh] overflow-y-auto custom-scrollbar">
             <button onclick="closeModal('modal-offer')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-3xl leading-none">&times;</button>
@@ -397,7 +425,7 @@
             
             <form id="offer-form" onsubmit="submitOffer(event)" class="p-8 space-y-5">
                 
-                <!-- NOWY KLUCZ API -->
+                <!-- KLUCZ API -->
                 <input type="hidden" name="access_key" value="44ce55c2-c91f-48f0-a899-eb436353a204">
                 <input type="hidden" name="subject" value="Nowy Wniosek: Kalkulator BeautyPolisa">
                 <input type="hidden" name="from_name" value="System BeautyPolisa">
@@ -441,7 +469,7 @@
                     <div class="mt-4 border-t border-amber-200 pt-4">
                         <label class="flex items-start gap-3 cursor-pointer">
                             <input type="checkbox" id="ankieta-agreement" class="mt-1 w-5 h-5 accent-amber-600 rounded cursor-pointer" onchange="toggleDownloadButton()">
-                            <span class="text-xs text-amber-900 font-medium">Oświadczam, że zapoznałem/am się z wymogiem dołączenia dyplomu kosmetologa oraz zaświadczeń ze szkoleń.</span>
+                            <span class="text-[11px] text-amber-900 font-medium">Oświadczam, że zapoznałem/am się z wymogiem dołączenia dyplomu kosmetologa oraz zaświadczeń ze szkoleń.</span>
                         </label>
                         
                         <a href="Ankieta_BeautyPolisa.pdf" target="_blank" id="download-ankieta-btn" onclick="trackDownload()" class="mt-4 block w-full bg-slate-300 text-slate-500 text-center font-bold py-3 rounded-lg transition-colors shadow-sm text-xs uppercase tracking-wider pointer-events-none" disabled>
@@ -467,7 +495,6 @@
             <p class="text-sm text-slate-500 mb-6 leading-relaxed">Zostaw kontakt do siebie. Nasz ekspert prześle Ci materiały i pomoże rozwiać wątpliwości.</p>
             
             <form id="contact-form" onsubmit="submitContact(event)" class="text-left space-y-4">
-                <!-- NOWY KLUCZ API -->
                 <input type="hidden" name="access_key" value="44ce55c2-c91f-48f0-a899-eb436353a204">
                 <input type="hidden" name="subject" value="BeautyPolisa - Prośba o kontakt ogólny">
                 <input type="hidden" name="from_name" value="System BeautyPolisa">
@@ -539,7 +566,7 @@
             }
         }
 
-        // Śledzenie pobrań PDF za pomocą Google Analytics
+        // --- TRACKING POBRAŃ W GOOGLE ADS/ANALYTICS ---
         function trackDownload() {
             if (typeof gtag === 'function') {
                 gtag('event', 'file_download', {
@@ -621,7 +648,6 @@
                 if(!confettiFired && checkedCount > 0 && !hasHighRisk && !document.getElementById('emp-9').checked) fireConfetti();
             }, 100);
 
-            // LOGIKA NAZEWNICTWA
             let finalTier = 1;
             let taryfaName = "";
 
@@ -652,7 +678,6 @@
             
             document.getElementById('detected-tier-msg').innerHTML = `<span class="text-beauty-navy">${taryfaName}</span>`;
 
-            // JEŚLI WYSOKIE RYZYKO LUB +9 OSÓB
             if (empValue === 'ind' || hasHighRisk) {
                 cardsContainer.classList.add('hidden');
                 indMsg.classList.remove('hidden');
@@ -712,7 +737,6 @@
                 document.getElementById('company-name-display').innerText = '';
                 document.getElementById('regon-input').value = '';
                 
-                // Reset checkboxa zgody na PDF po zamknięciu modala
                 const agreementCb = document.getElementById('ankieta-agreement');
                 if(agreementCb) {
                     agreementCb.checked = false;
@@ -770,6 +794,15 @@
             const form = document.getElementById('offer-form');
             const formData = new FormData(form);
 
+            // Zgłaszanie lead'a do Google Ads/Analytics
+            if (typeof gtag === 'function') {
+                gtag('event', 'generate_lead', {
+                    'event_category': 'form',
+                    'event_label': 'Polisa_Zapytanie',
+                    'value': document.getElementById('form-hidden-price').value
+                });
+            }
+
             try {
                 const response = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
                 const data = await response.json();
@@ -794,6 +827,14 @@
             const btn = document.getElementById('submit-contact-btn');
             btn.innerHTML = 'Wysyłanie...';
             btn.disabled = true;
+
+            // Zgłaszanie lead'a z szybkiego kontaktu do Google Ads/Analytics
+            if (typeof gtag === 'function') {
+                gtag('event', 'generate_lead', {
+                    'event_category': 'contact',
+                    'event_label': 'Szybki_Kontakt'
+                });
+            }
 
             const form = document.getElementById('contact-form');
             const formData = new FormData(form);
