@@ -351,7 +351,7 @@
                         Ze względu na wybrane parametry przygotujemy dla Ciebie taryfę szytą na miarę. Wypełnij ankietę, a nasz broker wynegocjuje dla Ciebie optymalną stawkę w ERGO Hestia.
                     </p>
                     <button id="btn-ind" class="bg-white text-beauty-navy hover:bg-slate-100 font-bold py-4 px-10 rounded-full transition-colors text-sm shadow-lg relative z-10">
-                        Odbierz Ankietę na e-mail
+                        Pobierz i uzupełnij Ankietę
                     </button>
                 </div>
 
@@ -384,8 +384,8 @@
         </div>
     </footer>
 
-    <!-- MODAL 1: Chcę Ofertę -->
-    <div id="modal-offer" class="modal fixed inset-0 bg-slate-900/40 backdrop-blur-sm items-center justify-center p-4">
+    <!-- MODAL 1: Wniosek/Ankieta (z blokadą PDF) -->
+    <div id="modal-offer" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden relative max-h-[90vh] overflow-y-auto custom-scrollbar">
             <button onclick="closeModal('modal-offer')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-3xl leading-none">&times;</button>
             
@@ -402,7 +402,7 @@
                 <input type="hidden" name="subject" value="Nowy Wniosek: Kalkulator BeautyPolisa">
                 <input type="hidden" name="from_name" value="System BeautyPolisa">
                 
-                <!-- UKRYTE POLA WYPEŁNIANE PRZEZ JAVASCRIPT DO MAILA -->
+                <!-- UKRYTE POLA DO MAILA -->
                 <input type="hidden" id="form-hidden-variant" name="Wybrana_Suma_Gwarancyjna">
                 <input type="hidden" id="form-hidden-price" name="Obliczona_Skladka">
                 <input type="hidden" id="form-hidden-taryfa" name="Systemowa_Taryfa">
@@ -429,13 +429,25 @@
                     <input type="tel" name="Telefon" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink focus:bg-white outline-none transition-all">
                 </div>
                 
-                <div class="bg-amber-50 text-amber-900 text-[11px] p-4 rounded-xl mt-4 border border-amber-200 hidden leading-relaxed" id="modal-ankieta-warning">
-                    <strong class="block mb-2 text-amber-700">Wymagana Ankieta Medyczna</strong>
-                    Do zawarcia polisy w tym wariancie niezbędne jest wypełnienie Ankiety Ubezpieczeniowej. <br><br>
-                    <strong>Pamiętaj, żeby do ankiety dołączyć:</strong> dyplom kosmetologa (studia magisterskie/licencjackie), zaświadczenia z odbytych szkoleń w zakresie wskazanych do ubezpieczenia zabiegów. 
-                    <br><br>Zaświadczenia nie mogą być młodsze niż 12 miesięcy 
-                    <span class="inline-block bg-amber-200 px-2 py-0.5 rounded mt-1">(akceptujemy certyfikaty wystawione najwcześniej od: <span id="dynamic-min-date" class="font-bold"></span>)</span>. 
-                    <br><br>Czysty druk prześlemy na Twój e-mail po kliknięciu wyślij.
+                <!-- Ostrzeżenie i Blokada Pobierania Ankiety -->
+                <div class="bg-amber-50 p-5 rounded-xl mt-4 border border-amber-200 hidden leading-relaxed shadow-inner" id="modal-ankieta-warning">
+                    <strong class="block mb-2 text-amber-800 text-sm">Wymagana Ankieta Medyczna</strong>
+                    <p class="text-[11px] text-amber-900 mb-3">Do zawarcia polisy w tym wariancie niezbędne jest wypełnienie Ankiety Ubezpieczeniowej (wymóg ERGO Hestia).</p>
+                    
+                    <p class="text-[11px] text-amber-900 mb-3"><strong>Pamiętaj, żeby do wypełnionej ankiety koniecznie dołączyć:</strong> dyplom kosmetologa (studia magisterskie/licencjackie) oraz zaświadczenia z odbytych szkoleń w zakresie wskazanych do ubezpieczenia zabiegów.</p>
+                    
+                    <p class="text-[11px] text-amber-900 mb-4">Zaświadczenia nie mogą być młodsze niż 12 miesięcy <span class="inline-block bg-amber-200 px-1 py-0.5 rounded mt-1 font-bold">(weryfikujemy certyfikaty wydane przed: <span id="dynamic-min-date"></span>)</span>.</p>
+                    
+                    <div class="mt-4 border-t border-amber-200 pt-4">
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="checkbox" id="ankieta-agreement" class="mt-1 w-5 h-5 accent-amber-600 rounded cursor-pointer" onchange="toggleDownloadButton()">
+                            <span class="text-xs text-amber-900 font-medium">Oświadczam, że zapoznałem/am się z wymogiem dołączenia dyplomu kosmetologa oraz zaświadczeń ze szkoleń.</span>
+                        </label>
+                        
+                        <a href="Ankieta_BeautyPolisa.pdf" target="_blank" id="download-ankieta-btn" onclick="trackDownload()" class="mt-4 block w-full bg-slate-300 text-slate-500 text-center font-bold py-3 rounded-lg transition-colors shadow-sm text-xs uppercase tracking-wider pointer-events-none" disabled>
+                            📥 POBIERZ DRUK ANKIETY (PDF)
+                        </a>
+                    </div>
                 </div>
 
                 <button type="submit" id="submit-offer-btn" class="w-full bg-beauty-navy hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition-colors mt-6 shadow-md">
@@ -446,7 +458,7 @@
     </div>
 
     <!-- MODAL 2: Wrócę do Ciebie -->
-    <div id="modal-contact" class="modal fixed inset-0 bg-slate-900/40 backdrop-blur-sm items-center justify-center p-4">
+    <div id="modal-contact" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-8 text-center relative">
             <button onclick="closeModal('modal-contact')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-3xl leading-none">&times;</button>
             
@@ -507,9 +519,35 @@
             const d = new Date();
             d.setFullYear(d.getFullYear() - 1);
             const months = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
-            const minDate = months[d.getMonth()] + " " + d.getFullYear();
+            const minDate = months[d.getMonth()] + " " + d.getFullYear() + " r.";
             document.getElementById('dynamic-min-date').innerText = minDate;
         });
+
+        // --- OBSŁUGA PRZYCISKU POBIERZ PDF ---
+        function toggleDownloadButton() {
+            const checkbox = document.getElementById('ankieta-agreement');
+            const btn = document.getElementById('download-ankieta-btn');
+            
+            if (checkbox.checked) {
+                btn.classList.remove('bg-slate-300', 'text-slate-500', 'pointer-events-none');
+                btn.classList.add('bg-amber-500', 'text-white', 'hover:bg-amber-600');
+                btn.removeAttribute('disabled');
+            } else {
+                btn.classList.add('bg-slate-300', 'text-slate-500', 'pointer-events-none');
+                btn.classList.remove('bg-amber-500', 'text-white', 'hover:bg-amber-600');
+                btn.setAttribute('disabled', 'true');
+            }
+        }
+
+        // Śledzenie pobrań PDF za pomocą Google Analytics
+        function trackDownload() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'file_download', {
+                    'file_name': 'Ankieta_BeautyPolisa.pdf',
+                    'event_category': 'Engagement'
+                });
+            }
+        }
 
         // --- BAZA ZABIEGÓW ---
         const dbProcedures = {
@@ -557,7 +595,7 @@
                     if (t === 1) hasTier1 = true;
                     if (t === 2) hasTier2 = true;
                     if (t === 3) hasTier3 = true;
-                    if (t === 4) hasHighRisk = true; // Zaznaczono wysokie ryzyko
+                    if (t === 4) hasHighRisk = true; 
                 }
             });
 
@@ -580,11 +618,10 @@
             setTimeout(() => {
                 resultsSec.classList.remove('opacity-0', 'translate-y-8');
                 resultsSec.classList.add('opacity-100', 'translate-y-0');
-                // Jeśli nie ma wysokiego ryzyka i nie ma 9 osób -> odpalamy fajerwerki przy pokazaniu ceny
                 if(!confettiFired && checkedCount > 0 && !hasHighRisk && !document.getElementById('emp-9').checked) fireConfetti();
             }, 100);
 
-            // LOGIKA NAZEWNICTWA I PRZYPISANIA DO KOLUMNY
+            // LOGIKA NAZEWNICTWA
             let finalTier = 1;
             let taryfaName = "";
 
@@ -615,12 +652,11 @@
             
             document.getElementById('detected-tier-msg').innerHTML = `<span class="text-beauty-navy">${taryfaName}</span>`;
 
-            // JEŚLI WYSOKIE RYZYKO LUB +9 OSÓB -> TYLKO ANKIETA I WYCENA INDYWIDUALNA
+            // JEŚLI WYSOKIE RYZYKO LUB +9 OSÓB
             if (empValue === 'ind' || hasHighRisk) {
                 cardsContainer.classList.add('hidden');
                 indMsg.classList.remove('hidden');
                 
-                // Ustalanie przyczyny braku cen
                 if (hasHighRisk) {
                     indMsgReason.innerText = "Wybrałaś zabiegi specjalistyczne (Z Grupy 4), które bezwzględnie wymagają indywidualnej oceny ryzyka przez ubezpieczyciela. Wypełnij ankietę, abyśmy mogli wynegocjować dla Ciebie najlepszą stawkę.";
                     taryfaName = "Wycena Indywidualna (Zabiegi Specjalistyczne)";
@@ -631,7 +667,6 @@
 
                 document.getElementById('btn-ind').setAttribute('onclick', `openOfferModal('Wycena Indywidualna', 'Brak ceny - Wymaga weryfikacji przez TU', '${taryfaName}')`);
             } else {
-                // STANDARDOWA WYCENA
                 cardsContainer.classList.remove('hidden');
                 indMsg.classList.add('hidden');
                 
@@ -662,7 +697,6 @@
 
             document.getElementById('modal-offer').classList.add('active');
             
-            // Logika wyświetlania "straszaka" z dokumentami do Ankiety
             if(variant.includes('Ankiety') || variant.includes('Indywidualna')) {
                 document.getElementById('modal-ankieta-warning').classList.remove('hidden');
             } else {
@@ -671,11 +705,19 @@
         }
 
         function openContactModal() { document.getElementById('modal-contact').classList.add('active'); }
+        
         function closeModal(modalId) { 
             document.getElementById(modalId).classList.remove('active'); 
             if(modalId === 'modal-offer') {
                 document.getElementById('company-name-display').innerText = '';
                 document.getElementById('regon-input').value = '';
+                
+                // Reset checkboxa zgody na PDF po zamknięciu modala
+                const agreementCb = document.getElementById('ankieta-agreement');
+                if(agreementCb) {
+                    agreementCb.checked = false;
+                    toggleDownloadButton();
+                }
             }
         }
 
