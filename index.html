@@ -2,10 +2,8 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport zoptymalizowany pod przeglądarki in-app (TikTok, IG, FB) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     
-    <!-- === OPTYMALIZACJA SEO & TIKTOK/IG/FB MARKETING === -->
     <title>BeautyPolisa | Ubezpieczenie OC dla Salonów Beauty i Kosmetologów</title>
     <meta name="description" content="Ekskluzywne ubezpieczenie OC dla salonów beauty, kosmetologów, fryzjerów i podologów. Zabezpiecz swój biznes na sumę do 300 000 zł. Oblicz składkę online w 2 minuty!">
     <meta name="keywords" content="OC kosmetyczki, ubezpieczenie salonu kosmetycznego, OC kosmetologa, ubezpieczenie podologa, BeautyPolisa, ubezpieczenie fryzjera, OC zawodowe beauty, Beauty Razem, ubezpieczenia medycyna estetyczna">
@@ -17,7 +15,6 @@
     <meta name="apple-mobile-web-app-title" content="BeautyPolisa">
     <meta name="application-name" content="BeautyPolisa">
     
-    <!-- Open Graph (Facebook, Instagram, LinkedIn, TikTok) -->
     <meta property="og:locale" content="pl_PL">
     <meta property="og:type" content="website">
     <meta property="og:title" content="BeautyPolisa | Ubezpieczenie OC dla Branży Beauty">
@@ -28,13 +25,11 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
-    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="BeautyPolisa | Ochrona dla Salonów Beauty">
     <meta name="twitter:description" content="Zabezpiecz swój salon online w 2 minuty. Dedykowane ubezpieczenie OC dla członków Beauty Razem.">
     <meta name="twitter:image" content="BeautyPolisa_logo_podstawowe_poziome.png">
 
-    <!-- JSON-LD (Rich Snippets dla algorytmów Google) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -57,9 +52,7 @@
       }
     }
     </script>
-    <!-- === KONIEC OPTYMALIZACJI === -->
 
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJWP7XYCF1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -68,7 +61,6 @@
       gtag('config', 'G-HJWP7XYCF1');
     </script>
     
-    <!-- Tailwind CSS & Confetti & Google Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
@@ -87,16 +79,14 @@
 
         .hero-gradient { background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 50%, #ffffff 100%); position: relative; }
 
-        /* Checkboxy zabiegów */
-        .procedure-checkbox { display: flex; align-items: flex-start; padding: 0.5rem; border-radius: 0.5rem; transition: all 0.2s ease-in-out; cursor: pointer; border: 1px solid transparent; }
+        .procedure-checkbox { display: flex; align-items: flex-start; padding: 0.35rem 0.5rem; border-radius: 0.5rem; transition: all 0.2s ease-in-out; cursor: pointer; border: 1px solid transparent; }
         .procedure-checkbox:hover { background-color: #fff1f2; border-color: #ffe4e6; }
-        .procedure-checkbox input[type="checkbox"] { margin-top: 0.3rem; margin-right: 0.75rem; width: 1.15rem; height: 1.15rem; accent-color: #e11d48; cursor: pointer; }
-        .procedure-checkbox span { font-size: 0.8rem; line-height: 1.25rem; color: #475569; flex-grow: 1; }
+        .procedure-checkbox input[type="checkbox"] { margin-top: 0.25rem; margin-right: 0.6rem; width: 1.1rem; height: 1.1rem; accent-color: #e11d48; cursor: pointer; }
+        .procedure-checkbox span { font-size: 0.75rem; line-height: 1.1rem; color: #475569; flex-grow: 1; }
 
-        /* Przyciski Radio (Zatrudnienie) */
         .radio-card input[type="radio"] { display: none; }
-        .radio-card label { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.2rem 1rem; border: 2px solid #e2e8f0; border-radius: 1rem; cursor: pointer; transition: all 0.3s; background: white; height: 100%; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .radio-card input[type="radio"]:checked + label { border-color: #2a3b69; background-color: #f8fafc; box-shadow: 0 10px 15px -3px rgba(42, 59, 105, 0.15); transform: translateY(-3px); }
+        .radio-card label { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.75rem 1rem; border: 2px solid #e2e8f0; border-radius: 1rem; cursor: pointer; transition: all 0.3s; background: white; height: 100%; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .radio-card input[type="radio"]:checked + label { border-color: #2a3b69; background-color: #f8fafc; box-shadow: 0 10px 15px -3px rgba(42, 59, 105, 0.15); transform: translateY(-2px); }
 
         .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; border-radius: 4px; }
@@ -108,7 +98,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
         .premium-card { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; }
-        .premium-card:hover { transform: translateY(-8px); box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.1), 0 15px 15px -5px rgba(0, 0, 0, 0.04); }
+        .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid #2a3b69; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -116,8 +106,8 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col selection:bg-beauty-pink selection:text-white">
 
-    <!-- Top Menu (Produkty) -->
-    <nav class="bg-slate-900 text-slate-300 text-[11px] md:text-xs py-2.5 font-semibold tracking-wide border-b border-slate-800 z-50 relative">
+    <!-- Top Menu -->
+    <nav class="bg-slate-900 text-slate-300 text-[10px] md:text-xs py-1.5 font-semibold tracking-wide border-b border-slate-800 z-50 relative">
         <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start">
             <a href="#" class="hover:text-white transition-colors">OC</a>
             <a href="#" class="hover:text-white transition-colors">Ochrona karno-skarbowa</a>
@@ -129,17 +119,17 @@
 
     <!-- Nagłówek główny -->
     <header class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-40 border-b border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-5">
-                <img src="BeautyPolisa_logo_podstawowe_poziome.png" alt="Logo BeautyPolisa" class="h-10 md:h-12 object-contain">
-                <div class="hidden md:block h-10 w-px bg-slate-200"></div>
+        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-4">
+                <img src="BeautyPolisa_logo_podstawowe_poziome.png" alt="Logo BeautyPolisa" class="h-8 md:h-10 object-contain">
+                <div class="hidden md:block h-8 w-px bg-slate-200"></div>
                 <div class="hidden md:flex flex-col">
-                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Obsługa Brokerska</span>
-                    <span class="text-xs text-beauty-navy font-semibold">Aura Consulting</span>
+                    <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Obsługa Brokerska</span>
+                    <span class="text-[11px] text-beauty-navy font-semibold">Aura Consulting</span>
                 </div>
             </div>
             <div>
-                <button onclick="document.getElementById('calculator-section').scrollIntoView({behavior: 'smooth'});" class="bg-beauty-navy hover:bg-slate-800 text-white font-semibold py-2.5 px-7 rounded-full transition-all text-sm shadow-lg shadow-blue-900/20">
+                <button onclick="document.getElementById('calculator-section').scrollIntoView({behavior: 'smooth'});" class="bg-beauty-navy hover:bg-slate-800 text-white font-semibold py-2 px-6 rounded-full transition-all text-xs shadow-lg shadow-blue-900/20">
                     Rozpocznij Kalkulację
                 </button>
             </div>
@@ -148,31 +138,31 @@
 
     <main class="flex-grow">
         <!-- Sekcja Hero -->
-        <section class="hero-gradient text-beauty-navy py-16 md:py-24 px-4 overflow-hidden border-b border-rose-100">
+        <section class="hero-gradient text-beauty-navy py-10 md:py-14 px-4 overflow-hidden border-b border-rose-100">
             <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-white rounded-full blur-3xl opacity-60"></div>
             <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 bg-rose-200 rounded-full blur-3xl opacity-40"></div>
 
             <div class="max-w-4xl mx-auto text-center relative z-10">
-                <span class="inline-block py-1.5 px-4 rounded-full bg-white border border-rose-200 text-beauty-pink text-xs font-bold tracking-widest uppercase mb-6 shadow-sm">
+                <span class="inline-block py-1 px-3 rounded-full bg-white border border-rose-200 text-beauty-pink text-[10px] font-bold tracking-widest uppercase mb-4 shadow-sm">
                     Kalkulator Składek 2026
                 </span>
                 
-                <h1 class="font-heading text-3xl md:text-5xl font-bold mb-6 leading-tight text-slate-800">
+                <h1 class="font-heading text-2xl md:text-4xl font-bold mb-4 leading-tight text-slate-800">
                     Ekskluzywny Program Ochrony<br><span class="text-beauty-pink">dla Branży Beauty</span>
                 </h1>
                 
-                <p class="text-base md:text-lg text-slate-600 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                <p class="text-sm md:text-base text-slate-600 mb-6 max-w-2xl mx-auto font-light leading-relaxed">
                     Zbudowany we współpracy z <strong>BeautyRazem</strong>. Zaznacz zabiegi, które wykonujesz w swoim gabinecie, a system automatycznie dopasuje optymalny wariant ubezpieczenia.
                 </p>
                 
-                <div class="flex flex-wrap justify-center gap-3 md:gap-5 text-xs md:text-sm font-semibold text-slate-700">
-                    <span class="bg-white px-5 py-2.5 rounded-full border border-rose-100 shadow-sm flex items-center gap-2">
+                <div class="flex flex-wrap justify-center gap-2 md:gap-4 text-xs font-semibold text-slate-700">
+                    <span class="bg-white px-4 py-2 rounded-full border border-rose-100 shadow-sm flex items-center gap-1.5">
                         <span class="text-emerald-500">✓</span> Dedykowane dla BeautyRazem
                     </span>
-                    <span class="bg-white px-5 py-2.5 rounded-full border border-rose-100 shadow-sm flex items-center gap-2">
+                    <span class="bg-white px-4 py-2 rounded-full border border-rose-100 shadow-sm flex items-center gap-1.5">
                         <span class="text-emerald-500">✓</span> Ochrona do 300 000 zł
                     </span>
-                    <span class="bg-white px-5 py-2.5 rounded-full border border-rose-100 shadow-sm flex items-center gap-2">
+                    <span class="bg-white px-4 py-2 rounded-full border border-rose-100 shadow-sm flex items-center gap-1.5">
                         <span class="text-emerald-500">✓</span> Ekspercka likwidacja szkód
                     </span>
                 </div>
@@ -180,107 +170,106 @@
         </section>
 
         <!-- Kalkulator -->
-        <section id="calculator-section" class="py-16 px-4 max-w-7xl mx-auto">
+        <section id="calculator-section" class="py-8 px-4 max-w-7xl mx-auto">
             
             <!-- KROK 1 -->
-            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-10 mb-10 relative">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-slate-100 pb-6">
-                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy flex items-center">
-                        <span class="bg-rose-100 text-beauty-pink w-10 h-10 inline-flex items-center justify-center rounded-full text-xl mr-4 shadow-sm font-sans">1</span> 
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-5 md:p-6 mb-6 relative">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 gap-3 border-b border-slate-100 pb-4">
+                    <h2 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy flex items-center">
+                        <span class="bg-rose-100 text-beauty-pink w-8 h-8 inline-flex items-center justify-center rounded-full text-base mr-3 shadow-sm font-sans">1</span> 
                         Jakie zabiegi wykonujesz?
                     </h2>
-                    <p class="text-xs font-medium text-slate-500 bg-slate-50 px-4 py-2 rounded-full border border-slate-200">
+                    <p class="text-[11px] font-medium text-slate-500 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200">
                         Zaznacz wszystkie. System dopasuje odpowiednią taryfę.
                     </p>
                 </div>
                 
-                <div class="grid lg:grid-cols-3 gap-8">
+                <div class="grid lg:grid-cols-3 gap-5">
                     <!-- Lista 1 -->
                     <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white shadow-sm">
-                        <div class="bg-slate-50 p-4 border-b border-slate-200 flex justify-between items-center">
+                        <div class="bg-slate-50 p-3 border-b border-slate-200 flex justify-between items-center">
                             <div>
-                                <h3 class="font-bold text-beauty-navy">Grupa 1</h3>
-                                <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Kosmetyka i Fryzjerstwo</p>
+                                <h3 class="font-bold text-sm text-beauty-navy">Grupa 1</h3>
+                                <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-0.5">Kosmetyka i Fryzjerstwo</p>
                             </div>
-                            <button onclick="selectAll(1)" class="text-[10px] text-beauty-navy border border-slate-300 bg-white px-3 py-1.5 rounded-full hover:border-beauty-navy hover:bg-rose-50 transition-colors font-semibold shadow-sm">Zaznacz wszystkie</button>
+                            <button onclick="selectAll(1)" class="text-[9px] text-beauty-navy border border-slate-300 bg-white px-2.5 py-1 rounded-full hover:border-beauty-navy hover:bg-rose-50 transition-colors font-semibold shadow-sm">Wszystkie</button>
                         </div>
-                        <div class="p-3 h-[450px] overflow-y-auto custom-scrollbar" id="list-1-container"></div>
+                        <div class="p-2 h-[320px] overflow-y-auto custom-scrollbar" id="list-1-container"></div>
                     </div>
 
                     <!-- Lista 2 -->
                     <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white shadow-sm">
-                        <div class="bg-slate-50 p-4 border-b border-slate-200 flex justify-between items-center">
+                        <div class="bg-slate-50 p-3 border-b border-slate-200 flex justify-between items-center">
                             <div>
-                                <h3 class="font-bold text-beauty-navy">Grupa 2</h3>
-                                <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Kosmetologia i Tatuaż</p>
+                                <h3 class="font-bold text-sm text-beauty-navy">Grupa 2</h3>
+                                <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-0.5">Kosmetologia i Tatuaż</p>
                             </div>
-                            <button onclick="selectAll(2)" class="text-[10px] text-beauty-navy border border-slate-300 bg-white px-3 py-1.5 rounded-full hover:border-beauty-navy hover:bg-rose-50 transition-colors font-semibold shadow-sm">Zaznacz wszystkie</button>
+                            <button onclick="selectAll(2)" class="text-[9px] text-beauty-navy border border-slate-300 bg-white px-2.5 py-1 rounded-full hover:border-beauty-navy hover:bg-rose-50 transition-colors font-semibold shadow-sm">Wszystkie</button>
                         </div>
-                        <div class="p-3 h-[450px] overflow-y-auto custom-scrollbar" id="list-2-container"></div>
+                        <div class="p-2 h-[320px] overflow-y-auto custom-scrollbar" id="list-2-container"></div>
                     </div>
 
                     <!-- Lista 3 -->
                     <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white shadow-sm">
-                        <div class="bg-slate-50 p-4 border-b border-slate-200 flex justify-between items-center">
+                        <div class="bg-slate-50 p-3 border-b border-slate-200 flex justify-between items-center">
                             <div>
-                                <h3 class="font-bold text-beauty-navy">Grupa 3</h3>
-                                <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Podologia Medyczna</p>
+                                <h3 class="font-bold text-sm text-beauty-navy">Grupa 3</h3>
+                                <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-0.5">Podologia Medyczna</p>
                             </div>
-                            <button onclick="selectAll(3)" class="text-[10px] text-beauty-navy border border-slate-300 bg-white px-3 py-1.5 rounded-full hover:border-beauty-navy hover:bg-rose-50 transition-colors font-semibold shadow-sm">Zaznacz wszystkie</button>
+                            <button onclick="selectAll(3)" class="text-[9px] text-beauty-navy border border-slate-300 bg-white px-2.5 py-1 rounded-full hover:border-beauty-navy hover:bg-rose-50 transition-colors font-semibold shadow-sm">Wszystkie</button>
                         </div>
-                        <div class="p-3 h-[450px] overflow-y-auto custom-scrollbar" id="list-3-container"></div>
+                        <div class="p-2 h-[320px] overflow-y-auto custom-scrollbar" id="list-3-container"></div>
                     </div>
                 </div>
 
                 <!-- Tabela Zabiegów Wysokiego Ryzyka (Grupa 4) -->
-                <div class="mt-8 border-2 border-amber-200 rounded-2xl overflow-hidden flex flex-col bg-amber-50/40">
-                    <div class="bg-amber-100/50 p-5 border-b border-amber-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div class="mt-5 border-2 border-amber-200 rounded-2xl overflow-hidden flex flex-col bg-amber-50/40">
+                    <div class="bg-amber-100/50 p-4 border-b border-amber-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <div>
-                            <h3 class="font-bold text-amber-900 text-lg">Zabiegi Specjalistyczne (Wysokie Ryzyko)</h3>
-                            <p class="text-xs text-amber-700 mt-1 font-medium">Zabiegi podlegające ubezpieczeniu po uprzedniej, indywidualnej ocenie ryzyka przez ubezpieczyciela.</p>
+                            <h3 class="font-bold text-amber-900 text-base">Zabiegi Specjalistyczne (Wysokie Ryzyko)</h3>
+                            <p class="text-[11px] text-amber-700 mt-0.5 font-medium">Zabiegi podlegające ubezpieczeniu po uprzedniej, indywidualnej ocenie ryzyka przez ubezpieczyciela.</p>
                         </div>
-                        <button onclick="selectAll(4)" class="text-[10px] text-amber-800 border border-amber-300 bg-white px-4 py-2 rounded-full hover:bg-amber-100 transition-colors font-bold shadow-sm whitespace-nowrap">Zaznacz wszystkie</button>
+                        <button onclick="selectAll(4)" class="text-[9px] text-amber-800 border border-amber-300 bg-white px-3 py-1.5 rounded-full hover:bg-amber-100 transition-colors font-bold shadow-sm whitespace-nowrap">Zaznacz wszystkie</button>
                     </div>
-                    <div class="p-4 grid md:grid-cols-2 lg:grid-cols-3 gap-3" id="list-4-container">
+                    <div class="p-3 grid md:grid-cols-2 lg:grid-cols-3 gap-2" id="list-4-container">
                         <!-- JS wstrzykuje listę 4 -->
                     </div>
                 </div>
-
             </div>
 
             <!-- KROK 2 -->
-            <div id="step-2" class="bg-white rounded-3xl shadow-lg border border-slate-100 p-6 md:p-10 mb-10 opacity-40 pointer-events-none transition-all duration-500 transform translate-y-4">
-                <div class="border-b border-slate-100 pb-6 mb-8">
-                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy flex items-center">
-                        <span class="bg-rose-100 text-beauty-pink w-10 h-10 inline-flex items-center justify-center rounded-full text-xl mr-4 shadow-sm font-sans">2</span> 
+            <div id="step-2" class="bg-white rounded-3xl shadow-lg border border-slate-100 p-5 md:p-6 mb-6 opacity-40 pointer-events-none transition-all duration-500 transform translate-y-4">
+                <div class="border-b border-slate-100 pb-4 mb-5">
+                    <h2 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy flex items-center">
+                        <span class="bg-rose-100 text-beauty-pink w-8 h-8 inline-flex items-center justify-center rounded-full text-base mr-3 shadow-sm font-sans">2</span> 
                         Parametry Gabinetu
                     </h2>
                 </div>
                 
-                <div class="grid md:grid-cols-2 gap-10">
+                <div class="grid md:grid-cols-2 gap-6">
                     <!-- Zatrudnienie -->
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-4">Ile osób wykonuje zabiegi?</label>
-                        <div class="flex flex-col sm:flex-row gap-4">
+                        <label class="block text-xs font-semibold text-slate-700 mb-3">Ile osób wykonuje zabiegi?</label>
+                        <div class="flex flex-col sm:flex-row gap-3">
                             <div class="radio-card flex-1">
                                 <input type="radio" name="employees" id="emp-5" value="1" checked onchange="updateCalculator()">
-                                <label for="emp-5" class="py-3">
-                                    <span class="font-bold text-sm text-slate-800">1 - 5 osób</span>
-                                    <span class="text-[10px] text-emerald-600 mt-1 font-semibold uppercase">Taryfa bazowa</span>
+                                <label for="emp-5" class="py-2">
+                                    <span class="font-bold text-xs text-slate-800">1 - 5 osób</span>
+                                    <span class="text-[9px] text-emerald-600 mt-1 font-semibold uppercase">Taryfa bazowa</span>
                                 </label>
                             </div>
                             <div class="radio-card flex-1">
                                 <input type="radio" name="employees" id="emp-8" value="1.25" onchange="updateCalculator()">
-                                <label for="emp-8" class="py-3">
-                                    <span class="font-bold text-sm text-slate-800">6 - 8 osób</span>
-                                    <span class="text-[10px] text-slate-500 mt-1 font-semibold uppercase">+25% składki</span>
+                                <label for="emp-8" class="py-2">
+                                    <span class="font-bold text-xs text-slate-800">6 - 8 osób</span>
+                                    <span class="text-[9px] text-slate-500 mt-1 font-semibold uppercase">+25% składki</span>
                                 </label>
                             </div>
                             <div class="radio-card flex-1">
                                 <input type="radio" name="employees" id="emp-9" value="ind" onchange="updateCalculator()">
-                                <label for="emp-9" class="py-3">
-                                    <span class="font-bold text-sm text-slate-800">9 i więcej</span>
-                                    <span class="text-[10px] text-amber-600 mt-1 font-semibold uppercase">Ankieta</span>
+                                <label for="emp-9" class="py-2">
+                                    <span class="font-bold text-xs text-slate-800">9 i więcej</span>
+                                    <span class="text-[9px] text-amber-600 mt-1 font-semibold uppercase">Ankieta</span>
                                 </label>
                             </div>
                         </div>
@@ -288,14 +277,14 @@
 
                     <!-- Dodatki -->
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-4">Rozszerzenie (Opcjonalnie)</label>
-                        <div class="border-2 border-slate-100 rounded-2xl p-5 flex items-start gap-4 cursor-pointer hover:bg-rose-50 hover:border-rose-100 transition-colors h-[88px] box-border" onclick="document.getElementById('legal-protection').click()">
-                            <div class="flex-shrink-0 mt-1">
-                                <input type="checkbox" id="legal-protection" class="w-6 h-6 accent-beauty-pink rounded cursor-pointer" onclick="event.stopPropagation();" onchange="updateCalculator()">
+                        <label class="block text-xs font-semibold text-slate-700 mb-3">Rozszerzenie (Opcjonalnie)</label>
+                        <div class="border-2 border-slate-100 rounded-2xl p-4 flex items-start gap-3 cursor-pointer hover:bg-rose-50 hover:border-rose-100 transition-colors" onclick="document.getElementById('legal-protection').click()">
+                            <div class="flex-shrink-0 mt-0.5">
+                                <input type="checkbox" id="legal-protection" class="w-5 h-5 accent-beauty-pink rounded cursor-pointer" onclick="event.stopPropagation();" onchange="updateCalculator()">
                             </div>
                             <div>
-                                <label class="font-bold text-slate-800 cursor-pointer block">Ubezpieczenie Ochrony Prawnej</label>
-                                <p class="text-xs text-slate-500 mt-1">Koszty adwokata (Suma: 100 000 zł). <span class="font-semibold text-beauty-pink">Składka: +92 zł / rok</span></p>
+                                <label class="font-bold text-sm text-slate-800 cursor-pointer block">Ubezpieczenie Ochrony Prawnej</label>
+                                <p class="text-[11px] text-slate-500 mt-1">Koszty adwokata (Suma: 100 000 zł). <span class="font-semibold text-beauty-pink">Składka: +92 zł / rok</span></p>
                             </div>
                         </div>
                     </div>
@@ -303,55 +292,55 @@
             </div>
 
             <!-- WYNIKI -->
-            <div id="results-section" class="hidden transform transition-all duration-700 translate-y-8 opacity-0">
+            <div id="results-section" class="hidden transform transition-all duration-700 translate-y-4 opacity-0">
                 
-                <div id="detected-tier-box" class="bg-white border-l-4 border-beauty-pink shadow-lg rounded-r-2xl p-6 mb-10 flex items-center justify-between">
+                <div id="detected-tier-box" class="bg-white border-l-4 border-beauty-pink shadow-lg rounded-r-2xl p-4 mb-6 flex items-center justify-between">
                     <div>
-                        <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Dopasowana Taryfa</p>
-                        <p id="detected-tier-msg" class="text-base text-slate-800 font-semibold"></p>
+                        <p class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">Dopasowana Taryfa</p>
+                        <p id="detected-tier-msg" class="text-sm text-slate-800 font-semibold"></p>
                     </div>
-                    <div class="text-beauty-pink bg-rose-50 p-3 rounded-full hidden md:block">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="text-beauty-pink bg-rose-50 p-2 rounded-full hidden md:block">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
                 </div>
                 
-                <!-- Karty Cenowe (widoczne dla pakietów standardowych) -->
+                <!-- Karty Cenowe -->
                 <div id="pricing-cards-container">
-                    <h2 class="font-heading text-center text-3xl md:text-4xl font-bold text-beauty-navy mb-12">Wybierz wariant ochrony</h2>
+                    <h2 class="font-heading text-center text-2xl md:text-3xl font-bold text-beauty-navy mb-8">Wybierz wariant ochrony</h2>
                     
-                    <div id="pricing-cards" class="grid md:grid-cols-3 gap-8">
+                    <div id="pricing-cards" class="grid md:grid-cols-3 gap-5">
                         <!-- Karta 100k -->
                         <div class="bg-white rounded-3xl shadow-md border border-slate-100 overflow-hidden flex flex-col premium-card">
-                            <div class="p-8 flex-grow flex flex-col items-center">
-                                <h3 class="font-semibold text-slate-400 uppercase tracking-widest text-[10px] mb-2">Wariant Podstawowy</h3>
-                                <div class="font-heading text-3xl font-bold text-beauty-navy mb-6">100 000 zł</div>
-                                <div class="w-full h-px bg-slate-100 mb-6"></div>
+                            <div class="p-6 flex-grow flex flex-col items-center">
+                                <h3 class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] mb-2">Wariant Podstawowy</h3>
+                                <div class="font-heading text-2xl font-bold text-beauty-navy mb-4">100 000 zł</div>
+                                <div class="w-full h-px bg-slate-100 mb-4"></div>
                                 
-                                <div class="text-center mb-8">
-                                    <p class="text-xs text-slate-500 mb-1">Składka roczna:</p>
-                                    <span id="price-100k" class="text-5xl font-extrabold text-slate-800">---</span><span class="text-slate-500 font-medium"> zł</span>
+                                <div class="text-center mb-6">
+                                    <p class="text-[11px] text-slate-500 mb-1">Składka roczna:</p>
+                                    <span id="price-100k" class="text-4xl font-extrabold text-slate-800">---</span><span class="text-slate-500 font-medium text-sm"> zł</span>
                                 </div>
-                                <button id="btn-100k" class="mt-auto w-full border-2 border-slate-200 text-slate-600 hover:border-beauty-navy hover:text-beauty-navy font-bold py-4 rounded-xl transition-colors">
+                                <button id="btn-100k" class="mt-auto w-full border-2 border-slate-200 text-slate-600 hover:border-beauty-navy hover:text-beauty-navy font-bold py-3 rounded-xl text-sm transition-colors">
                                     Wybieram wariant
                                 </button>
                             </div>
                         </div>
 
                         <!-- Karta 200k -->
-                        <div class="bg-white rounded-3xl shadow-2xl border-2 border-beauty-pink overflow-hidden flex flex-col relative premium-card transform md:-translate-y-4">
-                            <div class="absolute top-0 left-0 w-full bg-gradient-to-r from-beauty-pink to-rose-500 text-white text-center text-[10px] font-bold py-2 uppercase tracking-widest">
+                        <div class="bg-white rounded-3xl shadow-xl border-2 border-beauty-pink overflow-hidden flex flex-col relative premium-card transform md:-translate-y-2">
+                            <div class="absolute top-0 left-0 w-full bg-gradient-to-r from-beauty-pink to-rose-500 text-white text-center text-[9px] font-bold py-1.5 uppercase tracking-widest">
                                 Rekomendacja Ekspertów
                             </div>
-                            <div class="p-8 pt-12 flex-grow flex flex-col items-center bg-rose-50/30">
-                                <h3 class="font-semibold text-rose-400 uppercase tracking-widest text-[10px] mb-2">Wariant Optymalny</h3>
-                                <div class="font-heading text-3xl font-bold text-beauty-pink mb-6">200 000 zł</div>
-                                <div class="w-full h-px bg-rose-100 mb-6"></div>
+                            <div class="p-6 pt-8 flex-grow flex flex-col items-center bg-rose-50/30">
+                                <h3 class="font-semibold text-rose-400 uppercase tracking-widest text-[9px] mb-2">Wariant Optymalny</h3>
+                                <div class="font-heading text-2xl font-bold text-beauty-pink mb-4">200 000 zł</div>
+                                <div class="w-full h-px bg-rose-100 mb-4"></div>
                                 
-                                <div class="text-center mb-8">
-                                    <p class="text-xs text-slate-500 mb-1">Składka roczna:</p>
-                                    <span id="price-200k" class="text-5xl font-extrabold text-slate-800">---</span><span class="text-slate-500 font-medium"> zł</span>
+                                <div class="text-center mb-6">
+                                    <p class="text-[11px] text-slate-500 mb-1">Składka roczna:</p>
+                                    <span id="price-200k" class="text-4xl font-extrabold text-slate-800">---</span><span class="text-slate-500 font-medium text-sm"> zł</span>
                                 </div>
-                                <button id="btn-200k" class="mt-auto w-full bg-beauty-pink hover:bg-rose-700 text-white font-bold py-4 rounded-xl transition-colors shadow-lg shadow-rose-200">
+                                <button id="btn-200k" class="mt-auto w-full bg-beauty-pink hover:bg-rose-700 text-white font-bold py-3 rounded-xl text-sm transition-colors shadow-md shadow-rose-200">
                                     Wybieram wariant
                                 </button>
                             </div>
@@ -359,19 +348,19 @@
 
                         <!-- Karta 300k -->
                         <div class="bg-white rounded-3xl shadow-md border border-slate-100 overflow-hidden flex flex-col premium-card relative">
-                            <div class="p-8 flex-grow flex flex-col items-center">
-                                <h3 class="font-semibold text-slate-400 uppercase tracking-widest text-[10px] mb-2">Wariant Maksymalny</h3>
-                                <div class="font-heading text-3xl font-bold text-beauty-navy mb-6">300 000 zł</div>
-                                <div class="w-full h-px bg-slate-100 mb-6"></div>
+                            <div class="p-6 flex-grow flex flex-col items-center">
+                                <h3 class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] mb-2">Wariant Maksymalny</h3>
+                                <div class="font-heading text-2xl font-bold text-beauty-navy mb-4">300 000 zł</div>
+                                <div class="w-full h-px bg-slate-100 mb-4"></div>
                                 
-                                <div class="text-center mb-6">
-                                    <p class="text-xs text-slate-500 mb-1">Składka roczna:</p>
-                                    <span id="price-300k" class="text-5xl font-extrabold text-slate-800">---</span><span class="text-slate-500 font-medium"> zł</span>
+                                <div class="text-center mb-5">
+                                    <p class="text-[11px] text-slate-500 mb-1">Składka roczna:</p>
+                                    <span id="price-300k" class="text-4xl font-extrabold text-slate-800">---</span><span class="text-slate-500 font-medium text-sm"> zł</span>
                                 </div>
-                                <div class="bg-slate-50 text-slate-500 text-[10px] p-3 rounded-xl mb-6 text-center w-full border border-slate-100">
-                                    ℹ️ Wymaga wypełnienia ankiety oceny ryzyka.
+                                <div class="bg-slate-50 text-slate-500 text-[9px] p-2 rounded-lg mb-5 text-center w-full border border-slate-100">
+                                    ℹ️ Wymaga wypełnienia ankiety.
                                 </div>
-                                <button id="btn-300k" class="mt-auto w-full border-2 border-slate-200 text-slate-600 hover:border-beauty-navy hover:text-beauty-navy font-bold py-4 rounded-xl transition-colors">
+                                <button id="btn-300k" class="mt-auto w-full border-2 border-slate-200 text-slate-600 hover:border-beauty-navy hover:text-beauty-navy font-bold py-3 rounded-xl text-sm transition-colors">
                                     Wyślijcie Ankietę
                                 </button>
                             </div>
@@ -379,22 +368,22 @@
                     </div>
                 </div>
 
-                <!-- Komunikat Wyceny Indywidualnej (Zabiegi Specjalistyczne lub 9+ osób) -->
-                <div id="individual-pricing-msg" class="hidden bg-beauty-navy text-white rounded-3xl p-10 text-center shadow-xl mt-8 relative overflow-hidden">
+                <!-- Komunikat Wyceny Indywidualnej -->
+                <div id="individual-pricing-msg" class="hidden bg-beauty-navy text-white rounded-3xl p-8 text-center shadow-lg mt-6 relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl"></div>
-                    <h3 class="font-heading text-3xl font-bold mb-4 relative z-10">Wymagana Indywidualna Ocena Ryzyka</h3>
-                    <p class="text-slate-300 mb-8 max-w-2xl mx-auto text-sm leading-relaxed relative z-10" id="ind-pricing-reason">
+                    <h3 class="font-heading text-2xl font-bold mb-3 relative z-10">Wymagana Indywidualna Ocena Ryzyka</h3>
+                    <p class="text-slate-300 mb-6 max-w-2xl mx-auto text-xs leading-relaxed relative z-10" id="ind-pricing-reason">
                         Ze względu na wybrane parametry przygotujemy dla Ciebie taryfę szytą na miarę. Wypełnij ankietę, a nasz broker wynegocjuje dla Ciebie optymalną stawkę w ERGO Hestia.
                     </p>
-                    <button id="btn-ind" class="bg-white text-beauty-navy hover:bg-slate-100 font-bold py-4 px-10 rounded-full transition-colors text-sm shadow-lg relative z-10">
+                    <button id="btn-ind" class="bg-white text-beauty-navy hover:bg-slate-100 font-bold py-3 px-8 rounded-full transition-colors text-xs shadow-md relative z-10">
                         Odbierz Ankietę na e-mail
                     </button>
                 </div>
 
-                <div class="mt-12 flex justify-center">
-                    <button onclick="openModal('modal-contact')" class="flex items-center gap-2 text-slate-500 hover:text-beauty-pink font-medium transition-colors text-sm bg-white border border-slate-200 px-8 py-3 rounded-full shadow-sm">
+                <div class="mt-8 flex justify-center">
+                    <button onclick="openModal('modal-contact')" class="flex items-center gap-2 text-slate-500 hover:text-beauty-pink font-medium transition-colors text-xs bg-white border border-slate-200 px-6 py-2.5 rounded-full shadow-sm">
                         Masz pytania? Zostaw kontakt, odezwiemy się
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </button>
                 </div>
             </div>
@@ -402,47 +391,43 @@
         </section>
     </main>
 
-    <!-- Footer z linkami RODO i Informacjami o dystrybutorze -->
-    <footer class="bg-white border-t border-slate-200 pt-12 pb-8 text-sm text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 mb-8">
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 pt-8 pb-6 text-sm text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-6 mb-4">
             <div>
-                <img src="BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa Logo" class="h-8 object-contain grayscale opacity-60 mb-5">
-                <p class="mb-2 text-xs"><strong>Obsługa techniczna Programu:</strong> Aura Expert sp. z o.o.</p>
-                <p class="text-xs"><strong>Likwidacja szkód i obsługa brokerska:</strong> Broker Ubezpieczeniowy Aura Consulting sp. z o.o.</p>
+                <img src="BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa Logo" class="h-6 object-contain grayscale opacity-60 mb-3">
+                <p class="mb-1 text-[11px]"><strong>Obsługa techniczna Programu:</strong> Aura Expert sp. z o.o.</p>
+                <p class="text-[11px]"><strong>Likwidacja szkód i obsługa:</strong> Broker Ubezpieczeniowy Aura Consulting sp. z o.o.</p>
             </div>
-            <div class="text-[10px] text-slate-400 md:text-right flex flex-col justify-center leading-relaxed">
-                <p class="mb-2">Niniejszy kalkulator oraz wyliczenia mają charakter wyłącznie informacyjny i nie stanowią oferty w rozumieniu art. 66 Kodeksu Cywilnego.</p>
-                <p>Ostateczna wysokość składki oraz możliwość zawarcia ochrony ubezpieczeniowej uzależniona jest od weryfikacji ryzyka i ostatecznej akceptacji przez Towarzystwo Ubezpieczeń ERGO Hestia.</p>
-                <div class="mt-4 flex flex-col md:items-end gap-2 text-xs font-semibold">
-                    <button onclick="openModal('modal-dystrybutor')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Informacja o dystrybutorze ubezpieczeniowym</button>
-                    <button onclick="openModal('modal-rodo')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Nota informacyjna RODO (Polityka Prywatności)</button>
+            <div class="text-[9px] text-slate-400 md:text-right flex flex-col justify-center leading-relaxed">
+                <p class="mb-1">Niniejszy kalkulator oraz wyliczenia mają charakter wyłącznie informacyjny i nie stanowią oferty w rozumieniu art. 66 Kodeksu Cywilnego.</p>
+                <p>Ostateczna wysokość składki uzależniona jest od weryfikacji ryzyka i akceptacji przez Towarzystwo Ubezpieczeń ERGO Hestia.</p>
+                <div class="mt-3 flex flex-col md:items-end gap-1.5 text-[10px] font-semibold">
+                    <button onclick="openModal('modal-dystrybutor')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Informacja o dystrybutorze</button>
+                    <button onclick="openModal('modal-rodo')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Nota informacyjna RODO</button>
                 </div>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto px-4 text-center border-t border-slate-100 pt-6 text-[10px] tracking-widest uppercase font-semibold text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 text-center border-t border-slate-100 pt-4 text-[9px] tracking-widest uppercase font-semibold text-slate-400">
             &copy; 2026 Program BeautyRazem. Wszelkie prawa zastrzeżone.
         </div>
     </footer>
 
-    <!-- MODAL 1: Wniosek/Ankieta (z blokadą PDF) -->
+    <!-- MODAL 1: Wniosek/Ankieta -->
     <div id="modal-offer" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden relative max-h-[90vh] overflow-y-auto custom-scrollbar">
-            <button onclick="closeModal('modal-offer')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-3xl leading-none">&times;</button>
+            <button onclick="closeModal('modal-offer')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none">&times;</button>
             
-            <div class="bg-slate-50 px-8 py-6 border-b border-slate-100">
-                <h3 class="font-heading font-bold text-xl text-beauty-navy">Wniosek o polisę</h3>
-                <p class="text-xs text-slate-500 mt-2">Wybrany wariant: <strong id="modal-chosen-variant" class="text-beauty-pink text-sm"></strong></p>
-                <p class="text-xs text-slate-500 mt-1">Składka roczna: <strong id="modal-chosen-price" class="text-beauty-navy"></strong></p>
+            <div class="bg-slate-50 px-6 py-5 border-b border-slate-100">
+                <h3 class="font-heading font-bold text-lg text-beauty-navy">Wniosek o polisę</h3>
+                <p class="text-[11px] text-slate-500 mt-1">Wybrany wariant: <strong id="modal-chosen-variant" class="text-beauty-pink text-xs"></strong></p>
+                <p class="text-[11px] text-slate-500 mt-0.5">Składka roczna: <strong id="modal-chosen-price" class="text-beauty-navy"></strong></p>
             </div>
             
-            <form id="offer-form" onsubmit="submitOffer(event)" class="p-8 space-y-5">
-                
-                <!-- NOWY KLUCZ API -->
+            <form id="offer-form" onsubmit="submitOffer(event)" class="p-6 space-y-4">
                 <input type="hidden" name="access_key" value="44ce55c2-c91f-48f0-a899-eb436353a204">
                 <input type="hidden" name="subject" value="Nowy Wniosek: Kalkulator BeautyPolisa">
                 <input type="hidden" name="from_name" value="System BeautyPolisa">
-                
-                <!-- UKRYTE POLA DO MAILA -->
                 <input type="hidden" id="form-hidden-variant" name="Wybrana_Suma_Gwarancyjna">
                 <input type="hidden" id="form-hidden-price" name="Obliczona_Skladka">
                 <input type="hidden" id="form-hidden-taryfa" name="Systemowa_Taryfa">
@@ -451,47 +436,43 @@
                 <input type="hidden" id="form-hidden-procedures" name="Zaznaczone_Zabiegi">
 
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Numer REGON salonu</label>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Numer REGON salonu</label>
                     <div class="relative">
-                        <input type="text" name="REGON" id="regon-input" required pattern="[0-9]{9}|[0-9]{14}" placeholder="Wpisz 9 lub 14 cyfr" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink focus:bg-white outline-none transition-all" oninput="verifyRegon()">
-                        <div id="regon-loader" class="loader absolute right-4 top-4"></div>
+                        <input type="text" name="REGON" id="regon-input" required pattern="[0-9]{9}|[0-9]{14}" placeholder="Wpisz 9 lub 14 cyfr" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink focus:bg-white outline-none transition-all" oninput="verifyRegon()">
+                        <div id="regon-loader" class="loader absolute right-3 top-3"></div>
                     </div>
-                    <p id="company-name-display" class="text-[10px] text-emerald-600 font-medium mt-2 min-h-[15px]"></p>
+                    <p id="company-name-display" class="text-[9px] text-emerald-600 font-medium mt-1.5 min-h-[14px]"></p>
                 </div>
                 
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Adres E-mail</label>
-                    <input type="email" name="Email_Klienta" required placeholder="kontakt@twojsalon.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink focus:bg-white outline-none transition-all">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Adres E-mail</label>
+                    <input type="email" name="Email_Klienta" required placeholder="kontakt@twojsalon.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink focus:bg-white outline-none transition-all">
                 </div>
                 
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Telefon kontaktowy</label>
-                    <input type="tel" name="Telefon" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink focus:bg-white outline-none transition-all">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Telefon kontaktowy</label>
+                    <input type="tel" name="Telefon" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink focus:bg-white outline-none transition-all">
                 </div>
                 
-                <!-- Ostrzeżenie i Blokada Pobierania Ankiety -->
-                <div class="bg-amber-50 p-5 rounded-xl mt-4 border border-amber-200 hidden leading-relaxed shadow-inner" id="modal-ankieta-warning">
-                    <strong class="block mb-2 text-amber-800 text-sm">Wymagana Ankieta Medyczna</strong>
-                    <p class="text-[11px] text-amber-900 mb-3">Do zawarcia polisy w tym wariancie niezbędne jest wypełnienie Ankiety Ubezpieczeniowej (wymóg ERGO Hestia).</p>
+                <div class="bg-amber-50 p-4 rounded-xl mt-3 border border-amber-200 hidden leading-relaxed shadow-inner" id="modal-ankieta-warning">
+                    <strong class="block mb-1.5 text-amber-800 text-xs">Wymagana Ankieta Medyczna</strong>
+                    <p class="text-[10px] text-amber-900 mb-2">Do zawarcia polisy w tym wariancie niezbędne jest wypełnienie Ankiety Ubezpieczeniowej.</p>
+                    <p class="text-[10px] text-amber-900 mb-2"><strong>Pamiętaj, żeby dołączyć:</strong> dyplom kosmetologa (studia magisterskie/licencjackie) oraz zaświadczenia ze szkoleń.</p>
+                    <p class="text-[10px] text-amber-900 mb-3">Ważność zaświadczeń: <span class="inline-block bg-amber-200 px-1 py-0.5 rounded mt-0.5 font-bold">(od: <span id="dynamic-min-date"></span>)</span>.</p>
                     
-                    <p class="text-[11px] text-amber-900 mb-3"><strong>Pamiętaj, żeby do wypełnionej ankiety koniecznie dołączyć:</strong> dyplom kosmetologa (studia magisterskie/licencjackie) oraz zaświadczenia z odbytych szkoleń w zakresie wskazanych do ubezpieczenia zabiegów.</p>
-                    
-                    <p class="text-[11px] text-amber-900 mb-4">Zaświadczenia nie mogą być młodsze niż 12 miesięcy <span class="inline-block bg-amber-200 px-1 py-0.5 rounded mt-1 font-bold">(weryfikujemy certyfikaty wydane przed: <span id="dynamic-min-date"></span>)</span>.</p>
-                    
-                    <div class="mt-4 border-t border-amber-200 pt-4">
-                        <label class="flex items-start gap-3 cursor-pointer">
-                            <input type="checkbox" id="ankieta-agreement" class="mt-1 w-5 h-5 accent-amber-600 rounded cursor-pointer" onchange="toggleDownloadButton()">
-                            <span class="text-[11px] text-amber-900 font-medium">Oświadczam, że zapoznałem/am się z wymogiem dołączenia dyplomu kosmetologa oraz zaświadczeń ze szkoleń.</span>
+                    <div class="mt-3 border-t border-amber-200 pt-3">
+                        <label class="flex items-start gap-2 cursor-pointer mb-3">
+                            <input type="checkbox" id="ankieta-agreement" class="mt-0.5 w-4 h-4 accent-amber-600 rounded cursor-pointer" onchange="toggleDownloadButton()">
+                            <span class="text-[9px] text-amber-900 font-medium">Oświadczam, że zapoznałem/am się z wymogiem dołączenia dyplomu.</span>
                         </label>
                         
-                        <!-- Zaktualizowany link do pliku AnkietaBPEH.pdf -->
-                        <a href="AnkietaBPEH.pdf" target="_blank" id="download-ankieta-btn" onclick="trackDownload()" class="mt-4 block w-full bg-slate-300 text-slate-500 text-center font-bold py-3 rounded-lg transition-colors shadow-sm text-xs uppercase tracking-wider pointer-events-none" disabled>
-                            📥 POBIERZ DRUK ANKIETY (PDF)
+                        <a href="AnkietaBPEH.pdf" target="_blank" id="download-ankieta-btn" onclick="trackDownload()" class="block w-full bg-slate-300 text-slate-500 text-center font-bold py-2.5 rounded-lg transition-colors shadow-sm text-[10px] uppercase tracking-wider pointer-events-none" disabled>
+                            📥 POBIERZ ANKIETĘ (PDF)
                         </a>
                     </div>
                 </div>
 
-                <button type="submit" id="submit-offer-btn" class="w-full bg-beauty-navy hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition-colors mt-6 shadow-md">
+                <button type="submit" id="submit-offer-btn" class="w-full bg-beauty-navy hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition-colors mt-4 shadow-md text-sm">
                     Przekaż do weryfikacji
                 </button>
             </form>
@@ -500,98 +481,96 @@
 
     <!-- MODAL 2: Wrócę do Ciebie -->
     <div id="modal-contact" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-8 text-center relative">
-            <button onclick="closeModal('modal-contact')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-3xl leading-none">&times;</button>
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center relative">
+            <button onclick="closeModal('modal-contact')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none">&times;</button>
             
-            <div class="text-5xl mb-4">✨</div>
-            <h3 class="font-heading font-bold text-2xl text-beauty-navy mb-2">Masz pytania?</h3>
-            <p class="text-sm text-slate-500 mb-6 leading-relaxed">Zostaw kontakt do siebie. Nasz ekspert prześle Ci materiały i pomoże rozwiać wątpliwości.</p>
+            <div class="text-4xl mb-3">✨</div>
+            <h3 class="font-heading font-bold text-xl text-beauty-navy mb-2">Masz pytania?</h3>
+            <p class="text-xs text-slate-500 mb-5 leading-relaxed">Zostaw kontakt do siebie. Nasz ekspert prześle Ci materiały i pomoże rozwiać wątpliwości.</p>
             
-            <form id="contact-form" onsubmit="submitContact(event)" class="text-left space-y-4">
+            <form id="contact-form" onsubmit="submitContact(event)" class="text-left space-y-3">
                 <input type="hidden" name="access_key" value="44ce55c2-c91f-48f0-a899-eb436353a204">
                 <input type="hidden" name="subject" value="BeautyPolisa - Prośba o kontakt ogólny">
                 <input type="hidden" name="from_name" value="System BeautyPolisa">
 
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 pl-1">Imię</label>
-                    <input type="text" name="Imie_Klienta" required placeholder="Twoje imię" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink outline-none transition-all">
+                    <label class="block text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-1 pl-1">Imię</label>
+                    <input type="text" name="Imie_Klienta" required placeholder="Twoje imię" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink outline-none transition-all">
                 </div>
                 
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 pl-1">Adres E-mail</label>
-                    <input type="email" name="Email_Klienta" required placeholder="twoj@email.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink outline-none transition-all">
+                    <label class="block text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-1 pl-1">Adres E-mail</label>
+                    <input type="email" name="Email_Klienta" required placeholder="twoj@email.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink outline-none transition-all">
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 pl-1">Telefon</label>
-                    <input type="tel" name="Telefon_Klienta" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink outline-none transition-all">
+                    <label class="block text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-1 pl-1">Telefon</label>
+                    <input type="tel" name="Telefon_Klienta" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink outline-none transition-all">
                 </div>
 
-                <button type="submit" id="submit-contact-btn" class="w-full bg-beauty-pink hover:bg-rose-700 text-white font-bold py-3.5 rounded-xl transition-colors shadow-md mt-2">
+                <button type="submit" id="submit-contact-btn" class="w-full bg-beauty-pink hover:bg-rose-700 text-white font-bold py-3 rounded-xl transition-colors shadow-md mt-2 text-sm">
                     Proszę o kontakt
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL: Informacja o dystrybutorze (z PDF Z001) -->
+    <!-- MODAL: Dystrybutor -->
     <div id="modal-dystrybutor" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-8">
-            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-3xl leading-none">&times;</button>
-            <h3 class="font-heading font-bold text-xl text-beauty-navy mb-4">Informacje dotyczące agenta ubezpieczeniowego</h3>
-            <div class="text-xs text-slate-600 space-y-4 leading-relaxed">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
+            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none">&times;</button>
+            <h3 class="font-heading font-bold text-lg text-beauty-navy mb-3">Informacje o agencie ubezpieczeniowym</h3>
+            <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed">
                 <p>Działając na podstawie art. 22 ust. 1 pkt 2-6 oraz ust. 2-4 ustawy z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń (Dz.U. z 2017 r., poz. 2486 ze zm.) (dalej „Ustawa”) niniejszym przekazujemy następujące informacje dotyczące Aura Expert spółka z ograniczoną odpowiedzialnością („Agent”):</p>
-                <ol class="list-decimal pl-5 space-y-3">
+                <ol class="list-decimal pl-4 space-y-2">
                     <li>Agent jest agentem ubezpieczeniowym w rozumieniu Ustawy.</li>
                     <li>Agent wykonuje działalność agencyjną pod firmą: Aura Expert sp. z o.o.</li>
                     <li>Adres siedziby Agenta: ul. Bolkowska 2A/28, 01-466 Warszawa</li>
-                    <li>Adres korespondencyjny Agenta: ul. Bolkowska 2A/28, 01-466 Warszawa. E-mail: zarzad@auraexpert.pl, tel: +48 504 400 901</li>
-                    <li>Agent jest wpisany do rejestru przedsiębiorców KRS pod nr 0000599840, NIP 5242793544, REGON 363673048, kapitał zakładowy 5.000 zł.</li>
+                    <li>Kontakt: E-mail: zarzad@auraexpert.pl, tel: +48 504 400 901</li>
+                    <li>Agent jest wpisany do KRS pod nr 0000599840, NIP 5242793544, REGON 363673048.</li>
                     <li>Agent jest wpisany do rejestru agentów KNF pod nr 11229690/A.</li>
-                    <li>Agent nie posiada akcji ani udziałów żadnego zakładu ubezpieczeń uprawniających co najmniej do 10% głosów na walnym zgromadzeniu.</li>
-                    <li>Agent wykonuje działalność agencyjną na rzecz zakładów ubezpieczeń: m.in. Generali, UNIQA, Lloyd's, SALTUS, ERGO Hestia, WARTA, Colonnade.</li>
-                    <li>W związku z proponowanym zawarciem umowy Agent otrzymuje od zakładu ubezpieczeń prowizję uwzględnioną w kwocie składki.</li>
-                    <li>Klient może złożyć reklamację w formie pisemnej, telefonicznej lub e-mailowej (reklamacje@auraexpert.pl).</li>
-                    <li>Spór pomiędzy osobą fizyczną będącą klientem a Agentem może być zakończony w drodze pozasądowego postępowania przed Rzecznikiem Finansowym (www.rf.gov.pl).</li>
+                    <li>Agent nie posiada akcji ani udziałów zakładu ubezpieczeń uprawniających do 10% głosów na walnym zgromadzeniu.</li>
+                    <li>Agent działa na rzecz m.in.: Generali, UNIQA, Lloyd's, SALTUS, ERGO Hestia, WARTA, Colonnade.</li>
+                    <li>Agent otrzymuje od zakładu ubezpieczeń prowizję uwzględnioną w kwocie składki.</li>
+                    <li>Reklamacje można złożyć e-mailowo (reklamacje@auraexpert.pl) lub telefonicznie.</li>
+                    <li>Spór może być zakończony w drodze pozasądowego postępowania przed Rzecznikiem Finansowym.</li>
                 </ol>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: RODO (z PDF Z002) -->
+    <!-- MODAL: RODO -->
     <div id="modal-rodo" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-8">
-            <button onclick="closeModal('modal-rodo')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-3xl leading-none">&times;</button>
-            <h3 class="font-heading font-bold text-xl text-beauty-navy mb-4">Nota informacyjna RODO</h3>
-            <div class="text-xs text-slate-600 space-y-4 leading-relaxed">
-                <p>Zgodnie z art. 13-14 ogólnego rozporządzenia o ochronie danych osobowych z dnia 27 kwietnia 2016 r.</p>
-                <p>Administratorem danych osobowych jest <strong>Aura Expert spółka z ograniczoną odpowiedzialnością</strong> z siedzibą w Warszawie, przy ul. Bolkowskiej 2A lok 28, 01-466 Warszawa.</p>
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
+            <button onclick="closeModal('modal-rodo')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none">&times;</button>
+            <h3 class="font-heading font-bold text-lg text-beauty-navy mb-3">Nota informacyjna RODO</h3>
+            <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed">
+                <p>Zgodnie z art. 13-14 rozporządzenia o ochronie danych osobowych z 27 kwietnia 2016 r.</p>
+                <p>Administratorem danych jest <strong>Aura Expert sp. z o.o.</strong> z siedzibą: ul. Bolkowska 2A lok 28, 01-466 Warszawa.</p>
                 
-                <p class="font-bold text-slate-800 mt-4">Aura Expert przetwarza dane osobowe m.in. w związku z:</p>
-                <ul class="list-disc pl-5 space-y-1">
+                <p class="font-bold text-slate-800 mt-2">Aura Expert przetwarza dane m.in. w związku z:</p>
+                <ul class="list-disc pl-4 space-y-1">
                     <li>wykonywaniem czynności agencyjnych,</li>
-                    <li>udostępnieniem klientom narzędzi informatycznych do komunikacji,</li>
-                    <li>obsługą reklamacji i zapytań kierowanych przez strony internetowe.</li>
+                    <li>obsługą reklamacji i zapytań przez strony internetowe.</li>
                 </ul>
 
-                <p class="font-bold text-slate-800 mt-4">Aura Expert zbiera dane osobowe:</p>
-                <ul class="list-disc pl-5 space-y-1">
-                    <li>bezpośrednio od osób fizycznych poprzez formularze elektroniczne i e-mail,</li>
-                    <li>od pracodawców osób fizycznych, innych dystrybutorów oraz klientów zgodnie z umową powierzenia.</li>
+                <p class="font-bold text-slate-800 mt-2">Aura Expert zbiera dane:</p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li>bezpośrednio od osób fizycznych poprzez formularze elektroniczne,</li>
+                    <li>od klientów zgodnie z umową powierzenia.</li>
                 </ul>
 
-                <p class="font-bold text-slate-800 mt-4">Aura Expert udostępnia dane:</p>
-                <ul class="list-disc pl-5 space-y-1">
+                <p class="font-bold text-slate-800 mt-2">Aura Expert udostępnia dane:</p>
+                <ul class="list-disc pl-4 space-y-1">
                     <li>zakładom ubezpieczeń i współpracującym dystrybutorom,</li>
-                    <li>podmiotom świadczącym usługi lecznicze w zakresie obsługi szkód,</li>
-                    <li>innym instytucjom ustawowo upoważnionym.</li>
+                    <li>podmiotom obsługującym szkody.</li>
                 </ul>
 
-                <p>Osobom, których dane dotyczą, przysługują prawa dostępu, sprostowania, usunięcia, ograniczenia przetwarzania, przenoszenia, wniesienia sprzeciwu, cofnięcia zgody oraz skargi do organu nadzorczego.</p>
+                <p>Osobom, których dane dotyczą, przysługują prawa dostępu, sprostowania, usunięcia, ograniczenia przetwarzania, wniesienia sprzeciwu oraz skargi do organu nadzorczego.</p>
                 
-                <div class="bg-slate-50 p-4 rounded-lg mt-4 border border-slate-200">
-                    <p class="font-bold mb-2">Kontakt z Inspektorem Ochrony Danych:</p>
-                    <p>E-mail: iod@auraexpert.pl | Tel: +48 504 400 901<br>Adres: ul. Bolkowska 2A/28, 01-466 Warszawa</p>
+                <div class="bg-slate-50 p-3 rounded-lg mt-3 border border-slate-200">
+                    <p class="font-bold mb-1">Kontakt z IOD:</p>
+                    <p>E-mail: iod@auraexpert.pl | Tel: +48 504 400 901</p>
                 </div>
             </div>
         </div>
@@ -599,7 +578,6 @@
 
     <!-- LOGIKA BIZNESOWA -->
     <script>
-        // --- FAJERWERKI ---
         let confettiFired = false;
         function fireConfetti() {
             if(confettiFired) return;
@@ -617,7 +595,6 @@
             }, 250);
         }
 
-        // --- OBLICZANIE DATY (12 miesięcy wstecz) ---
         document.addEventListener('DOMContentLoaded', () => {
             const d = new Date();
             d.setFullYear(d.getFullYear() - 1);
@@ -626,11 +603,9 @@
             document.getElementById('dynamic-min-date').innerText = minDate;
         });
 
-        // --- OBSŁUGA PRZYCISKU POBIERZ PDF ---
         function toggleDownloadButton() {
             const checkbox = document.getElementById('ankieta-agreement');
             const btn = document.getElementById('download-ankieta-btn');
-            
             if (checkbox.checked) {
                 btn.classList.remove('bg-slate-300', 'text-slate-500', 'pointer-events-none');
                 btn.classList.add('bg-amber-500', 'text-white', 'hover:bg-amber-600');
@@ -642,17 +617,12 @@
             }
         }
 
-        // --- TRACKING POBRAŃ W GOOGLE ADS/ANALYTICS ---
         function trackDownload() {
             if (typeof gtag === 'function') {
-                gtag('event', 'file_download', {
-                    'file_name': 'AnkietaBPEH.pdf', // Zaktualizowana nazwa dla statystyk Google
-                    'event_category': 'Engagement'
-                });
+                gtag('event', 'file_download', { 'file_name': 'AnkietaBPEH.pdf', 'event_category': 'Engagement' });
             }
         }
 
-        // --- BAZA ZABIEGÓW ---
         const dbProcedures = {
             1: ["Barbering", "Depilacja pastą cukrową", "Depilacja woskiem", "Dermabrazja i peeling skóry głowy", "Diagnoza skóry głowy i USG włosa", "Elektrostymulacja", "Endermologia - masaż podciśnieniowy", "Golenie głowy", "Henna", "Koloryzacja i dekoloryzacja włosów", "Kosmetyczna diagnostyka trychologiczna", "Kosmetyczny zabieg trychologiczny", "Kuracje nawilżające, regenerujące i odbudowujące włosy", "Laminowanie brwi i rzęs", "Laminowanie włosów", "Makijaż", "Manicure", "Manualne oczyszczanie twarzy", "Masaż bańką chińską", "Masaż endodermiczny i drenaż limfatyczny", "Masaż manualny ciała, w tym masaż głowy i twarzy", "Mycie i suszenie włosów", "Oczyszczanie włosów", "Pasemka i baleyage", "Pedicure kosmetyczny", "Piercing - przekłuwanie innych części ciała", "Presoterapia", "Przekłuwanie uszu", "Przedłużanie i zagęszczanie rzęs", "Przedłużanie włosów", "Prostowanie włosów na stałe", "Retusz siwizny", "Sauna na włosy", "Strzyżenie nożyczkami, maszynką, brzytwą oraz metodą Split-ender i Hair-dusting; trymowanie", "Trwała ondulacja", "Wykonywanie zabiegów kosmetycznych z zastosowaniem składników aktywnych", "Zabieg pielęgnacyjny włosów z użyciem fal ultradźwiękowych", "Zabieg rekonstrukcji włosów", "Zabieg regeneracyjny włosów z użyciem podczerwieni", "Zabiegi keratynowe", "Zabiegi przeciwłupieżowe", "Zabiegi wykorzystujące terapeutyczne działanie światła - światło LED", "Zagęszczanie włosów"],
             2: ["Chemiczne usuwanie makijażu permanentnego", "Cool Lifting", "Elektroliza", "Elektrokoagulacja", "Elektroporacja", "Fala akustyczna i energia wysokiej częstotliwości", "Infuzja tlenowa", "Jonoforeza", "Karboksyterapia", "Kawitacja ultradźwiękowa", "Kriolipoliza", "Makijaż permanentny", "Masaż Kobido", "Mezoterapia bezigłowa", "Mezoterapia igłowa", "Mezoterapia mikroigłowa", "Metaterapia", "Microblading", "Mikronakłuwanie", "Mikropigmentacja rekonstrukcyjna", "Mikrodermabrazja korundowa i diamentowa", "Oczyszczanie wodorowo-tlenowe", "Opalanie natryskowe", "Oxybrazja", "Peeling węglowy", "Radiofrekwencja mikroigłowa", "Radiotermoliza zmian skórnych", "Różnorodne peelingi chemiczne", "Sauny infrared", "Sonoforeza", "Tatuaż", "Wykonywanie zabiegów na twarz i ciało z zastosowaniem fali radiowej", "Zabiegi wykorzystujące światło IPL: fotoodmładzanie, likwidowanie przebarwień, terapia trądziku, zamykanie naczyń, usuwanie zbędnego owłosienia", "Zabiegi z zastosowaniem lasera frakcyjnego nieablacyjnego", "Zabiegi z wykorzystaniem laserów nieablacyjnych", "Zastosowanie prądów małej i dużej częstotliwości"],
@@ -660,11 +630,7 @@
             4: ["Zabiegi urządzeniami opartymi na technologii HIFU", "Zabiegi z użyciem toksyny botulinowej", "Zabiegi z użyciem osocza bogatopłytkowego", "Zabiegi z użyciem urządzeń wykorzystujących technologię PLASMA", "Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego", "Zabiegi z użyciem nici PDO", "Zabiegi lipolizy iniekcyjnej", "Zabiegi laserem ablacyjnym", "Inny zabieg specjalistyczny – opiszę w ankiecie"]
         };
 
-        const basePricing = {
-            1: { s100: 400, s200: 500, s300: 650 },
-            2: { s100: 650, s200: 790, s300: 950 },
-            3: { s100: 850, s200: 980, s300: 1250 }
-        };
+        const basePricing = { 1: { s100: 400, s200: 500, s300: 650 }, 2: { s100: 650, s200: 790, s300: 950 }, 3: { s100: 850, s200: 980, s300: 1250 } };
 
         document.addEventListener('DOMContentLoaded', () => {
             for(let tier = 1; tier <= 4; tier++) {
@@ -724,23 +690,13 @@
                 if(!confettiFired && checkedCount > 0 && !hasHighRisk && !document.getElementById('emp-9').checked) fireConfetti();
             }, 100);
 
-            // LOGIKA NAZEWNICTWA
             let finalTier = 1;
             let taryfaName = "";
 
-            if (hasTier3) {
-                finalTier = 3;
-                taryfaName = "Gabinety Podologiczne (Pakiet Pełny)";
-            } else if (hasTier1 && hasTier2) {
-                finalTier = 3;
-                taryfaName = "Pakiet Łączony (Kosmetyka + Kosmetologia)";
-            } else if (hasTier2) {
-                finalTier = 2;
-                taryfaName = "Gabinety Kosmetologiczne";
-            } else if (hasTier1) {
-                finalTier = 1;
-                taryfaName = "Gabinety Kosmetyczne i Fryzjerskie";
-            }
+            if (hasTier3) { finalTier = 3; taryfaName = "Gabinety Podologiczne (Pakiet Pełny)"; } 
+            else if (hasTier1 && hasTier2) { finalTier = 3; taryfaName = "Pakiet Łączony (Kosmetyka + Kosmetologia)"; } 
+            else if (hasTier2) { finalTier = 2; taryfaName = "Gabinety Kosmetologiczne"; } 
+            else if (hasTier1) { finalTier = 1; taryfaName = "Gabinety Kosmetyczne i Fryzjerskie"; }
 
             const empRadios = document.getElementsByName('employees');
             let empValue = null;
@@ -755,7 +711,6 @@
             
             document.getElementById('detected-tier-msg').innerHTML = `<span class="text-beauty-navy">${taryfaName}</span>`;
 
-            // JEŚLI WYSOKIE RYZYKO LUB +9 OSÓB
             if (empValue === 'ind' || hasHighRisk) {
                 cardsContainer.classList.add('hidden');
                 indMsg.classList.remove('hidden');
@@ -790,15 +745,11 @@
             }
         }
 
-        // Globalna funkcja otwierania Modali z identyfikatorami
-        function openModal(modalId) { 
-            document.getElementById(modalId).classList.add('active'); 
-        }
+        function openModal(modalId) { document.getElementById(modalId).classList.add('active'); }
 
         function openOfferModal(variant, price, taryfaName) {
             document.getElementById('modal-chosen-variant').innerText = variant;
             document.getElementById('modal-chosen-price').innerText = price;
-            
             document.getElementById('form-hidden-variant').value = variant;
             document.getElementById('form-hidden-price').value = price;
             document.getElementById('form-hidden-taryfa').value = taryfaName;
@@ -819,12 +770,8 @@
             if(modalId === 'modal-offer') {
                 document.getElementById('company-name-display').innerText = '';
                 document.getElementById('regon-input').value = '';
-                
                 const agreementCb = document.getElementById('ankieta-agreement');
-                if(agreementCb) {
-                    agreementCb.checked = false;
-                    toggleDownloadButton();
-                }
+                if(agreementCb) { agreementCb.checked = false; toggleDownloadButton(); }
             }
         }
 
@@ -846,7 +793,6 @@
             }
         }
 
-        // --- WYSYŁKA ---
         async function submitOffer(e) {
             e.preventDefault();
             const btn = document.getElementById('submit-offer-btn');
@@ -877,13 +823,8 @@
             const form = document.getElementById('offer-form');
             const formData = new FormData(form);
 
-            // Zgłaszanie lead'a do Google Ads/Analytics
             if (typeof gtag === 'function') {
-                gtag('event', 'generate_lead', {
-                    'event_category': 'form',
-                    'event_label': 'Polisa_Zapytanie',
-                    'value': document.getElementById('form-hidden-price').value
-                });
+                gtag('event', 'generate_lead', { 'event_category': 'form', 'event_label': 'Polisa_Zapytanie', 'value': document.getElementById('form-hidden-price').value });
             }
 
             try {
@@ -911,12 +852,8 @@
             btn.innerHTML = 'Wysyłanie...';
             btn.disabled = true;
 
-            // Zgłaszanie lead'a z szybkiego kontaktu do Google Ads/Analytics
             if (typeof gtag === 'function') {
-                gtag('event', 'generate_lead', {
-                    'event_category': 'contact',
-                    'event_label': 'Szybki_Kontakt'
-                });
+                gtag('event', 'generate_lead', { 'event_category': 'contact', 'event_label': 'Szybki_Kontakt' });
             }
 
             const form = document.getElementById('contact-form');
