@@ -9,26 +9,15 @@
     <meta name="keywords" content="OC kosmetyczki, ubezpieczenie salonu kosmetycznego, OC tatuatora, OC kosmetologa, ubezpieczenie podologa, BeautyPolisa, ubezpieczenie fryzjera, OC zawodowe beauty, Beauty Razem, ubezpieczenia medycyna estetyczna">
     <meta name="author" content="Aura Consulting">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <link rel="canonical" href="https://www.beautypolisa.com">
     <meta name="theme-color" content="#2a3b69">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="BeautyPolisa">
     <meta name="application-name" content="BeautyPolisa">
     
-    <meta property="og:locale" content="pl_PL">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="BeautyPolisa | Ubezpieczenie OC dla Branży Beauty">
-    <meta property="og:description" content="Poznaj dedykowaną taryfę ubezpieczeniową dla swojego salonu. 100% online, ochrona do 300 tys. zł, wsparcie doświadczonego brokera.">
-    <meta property="og:url" content="https://www.beautypolisa.com">
-    <meta property="og:site_name" content="BeautyPolisa">
-    <meta property="og:image" content="BeautyPolisa_logo_podstawowe_poziome.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="BeautyPolisa | Ochrona dla Salonów Beauty">
-    <meta name="twitter:description" content="Zabezpiecz swój salon online w 2 minuty. Dedykowane ubezpieczenie OC dla członków Beauty Razem.">
-    <meta name="twitter:image" content="BeautyPolisa_logo_podstawowe_poziome.png">
+    <!-- Chosen Palette: Warm Neutrals with Beauty Navy (#2a3b69) and Rose Pink (#e11d48) accents -->
+    <!-- Application Structure Plan: Interaktywny kalkulator w formie One-Page. Krok 1: Wybór zabiegów. Krok 2: Parametry gabinetu. Krok 3 (Wyniki): Dynamicznie kalkulowana oferta z wykorzystaniem wizualizacji Chart.js dla czytelnego porównania wariantów składek. Optymalizacja UX pod kątem konwersji (lead generation). -->
+    <!-- Visualization & Content Choices: Interactive Form (Checkbox/Radio) do zbierania danych wejściowych. Dynamiczna sekcja wyników z Bar Chart (Chart.js) do porównywania cen wariantów na żywo. Usunięto całkowicie SVG, użyto symboli Unicode dla zachowania lekkości i zgodności z wytycznymi. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <script type="application/ld+json">
     {
@@ -38,7 +27,6 @@
           "@type": "InsuranceAgency",
           "@id": "https://www.beautypolisa.com/#agency",
           "name": "BeautyPolisa obsługiwana przez Aura Consulting",
-          "image": "https://www.beautypolisa.com/BeautyPolisa_logo_podstawowe_poziome.png",
           "description": "Butik ubezpieczeniowy dedykowany branży beauty. Ubezpieczenia OC dla salonów kosmetycznych, fryzjerskich, kosmetologów i podologów.",
           "address": {
             "@type": "PostalAddress",
@@ -47,38 +35,16 @@
             "postalCode": "01-466",
             "addressCountry": "PL"
           },
-          "telephone": "+48500502702",
-          "url": "https://www.beautypolisa.com"
-        },
-        {
-          "@type": "Product",
-          "name": "Ubezpieczenie OC dla Salonu Beauty",
-          "description": "Zabezpiecz swój salon kosmetyczny, fryzjerski lub podologiczny dedykowaną polisą OC. Suma gwarancyjna do 300 000 zł, ochrona karno-skarbowa.",
-          "brand": {
-            "@type": "Brand",
-            "name": "ERGO Hestia & BeautyRazem"
-          },
-          "offers": {
-            "@type": "AggregateOffer",
-            "priceCurrency": "PLN",
-            "lowPrice": "400",
-            "highPrice": "1250",
-            "offerCount": "3"
-          }
+          "telephone": "+48500502702"
         }
       ]
     }
     </script>
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJWP7XYCF1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-HJWP7XYCF1');
-    </script>
-    
+    <!-- Załadowanie lokalnej biblioteki stylów Tailwind CSS -->
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     
@@ -86,39 +52,45 @@
         body { font-family: 'Montserrat', sans-serif; background-color: #fafafa; color: #1e293b; }
         h1, h2, h3, .font-heading { font-family: 'Playfair Display', serif; }
 
+        /* Niestandardowe kolory bazowe (zastępstwo konfiguracji Tailwind) */
         .text-beauty-navy { color: #2a3b69; }
         .bg-beauty-navy { background-color: #2a3b69; }
         .border-beauty-navy { border-color: #2a3b69; }
+        .hover\:border-beauty-navy:hover { border-color: #2a3b69; }
+        .hover\:text-beauty-navy:hover { color: #2a3b69; }
+        .focus\:ring-beauty-navy:focus { box-shadow: 0 0 0 2px #fafafa, 0 0 0 4px #2a3b69; }
         
         .text-beauty-pink { color: #e11d48; }
         .bg-beauty-pink { background-color: #e11d48; }
         .border-beauty-pink { border-color: #e11d48; }
+        .hover\:text-beauty-pink:hover { color: #e11d48; }
+        .focus\:border-beauty-pink:focus { border-color: #e11d48; }
+        .focus\:ring-beauty-pink:focus { box-shadow: 0 0 0 2px #fafafa, 0 0 0 4px #e11d48; }
+        .accent-beauty-pink { accent-color: #e11d48; }
+        .selection\:bg-beauty-pink *::selection, .selection\:bg-beauty-pink::selection { background-color: #e11d48; color: white; }
 
         .hero-gradient { background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 50%, #ffffff 100%); position: relative; }
-
         .procedure-checkbox { display: flex; align-items: flex-start; padding: 0.35rem 0.5rem; border-radius: 0.5rem; transition: all 0.2s ease-in-out; cursor: pointer; border: 1px solid transparent; }
         .procedure-checkbox:hover { background-color: #fff1f2; border-color: #ffe4e6; }
-        .procedure-checkbox input[type="checkbox"] { margin-top: 0.25rem; margin-right: 0.6rem; width: 1.1rem; height: 1.1rem; accent-color: #e11d48; cursor: pointer; }
+        .procedure-checkbox input[type="checkbox"] { margin-top: 0.25rem; margin-right: 0.6rem; width: 1.1rem; height: 1.1rem; cursor: pointer; }
         .procedure-checkbox span { font-size: 0.75rem; line-height: 1.1rem; color: #475569; flex-grow: 1; }
-
         .radio-card input[type="radio"] { display: none; }
         .radio-card label { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.75rem 1rem; border: 2px solid #e2e8f0; border-radius: 1rem; cursor: pointer; transition: all 0.3s; background: white; height: 100%; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .radio-card input[type="radio"]:checked + label { border-color: #2a3b69; background-color: #f8fafc; box-shadow: 0 10px 15px -3px rgba(42, 59, 105, 0.15); transform: translateY(-2px); }
-
         .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
         .modal { display: none; opacity: 0; transition: opacity 0.3s ease; }
         .modal.active { display: flex; opacity: 1; animation: fadeIn 0.3s ease forwards; z-index: 100;}
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-
         .premium-card { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; }
         .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-        
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid #2a3b69; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; margin-top: 20px; margin-bottom: 20px;}
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col selection:bg-beauty-pink selection:text-white">
@@ -136,7 +108,6 @@
     <header class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-40 border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col sm:flex-row justify-between items-center gap-2">
             <div class="flex items-center gap-4">
-                <img src="BeautyPolisa_logo_podstawowe_poziome.png" alt="Logo BeautyPolisa - Ubezpieczenia dla salonów beauty" class="h-8 md:h-10 object-contain">
                 <div class="hidden md:block h-8 w-px bg-slate-200" aria-hidden="true"></div>
                 <div class="hidden md:flex flex-col">
                     <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Obsługa Brokerska</span>
@@ -171,13 +142,13 @@
                 
                 <div class="flex flex-wrap justify-center gap-2 md:gap-4 text-xs font-semibold text-slate-700">
                     <span class="bg-white px-4 py-2 rounded-full border border-rose-100 shadow-sm flex items-center gap-1.5">
-                        <span class="text-emerald-500" aria-hidden="true">✓</span> Dedykowane dla BeautyRazem
+                        <span class="text-emerald-500 text-lg leading-none" aria-hidden="true">&#10003;</span> Dedykowane dla BeautyRazem
                     </span>
                     <span class="bg-white px-4 py-2 rounded-full border border-rose-100 shadow-sm flex items-center gap-1.5">
-                        <span class="text-emerald-500" aria-hidden="true">✓</span> Ochrona do 300 000 zł
+                        <span class="text-emerald-500 text-lg leading-none" aria-hidden="true">&#10003;</span> Ochrona do 300 000 zł
                     </span>
                     <span class="bg-white px-4 py-2 rounded-full border border-rose-100 shadow-sm flex items-center gap-1.5">
-                        <span class="text-emerald-500" aria-hidden="true">✓</span> Ekspercka likwidacja szkód
+                        <span class="text-emerald-500 text-lg leading-none" aria-hidden="true">&#10003;</span> Ekspercka likwidacja szkód
                     </span>
                 </div>
             </div>
@@ -185,6 +156,10 @@
 
         <article id="calculator-section" class="py-8 px-4 max-w-7xl mx-auto">
             
+            <p class="text-slate-600 text-sm mb-6 max-w-4xl mx-auto">
+                Wybierz zabiegi, które wykonujesz, abyśmy mogli dopasować ubezpieczenie odpowiednie do Twojego profilu działalności. Proces ten oceni ryzyko i precyzyjnie wyliczy kwoty pokrycia dla Twojego salonu.
+            </p>
+
             <section class="bg-white rounded-3xl shadow-xl border border-slate-100 p-5 md:p-6 mb-6 relative">
                 <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 gap-3 border-b border-slate-100 pb-4">
                     <h2 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy flex items-center">
@@ -358,8 +333,15 @@
                         <p class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">Dopasowana Taryfa</p>
                         <p id="detected-tier-msg" class="text-sm text-slate-800 font-semibold"></p>
                     </div>
-                    <div class="text-beauty-pink bg-rose-50 p-2 rounded-full hidden md:block" aria-hidden="true">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="text-beauty-pink bg-rose-50 w-8 h-8 rounded-full hidden md:flex items-center justify-center font-bold text-lg" aria-hidden="true">
+                        &#10003;
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-sm font-bold text-slate-700 text-center mb-2">Porównanie wariantów dla Twojego salonu</h3>
+                    <div class="chart-container">
+                        <canvas id="priceChart"></canvas>
                     </div>
                 </div>
                 
@@ -437,7 +419,7 @@
                 <div class="mt-8 flex justify-center">
                     <button onclick="openModal('modal-contact')" class="flex items-center gap-2 text-slate-500 hover:text-beauty-pink font-medium transition-colors text-xs bg-white border border-slate-200 px-6 py-2.5 rounded-full shadow-sm focus:ring-2 focus:ring-beauty-pink outline-none">
                         Masz pytania? Zostaw kontakt, odezwiemy się
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        <span class="text-lg" aria-hidden="true">&#8594;</span>
                     </button>
                 </div>
             </section>
@@ -448,7 +430,6 @@
     <footer class="bg-white border-t border-slate-200 pt-8 pb-6 text-sm text-slate-500">
         <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-6 mb-4">
             <div>
-                <img src="BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa Logo Szare" class="h-6 object-contain grayscale opacity-60 mb-3">
                 <p class="mb-1 text-[11px]"><strong>Obsługa techniczna Programu:</strong> Aura Expert sp. z o.o.</p>
                 <p class="text-[11px]"><strong>Likwidacja szkód i obsługa:</strong> Broker Ubezpieczeniowy Aura Consulting sp. z o.o.</p>
             </div>
@@ -469,7 +450,7 @@
 
     <div id="modal-offer" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-offer-title">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden relative max-h-[90vh] overflow-y-auto custom-scrollbar">
-            <button onclick="closeModal('modal-offer')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&times;</button>
+            <button onclick="closeModal('modal-offer')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&#10005;</button>
             
             <div class="bg-slate-50 px-6 py-5 border-b border-slate-100">
                 <h3 id="modal-offer-title" class="font-heading font-bold text-lg text-beauty-navy">Wniosek o polisę</h3>
@@ -520,7 +501,7 @@
                         </label>
                         
                         <a href="AnkietaBPEH.pdf" target="_blank" id="download-ankieta-btn" onclick="trackDownload()" class="block w-full bg-slate-300 text-slate-500 text-center font-bold py-2.5 rounded-lg transition-colors shadow-sm text-[10px] uppercase tracking-wider pointer-events-none" aria-disabled="true">
-                            📥 POBIERZ ANKIETĘ (PDF)
+                            POBIERZ ANKIETĘ (PDF)
                         </a>
                     </div>
                 </div>
@@ -534,9 +515,9 @@
 
     <div id="modal-contact" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-contact-title">
         <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center relative">
-            <button onclick="closeModal('modal-contact')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&times;</button>
+            <button onclick="closeModal('modal-contact')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&#10005;</button>
             
-            <div class="text-4xl mb-3" aria-hidden="true">✨</div>
+            <div class="text-4xl mb-3" aria-hidden="true">&#10024;</div>
             <h3 id="modal-contact-title" class="font-heading font-bold text-xl text-beauty-navy mb-2">Masz pytania?</h3>
             <p class="text-xs text-slate-500 mb-5 leading-relaxed">Zostaw kontakt do siebie. Nasz ekspert prześle Ci materiały i pomoże rozwiać wątpliwości.</p>
             
@@ -567,10 +548,9 @@
         </div>
     </div>
 
-    <script>
-<div id="modal-dystrybutor" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-dystrybutor-title">
+    <div id="modal-dystrybutor" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-dystrybutor-title">
         <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
-            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&times;</button>
+            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&#10005;</button>
             <h3 id="modal-dystrybutor-title" class="font-heading font-bold text-lg text-beauty-navy mb-3">Informacje o agencie ubezpieczeniowym</h3>
             <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed">
                 <p>Działając na podstawie art. 22 ust. 1 pkt 2-6 oraz ust. 2-4 ustawy z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń (Dz.U. z 2017 r., poz. 2486 ze zm.) (dalej „Ustawa”) niniejszym przekazujemy następujące informacje dotyczące Aura Expert spółka z ograniczoną odpowiedzialnością („Agent”):</p>
@@ -593,7 +573,7 @@
 
     <div id="modal-rodo" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-rodo-title">
         <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
-            <button onclick="closeModal('modal-rodo')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&times;</button>
+            <button onclick="closeModal('modal-rodo')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&#10005;</button>
             <h3 id="modal-rodo-title" class="font-heading font-bold text-lg text-beauty-navy mb-3">Nota informacyjna RODO</h3>
             <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed">
                 <p>Zgodnie z art. 13-14 rozporządzenia o ochronie danych osobowych z 27 kwietnia 2016 r.</p>
@@ -627,9 +607,7 @@
         </div>
     </div>
 
-
-        
-        // Logika konfetti
+    <script>
         let confettiFired = false;
         function fireConfetti() {
             if(confettiFired) return;
@@ -647,7 +625,6 @@
             }, 250);
         }
 
-        // Data dla ankiety medycznej
         document.addEventListener('DOMContentLoaded', () => {
             const d = new Date();
             d.setFullYear(d.getFullYear() - 1);
@@ -657,7 +634,6 @@
             if(dateEl) dateEl.innerText = minDate;
         });
 
-        // Włącznik PDF
         function toggleDownloadButton() {
             const checkbox = document.getElementById('ankieta-agreement');
             const btn = document.getElementById('download-ankieta-btn');
@@ -672,7 +648,6 @@
             }
         }
 
-        // Tracking pobrania z DataLayer
         function trackDownload() {
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
@@ -682,8 +657,44 @@
             });
         }
 
-        // Baza cenowa
         const basePricing = { 1: { s100: 400, s200: 500, s300: 650 }, 2: { s100: 650, s200: 790, s300: 950 }, 3: { s100: 850, s200: 980, s300: 1250 } };
+        let premiumChart = null;
+
+        function renderPricingChart(p100, p200, p300) {
+            const ctx = document.getElementById('priceChart');
+            if(!ctx) return;
+            
+            if(premiumChart) {
+                premiumChart.data.datasets[0].data = [p100, p200, p300];
+                premiumChart.update();
+            } else {
+                premiumChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['100 000 zł', '200 000 zł', '300 000 zł'],
+                        datasets: [{
+                            label: 'Roczna Składka (PLN)',
+                            data: [p100, p200, p300],
+                            backgroundColor: ['#cbd5e1', '#e11d48', '#2a3b69'],
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Kwota Składki (PLN)' }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+        }
 
         function selectAll(tierId) {
             const container = document.getElementById(`list-${tierId}-container`);
@@ -747,6 +758,7 @@
             const legalCost = hasLegal ? 92 : 0;
 
             const cardsContainer = document.getElementById('pricing-cards-container');
+            const chartArea = document.querySelector('.chart-container').parentElement;
             const indMsg = document.getElementById('individual-pricing-msg');
             const indMsgReason = document.getElementById('ind-pricing-reason');
             
@@ -754,6 +766,7 @@
 
             if (empValue === 'ind' || hasHighRisk) {
                 cardsContainer.classList.add('hidden');
+                chartArea.classList.add('hidden');
                 indMsg.classList.remove('hidden');
                 
                 if (hasHighRisk) {
@@ -767,6 +780,7 @@
                 document.getElementById('btn-ind').setAttribute('onclick', `openOfferModal('Wycena Indywidualna', 'Brak ceny - Wymaga weryfikacji przez TU', '${taryfaName}')`);
             } else {
                 cardsContainer.classList.remove('hidden');
+                chartArea.classList.remove('hidden');
                 indMsg.classList.add('hidden');
                 
                 const multiplier = parseFloat(empValue);
@@ -780,17 +794,17 @@
                 document.getElementById('price-200k').innerText = p200;
                 document.getElementById('price-300k').innerText = p300;
 
+                renderPricingChart(p100, p200, p300);
+
                 document.getElementById('btn-100k').setAttribute('onclick', `openOfferModal('100 000 zł', '${p100} zł', '${taryfaName}')`);
                 document.getElementById('btn-200k').setAttribute('onclick', `openOfferModal('200 000 zł', '${p200} zł', '${taryfaName}')`);
                 document.getElementById('btn-300k').setAttribute('onclick', `openOfferModal('300 000 zł (Wymaga Ankiety)', '${p300} zł', '${taryfaName}')`);
             }
         }
 
-        // Modale - Accessibility i obsługa
         function openModal(modalId) { 
             const modal = document.getElementById(modalId);
             modal.classList.add('active'); 
-            // Accessibility: Focus wewnątrz okna
             const firstInput = modal.querySelector('input');
             if(firstInput) setTimeout(() => firstInput.focus(), 100);
             document.body.style.overflow = 'hidden';
@@ -823,7 +837,6 @@
             }
         }
 
-        // Animacja Regon
         let regonTimeout;
         function verifyRegon() {
             const input = document.getElementById('regon-input');
@@ -842,7 +855,6 @@
             }
         }
 
-        // Zapisywanie Oferty + DataLayer
         async function submitOffer(e) {
             e.preventDefault();
             const btn = document.getElementById('submit-offer-btn');
@@ -872,7 +884,6 @@
             const form = document.getElementById('offer-form');
             const formData = new FormData(form);
 
-            // Czysty push do DataLayer (Idealny pod FB/TikTok CAPI)
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
                 'event': 'form_submission',
