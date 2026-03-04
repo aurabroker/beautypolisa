@@ -320,6 +320,9 @@
                             <div>
                                 <label for="legal-protection" class="font-bold text-sm text-slate-800 cursor-pointer block">Ubezpieczenie Ochrony Prawnej</label>
                                 <p class="text-[11px] text-slate-500 mt-1">Koszty adwokata (Suma: 100 000 zł). <span class="font-semibold text-beauty-pink">Składka: +92 zł / rok</span></p>
+                                <button type="button" onclick="event.stopPropagation(); openModal('modal-klauzula-prawna')" class="text-[10px] text-beauty-navy hover:text-beauty-pink mt-1.5 font-bold transition-colors focus:outline-none block" style="text-decoration: underline; text-underline-offset: 2px;">
+                                    Przeczytaj treść klauzuli
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -601,8 +604,57 @@
                 
                 <div class="bg-slate-50 p-3 rounded-lg mt-3 border border-slate-200">
                     <p class="font-bold mb-1">Kontakt z IOD:</p>
-                    <p>E-mail: iod@auraexpert.pl</p>
+                    <p>E-mail: iod@auraexpert.pl | Tel: +48 504 400 901</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-klauzula-prawna" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-klauzula-title">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
+            <button onclick="closeModal('modal-klauzula-prawna')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&#10005;</button>
+            <h3 id="modal-klauzula-title" class="font-heading font-bold text-lg text-beauty-navy mb-3">Klauzula: Ochrona Prawna</h3>
+            <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed" style="text-align: justify;">
+                <p class="font-bold text-slate-800">Rozszerzenie zakresu ubezpieczenia o koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgoda Ubezpieczyciela ochroną zgodnie z § 6 ust. 3</p>
+                <ol style="list-style-type: decimal; padding-left: 1.5rem;" class="space-y-3">
+                    <li>Z zachowaniem pozostałych, niezmienionych niniejszą klauzulą postanowień umowy ubezpieczenia określonych w Warunkach Ubezpieczenia, strony postanowiły rozszerzyć zakres ubezpieczenia o koszty ochrony prawnej, poniesione przez Ubezpieczonego w celu obrony jego praw w postępowaniach przed sądami polskimi prowadzonych z jego udziałem w charakterze pozwanego, podejrzanego lub oskarżonego, w tym w postępowaniu dyscyplinarnym.</li>
+                    <li>Ochroną ubezpieczeniową na podstawie niniejszej klauzuli objęte są koszty ochrony prawnej, poniesione przez Ubezpieczonego w postępowaniu wszczętym na terenie RP w okresie ubezpieczenia, o ile dotyczy ono czynności zawodowych Ubezpieczonego przyjętych do ubezpieczenia na podstawie niniejszej umowy. W razie wątpliwości za datę wszczęcia postępowania uważa się chwilę, w której właściwy organ, urząd lub funkcjonariusz podjął pierwszą czynność wobec Ubezpieczonego, nawet jeśli nie była ona potwierdzona na piśmie i nie stanowiła formalnego wszczęcia postępowania w świetle obowiązujących przepisów.</li>
+                    <li>Przez koszty ochrony prawnej rozumie się w szczególności:
+                        <ul style="list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem;" class="space-y-1">
+                            <li>koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej,</li>
+                            <li>koszty związane z uzyskaniem opinii biegłych lub rzeczoznawców albo innych dokumentów stanowiących środki dowodowe,</li>
+                            <li>koszty zasądzone od Ubezpieczonego na rzecz strony przeciwnej,</li>
+                            <li>pozostałe koszty i opłaty sądowe lub administracyjne, o ile służą one ochronie praw Ubezpieczonego w związku z prowadzonym postępowaniem.</li>
+                        </ul>
+                    </li>
+                    <li>Przez koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej rozumie się koszty jednego adwokata lub radcy prawnego z tytułu zastępstwa procesowego lub obrony, pokrywane do wysokości ustalonej zgodnie z odpowiednimi przepisami regulującymi wysokość minimalnego wynagrodzenia za czynności adwokata lub radcy prawnego, jeśli takie obowiązują.</li>
+                    <li>Z zakresu ubezpieczenia wyłączone są koszty:
+                        <ul style="list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem;" class="space-y-1">
+                            <li>poniesione w postępowaniu wszczętym w okresie ubezpieczenia, w wyniku apelacji lub wniesienia innego środka zaskarżenia albo wznowienia postępowania, o ile dotyczą postępowania prowadzonego przed rozpoczęciem okresu odpowiedzialności Ubezpieczyciela,</li>
+                            <li>powstałe w następstwie korzystania z usług osób nieuprawnionych do świadczenia pomocy prawnej,</li>
+                            <li>związane ze świadomym udzieleniem przez Ubezpieczonego nieprawdziwych lub wprowadzających w błąd informacji, albo dostarczeniem sfałszowanych dokumentów,</li>
+                            <li>poniesione w postępowaniu wszczętym na wniosek osób bliskich Ubezpieczonego, osób i podmiotów pozostających z nim w stosunku zależności wynikającej z zatrudnienia ich przez Ubezpieczonego lub z innej podstawy,</li>
+                            <li>poniesione na pokrycie kar sądowych lub administracyjnych nałożonych na Ubezpieczonego.</li>
+                        </ul>
+                    </li>
+                    <li>Z zakresu ubezpieczenia wyłączone są ponadto koszty poniesione:
+                        <ul style="list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem;" class="space-y-1">
+                            <li>w postępowaniach z zakresu prawa funduszy inwestycyjnych, prawa obligacji, papierów wartościowych oraz z zakresu prawa pracy,</li>
+                            <li>w postępowaniach z zakresu prawa patentowego, autorskiego, znaków towarowych, pozostałego prawa własności intelektualnej i przemysłowej, prawa ochrony konkurencji (antymonopolowego) oraz prawa dotyczącego zasad konkurencji,</li>
+                            <li>w postępowaniach z umów poręczenia i przejęcia długów,</li>
+                            <li>w postępowaniach z zakresu prawa podatkowego, celnego oraz dotyczącego innych opłat publicznoprawnych, a także prawa karno-skarbowego,</li>
+                            <li>w postępowaniu układowym, naprawczym albo upadłościowym,</li>
+                            <li>w postępowaniach w związku z posiadaniem pojazdów mechanicznych,</li>
+                            <li>w postępowaniach pomiędzy stronami umowy ubezpieczenia.</li>
+                        </ul>
+                    </li>
+                    <li>W odniesieniu do postępowań karnych ochrona ubezpieczeniowa dotyczy wyłącznie czynów, w których karane jest nieumyślne popełnienie danego czynu; w przypadku stwierdzenia winy umyślnej w prawomocnym orzeczeniu sądu, Ubezpieczycielowi przysługuje roszczenie regresowe do Ubezpieczonego o zwrot uprzednio wypłaconych świadczeń.</li>
+                    <li>Jeżeli przeciwko Ubezpieczonemu wszczęte zostało postępowanie, o którym mowa w niniejszej klauzuli, albo jeżeli istnieje bezpośrednie zagrożenie wszczęciem takiego postępowania, Ubezpieczony obowiązany jest niezwłocznie zawiadomić o tym Ubezpieczyciela, przekazując mu wszelkie informacje i dokumenty w sprawie.</li>
+                    <li>W ramach udzielonej ochrony Ubezpieczyciel dokonuje oceny sytuacji faktycznej i prawnej oraz podejmuje decyzję o uznaniu lub nieuznaniu roszczenia Ubezpieczonego i wypłacie lub odmowie wypłaty świadczenia w postaci refundacji kosztów ochrony prawnej.</li>
+                    <li>Ubezpieczonemu przysługuje prawo swobodnego wyboru adwokata lub radcy prawnego w zakresie obrony, reprezentowania lub wspierania jego interesów w postępowaniu sądowym. Koszty ochrony prawnej pokrywane są przez Ubezpieczyciela na podstawie rachunków wystawionych na Ubezpieczonego, o ile dotyczą kosztów objętych ubezpieczeniem, zgodnie z niniejszą klauzulą.</li>
+                    <li>Suma ubezpieczenia dla kosztów ochrony prawnej pokrywanych przez Ubezpieczyciela na podstawie niniejszej klauzuli zostaje wskazana w umowie ubezpieczenia i stanowi górną granicę odpowiedzialności Ubezpieczyciela.</li>
+                    <li>Za rozszerzenie zakresu ubezpieczenia w sposób określony w niniejszej klauzuli Ubezpieczony opłaci dodatkową składkę w wysokości ustalonej w umowie ubezpieczenia.</li>
+                </ol>
             </div>
         </div>
     </div>
@@ -942,4 +994,3 @@
     </script>
 </body>
 </html>
-
