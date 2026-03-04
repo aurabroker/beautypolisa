@@ -44,7 +44,6 @@
     <!-- Załadowanie lokalnej biblioteki stylów Tailwind CSS -->
     <link rel="stylesheet" href="style.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     
@@ -88,9 +87,6 @@
         .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid #2a3b69; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; margin-top: 20px; margin-bottom: 20px;}
-        @media (min-width: 768px) { .chart-container { height: 350px; } }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col selection:bg-beauty-pink selection:text-white">
@@ -153,6 +149,63 @@
                 </div>
             </div>
         </section>
+
+        <!-- NOWA SEKCJA ZAKRESU UBEZPIECZENIA -->
+        <section class="max-w-7xl mx-auto px-4 py-10 mt-2">
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-6 md:p-8">
+                    <div class="text-center mb-8">
+                        <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-3">Zakres Ochrony Ubezpieczeniowej</h2>
+                        <p class="text-slate-500 text-sm max-w-3xl mx-auto leading-relaxed">Przedmiotem ubezpieczenia jest odpowiedzialność cywilna (OC) osób objętych ubezpieczeniem za szkody na osobie oraz szkody w mieniu wyrządzone osobom trzecim w związku z wykonywaniem czynności zawodowych w branży beauty.</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        
+                        <!-- KARTA 1: Podstawa -->
+                        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100">
+                            <h3 class="font-bold text-beauty-navy mb-4 flex items-center gap-2">
+                                <span class="text-emerald-500 text-xl leading-none" aria-hidden="true">&#10003;</span> Zakres Podstawowy
+                            </h3>
+                            <ul class="space-y-3 text-xs text-slate-600 leading-relaxed">
+                                <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <span>Szkody wyrządzone przez podwykonawców.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <span>Szkody wynikłe z rażącego niedbalstwa.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <span>Szkody w powierzonych dokumentach.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <span>Szkody wynikłe z posiadania mienia.</span></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- KARTA 2: Rozszerzenia -->
+                        <div class="bg-rose-50 rounded-2xl p-5 border border-rose-100">
+                            <h3 class="font-bold text-beauty-pink mb-4 flex items-center gap-2">
+                                <span class="text-beauty-pink text-xl leading-none" aria-hidden="true">&#10024;</span> Włączone Rozszerzenia
+                            </h3>
+                            <ul class="space-y-3 text-xs text-slate-700 leading-relaxed">
+                                <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5 font-bold" aria-hidden="true">+</span> <span><strong>Choroby zakaźne:</strong> OC za szkody z tytułu przeniesienia chorób zakaźnych (klauzula 4).</span></li>
+                                <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5 font-bold" aria-hidden="true">+</span> <span><strong>Aparatura:</strong> Szkody wynikłe z użytkowania urządzeń rentgenowskich, laserowych i innej aparatury zabiegowej/medycznej (klauzula 5).</span></li>
+                                <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5 font-bold" aria-hidden="true">+</span> <span><strong>OC Najemcy Nieruchomości:</strong> Szkody w wynajmowanym lokalu. Sublimit: 100 000 PLN.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5 font-bold" aria-hidden="true">+</span> <span><strong>OC Najemcy Ruchomości:</strong> Szkody w rzeczach pod dozorem i sprzęcie. Sublimit: 100 000 PLN.</span></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- KARTA 3: Wyłączenia -->
+                        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                            <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                                <span class="text-slate-400 text-lg leading-none" aria-hidden="true">&#10005;</span> Czego polisa nie obejmuje?
+                            </h3>
+                            <ul class="space-y-2.5 text-[11px] text-slate-500 leading-relaxed">
+                                <li class="flex items-start gap-2"><span class="text-slate-300 mt-0.5" aria-hidden="true">&#10005;</span> <span>Szkód wynikłych z wprowadzania produktów do obrotu oraz życia prywatnego.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-slate-300 mt-0.5" aria-hidden="true">&#10005;</span> <span>Szkód wynikłych z użytkowania pojazdów mechanicznych, urządzeń latających i pływających.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-slate-300 mt-0.5" aria-hidden="true">&#10005;</span> <span>Szkód wynikłych z wykonywania funkcji członka władz lub dyrekcji spółki.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-slate-300 mt-0.5" aria-hidden="true">&#10005;</span> <span>Czynności z branży budowlanej, IT, finansowej, prawnej i spedycyjnej.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-slate-300 mt-0.5" aria-hidden="true">&#10005;</span> <span>Szkód w środowisku naturalnym oraz objętych minimalnym ubezpieczeniem obowiązkowym.</span></li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- KONIEC NOWEJ SEKCJI -->
 
         <article id="calculator-section" class="py-8 px-4 max-w-7xl mx-auto">
             
@@ -338,13 +391,6 @@
                     </div>
                     <div class="text-beauty-pink bg-rose-50 w-8 h-8 rounded-full hidden md:flex items-center justify-center font-bold text-lg" aria-hidden="true">
                         &#10003;
-                    </div>
-                </div>
-
-                <div class="mb-8">
-                    <h3 class="text-sm font-bold text-slate-700 text-center mb-2">Porównanie wariantów dla Twojego salonu</h3>
-                    <div class="chart-container">
-                        <canvas id="priceChart"></canvas>
                     </div>
                 </div>
                 
@@ -710,43 +756,6 @@
         }
 
         const basePricing = { 1: { s100: 400, s200: 500, s300: 650 }, 2: { s100: 650, s200: 790, s300: 950 }, 3: { s100: 850, s200: 980, s300: 1250 } };
-        let premiumChart = null;
-
-        function renderPricingChart(p100, p200, p300) {
-            const ctx = document.getElementById('priceChart');
-            if(!ctx) return;
-            
-            if(premiumChart) {
-                premiumChart.data.datasets[0].data = [p100, p200, p300];
-                premiumChart.update();
-            } else {
-                premiumChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['100 000 zł', '200 000 zł', '300 000 zł'],
-                        datasets: [{
-                            label: 'Roczna Składka (PLN)',
-                            data: [p100, p200, p300],
-                            backgroundColor: ['#cbd5e1', '#e11d48', '#2a3b69'],
-                            borderRadius: 6
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: { display: true, text: 'Kwota Składki (PLN)' }
-                            }
-                        },
-                        plugins: {
-                            legend: { display: false }
-                        }
-                    }
-                });
-            }
-        }
 
         function selectAll(tierId) {
             const container = document.getElementById(`list-${tierId}-container`);
@@ -810,7 +819,6 @@
             const legalCost = hasLegal ? 92 : 0;
 
             const cardsContainer = document.getElementById('pricing-cards-container');
-            const chartArea = document.querySelector('.chart-container').parentElement;
             const indMsg = document.getElementById('individual-pricing-msg');
             const indMsgReason = document.getElementById('ind-pricing-reason');
             
@@ -818,7 +826,6 @@
 
             if (empValue === 'ind' || hasHighRisk) {
                 cardsContainer.classList.add('hidden');
-                chartArea.classList.add('hidden');
                 indMsg.classList.remove('hidden');
                 
                 if (hasHighRisk) {
@@ -832,7 +839,6 @@
                 document.getElementById('btn-ind').setAttribute('onclick', `openOfferModal('Wycena Indywidualna', 'Brak ceny - Wymaga weryfikacji przez TU', '${taryfaName}')`);
             } else {
                 cardsContainer.classList.remove('hidden');
-                chartArea.classList.remove('hidden');
                 indMsg.classList.add('hidden');
                 
                 const multiplier = parseFloat(empValue);
@@ -845,8 +851,6 @@
                 document.getElementById('price-100k').innerText = p100;
                 document.getElementById('price-200k').innerText = p200;
                 document.getElementById('price-300k').innerText = p300;
-
-                renderPricingChart(p100, p200, p300);
 
                 document.getElementById('btn-100k').setAttribute('onclick', `openOfferModal('100 000 zł', '${p100} zł', '${taryfaName}')`);
                 document.getElementById('btn-200k').setAttribute('onclick', `openOfferModal('200 000 zł', '${p200} zł', '${taryfaName}')`);
