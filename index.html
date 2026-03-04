@@ -568,6 +568,67 @@
     </div>
 
     <script>
+<div id="modal-dystrybutor" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-dystrybutor-title">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
+            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&times;</button>
+            <h3 id="modal-dystrybutor-title" class="font-heading font-bold text-lg text-beauty-navy mb-3">Informacje o agencie ubezpieczeniowym</h3>
+            <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed">
+                <p>Działając na podstawie art. 22 ust. 1 pkt 2-6 oraz ust. 2-4 ustawy z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń (Dz.U. z 2017 r., poz. 2486 ze zm.) (dalej „Ustawa”) niniejszym przekazujemy następujące informacje dotyczące Aura Expert spółka z ograniczoną odpowiedzialnością („Agent”):</p>
+                <ol class="list-decimal pl-4 space-y-2">
+                    <li>Agent jest agentem ubezpieczeniowym w rozumieniu Ustawy.</li>
+                    <li>Agent wykonuje działalność agencyjną pod firmą: Aura Expert sp. z o.o.</li>
+                    <li>Adres siedziby Agenta: ul. Bolkowska 2A/28, 01-466 Warszawa</li>
+                    <li>Kontakt: E-mail: zarzad@auraexpert.pl, tel: +48 504 400 901</li>
+                    <li>Agent jest wpisany do KRS pod nr 0000599840, NIP 5242793544, REGON 363673048.</li>
+                    <li>Agent jest wpisany do rejestru agentów KNF pod nr 11229690/A.</li>
+                    <li>Agent nie posiada akcji ani udziałów zakładu ubezpieczeń uprawniających do 10% głosów na walnym zgromadzeniu.</li>
+                    <li>Agent działa na rzecz m.in.: Generali, UNIQA, Lloyd's, SALTUS, ERGO Hestia, WARTA, Colonnade.</li>
+                    <li>Agent otrzymuje od zakładu ubezpieczeń prowizję uwzględnioną w kwocie składki.</li>
+                    <li>Reklamacje można złożyć e-mailowo (reklamacje@auraexpert.pl) lub telefonicznie.</li>
+                    <li>Spór może być zakończony w drodze pozasądowego postępowania przed Rzecznikiem Finansowym.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-rodo" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-rodo-title">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
+            <button onclick="closeModal('modal-rodo')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&times;</button>
+            <h3 id="modal-rodo-title" class="font-heading font-bold text-lg text-beauty-navy mb-3">Nota informacyjna RODO</h3>
+            <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed">
+                <p>Zgodnie z art. 13-14 rozporządzenia o ochronie danych osobowych z 27 kwietnia 2016 r.</p>
+                <p>Administratorem danych jest <strong>Aura Expert sp. z o.o.</strong> z siedzibą: ul. Bolkowska 2A lok 28, 01-466 Warszawa.</p>
+                
+                <p class="font-bold text-slate-800 mt-2">Aura Expert przetwarza dane m.in. w związku z:</p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li>wykonywaniem czynności agencyjnych,</li>
+                    <li>obsługą reklamacji i zapytań przez strony internetowe.</li>
+                </ul>
+
+                <p class="font-bold text-slate-800 mt-2">Aura Expert zbiera dane:</p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li>bezpośrednio od osób fizycznych poprzez formularze elektroniczne,</li>
+                    <li>od klientów zgodnie z umową powierzenia.</li>
+                </ul>
+
+                <p class="font-bold text-slate-800 mt-2">Aura Expert udostępnia dane:</p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li>zakładom ubezpieczeń i współpracującym dystrybutorom,</li>
+                    <li>podmiotom obsługującym szkody.</li>
+                </ul>
+
+                <p>Osobom, których dane dotyczą, przysługują prawa dostępu, sprostowania, usunięcia, ograniczenia przetwarzania, wniesienia sprzeciwu oraz skargi do organu nadzorczego.</p>
+                
+                <div class="bg-slate-50 p-3 rounded-lg mt-3 border border-slate-200">
+                    <p class="font-bold mb-1">Kontakt z IOD:</p>
+                    <p>E-mail: iod@auraexpert.pl | Tel: +48 504 400 901</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        
         // Logika konfetti
         let confettiFired = false;
         function fireConfetti() {
@@ -870,4 +931,3 @@
     </script>
 </body>
 </html>
-
