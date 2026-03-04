@@ -9,8 +9,8 @@
     <meta name="theme-color" content="#2a3b69">
     
     <!-- Chosen Palette: Warm Neutrals with Beauty Navy (#2a3b69) and Rose Pink (#e11d48) accents -->
-    <!-- Application Structure Plan: Landing page z kalkulatorem Tax Protect. Górny pasek ujednolicony z OC. Rotujący baner FAQ pod nagłówkiem. Jasny podział na Sekcję 1 (osoby) i Sekcję 2 (firma). Interaktywny selektor przychodów przeliczający składkę dla wariantów 50k i 100k. Na dole przejrzyste akordeony FAQ i formularz leadowy. -->
-    <!-- Visualization & Content Choices: Interaktywny pasek alertu (rotator JS) przyciągający uwagę. Karty wariantów zmieniające ceny na żywo w oparciu o obiekt danych (JS). Przyciski typu Radio zamienione na eleganckie kafelki ułatwiające obsługę na mobile. Zastosowano wyłącznie znaki Unicode dla ikon (zgodność z wytycznymi NO SVG). -->
+    <!-- Application Structure Plan: Rozbudowany landing page z kalkulatorem. Dodano informację o limicie 1 sporu podatkowego w standardowych wariantach. Wprowadzono opcję wyceny indywidualnej dla większej liczby sporów. -->
+    <!-- Visualization & Content Choices: Interaktywne kafelki cenowe z wyraźnym zaznaczeniem limitów ilościowych. Dynamiczne komunikaty dla niestandardowych potrzeb biznesowych. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <link rel="stylesheet" href="style.css">
@@ -20,19 +20,13 @@
         body { font-family: 'Montserrat', sans-serif; background-color: #fafafa; color: #1e293b; }
         h1, h2, h3, .font-heading { font-family: 'Playfair Display', serif; }
 
-        /* Niestandardowe kolory bazowe (kompatybilność z style.css) */
         .text-beauty-navy { color: #2a3b69; }
         .bg-beauty-navy { background-color: #2a3b69; }
         .border-beauty-navy { border-color: #2a3b69; }
-        .hover\:bg-beauty-navy:hover { background-color: #2a3b69; }
-        .hover\:text-beauty-navy:hover { color: #2a3b69; }
         
         .text-beauty-pink { color: #e11d48; }
         .bg-beauty-pink { background-color: #e11d48; }
         .border-beauty-pink { border-color: #e11d48; }
-        .hover\:bg-rose-700:hover { background-color: #be123c; }
-        .hover\:text-beauty-pink:hover { color: #e11d48; }
-        .focus\:ring-beauty-pink:focus { box-shadow: 0 0 0 2px #fafafa, 0 0 0 4px #e11d48; }
 
         .hero-gradient { background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 50%, #ffffff 100%); position: relative; }
         
@@ -50,7 +44,6 @@
         .premium-card { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; }
         .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
 
-        /* Pasek animowany FAQ */
         #faq-banner { transition: opacity 0.5s ease-in-out; }
         .fade-out { opacity: 0; }
         .fade-in { opacity: 1; }
@@ -58,7 +51,7 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col selection:bg-beauty-pink selection:text-white">
 
-    <!-- UJEDNOLICONY GÓRNY PASEK NAWIGACJI -->
+    <!-- GÓRNY PASEK NAWIGACJI -->
     <nav aria-label="Menu pomocnicze" class="bg-slate-900 text-slate-300 text-[10px] md:text-xs py-1.5 font-semibold tracking-wide border-b border-slate-800 z-50 relative">
         <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start">
             <a href="index.html" class="hover:text-white transition-colors">OC</a>
@@ -99,22 +92,17 @@
     <main class="flex-grow">
         <!-- HERO -->
         <section class="hero-gradient text-beauty-navy py-12 md:py-20 px-4 overflow-hidden border-b border-slate-200">
-            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-white rounded-full blur-3xl opacity-60" aria-hidden="true"></div>
-            
             <div class="max-w-5xl mx-auto text-center relative z-10">
                 <span class="inline-block py-1 px-3 rounded-full bg-white border border-indigo-100 text-indigo-600 text-[10px] font-bold tracking-widest uppercase mb-4 shadow-sm">
                     Program Colonnade: TAX Protect
                 </span>
-                
                 <h1 class="font-heading text-3xl md:text-5xl font-bold mb-4 leading-tight text-slate-800">
                     Ochrona Skarbowa i Podatkowa<br><span class="text-beauty-pink">dla Branży Beauty</span>
                 </h1>
-                
                 <p class="text-sm md:text-base text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-                    Kontrola ZUS u "B2B"? Spór o stawkę VAT na zabieg kosmetologiczny? Błąd księgowej? <br>
-                    <strong>TAX Protect</strong> zdejmuje z Ciebie ciężar finansowy postępowań, organizuje najlepszych doradców podatkowych i refunduje nałożone mandaty karnoskarbowe.
+                    Spór o stawkę VAT na zabieg, kontrole ZUS czy błąd kadrowy? <br>
+                    <strong>TAX Protect</strong> to tarcza, która organizuje doradców i refunduje mandaty karnoskarbowe.
                 </p>
-                
                 <div class="flex flex-wrap justify-center gap-3 text-xs font-semibold text-slate-700">
                     <span class="bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2">
                         <span class="text-emerald-500 text-lg leading-none" aria-hidden="true">&#10003;</span> Refundacja grzywien (KKS)
@@ -123,289 +111,243 @@
                         <span class="text-emerald-500 text-lg leading-none" aria-hidden="true">&#10003;</span> Darmowy doradca przy kontroli
                     </span>
                     <span class="bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2">
-                        <span class="text-emerald-500 text-lg leading-none" aria-hidden="true">&#10003;</span> Ochrona całego zarządu
+                        <span class="text-emerald-500 text-lg leading-none" aria-hidden="true">&#10003;</span> Retroaktywność do 5 lat
                     </span>
                 </div>
             </div>
         </section>
 
-        <!-- DLACZEGO WARTO / MITY -->
-        <section class="py-12 bg-white px-4">
-            <div class="max-w-7xl mx-auto">
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-4">Złudne poczucie bezpieczeństwa</h2>
-                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                            Wielu właścicieli salonów uważa, że zatrudnienie biura rachunkowego przenosi na nich całą odpowiedzialność. W świetle polskiego prawa podatkowego i karnoskarbowego - to niebezpieczny mit.
-                        </p>
-                        
-                        <div class="space-y-4">
-                            <div class="bg-rose-50 border-l-4 border-beauty-pink p-4 rounded-r-xl">
-                                <h4 class="font-bold text-beauty-pink text-xs uppercase tracking-wider mb-1">MIT: Księgowa ma OC, to mi wystarczy</h4>
-                                <p class="text-slate-700 text-xs leading-relaxed">
-                                    Odpowiedzialność <strong>karnoskarbowa</strong> zawsze dotyczy osób zarządzających firmą (właściciela/zarządu). Zgodnie z ustawą o rachunkowości, nie można jej przenieść. OC biura nie zapłaci Twojego mandatu!
-                                </p>
-                            </div>
-                            <div class="bg-slate-50 border-l-4 border-slate-400 p-4 rounded-r-xl">
-                                <h4 class="font-bold text-slate-600 text-xs uppercase tracking-wider mb-1">FAKT: Przedawnienie to aż 5 lat</h4>
-                                <p class="text-slate-600 text-xs leading-relaxed">
-                                    Urząd Skarbowy czy ZUS mogą skontrolować Cię nawet 5 lat wstecz. TAX Protect oferuje <strong>pełne pokrycie retroaktywne</strong> – chroni przed błędami z przeszłości, o ile postępowanie ruszyło w trakcie trwania polisy.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-beauty-navy text-white rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden">
-                        <div class="absolute -right-10 -top-10 text-8xl opacity-10" aria-hidden="true">&#9878;&#65039;</div>
-                        <h3 class="font-bold text-xl mb-4 relative z-10 text-blue-100">Czego ubezpieczenie NIE obejmuje?</h3>
-                        <p class="text-xs text-slate-300 mb-5 relative z-10 leading-relaxed">Jesteśmy transparentni. Zobacz, w jakich sytuacjach polisa nie zadziała:</p>
-                        <ul class="space-y-3 text-sm font-light relative z-10">
-                            <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5" aria-hidden="true">&#10005;</span> <span>Zapłata samego zaległego podatku / VAT (ryzyko nieubezpieczalne w Polsce).</span></li>
-                            <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5" aria-hidden="true">&#10005;</span> <span>Kary administracyjne (np. mandat z Sanepidu). Chronimy stricte karno-skarbówkę.</span></li>
-                            <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5" aria-hidden="true">&#10005;</span> <span>Wina umyślna (po prawomocnym wyroku sądu Ubezpieczyciel prosi o zwrot wyłożonych kosztów obrony).</span></li>
-                            <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5" aria-hidden="true">&#10005;</span> <span>Sprawy rozpoczęte przed zawarciem polisy lub w okresie karencji (21 dni).</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ZAKRES OCHRONY (SEKCJE 1 i 2) -->
+        <!-- ZAKRES OCHRONY -->
         <section class="py-12 bg-slate-50 px-4 border-t border-slate-200">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-10">
-                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-3">Jak dokładnie działa TAX Protect?</h2>
-                    <p class="text-slate-500 text-sm">Jedna polisa zawiera dwie niezależne tarcze ochronne - dla ludzi i dla firmy.</p>
+                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-3">Zakres ubezpieczenia (OWU)</h2>
+                    <p class="text-slate-500 text-sm">Polisa podzielona na dwie sekcje - dla bezpieczeństwa osobistego i firmowego.</p>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <!-- Sekcja 1 -->
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-4">
-                            <div class="bg-blue-50 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center text-xl" aria-hidden="true">&#128100;</div>
+                    <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-5">
+                            <div class="bg-blue-50 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center text-2xl" aria-hidden="true">&#128100;</div>
                             <div>
-                                <h3 class="font-bold text-beauty-navy text-lg">SEKCJA 1: Dla Osób Fizycznych</h3>
-                                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Ochrona karnoskarbowa właścicieli / zarządu</p>
+                                <h3 class="font-bold text-beauty-navy text-lg leading-tight">SEKCJA 1: Ochrona karnoskarbowa</h3>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Osobiste bezpieczeństwo zarządu i menedżerów</p>
                             </div>
                         </div>
-                        <p class="text-xs text-slate-600 mb-4 leading-relaxed">W związku ze wszczęciem postępowania karnoskarbowego, karnego lub przygotowawczego, polisa pokrywa:</p>
-                        <ul class="space-y-2.5 text-xs text-slate-700">
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <strong>Koszty Obrony:</strong> adwokat, ekspertyzy (bez Twojego udziału własnego).</li>
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <strong>Grzywny i Kary:</strong> refundacja mandatów karnoskarbowych (do 75% Sumy Ubezpieczenia).</li>
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <strong>Koszty Porady Prawnej:</strong> zanim roszczenie stanie się oficjalne.</li>
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <strong>Tryb awaryjny:</strong> zwrot kosztów, gdy nie miałeś czasu zapytać nas o zgodę (do 30% SU).</li>
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <strong>Postępowania Porządkowe.</strong></li>
-                        </ul>
+                        
+                        <div class="space-y-5">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-2">
+                                    <span class="text-emerald-500" aria-hidden="true">&#10003;</span> Koszty Obrony (§ 5 ust. 1)
+                                </h4>
+                                <p class="text-[11px] text-slate-500 pl-6 leading-relaxed">Pokrycie kosztów, opłat i wydatków na adwokata w postępowaniach cywilnych, administracyjnych i arbitrażowych dotyczących roszczeń objętych ochroną.</p>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-2">
+                                    <span class="text-emerald-500" aria-hidden="true">&#10003;</span> Koszty Postępowań (§ 5 ust. 6 i 7)
+                                </h4>
+                                <p class="text-[11px] text-slate-500 pl-6 leading-relaxed">Finansowanie pomocy prawnej w <strong>Postępowaniu Karnym</strong> oraz <strong>Postępowaniu Przygotowawczym</strong>.</p>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-2">
+                                    <span class="text-emerald-500" aria-hidden="true">&#10003;</span> Koszty Porady Prawnej (§ 5 ust. 8)
+                                </h4>
+                                <p class="text-[11px] text-slate-500 pl-6 leading-relaxed">Koszty adwokata lub doradcy w celu uniknięcia roszczenia jeszcze przed oficjalnym wszczęciem postępowania.</p>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-2">
+                                    <span class="text-beauty-pink" aria-hidden="true">&#9889;</span> Tryb Awaryjny (§ 6)
+                                </h4>
+                                <p class="text-[11px] text-slate-500 pl-6 leading-relaxed">Refundacja kosztów obrony podjętej w sytuacjach nagłych (np. aresztowanie) bez uprzedniej zgody ubezpieczyciela.</p>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Sekcja 2 -->
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-4">
-                            <div class="bg-emerald-50 text-emerald-600 w-10 h-10 rounded-full flex items-center justify-center text-xl" aria-hidden="true">&#127970;</div>
+                    <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-5">
+                            <div class="bg-emerald-50 text-emerald-600 w-12 h-12 rounded-full flex items-center justify-center text-2xl" aria-hidden="true">&#127970;</div>
                             <div>
-                                <h3 class="font-bold text-beauty-navy text-lg">SEKCJA 2: Dla Podmiotów</h3>
-                                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Ochrona podatkowa dla Twojej Firmy</p>
+                                <h3 class="font-bold text-beauty-navy text-lg leading-tight">SEKCJA 2: Ochrona podatkowa podmiotu</h3>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Wsparcie operacyjne dla firmy</p>
                             </div>
                         </div>
-                        <p class="text-xs text-slate-600 mb-4 leading-relaxed">Jeżeli wystąpi <strong>jeden spór podatkowy</strong> wszczęty w okresie ubezpieczenia, organizujemy i finansujemy:</p>
-                        <ul class="space-y-2.5 text-xs text-slate-700">
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <strong>Doradcę Podatkowego:</strong> w sporze z Urzędem Skarbowym.</li>
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <strong>Zastępstwo prawne:</strong> podczas sporów i kontroli z ZUS.</li>
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <strong>Zastępstwo prawne:</strong> podczas sporów i kontroli PIP (Państwowa Inspekcja Pracy) oraz PFRON.</li>
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> <strong>Asystę podatkową:</strong> szybkie porady przy czynnościach sprawdzających.</li>
-                            <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5" aria-hidden="true">&#10003;</span> Wnioski do Krajowej Informacji Skarbowej (KIS).</li>
-                        </ul>
+                        <p class="text-xs text-slate-600 mb-6 leading-relaxed">Organizacja i sfinansowanie profesjonalnej obsługi prawnej dla <strong>jednego sporu podatkowego</strong> wszczętego w okresie ubezpieczenia:</p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-xl">
+                                <span class="text-emerald-500 font-bold" aria-hidden="true">&#10148;</span>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Spory Podatkowe (US / KAS)</h4>
+                                    <p class="text-[11px] text-slate-500">Reprezentacja przez doradcę podatkowego podczas kontroli i postępowań przed Urzędem Skarbowym.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-xl">
+                                <span class="text-emerald-500 font-bold" aria-hidden="true">&#10148;</span>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Spory z ZUS, PIP, PFRON</h4>
+                                    <p class="text-[11px] text-slate-500">Zastępstwo prawne przy kontrolach ubezpieczeń społecznych oraz Inspekcji Pracy.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-xl">
+                                <span class="text-emerald-500 font-bold" aria-hidden="true">&#10148;</span>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Interpretacje KIS</h4>
+                                    <p class="text-[11px] text-slate-500">Przygotowanie wniosku o Indywidualną Interpretację Podatkową.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- KALKULATOR SKŁADKI -->
-        <article id="kalkulator" class="py-12 px-4 max-w-5xl mx-auto">
+        <!-- KALKULATOR -->
+        <article id="kalkulator" class="py-12 px-4 max-w-7xl mx-auto">
             <section class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-10 mb-6">
                 <header class="text-center mb-8">
-                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-2">
-                        Kalkulator Składki Rocznej
-                    </h2>
-                    <p class="text-xs text-slate-500">
-                        Wybierz przedział przychodów swojej firmy z ostatniego zamkniętego roku podatkowego, aby sprawdzić gwarantowane ceny dla programu BeautyPolisa.
-                    </p>
+                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-2">Oblicz składkę dla swojego salonu</h2>
+                    <p class="text-xs text-slate-500">Składka zależy od rocznych przychodów netto firmy.</p>
                 </header>
                 
-                <!-- KROK 1: Przychody -->
                 <div class="mb-10">
-                    <h3 class="text-sm font-bold text-slate-700 mb-4 text-center">Roczne przychody firmy:</h3>
+                    <h3 class="text-sm font-bold text-slate-700 mb-4 text-center">Wielkość przychodów firmy (ostatni rok):</h3>
                     <div class="flex flex-wrap justify-center gap-2 md:gap-3">
-                        <div class="radio-revenue flex-1 min-w-[110px] max-w-[180px]">
+                        <div class="radio-revenue flex-1 min-w-[120px] max-w-[180px]">
                             <input type="radio" name="revenue" id="rev-250k" value="250k" checked onchange="updateTaxPrices()">
-                            <label for="rev-250k">
-                                <span class="font-bold text-[11px] md:text-xs text-slate-800">do 250 tys. zł</span>
-                            </label>
+                            <label for="rev-250k"><span class="font-bold text-[11px] md:text-xs">do 250 tys. zł</span></label>
                         </div>
-                        <div class="radio-revenue flex-1 min-w-[110px] max-w-[180px]">
+                        <div class="radio-revenue flex-1 min-w-[120px] max-w-[180px]">
                             <input type="radio" name="revenue" id="rev-500k" value="500k" onchange="updateTaxPrices()">
-                            <label for="rev-500k">
-                                <span class="font-bold text-[11px] md:text-xs text-slate-800">do 500 tys. zł</span>
-                            </label>
+                            <label for="rev-500k"><span class="font-bold text-[11px] md:text-xs">do 500 tys. zł</span></label>
                         </div>
-                        <div class="radio-revenue flex-1 min-w-[110px] max-w-[180px]">
+                        <div class="radio-revenue flex-1 min-w-[120px] max-w-[180px]">
                             <input type="radio" name="revenue" id="rev-1m" value="1m" onchange="updateTaxPrices()">
-                            <label for="rev-1m">
-                                <span class="font-bold text-[11px] md:text-xs text-slate-800">do 1 mln zł</span>
-                            </label>
+                            <label for="rev-1m"><span class="font-bold text-[11px] md:text-xs">do 1 mln zł</span></label>
                         </div>
-                        <div class="radio-revenue flex-1 min-w-[110px] max-w-[180px]">
+                        <div class="radio-revenue flex-1 min-w-[120px] max-w-[180px]">
                             <input type="radio" name="revenue" id="rev-3m" value="3m" onchange="updateTaxPrices()">
-                            <label for="rev-3m">
-                                <span class="font-bold text-[11px] md:text-xs text-slate-800">do 3 mln zł</span>
-                            </label>
+                            <label for="rev-3m"><span class="font-bold text-[11px] md:text-xs">do 3 mln zł</span></label>
                         </div>
-                        <div class="radio-revenue flex-1 min-w-[110px] max-w-[180px]">
+                        <div class="radio-revenue flex-1 min-w-[120px] max-w-[180px]">
                             <input type="radio" name="revenue" id="rev-more" value="more" onchange="updateTaxPrices()">
-                            <label for="rev-more">
-                                <span class="font-bold text-[11px] md:text-xs text-beauty-pink">Powyżej 3 mln zł</span>
-                            </label>
+                            <label for="rev-more"><span class="font-bold text-[11px] md:text-xs text-beauty-pink">Powyżej 3 mln zł</span></label>
                         </div>
                     </div>
                 </div>
 
-                <!-- KROK 2: Ceny -->
-                <div id="pricing-results" class="grid md:grid-cols-2 gap-6">
-                    
+                <div id="pricing-results" class="grid md:grid-cols-2 gap-6 mb-8">
                     <!-- Wariant 50k -->
                     <div class="bg-white rounded-3xl border-2 border-slate-100 overflow-hidden flex flex-col premium-card">
-                        <div class="p-6 flex flex-col items-center border-b border-slate-100 bg-slate-50">
-                            <h4 class="font-semibold text-slate-500 uppercase tracking-widest text-[10px] mb-1">Wariant Podstawowy</h4>
-                            <div class="font-heading text-xl font-bold text-beauty-navy mb-2">Suma: 50 000 zł</div>
+                        <div class="p-6 flex flex-col items-center bg-slate-50">
+                            <h4 class="font-semibold text-slate-500 uppercase tracking-widest text-[9px] mb-1">Wariant 1</h4>
+                            <div class="font-heading text-xl font-bold text-beauty-navy mb-1">Suma: 50 000 zł</div>
+                            <div class="bg-slate-200 text-slate-600 text-[9px] px-2 py-0.5 rounded-full font-bold uppercase mb-3">Ochrona dla 1 sporu</div>
                             <div class="flex items-end gap-1">
-                                <span id="tax-price-50" class="text-4xl font-extrabold text-slate-800">1 532</span>
-                                <span class="text-slate-500 font-medium mb-1">zł / rok</span>
+                                <span id="tax-price-50" class="text-4xl font-extrabold text-slate-800">1 532</span><span class="text-slate-500 font-medium mb-1"> zł</span>
                             </div>
                         </div>
-                        <div class="p-5 bg-white text-xs text-slate-600 flex-grow">
-                            <div class="flex justify-between border-b border-slate-100 py-2">
-                                <span>Limit na grzywny (75%):</span> <strong class="text-slate-800">37 500 zł</strong>
-                            </div>
-                            <div class="flex justify-between border-b border-slate-100 py-2">
-                                <span>Obrona awaryjna (30%):</span> <strong class="text-slate-800">15 000 zł</strong>
-                            </div>
-                            <div class="mt-4 text-center">
-                                <button onclick="openTaxOfferModal('50 000 zł')" class="w-full border border-slate-300 text-slate-700 hover:border-beauty-navy hover:text-beauty-navy font-bold py-2.5 rounded-xl transition-colors outline-none focus:ring-2 focus:ring-beauty-navy">
-                                    Jestem zainteresowany
-                                </button>
-                            </div>
+                        <div class="p-5 flex-grow text-center">
+                            <button onclick="openTaxOfferModal('50 000 zł (1 spór)')" class="w-full border border-slate-300 text-slate-700 hover:border-beauty-navy hover:text-beauty-navy font-bold py-2.5 rounded-xl transition-colors">Wybieram ten wariant</button>
                         </div>
                     </div>
 
                     <!-- Wariant 100k -->
                     <div class="bg-white rounded-3xl border-2 border-beauty-pink overflow-hidden flex flex-col premium-card relative">
-                        <div class="absolute top-0 left-0 w-full bg-beauty-pink text-white text-center text-[9px] font-bold py-1 uppercase tracking-widest">
-                            Rekomendacja dla Branży
-                        </div>
-                        <div class="p-6 pt-8 flex flex-col items-center border-b border-rose-100 bg-rose-50/50">
-                            <h4 class="font-semibold text-rose-500 uppercase tracking-widest text-[10px] mb-1">Wariant Rozszerzony</h4>
-                            <div class="font-heading text-xl font-bold text-beauty-pink mb-2">Suma: 100 000 zł</div>
+                        <div class="absolute top-0 left-0 w-full bg-beauty-pink text-white text-center text-[9px] font-bold py-1 uppercase tracking-widest">Rekomendacja</div>
+                        <div class="p-6 pt-8 flex flex-col items-center bg-rose-50/50">
+                            <h4 class="font-semibold text-rose-500 uppercase tracking-widest text-[9px] mb-1">Wariant 2</h4>
+                            <div class="font-heading text-xl font-bold text-beauty-pink mb-1">Suma: 100 000 zł</div>
+                            <div class="bg-rose-200 text-beauty-pink text-[9px] px-2 py-0.5 rounded-full font-bold uppercase mb-3">Ochrona dla 1 sporu</div>
                             <div class="flex items-end gap-1">
-                                <span id="tax-price-100" class="text-4xl font-extrabold text-slate-800">2 501</span>
-                                <span class="text-slate-500 font-medium mb-1">zł / rok</span>
+                                <span id="tax-price-100" class="text-4xl font-extrabold text-slate-800">2 501</span><span class="text-slate-500 font-medium mb-1"> zł</span>
                             </div>
                         </div>
-                        <div class="p-5 bg-white text-xs text-slate-600 flex-grow">
-                            <div class="flex justify-between border-b border-slate-100 py-2">
-                                <span>Limit na grzywny (75%):</span> <strong class="text-slate-800">75 000 zł</strong>
-                            </div>
-                            <div class="flex justify-between border-b border-slate-100 py-2">
-                                <span>Obrona awaryjna (30%):</span> <strong class="text-slate-800">30 000 zł</strong>
-                            </div>
-                            <div class="mt-4 text-center">
-                                <button onclick="openTaxOfferModal('100 000 zł')" class="w-full bg-beauty-pink hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl transition-colors shadow-md shadow-rose-200 outline-none focus:ring-2 focus:ring-rose-500">
-                                    Jestem zainteresowany
-                                </button>
-                            </div>
+                        <div class="p-5 flex-grow text-center">
+                            <button onclick="openTaxOfferModal('100 000 zł (1 spór)')" class="w-full bg-beauty-pink hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl transition-colors shadow-md">Wybieram ten wariant</button>
                         </div>
                     </div>
-
                 </div>
 
-                <!-- Komunikat Indywidualny (Dla > 3mln) -->
-                <div id="individual-msg" class="hidden bg-beauty-navy text-white rounded-2xl p-6 text-center shadow-lg mt-2 relative overflow-hidden">
-                    <h3 class="font-heading text-xl font-bold mb-2">Indywidualna Ocena Ryzyka</h3>
-                    <p class="text-blue-100 text-xs mb-4">Dla podmiotów o przychodach powyżej 3 000 000 zł, składka jest wyliczana na podstawie dodatkowych informacji.</p>
-                    <button onclick="openTaxOfferModal('Powyżej 3 mln - Indywidualna')" class="bg-white text-beauty-navy font-bold py-2 px-6 rounded-full text-xs hover:bg-slate-100 transition-colors">
+                <!-- INFO O WIĘKSZEJ LICZBIE SPORÓW -->
+                <div id="more-disputes-info" class="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="text-center md:text-left">
+                        <p class="text-xs font-bold text-beauty-navy">Chcesz ubezpieczyć więcej niż 1 spór podatkowy?</p>
+                        <p class="text-[11px] text-slate-500">Przygotujemy dla Ciebie dedykowane rozszerzenie liczby sporów.</p>
+                    </div>
+                    <button onclick="openTaxOfferModal('Więcej sporów - Wycena Indywidualna')" class="text-[11px] font-bold text-beauty-pink border border-beauty-pink px-5 py-2 rounded-full hover:bg-beauty-pink hover:text-white transition-colors">
                         Zapytaj o wycenę indywidualną
                     </button>
                 </div>
 
+                <div id="individual-msg" class="hidden bg-beauty-navy text-white rounded-3xl p-8 text-center shadow-lg relative overflow-hidden animate-[fadeIn_0.5s_ease-out]">
+                    <h3 class="font-heading text-xl font-bold mb-3">Indywidualna Ocena Ryzyka</h3>
+                    <p class="text-slate-300 text-xs mb-6">Dla przychodów powyżej 3 mln zł wycenę przygotowujemy indywidualnie.</p>
+                    <button onclick="openTaxOfferModal('Powyżej 3 mln - Indywidualna')" class="bg-white text-beauty-navy font-bold py-3 px-8 rounded-full text-xs hover:bg-slate-100 transition-colors">Poproś o wycenę</button>
+                </div>
             </section>
         </article>
 
-        <!-- FAQ SEKCJA -->
-        <section id="faq-section" class="py-12 bg-white px-4 border-t border-slate-100">
-            <div class="max-w-3xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="font-heading text-2xl font-bold text-beauty-navy mb-2">Najczęściej Zadawane Pytania</h2>
-                    <p class="text-slate-500 text-xs">Masz wątpliwości? Odpowiadamy jasno i konkretnie.</p>
+        <!-- FAQ -->
+        <section id="faq-section" class="py-16 bg-white px-4 border-t border-slate-100">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-10">
+                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-3">Baza Wiedzy Tax Protect</h2>
+                    <p class="text-slate-500 text-sm">Praktyczne odpowiedzi na najczęstsze sytuacje w branży beauty.</p>
                 </div>
 
-                <div class="space-y-3">
-                    <!-- FAQ 1 -->
-                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
-                        <button class="accordion-btn w-full px-5 py-4 text-left font-bold text-xs text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
-                            Mam zewnętrzną księgową, która ma swoją polisę OC. Czy to nie wystarczy?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg leading-none" aria-hidden="true">&#9660;</span>
-                        </button>
-                        <div class="accordion-content">
-                            <p class="p-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                                <strong>NIE.</strong> Odpowiedzialność podatkowa dotyczy podatnika, czyli tego kto podatki płaci. Odpowiedzialność karnoskarbowa dotyczy osób odpowiedzialnych w firmie (właściciela, zarządu). Zgodnie z ustawą o rachunkowości, <strong>nie można tej odpowiedzialności przenieść</strong> na biuro rachunkowe. Polisa księgowej chroni księgową, a Twoje mandaty uderzą w Twój majątek.
-                            </p>
+                <div class="grid md:grid-cols-2 gap-4 md:gap-8 items-start">
+                    <div class="space-y-4">
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                            <button class="accordion-btn w-full px-5 py-4 text-left font-bold text-xs text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
+                                Co oznacza limit "jednego sporu" w polisie?
+                                <span class="icon transition-transform duration-300 text-slate-400" aria-hidden="true">&#9660;</span>
+                            </button>
+                            <div class="accordion-content bg-white">
+                                <p class="p-5 text-[11px] text-slate-600 leading-relaxed border-t border-slate-100">
+                                    Standardowa składka w programie BeautyPolisa obejmuje organizację i sfinansowanie obsługi <strong>jednego pełnego sporu podatkowego</strong> (np. kontroli skarbowej zakończonej postępowaniem) w ciągu roku. Jeśli prowadzisz działalność o wysokiej skali i chcesz zabezpieczyć możliwość obsługi wielu sporów jednocześnie, przygotujemy dla Ciebie ofertę indywidualną.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                            <button class="accordion-btn w-full px-5 py-4 text-left font-bold text-xs text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
+                                Czy zewnętrzna księgowa zdejmuje ze mnie odpowiedzialność?
+                                <span class="icon transition-transform duration-300 text-slate-400" aria-hidden="true">&#9660;</span>
+                            </button>
+                            <div class="accordion-content bg-white">
+                                <p class="p-5 text-[11px] text-slate-600 leading-relaxed border-t border-slate-100">
+                                    <strong>NIE.</strong> Zgodnie z ustawą o rachunkowości, odpowiedzialności karnoskarbowej nie można przenieść na biuro rachunkowe. Polisa księgowej chroni ją, ale mandaty karnoskarbowe wystawiane są na właściciela lub zarząd salonu.
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <!-- FAQ 2 -->
-                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
-                        <button class="accordion-btn w-full px-5 py-4 text-left font-bold text-xs text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
-                            Czy ubezpieczyciel zapłaci za mnie zaległy podatek lub VAT?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg leading-none" aria-hidden="true">&#9660;</span>
-                        </button>
-                        <div class="accordion-content">
-                            <p class="p-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                                <strong>NIE.</strong> To ryzyko nieubezpieczalne w polskim prawie. Podatki należy płacić samodzielnie, nie można tego obowiązku przenieść na ubezpieczyciela. Polisa finansuje za to koszty obrony, prawników oraz nałożone mandaty/grzywny karne.
-                            </p>
+
+                    <div class="space-y-4">
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                            <button class="accordion-btn w-full px-5 py-4 text-left font-bold text-xs text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
+                                Czy ubezpieczyciel zapłaci za mnie zaległy podatek?
+                                <span class="icon transition-transform duration-300 text-slate-400" aria-hidden="true">&#9660;</span>
+                            </button>
+                            <div class="accordion-content bg-white">
+                                <p class="p-5 text-[11px] text-slate-600 leading-relaxed border-t border-slate-100">
+                                    <strong>NIE.</strong> Podatki należy płacić samodzielnie. Polisa finansuje koszty obrony (adwokata), ekspertyzy oraz <strong>refunduje nałożone mandaty karnoskarbowe</strong>, które są osobistą karą finansową.
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <!-- FAQ 3 -->
-                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
-                        <button class="accordion-btn w-full px-5 py-4 text-left font-bold text-xs text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
-                            Czy ubezpieczyciel zapłaci mandat nałożony po kontroli Inspekcji Pracy (PIP)?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg leading-none" aria-hidden="true">&#9660;</span>
-                        </button>
-                        <div class="accordion-content">
-                            <p class="p-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                                Mandat nałożony przez Państwową Inspekcję Pracy należy fizycznie zapłacić samodzielnie, natomiast Ubezpieczyciel <strong>zrefunduje Ci poniesioną z tego tytułu stratę</strong> finansową po zgłoszeniu szkody.
-                            </p>
-                        </div>
-                    </div>
-                    <!-- FAQ 4 -->
-                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
-                        <button class="accordion-btn w-full px-5 py-4 text-left font-bold text-xs text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
-                            Prowadzę działalność jednoosobową (JDG), co chroni ta polisa?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg leading-none" aria-hidden="true">&#9660;</span>
-                        </button>
-                        <div class="accordion-content">
-                            <p class="p-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                                Polisa chroni Cię na wypadek kontroli (otrzymasz asystę prawno-podatkową), postępowań z urzędem, a także chroni osobiście Twoją odpowiedzialność karnoskarbową jako właściciela na wypadek grzywien.
-                            </p>
-                        </div>
-                    </div>
-                    <!-- FAQ 5 -->
-                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
-                        <button class="accordion-btn w-full px-5 py-4 text-left font-bold text-xs text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
-                            Czy ochrona zadziała na już rozpoczęte postępowanie?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg leading-none" aria-hidden="true">&#9660;</span>
-                        </button>
-                        <div class="accordion-content">
-                            <p class="p-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                                <strong>NIE.</strong> Postępowania rozpoczęte przed zawarciem umowy ubezpieczenia lub w okresie 21-dniowej karencji (liczonej od daty zawarcia polisy) nie są objęte ochroną. Dlatego warto ubezpieczyć się prewencyjnie.
-                            </p>
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                            <button class="accordion-btn w-full px-5 py-4 text-left font-bold text-xs text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
+                                Co to jest karencja i ile trwa?
+                                <span class="icon transition-transform duration-300 text-slate-400" aria-hidden="true">&#9660;</span>
+                            </button>
+                            <div class="accordion-content bg-white">
+                                <p class="p-5 text-[11px] text-slate-600 leading-relaxed border-t border-slate-100">
+                                    Karencja trwa <strong>21 dni</strong> od zawarcia polisy. Kontrole i postępowania rozpoczęte w tym czasie nie są objęte ochroną. Ma to zapobiegać kupowaniu ubezpieczenia w momencie, gdy kontrola już trwa.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -413,20 +355,17 @@
         </section>
     </main>
 
-    <!-- STOPKA -->
     <footer class="bg-white border-t border-slate-200 pt-8 pb-6 text-sm text-slate-500">
         <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-6 mb-4">
             <div>
                 <p class="mb-1 text-[11px]"><strong>Obsługa techniczna Programu:</strong> Aura Expert sp. z o.o. <span class="font-semibold text-beauty-navy">(tel. 504 400 901)</span></p>
                 <p class="mb-3 text-[11px]"><strong>Likwidacja szkód i obsługa:</strong> Broker Ubezpieczeniowy Aura Consulting sp. z o.o.</p>
-                
                 <div class="inline-block bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 mt-1 shadow-sm">
-                    <span class="text-[10px] text-slate-600 font-medium tracking-wide"><strong class="text-beauty-navy">BeautyPolisa TAX Protect</strong> ubezpiecza Colonnade.</span>
+                    <span class="text-[10px] text-slate-600 font-medium tracking-wide">✨ <strong class="text-beauty-navy">BeautyPolisa TAX Protect</strong> ubezpiecza Colonnade.</span>
                 </div>
             </div>
             <div class="text-[9px] text-slate-400 md:text-right flex flex-col justify-center leading-relaxed">
-                <p class="mb-1">Ubezpieczycielem w programie jest Colonnade Insurance S.A. działająca przez Oddział w Polsce.</p>
-                <p class="mb-1 font-semibold text-slate-500">Ogólne warunki ubezpieczenia ochrony skarbowej i podatkowej TAX PROTECT zatwierdzone przez dyrektora Colonnade Insurance Société Anonyme Oddział w Polsce w dniu 25.01.2023 r., mające zastosowanie do umów ubezpieczenia zawieranych od 26.01.2023 r.</p>
+                <p class="mb-1 font-semibold text-slate-500 italic text-[10px]">Ogólne warunki ubezpieczenia ochrony skarbowej i podatkowej TAX PROTECT zatwierdzone przez dyrektora Colonnade Insurance Société Anonyme Oddział w Polsce w dniu 25.01.2023 r., mające zastosowanie do umów ubezpieczenia zawieranych od 26.01.2023 r.</p>
                 <div class="mt-3 flex flex-col md:items-end gap-1.5 text-[10px] font-semibold">
                     <button onclick="openModal('modal-dystrybutor')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Informacja o dystrybutorze</button>
                     <button onclick="openModal('modal-rodo')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Nota informacyjna RODO</button>
@@ -438,98 +377,76 @@
         </div>
     </footer>
 
-    <!-- MODAL OFERTY (TAX) -->
+    <!-- MODAL OFERTY -->
     <div id="modal-tax-offer" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog">
         <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden relative">
             <button onclick="closeModal('modal-tax-offer')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij">&#10005;</button>
-            
             <div class="bg-slate-50 px-6 py-5 border-b border-slate-100">
-                <h3 class="font-heading font-bold text-lg text-beauty-navy">Zapytanie: TAX Protect</h3>
-                <p class="text-[11px] text-slate-500 mt-1">Wybrany wariant: <strong id="modal-tax-variant" class="text-beauty-pink text-xs"></strong></p>
-                <p class="text-[11px] text-slate-500 mt-0.5">Suma składek zależy od potwierdzenia przychodów.</p>
+                <h3 class="font-heading font-bold text-lg text-beauty-navy">Finalizacja zapytania</h3>
+                <p class="text-[11px] text-slate-500 mt-1">Wybrany wariant: <strong id="m-variant" class="text-beauty-pink text-xs"></strong></p>
             </div>
-            
-            <form id="tax-offer-form" onsubmit="submitTaxForm(event)" class="p-6 space-y-4">
+            <form id="m-form" onsubmit="submitModalForm(event)" class="p-6 space-y-4">
                 <div>
-                    <label for="tax-nip" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">NIP Twojej Firmy</label>
-                    <input type="text" id="tax-nip" required placeholder="0000000000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
+                    <label for="m-nip" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">NIP Salonu</label>
+                    <input type="text" id="m-nip" required placeholder="0000000000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
                 </div>
                 <div>
-                    <label for="tax-email" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">E-mail</label>
-                    <input type="email" id="tax-email" required placeholder="kontakt@twojsalon.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
+                    <label for="m-email" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">E-mail do kontaktu</label>
+                    <input type="email" id="m-email" required placeholder="twoj@email.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
                 </div>
-                <div>
-                    <label for="tax-tel" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Telefon</label>
-                    <input type="tel" id="tax-tel" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
-                </div>
-                <button type="submit" id="btn-tax-submit" class="w-full bg-beauty-navy hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition-colors mt-2 text-sm shadow-md">
-                    Wyślij zapytanie
-                </button>
+                <button type="submit" id="m-btn" class="w-full bg-beauty-navy hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl shadow-md text-sm">Poproś o wniosek</button>
             </form>
         </div>
     </div>
 
-    <!-- MODALE INFORMACYJNE (Reuse z OC) -->
+    <!-- MODALE INFORMACYJNE -->
     <div id="modal-dystrybutor" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto p-6">
             <button onclick="closeModal('modal-dystrybutor')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij">&#10005;</button>
-            <h3 class="font-heading font-bold text-lg text-beauty-navy mb-3">Informacje o agencie</h3>
-            <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed">
-                <p>Aura Expert spółka z ograniczoną odpowiedzialnością z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28, wpisana do KRS pod nr 0000599840, REGON 363673048. Spółka wpisana jest do Rejestru Pośredników Ubezpieczeniowych pod nr 11229690/A.</p>
-            </div>
+            <h3 class="font-heading font-bold text-lg text-beauty-navy mb-3">Informacja o dystrybutorze</h3>
+            <p class="text-[11px] text-slate-600 leading-relaxed">Agentem ubezpieczeniowym wskazanym do obsługi Umowy Ramowej dla Beauty Razem jest Aura Expert sp. z o.o. z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28.</p>
         </div>
     </div>
 
     <div id="modal-rodo" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto p-6">
             <button onclick="closeModal('modal-rodo')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij">&#10005;</button>
             <h3 class="font-heading font-bold text-lg text-beauty-navy mb-3">Nota informacyjna RODO</h3>
-            <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed">
-                <p>Administratorem danych jest <strong>Aura Expert sp. z o.o.</strong> z siedzibą: ul. Bolkowska 2A lok 28, 01-466 Warszawa. E-mail IOD: iod@auraexpert.pl | Tel: +48 504 400 901.</p>
-            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed">Administratorem danych osobowych w procesie technicznej obsługi programu jest Aura Expert sp. z o.o. Kontakt z IOD: iod@auraexpert.pl.</p>
         </div>
     </div>
 
     <script>
-        // Logika FAQ Banners
         const faqs = [
-            "Czy wiesz, że odpowiedzialności karnoskarbowej nie przekażesz na zewnętrzną księgową?",
-            "Czy wiesz, że mandat z Inspekcji Pracy zostanie Ci zrefundowany z naszej polisy?",
-            "Prowadzisz działalność jednoosobową? TAX Protect chroni i Ciebie!",
-            "Koszty adwokata w sporze ze skarbówką to średnio kilkanaście tysięcy złotych. My to opłacimy.",
+            "Ochrona dla 1 sporu podatkowego w cenie standardowej.",
+            "Czy zewnętrzna księgowa zdejmuje ze mnie odpowiedzialność karnoskarbową? (Nie!)",
+            "Czy mandat z Inspekcji Pracy zostanie mi zrefundowany? (Tak!)",
+            "Koszty adwokata w sporze ze skarbówką? My to opłacimy.",
             "W polisie obowiązuje 21 dni karencji. Nie zwlekaj, zabezpiecz się dziś."
         ];
         
         let currentFaq = 0;
         const bannerText = document.getElementById('faq-banner-text');
-        
         setInterval(() => {
             bannerText.classList.remove('fade-in');
             bannerText.classList.add('fade-out');
-            
             setTimeout(() => {
                 currentFaq = (currentFaq + 1) % faqs.length;
                 bannerText.innerText = faqs[currentFaq];
                 bannerText.classList.remove('fade-out');
                 bannerText.classList.add('fade-in');
-            }, 500); // Wait for fade out
+            }, 500);
         }, 5500);
 
-        // Akordeony FAQ
         const accordionBtns = document.querySelectorAll('.accordion-btn');
         accordionBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 this.classList.toggle('active');
                 const content = this.nextElementSibling;
-                if (content.style.maxHeight) {
-                    content.style.maxHeight = null;
-                } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                } 
+                content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
             });
         });
 
-        // Kalkulator Składek TAX Protect
         const taxPricing = {
             '250k': { p50: '1 532', p100: '2 501' },
             '500k': { p50: '1 612', p100: '2 581' },
@@ -539,49 +456,36 @@
 
         function updateTaxPrices() {
             const revenue = document.querySelector('input[name="revenue"]:checked').value;
-            const resultsDiv = document.getElementById('pricing-results');
+            const resDiv = document.getElementById('pricing-results');
             const indMsg = document.getElementById('individual-msg');
-
+            const moreDisp = document.getElementById('more-disputes-info');
             if(revenue === 'more') {
-                resultsDiv.classList.add('hidden');
+                resDiv.classList.add('hidden');
+                moreDisp.classList.add('hidden');
                 indMsg.classList.remove('hidden');
             } else {
-                resultsDiv.classList.remove('hidden');
+                resDiv.classList.remove('hidden');
+                moreDisp.classList.remove('hidden');
                 indMsg.classList.add('hidden');
-                
                 document.getElementById('tax-price-50').innerText = taxPricing[revenue].p50;
                 document.getElementById('tax-price-100').innerText = taxPricing[revenue].p100;
             }
         }
 
-        // Modale
-        function openModal(id) {
-            document.getElementById(id).classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-        function openTaxOfferModal(variantInfo) {
-            document.getElementById('modal-tax-variant').innerText = variantInfo;
-            openModal('modal-tax-offer');
-        }
+        function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = 'auto'; }
+        function openTaxOfferModal(variant) { document.getElementById('m-variant').innerText = variant; openModal('modal-tax-offer'); }
 
-        // Wysyłka formularza (Mock)
         function submitTaxForm(e) {
             e.preventDefault();
-            const btn = document.getElementById('btn-tax-submit');
-            btn.innerHTML = 'Przetwarzanie...';
-            btn.disabled = true;
+            alert('Dziękujemy! Twoje zapytanie o Tax Protect zostało przyjęte.');
+            document.getElementById('tax-lead-form').reset();
+        }
 
-            setTimeout(() => {
-                alert('Zgłoszenie wysłane. Broker Aura Consulting przygotuje spersonalizowaną ofertę i skontaktuje się z Tobą.');
-                closeModal('modal-tax-offer');
-                document.getElementById('tax-offer-form').reset();
-                btn.innerHTML = 'Wyślij zapytanie';
-                btn.disabled = false;
-            }, 1000);
+        function submitModalForm(e) {
+            e.preventDefault();
+            alert('Sukces! Przesłaliśmy prośbę o przygotowanie finalnego wniosku.');
+            closeModal('modal-tax-offer');
         }
     </script>
 </body>
