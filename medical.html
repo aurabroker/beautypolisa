@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     
-    <title>Opieka Medyczna | Pakiety ENEL-MED i LUX MED dla Branży Beauty</title>
-    <meta name="description" content="Prywatna opieka medyczna dla salonów beauty. Porównaj pakiety ENEL-MED i LUX MED. Szybki dostęp do lekarzy, badania i stomatologia dla Twojego zespołu.">
+    <title>Opieka Medyczna | ENEL-MED i LUX MED dla Branży Beauty</title>
+    <meta name="description" content="Prywatna opieka medyczna dla salonów beauty. Porównaj pakiety ENEL-MED i LUX MED. Szybki dostęp do lekarzy bez skierowań.">
     <meta name="theme-color" content="#2a3b69">
     
     <!-- Google Analytics -->
@@ -17,31 +17,37 @@
       gtag('config', 'G-HJWP7XYCF1');
     </script>
 
-    <!-- Chosen Palette: Warm Neutrals with Beauty Navy (#2a3b69) and Rose Pink (#e11d48) accents -->
-    <!-- Application Structure Plan: Landing page dla abonamentów medycznych. 
-         1. Porównanie ofert ENEL-MED i LUX MED. 
-         2. Baner FAQ z faktami o czasie oczekiwania na lekarza. 
-         3. Przejrzyste karty wariantów (Basic, Standard, Premium). 
-         4. Rozbudowany formularz finalizacji (NIP API, Telefon, Wybór operatora). -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'beauty-navy': '#2a3b69',
+                        'beauty-pink': '#e11d48'
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        heading: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #fafafa; color: #1e293b; }
         h1, h2, h3, .font-heading { font-family: 'Playfair Display', serif; }
 
-        .text-beauty-navy { color: #2a3b69; }
-        .bg-beauty-navy { background-color: #2a3b69; }
-        .border-beauty-navy { border-color: #2a3b69; }
-        
-        .text-beauty-pink { color: #e11d48; }
-        .bg-beauty-pink { background-color: #e11d48; }
-        .border-beauty-pink { border-color: #e11d48; }
-
         .hero-gradient { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); position: relative; }
         
+        .radio-staff input[type="radio"] { display: none; }
+        .radio-staff label { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.6rem 1rem; border: 2px solid #e2e8f0; border-radius: 1rem; cursor: pointer; transition: all 0.3s; background: white; text-align: center; height: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .radio-staff input[type="radio"]:checked + label { border-color: #2a3b69; background-color: #f0f9ff; box-shadow: 0 10px 15px -3px rgba(42, 59, 105, 0.15); transform: translateY(-2px); }
+
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
         .accordion-btn.active .icon { transform: rotate(180deg); }
 
@@ -55,12 +61,12 @@
         .loader { border: 2px solid #f3f3f3; border-top: 2px solid #2a3b69; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .price-tag { font-size: 2rem; font-weight: 800; color: #1e293b; }
-        .operator-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.2rem 0.6rem; border-radius: 99px; }
-        
         #faq-banner-text { transition: opacity 0.5s ease-in-out; }
         .fade-out { opacity: 0; }
         .fade-in { opacity: 1; }
+
+        .search-suggestion { cursor: pointer; padding: 0.5rem; border-bottom: 1px solid #f1f5f9; font-size: 0.75rem; }
+        .search-suggestion:hover { background-color: #f8fafc; }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col selection:bg-beauty-pink selection:text-white">
@@ -88,187 +94,264 @@
             </div>
             <div class="flex items-center gap-2">
                 <button onclick="document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'});" class="bg-white border border-slate-200 text-slate-600 font-bold py-2 px-6 rounded-full transition-all text-xs hover:bg-slate-50">
-                    Wiedza
+                    FAQ
                 </button>
-                <button onclick="document.getElementById('oferta').scrollIntoView({behavior: 'smooth'});" class="bg-beauty-navy hover:bg-slate-800 text-white font-semibold py-2 px-6 rounded-full transition-all text-xs shadow-lg">
-                    Porównaj Pakiety
+                <button onclick="document.getElementById('kalkulator').scrollIntoView({behavior: 'smooth'});" class="bg-beauty-navy hover:bg-slate-800 text-white font-semibold py-2 px-6 rounded-full transition-all text-xs shadow-lg">
+                    Kalkulator Składki
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- BANER FAKTY / STATYSTYKI -->
+    <!-- BANER FAKTY -->
     <div onclick="document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'});" class="bg-emerald-50 text-emerald-900 text-xs md:text-sm font-semibold py-2.5 px-4 text-center cursor-pointer hover:bg-emerald-100 transition-colors border-b border-emerald-200 shadow-inner z-30 relative group">
-        <div class="max-w-4xl mx-auto flex items-center justify-center gap-2 text-center">
+        <div class="max-w-4xl mx-auto flex items-center justify-center gap-2">
             <span class="text-emerald-600 text-lg" aria-hidden="true">&#9201;</span>
-            <span id="faq-banner-text" class="fade-in">Średni czas oczekiwania na endokrynologa w ramach NFZ to obecnie kilka miesięcy.</span>
+            <span id="faq-banner-text" class="fade-in">Średni czas oczekiwania na specjalistę w NFZ to kilka miesięcy. U nas: do 5 dni.</span>
         </div>
     </div>
 
     <main class="flex-grow">
         <!-- HERO -->
-        <section class="hero-gradient text-beauty-navy py-10 md:py-16 px-4 text-center">
+        <section class="hero-gradient text-beauty-navy py-8 md:py-12 px-4 text-center">
             <div class="max-w-5xl mx-auto relative z-10">
                 <span class="inline-block py-1 px-3 rounded-full bg-white border border-emerald-100 text-emerald-600 text-[10px] font-bold tracking-widest uppercase mb-4 shadow-sm">
-                    Prywatna Opieka Medyczna dla Salonów Beauty
+                    Prywatne Abonamenty dla Salonów Beauty
                 </span>
                 <h1 class="font-heading text-3xl md:text-5xl font-bold mb-4 leading-tight text-slate-800">
-                    Zdrowy Zespół to <br><span class="text-emerald-600">Zdrowy Biznes</span>
+                    Opieka Medyczna dla <br><span class="text-emerald-600">Specjalistów Branży Beauty</span>
                 </h1>
-                <p class="text-sm md:text-base text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-                    W branży beauty Twoim największym kapitałem są ludzie. Zapewnij im dostęp do lekarzy specjalistów, diagnostyki i stomatologii bez kolejek. 
-                    Porównaj pakiety <strong>ENEL-MED</strong> oraz <strong>LUX MED</strong> przygotowane specjalnie dla salonów od 2-3 pracowników.
+                <p class="text-sm md:text-base text-slate-600 mb-2 max-w-3xl mx-auto leading-relaxed">
+                    Koniec z kolejkami. Porównaj pakiety <strong>ENEL-MED</strong> i <strong>LUX MED</strong> przygotowane dla Twojego zespołu. 
+                    Dostęp do lekarzy, diagnostyki i stomatologii w zasięgu Twojej ręki.
                 </p>
             </div>
         </section>
 
-        <!-- PORÓWNANIE OPERATORÓW -->
-        <section id="oferta" class="py-12 bg-slate-50 px-4 border-y border-slate-200">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-10">
-                    <h2 class="font-heading text-2xl md:text-4xl font-bold text-beauty-navy mb-3">Wybierz swojego operatora</h2>
-                    <p class="text-slate-500 text-sm">Zestawienie najpopularniejszych pakietów dla zespołów 3-10 osób.</p>
+        <!-- KORZYŚCI - ZWIĘKSZONA CZCIONKA, ZWARTE ODSTĘPY -->
+        <section class="py-6 bg-white px-4">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
+                <div class="bg-slate-50 p-6 md:p-10 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-4 mb-6 border-b border-slate-200 pb-4">
+                        <div class="bg-emerald-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl">&#128188;</div>
+                        <h3 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy">Wsparcie dla Salonu</h3>
+                    </div>
+                    <ul class="space-y-4 text-sm md:text-base text-slate-700 leading-relaxed">
+                        <li><strong>Mniejsza absencja:</strong> Szybka diagnoza to krótszy czas zwolnień lekarskich Twoich pracowników.</li>
+                        <li><strong>Efektywna rekrutacja:</strong> Pakiet medyczny to najsilniejszy benefit przyciągający talenty.</li>
+                        <li><strong>Składka w kosztach:</strong> Abonamenty medyczne możesz w całości zaliczyć w koszty salonu.</li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50/40 p-6 md:p-10 rounded-3xl border border-blue-200 shadow-sm">
+                    <div class="flex items-center gap-4 mb-6 border-b border-blue-200 pb-4">
+                        <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl">&#128103;</div>
+                        <h3 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy">Dla Twojego Zespołu</h3>
+                    </div>
+                    <ul class="space-y-4 text-sm md:text-base text-slate-700 leading-relaxed">
+                        <li><strong>Bez skierowań:</strong> Bezpośredni dostęp do specjalistów (ginekolog, dermatolog, okulista).</li>
+                        <li><strong>Badania w cenie:</strong> Pełna diagnostyka obrazowa i laboratoryjna bez dodatkowych opłat.</li>
+                        <li><strong>Ochrona bliskich:</strong> Możliwość objęcia pakietem małżonków, dzieci i rodziców (Senior).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- WYSZUKIWARKA SPECJALIZACJI -->
+        <section class="py-10 bg-slate-900 text-white px-4 border-y border-slate-800 relative overflow-hidden">
+            <div class="max-w-4xl mx-auto relative z-10">
+                <div class="text-center mb-8">
+                    <h2 class="font-heading text-2xl md:text-3xl font-bold mb-2">Szukasz konkretnego lekarza?</h2>
+                    <p class="text-slate-400 text-xs">Wpisz specjalizację, a my powiemy Ci, w którym wariancie ją znajdziesz.</p>
+                </div>
+                
+                <div class="relative max-w-xl mx-auto">
+                    <input type="text" id="spec-search" placeholder="np. audiolog, neurolog, kardiolog..." class="w-full bg-white/10 border border-white/20 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-beauty-pink outline-none transition-all placeholder:text-white/30" oninput="searchSpecialization()">
+                    <div id="search-results" class="absolute top-full left-0 w-full bg-white text-slate-800 rounded-b-2xl shadow-2xl mt-1 hidden max-h-60 overflow-y-auto z-50">
+                        <!-- Wyniki wyszukiwania -->
+                    </div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-8">
+                <div id="search-feedback" class="mt-6 hidden animate-[fadeIn_0.3s]">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white/5 border border-white/10 p-4 rounded-2xl text-center">
+                            <p class="text-[10px] uppercase font-bold text-emerald-400 mb-1">ENEL-MED</p>
+                            <p id="enel-feedback-val" class="font-bold text-sm">---</p>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 p-4 rounded-2xl text-center">
+                            <p class="text-[10px] uppercase font-bold text-blue-400 mb-1">LUX MED</p>
+                            <p id="lux-feedback-val" class="font-bold text-sm">---</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KALKULATOR SKŁADKI -->
+        <article id="kalkulator" class="py-10 px-4 max-w-7xl mx-auto">
+            <section class="bg-white rounded-[40px] shadow-xl border border-slate-100 p-6 md:p-12 text-center">
+                <h2 class="font-heading text-2xl md:text-4xl font-bold text-beauty-navy mb-4">Wybierz wariant opieki</h2>
+                
+                <div class="mb-12">
+                    <p class="text-sm font-bold text-slate-700 mb-6">1. Liczba pracowników w salonie:</p>
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <div class="radio-staff flex-1 min-w-[120px] max-w-[200px]">
+                            <input type="radio" name="staff_size" id="staff-small" value="3-10" checked onchange="updateMedicalTable()">
+                            <label for="staff-small"><span class="font-bold text-xs">2 - 10 osób</span></label>
+                        </div>
+                        <div class="radio-staff flex-1 min-w-[120px] max-w-[200px]">
+                            <input type="radio" name="staff_size" id="staff-mid" value="11-20" onchange="updateMedicalTable()">
+                            <label for="staff-mid"><span class="font-bold text-xs">11 - 20 osób</span></label>
+                        </div>
+                        <div class="radio-staff flex-1 min-w-[120px] max-w-[200px]">
+                            <input type="radio" name="staff_size" id="staff-large" value="21-50" onchange="updateMedicalTable()">
+                            <label for="staff-large"><span class="font-bold text-xs">21 - 50 osób</span></label>
+                        </div>
+                        <div class="radio-staff flex-1 min-w-[120px] max-w-[200px]">
+                            <input type="radio" name="staff_size" id="staff-max" value="51+" onchange="updateMedicalTable()">
+                            <label for="staff-max"><span class="font-bold text-xs">Powyżej 51</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PORÓWNANIE TYPÓW PAKIETÓW -->
+                <div id="medical-pricing" class="grid md:grid-cols-2 gap-10 text-left">
+                    
                     <!-- ENEL-MED -->
-                    <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm flex flex-col">
-                        <div class="p-8 bg-emerald-50 border-b border-emerald-100 flex justify-between items-center">
-                            <div>
-                                <span class="bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Operator 1</span>
-                                <h3 class="font-heading text-3xl font-bold text-emerald-900 mt-2">ENEL-MED</h3>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[10px] text-emerald-600 font-bold uppercase">Składka od:</p>
-                                <p class="price-tag">89 zł<span class="text-sm font-medium text-slate-400">/mc</span></p>
-                            </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Operator 1</span>
+                            <h3 class="font-heading text-2xl font-bold text-emerald-900">ENEL-MED</h3>
                         </div>
-                        <div class="p-8 flex-grow">
-                            <h4 class="font-bold text-slate-800 mb-4 text-sm">Główne atuty ENEL-MED:</h4>
-                            <ul class="space-y-4 text-sm text-slate-700">
-                                <li class="flex items-start gap-3"><span class="text-emerald-500 font-bold">&#10003;</span> <span><strong>Brak skierowań:</strong> Do wszystkich specjalistów, w tym dziecięcych.</span></li>
-                                <li class="flex items-start gap-3"><span class="text-emerald-500 font-bold">&#10003;</span> <span><strong>Honorowanie skierowań z zewnątrz:</strong> Akceptują badania zlecone przez lekarzy spoza sieci.</span></li>
-                                <li class="flex items-start gap-3"><span class="text-emerald-500 font-bold">&#10003;</span> <span><strong>Prowadzenie ciąży:</strong> W pełnym standardzie wariantów Premium/Prestige.</span></li>
-                                <li class="flex items-start gap-3"><span class="text-emerald-500 font-bold">&#10003;</span> <span><strong>Konsultacja kosmetologa:</strong> Unikatowa usługa z 1 zabiegiem w pakiecie!</span></li>
-                            </ul>
-                        </div>
-                        <div class="p-8 pt-0 grid grid-cols-2 gap-3">
-                            <div class="bg-slate-50 p-4 rounded-2xl text-center">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase">Wariant Standard</p>
-                                <p class="font-bold text-beauty-navy">216 zł</p>
+                        <div class="space-y-4">
+                            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:border-emerald-300 transition-all group">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h4 class="font-bold text-lg">Pakiet Basic</h4>
+                                    <div class="text-right">
+                                        <p id="enel-basic-price" class="text-2xl font-black text-slate-800">89 zł</p>
+                                        <p class="text-[9px] text-slate-400 font-bold uppercase">Singiel / mc</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    <div class="bg-slate-50 p-2 rounded-xl text-center">
+                                        <p class="text-[9px] text-slate-400 font-bold">PARTNER</p>
+                                        <p id="enel-basic-part" class="font-bold text-xs">98 zł</p>
+                                    </div>
+                                    <div class="bg-slate-50 p-2 rounded-xl text-center">
+                                        <p class="text-[9px] text-slate-400 font-bold">RODZINA</p>
+                                        <p id="enel-basic-fam" class="font-bold text-xs">178 zł</p>
+                                    </div>
+                                </div>
+                                <button onclick="openMedicalOfferModal('ENEL-MED', 'Basic')" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs group-hover:bg-emerald-700">Wybieram Basic</button>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-2xl text-center">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase">Wariant Premium</p>
-                                <p class="font-bold text-beauty-navy">379 zł</p>
+
+                            <div class="bg-emerald-50 border-2 border-emerald-200 rounded-3xl p-6 shadow-md relative">
+                                <div class="absolute -top-3 left-6 bg-emerald-600 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter">Najczęściej wybierany</div>
+                                <div class="flex justify-between items-start mb-4 mt-2">
+                                    <h4 class="font-bold text-lg">Pakiet Standard</h4>
+                                    <div class="text-right">
+                                        <p id="enel-std-price" class="text-2xl font-black text-emerald-900">216 zł</p>
+                                        <p class="text-[9px] text-emerald-600 font-bold uppercase">Singiel / mc</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    <div class="bg-white p-2 rounded-xl text-center">
+                                        <p class="text-[9px] text-slate-400 font-bold">PARTNER</p>
+                                        <p id="enel-std-part" class="font-bold text-xs">237 zł</p>
+                                    </div>
+                                    <div class="bg-white p-2 rounded-xl text-center">
+                                        <p class="text-[9px] text-slate-400 font-bold">RODZINA</p>
+                                        <p id="enel-std-fam" class="font-bold text-xs">478 zł</p>
+                                    </div>
+                                </div>
+                                <button onclick="openMedicalOfferModal('ENEL-MED', 'Standard')" class="w-full bg-beauty-navy text-white font-bold py-2.5 rounded-xl text-xs">Wybieram Standard</button>
                             </div>
-                        </div>
-                        <div class="px-8 pb-8">
-                            <button onclick="openMedicalModal('ENEL-MED')" class="w-full bg-emerald-600 text-white font-bold py-4 rounded-2xl hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100">Interesuje mnie ENEL-MED</button>
                         </div>
                     </div>
 
                     <!-- LUX MED -->
-                    <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm flex flex-col">
-                        <div class="p-8 bg-blue-50 border-b border-blue-100 flex justify-between items-center">
-                            <div>
-                                <span class="bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Operator 2</span>
-                                <h3 class="font-heading text-3xl font-bold text-blue-900 mt-2">LUX MED</h3>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[10px] text-blue-600 font-bold uppercase">Składka od:</p>
-                                <p class="price-tag">99 zł<span class="text-sm font-medium text-slate-400">/mc</span></p>
-                            </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Operator 2</span>
+                            <h3 class="font-heading text-2xl font-bold text-blue-900">LUX MED</h3>
                         </div>
-                        <div class="p-8 flex-grow">
-                            <h4 class="font-bold text-slate-800 mb-4 text-sm">Główne atuty LUX MED:</h4>
-                            <ul class="space-y-4 text-sm text-slate-700">
-                                <li class="flex items-start gap-3"><span class="text-blue-500 font-bold">&#10003;</span> <span><strong>Największa sieć:</strong> Ponad 1600 placówek partnerskich w całej Polsce.</span></li>
-                                <li class="flex items-start gap-3"><span class="text-blue-500 font-bold">&#10003;</span> <span><strong>Druga Opinia Medyczna:</strong> Dostęp do światowych ekspertów w trudnych diagnozach.</span></li>
-                                <li class="flex items-start gap-3"><span class="text-blue-500 font-bold">&#10003;</span> <span><strong>Osobisty Opiekun:</strong> W pakietach Premium dedykowana osoba do wsparcia pacjenta.</span></li>
-                                <li class="flex items-start gap-3"><span class="text-blue-500 font-bold">&#10003;</span> <span><strong>Przegląd Profilaktyczny:</strong> Rozbudowany zestaw badań kontrolnych raz w roku.</span></li>
-                            </ul>
-                        </div>
-                        <div class="p-8 pt-0 grid grid-cols-2 gap-3">
-                            <div class="bg-slate-50 p-4 rounded-2xl text-center">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase">Opieka Standard</p>
-                                <p class="font-bold text-beauty-navy">131 zł</p>
+                        <div class="space-y-4">
+                            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:border-blue-300 transition-all group">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h4 class="font-bold text-lg">Opieka Podstawowa</h4>
+                                    <div class="text-right">
+                                        <p id="lux-basic-price" class="text-2xl font-black text-slate-800">99 zł</p>
+                                        <p class="text-[9px] text-slate-400 font-bold uppercase">Singiel / mc</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    <div class="bg-slate-50 p-2 rounded-xl text-center">
+                                        <p class="text-[9px] text-slate-400 font-bold">PARTNER</p>
+                                        <p id="lux-basic-part" class="font-bold text-xs">170 zł</p>
+                                    </div>
+                                    <div class="bg-slate-50 p-2 rounded-xl text-center">
+                                        <p class="text-[9px] text-slate-400 font-bold">RODZINA</p>
+                                        <p id="lux-basic-fam" class="font-bold text-xs">248 zł</p>
+                                    </div>
+                                </div>
+                                <button onclick="openMedicalOfferModal('LUX MED', 'Podstawowa')" class="w-full bg-blue-600 text-white font-bold py-2.5 rounded-xl text-xs group-hover:bg-blue-700">Wybieram Podstawową</button>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-2xl text-center">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase">Opieka Premium</p>
-                                <p class="font-bold text-beauty-navy">580 zł</p>
+
+                            <div class="bg-blue-50 border-2 border-blue-200 rounded-3xl p-6 shadow-md">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h4 class="font-bold text-lg">Opieka Standardowa</h4>
+                                    <div class="text-right">
+                                        <p id="lux-std-price" class="text-2xl font-black text-blue-900">131 zł</p>
+                                        <p class="text-[9px] text-blue-600 font-bold uppercase">Singiel / mc</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    <div class="bg-white p-2 rounded-xl text-center">
+                                        <p class="text-[9px] text-slate-400 font-bold">PARTNER</p>
+                                        <p id="lux-std-part" class="font-bold text-xs">234 zł</p>
+                                    </div>
+                                    <div class="bg-white p-2 rounded-xl text-center">
+                                        <p class="text-[9px] text-slate-400 font-bold">RODZINA</p>
+                                        <p id="lux-std-fam" class="font-bold text-xs">347 zł</p>
+                                    </div>
+                                </div>
+                                <button onclick="openMedicalOfferModal('LUX MED', 'Standardowa')" class="w-full bg-beauty-navy text-white font-bold py-2.5 rounded-xl text-xs">Wybieram Standardową</button>
                             </div>
-                        </div>
-                        <div class="px-8 pb-8">
-                            <button onclick="openMedicalModal('LUX MED')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">Interesuje mnie LUX MED</button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- DLACZEGO WARTO -->
-        <section class="py-16 bg-white px-4">
+                <div id="max-staff-msg" class="hidden bg-beauty-navy text-white rounded-[32px] p-8 text-center animate-[fadeIn_0.3s]">
+                    <h3 class="font-heading text-xl font-bold mb-3">Wycena Korporacyjna</h3>
+                    <p class="text-blue-100 text-xs mb-6">Przy większej liczbie pracowników (51+) przygotowujemy ofertę indywidualną z dedykowanym opiekunem VIP.</p>
+                    <button onclick="openMedicalOfferModal('Comparison', 'Corporate')" class="bg-white text-beauty-navy font-bold py-3 px-8 rounded-full text-xs">Poproś o zestawienie ofert</button>
+                </div>
+            </section>
+        </article>
+
+        <!-- FAQ - SKONDENSOWANA SZEROKOŚĆ -->
+        <section id="faq-section" class="py-12 bg-white px-4 border-t border-slate-100">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-8">Prywatna opieka to realne oszczędności</h2>
-                <div class="grid sm:grid-cols-3 gap-6 text-left">
-                    <div class="p-6 rounded-3xl bg-slate-50 border border-slate-100">
-                        <span class="text-3xl mb-3 block">&#128640;</span>
-                        <h4 class="font-bold text-sm mb-2">Szybszy powrót do pracy</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Dostęp do specjalistów w 5 dni zamiast 5 miesięcy oznacza krótsze przestoje w Twoim salonie.</p>
-                    </div>
-                    <div class="p-6 rounded-3xl bg-slate-50 border border-slate-100">
-                        <span class="text-3xl mb-3 block">&#128104;&#8205;&#128187;</span>
-                        <h4 class="font-bold text-sm mb-2">Wyjątkowy Employer Branding</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Pakiet medyczny to najbardziej pożądany benefit. Przyciągaj i zatrzymuj najlepszych specjalistów beauty.</p>
-                    </div>
-                    <div class="p-6 rounded-3xl bg-slate-50 border border-slate-100">
-                        <span class="text-3xl mb-3 block">&#128181;</span>
-                        <h4 class="font-bold text-sm mb-2">Składka jako koszt firmy</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Możliwość zaliczenia wydatków na pakiety medyczne pracowników do kosztów uzyskania przychodów.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ - SKONDENSOWANE -->
-        <section id="faq-section" class="py-12 bg-slate-50 px-4 border-t border-slate-200">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-10">
-                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-2">Baza Wiedzy Medycznej</h2>
-                    <p class="text-slate-500 text-xs">Pytania o opiekę medyczną dla pracowników.</p>
-                </div>
-
-                <div class="space-y-4">
-                    <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm">
-                        <button class="accordion-btn w-full px-6 py-4 text-left font-bold text-sm text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
-                            Czy pakiet medyczny obejmuje moją rodzinę?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg" aria-hidden="true">&#9660;</span>
+                <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-8">Pytania i Odpowiedzi</h2>
+                <div class="space-y-4 text-left">
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-white">
+                        <button class="accordion-btn w-full px-6 py-4 text-left font-bold text-sm text-slate-800 bg-slate-50 flex justify-between items-center focus:outline-none">
+                            Czy pakiet medyczny dla pracowników obejmuje też badania stomatologiczne?
+                            <span class="icon transition-transform duration-300 text-slate-400 text-lg">&#9660;</span>
                         </button>
                         <div class="accordion-content">
                             <p class="p-6 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                                <strong>TAK.</strong> Możesz wykupić pakiet partnerski (dla małżonka/partnera lub jednego dziecka) lub pakiet rodzinny (dla małżonka i dzieci do 26 roku życia). Istnieje także opcja "Senior" dla rodziców i teściów bez limitu wieku.
+                                <strong>TAK.</strong> Większość pakietów Standard (u obu operatorów) obejmuje przynajmniej podstawowy przegląd oraz doraźną pomoc stomatologiczną. Pakiety Premium oferują leczenie zachowawcze oraz duże zniżki na usługi specjalistyczne.
                             </p>
                         </div>
                     </div>
-                    <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm">
-                        <button class="accordion-btn w-full px-6 py-4 text-left font-bold text-sm text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
-                            Czy muszę mieć skierowanie do lekarzy specjalistów?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg" aria-hidden="true">&#9660;</span>
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-white">
+                        <button class="accordion-btn w-full px-6 py-4 text-left font-bold text-sm text-slate-800 bg-slate-50 flex justify-between items-center focus:outline-none">
+                            Czy muszę objąć ubezpieczeniem wszystkich pracowników salonu?
+                            <span class="icon transition-transform duration-300 text-slate-400 text-lg">&#9660;</span>
                         </button>
                         <div class="accordion-content">
                             <p class="p-6 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                                <strong>NIE.</strong> W obu oferowanych sieciach (ENEL-MED i LUX MED) większość konsultacji specjalistycznych (np. ginekolog, kardiolog, dermatolog) dostępna jest bez skierowania. Skierowania wymagane są jedynie na badania diagnostyczne i zabiegi.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm">
-                        <button class="accordion-btn w-full px-6 py-4 text-left font-bold text-sm text-slate-800 bg-slate-50 hover:bg-slate-100 transition-colors flex justify-between items-center focus:outline-none">
-                            Co jeśli mam już skierowanie na badania od lekarza z NFZ?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg" aria-hidden="true">&#9660;</span>
-                        </button>
-                        <div class="accordion-content">
-                            <p class="p-6 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                                ENEL-MED honoruje skierowania wystawione przez lekarzy spoza swojej sieci, o ile są one czytelne i zawierają wszystkie niezbędne dane. W LUX MED badania również mogą być realizowane na podstawie skierowań zewnętrznych zgodnie z zakresem pakietu.
+                                W przypadku pakietów firmowych zaleca się objęcie ochroną pracowników w ramach danej grupy. Minimalna liczba osób do zawarcia umowy grupowej w naszym programie to <strong>2-3 pracowników</strong>.
                             </p>
                         </div>
                     </div>
@@ -277,25 +360,21 @@
         </section>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 pt-8 pb-6 text-sm text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-6 text-center md:text-left">
+    <!-- STOPKA -->
+    <footer class="bg-white border-t border-slate-200 pt-8 pb-6 text-sm text-slate-500 text-center md:text-left">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-6">
             <div>
                 <p class="mb-1 text-[11px]"><strong>Obsługa techniczna Programu:</strong> Aura Expert sp. z o.o. <span class="font-semibold text-beauty-navy">(tel. 504 400 901)</span></p>
-                <p class="mb-3 text-[11px]"><strong>Likwidacja szkód i obsługa klienta:</strong> Aura Consulting sp. z o.o.</p>
-                <div class="inline-block bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 mt-1 shadow-sm">
-                    <span class="text-[10px] text-slate-600 font-medium tracking-wide">✨ <strong class="text-beauty-navy">BeautyPolisa MEDICAL</strong> – Najlepsza opieka dla salonów.</span>
-                </div>
+                <p class="mb-3 text-[11px]"><strong>Partnerzy Medyczni:</strong> ENEL-MED S.A., LUX MED sp. z o.o.</p>
+                <p class="text-[9px] text-slate-400">BeautyPolisa created by Aura Consulting</p>
             </div>
-            <div class="text-[9px] text-slate-400 md:text-right flex flex-col justify-center gap-1 leading-relaxed">
-                <p>Niniejszy materiał ma charakter informacyjny i nie stanowi oferty w rozumieniu art. 66 k.c. Ceny i zakresy mogą ulec zmianie w zależności od liczby osób i formy działalności.</p>
+            <div class="text-[9px] text-slate-400 md:text-right flex flex-col justify-center gap-1">
+                <p>Materiał informacyjny. Szczegółowe zakresy świadczeń znajdują się w dokumentach OWU operatorów.</p>
                 <div class="mt-3 flex flex-col md:items-end gap-1.5 text-[10px] font-semibold">
                     <button onclick="openModal('modal-dystrybutor')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Informacja o dystrybutorze</button>
                     <button onclick="openModal('modal-rodo')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Nota informacyjna RODO</button>
                 </div>
             </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 text-center border-t border-slate-100 pt-4 text-[9px] tracking-widest uppercase font-semibold text-slate-400">
-            &copy; 2026 Program BeautyRazem. Wszelkie prawa zastrzeżone.
         </div>
     </footer>
 
@@ -304,15 +383,15 @@
         <div class="bg-white rounded-[32px] shadow-2xl max-w-md w-full overflow-hidden relative max-h-[95vh] overflow-y-auto">
             <button onclick="closeModal('modal-medical-offer')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&#10005;</button>
             
-            <div class="bg-slate-50 px-6 py-5 border-b border-slate-100">
-                <h3 class="font-heading font-bold text-lg text-beauty-navy">Wycena Opieki Medycznej</h3>
-                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mt-1">Dla salonów od 2-3 osób</p>
+            <div class="bg-slate-50 px-6 py-5 border-b border-slate-100 text-left">
+                <h3 class="font-heading font-bold text-lg text-beauty-navy leading-none">Finalizacja zapytania</h3>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mt-2">Dla Twojego Salonu</p>
             </div>
             
-            <form onsubmit="submitMedicalModalForm(event)" class="p-6 space-y-4">
-                <!-- NIP WERYFIKACJA -->
+            <form id="m-form" onsubmit="submitMedicalModalForm(event)" class="p-6 space-y-4 text-left">
+                <!-- NIP -->
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">NIP Salonu / Firmy (Weryfikacja API)</label>
+                    <label for="m-nip" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">NIP Salonu / Firmy (Weryfikacja API)</label>
                     <div class="relative">
                         <input type="text" id="m-nip" required maxlength="10" placeholder="Wpisz 10 cyfr" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none transition-all" oninput="verifyNipApi()">
                         <div id="nip-loader" class="loader absolute right-3 top-3.5"></div>
@@ -322,40 +401,51 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Telefon</label>
-                        <input type="tel" id="m-tel" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
+                        <label for="m-email" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">E-mail</label>
+                        <input type="email" id="m-email" required placeholder="adres@email.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Liczba osób</label>
-                        <input type="number" id="m-count" required min="1" placeholder="np. 4" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
+                        <label for="m-tel" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Telefon</label>
+                        <input type="tel" id="m-tel" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Wybrany Operator:</label>
-                    <select id="m-operator" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none cursor-pointer">
-                        <option value="ENEL-MED">ENEL-MED (od 89 zł)</option>
-                        <option value="LUX MED">LUX MED (od 99 zł)</option>
-                        <option value="COMPARISON">Poproszę o porównanie obu ofert</option>
-                    </select>
+                <div class="border-t border-slate-100 pt-4 mt-2">
+                    <h4 class="text-[10px] font-bold uppercase text-slate-400 mb-3 tracking-widest text-left">Parametry Twojej ochrony:</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label for="m-sum" class="block text-[10px] font-bold text-slate-500 mb-1">Wybieram wariant:</label>
+                            <select id="m-sum" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-beauty-pink outline-none cursor-pointer">
+                                <option value="Basic">Pakiet Podstawowy / Basic</option>
+                                <option value="Standard">Pakiet Standardowy</option>
+                                <option value="Premium">Pakiet Premium / VIP</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="m-staff" class="block text-[10px] font-bold text-slate-500 mb-1">Moja liczba pracowników:</label>
+                            <select id="m-staff" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-beauty-pink outline-none cursor-pointer">
+                                <option value="3-10">2 - 10 pracowników</option>
+                                <option value="11-20">11 - 20 pracowników</option>
+                                <option value="21-50">21 - 50 pracowników</option>
+                                <option value="51+">Powyżej 51 pracowników</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="m-disputes" class="block text-[10px] font-bold text-slate-500 mb-1">Liczba osób do ubezpieczenia:</label>
+                            <select id="m-disputes" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-beauty-pink outline-none cursor-pointer" onchange="checkDisputeWarning()">
+                                <option value="1">Tylko Pracownicy (Standard)</option>
+                                <option value="2">Pracownicy + Rodziny (Rozszerzone)</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Interesujący zakres:</label>
-                    <select id="m-package" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none cursor-pointer">
-                        <option value="BASIC">Pakiet Podstawowy (Basic)</option>
-                        <option value="STANDARD">Pakiet Standardowy</option>
-                        <option value="PREMIUM">Pakiet Premium / VIP</option>
-                    </select>
-                </div>
-
-                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100 flex items-start gap-3">
-                    <span class="text-lg">&#128227;</span>
-                    <p class="text-[10px] text-amber-900 leading-tight">Nasza oferta obejmuje pakiety firmowe. Po wysłaniu danych otrzymasz kompletne zestawienie placówek w Twoim mieście.</p>
+                <div id="dispute-warning" class="hidden bg-amber-50 text-amber-800 p-3 rounded-xl border border-amber-100 text-[10px] leading-tight">
+                    <strong>Informacja:</strong> Wybrana liczba osób wymaga przygotowania zestawienia imiennego dla towarzystwa. Skontaktujemy się z Tobą.
                 </div>
 
                 <button type="submit" id="m-btn" class="w-full bg-beauty-navy hover:bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg text-sm transition-all mt-2">
-                    Poproś o zestawienie ofert
+                    Prześlij dane do zestawienia
                 </button>
             </form>
         </div>
@@ -374,19 +464,18 @@
         <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto p-8">
             <button onclick="closeModal('modal-rodo')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&#10005;</button>
             <h3 class="font-heading font-bold text-lg text-beauty-navy mb-4 border-b pb-2">Nota informacyjna RODO</h3>
-            <p class="text-xs text-slate-600 leading-relaxed italic">Administratorem danych osobowych przetwarzanych w celu przygotowania oferty abonamentów medycznych jest Aura Expert sp. z o.o. Kontakt z IOD: iod@auraexpert.pl.</p>
+            <p class="text-xs text-slate-600 leading-relaxed italic">Administratorem danych osobowych przetwarzanych w celu przygotowania oferty abonamentów medycznych jest Aura Expert sp. z o.o. Dane są przetwarzane wyłącznie w celach ubezpieczeniowych.</p>
         </div>
     </div>
 
     <script>
-        // Logika banera FAQ (Czas oczekiwania i fakty)
+        // Logika banera FAQ
         const faqs = [
-            "Średni czas oczekiwania na endokrynologa w NFZ to kilka miesięcy. U nas: 5 dni.",
-            "Czy wiesz, że ponad 60% pacjentów onkologicznych w Polsce trafia do lekarza w stadium III lub IV?",
-            "Tylko 30% nowoczesnych terapii onkologicznych jest w Polsce w pełni refundowanych.",
+            "Średni czas oczekiwania na endokrynologa w NFZ to kilka miesięcy. U nas: do 5 dni.",
             "W pakiecie ENEL-MED otrzymasz konsultację kosmetologa z zabiegiem w cenie.",
             "Prywatna opieka medyczna zmniejsza absencję pracowników o średnio 30% rocznie.",
-            "Abonament medyczny możesz w całości wliczyć w koszty prowadzenia salonu."
+            "Abonament medyczny możesz w całości wliczyć w koszty prowadzenia salonu.",
+            "Szybki dostęp do dermatologa bez skierowania – standard w każdym pakiecie."
         ];
         
         let currentFaq = 0;
@@ -400,7 +489,96 @@
                 bannerText.classList.remove('fade-out');
                 bannerText.classList.add('fade-in');
             }, 500);
-        }, 6000);
+        }, 5500);
+
+        // Baza specjalizacji dla wyszukiwarki
+        const specializations = {
+            "audiolog": { enel: "Premium", lux: "Kompleksowa" },
+            "alergolog": { enel: "Premium", lux: "Rozszerzona" },
+            "kardiolog": { enel: "Basic", lux: "Podstawowa" },
+            "dermatolog": { enel: "Basic", lux: "Podstawowa" },
+            "endokrynolog": { enel: "Premium", lux: "Rozszerzona" },
+            "gastrolog": { enel: "Premium", lux: "Standardowa" },
+            "ginekolog": { enel: "Basic", lux: "Podstawowa" },
+            "neurolog": { enel: "Basic", lux: "Standardowa" },
+            "okulista": { enel: "Basic", lux: "Podstawowa" },
+            "ortopeda": { enel: "Basic", lux: "Standardowa" },
+            "pediatra": { enel: "Basic", lux: "Podstawowa" },
+            "urolog": { enel: "Basic", lux: "Rozszerzona" },
+            "diabetolog": { enel: "Premium", lux: "Rozszerzona" },
+            "reumatolog": { enel: "Premium", lux: "Standardowa" },
+            "chirurg": { enel: "Basic", lux: "Podstawowa" },
+            "psychiatra": { enel: "Premium (3 wizyty)", lux: "Rozszerzona (3 wizyty)" }
+        };
+
+        function searchSpecialization() {
+            const query = document.getElementById('spec-search').value.toLowerCase();
+            const resultsDiv = document.getElementById('search-results');
+            const feedbackDiv = document.getElementById('search-feedback');
+            
+            if (query.length < 2) {
+                resultsDiv.classList.add('hidden');
+                feedbackDiv.classList.add('hidden');
+                return;
+            }
+
+            const matches = Object.keys(specializations).filter(s => s.includes(query));
+            
+            if (matches.length > 0) {
+                resultsDiv.innerHTML = matches.map(m => `<div class="search-suggestion" onclick="showSpecDetails('${m}')">${m}</div>`).join('');
+                resultsDiv.classList.remove('hidden');
+            } else {
+                resultsDiv.classList.add('hidden');
+            }
+        }
+
+        function showSpecDetails(spec) {
+            const data = specializations[spec];
+            document.getElementById('enel-feedback-val').innerText = data.enel;
+            document.getElementById('lux-feedback-val').innerText = data.lux;
+            document.getElementById('search-feedback').classList.remove('hidden');
+            document.getElementById('search-results').classList.add('hidden');
+            document.getElementById('spec-search').value = spec;
+        }
+
+        // Dane cenowe (Uproszczone z plików)
+        const pricingData = {
+            '3-10': { enel: ['89', '216', '98', '237', '178', '478'], lux: ['99', '131', '170', '234', '248', '347'] },
+            '11-20': { enel: ['85', '202', '94', '220', '166', '450'], lux: ['94', '124', '160', '220', '233', '327'] },
+            '21-50': { enel: ['80', '194', '88', '212', '154', '420'], lux: ['91', '120', '154', '212', '224', '314'] }
+        };
+
+        function updateMedicalTable() {
+            const size = document.querySelector('input[name="staff_size"]:checked').value;
+            const pricingGrid = document.getElementById('medical-pricing');
+            const maxMsg = document.getElementById('max-staff-msg');
+
+            if (size === '51+') {
+                pricingGrid.classList.add('hidden');
+                maxMsg.classList.remove('hidden');
+            } else {
+                pricingGrid.classList.remove('hidden');
+                maxMsg.classList.add('hidden');
+                
+                const d = pricingData[size];
+                // ENEL Basic
+                document.getElementById('enel-basic-price').innerText = d.enel[0] + ' zł';
+                document.getElementById('enel-basic-part').innerText = d.enel[2] + ' zł';
+                document.getElementById('enel-basic-fam').innerText = d.enel[4] + ' zł';
+                // ENEL Std
+                document.getElementById('enel-std-price').innerText = d.enel[1] + ' zł';
+                document.getElementById('enel-std-part').innerText = d.enel[3] + ' zł';
+                document.getElementById('enel-std-fam').innerText = d.enel[5] + ' zł';
+                // LUX Basic
+                document.getElementById('lux-basic-price').innerText = d.lux[0] + ' zł';
+                document.getElementById('lux-basic-part').innerText = d.lux[2] + ' zł';
+                document.getElementById('lux-basic-fam').innerText = d.lux[4] + ' zł';
+                // LUX Std
+                document.getElementById('lux-std-price').innerText = d.lux[1] + ' zł';
+                document.getElementById('lux-std-part').innerText = d.lux[3] + ' zł';
+                document.getElementById('lux-std-fam').innerText = d.lux[5] + ' zł';
+            }
+        }
 
         // Akordeony FAQ
         const accordionBtns = document.querySelectorAll('.accordion-btn');
@@ -412,7 +590,7 @@
             });
         });
 
-        // Walidacja NIP
+        // Walidacja NIP (Mock)
         let nipTimeout;
         function verifyNipApi() {
             const nipInput = document.getElementById('m-nip');
@@ -424,7 +602,7 @@
                 clearTimeout(nipTimeout);
                 nipTimeout = setTimeout(() => {
                     loader.style.display = 'none';
-                    status.innerText = "✓ Salon zweryfikowany w bazie REGON/GUS";
+                    status.innerText = "✓ Salon zweryfikowany w bazie GUS/REGON";
                     status.className = "text-[9px] mt-1 font-semibold text-emerald-600";
                 }, 1200);
             } else { loader.style.display = 'none'; }
@@ -434,24 +612,30 @@
         function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = 'auto'; }
 
-        function openMedicalModal(operator) {
-            if (operator !== 'COMPARISON') {
-                document.getElementById('m-operator').value = operator;
-            } else {
-                document.getElementById('m-operator').value = 'COMPARISON';
-            }
+        function openMedicalOfferModal(operator, variant) {
+            const size = document.querySelector('input[name="staff_size"]:checked').value;
+            document.getElementById('m-operator').value = operator;
+            document.getElementById('m-sum').value = variant;
+            document.getElementById('m-staff').value = size;
             openModal('modal-medical-offer');
+        }
+
+        function checkDisputeWarning() {
+            const val = document.getElementById('m-disputes').value;
+            const warning = document.getElementById('dispute-warning');
+            if (val === "2") warning.classList.remove('hidden');
+            else warning.classList.add('hidden');
         }
 
         function submitMedicalModalForm(e) {
             e.preventDefault();
             const btn = document.getElementById('m-btn');
-            btn.innerHTML = 'Wysyłanie zapytania...';
+            btn.innerHTML = 'Wysyłanie danych...';
             btn.disabled = true;
             setTimeout(() => {
-                alert('Dziękujemy! Dane zostały przesłane do zespołu BeautyPolisa. Przygotujemy dla Ciebie porównanie placówek i ofert cenowych.');
+                alert('Dziękujemy! Dane zostały przesłane do zespołu BeautyPolisa. Przygotujemy zestawienie ofert dla Twojego salonu.');
                 closeModal('modal-medical-offer');
-                btn.innerHTML = 'Poproś o zestawienie ofert';
+                btn.innerHTML = 'Prześlij dane do zestawienia';
                 btn.disabled = false;
                 document.getElementById('m-form').reset();
             }, 1500);
