@@ -65,7 +65,7 @@
         .search-suggestion:hover { background-color: #f8fafc; color: #e11d48; }
 
         .compare-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-        .compare-table th, .compare-table td { padding: 1.25rem; border: 1px solid #e2e8f0; vertical-align: top; }
+        .compare-table th, .compare-table td { padding: 1rem; border: 1px solid #e2e8f0; vertical-align: top; }
         .compare-table th { background-color: #f8fafc; text-align: left; font-weight: 700; color: #2a3b69; }
 
         #faq-banner-text { transition: opacity 0.5s ease-in-out; }
@@ -114,7 +114,7 @@
 
     <!-- BANER FAKTY -->
     <div onclick="document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'});" class="bg-emerald-50 text-emerald-900 text-xs md:text-sm font-semibold py-2.5 px-4 text-center cursor-pointer hover:bg-emerald-100 transition-colors border-b border-emerald-200 shadow-inner z-30 relative group text-center">
-        <div class="max-w-4xl mx-auto flex items-center justify-center gap-2">
+        <div class="max-w-4xl mx-auto flex items-center justify-center gap-2 text-center">
             <span class="text-emerald-600 text-lg" aria-hidden="true">&#9201;</span>
             <span id="faq-banner-text" class="fade-in">Średni czas oczekiwania na specjalistę w NFZ to kilka miesięcy. U nas: do 5 dni.</span>
         </div>
@@ -135,7 +135,7 @@
                             Opieka Medyczna dla <br><span class="text-emerald-600">Twoich Specjalistów</span>
                         </h1>
                         <p class="text-base md:text-xl text-slate-600 mb-8 leading-relaxed text-left">
-                            Porównaj pakiety <strong>ENEL</strong> oraz <strong>LuxMed</strong> przygotowane dla Twojego salonu. Szybki dostęp do lekarzy, e-wizyty i stomatologia bez skierowań.
+                            Zadbaj o zdrowie swoje i zespołu. Porównaj pakiety <strong>ENEL</strong> oraz <strong>LuxMed</strong> przygotowane specjalnie dla salonów od 2-3 osób. Zapomnij o kolejkach i skierowaniach do specjalistów.
                         </p>
                     </div>
 
@@ -143,11 +143,11 @@
                     <div class="lg:w-1/2 w-full flex flex-col">
                         <div class="bg-white border-2 border-emerald-50 rounded-[40px] p-8 md:p-12 shadow-2xl flex flex-col h-full relative overflow-hidden">
                             <div class="absolute top-0 right-0 p-10 opacity-5">
-                                <span class="text-7xl">&#128269;</span>
+                                <span class="text-7xl" aria-hidden="true">&#128269;</span>
                             </div>
                             
                             <h3 class="font-heading text-2xl font-bold text-beauty-navy mb-3 leading-tight text-left">Wyszukiwarka Lekarzy i Zabiegów</h3>
-                            <p class="text-sm text-slate-500 mb-8 leading-relaxed text-left">Sprawdź dostępność lekarza (p. nefrolog, onkolog) lub zabiegu (np. krioterapia, szycie rany).</p>
+                            <p class="text-sm text-slate-500 mb-8 leading-relaxed text-left">Wpisz specjalizację (np. nefrolog, onkolog), badanie (np. RTG klatki) lub zabieg (np. krioterapia).</p>
                             
                             <div class="relative mb-6">
                                 <input type="text" id="spec-search" placeholder="np. nefrolog, onkolog, kardiolog..." class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all shadow-inner" oninput="searchSpecialization()">
@@ -175,28 +175,28 @@
             </div>
         </section>
 
-        <!-- KORZYŚCI - WIĘKSZE CZCIONKI -->
+        <!-- KORZYŚCI -->
         <section class="py-10 bg-white px-4">
             <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
                 <div class="bg-slate-50 p-8 md:p-12 rounded-[32px] border border-slate-100 shadow-sm flex flex-col items-start">
                     <div class="flex items-center gap-4 mb-6 border-b border-slate-200 pb-4 w-full">
-                        <div class="bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl">&#128188;</div>
+                        <div class="bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl" aria-hidden="true">&#128188;</div>
                         <h3 class="font-heading text-2xl font-bold text-beauty-navy leading-tight">Dla Twojego Salonu</h3>
                     </div>
-                    <ul class="space-y-5 text-base md:text-lg text-slate-700 leading-relaxed">
+                    <ul class="space-y-5 text-base md:text-lg text-slate-700 leading-relaxed text-left">
                         <li><strong class="text-emerald-600">Ciągłość pracy:</strong> Szybsza diagnoza pracowników to krótszy czas zwolnień lekarskich w Twoim salonie.</li>
                         <li><strong class="text-emerald-600">Najlepszy benefit:</strong> Prywatna opieka to najbardziej pożądany dodatek w branży beauty.</li>
                         <li><strong class="text-emerald-600">Składka w kosztach:</strong> Abonamenty medyczne dla zespołu wliczasz w koszty prowadzenia działalności.</li>
                     </ul>
                 </div>
-                <div class="bg-blue-50/40 p-8 md:p-12 rounded-[32px] border border-blue-200 shadow-sm flex flex-col items-start">
+                <div class="bg-blue-50/40 p-8 md:p-12 rounded-[32px] border border-blue-200 shadow-sm flex flex-col items-start text-left">
                     <div class="flex items-center gap-4 mb-6 border-b border-blue-200 pb-4 w-full">
-                        <div class="bg-blue-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl">&#128103;</div>
-                        <h3 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy leading-tight text-left">Dla Twoich Ludzi</h3>
+                        <div class="bg-blue-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl" aria-hidden="true">&#128103;</div>
+                        <h3 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy leading-tight">Dla Twoich Ludzi</h3>
                     </div>
-                    <ul class="space-y-5 text-base md:text-lg text-slate-700 leading-relaxed text-left">
+                    <ul class="space-y-5 text-base md:text-lg text-slate-700 leading-relaxed">
                         <li><strong class="text-blue-600">Bez skierowań:</strong> Wizyty u ginekologa, dermatologa czy okulisty dostępne od ręki, bez czekania.</li>
-                        <li><strong class="text-blue-600">Dla całej rodziny:</strong> Możesz ubezpieczyć małżonka, dzieci, a także rodziców.</li>
+                        <li><strong class="text-blue-600">Dla całej rodziny:</strong> Możesz ubezpieczyć małżonka, dzieci, a także rodziców (Senior).</li>
                         <li><strong class="text-blue-600">E-wizyty 24/7:</strong> Konsultacje wideo z e-receptą bez konieczności wychodzenia z domu.</li>
                     </ul>
                 </div>
@@ -229,7 +229,7 @@
                 <!-- CENNIK DYNAMICZNY -->
                 <div id="medical-pricing" class="grid lg:grid-cols-2 gap-10 text-left">
                     <!-- ENEL -->
-                    <div class="space-y-6">
+                    <div class="space-y-6 text-left">
                         <div class="flex items-center gap-3 mb-2">
                             <span class="font-heading text-3xl font-bold text-emerald-900 leading-none">ENEL</span>
                         </div>
@@ -256,7 +256,7 @@
                     </div>
 
                     <!-- LuxMed -->
-                    <div class="space-y-6">
+                    <div class="space-y-6 text-left">
                         <div class="flex items-center gap-3 mb-2">
                             <span class="font-heading text-3xl font-bold text-blue-900 leading-none">LuxMed</span>
                         </div>
@@ -268,6 +268,7 @@
                                     <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Singiel / mc</p>
                                 </div>
                             </div>
+
                             <div class="grid grid-cols-2 gap-3 mb-8">
                                 <div class="bg-slate-50 p-4 rounded-2xl text-center">
                                     <p class="text-[9px] text-slate-400 font-bold mb-1 uppercase tracking-tighter">PARTNER</p>
@@ -284,8 +285,8 @@
                 </div>
 
                 <div id="max-staff-msg" class="hidden bg-beauty-navy text-white rounded-[40px] p-10 text-center animate-[fadeIn_0.5s] mt-8">
-                    <h3 class="font-heading text-2xl font-bold mb-4 leading-tight">Wycena Korporacyjna (51+ osób)</h3>
-                    <p class="text-blue-100 text-sm mb-8 max-w-2xl mx-auto leading-relaxed">Dla dużych salonów przygotowujemy ofertę indywidualną. Prześlij zapytanie, a nasz zespół ekspertów przygotuje ofertę uszytą na miarę.</p>
+                    <h3 class="font-heading text-2xl font-bold mb-4 leading-tight text-white">Wycena Korporacyjna (51+ osób)</h3>
+                    <p class="text-blue-100 text-sm mb-8 max-w-2xl mx-auto leading-relaxed">Dla dużych salonów przygotowujemy ofertę indywidualną. Prześlij zapytanie, a nasz zespół przygotuje ofertę uszytą na miarę.</p>
                     <button onclick="openMedicalOfferModal('Porównanie', 'Corporate')" class="bg-white text-beauty-navy font-bold py-4 px-12 rounded-full text-sm hover:bg-slate-100 transition-all shadow-xl">Zapytaj o ofertę korporacyjną</button>
                 </div>
             </div>
@@ -295,8 +296,8 @@
         <section class="py-16 bg-white px-4">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-12">
-                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-4">Porównanie Szczegółowych Zakresów</h2>
-                    <p class="text-slate-500 text-sm">Zaznacz warianty, aby porównać liczbę specjalistów, badania oraz zakres zabiegów ambulatoryjnych.</p>
+                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-4 leading-tight">Szczegółowe Porównanie Zakresów</h2>
+                    <p class="text-slate-500 text-sm">Zaznacz warianty, aby porównać liczbę specjalistów, pełną diagnostykę laboratoryjną i obrazową (RTG) oraz zabiegi.</p>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-6 mb-10">
@@ -318,7 +319,7 @@
                     </label>
                 </div>
 
-                <div class="overflow-x-auto bg-white rounded-3xl border border-slate-200 shadow-xl max-w-5xl mx-auto">
+                <div class="overflow-x-auto bg-white rounded-3xl border border-slate-200 shadow-xl max-w-6xl mx-auto">
                     <div id="comparison-table-wrapper">
                         <!-- Tabela renderowana przez JS -->
                     </div>
@@ -331,13 +332,13 @@
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-10 leading-tight">Baza Wiedzy Medycznej</h2>
                 <div class="space-y-4 text-left">
-                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-white">
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-white text-left">
                         <button class="accordion-btn w-full px-6 py-5 text-left font-bold text-sm text-slate-800 bg-slate-50 flex justify-between items-center focus:outline-none transition-colors hover:bg-slate-100">
                             Kto może korzystać z pakietu medycznego?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg">&#9660;</span>
+                            <span class="icon transition-transform duration-300 text-slate-400 text-lg" aria-hidden="true">&#9660;</span>
                         </button>
                         <div class="accordion-content">
-                            <p class="p-6 text-xs md:text-sm text-slate-600 leading-relaxed border-t border-slate-100 text-left">
+                            <p class="p-6 text-xs md:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
                                 Abonamenty medyczne przeznaczone są dla pracowników salonu oraz osób współpracujących (B2B). Możesz objąć ochroną także członków rodziny: małżonka, partnera życiowego oraz dzieci. Istnieje również specjalny pakiet "Senior" dla rodziców i teściów bez limitu wieku.
                             </p>
                         </div>
@@ -355,13 +356,13 @@
                     <span class="text-3xl bp-logo-heart" aria-hidden="true">&#10084;&#65039;</span>
                     <span class="font-heading font-extrabold text-xl text-beauty-navy tracking-tight">BeautyPolisa</span>
                 </div>
-                <p class="text-[11px] mb-1 leading-none">Obsługa techniczna Programu: <strong>Aura Expert sp. z o.o. (tel. 504 400 901)</strong></p>
+                <p class="text-[11px] mb-1 leading-none text-slate-500">Obsługa techniczna Programu: <strong>Aura Expert sp. z o.o. (tel. 504 400 901)</strong></p>
                 <div class="inline-block bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 mt-1 shadow-sm">
                     <span class="text-[10px] text-slate-600 font-medium leading-none">✨ <strong class="text-beauty-navy">BeautyPolisa MEDICAL</strong> created by <strong class="text-beauty-pink">Aura Consulting</strong>.</span>
                 </div>
             </div>
             <div class="text-[10px] text-slate-400 md:text-right flex flex-col justify-center gap-2 leading-relaxed">
-                <p>Pakiety dostarczane przez ENEL-MED S.A. oraz LUX MED sp. z o.o. Szczegóły w OWU operatorów.</p>
+                <p>Informacja marketingowa. Pakiety dostarczane przez ENEL-MED S.A. oraz LUX MED sp. z o.o.</p>
                 <div class="flex flex-wrap justify-center md:justify-end gap-4 font-semibold uppercase tracking-wider text-[9px]">
                     <button onclick="openModal('modal-dystrybutor')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Dystrybutor</button>
                     <button onclick="openModal('modal-rodo')" class="text-beauty-navy hover:text-beauty-pink transition-colors">RODO</button>
@@ -373,9 +374,9 @@
     <!-- MODAL FINALIZACJI -->
     <div id="modal-medical-offer" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog">
         <div class="bg-white rounded-[40px] shadow-2xl max-w-lg w-full overflow-hidden relative max-h-[95vh] overflow-y-auto">
-            <button onclick="closeModal('modal-medical-offer')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&#10005;</button>
+            <button onclick="closeModal('modal-medical-offer')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10" aria-label="Zamknij">&#10005;</button>
             
-            <div class="bg-slate-50 px-8 py-6 border-b border-slate-100 text-left text-left">
+            <div class="bg-slate-50 px-8 py-6 border-b border-slate-100 text-left">
                 <h3 class="font-heading font-bold text-xl text-beauty-navy leading-none">Finalizacja zapytania</h3>
                 <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mt-2">Dla Twojego Salonu</p>
             </div>
@@ -393,12 +394,12 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Twój E-mail</label>
-                        <input type="email" id="m-email" required placeholder="adres@email.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs focus:ring-2 focus:ring-beauty-pink outline-none transition-all">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5 text-nowrap">Twój E-mail</label>
+                        <input type="email" id="m-email" required placeholder="adres@email.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Telefon</label>
-                        <input type="tel" id="m-tel" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs focus:ring-2 focus:ring-beauty-pink outline-none transition-all">
+                        <input type="tel" id="m-tel" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
                     </div>
                 </div>
 
@@ -415,7 +416,7 @@
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-500 mb-1.5">Liczba pracowników:</label>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-1.5 text-nowrap">Liczba pracowników:</label>
                                 <select id="m-staff" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none cursor-pointer">
                                     <option value="3-10">3 - 10 pracowników</option>
                                     <option value="11-20">11 - 20 pracowników</option>
@@ -444,15 +445,15 @@
     <!-- MODALE INFORMACYJNE -->
     <div id="modal-dystrybutor" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog">
         <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto p-10 text-left">
-            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&#10005;</button>
+            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10" aria-label="Zamknij">&#10005;</button>
             <h3 class="font-heading font-bold text-xl text-beauty-navy mb-6 border-b pb-3 leading-none">Informacja o dystrybutorze</h3>
-            <p class="text-sm text-slate-600 leading-relaxed italic text-left">Techniczną obsługą programu ubezpieczeń medycznych dla branży Beauty zajmuje się Aura Expert sp. z o.o. z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28.</p>
+            <p class="text-sm text-slate-600 leading-relaxed italic text-left">Techniczną obsługą programu ubezpieczeń medycznych dla branży Beauty zajmuje się <strong>Aura Expert sp. z o.o.</strong> z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28.</p>
         </div>
     </div>
 
     <div id="modal-rodo" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog">
         <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto p-10 text-left">
-            <button onclick="closeModal('modal-rodo')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&#10005;</button>
+            <button onclick="closeModal('modal-rodo')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10" aria-label="Zamknij">&#10005;</button>
             <h3 class="font-heading font-bold text-xl text-beauty-navy mb-6 border-b pb-3 leading-none text-left">Nota informacyjna RODO</h3>
             <p class="text-sm text-slate-600 leading-relaxed italic text-left">Administratorem danych przetwarzanych w celu przygotowania oferty abonamentów medycznych jest Aura Expert sp. z o.o. Kontakt z IOD: iod@auraexpert.pl.</p>
         </div>
@@ -480,7 +481,7 @@
             }
         }, 5500);
 
-        // Baza specjalizacji
+        // Rozbudowana Baza specjalizacji
         const specializations = {
             "nefrolog": { enel: "Standard / Premium / Prestige", lux: "Rozszerzona / Kompleksowa" },
             "audiolog": { enel: "Premium / Prestige", lux: "Premium" },
@@ -504,7 +505,11 @@
             "iniekcja": { enel: "Basic (dożylna/domięśniowa)", lux: "Podstawowa" },
             "szycie rany": { enel: "Basic (do 5cm)", lux: "Standardowa" },
             "kleszcz": { enel: "Basic (usuwanie)", lux: "Podstawowa" },
-            "rehabilitacja": { enel: "Standard (10 spotkań)", lux: "Standardowa (13 wizyt)" }
+            "rehabilitacja": { enel: "Standard (10 spotkań)", lux: "Standardowa (13 wizyt)" },
+            "audiogram": { enel: "Basic / Standard", lux: "Standardowa" },
+            "spirometria": { enel: "Basic / Standard", lux: "Standardowa" },
+            "rtg klatki": { enel: "Basic / Standard", lux: "Podstawowa" },
+            "rtg kręgosłupa": { enel: "Basic / Standard", lux: "Standardowa" }
         };
 
         function searchSpecialization() {
@@ -530,42 +535,46 @@
             document.getElementById('spec-search').value = spec;
         }
 
-        // Dane do porównania
+        // Rozbudowane dane do porównania o Diagnostykę i RTG
         const comparisonData = {
             'enel-basic': { 
                 name: 'ENEL Basic', 
-                specs: '17 specjalności', 
-                labs: 'Podstawowy zakres + morfologia, mocz, cytologia raz/rok bez skierowania', 
-                vax: 'Grypa, Tężec, Błonica', 
-                preg: 'Zgodnie ze schematem PTG, Karta Przebiegu Ciąży', 
+                specs: '17 specjalności (chirurg, ginekolog, kardiolog, laryngolog, neurolog, okulista, pediatra, urolog i inni)', 
+                labs: 'Podstawowy zakres + morfologia, mocz, cytologia raz/rok bez skierowania. Hematologia, Koagulologia (APTT, PT, INR), Analityka (Białko, Glukoza), Biochemia (Albumina, ALT, AST, Amylaza, ASO, Cholesterol, Krzywe gluk.), Bakteriologia, TSH.', 
+                diag: 'Audiogram, Autorefrektometria, Dno oka, EKG spoczynkowe, Gonioskopia, Spirometria, Tonometria, Tympanogram. RTG: Klatka piersiowa, Kręgosłup (szyjny, piersiowy, lędźwiowy), Czaszka, Kości miednicy, rąk, stóp, żebra, zatoki, miednica (ponad 80 projekcji).',
+                vax: 'Podstawowe: Grypa, Tężec, Błonica (koszt szczepionki i wykonania w cenie)', 
+                preg: 'Zgodnie ze schematem PTG, Karta Przebiegu Ciąży, nielimitowane badania w zakresie pakietu', 
                 stom: 'Przegląd 1/rok, wizyta bólowa 1/rok (znieczulenie, dewitalizacja, RTG)',
-                proc: 'Immunoterapia, Biopsja zmian skórnych, Cewnikowanie, Szycie rany <5cm, Nacięcie ropnia, Usuwanie kleszcza/paznokcia, Paracenteza, Płukanie uszu, Tamponada nosa, Iniekcje dostawowe, Inhalacje, Iniekcje domięśniowe.'
+                proc: 'Immunoterapia, Biopsja zmian skórnych, Cewnikowanie, Szycie rany <5cm, Nacięcie ropnia, Usuwanie kleszcza/paznokcia, Paracenteza, Płukanie uszu, Tamponada nosa, Iniekcje dostawowe, Inhalacje, Iniekcje domięśniowe, Iniekcje dożylne.'
             },
             'enel-std': { 
                 name: 'ENEL Standard', 
-                specs: '33 specjalności', 
-                labs: 'Rozszerzony (ponad 300 badań lab.), brak limitów na skierowania', 
-                vax: 'Grypa, Tężec, Błonica', 
-                preg: 'Pełne prowadzenie, nielimitowane badania laboratoryjne w cenie', 
-                stom: 'Przegląd okresowy + Doraźna pomoc (bez limitów)',
-                proc: 'Pełen zakres ambulatoryjny Basic + zaawansowane procedury ortopedyczne i ginekologiczne.'
+                specs: '33 specjalności (Pełen zakres bez limitów skierowań)', 
+                labs: 'Rozszerzony (ponad 300 badań lab.), honorowanie skierowań zewnętrznych, nielimitowana liczba badań', 
+                diag: 'Pełen zakres Basic + dodatkowe badania specjalistyczne. RTG: Pełna diagnostyka kostna i klatki piersiowej w nielimitowanej ilości projekcji.',
+                vax: 'Grypa, Tężec, Błonica (możliwość wykonania w siedzibie firmy od 20 osób)', 
+                preg: 'Kompleksowe prowadzenie ciąży, wszystkie badania laboratoryjne i diagnostyczne w cenie', 
+                stom: 'Przegląd okresowy + Doraźna pomoc stomatologiczna (bez limitów)',
+                proc: 'Pełen zakres ambulatoryjny Basic + zaawansowane procedury chirurgiczne i ginekologiczne.'
             },
             'lux-basic': { 
                 name: 'LuxMed Podstawowa', 
-                specs: '11 specjalności', 
-                labs: '52 badania (diagnostyka podstawowa)', 
-                vax: 'Grypa, Tężec', 
-                preg: 'Opieka podstawowa bez hospitalizacji', 
-                stom: 'Zniżki 15% na usługi stomatologiczne',
-                proc: 'Iniekcje, opatrunki, podstawowe zabiegi pielęgniarskie.'
+                specs: '11 specjalności lekarskich', 
+                labs: '52 badania (podstawowa diagnostyka hematologiczna i analityczna)', 
+                diag: 'Podstawowe badania obrazowe (RTG klatki piersiowej, EKG spoczynkowe)',
+                vax: 'Podstawowe szczepienia przeciw grypie i tężcowi', 
+                preg: 'Opieka podstawowa bez zaawansowanych badań prenatalnych', 
+                stom: 'Zniżki 15% na pełną profilaktykę i leczenie',
+                proc: 'Podstawowe zabiegi pielęgniarskie, iniekcje, proste opatrunki.'
             },
             'lux-std': { 
                 name: 'LuxMed Standardowa', 
-                specs: '17 specjalności', 
-                labs: '263 badania (szeroka diagnostyka laboratoryjna i obrazowa)', 
-                vax: 'Grypa, Tężec, Błonica', 
-                preg: 'Pełny standard opieki (Karta Ciąży)', 
-                stom: 'Wariant I (Przegląd okresowy bezpłatny)',
+                specs: '17 specjalności lekarskich', 
+                labs: '263 badania (szeroka diagnostyka laboratoryjna)', 
+                diag: 'Rozszerzona diagnostyka obrazowa i laboratoryjna (USG jamy brzusznej, RTG kostne)',
+                vax: 'Pełne szczepienia: Grypa, Tężec, Błonica', 
+                preg: 'Pełny standard opieki zgodnie z Kartą Ciąży', 
+                stom: 'Wariant I (Przegląd okresowy w cenie abonamentu)',
                 proc: 'Szeroki zakres zabiegów ambulatoryjnych i pielęgniarskich (46 procedur).'
             }
         };
@@ -575,7 +584,7 @@
             const wrapper = document.getElementById('comparison-table-wrapper');
             
             if (selected.length === 0) {
-                wrapper.innerHTML = '<div class="p-10 text-center text-slate-400 text-sm italic text-left">Zaznacz warianty powyżej, aby zobaczyć szczegóły.</div>';
+                wrapper.innerHTML = '<div class="p-10 text-center text-slate-400 text-sm italic">Zaznacz warianty powyżej, aby zobaczyć szczegóły.</div>';
                 return;
             }
 
@@ -585,7 +594,8 @@
 
             const rows = [
                 { label: 'Liczba Specjalizacji', key: 'specs' },
-                { label: 'Diagnostyka Lab.', key: 'labs' },
+                { label: 'Diagnostyka Laboratoryjna', key: 'labs' },
+                { label: 'Diagnostyka Obrazowa i RTG', key: 'diag' },
                 { label: 'Szczepienia Ochronne', key: 'vax' },
                 { label: 'Prowadzenie Ciąży', key: 'preg' },
                 { label: 'Opieka Stomatologiczna', key: 'stom' },
