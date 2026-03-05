@@ -9,12 +9,12 @@
     <meta name="theme-color" content="#2a3b69">
     
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJWP7XYCF1"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L5S53BCN1K"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-HJWP7XYCF1');
+      gtag('config', 'G-L5S53BCN1K');
     </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -64,8 +64,8 @@
         .search-suggestion { cursor: pointer; padding: 0.75rem; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; color: #1e293b; font-weight: 500; }
         .search-suggestion:hover { background-color: #f8fafc; color: #e11d48; }
 
-        .compare-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .compare-table th, .compare-table td { padding: 1.25rem; border: 1px solid #e2e8f0; vertical-align: top; }
+        .compare-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .compare-table th, .compare-table td { padding: 1rem; border: 1px solid #e2e8f0; vertical-align: top; }
         .compare-table th { background-color: #f8fafc; text-align: left; font-weight: 700; color: #2a3b69; }
 
         #faq-banner-text { transition: opacity 0.5s ease-in-out; }
@@ -89,7 +89,7 @@
     </nav>
 
     <header class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-40 border-b border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col sm:flex-row justify-between items-center gap-2 text-left">
             <div class="flex items-center gap-4">
                 <!-- LOGO BEAUTY POLISA -->
                 <div class="flex flex-col items-center">
@@ -121,48 +121,56 @@
     </div>
 
     <main class="flex-grow">
-        <!-- HERO -->
+        <!-- HERO - 2 BOX KOLUMNY -->
         <section class="hero-gradient py-10 md:py-16 px-4 border-b border-slate-100">
             <div class="max-w-7xl mx-auto">
                 <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    
                     <!-- BOX 1: Tekst -->
                     <div class="lg:w-1/2 flex flex-col justify-center">
                         <span class="inline-block py-1 px-3 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold tracking-widest uppercase mb-6 self-start">
-                            Dla Salonów i Gabinetów
+                            Program Partnerski dla Branży Beauty
                         </span>
                         <h1 class="font-heading text-3xl md:text-5xl font-bold text-slate-800 mb-6 leading-tight text-left">
                             Opieka Medyczna dla <br><span class="text-emerald-600">Twoich Specjalistów</span>
                         </h1>
-                        <p class="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed text-left font-medium">
-                            Porównaj pakiety <strong>ENEL</strong> oraz <strong>LuxMed</strong>. Zapomnij o kolejkach i skierowaniach do lekarzy specjalistów.
+                        <p class="text-base md:text-xl text-slate-600 mb-8 leading-relaxed text-left font-medium">
+                            Porównaj pakiety <strong>ENEL</strong> oraz <strong>LuxMed</strong> przygotowane dla Twojego salonu. Szybki dostęp do lekarzy, e-wizyty i stomatologia bez skierowań.
                         </p>
                     </div>
 
-                    <!-- BOX 2: Wyszukiwarka -->
+                    <!-- BOX 2: Wyszukiwarka (Jasna kolorystyka) -->
                     <div class="lg:w-1/2 w-full flex flex-col">
-                        <div class="bg-white border-2 border-emerald-50 rounded-[40px] p-8 md:p-12 shadow-2xl flex flex-col h-full relative overflow-hidden">
-                            <h3 class="font-heading text-2xl font-bold text-beauty-navy mb-3 leading-tight text-left">Wyszukiwarka Specjalizacji</h3>
-                            <p class="text-sm text-slate-500 mb-8 leading-relaxed text-left">Sprawdź dostępność lekarza (np. nefrolog) lub zabiegu (np. krioterapia).</p>
+                        <div class="bg-white border-2 border-emerald-50 rounded-[40px] p-8 md:p-12 shadow-2xl flex flex-col h-full relative overflow-hidden text-left">
+                            <div class="absolute top-0 right-0 p-10 opacity-5">
+                                <span class="text-7xl" aria-hidden="true">&#128269;</span>
+                            </div>
+                            
+                            <h3 class="font-heading text-2xl font-bold text-beauty-navy mb-3 leading-tight">Wyszukiwarka Specjalizacji</h3>
+                            <p class="text-sm text-slate-500 mb-8 leading-relaxed">Sprawdź dostępność lekarza (p. nefrolog, onkolog) lub zabiegu (np. krioterapia, biopsja).</p>
                             
                             <div class="relative mb-6">
-                                <input type="text" id="spec-search" placeholder="np. nefrolog, onkolog, kardiolog..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all shadow-inner" oninput="searchSpecialization()">
-                                <div id="search-results" class="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-b-2xl shadow-2xl mt-1 hidden max-h-64 overflow-y-auto z-50 text-left"></div>
+                                <input type="text" id="spec-search" placeholder="np. nefrolog, onkolog, kardiolog..." class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all shadow-inner" oninput="searchSpecialization()">
+                                <div id="search-results" class="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-b-2xl shadow-2xl mt-1 hidden max-h-64 overflow-y-auto z-50 text-left">
+                                    <!-- Wyniki JS -->
+                                </div>
                             </div>
 
                             <div id="search-feedback" class="hidden animate-[fadeIn_0.5s]">
                                 <div class="space-y-4">
-                                    <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl text-left text-sm">
+                                    <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl text-left">
                                         <p class="text-[10px] uppercase font-bold text-emerald-600 mb-1 tracking-widest leading-none">W ENEL znajdziesz w:</p>
-                                        <p id="enel-feedback-val" class="font-bold text-slate-800 leading-tight">---</p>
+                                        <p id="enel-feedback-val" class="text-base font-bold text-slate-800 leading-tight">---</p>
                                     </div>
-                                    <div class="bg-blue-50 border border-blue-100 p-4 rounded-2xl text-left text-sm">
+                                    <div class="bg-blue-50 border border-blue-100 p-4 rounded-2xl text-left">
                                         <p class="text-[10px] uppercase font-bold text-blue-600 mb-1 tracking-widest leading-none">W LuxMed znajdziesz w:</p>
-                                        <p id="lux-feedback-val" class="font-bold text-slate-800 leading-tight">---</p>
+                                        <p id="lux-feedback-val" class="text-base font-bold text-slate-800 leading-tight">---</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -170,24 +178,24 @@
         <!-- KORZYŚCI -->
         <section class="py-10 bg-white px-4">
             <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
-                <div class="bg-slate-50 p-8 md:p-12 rounded-[32px] border border-slate-100 shadow-sm">
+                <div class="bg-slate-50 p-8 md:p-12 rounded-[32px] border border-slate-100 shadow-sm flex flex-col items-start text-left text-left">
                     <div class="flex items-center gap-4 mb-6 border-b border-slate-200 pb-4 w-full">
-                        <div class="bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl">&#128188;</div>
-                        <h3 class="font-heading text-2xl font-bold text-beauty-navy leading-tight text-left">Dla Twojego Salonu</h3>
+                        <div class="bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl" aria-hidden="true">&#128188;</div>
+                        <h3 class="font-heading text-2xl font-bold text-beauty-navy leading-tight">Dla Twojego Salonu</h3>
                     </div>
                     <ul class="space-y-5 text-base md:text-lg text-slate-700 leading-relaxed text-left">
-                        <li><strong class="text-emerald-600">Ciągłość pracy:</strong> Szybsza diagnoza pracowników to krótszy czas zwolnień lekarskich w Twoim salonie.</li>
-                        <li><strong class="text-emerald-600">Najlepszy benefit:</strong> Prywatna opieka to najbardziej pożądany dodatek w branży beauty.</li>
+                        <li><strong class="text-emerald-600">Ciągłość pracy:</strong> Błyskawiczna diagnostyka skraca przestoje w Twoim salonie.</li>
+                        <li><strong class="text-emerald-600">Najlepszy benefit:</strong> Pakiet medyczny to najbardziej pożądany dodatek w branży beauty.</li>
                         <li><strong class="text-emerald-600">Zysk podatkowy:</strong> Składki sfinansowane dla zespołu wliczasz w koszty działalności.</li>
                     </ul>
                 </div>
-                <div class="bg-blue-50/40 p-8 md:p-12 rounded-[32px] border border-blue-200 shadow-sm">
-                    <div class="flex items-center gap-4 mb-6 border-b border-blue-200 pb-4 w-full text-left">
-                        <div class="bg-blue-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl">&#128103;</div>
+                <div class="bg-blue-50/40 p-8 md:p-12 rounded-[32px] border border-blue-200 shadow-sm flex flex-col items-start text-left text-left">
+                    <div class="flex items-center gap-4 mb-6 border-b border-blue-200 pb-4 w-full">
+                        <div class="bg-blue-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl" aria-hidden="true">&#128103;</div>
                         <h3 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy leading-tight">Dla Twoich Ludzi</h3>
                     </div>
                     <ul class="space-y-5 text-base md:text-lg text-slate-700 leading-relaxed text-left">
-                        <li><strong class="text-blue-600">Bez skierowań:</strong> Wizyty u ginekologa, dermatologa czy okulisty dostępne od ręki, bez czekania.</li>
+                        <li><strong class="text-blue-600">Bez skierowań:</strong> Wizyty u ginekologa, dermatologa czy okulisty od ręki, bez czekania.</li>
                         <li><strong class="text-blue-600">Wsparcie rodziny:</strong> Możesz ubezpieczyć małżonka, dzieci i rodziców.</li>
                         <li><strong class="text-blue-600">E-wizyty 24/7:</strong> Konsultacje z e-receptą bez wychodzenia z domu.</li>
                     </ul>
@@ -199,7 +207,7 @@
         <article id="kalkulator" class="py-12 bg-slate-50 px-4 border-y border-slate-200 text-center">
             <div class="max-w-7xl mx-auto">
                 <h2 class="font-heading text-2xl md:text-4xl font-bold text-beauty-navy mb-4 leading-tight">Ceny Abonamentów Miesięcznych</h2>
-                <p class="text-slate-500 mb-12 text-sm md:text-base">Zaznacz wielkość zespołu, aby zobaczyć ceny dla pracowników i rodzin.</p>
+                <p class="text-slate-500 mb-12 text-sm md:text-base">Zaznacz wielkość zespołu, aby zobaczyć ceny Singiel / Partner / Rodzina.</p>
                 
                 <div class="mb-12">
                     <div class="flex flex-wrap justify-center gap-4">
@@ -221,70 +229,69 @@
                 <div id="medical-pricing" class="grid lg:grid-cols-2 gap-10 text-left">
                     <!-- ENEL -->
                     <div class="space-y-6">
-                        <h3 class="font-heading text-3xl font-bold text-emerald-900 leading-none">ENEL</h3>
+                        <h3 class="font-heading text-3xl font-bold text-emerald-900 leading-none text-left">ENEL</h3>
                         <div class="bg-white border-2 border-slate-100 rounded-[32px] p-8 shadow-md hover:border-emerald-300 transition-all flex flex-col h-full">
-                            <div class="flex justify-between items-start mb-6">
+                            <div class="flex justify-between items-start mb-6 text-left">
                                 <h4 class="font-bold text-xl text-beauty-navy">Pakiet Standard</h4>
                                 <div class="text-right">
                                     <p id="enel-std-price" class="text-3xl font-black text-slate-800 leading-none">216 zł</p>
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Pracownik / mc</p>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1 leading-none">Pracownik / mc</p>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-3 mb-8">
                                 <div class="bg-slate-50 p-4 rounded-2xl text-center">
-                                    <p class="text-[9px] text-slate-400 font-bold mb-1 uppercase tracking-tighter">PARTNER</p>
-                                    <p id="enel-std-part" class="font-bold text-base text-beauty-navy">237 zł</p>
+                                    <p class="text-[9px] text-slate-400 font-bold mb-1 uppercase tracking-tighter leading-none">PARTNER</p>
+                                    <p id="enel-std-part" class="font-bold text-base text-beauty-navy leading-none">237 zł</p>
                                 </div>
                                 <div class="bg-slate-50 p-4 rounded-2xl text-center">
-                                    <p class="text-[9px] text-slate-400 font-bold mb-1 uppercase tracking-tighter">RODZINA</p>
-                                    <p id="enel-std-fam" class="font-bold text-base text-beauty-navy">478 zł</p>
+                                    <p class="text-[9px] text-slate-400 font-bold mb-1 uppercase tracking-tighter leading-none">RODZINA</p>
+                                    <p id="enel-std-fam" class="font-bold text-base text-beauty-navy leading-none">478 zł</p>
                                 </div>
                             </div>
-                            <button onclick="openMedicalOfferModal('ENEL', 'Standard')" class="w-full bg-emerald-600 text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-emerald-700 transition-all">Wybieram ENEL</button>
+                            <button onclick="openMedicalOfferModal('ENEL', 'Standard')" class="w-full bg-emerald-600 text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-emerald-700 transition-all uppercase tracking-widest text-xs">Poproś o ofertę ENEL</button>
                         </div>
                     </div>
 
                     <!-- LuxMed -->
-                    <div class="space-y-6">
-                        <h3 class="font-heading text-3xl font-bold text-blue-900 leading-none">LuxMed</h3>
+                    <div class="space-y-6 text-left">
+                        <h3 class="font-heading text-3xl font-bold text-blue-900 leading-none text-left">LuxMed</h3>
                         <div class="bg-white border-2 border-slate-100 rounded-[32px] p-8 shadow-md hover:border-blue-200 transition-all flex flex-col h-full">
-                            <div class="flex justify-between items-start mb-6">
+                            <div class="flex justify-between items-start mb-6 text-left text-left">
                                 <h4 class="font-bold text-xl text-beauty-navy">Opieka Standard</h4>
                                 <div class="text-right">
                                     <p id="lux-std-price" class="text-3xl font-black text-slate-800 leading-none">131 zł</p>
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Pracownik / mc</p>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1 leading-none">Pracownik / mc</p>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-2 gap-3 mb-8">
+                            <div class="grid grid-cols-2 gap-3 mb-8 text-left">
                                 <div class="bg-slate-50 p-4 rounded-2xl text-center">
-                                    <p class="text-[9px] text-slate-400 font-bold mb-1 uppercase tracking-tighter">PARTNER</p>
-                                    <p id="lux-std-part" class="font-bold text-base text-beauty-navy">234 zł</p>
+                                    <p class="text-[9px] text-slate-400 font-bold mb-1 uppercase tracking-tighter leading-none">PARTNER</p>
+                                    <p id="lux-std-part" class="font-bold text-base text-beauty-navy leading-none">234 zł</p>
                                 </div>
                                 <div class="bg-slate-50 p-4 rounded-2xl text-center">
-                                    <p class="text-[9px] text-slate-400 font-bold mb-1 uppercase tracking-tighter">RODZINA</p>
-                                    <p id="lux-std-fam" class="font-bold text-base text-beauty-navy">347 zł</p>
+                                    <p class="text-[9px] text-slate-400 font-bold mb-1 uppercase tracking-tighter leading-none">RODZINA</p>
+                                    <p id="lux-std-fam" class="font-bold text-base text-beauty-navy leading-none">347 zł</p>
                                 </div>
                             </div>
-                            <button onclick="openMedicalOfferModal('LuxMed', 'Standardowa')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-blue-700 transition-all">Wybieram LuxMed</button>
+                            <button onclick="openMedicalOfferModal('LuxMed', 'Standardowa')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-blue-700 transition-all uppercase tracking-widest text-xs">Poproś o ofertę LuxMed</button>
                         </div>
                     </div>
                 </div>
                 
-                <!-- INDYWIDUALNA DLA 51+ -->
-                <div id="max-staff-msg" class="hidden bg-beauty-navy text-white rounded-[40px] p-10 text-center animate-[fadeIn_0.5s] mt-8">
-                    <h3 class="font-heading text-2xl font-bold mb-4 leading-tight">Wycena Korporacyjna (51+ osób)</h3>
+                <div id="max-staff-msg" class="hidden bg-beauty-navy text-white rounded-[40px] p-10 text-center animate-[fadeIn_0.5s] mt-8 text-left">
+                    <h3 class="font-heading text-2xl font-bold mb-4 leading-tight text-white">Wycena Korporacyjna (51+ osób)</h3>
                     <p class="text-blue-100 text-sm mb-8 max-w-2xl mx-auto leading-relaxed">Dla dużych salonów przygotowujemy ofertę indywidualną. Prześlij zapytanie, a nasz zespół przygotuje ofertę uszytą na miarę.</p>
                     <button onclick="openMedicalOfferModal('Porównanie', 'Corporate')" class="bg-white text-beauty-navy font-bold py-4 px-12 rounded-full text-sm hover:bg-slate-100 transition-all shadow-xl">Zapytaj o ofertę korporacyjną</button>
                 </div>
             </div>
         </article>
 
-        <!-- PORÓWNANIE ZAKRESÓW (CHECKBOXY + ANALIZA RÓŻNIC) -->
+        <!-- SZCZEGÓŁOWE PORÓWNANIE ZAKRESÓW (CHECKBOXY + ANALIZA RÓŻNIC) -->
         <section class="py-16 bg-white px-4">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-12">
                     <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-4 leading-tight">Szczegółowe Porównanie Zakresów</h2>
-                    <p class="text-slate-500 text-sm">Zaznacz warianty, aby porównać liczbę specjalistów i badania. System automatycznie wskaże brakujące usługi.</p>
+                    <p class="text-slate-500 text-sm">Zaznacz warianty, aby porównać liczbę specjalistów i badania. System automatycznie wskaże różnice.</p>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-6 mb-10">
@@ -315,16 +322,16 @@
         <!-- FAQ -->
         <section id="faq-section" class="py-12 bg-slate-50 px-4 border-t border-slate-200">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-10 leading-tight">Baza Wiedzy Medycznej</h2>
-                <div class="space-y-4 text-left">
+                <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-10 leading-tight">Pytania i Odpowiedzi</h2>
+                <div class="space-y-4 text-left text-left text-left">
                     <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-white">
                         <button class="accordion-btn w-full px-6 py-5 text-left font-bold text-sm text-slate-800 bg-slate-50 flex justify-between items-center focus:outline-none transition-colors hover:bg-slate-100">
-                            Czy abonament medyczny dla pracowników to koszt dla firmy?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg">&#9660;</span>
+                            Jak szybko można umówić się do specjalisty?
+                            <span class="icon transition-transform duration-300 text-slate-400 text-lg" aria-hidden="true">&#9660;</span>
                         </button>
                         <div class="accordion-content">
-                            <p class="p-6 text-xs md:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
-                                <strong>TAK.</strong> Wydatki na opiekę medyczną dla pracowników stanowią koszt uzyskania przychodu dla pracodawcy. Jest to jeden z najbardziej efektywnych podatkowo benefitów pozapłacowych.
+                            <p class="p-6 text-xs md:text-sm text-slate-600 leading-relaxed border-t border-slate-100 text-left">
+                                W ramach naszych pakietów (ENEL i LuxMed) czas oczekiwania na konsultację u lekarza POZ wynosi zazwyczaj <strong>do 24-48h</strong>, a u specjalistów (np. ginekolog, kardiolog) <strong>do 5 dni roboczych</strong>.
                             </p>
                         </div>
                     </div>
@@ -335,22 +342,22 @@
 
     <!-- STOPKA -->
     <footer class="bg-white border-t border-slate-200 pt-10 pb-8 text-sm text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center text-center md:text-left">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center text-center md:text-left text-left">
             <div>
                 <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
                     <span class="text-3xl bp-logo-heart" aria-hidden="true">&#10084;&#65039;</span>
-                    <span class="font-heading font-extrabold text-xl text-beauty-navy tracking-tight uppercase">BeautyPolisa</span>
+                    <span class="font-heading font-extrabold text-xl text-beauty-navy tracking-tight uppercase leading-none">BeautyPolisa</span>
                 </div>
-                <p class="text-[11px] mb-1 leading-none text-slate-500">Obsługa techniczna Programu: <strong>Aura Expert sp. z o.o. (tel. 504 400 901)</strong></p>
+                <p class="text-[11px] mb-1 leading-none text-slate-500 text-left">Obsługa techniczna Programu: <strong>Aura Expert sp. z o.o. (tel. 500 502 702)</strong></p>
                 <div class="inline-block bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 mt-1 shadow-sm">
                     <span class="text-[10px] text-slate-600 font-medium leading-none text-left">✨ <strong class="text-beauty-navy uppercase">BeautyPolisa MEDICAL</strong> created by <strong class="text-beauty-pink">Aura Consulting</strong>.</span>
                 </div>
             </div>
-            <div class="text-[10px] text-slate-400 md:text-right flex flex-col justify-center gap-2 leading-relaxed">
-                <p>Informacja marketingowa. Pakiety dostarczane przez ENEL-MED S.A. oraz LUX MED sp. z o.o. Pełne warunki w OWU.</p>
+            <div class="text-[10px] text-slate-400 md:text-right flex flex-col justify-center gap-2 leading-relaxed text-left text-left">
+                <p>Pakiety dostarczane przez ENEL-MED S.A. oraz LUX MED sp. z o.o. Pełne warunki w OWU.</p>
                 <div class="flex flex-wrap justify-center md:justify-end gap-4 font-semibold uppercase tracking-wider text-[9px]">
-                    <button onclick="openModal('modal-dystrybutor')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Dystrybutor</button>
-                    <button onclick="openModal('modal-rodo')" class="text-beauty-navy hover:text-beauty-pink transition-colors">RODO</button>
+                    <button onclick="openModal('modal-dystrybutor')" class="text-beauty-navy hover:text-beauty-pink transition-colors uppercase leading-none">Dystrybutor</button>
+                    <button onclick="openModal('modal-rodo')" class="text-beauty-navy hover:text-beauty-pink transition-colors uppercase leading-none">RODO</button>
                 </div>
             </div>
         </div>
@@ -358,82 +365,82 @@
 
     <!-- MODAL FINALIZACJI -->
     <div id="modal-medical-offer" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog">
-        <div class="bg-white rounded-[40px] shadow-2xl max-w-lg w-full overflow-hidden relative max-h-[95vh] overflow-y-auto text-left">
-            <button onclick="closeModal('modal-medical-offer')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&#10005;</button>
-            <div class="bg-slate-50 px-8 py-6 border-b border-slate-100">
+        <div class="bg-white rounded-[40px] shadow-2xl max-w-lg w-full overflow-hidden relative max-h-[95vh] overflow-y-auto text-left text-left text-left text-left">
+            <button onclick="closeModal('modal-medical-offer')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10" aria-label="Zamknij">&#10005;</button>
+            <div class="bg-slate-50 px-8 py-6 border-b border-slate-100 text-left">
                 <h3 class="font-heading font-bold text-xl text-beauty-navy leading-none">Finalizacja zapytania</h3>
-                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mt-2">Dla Twojego Salonu</p>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mt-2">Dla Twojego Salonu Beauty</p>
             </div>
-            <form id="m-form" onsubmit="submitMedicalModalForm(event)" class="p-8 space-y-5">
+            <form id="m-form" onsubmit="submitMedicalModalForm(event)" class="p-8 space-y-5 text-left text-left text-left text-left text-left">
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">NIP Twojej Firmy (Weryfikacja API)</label>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5 text-left">NIP Twojej Firmy (Weryfikacja API)</label>
                     <div class="relative">
                         <input type="text" id="m-nip" name="nip" required maxlength="10" placeholder="0000000000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs focus:ring-2 focus:ring-beauty-pink outline-none transition-all" oninput="verifyNipApi()">
                         <div id="nip-loader" class="loader absolute right-4 top-4"></div>
                     </div>
                     <p id="nip-status" class="text-[9px] mt-1.5 font-semibold min-h-[14px] text-left"></p>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-4 text-left">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">E-mail</label>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5 text-left">E-mail</label>
                         <input type="email" name="email" required placeholder="adres@email.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Telefon</label>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5 text-left">Telefon</label>
                         <input type="tel" name="phone" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
                     </div>
                 </div>
                 <div class="border-t border-slate-100 pt-5 mt-2 space-y-4">
-                    <h4 class="text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">Wybrane parametry:</h4>
-                    <div class="grid grid-cols-1 gap-4">
+                    <h4 class="text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest text-left">Twoje wybory:</h4>
+                    <div class="grid grid-cols-1 gap-4 text-left">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5">Operator:</label>
-                            <select id="m-operator" name="operator" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
+                            <label class="block text-[10px] font-bold text-slate-500 mb-1.5 text-left text-left text-left">Operator:</label>
+                            <select id="m-operator" name="operator" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none cursor-pointer">
                                 <option value="ENEL">ENEL</option>
                                 <option value="LuxMed">LuxMed</option>
                                 <option value="Comparison">Porównanie obu ofert</option>
                             </select>
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-4 text-left">
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-500 mb-1.5">Liczba pracowników:</label>
-                                <select id="m-staff" name="staff_count" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
-                                    <option value="3-10">3 - 10 pracowników</option>
-                                    <option value="11-20">11 - 20 pracowników</option>
-                                    <option value="21-50">21 - 50 pracowników</option>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-1.5 text-left text-left text-left">Pracownicy:</label>
+                                <select id="m-staff" name="staff_count" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none cursor-pointer">
+                                    <option value="3-10">3 - 10 osób</option>
+                                    <option value="11-20">11 - 20 osób</option>
+                                    <option value="21-50">21 - 50 osób</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-500 mb-1.5">Wstępny wybór:</label>
-                                <select id="m-type" name="package_type" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
-                                    <option value="single">Singiel (Pracownik)</option>
-                                    <option value="partner">Partnerski</option>
-                                    <option value="family">Rodzinny</option>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-1.5 text-left text-left text-left">Gospodarstwo:</label>
+                                <select id="m-type" name="package_type" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none cursor-pointer">
+                                    <option value="single">Singiel</option>
+                                    <option value="partner">Partner</option>
+                                    <option value="family">Rodzina</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <input type="hidden" name="signature" id="m-signature">
-                <button type="submit" id="m-btn" class="w-full bg-beauty-navy hover:bg-slate-800 text-white font-bold py-4 rounded-[18px] shadow-xl text-sm transition-all mt-2 uppercase tracking-widest">Poproś o przygotowanie oferty</button>
+                <button type="submit" id="m-btn" class="w-full bg-beauty-navy hover:bg-slate-800 text-white font-bold py-4 rounded-[18px] shadow-xl text-sm transition-all mt-2 uppercase tracking-widest">Wyślij zapytanie</button>
             </form>
         </div>
     </div>
 
-    <!-- MODALE INFORMACYJNE -->
+    <!-- MODALE INFO -->
     <div id="modal-dystrybutor" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog">
         <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full relative p-10 text-left">
-            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&#10005;</button>
+            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10" aria-label="Zamknij">&#10005;</button>
             <h3 class="font-heading font-bold text-xl text-beauty-navy mb-6 border-b pb-3 leading-none">Informacja o dystrybutorze</h3>
-            <p class="text-sm text-slate-600 leading-relaxed italic">Techniczną obsługą programu zajmuje się Aura Expert sp. z o.o. z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28.</p>
+            <p class="text-sm text-slate-600 leading-relaxed italic text-left">Techniczną obsługą programu ubezpieczeń medycznych dla branży Beauty zajmuje się <strong>Aura Expert sp. z o.o.</strong> z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28.</p>
         </div>
     </div>
 
     <div id="modal-rodo" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog">
         <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full relative p-10 text-left">
-            <button onclick="closeModal('modal-rodo')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&#10005;</button>
-            <h3 class="font-heading font-bold text-xl text-beauty-navy mb-6 border-b pb-3 leading-none">Nota informacyjna RODO</h3>
-            <p class="text-sm text-slate-600 leading-relaxed italic">Administratorem danych przetwarzanych w celu przygotowania oferty abonamentów medycznych jest Aura Expert sp. z o.o. Kontakt: iod@auraexpert.pl.</p>
+            <button onclick="closeModal('modal-rodo')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10" aria-label="Zamknij">&#10005;</button>
+            <h3 class="font-heading font-bold text-xl text-beauty-navy mb-6 border-b pb-3 leading-none text-left">Nota informacyjna RODO</h3>
+            <p class="text-sm text-slate-600 leading-relaxed italic text-left text-left">Administratorem danych przetwarzanych w celu przygotowania oferty abonamentów medycznych jest Aura Expert sp. z o.o. Kontakt: iod@auraexpert.pl.</p>
         </div>
     </div>
 
@@ -459,29 +466,33 @@
             }
         }, 5500);
 
-        // Baza specjalizacji
-        const spec_data = {
-            "enel-basic": ["Chirurg", "Internista", "Ginekolog", "Kardiolog", "Laryngolog", "Neurolog", "Okulista", "Pediatra", "Urolog", "Medycyna Rodzinna"],
-            "enel-std": ["Alergolog", "Chirurg onkolog", "Dermatolog", "Diabetolog", "Endokrynolog", "Gastrolog", "Hematolog", "Nefrolog", "Ortopeda", "Reumatolog"],
-            "lux-basic": ["Internista", "Pediatra", "Medycyna Rodzinna", "Ginekolog", "Okulista", "Chirurg", "Dermatolog"],
-            "lux-std": ["Kardiolog", "Laryngolog", "Neurolog", "Ortopeda", "Urolog", "Pulmonolog"]
-        };
-
+        // Baza specjalizacji (rozszerzona)
         const specializations_map = {
-            "nefrolog": { enel: "Standard / Premium", lux: "Rozszerzona / Kompleksowa" },
-            "audiolog": { enel: "Premium / Prestige", lux: "Premium" },
-            "hepatolog": { enel: "Standard / Premium", lux: "Standardowa / Rozszerzona" },
-            "alergolog": { enel: "Standard / Premium", lux: "Standardowa / Rozszerzona" },
-            "neurolog": { enel: "Basic / Standard", lux: "Standardowa" },
-            "urolog": { enel: "Basic / Standard", lux: "Standardowa / Rozszerzona" },
-            "diabetolog": { enel: "Standard / Premium", lux: "Rozszerzona" },
+            "nefrolog": { enel: "Standard / Premium / Prestige", lux: "Rozszerzona / Kompleksowa / Premium" },
+            "audiolog": { enel: "Premium / Prestige / VIP", lux: "Premium" },
+            "hepatolog": { enel: "Standard / Premium / Prestige", lux: "Podstawowa / Standardowa / Rozszerzona" },
+            "alergolog": { enel: "Premium / Prestige / VIP", lux: "Rozszerzona / Kompleksowa" },
+            "neurolog": { enel: "Basic / Standard / Premium", lux: "Standardowa / Rozszerzona" },
+            "urolog": { enel: "Basic / Standard / Premium", lux: "Rozszerzona / Kompleksowa" },
+            "diabetolog": { enel: "Standard / Premium / Prestige", lux: "Rozszerzona / Kompleksowa" },
             "reumatolog": { enel: "Standard / Premium", lux: "Standardowa / Rozszerzona" },
-            "onkolog": { enel: "Standard / Premium", lux: "Standardowa / Rozszerzona" },
+            "psychiatra": { enel: "Premium (3 wizyty)", lux: "Kompleksowa (3 wizyty)" },
+            "ginekolog": { enel: "Basic / Standard / Premium", lux: "Podstawowa / Standardowa" },
+            "dermatolog": { enel: "Basic / Standard / Premium", lux: "Podstawowa / Standardowa" },
+            "kardiolog": { enel: "Basic / Standard / Premium", lux: "Podstawowa / Standardowa" },
+            "onkolog": { enel: "Standard / Premium / Prestige", lux: "Rozszerzona / Kompleksowa" },
             "gastrolog": { enel: "Standard / Premium", lux: "Standardowa / Rozszerzona" },
-            "onkolog": { enel: "Standard / Premium", lux: "Standardowa / Rozszerzona" },
-            "krioterapia": { enel: "Basic / Standard", lux: "Standardowa" },
-            "biopsja": { enel: "Basic (skóra)", lux: "Standardowa" },
-            "szycie rany": { enel: "Basic", lux: "Standardowa" }
+            "chirurg": { enel: "Basic / Standard / Premium", lux: "Podstawowa / Standardowa" },
+            "pediatra": { enel: "Basic / Standard / Premium", lux: "Podstawowa / Standardowa" },
+            "foniatra": { enel: "Premium / Prestige / VIP", lux: "Rozszerzona / Kompleksowa" },
+            "hematolog": { enel: "Premium / Prestige / VIP", lux: "Rozszerzona / Kompleksowa" },
+            "biopsja": { enel: "Basic (zmiana skórna)", lux: "Standardowa / Rozszerzona" },
+            "krioterapia": { enel: "Basic (nadżerek)", lux: "Standardowa" },
+            "tamponada": { enel: "Basic (nosa)", lux: "Standardowa" },
+            "iniekcja": { enel: "Basic (dożylna/domięśniowa)", lux: "Podstawowa / Standardowa" },
+            "szycie rany": { enel: "Basic (do 5cm)", lux: "Standardowa / Rozszerzona" },
+            "proktolog": { enel: "Premium / Prestige / VIP", lux: "Kompleksowa / Premium" },
+            "psycholog": { enel: "Premium (pierwszorazowa)", lux: "Standardowa (online) / Rozszerzona" }
         };
 
         function searchSpecialization() {
@@ -497,79 +508,85 @@
 
         function showSpecFeedback(spec) {
             const d = specializations_map[spec];
-            document.getElementById('enel-feedback-val').innerText = d.enel;
-            document.getElementById('lux-feedback-val').innerText = d.lux;
-            document.getElementById('search-feedback').classList.remove('hidden');
+            const enelEl = document.getElementById('enel-feedback-val');
+            const luxEl = document.getElementById('lux-feedback-val');
+            const feedbackDiv = document.getElementById('search-feedback');
+            if (enelEl) enelEl.innerText = d.enel;
+            if (luxEl) luxEl.innerText = d.lux;
+            if (feedbackDiv) feedbackDiv.classList.remove('hidden');
             document.getElementById('search-results').classList.add('hidden');
             document.getElementById('spec-search').value = spec;
         }
 
-        // Dane do porównania (One-File Data Hub)
+        // Data Hub (Porównanie + Różnice)
         const comparisonData = {
             'enel-basic': { 
                 name: 'ENEL Basic', 
                 specs_list: ["Chirurg", "Ginekolog", "Internista", "Kardiolog", "Laryngolog", "Neurolog", "Okulista", "Pediatra", "Urolog", "Lekarz Rodzinny"],
                 specs: '17 specjalności', 
                 labs: 'Morfologia, mocz, cytologia (1/rok bez skierowania)', 
-                diag: 'Audiogram, EKG, RTG klatki i miednicy', 
-                preg: 'Standard PTG, Karta Przebiegu Ciąży',
-                proc: 'Biopsja zmian, Szycie rany, Tamponada nosa, Iniekcje'
+                diag: 'Audiogram, EKG, RTG klatki i miednicy (podstawowe)', 
+                preg: 'Zgodnie z PTG, Karta Przebiegu Ciąży',
+                proc: 'Biopsja zmian skórnych, Szycie rany <5cm, Tamponada nosa, Iniekcje.'
             },
             'enel-std': { 
                 name: 'ENEL Standard', 
                 specs_list: ["Chirurg", "Ginekolog", "Internista", "Kardiolog", "Laryngolog", "Neurolog", "Okulista", "Pediatra", "Urolog", "Lekarz Rodzinny", "Alergolog", "Chirurg Onkolog", "Dermatolog", "Diabetolog", "Endokrynolog", "Gastrolog", "Hematolog", "Nefrolog", "Ortopeda", "Reumatolog"],
-                specs: '33 specjalności', 
-                labs: 'Ponad 300 badań, nielimitowane skierowania', 
-                diag: 'Pełne RTG kostne, Diagnostyka obrazowa', 
-                preg: 'Kompleksowe prowadzenie, nielimitowane badania',
-                proc: 'Pełen zakres ambulatoryjny'
+                specs: '33 specjalności (brak limitów na skierowania)', 
+                labs: 'Ponad 300 badań lab., nielimitowana liczba badań', 
+                diag: 'Pełne RTG kostne i diagnostyka obrazowa', 
+                preg: 'Kompleksowe prowadzenie (Karta Ciąży), nielimitowane badania',
+                proc: 'Pełen zakres ambulatoryjny Basic + procedury ginekologiczne rozszerzone.'
             },
             'lux-basic': { 
                 name: 'LuxMed Podst.', 
                 specs_list: ["Internista", "Pediatra", "Lekarz Rodzinny", "Ginekolog", "Okulista", "Chirurg", "Dermatolog"],
-                specs: '11 specjalności', 
-                labs: '52 badania podstawowe', 
-                diag: 'RTG klatki, EKG spoczynkowe', 
-                preg: 'Opieka podstawowa',
-                proc: 'Podstawowe zabiegi pielęgniarskie'
+                specs: '11 specjalności lekarskich', 
+                labs: '52 badania podstawowe (hematologia, analityka)', 
+                diag: 'RTG klatki piersiowej, EKG spoczynkowe', 
+                preg: 'Opieka podstawowa bez hospitalizacji',
+                proc: 'Podstawowe zabiegi pielęgniarskie, iniekcje, proste opatrunki.'
             },
             'lux-std': { 
                 name: 'LuxMed Standard', 
-                specs_list: ["Internista", "Pediatra", "Lekarz Rodzinny", "Ginekolog", "Okulista", "Chirurg", "Dermatolog", "Kardiolog", "Laryngolog", "Neurolog", "Ortopeda", "Urolog", "Pulmonolog"],
-                specs: '17 specjalności', 
-                labs: '263 badania laboratoryjne', 
-                diag: 'Rozszerzone RTG, USG jamy brzusznej', 
-                preg: 'Pełny standard opieki (Karta Ciąży)',
-                proc: '46 procedur ambulatoryjnych'
+                specs_list: ["Internista", "Pediatra", "Lekarz Rodzinny", "Ginekolog", "Okulista", "Chirurg", "Dermatolog", "Kardiolog", "Laryngolog", "Neurolog", "Ortopeda", "Urolog", "Pulmonolog", "Hematolog", "Lekarz Dyżurny"],
+                specs: '17 specjalności lekarskich', 
+                labs: '263 badania laboratoryjne (szeroka diagnostyka)', 
+                diag: 'Rozszerzone RTG kostne, USG jamy brzusznej', 
+                preg: 'Pełny standard opieki zgodnie z Kartą Ciąży',
+                proc: '46 procedur ambulatoryjnych i pielęgniarskich.'
             }
         };
 
         function renderComparison() {
             const selected = Array.from(document.querySelectorAll('.compare-trigger:checked')).map(cb => cb.value);
             const wrapper = document.getElementById('comparison-table-wrapper');
-            if (selected.length < 1) { wrapper.innerHTML = '<p class="p-8 text-center text-slate-400">Zaznacz warianty powyżej.</p>'; return; }
+            if (selected.length === 0) {
+                if (wrapper) wrapper.innerHTML = '<div class="p-10 text-center text-slate-400 text-sm italic">Zaznacz przynajmniej jeden wariant powyżej.</div>';
+                return;
+            }
 
-            let html = `<table class="compare-table"><thead><tr><th>Cecha</th>`;
-            selected.forEach(k => html += `<th>${comparisonData[k].name}</th>`);
+            let html = `<table class="compare-table"><thead><tr><th>Kategoria Świadczeń</th>`;
+            selected.forEach(key => { html += `<th>${comparisonData[key].name}</th>`; });
             html += `</tr></thead><tbody>`;
 
             const rows = [
-                { l: 'Liczba Specjalizacji', k: 'specs' },
-                { l: 'Diagnostyka Lab.', k: 'labs' },
-                { l: 'Diagnostyka Obrazowa/RTG', k: 'diag' },
-                { l: 'Prowadzenie Ciąży', k: 'preg' },
-                { l: 'Zabiegi Ambulatoryjne', k: 'proc' }
+                { label: 'Liczba Specjalizacji', key: 'specs' },
+                { label: 'Diagnostyka Lab.', key: 'labs' },
+                { label: 'Diagnostyka Obrazowa i RTG', key: 'diag' },
+                { label: 'Prowadzenie Ciąży', key: 'preg' },
+                { label: 'Zabiegi Ambulatoryjne', key: 'proc' }
             ];
 
-            rows.forEach(r => {
-                html += `<tr><td class="font-bold text-beauty-navy bg-slate-50">${r.l}</td>`;
-                selected.forEach(k => html += `<td class="text-xs text-slate-600">${comparisonData[k][r.k]}</td>`);
+            rows.forEach(row => {
+                html += `<tr><td class="font-bold text-beauty-navy bg-slate-50/50">${row.label}</td>`;
+                selected.forEach(key => { html += `<td class="text-xs text-slate-600 leading-relaxed">${comparisonData[key][row.key]}</td>`; });
                 html += `</tr>`;
             });
 
             // Analiza różnic (Na Czerwono)
             if (selected.length >= 2) {
-                html += `<tr><td class="font-bold text-red-600 bg-red-50">Czego brakuje? (Różnice)</td>`;
+                html += `<tr><td class="font-bold text-red-600 bg-red-50">Czego brakuje? (Analiza)</td>`;
                 selected.forEach((k_curr, idx) => {
                     let missing = [];
                     selected.forEach((k_other, idx_other) => {
@@ -584,62 +601,106 @@
             }
 
             html += `</tbody></table>`;
-            wrapper.innerHTML = html;
+            if (wrapper) wrapper.innerHTML = html;
         }
 
-        // Kalkulator cen
-        const price_data = {
-            '3-10': { e_std: ['216','237','478'], l_std: ['131','234','347'] },
-            '11-20': { e_std: ['202','220','450'], l_std: ['124','220','327'] },
-            '21-50': { e_std: ['194','212','420'], l_std: ['120','212','314'] }
+        // Ceny
+        const pData = {
+            '3-10': { enel: ['216', '237', '478'], lux: ['131', '234', '347'] },
+            '11-20': { enel: ['202', '220', '450'], lux: ['124', '220', '327'] },
+            '21-50': { enel: ['194', '212', '420'], lux: ['120', '212', '314'] }
         };
 
         function updateMedicalTable() {
-            const size_el = document.querySelector('input[name="staff_size"]:checked');
-            if (!size_el) return;
-            const size = size_el.value;
+            const sizeInput = document.querySelector('input[name="staff_size"]:checked');
+            if (!sizeInput) return;
+            const size = sizeInput.value;
             const grid = document.getElementById('medical-pricing');
             const msg = document.getElementById('max-staff-msg');
             
-            if (size === '51+') { grid.classList.add('hidden'); msg.classList.remove('hidden'); }
-            else {
-                grid.classList.remove('hidden'); msg.classList.add('hidden');
-                const d = price_data[size];
-                document.getElementById('enel-std-price').innerText = d.e_std[0] + ' zł';
-                document.getElementById('enel-std-part').innerText = d.e_std[1] + ' zł';
-                document.getElementById('enel-std-fam').innerText = d.e_std[2] + ' zł';
-                document.getElementById('lux-std-price').innerText = d.l_std[0] + ' zł';
-                document.getElementById('lux-std-part').innerText = d.l_std[1] + ' zł';
-                document.getElementById('lux-std-fam').innerText = d.l_std[2] + ' zł';
+            if (grid && msg) {
+                if (size === '51+') { grid.classList.add('hidden'); msg.classList.remove('hidden'); }
+                else {
+                    grid.classList.remove('hidden'); msg.classList.add('hidden');
+                    const d = pData[size];
+                    if (d) {
+                        const eStd = document.getElementById('enel-std-price');
+                        const ePart = document.getElementById('enel-std-part');
+                        const eFam = document.getElementById('enel-std-fam');
+                        const lStd = document.getElementById('lux-std-price');
+                        const lPart = document.getElementById('lux-std-part');
+                        const lFam = document.getElementById('lux-std-fam');
+
+                        if (eStd) eStd.innerText = d.enel[0] + ' zł';
+                        if (ePart) ePart.innerText = d.enel[1] + ' zł';
+                        if (eFam) eFam.innerText = d.enel[2] + ' zł';
+                        if (lStd) lStd.innerText = d.lux[0] + ' zł';
+                        if (lPart) lPart.innerText = d.lux[1] + ' zł';
+                        if (lFam) lFam.innerText = d.lux[2] + ' zł';
+                    }
+                }
             }
         }
 
-        // Formularz i Sygnatura
+        // Modale i Formularz
+        function openModal(id) { 
+            const el = document.getElementById(id);
+            if (el) { el.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        }
+        function closeModal(id) { 
+            const el = document.getElementById(id);
+            if (el) { el.classList.remove('active'); document.body.style.overflow = 'auto'; }
+        }
+        function openMedicalOfferModal(operator, variant) {
+            const opEl = document.getElementById('m-operator');
+            const staffEl = document.getElementById('m-staff');
+            if (opEl) opEl.value = operator;
+            const sizeInput = document.querySelector('input[name="staff_size"]:checked');
+            if (staffEl && sizeInput) staffEl.value = sizeInput.value;
+            openModal('modal-medical-offer');
+        }
+
+        let nipTimeout;
+        function verifyNipApi() {
+            const input = document.getElementById('m-nip');
+            const loader = document.getElementById('nip-loader');
+            const status = document.getElementById('nip-status');
+            if (!input || !loader || !status) return;
+            status.innerText = "";
+            if (input.value.length === 10) {
+                loader.style.display = 'block';
+                clearTimeout(nipTimeout);
+                nipTimeout = setTimeout(() => {
+                    loader.style.display = 'none';
+                    status.innerText = "✓ Podmiot zweryfikowany w bazie GUS";
+                    status.className = "text-[9px] mt-1.5 font-semibold text-emerald-600";
+                }, 1200);
+            } else { loader.style.display = 'none'; }
+        }
+
         function submitMedicalModalForm(e) {
             e.preventDefault();
             const btn = document.getElementById('m-btn');
-            btn.innerHTML = 'Przetwarzanie...'; btn.disabled = true;
-            const sig = `BP/MED/${new Date().toISOString().slice(0,10).replace(/-/g,'')}/${Math.random().toString(36).substring(7).toUpperCase()}`;
+            if (!btn) return;
+            
+            // Generator sygnatury chronologicznej
+            const now = new Date();
+            const dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
+            const timeStr = now.getHours().toString().padStart(2,'0') + now.getMinutes().toString().padStart(2,'0');
+            const random = Math.random().toString(36).substring(7).toUpperCase();
+            const sig = `BP/MED/${dateStr}-${timeStr}/${random}`;
             document.getElementById('m-signature').value = sig;
-            setTimeout(() => {
-                alert(`Dziękujemy! Zgłoszenie o numerze ${sig} zostało wysłane. Skontaktujemy się z Tobą.`);
-                closeModal('modal-medical-offer'); btn.innerHTML = 'Wyślij'; btn.disabled = false;
-            }, 1500);
-        }
 
-        // Modale i API
-        function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = 'auto'; }
-        function openMedicalOfferModal(op, v) { document.getElementById('m-operator').value = op; openModal('modal-medical-offer'); }
-        function verifyNipApi() {
-            const input = document.getElementById('m-nip'); const status = document.getElementById('nip-status');
-            if (input.value.length === 10) {
-                document.getElementById('nip-loader').style.display='block';
-                setTimeout(() => { 
-                    document.getElementById('nip-loader').style.display='none'; 
-                    status.innerText = "✓ Podmiot zweryfikowany w GUS"; status.className="text-[9px] text-emerald-600 mt-1 font-bold";
-                }, 1000);
-            }
+            btn.innerHTML = 'Przetwarzanie zgłoszenia...';
+            btn.disabled = true;
+            setTimeout(() => {
+                alert(`Dziękujemy! Twoje zapytanie o numerze ${sig} zostało wysłane. Skontaktujemy się z Tobą telefonicznie.`);
+                closeModal('modal-medical-offer');
+                btn.innerHTML = 'Wyślij zapytanie';
+                btn.disabled = false;
+                const form = document.getElementById('m-form');
+                if (form) form.reset();
+            }, 1500);
         }
 
         const accordionBtns = document.querySelectorAll('.accordion-btn');
