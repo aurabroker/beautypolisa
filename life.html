@@ -8,302 +8,323 @@
     <meta name="description" content="Grupowe ubezpieczenie na życie ERGO Hestia dla branży beauty. Składki od 58 zł. Global Doctors, MediPlan i pełna ochrona zdrowia.">
     <meta name="theme-color" content="#2a3b69">
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJWP7XYCF1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-HJWP7XYCF1');
+    <!-- Link do Twojego głównego arkusza stylów (zgodnie z wytycznymi) -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Optymalizacja z Biblii: Prerendering / Prefetching -->
+    <script type="speculationrules">
+    {
+      "prefetch": [{"source": "document", "where": {"href_matches": "/*"}, "eagerness": "moderate"}]
+    }
     </script>
 
-    <!-- Chosen Palette: Warm Neutrals with Beauty Navy (#2a3b69) and Rose Pink (#e11d48) accents -->
-    <!-- Application Structure Plan: Kompletny landing page LIFE. 
-         1. Ujednolicony pasek nawigacji i baner FAQ. 
-         2. Sekcja korzyści z powiększoną czcionką. 
-         3. Warianty cenowe z rozwijaną pełną tabelą świadczeń (30+ pozycji). 
-         4. Poprawiona sekcja Global Doctors (114 zł) i MediPlan. 
-         5. Skondensowane FAQ. 
-         6. Formularz finalizacji z pełnymi polami (NIP API, Tel, Liczba osób). -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS (wersja CDN dla podglądu, w produkcji użyj własnego buildu) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #fafafa; color: #1e293b; }
-        h1, h2, h3, .font-heading { font-family: 'Playfair Display', serif; }
+        :root {
+            --beauty-navy: #2a3b69;
+            --beauty-pink: #e11d48;
+            --bg-color: #fafafa;
+        }
 
-        .text-beauty-navy { color: #2a3b69; }
-        .bg-beauty-navy { background-color: #2a3b69; }
-        .border-beauty-navy { border-color: #2a3b69; }
-        
-        .text-beauty-pink { color: #e11d48; }
-        .bg-beauty-pink { background-color: #e11d48; }
-        .border-beauty-pink { border-color: #e11d48; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--bg-color); 
+            color: #1e293b; 
+        }
 
-        .hero-gradient { background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 50%, #ffffff 100%); position: relative; }
-        
-        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
-        .accordion-btn.active .icon { transform: rotate(180deg); }
+        /* Usunięto fonty szeryfowe, nagłówki są teraz grube i nowoczesne */
+        h1, h2, h3, h4, .font-heading { font-weight: 800; letter-spacing: -0.02em; }
 
-        .modal { display: none; opacity: 0; transition: opacity 0.3s ease; z-index: 100; }
-        .modal.active { display: flex; opacity: 1; animation: fadeIn 0.3s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .text-beauty-navy { color: var(--beauty-navy); }
+        .bg-beauty-navy { background-color: var(--beauty-navy); }
+        .text-beauty-pink { color: var(--beauty-pink); }
+        .bg-beauty-pink { background-color: var(--beauty-pink); }
+
+        .hero-gradient { background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 50%, #ffffff 100%); }
         
         .premium-card { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; }
         .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
 
-        .loader { border: 2px solid #f3f3f3; border-top: 2px solid #2a3b69; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: none; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Custom Checkbox dla kalkulatora */
+        .medi-checkbox { appearance: none; width: 24px; height: 24px; border: 2px solid #cbd5e1; border-radius: 6px; outline: none; cursor: pointer; transition: 0.2s; position: relative; }
+        .medi-checkbox:checked { background-color: var(--beauty-pink); border-color: var(--beauty-pink); }
+        .medi-checkbox:checked::after { content: '✓'; position: absolute; color: white; font-size: 16px; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; }
 
-        .benefit-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.8rem; }
-        .benefit-row:last-child { border-bottom: none; }
+        .modal { display: none; opacity: 0; transition: opacity 0.3s ease; z-index: 1000; }
+        .modal.active { display: flex; opacity: 1; animation: fadeIn 0.3s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-        .full-benefits-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
-        .full-benefits-table th, .full-benefits-table td { padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: left; }
-        .full-benefits-table th { background-color: #f8fafc; font-weight: 700; color: #2a3b69; }
-        
-        #faq-banner-text { transition: opacity 0.5s ease-in-out; }
-        .fade-out { opacity: 0; }
-        .fade-in { opacity: 1; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-btn.active .icon { transform: rotate(180deg); }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col selection:bg-beauty-pink selection:text-white">
+<body class="antialiased min-h-screen flex flex-col selection:bg-rose-500 selection:text-white">
 
     <!-- NAWIGACJA -->
-    <nav class="bg-slate-900 text-slate-300 text-[10px] md:text-xs py-1.5 font-semibold tracking-wide border-b border-slate-800 z-50 relative text-center">
+    <nav class="bg-slate-900 text-slate-300 text-[10px] md:text-xs py-2 font-semibold tracking-wide border-b border-slate-800 z-50 relative text-center">
         <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start">
-            <a href="index.html" class="hover:text-white transition-colors">OC</a>
-            <a href="tax-protect.html" class="hover:text-white transition-colors">Ochrona karno-skarbowa</a>
+            <a href="#" class="hover:text-white transition-colors">OC</a>
+            <a href="#" class="hover:text-white transition-colors">Ochrona karno-skarbowa</a>
             <a href="#" class="hover:text-white transition-colors">Prywatne L4</a>
-            <a href="life.html" class="text-white border-b border-beauty-pink pb-0.5 transition-colors">Life</a>
+            <a href="#" class="text-white border-b-2 border-beauty-pink pb-0.5 transition-colors">Life</a>
             <a href="#" class="hover:text-white transition-colors">Opieka medyczna</a>
         </div>
     </nav>
 
-    <header class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-40 border-b border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col sm:flex-row justify-between items-center gap-2">
+    <header class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-slate-100 py-3">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center gap-2">
             <div class="flex items-center gap-4">
-                <span class="text-3xl" aria-hidden="true">&#10084;&#65039;</span>
+                <span class="text-3xl" aria-hidden="true">💎</span>
                 <div class="hidden md:block h-8 w-px bg-slate-200"></div>
                 <div class="flex flex-col">
-                    <span class="text-[14px] font-heading font-bold text-beauty-navy leading-none">BeautyPolisa</span>
+                    <span class="text-[16px] font-heading text-beauty-navy leading-none">BeautyPolisa</span>
                     <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">Created by Aura Consulting</span>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button onclick="document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'});" class="bg-white border border-slate-200 text-slate-600 font-bold py-2 px-6 rounded-full transition-all text-xs hover:bg-slate-50">
-                    FAQ
-                </button>
-                <button onclick="document.getElementById('warianty').scrollIntoView({behavior: 'smooth'});" class="bg-beauty-navy hover:bg-slate-800 text-white font-semibold py-2 px-6 rounded-full transition-all text-xs shadow-lg">
+            <div class="flex items-center gap-3">
+                <button onclick="document.getElementById('warianty').scrollIntoView({behavior: 'smooth'});" class="bg-beauty-navy hover:bg-slate-800 text-white font-bold py-2.5 px-6 rounded-full transition-all text-xs shadow-md">
                     Wybierz Wariant
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- BANER FAKTY -->
-    <div onclick="document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'});" class="bg-rose-50 text-beauty-navy text-xs md:text-sm font-semibold py-2.5 px-4 text-center cursor-pointer hover:bg-rose-100 transition-colors border-b border-rose-200 shadow-inner z-30 relative group">
-        <div class="max-w-4xl mx-auto flex items-center justify-center gap-2">
-            <span class="text-beauty-pink text-lg" aria-hidden="true">&#10024;</span>
-            <span id="faq-banner-text" class="fade-in">Ok. 400 Polaków dziennie otrzymuje informację o rozpoznaniu nowotworu.</span>
-        </div>
-    </div>
-
     <main class="flex-grow">
-        <!-- HERO -->
-        <section class="hero-gradient text-beauty-navy py-10 md:py-16 px-4 text-center">
+        <!-- HERO (Większe fonty, bez szeryfów) -->
+        <section class="hero-gradient text-beauty-navy py-16 md:py-24 px-4 text-center">
             <div class="max-w-5xl mx-auto relative z-10">
-                <span class="inline-block py-1 px-3 rounded-full bg-white border border-rose-100 text-beauty-pink text-[10px] font-bold tracking-widest uppercase mb-4 shadow-sm">
-                    Dedykowane dla Branży Beauty: ERGO Życie w Biznesie
+                <span class="inline-block py-1.5 px-4 rounded-full bg-white border border-rose-200 text-beauty-pink text-[11px] font-bold tracking-widest uppercase mb-6 shadow-sm">
+                    Kompleksowa ochrona w branży Beauty
                 </span>
-                <h1 class="font-heading text-3xl md:text-5xl font-bold mb-4 leading-tight text-slate-800">
-                    Ochrona Życia i Zdrowia<br><span class="text-beauty-pink">Twojego i Twojego Zespołu</span>
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight text-slate-800">
+                    Ochrona Życia i Zdrowia <br><span class="text-beauty-pink text-5xl md:text-7xl">Twojego i Zespołu</span>
                 </h1>
-                <p class="text-sm md:text-base text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-                    Zatrudniasz od 2 osób? Zadbaj o stabilność finansową swojego salonu. Ubezpieczenie chroni pracowników w wieku 15-70 lat oraz ich bliskich. 
-                    Pomoc medyczna, wsparcie po wypadku i bezpieczeństwo finansowe w każdej sytuacji.
+                <p class="text-base md:text-xl text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
+                    Wybierz dedykowaną ścieżkę ochrony. Zabezpiecz stabilność finansową swojego salonu, zaoferuj pracownikom pakiet medyczny lub chroń swój indywidualny dochód.
                 </p>
+
+                <!-- WYBÓR ŚCIEŻKI -->
+                <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mt-12 text-left">
+                    <!-- Box 1: Grupowe -->
+                    <div onclick="document.getElementById('warianty').scrollIntoView({behavior: 'smooth'});" class="bg-white rounded-3xl p-8 border-2 border-beauty-pink shadow-xl cursor-pointer transform hover:-translate-y-2 transition-all group">
+                        <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-2xl mb-4">👥</div>
+                        <h3 class="text-2xl font-bold text-beauty-navy mb-2">Ubezpieczenie Grupowe</h3>
+                        <p class="text-sm text-slate-600 mb-6 font-medium">Dla salonów zatrudniających <strong>od 2 osób</strong>. Zabezpiecz zespół (ERGO Hestia) i wrzuć składki w koszty firmy.</p>
+                        <span class="text-beauty-pink font-bold text-sm uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-2 transition-transform">Sprawdź pakiety <span>→</span></span>
+                    </div>
+
+                    <!-- Box 2: Indywidualne -->
+                    <a href="life1.html" class="bg-slate-50 rounded-3xl p-8 border border-slate-200 shadow-md hover:shadow-xl hover:border-blue-300 transform hover:-translate-y-2 transition-all block group">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-2xl mb-4">👤</div>
+                        <h3 class="text-2xl font-bold text-beauty-navy mb-2">Ubezpieczenie Indywidualne</h3>
+                        <p class="text-sm text-slate-600 mb-6 font-medium">Dla właścicieli i JDG (Squarelife). Wysokie sumy, ochrona dochodu i proces bez badań lekarskich.</p>
+                        <span class="text-blue-600 font-bold text-sm uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-2 transition-transform">Poznaj ofertę <span>→</span></span>
+                    </a>
+                </div>
             </div>
         </section>
 
-        <!-- KORZYŚCI -->
-        <section class="py-6 bg-white px-4">
+        <!-- 2 BOXY KORZYŚCI -->
+        <section class="py-12 bg-white px-4">
             <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
-                <div class="bg-slate-50 p-6 md:p-10 rounded-3xl border border-slate-200 shadow-sm">
-                    <h3 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy mb-6 border-b pb-4">Korzyści dla Ciebie (Właściciel)</h3>
-                    <ul class="space-y-4 text-sm md:text-base text-slate-700 leading-relaxed">
-                        <li class="flex items-start gap-4"><span class="text-beauty-pink font-bold mt-1">&#10148;</span> <span><strong>Optymalizacja kosztów:</strong> Składki możesz zaliczyć do kosztów uzyskania przychodów.</span></li>
-                        <li class="flex items-start gap-4"><span class="text-beauty-pink font-bold mt-1">&#10148;</span> <span><strong>Zwolnienie z odpraw:</strong> Wypłata z polisy zwalnia Cię z odprawy pośmiertnej.</span></li>
-                        <li class="flex items-start gap-4"><span class="text-beauty-pink font-bold mt-1">&#10148;</span> <span><strong>Lojalność zespołu:</strong> Prestiżowy benefit zdrowotny przyciąga najlepszych ekspertów.</span></li>
+                <!-- BOX 1: Ulepszony obecny -->
+                <div class="bg-slate-50 p-8 md:p-12 rounded-[32px] border border-slate-200 shadow-sm">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-6 text-2xl">🤝</div>
+                    <h3 class="text-2xl md:text-3xl font-bold text-beauty-navy mb-6">Pakiet Win-Win</h3>
+                    <p class="text-slate-600 mb-6 font-medium">System stworzony tak, aby chronił interesy właściciela salonu oraz dawał realne poczucie bezpieczeństwa pracownikom.</p>
+                    <ul class="space-y-4 text-sm md:text-base text-slate-700 font-medium">
+                        <li class="flex items-start gap-4"><span class="text-beauty-pink text-xl mt-0.5">✓</span> <span><strong>Zwolnienie z odpraw:</strong> Wypłata z polisy po śmierci pracownika zwalnia Cię z ustawowej odprawy pośmiertnej.</span></li>
+                        <li class="flex items-start gap-4"><span class="text-beauty-pink text-xl mt-0.5">✓</span> <span><strong>Optymalizacja VAT/PIT:</strong> Składki możesz wrzucić w koszty prowadzenia działalności.</span></li>
+                        <li class="flex items-start gap-4"><span class="text-beauty-pink text-xl mt-0.5">✓</span> <span><strong>Dla pracownika:</strong> Aż 87 poważnych zachorowań, wypłaty w 24h i pełne zaplecze medyczne.</span></li>
                     </ul>
                 </div>
-                <div class="bg-rose-50/40 p-6 md:p-10 rounded-3xl border border-rose-200 shadow-sm">
-                    <h3 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy mb-6 border-b pb-4">Korzyści dla Pracownika</h3>
-                    <ul class="space-y-4 text-sm md:text-base text-slate-700 leading-relaxed">
-                        <li class="flex items-start gap-4"><span class="text-beauty-pink font-bold mt-1">&#10148;</span> <span><strong>Szeroki zakres:</strong> Aż 87 poważnych zachorowań i pełen assistance MediOpieka.</span></li>
-                        <li class="flex items-start gap-4"><span class="text-beauty-pink font-bold mt-1">&#10148;</span> <span><strong>Wypłata w 1 dzień:</strong> Błyskawiczne świadczenie finansowe po zgłoszeniu szkody.</span></li>
-                        <li class="flex items-start gap-4"><span class="text-beauty-pink font-bold mt-1">&#10148;</span> <span><span>Brak karencji</span> na świadczenia z tytułu zgonu ubezpieczonego.</span></li>
-                    </ul>
+                
+                <!-- BOX 2: Nowy koncept (Tarcza Anty-Rotacyjna) -->
+                <div class="bg-beauty-navy text-white p-8 md:p-12 rounded-[32px] shadow-2xl relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 text-[150px] opacity-10">🛡️</div>
+                    <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-6 text-2xl">💎</div>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6">Tarcza Anty-Rotacyjna</h3>
+                    <p class="text-slate-300 mb-6 font-medium text-sm md:text-base leading-relaxed">
+                        Zastąpienie dobrego pracownika w branży beauty kosztuje średnio od 10 000 do 15 000 zł (rekrutacja, wdrożenie, utrata stałych klientek).
+                    </p>
+                    <div class="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm">
+                        <p class="text-xs text-beauty-pink font-bold uppercase tracking-widest mb-2">Psychologia HR</p>
+                        <p class="text-sm font-medium">Zamiast kolejnej podwyżki o 50 zł, która szybko znika w portfelu, dajesz pakiet medyczny o wartości postrzeganej w tysiącach złotych. To buduje lojalność, której nie kupisz gotówką.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- WARIANTY SKŁADEK -->
-        <article id="warianty" class="py-10 bg-slate-50 px-4 border-y border-slate-200">
+        <!-- WARIANTY BAZOWE -->
+        <article id="warianty" class="py-16 bg-slate-50 px-4 border-y border-slate-200">
             <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-10">
-                    <h2 class="font-heading text-2xl md:text-4xl font-bold text-beauty-navy mb-3">Warianty Programu Life</h2>
-                    <p class="text-slate-500 text-sm">Przykładowe konfiguracje dla salonów beauty.</p>
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-5xl font-bold text-beauty-navy mb-4">Wybierz bazę programu Life</h2>
+                    <p class="text-slate-500 font-medium max-w-2xl mx-auto">Podstawa ubezpieczenia. W kolejnym kroku rozszerzysz ją o pakiety usług medycznych.</p>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="grid md:grid-cols-3 gap-6">
                     <!-- Wariant I -->
                     <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden premium-card flex flex-col shadow-sm">
-                        <div class="p-6 text-center bg-slate-50 border-b border-slate-100">
-                            <h4 class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Wariant I</h4>
-                            <div class="text-3xl font-extrabold text-beauty-navy">58 zł<span class="text-sm font-medium text-slate-400">/mc</span></div>
+                        <div class="p-8 text-center bg-slate-50 border-b border-slate-100">
+                            <h4 class="text-xs uppercase font-bold text-slate-400 tracking-widest mb-2">Wariant I</h4>
+                            <div class="text-4xl font-extrabold text-beauty-navy">58 zł<span class="text-base font-semibold text-slate-400">/mc</span></div>
                         </div>
-                        <div class="p-6 flex-grow space-y-1">
-                            <div class="benefit-row"><span>Zgon ubezpieczonego</span><strong>100 000 zł</strong></div>
-                            <div class="benefit-row"><span>Zgon (Nieszczęśliwy Wypadek)</span><strong>210 000 zł</strong></div>
-                            <div class="benefit-row"><span>Zgon (Wypadek w Pracy)</span><strong>320 000 zł</strong></div>
-                            <div class="benefit-row"><span>Poważne zachorowanie</span><strong>11 000 zł</strong></div>
-                            <div class="benefit-row"><span>Urodzenie dziecka</span><strong>1 500 zł</strong></div>
-                        </div>
-                        <div class="p-5">
-                            <button onclick="openLifeOfferModal('58')" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-all">Wybieram Wariant I</button>
+                        <div class="p-8 flex-grow space-y-3 text-sm">
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Zgon ubezpieczonego</span><strong class="text-beauty-navy">100 000 zł</strong></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Nieszczęśliwy Wypadek</span><strong class="text-beauty-navy">210 000 zł</strong></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Poważne zachorowanie</span><strong class="text-beauty-navy">11 000 zł</strong></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Urodzenie dziecka</span><strong class="text-beauty-navy">1 500 zł</strong></div>
                         </div>
                     </div>
 
-                    <!-- Wariant II -->
-                    <div class="bg-white rounded-3xl border-2 border-beauty-pink overflow-hidden premium-card relative flex flex-col transform md:-translate-y-2 shadow-lg">
-                        <div class="absolute top-0 left-0 w-full bg-beauty-pink text-white text-[9px] font-bold py-1.5 uppercase text-center tracking-widest">Rekomendacja</div>
-                        <div class="p-6 pt-10 text-center bg-rose-50/50 border-b border-rose-100">
-                            <h4 class="text-[10px] uppercase font-bold text-beauty-pink tracking-widest mb-1">Wariant II</h4>
-                            <div class="text-3xl font-extrabold text-slate-800">68 zł<span class="text-sm font-medium text-slate-400">/mc</span></div>
+                    <!-- Wariant II (Rekomendowany) -->
+                    <div class="bg-white rounded-3xl border-2 border-beauty-pink overflow-hidden premium-card relative flex flex-col transform md:-translate-y-4 shadow-xl z-10">
+                        <div class="absolute top-0 left-0 w-full bg-beauty-pink text-white text-[10px] font-bold py-2 uppercase text-center tracking-widest">Najczęściej wybierany</div>
+                        <div class="p-8 pt-12 text-center bg-rose-50/50 border-b border-rose-100">
+                            <h4 class="text-xs uppercase font-bold text-beauty-pink tracking-widest mb-2">Wariant II</h4>
+                            <div class="text-4xl font-extrabold text-slate-800">68 zł<span class="text-base font-semibold text-slate-400">/mc</span></div>
                         </div>
-                        <div class="p-6 flex-grow space-y-1">
-                            <div class="benefit-row"><span>Zgon ubezpieczonego</span><strong>80 000 zł</strong></div>
-                            <div class="benefit-row"><span>Zgon (Nieszczęśliwy Wypadek)</span><strong>170 000 zł</strong></div>
-                            <div class="benefit-row"><span>Zgon (Wypadek w Pracy)</span><strong>260 000 zł</strong></div>
-                            <div class="benefit-row"><span>Poważne zachorowanie</span><strong>8 000 zł</strong></div>
-                            <div class="benefit-row"><span>Urodzenie dziecka</span><strong>1 500 zł</strong></div>
-                        </div>
-                        <div class="p-5">
-                            <button onclick="openLifeOfferModal('68')" class="w-full bg-beauty-pink text-white font-bold py-3 rounded-xl hover:bg-rose-700 shadow-md">Wybieram Wariant II</button>
+                        <div class="p-8 flex-grow space-y-3 text-sm">
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Zgon ubezpieczonego</span><strong class="text-beauty-navy">80 000 zł</strong></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Nieszczęśliwy Wypadek</span><strong class="text-beauty-navy">170 000 zł</strong></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Poważne zachorowanie</span><strong class="text-beauty-navy">8 000 zł</strong></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Urodzenie dziecka</span><strong class="text-beauty-navy">1 500 zł</strong></div>
                         </div>
                     </div>
 
                     <!-- Wariant III -->
                     <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden premium-card flex flex-col shadow-sm">
-                        <div class="p-6 text-center bg-slate-50 border-b border-slate-100">
-                            <h4 class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Wariant III</h4>
-                            <div class="text-3xl font-extrabold text-beauty-navy">76 zł<span class="text-sm font-medium text-slate-400">/mc</span></div>
+                        <div class="p-8 text-center bg-slate-50 border-b border-slate-100">
+                            <h4 class="text-xs uppercase font-bold text-slate-400 tracking-widest mb-2">Wariant III</h4>
+                            <div class="text-4xl font-extrabold text-beauty-navy">76 zł<span class="text-base font-semibold text-slate-400">/mc</span></div>
                         </div>
-                        <div class="p-6 flex-grow space-y-1">
-                            <div class="benefit-row"><span>Zgon ubezpieczonego</span><strong>75 000 zł</strong></div>
-                            <div class="benefit-row"><span>Zgon (Nieszczęśliwy Wypadek)</span><strong>160 000 zł</strong></div>
-                            <div class="benefit-row"><span>Zgon (Wypadek w Pracy)</span><strong>245 000 zł</strong></div>
-                            <div class="benefit-row"><span>Poważne zachorowanie</span><strong>7 500 zł</strong></div>
-                            <div class="benefit-row"><span>Urodzenie dziecka</span><strong>1 500 zł</strong></div>
-                        </div>
-                        <div class="p-5">
-                            <button onclick="openLifeOfferModal('76')" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-all">Wybieram Wariant III</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ROZWIJANA TABELA PEŁNYCH ŚWIADCZEŃ -->
-                <div class="max-w-4xl mx-auto">
-                    <button onclick="toggleBenefitsTable()" class="bg-white border border-slate-200 text-beauty-navy font-bold py-3 px-8 rounded-full text-xs hover:bg-slate-50 transition-all mx-auto flex items-center gap-2">
-                        <span id="btn-text">Rozwiń pełny zakres świadczeń (30+ pozycji)</span>
-                        <span id="btn-icon" class="transition-transform">&#9660;</span>
-                    </button>
-                    
-                    <div id="full-benefits-container" class="hidden mt-6 bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xl animate-[fadeIn_0.3s]">
-                        <div class="overflow-x-auto">
-                            <table class="full-benefits-table">
-                                <thead>
-                                    <tr><th>Zdarzenie</th><th>Wariant I</th><th>Wariant II</th><th>Wariant III</th></tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="bg-slate-50 font-bold"><td colspan="4">PAKIET ZGON</td></tr>
-                                    <tr><td>Zgon ubezpieczonego</td><td>100 000 zł</td><td>80 000 zł</td><td>75 000 zł</td></tr>
-                                    <tr><td>Zgon (Nieszczęśliwy Wypadek)</td><td>210 000 zł</td><td>170 000 zł</td><td>160 000 zł</td></tr>
-                                    <tr><td>Zgon (Wypadek Komunikacyjny)</td><td>320 000 zł</td><td>260 000 zł</td><td>245 000 zł</td></tr>
-                                    <tr><td>Zgon (Wypadek w Pracy)</td><td>320 000 zł</td><td>260 000 zł</td><td>245 000 zł</td></tr>
-                                    <tr><td>Zgon (Zawał serca / Udar mózgu)</td><td>150 000 zł</td><td>120 000 zł</td><td>110 000 zł</td></tr>
-                                    <tr><td>Zgon (Choroba nowotworowa)</td><td>110 000 zł</td><td>90 000 zł</td><td>85 000 zł</td></tr>
-                                    <tr class="bg-slate-50 font-bold"><td colspan="4">PAKIET WYPADEK I CHOROBA</td></tr>
-                                    <tr><td>Trwały uszczerbek NW (za 1%)</td><td>650 zł</td><td>600 zł</td><td>550 zł</td></tr>
-                                    <tr><td>Trwały uszczerbek (Wypadek Komunikacyjny) - za 1%</td><td>1 000 zł</td><td>800 zł</td><td>700 zł</td></tr>
-                                    <tr><td>Uraz niepowodujący uszczerbku (np. skręcenie)</td><td>200 zł</td><td>150 zł</td><td>100 zł</td></tr>
-                                    <tr><td>Poważne zachorowanie (Zakres Max - 87 chorób)</td><td>11 000 zł</td><td>8 000 zł</td><td>7 500 zł</td></tr>
-                                    <tr><td>Operacja chirurgiczna (Grupa 1 - 100%)</td><td>4 500 zł</td><td>3 500 zł</td><td>3 500 zł</td></tr>
-                                    <tr><td>Leczenie szpitalne (choroba) - dziennie</td><td>90 zł</td><td>80 zł</td><td>80 zł</td></tr>
-                                    <tr><td>Leczenie na OIOM/OIT - dziennie</td><td>50 zł</td><td>50 zł</td><td>50 zł</td></tr>
-                                    <tr class="bg-slate-50 font-bold"><td colspan="4">PAKIET RODZINA</td></tr>
-                                    <tr><td>Urodzenie dziecka</td><td>1 500 zł</td><td>1 500 zł</td><td>1 500 zł</td></tr>
-                                    <tr><td>Zgon małżonka / partnera</td><td>15 000 zł</td><td>15 000 zł</td><td>15 000 zł</td></tr>
-                                    <tr><td>Zgon dziecka (NW)</td><td>10 000 zł</td><td>10 000 zł</td><td>10 000 zł</td></tr>
-                                    <tr><td>Zgon rodzica / rodzica małżonka</td><td>1 800 zł</td><td>1 800 zł</td><td>1 800 zł</td></tr>
-                                </tbody>
-                            </table>
+                        <div class="p-8 flex-grow space-y-3 text-sm">
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Zgon ubezpieczonego</span><strong class="text-beauty-navy">75 000 zł</strong></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Nieszczęśliwy Wypadek</span><strong class="text-beauty-navy">160 000 zł</strong></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Poważne zachorowanie</span><strong class="text-beauty-navy">7 500 zł</strong></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Urodzenie dziecka</span><strong class="text-beauty-navy">1 500 zł</strong></div>
                         </div>
                     </div>
                 </div>
             </div>
         </article>
 
-        <!-- SEKCJA GLOBAL DOCTORS - POPRAWIONA GEOMETRIA -->
-        <section class="py-16 bg-white px-4 border-b border-slate-100 overflow-hidden">
+        <!-- SEKCJA MEDIOPIEKA I KALKULATOR -->
+        <section class="py-16 bg-white px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-12">
+                    <span class="bg-blue-100 text-blue-700 font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest">Nowość</span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-beauty-navy mt-6 mb-4">Rozszerz o MediOpiekę</h2>
+                    <p class="text-slate-600 font-medium max-w-2xl mx-auto">Skomponuj własny pakiet assistance medycznego. Sprawdź koszty dla swojego zespołu w kalkulatorze.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-5 gap-8">
+                    
+                    <!-- Lista Dodatków MediOpieka -->
+                    <div class="lg:col-span-3 space-y-4">
+                        <h3 class="text-xl font-bold text-slate-800 mb-6">Dostępne moduły (zaznacz, aby dodać):</h3>
+                        
+                        <!-- Generator elementów JS -->
+                        <div id="medi-options-container" class="space-y-3">
+                            <!-- Opcje będą wygenerowane przez JS -->
+                        </div>
+                    </div>
+
+                    <!-- Sticky Kalkulator -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-slate-900 text-white rounded-[32px] p-8 shadow-2xl sticky top-24">
+                            <h3 class="text-2xl font-bold mb-6 text-blue-400">Kalkulator Składki</h3>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Liczba osób do ubezpieczenia</label>
+                                    <input type="number" id="calc-people" value="2" min="2" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 text-white font-bold text-lg outline-none focus:border-beauty-pink transition-colors">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Wariant Bazowy (Life)</label>
+                                    <select id="calc-base" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 text-white font-bold text-lg outline-none focus:border-beauty-pink transition-colors cursor-pointer appearance-none">
+                                        <option value="58">Wariant I (58 zł / os)</option>
+                                        <option value="68" selected>Wariant II (68 zł / os)</option>
+                                        <option value="76">Wariant III (76 zł / os)</option>
+                                    </select>
+                                </div>
+
+                                <div class="border-t border-slate-700 pt-6">
+                                    <div class="flex justify-between text-slate-300 text-sm mb-2">
+                                        <span>Składka bazowa:</span>
+                                        <span id="summary-base">340,00 zł</span>
+                                    </div>
+                                    <div class="flex justify-between text-slate-300 text-sm mb-4">
+                                        <span>Dodatki MediOpieka:</span>
+                                        <span id="summary-addons">0,00 zł</span>
+                                    </div>
+                                    <div class="flex justify-between items-end mt-4">
+                                        <div>
+                                            <span class="block text-xs text-slate-400 uppercase font-bold tracking-widest">Łącznie miesięcznie</span>
+                                            <span class="block text-[10px] text-slate-500 mt-1">Wrzuć w koszty firmy</span>
+                                        </div>
+                                        <div class="text-4xl font-black text-white" id="summary-total">340,00 zł</div>
+                                    </div>
+                                </div>
+
+                                <button onclick="openFormModal()" class="w-full bg-beauty-pink hover:bg-rose-600 text-white font-bold py-4 rounded-xl transition-colors mt-4 text-lg">
+                                    Wyślij zapytanie
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKCJA GLOBAL DOCTORS (Przeniesiona na dół) -->
+        <section class="py-16 bg-slate-50 px-4 border-t border-slate-200 overflow-hidden">
             <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
                 <div class="lg:w-1/2">
-                    <span class="inline-block bg-blue-600 text-white px-4 py-1 rounded text-[10px] font-bold uppercase tracking-widest mb-4">Dostępne od 2 osób</span>
-                    <h2 class="font-heading text-3xl md:text-4xl font-bold text-beauty-navy mb-6">Global Doctors: Najwyższy standard leczenia</h2>
-                    <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-8">
+                    <span class="inline-block bg-blue-600 text-white px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-6">Ekskluzywny Dodatek</span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-beauty-navy mb-6">Global Doctors</h2>
+                    <p class="text-slate-600 font-medium md:text-lg leading-relaxed mb-8">
                         Zdiagnozowano nowotwór lub konieczność operacji serca? ERGO Hestia zorganizuje i sfinansuje leczenie w najlepszych klinikach świata (np. Madryt, USA).
                     </p>
                     <div class="grid grid-cols-2 gap-4 mb-8">
-                        <div class="p-5 bg-blue-50 rounded-2xl border border-blue-100">
-                            <div class="text-2xl font-bold text-blue-600 mb-1">2 mln EUR</div>
-                            <div class="text-[10px] text-slate-500 uppercase font-bold leading-tight">Limit na leczenie za granicą</div>
+                        <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
+                            <div class="text-3xl font-black text-blue-600 mb-2">2 mln €</div>
+                            <div class="text-xs text-slate-500 uppercase font-bold leading-tight">Limit na leczenie za granicą</div>
                         </div>
-                        <div class="p-5 bg-blue-50 rounded-2xl border border-blue-100">
-                            <div class="text-2xl font-bold text-blue-600 mb-1">114 zł</div>
-                            <div class="text-[10px] text-slate-500 uppercase font-bold leading-tight">Składka miesięczna / os.</div>
+                        <div class="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
+                            <div class="text-3xl font-black text-blue-600 mb-2">114 zł</div>
+                            <div class="text-xs text-slate-500 uppercase font-bold leading-tight">Składka miesięczna / os.</div>
                         </div>
                     </div>
-                    <ul class="space-y-3 text-xs text-slate-700">
-                        <li class="flex items-center gap-2"><span class="text-blue-500">&#10003;</span> Pokrycie kosztów podróży i pobytu osoby towarzyszącej</li>
-                        <li class="flex items-center gap-2"><span class="text-blue-500">&#10003;</span> Medycyna precyzyjna i testy genetyczne dla rodziny</li>
-                    </ul>
                 </div>
-                <div class="lg:w-1/2 bg-slate-900 text-white p-8 md:p-12 rounded-[40px] shadow-2xl relative">
-                    <div class="absolute -right-10 -bottom-10 text-9xl opacity-5">&#127757;</div>
-                    <h4 class="font-bold mb-6 text-xl text-blue-400">Zakres modułu:</h4>
+                <div class="lg:w-1/2 w-full bg-blue-900 text-white p-8 md:p-12 rounded-[40px] shadow-2xl relative">
+                    <div class="absolute -right-10 -bottom-10 text-[120px] opacity-10">🌍</div>
+                    <h4 class="font-bold mb-8 text-2xl text-blue-300">Zakres leczenia:</h4>
                     <div class="space-y-6">
-                        <div class="flex gap-4">
-                            <span class="text-2xl opacity-80">&#128300;</span>
+                        <div class="flex gap-4 items-center">
+                            <span class="text-3xl bg-blue-800 p-3 rounded-2xl">🧬</span>
                             <div>
-                                <p class="font-bold text-base">Onkologia</p>
-                                <p class="text-xs text-slate-400">Leczenie nowotworów złośliwych w stadium przedinwazyjnym i in situ.</p>
+                                <p class="font-bold text-lg">Onkologia</p>
+                                <p class="text-sm text-blue-200 mt-1">Leczenie nowotworów złośliwych, w tym precyzyjna genetyka.</p>
                             </div>
                         </div>
-                        <div class="flex gap-4">
-                            <span class="text-2xl opacity-80">&#129505;</span>
+                        <div class="flex gap-4 items-center">
+                            <span class="text-3xl bg-blue-800 p-3 rounded-2xl">🫀</span>
                             <div>
-                                <p class="font-bold text-base">Kardiochirurgia</p>
-                                <p class="text-xs text-slate-400">Wymiana zastawek serca i operacje pomostowania tętnic wieńcowych.</p>
+                                <p class="font-bold text-lg">Kardiochirurgia</p>
+                                <p class="text-sm text-blue-200 mt-1">Wymiana zastawek i operacje bypassów.</p>
                             </div>
                         </div>
-                        <div class="flex gap-4">
-                            <span class="text-2xl opacity-80">&#129504;</span>
+                        <div class="flex gap-4 items-center">
+                            <span class="text-3xl bg-blue-800 p-3 rounded-2xl">🧠</span>
                             <div>
-                                <p class="font-bold text-base">Neurochirurgia</p>
-                                <p class="text-xs text-slate-400">Skomplikowane operacje mózgu i układu nerwowego.</p>
+                                <p class="font-bold text-lg">Neurochirurgia</p>
+                                <p class="text-sm text-blue-200 mt-1">Skomplikowane operacje mózgu i rdzenia.</p>
                             </div>
                         </div>
                     </div>
@@ -311,161 +332,215 @@
             </div>
         </section>
 
-        <!-- MEDIPLAN -->
-        <section class="py-16 bg-slate-50 px-4">
-            <div class="max-w-4xl mx-auto bg-white border border-slate-200 rounded-[40px] p-8 md:p-12 shadow-sm text-center">
-                <span class="text-4xl mb-4 block">&#127973;</span>
-                <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-4">Dodaj MediPlan do swojej polisy</h2>
-                <p class="text-slate-600 text-sm md:text-base mb-8 max-w-2xl mx-auto leading-relaxed">
-                    Szybki dostęp do specjalistów (5-10 dni) i nowoczesnej diagnostyki po wypadku. Opcja dla osób, które cenią czas i profesjonalizm.
-                </p>
-                <div class="grid sm:grid-cols-3 gap-6 text-left mb-10">
-                    <div class="bg-slate-50 p-4 rounded-2xl">
-                        <p class="font-bold text-beauty-navy text-xs mb-1">Konsultacje</p>
-                        <p class="text-[11px] text-slate-500">Chirurg, neurolog, kardiolog, ortopeda i wielu innych.</p>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-2xl">
-                        <p class="font-bold text-beauty-navy text-xs mb-1">Diagnostyka</p>
-                        <p class="text-[11px] text-slate-500">RTG, USG oraz 1 badanie Rezonansu/Tomografii w roku.</p>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-2xl">
-                        <p class="font-bold text-beauty-navy text-xs mb-1">Rehabilitacja</p>
-                        <p class="text-[11px] text-slate-500">Do 40 zabiegów rocznie w wariancie maksymalnym.</p>
-                    </div>
-                </div>
-                <div class="inline-block bg-beauty-navy text-white px-8 py-2.5 rounded-full text-xs font-bold">
-                    Składka: od 1,60 zł do 2,80 zł miesięcznie
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ - SKONDENSOWANE -->
-        <section id="faq-section" class="py-12 bg-white px-4 border-t border-slate-100">
+        <!-- FAQ -->
+        <section class="py-16 bg-white px-4 border-t border-slate-100">
             <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-10">
-                    <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-2">Pytania i Odpowiedzi</h2>
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-beauty-navy mb-2">Pytania i Odpowiedzi</h2>
                 </div>
                 <div class="space-y-4">
                     <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                        <button class="accordion-btn w-full px-6 py-4 text-left font-bold text-sm text-slate-800 bg-slate-50 flex justify-between items-center focus:outline-none">
+                        <button class="accordion-btn w-full px-8 py-5 text-left font-bold text-slate-800 bg-slate-50 flex justify-between items-center focus:outline-none">
                             Czy ubezpieczenie chroni moich bliskich?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg">&#9660;</span>
+                            <span class="icon transition-transform duration-300 text-beauty-pink text-xl">▼</span>
                         </button>
                         <div class="accordion-content">
-                            <p class="p-6 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                                <strong>TAK.</strong> Możesz objąć ochroną małżonka, partnera życiowego oraz pełnoletnie dzieci (do 25 roku życia). Co więcej, MediOpieka oferuje assistance medyczny również dla Twoich rodziców oraz teściów.
+                            <p class="p-8 text-sm text-slate-600 leading-relaxed border-t border-slate-100 font-medium">
+                                <strong>TAK.</strong> Możesz objąć ochroną małżonka, partnera życiowego oraz pełnoletnie dzieci. Co więcej, pakiety MediOpieka mogą obejmować również wsparcie dla nich (np. infolinie, transport).
                             </p>
                         </div>
                     </div>
-                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                        <button class="accordion-btn w-full px-6 py-4 text-left font-bold text-sm text-slate-800 bg-slate-50 flex justify-between items-center focus:outline-none">
-                            Jak szybko wypłacane jest świadczenie?
-                            <span class="icon transition-transform duration-300 text-slate-400 text-lg">&#9660;</span>
-                        </button>
-                        <div class="accordion-content">
-                            <p class="p-6 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                                ERGO Hestia gwarantuje błyskawiczną ścieżkę obsługi roszczeń. W bezspornych przypadkach wypłata środków może nastąpić nawet w ciągu <strong>24 godzin</strong> od zgłoszenia online przez dedykowany portal.
-                            </p>
-                        </div>
-                    </div>
+                    <!-- Dodaj więcej FAQ wg potrzeb -->
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 pt-8 pb-6 text-sm text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-6 text-center md:text-left">
-            <div>
-                <p class="mb-1 text-[11px]"><strong>Obsługa techniczna Programu:</strong> Aura Expert sp. z o.o. <span class="font-semibold text-beauty-navy">(tel. 504 400 901)</span></p>
-                <p class="mb-3 text-[11px]"><strong>Likwidacja szkód:</strong> Aura Consulting sp. z o.o. we współpracy z ERGO Hestia S.A.</p>
-                <span class="text-[9px] text-slate-400 font-semibold tracking-wide">BeautyPolisa created by Aura Consulting</span>
+    <!-- MIEJSCE NA STOPKĘ GENEROWANĄ Z JS -->
+    <div id="footer-placeholder"></div>
+
+    <!-- MODAL INFORMACYJNY MEDIOPIEKA -->
+    <div id="modal-info" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
+        <div class="bg-white rounded-[32px] shadow-2xl max-w-lg w-full overflow-hidden relative max-h-[90vh] flex flex-col">
+            <div class="bg-slate-50 px-8 py-6 border-b border-slate-100 flex justify-between items-center sticky top-0">
+                <h3 id="modal-info-title" class="font-bold text-xl text-beauty-navy">Tytuł</h3>
+                <button onclick="closeModal('modal-info')" class="text-slate-400 hover:text-beauty-pink text-3xl leading-none">&times;</button>
             </div>
-            <div class="text-[9px] text-slate-400 md:text-right flex flex-col justify-center gap-1 leading-relaxed">
-                <p>Ubezpieczyciel: Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</p>
-                <p class="italic">Szczegóły w OWU ERGO Życie w Biznesie (kod: EZwB 01/25) oraz MediOpieka (MA 01/25).</p>
+            <div class="p-8 overflow-y-auto text-sm text-slate-600 space-y-4 font-medium" id="modal-info-content">
+                <!-- Treść wstrzykiwana przez JS -->
             </div>
         </div>
-    </footer>
+    </div>
 
-    <!-- MODAL FINALIZACJI - PEŁNE DANE -->
-    <div id="modal-life-offer" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog">
+    <!-- MODAL FINALIZACJI (Formularz) -->
+    <div id="modal-form" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
         <div class="bg-white rounded-[32px] shadow-2xl max-w-md w-full overflow-hidden relative max-h-[95vh] overflow-y-auto">
-            <button onclick="closeModal('modal-life-offer')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&#10005;</button>
+            <button onclick="closeModal('modal-form')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&times;</button>
             
-            <div class="bg-slate-50 px-6 py-5 border-b border-slate-100">
-                <h3 class="font-heading font-bold text-lg text-beauty-navy">Finalizacja zapytania Life</h3>
-                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mt-1">Uzupełnij dane dla zespołu ekspertów</p>
+            <div class="bg-slate-50 px-8 py-6 border-b border-slate-100">
+                <h3 class="font-bold text-xl text-beauty-navy">Darmowa wycena</h3>
+                <p class="text-xs text-slate-400 font-bold mt-1">Przygotujemy dedykowany wniosek</p>
             </div>
             
-            <form onsubmit="submitLifeModalForm(event)" class="p-6 space-y-4">
-                <!-- NIP WERYFIKACJA -->
+            <form class="p-8 space-y-5" onsubmit="event.preventDefault(); alert('Wysłano zapytanie!'); closeModal('modal-form');">
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">NIP Salonu / Firmy (Weryfikacja API)</label>
-                    <div class="relative">
-                        <input type="text" id="m-nip" required maxlength="10" placeholder="Wpisz 10 cyfr" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none transition-all" oninput="verifyNipApi()">
-                        <div id="nip-loader" class="loader absolute right-3 top-3.5"></div>
-                    </div>
-                    <p id="nip-status" class="text-[9px] mt-1 font-semibold min-h-[12px]"></p>
+                    <label class="block text-xs font-bold text-slate-500 mb-2">Telefon kontaktowy</label>
+                    <input type="tel" required placeholder="np. 500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm font-medium outline-none focus:border-beauty-pink">
                 </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Telefon</label>
-                        <input type="tel" id="m-tel" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Liczba pracowników</label>
-                        <input type="number" id="m-count" required min="2" placeholder="np. 5" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Wstępnie wybrany wariant:</label>
-                    <select id="m-variant" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink outline-none cursor-pointer">
-                        <option value="58">Wariant I (58 zł)</option>
-                        <option value="68">Wariant II (68 zł)</option>
-                        <option value="76">Wariant III (76 zł)</option>
-                    </select>
-                </div>
-
-                <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100 flex items-start gap-3">
-                    <input type="checkbox" id="m-gd" class="mt-1 accent-blue-600">
-                    <label for="m-gd" class="text-[10px] text-blue-900 leading-tight">Jestem zainteresowany rozszerzeniem <strong>Global Doctors</strong> (Leczenie za granicą do 2 mln EUR).</label>
-                </div>
-
-                <button type="submit" id="m-btn" class="w-full bg-beauty-navy hover:bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg text-sm transition-all mt-2">
-                    Poproś o przygotowanie wniosku
+                <button type="submit" class="w-full bg-beauty-navy text-white font-bold py-4 rounded-xl shadow-lg text-sm hover:bg-slate-800 transition-colors">
+                    Poproś o kontakt eksperta
                 </button>
             </form>
         </div>
     </div>
 
+    <!-- SKRYPTY LOGIKI STRONY -->
     <script>
-        // Logika banera FAQ
-        const faqs = [
-            "Ok. 400 Polaków dziennie otrzymuje informację o rozpoznaniu nowotworu.",
-            "Tylko 30% terapii onkologicznych jest w Polsce w pełni refundowanych.",
-            "Wypłata świadczenia w ERGO Hestii następuje nawet w 1 dzień od zgłoszenia.",
-            "Global Doctors (wersja grupowa): 114 zł / mc. Limit: 2 000 000 EUR.",
-            "Ubezpieczenie chroni na całym świecie 24/7.",
-            "Karencja na zgon ubezpieczonego wynosi 0 dni (brak)."
+        // Baza Danych MediOpieka (na podstawie PDF)
+        const mediAddons = [
+            { 
+                id: 'ast_med', 
+                name: 'Assistance Medyczny', 
+                price: 3.00, 
+                desc: 'Wsparcie w nieszczęśliwych wypadkach i nagłych chorobach.',
+                details: `<ul class="space-y-2">
+                    <li>✓ Wizyty domowe lekarza (do 800 zł)</li>
+                    <li>✓ Transport medyczny do/z placówki (do 800 zł)</li>
+                    <li>✓ Usługi pielęgniarskie w domu (do 1000 zł)</li>
+                    <li>✓ Dostawa leków i zakupy (do 500 zł)</li>
+                    <li>✓ Opieka nad dziećmi/zwierzętami w czasie pobytu w szpitalu</li>
+                </ul><p class="mt-4 text-xs text-slate-400">Limit łączny: 10 000 zł / rok.</p>`
+            },
+            { 
+                id: 'ast_chor', 
+                name: 'Assistance Chorobowy', 
+                price: 2.50, 
+                desc: 'Specjaliści i badania po zdiagnozowaniu poważnego zachorowania.',
+                details: `<ul class="space-y-2">
+                    <li>✓ 20 konsultacji (kardiolog, neurolog, ortopeda, internista itp.)</li>
+                    <li>✓ Badania: Rezonans (1x), Tomografia (1x), USG, RTG</li>
+                    <li>✓ Pełna diagnostyka laboratoryjna (krew, tarczyca, markery)</li>
+                    <li>✓ Rehabilitacja (do 2000 zł)</li>
+                </ul>`
+            },
+            { 
+                id: 'ast_onk', 
+                name: 'Assistance Onkologiczny', 
+                price: 2.00, 
+                desc: 'Wsparcie w chorobie nowotworowej (badania, psychoonkolog, peruki).',
+                details: `<ul class="space-y-2">
+                    <li>✓ 20 konsultacji onkologicznych i innych specjalistów</li>
+                    <li>✓ Testy zwiększonego ryzyka raka (genetyka)</li>
+                    <li>✓ 5 wizyt u psychoonkologa</li>
+                    <li>✓ Peruki i protezy (do 1000 zł)</li>
+                    <li>✓ Transport, opieka domowa i rehabilitacja</li>
+                </ul>`
+            },
+            { 
+                id: 'ast_psy', 
+                name: 'Assistance Psychologiczny', 
+                price: 4.00, 
+                desc: 'Pomoc psychiatry i psychoterapeuty (również telemedycyna).',
+                details: `<ul class="space-y-2">
+                    <li>✓ 5 konsultacji psychiatrycznych</li>
+                    <li>✓ 15 sesji psychoterapii indywidualnej</li>
+                    <li>✓ Dodatkowe badania tarczycy, witamin, hormonów powiązanych ze stresem</li>
+                </ul>`
+            },
+            { 
+                id: 'tele_kard', 
+                name: 'Teleopieka Kardiologiczna', 
+                price: 0.80, 
+                desc: 'Aparat EKG w domu na 180 dni z całodobowym monitoringiem.',
+                details: `<ul class="space-y-2">
+                    <li>✓ Wynajęcie i dostarczenie aparatu EKG do domu</li>
+                    <li>✓ Całodobowe analizowanie wyników przez tele-lekarza</li>
+                    <li>✓ Automatyczne wezwanie pogotowia w razie zagrożenia</li>
+                </ul>`
+            },
+            { 
+                id: 'mediplan', 
+                name: 'MediPlan (Wariant Rozszerzony)', 
+                price: 2.20, 
+                desc: 'Zabiegi, rehabilitacja i specjaliści po nieszczęśliwym wypadku.',
+                details: `<ul class="space-y-2">
+                    <li>✓ 15 konsultacji specjalistycznych rocznie</li>
+                    <li>✓ Do 40 zabiegów rehabilitacyjnych</li>
+                    <li>✓ Szybki dostęp do tomografii i rezonansu (1x rocznie)</li>
+                </ul>`
+            }
         ];
-        let currentFaq = 0;
-        setInterval(() => {
-            const banner = document.getElementById('faq-banner-text');
-            banner.classList.remove('fade-in');
-            banner.classList.add('fade-out');
-            setTimeout(() => {
-                currentFaq = (currentFaq + 1) % faqs.length;
-                banner.innerText = faqs[currentFaq];
-                banner.classList.remove('fade-out');
-                banner.classList.add('fade-in');
-            }, 500);
-        }, 5500);
+
+        // Renderowanie opcji MediOpieki
+        const container = document.getElementById('medi-options-container');
+        mediAddons.forEach(addon => {
+            container.innerHTML += `
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 flex items-start gap-4 transition-all hover:border-beauty-pink shadow-sm">
+                    <input type="checkbox" id="${addon.id}" class="medi-checkbox mt-1" onchange="calculate()">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-1">
+                            <label for="${addon.id}" class="font-bold text-beauty-navy cursor-pointer text-base">${addon.name}</label>
+                            <span class="font-bold text-slate-800 bg-slate-100 px-2 py-1 rounded text-xs">+${addon.price.toFixed(2)} zł/os</span>
+                        </div>
+                        <p class="text-sm text-slate-500 font-medium mb-3">${addon.desc}</p>
+                        <button onclick="showInfo('${addon.id}')" class="text-xs font-bold text-beauty-pink hover:text-rose-700 uppercase tracking-widest flex items-center gap-1">
+                            Co zawiera? <span>→</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Logika Kalkulatora
+        const elPeople = document.getElementById('calc-people');
+        const elBase = document.getElementById('calc-base');
+        
+        function calculate() {
+            // Wymuszenie minimum 2 osób niezależnie od tego co wpisze użytkownik
+            let people = Math.max(2, parseInt(elPeople.value) || 2);
+            let basePrice = parseFloat(elBase.value);
+            
+            let addonSumPerPerson = 0;
+            mediAddons.forEach(addon => {
+                if(document.getElementById(addon.id).checked) {
+                    addonSumPerPerson += addon.price;
+                }
+            });
+
+            let totalBase = people * basePrice;
+            let totalAddons = people * addonSumPerPerson;
+            let totalFinal = totalBase + totalAddons;
+
+            document.getElementById('summary-base').innerText = totalBase.toFixed(2).replace('.', ',') + ' zł';
+            document.getElementById('summary-addons').innerText = totalAddons.toFixed(2).replace('.', ',') + ' zł';
+            document.getElementById('summary-total').innerText = totalFinal.toFixed(2).replace('.', ',') + ' zł';
+        }
+
+        // Eventy kalkulatora
+        elPeople.addEventListener('input', calculate);
+        elBase.addEventListener('change', calculate);
+
+        // Modale
+        function showInfo(id) {
+            const addon = mediAddons.find(a => a.id === id);
+            document.getElementById('modal-info-title').innerText = addon.name;
+            document.getElementById('modal-info-content').innerHTML = addon.details;
+            document.getElementById('modal-info').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openFormModal() {
+            document.getElementById('modal-form').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
 
         // Akordeony FAQ
-        const accordionBtns = document.querySelectorAll('.accordion-btn');
-        accordionBtns.forEach(btn => {
+        document.querySelectorAll('.accordion-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 this.classList.toggle('active');
                 const content = this.nextElementSibling;
@@ -473,61 +548,34 @@
             });
         });
 
-        // Tabela świadczeń
-        function toggleBenefitsTable() {
-            const container = document.getElementById('full-benefits-container');
-            const btnText = document.getElementById('btn-text');
-            const icon = document.getElementById('btn-icon');
-            if (container.classList.contains('hidden')) {
-                container.classList.remove('hidden');
-                btnText.innerText = "Zwiń zakres świadczeń";
-                icon.style.transform = "rotate(180deg)";
-            } else {
-                container.classList.add('hidden');
-                btnText.innerText = "Rozwiń pełny zakres świadczeń (30+ pozycji)";
-                icon.style.transform = "rotate(0deg)";
-            }
-        }
+        // INICJALIZACJA
+        calculate();
+    </script>
 
-        // Walidacja NIP
-        let nipTimeout;
-        function verifyNipApi() {
-            const nipInput = document.getElementById('m-nip');
-            const loader = document.getElementById('nip-loader');
-            const status = document.getElementById('nip-status');
-            status.innerText = "";
-            if (nipInput.value.length === 10) {
-                loader.style.display = 'block';
-                clearTimeout(nipTimeout);
-                nipTimeout = setTimeout(() => {
-                    loader.style.display = 'none';
-                    status.innerText = "✓ Podmiot zweryfikowany w bazie GUS/REGON";
-                    status.className = "text-[9px] mt-1 font-semibold text-emerald-600";
-                }, 1200);
-            } else { loader.style.display = 'none'; }
+    <!-- SYSTEM WSTRZYKIWANIA STOPKI (Zgodnie z życzeniem) -->
+    <!-- W prawdziwym środowisku ten skrypt wydziel do pliku np. footer.js -->
+    <script>
+        function injectFooter() {
+            const footerHTML = `
+            <footer class="bg-slate-900 pt-12 pb-8 text-sm text-slate-400 border-t border-slate-800">
+                <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 text-center md:text-left">
+                    <div>
+                        <p class="mb-2 text-xs text-slate-300"><strong>Obsługa techniczna Programu:</strong> Aura Expert sp. z o.o. <span class="text-white">(tel. 504 400 901)</span></p>
+                        <p class="mb-4 text-xs text-slate-300"><strong>Likwidacja szkód:</strong> Aura Consulting sp. z o.o. we współpracy z ERGO Hestia S.A.</p>
+                        <span class="text-[10px] font-bold tracking-widest uppercase text-slate-500">BeautyPolisa created by Aura Consulting</span>
+                    </div>
+                    <div class="text-[10px] md:text-right flex flex-col justify-center gap-2 leading-relaxed">
+                        <p>Ubezpieczyciel: Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</p>
+                        <p class="italic">Szczegóły w OWU ERGO Życie w Biznesie (kod: EZwB 01/25) oraz MediOpieka (MA 01/25).</p>
+                    </div>
+                </div>
+            </footer>
+            `;
+            document.getElementById('footer-placeholder').innerHTML = footerHTML;
         }
-
-        // Modale
-        function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = 'auto'; }
-
-        function openLifeOfferModal(variant) {
-            document.getElementById('m-variant').value = variant;
-            openModal('modal-life-offer');
-        }
-
-        function submitLifeModalForm(e) {
-            e.preventDefault();
-            const btn = document.getElementById('m-btn');
-            btn.innerHTML = 'Wysyłanie danych...';
-            btn.disabled = true;
-            setTimeout(() => {
-                alert('Dziękujemy! Dane zostały przesłane do zespołu BeautyPolisa. Przygotujemy listę przystąpienia dla Twojego salonu.');
-                closeModal('modal-life-offer');
-                btn.innerHTML = 'Poproś o przygotowanie wniosku';
-                btn.disabled = false;
-            }, 1500);
-        }
+        
+        // Wywołanie budowy stopki
+        injectFooter();
     </script>
 </body>
 </html>
