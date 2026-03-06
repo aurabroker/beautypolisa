@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Ubezpieczenie Indywidualne Life | Squarelife & Leadenhall</title>
+    <meta name="description" content="Indywidualne ubezpieczenie na życie Squarelife. Chronimy dochód i zdrowie właścicieli salonów Beauty. Proces 100% online, wysokie sumy gwarancyjne.">
+    <meta name="theme-color" content="#2a3b69">
+    
+    <!-- Link do Twojego głównego arkusza stylów -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Tailwind CSS (wersja CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --beauty-navy: #2a3b69;
+            --beauty-pink: #e11d48;
+            --blue-accent: #2563eb;
+            --bg-color: #fafafa;
+        }
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--bg-color); 
+            color: #1e293b; 
+        }
+
+        h1, h2, h3, h4, .font-heading { font-weight: 800; letter-spacing: -0.02em; }
+
+        .text-beauty-navy { color: var(--beauty-navy); }
+        .bg-beauty-navy { background-color: var(--beauty-navy); }
+        .text-beauty-pink { color: var(--beauty-pink); }
+        .bg-beauty-pink { background-color: var(--beauty-pink); }
+
+        .hero-gradient { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #ffffff 100%); }
+        
+        .premium-card { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; }
+        .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+
+        .modal { display: none; opacity: 0; transition: opacity 0.3s ease; z-index: 1000; }
+        .modal.active { display: flex; opacity: 1; animation: fadeIn 0.3s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-btn.active .icon { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col selection:bg-blue-500 selection:text-white">
+
+    <!-- NAWIGACJA -->
+    <nav class="bg-slate-900 text-slate-300 text-[10px] md:text-xs py-2 font-semibold tracking-wide border-b border-slate-800 z-50 relative text-center">
+        <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start">
+            <a href="#" class="hover:text-white transition-colors">OC</a>
+            <a href="#" class="hover:text-white transition-colors">Ochrona karno-skarbowa</a>
+            <a href="#" class="hover:text-white transition-colors">Prywatne L4</a>
+            <a href="index.html" class="hover:text-white transition-colors text-slate-400">Life (Grupowe)</a>
+            <a href="life1.html" class="text-white border-b-2 border-blue-500 pb-0.5 transition-colors">Life (Indywidualne)</a>
+            <a href="#" class="hover:text-white transition-colors">Opieka medyczna</a>
+        </div>
+    </nav>
+
+    <header class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-slate-100 py-3">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center gap-2">
+            <div class="flex items-center gap-4">
+                <span class="text-3xl" aria-hidden="true">💎</span>
+                <div class="hidden md:block h-8 w-px bg-slate-200"></div>
+                <div class="flex flex-col">
+                    <span class="text-[16px] font-heading text-beauty-navy leading-none">BeautyPolisa</span>
+                    <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">Created by Aura Consulting</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors hidden sm:block mr-4">← Powrót do Grupowego</a>
+                <button onclick="openFormModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-full transition-all text-xs shadow-md">
+                    Zapytaj o Ofertę
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- HERO SQUARELIFE -->
+        <section class="hero-gradient text-beauty-navy py-16 md:py-24 px-4 text-center">
+            <div class="max-w-5xl mx-auto relative z-10">
+                <span class="inline-block py-1.5 px-4 rounded-full bg-white border border-blue-200 text-blue-600 text-[11px] font-bold tracking-widest uppercase mb-6 shadow-sm">
+                    Powered by Leadenhall & Squarelife
+                </span>
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight text-slate-800">
+                    Twoje ręce to <br><span class="text-blue-600 text-5xl md:text-7xl">Twoje źródło dochodu</span>
+                </h1>
+                <p class="text-base md:text-xl text-slate-600 mb-10 max-w-3xl mx-auto leading-relaxed font-medium">
+                    Jako właścicielka salonu JDG lub freelancerka jesteś zdana na siebie. Zabezpiecz swój budżet na wypadek poważnej choroby lub niezdolności do pracy z wypłatą nawet do 2 000 000 zł.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <button onclick="document.getElementById('dlaczego').scrollIntoView({behavior: 'smooth'});" class="bg-white border-2 border-slate-200 hover:border-blue-300 text-slate-700 font-bold py-4 px-10 rounded-full transition-all text-sm md:text-base shadow-sm">
+                        Poznaj zakres
+                    </button>
+                    <button onclick="openFormModal()" class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-4 px-10 rounded-full transition-all text-sm md:text-base shadow-xl transform hover:scale-105">
+                        Darmowa wycena
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKCJA: 3 FILARY -->
+        <section id="dlaczego" class="py-16 bg-white px-4 border-b border-slate-100">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-beauty-navy mb-4">3 Filary Pełnej Niezależności</h2>
+                    <p class="text-slate-500 font-medium max-w-2xl mx-auto">Produkt Squarelife jest projektowany dla wymagających profesjonalistów. Minimum formalności, maksimum ochrony.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-slate-50 rounded-[32px] p-8 border border-slate-200 premium-card text-center">
+                        <div class="w-16 h-16 bg-white rounded-2xl mx-auto flex items-center justify-center text-3xl mb-6 shadow-sm">🛡️</div>
+                        <h3 class="text-xl font-bold text-beauty-navy mb-4">Ochrona Życia</h3>
+                        <p class="text-sm text-slate-600 font-medium leading-relaxed">
+                            Wysoki kapitał zabezpieczający Twoich bliskich, kredyty firmowe lub leasing sprzętu w salonie. Brak zmartwień o długi w najtrudniejszych momentach.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-[32px] p-8 border border-slate-200 premium-card text-center">
+                        <div class="w-16 h-16 bg-white rounded-2xl mx-auto flex items-center justify-center text-3xl mb-6 shadow-sm">🏥</div>
+                        <h3 class="text-xl font-bold text-beauty-navy mb-4">Poważne Zachorowania</h3>
+                        <p class="text-sm text-slate-600 font-medium leading-relaxed">
+                            Natychmiastowy zastrzyk gotówki po diagnozie (np. nowotworu). Środki na prywatne, szybkie leczenie w Polsce lub za granicą. Zyskujesz czas na wyzdrowienie.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-[32px] p-8 border border-slate-200 premium-card text-center relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-blue-600 text-white text-[9px] font-bold py-1.5 px-3 rounded-bl-xl uppercase tracking-widest">Must Have JDG</div>
+                        <div class="w-16 h-16 bg-white rounded-2xl mx-auto flex items-center justify-center text-3xl mb-6 shadow-sm">♿</div>
+                        <h3 class="text-xl font-bold text-beauty-navy mb-4">Niezdolność do Pracy</h3>
+                        <p class="text-sm text-slate-600 font-medium leading-relaxed">
+                            Złamałaś rękę? Poważny uraz kręgosłupa? Ubezpieczyciel wypłaci Ci rekompensatę finansową, która pokryje Twoje koszty życia, gdy nie możesz przyjmować klientek.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKCJA: DLACZEGO LEADENHALL / SQUARELIFE -->
+        <section class="py-16 bg-slate-900 text-white px-4 relative overflow-hidden">
+            <div class="absolute -left-20 top-20 text-[200px] opacity-5">👑</div>
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center relative z-10">
+                <div>
+                    <span class="inline-block bg-white/10 text-blue-300 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-6 border border-white/20">Klasa Premium</span>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6">Proces stworzony na XXI wiek</h2>
+                    <p class="text-slate-300 font-medium leading-relaxed mb-8">
+                        Zapomnij o grubych teczkach dokumentów medycznych i długim oczekiwaniu. Ubezpieczenie w Squarelife (za pośrednictwem Leadenhall) zawrzesz podczas jednej, krótkiej rozmowy.
+                    </p>
+                    <ul class="space-y-4 text-sm font-medium">
+                        <li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold">1</div> Brak rutynowych badań lekarskich (nawet do bardzo wysokich sum, w zależności od wieku).</li>
+                        <li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold">2</div> Proces underwritingu automatyczny i w 100% cyfrowy.</li>
+                        <li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold">3</div> Ochrona z renomowanym rynkiem londyńskim (Lloyd's / Leadenhall).</li>
+                    </ul>
+                </div>
+                <div class="bg-slate-800 p-8 rounded-[32px] border border-slate-700 shadow-2xl">
+                    <h3 class="text-xl font-bold mb-6 text-center text-blue-400">Przykładowe sumy ubezpieczenia</h3>
+                    <div class="space-y-4">
+                        <div class="bg-slate-900/50 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                            <span class="text-slate-300 font-bold text-sm">Zgon</span>
+                            <span class="text-xl font-black text-white">do 5 000 000 zł</span>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                            <span class="text-slate-300 font-bold text-sm">Poważne Zachorowanie</span>
+                            <span class="text-xl font-black text-white">do 2 000 000 zł</span>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                            <span class="text-slate-300 font-bold text-sm">Całkowita niezdolność</span>
+                            <span class="text-xl font-black text-white">do 1 000 000 zł</span>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-6 text-center">* Powyższe wartości stanowią informację rynkową. Ostateczna decyzja i limit zależny od ankiety medycznej i wieku.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA SEKCJA -->
+        <section class="py-20 bg-blue-600 text-white px-4 text-center">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">Polisa szyta na Twoją miarę</h2>
+                <p class="text-blue-100 font-medium mb-10 text-lg">Indywidualne ubezpieczenie wymaga indywidualnego podejścia. Skonfigurujemy umowę precyzyjnie pod Twoje zarobki i potrzeby kredytowe.</p>
+                <button onclick="openFormModal()" class="bg-white text-blue-600 font-bold py-4 px-12 rounded-full shadow-2xl hover:bg-slate-50 transition-colors text-lg transform hover:scale-105">
+                    Zamów bezpłatną kalkulację
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MIEJSCE NA STOPKĘ GENEROWANĄ Z JS -->
+    <div id="footer-placeholder"></div>
+
+    <!-- MODAL FINALIZACJI (Formularz) -->
+    <div id="modal-form" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
+        <div class="bg-white rounded-[32px] shadow-2xl max-w-md w-full overflow-hidden relative max-h-[95vh] overflow-y-auto">
+            <button onclick="closeModal('modal-form')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 text-2xl leading-none z-10">&times;</button>
+            
+            <div class="bg-slate-50 px-8 py-6 border-b border-slate-100">
+                <h3 class="font-bold text-xl text-beauty-navy">Wycena Indywidualna</h3>
+                <p class="text-xs text-slate-400 font-bold mt-1">Nasz ekspert przygotuje ofertę Squarelife</p>
+            </div>
+            
+            <form class="p-8 space-y-5" onsubmit="event.preventDefault(); alert('Dziękujemy! Skontaktujemy się z Tobą wkrótce.'); closeModal('modal-form');">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-2">Imię i nazwisko</label>
+                    <input type="text" required placeholder="np. Anna Kowalska" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm font-medium outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-2">Telefon kontaktowy</label>
+                    <input type="tel" required placeholder="np. 500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm font-medium outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-2">Wiek</label>
+                    <input type="number" min="18" max="65" required placeholder="Wpisz wiek" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm font-medium outline-none focus:border-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg text-sm hover:bg-blue-800 transition-colors mt-2">
+                    Zamów rozmowę z doradcą
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SKRYPTY LOGIKI STRONY -->
+    <script>
+        // Modale
+        function openFormModal() {
+            document.getElementById('modal-form').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Akordeony FAQ
+        document.querySelectorAll('.accordion-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+            });
+        });
+    </script>
+
+    <!-- SYSTEM WSTRZYKIWANIA STOPKI -->
+    <script>
+        function injectFooter() {
+            const footerHTML = `
+            <footer class="bg-slate-900 pt-12 pb-8 text-sm text-slate-400 border-t border-slate-800">
+                <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 text-center md:text-left">
+                    <div>
+                        <p class="mb-2 text-xs text-slate-300"><strong>Obsługa techniczna Programu:</strong> Aura Expert sp. z o.o. <span class="text-white">(tel. 504 400 901)</span></p>
+                        <p class="mb-4 text-xs text-slate-300"><strong>Partner Ubezpieczeniowy:</strong> Leadenhall Polska / Squarelife</p>
+                        <span class="text-[10px] font-bold tracking-widest uppercase text-slate-500">BeautyPolisa created by Aura Consulting</span>
+                    </div>
+                    <div class="text-[10px] md:text-right flex flex-col justify-center gap-2 leading-relaxed">
+                        <p>Niniejsza strona ma charakter wyłącznie informacyjny i nie stanowi oferty w rozumieniu kodeksu cywilnego.</p>
+                        <p class="italic">Szczegóły ochrony określone są w Ogólnych Warunkach Ubezpieczenia (OWU) dostarczonych przez Towarzystwo.</p>
+                    </div>
+                </div>
+            </footer>
+            `;
+            document.getElementById('footer-placeholder').innerHTML = footerHTML;
+        }
+        
+        injectFooter();
+    </script>
+</body>
+</html>
