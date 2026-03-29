@@ -78,23 +78,21 @@ const PROCS = {
       "Sauna na włosy","Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)",
       "Trwała ondulacja","Zabiegi z zastosowaniem składników aktywnych",
       "Zabiegi keratynowe","Zabiegi przeciwłupieżowe","Zabiegi LED – terapeutyczne","Zagęszczanie włosów"],
-  2: ["Chemiczne usuwanie makijażu permanentnego","Cool Lifting","Depilacja pastą / woskiem",
-      "Elektroliza","Elektrokoagulacja","Elektroporacja","Elektrostymulacja",
-      "Fala akustyczna i energia wysokiej częstotliwości","Henna","Infuzja tlenowa",
+  2: ["Chemiczne usuwanie makijażu permanentnego","Cool Lifting",
+      "Elektroliza","Elektrokoagulacja","Elektroporacja",
+      "Fala akustyczna i energia wysokiej częstotliwości","Infuzja tlenowa",
       "Jonoforeza","Karboksyterapia","Kawitacja ultradźwiękowa","Kriolipoliza",
-      "Laminowanie brwi i rzęs","Makijaż okolicznościowy","Makijaż permanentny","Manicure",
-      "Masaż bańką chińską","Masaż Kobido","Masaż endodermiczny","Masaż podciśnieniowy",
-      "Manualne oczyszczanie twarzy","Mezoterapia bezigłowa","Mezoterapia igłowa",
+      "Makijaż okolicznościowy","Makijaż permanentny",
+      "Masaż Kobido","Mezoterapia bezigłowa","Mezoterapia igłowa",
       "Mezoterapia mikroigłowa","Microblading","Mikronakłuwanie",
       "Mikropigmentacja rekonstrukcyjna","Mikrodermabrazja korundowa i diamentowa",
       "Oczyszczanie wodorowo-tlenowe","Opalanie natryskowe","Oxybrazja",
       "Pedicure kosmetyczny (niezastrzeżony dla podologów)","Peeling węglowy",
-      "Piercing","Przedłużanie i zagęszczanie rzęs","Presoterapia",
       "Radiofrekwencja mikroigłowa","Radiotermoliza zmian skórnych",
       "Różnorodne peelingi chemiczne","Sauny infrared","Sonoforeza","Tatuaż",
-      "Zabiegi z zastosowaniem składników aktywnych","Zabiegi falą radiową",
+      "Zabiegi falą radiową",
       "Zabiegi IPL (fotoodmładzanie, przebarwienia, teleangiektazje, depilacja)",
-      "Zabiegi LED","Zabiegi laserem frakcyjnym nieablacyjnym",
+      "Zabiegi laserem frakcyjnym nieablacyjnym",
       "Zabiegi laserem nieablacyjnym (naczynia, tatuaż, depilacja)",
       "Zabiegi z zastosowaniem podczerwieni","Zastosowanie prądów małej i dużej częstotliwości"],
   3: ["Analiza chodu (ocena dynamiczna, wideoanaliza)","Badanie grzybicze paznokcia",
@@ -381,7 +379,7 @@ function buildPage() {
   const hdr = document.createElement("header");
   hdr.id = "bp-header";
   hdr.innerHTML = `<div class="hdr-inner">
-    <a class="hdr-brand" href="BP_index.html">
+    <a class="hdr-brand" href="new.html">
       <div><div class="hdr-logo">BeautyPolisa</div><div class="hdr-sub">Created by Aura Consulting</div></div>
     </a>
     <div class="hdr-sep" style="display:none" id="hdr-sep-el"></div>
@@ -411,7 +409,7 @@ function buildPage() {
         <div class="products-box">
           <div class="products-box-hd"><span>Produkty BeautyPolisa</span></div>
           <div class="products-grid">
-            <a href="BP_index.html" class="prod-card active-prod" title="OC Zawodowe"><div class="prod-icon">🛡️</div><div class="prod-name">OC</div></a>
+            <a href="new.html" class="prod-card active-prod" title="OC Zawodowe"><div class="prod-icon">🛡️</div><div class="prod-name">OC</div></a>
             <a href="tax-protect.html" class="prod-card" title="Tax Protect"><div class="prod-icon">📊</div><div class="prod-name">Tax Protect</div></a>
             <a href="#" class="prod-card" title="Prywatne L4 – Utrata Dochodu"><div class="prod-icon">💊</div><div class="prod-name">Prywatne L4</div></a>
             <a href="medical.html" class="prod-card" title="Opieka Medyczna"><div class="prod-icon">🏥</div><div class="prod-name">Opieka Medyczna</div></a>
@@ -620,6 +618,8 @@ function selectAll(tier) {
   let all = true;
   cbs.forEach(cb => { if (!cb.checked) all = false; });
   cbs.forEach(cb => { cb.checked = !all; });
+  const btn = c.parentElement.querySelector(".btn-all");
+  if (btn) btn.textContent = !all ? "Odznacz wszystkie" : "Zaznacz wszystkie";
   updateCalculator();
 }
 
@@ -639,10 +639,11 @@ function updateCalculator() {
   s2.classList.remove("locked"); res.classList.remove("hidden-anim");
 
   let tier=1, taryfaName="";
-  if (h3)           { tier=3; taryfaName="Gabinety Podologiczne (Pakiet Pełny)"; }
-  else if (h1&&h2)  { tier=3; taryfaName="Pakiet Łączony (Kosmetyka + Kosmetologia)"; }
-  else if (h2)      { tier=2; taryfaName="Gabinety Kosmetologiczne"; }
-  else              { tier=1; taryfaName="Gabinety Kosmetyczne i Fryzjerskie"; }
+  if      (h3 && (h1||h2)) { tier=3; taryfaName="Gabinet Wieloprofilowy (Podologia + Beauty)"; }
+  else if (h3)             { tier=3; taryfaName="Gabinety Podologiczne (Pakiet Pełny)"; }
+  else if (h1 && h2)       { tier=3; taryfaName="Pakiet Łączony (Kosmetyka + Kosmetologia)"; }
+  else if (h2)             { tier=2; taryfaName="Gabinety Kosmetologiczne"; }
+  else                     { tier=1; taryfaName="Gabinety Kosmetyczne i Fryzjerskie"; }
 
   const empVal  = document.querySelector("input[name=employees]:checked")?.value;
   const legalCost = document.getElementById("legal-protection")?.checked ? LEGAL : 0;
@@ -802,18 +803,20 @@ async function submitContact(e) {
 }
 
 /* ── REGON ── */
-let _rt;
 function verifyRegon() {
   const inp    = document.getElementById("m-regon");
-  const loader = document.getElementById("regon-loader");
   const status = document.getElementById("regon-status");
-  clearTimeout(_rt);
-  if (status) status.textContent = "";
-  if (!inp||!loader) return;
-  if (inp.value.length===9||inp.value.length===14) {
-    loader.style.display="block";
-    _rt = setTimeout(()=>{ loader.style.display="none"; if(status) status.textContent="✓ Weryfikacja GUS: Podmiot aktywny"; },900);
-  } else loader.style.display="none";
+  if (!inp || !status) return;
+  const v = inp.value.replace(/\D/g, "");
+  if (v.length === 9 || v.length === 14) {
+    status.style.color = "#16a34a";
+    status.textContent = "✓ Poprawny format REGON";
+  } else if (v.length > 0) {
+    status.style.color = "#dc2626";
+    status.textContent = "REGON musi mieć 9 lub 14 cyfr";
+  } else {
+    status.textContent = "";
+  }
 }
 
 /* ── ADMIN ── */
@@ -1024,10 +1027,7 @@ function buildModals() {
         <input type="hidden" id="fh-variant"><input type="hidden" id="fh-price"><input type="hidden" id="fh-taryfa">
         <div class="mgroup">
           <label class="mlabel">Numer REGON</label>
-          <div style="position:relative">
-            <input type="text" class="minput" id="m-regon" placeholder="9 lub 14 cyfr" oninput="verifyRegon()">
-            <div id="regon-loader" class="loader" style="position:absolute;right:.6rem;top:.55rem"></div>
-          </div>
+          <input type="text" class="minput" id="m-regon" placeholder="9 lub 14 cyfr" oninput="verifyRegon()" inputmode="numeric" maxlength="14">
           <div id="regon-status" style="font-size:8px;color:#16a34a;font-weight:600;margin-top:.2rem;min-height:11px"></div>
         </div>
         <div class="mgroup"><label class="mlabel">E-mail</label><input type="email" class="minput" id="m-email" required placeholder="kontakt@salon.pl"></div>
@@ -1090,6 +1090,11 @@ async function init() {
   _user = user;
   await loadProfile();
   renderAuthArea();
+  // ESC zamyka aktywny modal
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    document.querySelectorAll(".bp-modal.active").forEach(m => closeModal(m.id));
+  });
   // Rejestruj wizytę (z małym opóźnieniem, żeby auth zdążył załadować)
   setTimeout(trackVisit, 800);
 }
