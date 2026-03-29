@@ -129,7 +129,7 @@ function hideAlert(id)  { const e=$(id); if(e)e.style.display="none"; }
 /* ── CSS ────────────────────────────────────────────────────── */
 document.head.insertAdjacentHTML("beforeend", `<style>
 :root{--navy:#2a3b69;--pink:#e11d48;--bg:#fafafa;--border:#e2e8f0;--muted:#64748b;--sm:#f8fafc}
-body{font-family:'Montserrat',sans-serif;background:var(--bg);color:#1e293b;margin:0}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:#1e293b;margin:0;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
 *{box-sizing:border-box}
 .font-heading,h1,h2,h3{font-family:'Playfair Display',serif}
 
@@ -220,7 +220,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:#1e293b;marg
 .proc-col-hd p{font-size:8px;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin:.1rem 0 0}
 .btn-all{font-size:8px;border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:9999px;padding:2px 7px;cursor:pointer;font-weight:700;font-family:'Montserrat',sans-serif;transition:all .15s;white-space:nowrap}
 .btn-all:hover{border-color:var(--navy);background:#f0f4ff}
-.proc-list{padding:.25rem;height:200px;overflow-y:auto;flex:1}
+.proc-list{padding:.25rem;height:300px;overflow-y:auto;flex:1}
 .proc-list::-webkit-scrollbar{width:3px}
 .proc-list::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px}
 .proc-item{display:flex;align-items:flex-start;padding:.18rem .3rem;border-radius:.3rem;cursor:pointer;border:1px solid transparent;transition:all .1s}
@@ -239,6 +239,8 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:#1e293b;marg
 /* STEP 2 */
 #step-2{transition:opacity .35s,transform .35s}
 #step-2.locked{opacity:.38;pointer-events:none;transform:translateY(6px)}
+.step2-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+@media(max-width:520px){.step2-grid{grid-template-columns:1fr}}
 .emp-grid{display:flex;gap:.45rem;flex-wrap:wrap}
 .emp-card{flex:1;min-width:80px}
 .emp-card input[type=radio]{display:none}
@@ -522,7 +524,7 @@ function buildCalcHTML() {
     <div class="calc-hdr">
       <div class="calc-step"><span class="calc-step-n">2</span><span class="calc-h">Parametry Gabinetu</span></div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem">
+    <div class="step2-grid">
       <fieldset style="border:none;padding:0;margin:0">
         <legend style="font-size:.72rem;font-weight:600;color:#1e293b;margin-bottom:.45rem">Ile osób wykonuje zabiegi?</legend>
         <div class="emp-grid">
