@@ -128,8 +128,8 @@ function hideAlert(id)  { const e=$(id); if(e)e.style.display="none"; }
 
 /* ── CSS ────────────────────────────────────────────────────── */
 document.head.insertAdjacentHTML("beforeend", `<style>
-:root{--navy:#2a3b69;--pink:#e11d48;--bg:#fafafa;--border:#e2e8f0;--muted:#64748b;--sm:#f8fafc;--card:#ffffff;--text:#1e293b;--text2:#475569;--hover:#f0f4ff}
-html.dark{--navy:#93c5fd;--pink:#fb7185;--bg:#0f172a;--border:#334155;--muted:#94a3b8;--sm:#1e293b;--card:#162032;--text:#e2e8f0;--text2:#94a3b8;--hover:#1e3050}
+:root{--navy:#2a3b69;--pink:#e11d48;--bg:#fafafa;--border:#e2e8f0;--muted:#4b5563;--sm:#f8fafc;--card:#ffffff;--text:#111827;--text2:#374151;--hover:#f0f4ff}
+html.dark{--navy:#93c5fd;--pink:#fb7185;--bg:#0f172a;--border:#334155;--muted:#9ca3af;--sm:#1e293b;--card:#162032;--text:#f1f5f9;--text2:#cbd5e1;--hover:#1e3050}
 body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);margin:0;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
 *{box-sizing:border-box}
 .font-heading,h1,h2,h3{font-family:'Montserrat',sans-serif}
@@ -170,7 +170,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
 .bp-badge{display:inline-block;padding:.2rem .7rem;border-radius:9999px;background:#fff;border:1px solid #fecdd3;color:var(--pink);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .bp-h1{font-family:'Montserrat',sans-serif;font-size:clamp(1.5rem,3vw,2.3rem);font-weight:700;color:#1e293b;margin:0 0 .65rem;line-height:1.2}
 .bp-h1 span{color:var(--pink)}
-.bp-sub{font-size:.82rem;color:#475569;max-width:36rem;margin:0 0 .85rem;line-height:1.65}
+.bp-sub{font-size:.82rem;color:var(--text2);max-width:36rem;margin:0 0 .85rem;line-height:1.65}
 .bp-pills{display:flex;flex-wrap:wrap;gap:.35rem}
 .bp-pill{background:#fff;border:1px solid #fecdd3;border-radius:9999px;padding:.25rem .7rem;font-size:9px;font-weight:600;color:#475569;display:flex;align-items:center;gap:.3rem;box-shadow:0 1px 2px rgba(0,0,0,.04)}
 .bp-pill .ck{color:#22c55e}
@@ -206,7 +206,9 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
 
 /* CALC */
 .calc-card{background:var(--card);border-radius:1.1rem;border:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,.06);padding:.9rem;margin-bottom:.9rem}
-.calc-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;padding-bottom:.6rem;border-bottom:1px solid #f1f5f9;flex-wrap:wrap;gap:.4rem}
+.calc-hdr{display:flex;align-items:center;margin-bottom:.75rem;padding-bottom:.6rem;border-bottom:1px solid #f1f5f9;gap:.6rem}
+.calc-hdr>.calc-step{flex-shrink:0}
+.calc-hdr>.calc-note{margin-left:auto;flex-shrink:0}
 .calc-step{display:flex;align-items:center;gap:.4rem}
 .calc-step-n{background:#ffe4e6;color:var(--pink);width:1.5rem;height:1.5rem;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;font-family:'Montserrat',sans-serif;flex-shrink:0}
 .calc-h{font-family:'Montserrat',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy)}
@@ -365,11 +367,12 @@ html.dark .proc-col{background:#1a2640}
 .bar-val{font-size:9px;font-weight:700;color:var(--navy);min-width:28px}
 
 /* SEARCH */
-.search-wrap{margin-bottom:.65rem;position:relative}
-.search-input{width:100%;padding:.5rem .75rem .5rem 2.1rem;border:1px solid var(--border);border-radius:.6rem;font-family:'Montserrat',sans-serif;font-size:.78rem;color:var(--text);background:var(--card);outline:none;transition:border-color .2s}
+.search-wrap{position:relative;flex:1;min-width:0;max-width:220px}
+.search-input{width:100%;padding:.32rem .65rem .32rem 1.85rem;border:1px solid var(--border);border-radius:9999px;font-family:'Montserrat',sans-serif;font-size:.75rem;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s;box-sizing:border-box}
 .search-input:focus{border-color:var(--navy)}
-.search-icon{position:absolute;left:.65rem;top:50%;transform:translateY(-50%);font-size:.85rem;pointer-events:none;opacity:.45}
+.search-icon{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);font-size:.78rem;pointer-events:none;opacity:.45}
 .no-results{font-size:.72rem;color:var(--muted);text-align:center;padding:.6rem;display:none}
+@media(max-width:520px){.search-wrap{max-width:none;flex:1}.calc-hdr>.calc-note{display:none}}
 
 /* DARK MODE TOGGLE */
 .dark-toggle{background:none;border:1px solid var(--border);border-radius:9999px;padding:.25rem .6rem;cursor:pointer;font-size:.82rem;line-height:1;transition:all .2s;color:var(--text)}
@@ -425,21 +428,26 @@ footer a:hover{color:var(--pink)}
    BUILD PAGE
 ================================================================ */
 function buildPage() {
+  /* preserve bp-nav header if already injected */
+  const navHdr = document.getElementById("bp-header");
   document.body.innerHTML = "";
-
-  /* HEADER */
-  const hdr = document.createElement("header");
-  hdr.id = "bp-header";
-  hdr.innerHTML = `<div class="hdr-inner">
-    <a class="hdr-brand" href="new.html">
-      <div><div class="hdr-logo">BeautyPolisa</div><div class="hdr-sub">Created by Aura Consulting</div></div>
-    </a>
-    <div class="hdr-sep" style="display:none" id="hdr-sep-el"></div>
-    <div class="hdr-broker" id="hdr-broker-txt" style="display:none">Obsługa brokerska: Aura Consulting</div>
-    <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()" title="Przełącz tryb ciemny">🌙</button>
-    <div id="hdr-auth" style="display:flex;align-items:center;gap:.5rem"></div>
-  </div>`;
-  document.body.appendChild(hdr);
+  if (navHdr) {
+    document.body.appendChild(navHdr);
+  } else {
+    /* HEADER — standalone (no bp-nav.js) */
+    const hdr = document.createElement("header");
+    hdr.id = "bp-header";
+    hdr.innerHTML = `<div class="hdr-inner">
+      <a class="hdr-brand" href="new.html">
+        <div><div class="hdr-logo">BeautyPolisa</div><div class="hdr-sub">Created by Aura Consulting</div></div>
+      </a>
+      <div class="hdr-sep" style="display:none" id="hdr-sep-el"></div>
+      <div class="hdr-broker" id="hdr-broker-txt" style="display:none">Obsługa brokerska: Aura Consulting</div>
+      <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()" title="Przełącz tryb ciemny">🌙</button>
+      <div id="hdr-auth" style="display:flex;align-items:center;gap:.5rem"></div>
+    </div>`;
+    document.body.appendChild(hdr);
+  }
 
   /* HERO — 2 kolumny */
   const hero = document.createElement("section");
@@ -563,11 +571,11 @@ function buildCalcHTML() {
   <div class="calc-card">
     <div class="calc-hdr">
       <div class="calc-step"><span class="calc-step-n">1</span><span class="calc-h">Jakie zabiegi wykonujesz?</span></div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="search" class="search-input" id="proc-search" placeholder="Szukaj zabiegu…" oninput="filterProcs(this.value)" autocomplete="off">
+      </div>
       <span class="calc-note">Zaznacz wszystkie – system dobierze taryfę</span>
-    </div>
-    <div class="search-wrap">
-      <span class="search-icon">🔍</span>
-      <input type="search" class="search-input" id="proc-search" placeholder="Wyszukaj zabieg..." oninput="filterProcs(this.value)" autocomplete="off">
     </div>
     <div id="no-results" class="no-results">Brak wyników dla podanej frazy.</div>
     <div class="proc-grid" id="proc-grid"></div>
@@ -754,7 +762,8 @@ function openOfferModal(variant, price, taryfaName) {
 
 /* ── AUTH ── */
 function renderAuthArea() {
-  const area = document.getElementById("hdr-auth");
+  /* support both standalone header slot and bp-nav slot */
+  const area = document.getElementById("hdr-auth") || document.getElementById("bp-hdr-auth");
   if (!area) return;
   if (_user) {
     const name     = _user.user_metadata?.full_name || _user.email.split("@")[0];
@@ -898,8 +907,11 @@ function filterProcs(query) {
 
 /* ── DARK MODE ── */
 function syncDarkToggle() {
+  const isDark = document.documentElement.classList.contains("dark");
   const btn = $("dark-toggle");
-  if (btn) btn.textContent = document.documentElement.classList.contains("dark") ? "☀️" : "🌙";
+  if (btn) btn.textContent = isDark ? "☀️" : "🌙";
+  /* sync bp-nav toggle if present */
+  if (window.bpNav) window.bpNav.syncBtn();
 }
 function toggleDark() {
   localStorage.setItem("bp_dark", document.documentElement.classList.toggle("dark") ? "1" : "0");

@@ -17,13 +17,10 @@
   gtag('config', 'G-HJWP7XYCF1');
 </script>
     
-    <!-- Link do Twojego głównego arkusza stylów -->
-    <link rel="stylesheet" href="style.css">
-
     <!-- Tailwind CSS (wersja CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
             --beauty-navy: #2a3b69;
@@ -32,13 +29,13 @@
             --bg-color: #fafafa;
         }
 
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: var(--bg-color); 
-            color: #1e293b; 
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: #1e293b;
         }
 
-        h1, h2, h3, h4, .font-heading { font-weight: 800; letter-spacing: -0.02em; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: -0.02em; }
 
         .text-beauty-navy { color: var(--beauty-navy); }
         .bg-beauty-navy { background-color: var(--beauty-navy); }
@@ -59,37 +56,8 @@
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col selection:bg-blue-500 selection:text-white">
-
-    <!-- NAWIGACJA -->
-    <nav class="bg-slate-900 text-slate-300 text-[10px] md:text-xs py-2 font-semibold tracking-wide border-b border-slate-800 z-50 relative text-center">
-        <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start">
-            <a href="#" class="hover:text-white transition-colors">OC</a>
-            <a href="#" class="hover:text-white transition-colors">Ochrona karno-skarbowa</a>
-            <a href="#" class="hover:text-white transition-colors">Prywatne L4</a>
-            <a href="index.html" class="hover:text-white transition-colors text-slate-400">Life (Grupowe)</a>
-            <a href="life1.html" class="text-white border-b-2 border-blue-500 pb-0.5 transition-colors">Life (Indywidualne)</a>
-            <a href="#" class="hover:text-white transition-colors">Opieka medyczna</a>
-        </div>
-    </nav>
-
-    <header class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-slate-100 py-3">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center gap-2">
-            <div class="flex items-center gap-4">
-                <span class="text-3xl" aria-hidden="true">💎</span>
-                <div class="hidden md:block h-8 w-px bg-slate-200"></div>
-                <div class="flex flex-col">
-                    <span class="text-[16px] font-heading text-beauty-navy leading-none">BeautyPolisa</span>
-                    <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">Created by Aura Consulting</span>
-                </div>
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="life.html" class="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors hidden sm:block mr-4">← Wróć do grupowych</a>
-                <button onclick="openFormModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-full transition-all text-xs shadow-md">
-                    Zapytaj o Ofertę
-                </button>
-            </div>
-        </div>
-    </header>
+<script>window.BP_PAGE = 'life';</script>
+<script src="bp-nav.js"></script>
 
     <main class="flex-grow">
         <!-- HERO SQUARELIFE -->
