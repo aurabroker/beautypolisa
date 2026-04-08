@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BeautyPolisa | Ubezpieczenie OC dla Salonów Beauty i Kosmetologów</title>
+<meta name="description" content="Ekskluzywne ubezpieczenie OC dla salonów beauty, kosmetologów, fryzjerów i podologów. Zabezpiecz swój biznes na sumę do 300 000 zł. Oblicz składkę online w 2 minuty!">
+<meta name="keywords" content="OC kosmetyczki, ubezpieczenie salonu kosmetycznego, OC tatuatora, OC kosmetologa, ubezpieczenie podologa, BeautyPolisa, ubezpieczenie fryzjera, OC zawodowe beauty">
+<meta name="author" content="Aura Consulting">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1e2d5a">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"InsuranceAgency","name":"BeautyPolisa by Aura Consulting","description":"Ubezpieczenia OC dla branży beauty","address":{"@type":"PostalAddress","streetAddress":"ul. Bolkowska 2A/28","addressLocality":"Warszawa","postalCode":"01-466","addressCountry":"PL"}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+<!-- TOP NAV BAR -->
+<nav class="topnav" role="navigation" aria-label="Produkty">
+  <div class="container topnav__inner">
+    <a href="index.html" class="topnav__link active">OC Zawodowe</a>
+    <a href="tax-protect.html" class="topnav__link">Ochrona Karno-Skarbowa</a>
+    <a href="#" class="topnav__link">Prywatne L4</a>
+    <a href="life.html" class="topnav__link">Life</a>
+    <a href="medical.html" class="topnav__link">Opieka Medyczna</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header class="header" role="banner">
+  <div class="container header__inner">
+    <div class="header__brand">
+      <span class="header__brand-sub">Obsługa Brokerska</span>
+      <span class="header__brand-name">Aura Consulting</span>
+    </div>
+    <button class="btn btn--primary btn--sm" onclick="BP.scrollToCalc()">Oblicz składkę</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero__deco hero__deco--1" aria-hidden="true"></div>
+  <div class="hero__deco hero__deco--2" aria-hidden="true"></div>
+  <div class="hero__deco hero__deco--3" aria-hidden="true"></div>
+  <div class="container hero__inner">
+    <span class="badge badge--pink">Kalkulator Składek 2026</span>
+    <h1 id="hero-heading" class="hero__title">Ekskluzywna Ochrona<br><em>dla Branży Beauty</em></h1>
+    <p class="hero__desc">Zbudowany we współpracy z <strong>BeautyRazem</strong>. Zaznacz zabiegi, które wykonujesz, a system automatycznie dopasuje wariant ubezpieczenia OC w <strong>ERGO Hestia</strong>.</p>
+    <div class="hero__stats">
+      <div class="stat">
+        <span class="stat__value">300 000 zł</span>
+        <span class="stat__label">Suma gwarancyjna</span>
+      </div>
+      <div class="stat__divider" aria-hidden="true"></div>
+      <div class="stat">
+        <span class="stat__value">2 min</span>
+        <span class="stat__label">Czas kalkulacji</span>
+      </div>
+      <div class="stat__divider" aria-hidden="true"></div>
+      <div class="stat">
+        <span class="stat__value">ERGO Hestia</span>
+        <span class="stat__label">Ubezpieczyciel</span>
+      </div>
+    </div>
+    <button class="btn btn--primary btn--lg" onclick="BP.scrollToCalc()">Rozpocznij Kalkulację →</button>
+  </div>
+</section>
+
+<!-- BENEFITS STRIP -->
+<section class="benefits" aria-label="Co obejmuje ubezpieczenie">
+  <div class="container benefits__grid">
+    <div class="benefit">
+      <span class="benefit__icon" aria-hidden="true">🛡️</span>
+      <div>
+        <strong>OC z tytułu wykonywania zawodu</strong>
+        <p>Szkody wyrządzone klientom podczas zabiegów</p>
+      </div>
+    </div>
+    <div class="benefit">
+      <span class="benefit__icon" aria-hidden="true">⚡</span>
+      <div>
+        <strong>Aparatura i urządzenia</strong>
+        <p>Lasery, IPL, urządzenia do zabiegów (klauzula 5)</p>
+      </div>
+    </div>
+    <div class="benefit">
+      <span class="benefit__icon" aria-hidden="true">⚖️</span>
+      <div>
+        <strong>Ochrona prawna (opcja)</strong>
+        <p>Koszty adwokata, suma 100 000 zł — tylko +92 zł/rok</p>
+      </div>
+    </div>
+    <div class="benefit">
+      <span class="benefit__icon" aria-hidden="true">📋</span>
+      <div>
+        <strong>OC pracodawcy</strong>
+        <p>Szkody wyrządzone pracownikom przy pracy</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<main id="calculator-section" class="calc-section" aria-label="Kalkulator składki">
+  <div class="container">
+
+    <!-- STEP 1: ZABIEGI -->
+    <section class="card" id="step-1" aria-labelledby="step1-heading">
+      <header class="card__header">
+        <span class="step-badge" aria-hidden="true">1</span>
+        <div>
+          <h2 id="step1-heading" class="card__title">Jakie zabiegi wykonujesz?</h2>
+          <p class="card__subtitle">Zaznacz wszystkie. System automatycznie dopasuje taryfę.</p>
+        </div>
+      </header>
+
+      <div class="procedures">
+
+        <!-- Tier 1 -->
+        <div class="tier-group">
+          <div class="tier-group__header">
+            <span class="tier-badge tier-badge--1">Grupa 1</span>
+            <span class="tier-group__name">Kosmetyka i Fryzjerstwo</span>
+            <button type="button" class="tier-select-all" onclick="BP.selectAll(1)" aria-label="Zaznacz wszystkie z Grupy 1">Zaznacz wszystkie</button>
+          </div>
+          <div class="tier-group__list" id="list-1-container">
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Barbering</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Depilacja pastą cukrową</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Depilacja woskiem</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Dermabrazja i peeling skóry głowy</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Diagnoza skóry głowy i USG włosa</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Elektrostymulacja</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Endermologia — masaż podciśnieniowy</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Golenie głowy</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Henna</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Koloryzacja i dekoloryzacja włosów</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Makijaż</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Manicure</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Masaż manualny ciała, głowy i twarzy</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Pedicure kosmetyczny</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Piercing — przekłuwanie</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Przedłużanie i zagęszczanie rzęs</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Przedłużanie włosów</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Strzyżenie (wszystkie metody)</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="1"><span>Zabiegi keratynowe</span></label>
+          </div>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="tier-group">
+          <div class="tier-group__header">
+            <span class="tier-badge tier-badge--2">Grupa 2</span>
+            <span class="tier-group__name">Kosmetologia</span>
+            <button type="button" class="tier-select-all" onclick="BP.selectAll(2)" aria-label="Zaznacz wszystkie z Grupy 2">Zaznacz wszystkie</button>
+          </div>
+          <div class="tier-group__list" id="list-2-container">
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Chemiczne usuwanie makijażu permanentnego</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Elektroliza i Elektrokoagulacja</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Karboksyterapia</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Kawitacja ultradźwiękowa</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Kriolipoliza</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Makijaż permanentny i Microblading</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Masaż Kobido</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Mezoterapia igłowa i mikroigłowa</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Mikrodermabrazja korundowa i diamentowa</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Oczyszczanie wodorowo-tlenowe</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Peeling chemiczny i węglowy</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Radiofrekwencja mikroigłowa</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Tatuaż</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Zabiegi wykorzystujące światło IPL</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="2"><span>Zabiegi laserem nieablacyjnym</span></label>
+          </div>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="tier-group">
+          <div class="tier-group__header">
+            <span class="tier-badge tier-badge--3">Grupa 3</span>
+            <span class="tier-group__name">Podologia</span>
+            <button type="button" class="tier-select-all" onclick="BP.selectAll(3)" aria-label="Zaznacz wszystkie z Grupy 3">Zaznacz wszystkie</button>
+          </div>
+          <div class="tier-group__list" id="list-3-container">
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Badanie podoskopowe / podoskanerem</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Usuwanie zrogowaciałego naskórka (hiperkeratozy)</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Klamry ortonyksyjne — aplikacja i aktywacje</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Pedicure podologiczny (medyczny)</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Protetyka i rekonstrukcja paznokcia</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Opracowanie pęknięć i rozpadlin pięt</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Terapia nadpotliwości stóp (jonoforeza)</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Dobór i wykonywanie indywidualnych wkładek</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Ozonoterapia</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="3"><span>Krioterapia zmian skórnych na stopach</span></label>
+          </div>
+        </div>
+
+        <!-- Tier 4 -->
+        <div class="tier-group tier-group--high-risk">
+          <div class="tier-group__header">
+            <span class="tier-badge tier-badge--4">Grupa 4</span>
+            <span class="tier-group__name">Zabiegi Specjalistyczne</span>
+            <span class="high-risk-note">⚠️ Wymaga indywidualnej wyceny</span>
+          </div>
+          <div class="tier-group__list" id="list-4-container">
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="4"><span>Zabiegi technologią HIFU</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="4"><span>Zabiegi z użyciem toksyny botulinowej</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="4"><span>Zabiegi osoczem bogatopłytkowym</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="4"><span>Zabiegi technologią PLASMA</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="4"><span>Wypełniacze na bazie kwasu hialuronowego</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="4"><span>Zabiegi z użyciem nici PDO</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="4"><span>Lipoliza iniekcyjna</span></label>
+            <label class="proc"><input type="checkbox" class="tier-checkbox" data-tier="4"><span>Zabiegi laserem ablacyjnym</span></label>
+          </div>
+        </div>
+
+      </div><!-- /procedures -->
+    </section>
+
+    <!-- STEP 2: PARAMETRY -->
+    <section class="card card--dimmed" id="step-2" aria-labelledby="step2-heading">
+      <header class="card__header">
+        <span class="step-badge" aria-hidden="true">2</span>
+        <div>
+          <h2 id="step2-heading" class="card__title">Parametry Gabinetu</h2>
+        </div>
+      </header>
+
+      <div class="params-grid">
+
+        <fieldset class="param-group">
+          <legend class="param-group__label">Ile osób wykonuje zabiegi?</legend>
+          <div class="radio-group">
+            <div class="radio-card">
+              <input type="radio" name="employees" id="emp-5" value="1" checked>
+              <label for="emp-5">
+                <strong>1 – 5 osób</strong>
+                <span class="radio-card__note radio-card__note--green">Taryfa bazowa</span>
+              </label>
+            </div>
+            <div class="radio-card">
+              <input type="radio" name="employees" id="emp-8" value="1.25">
+              <label for="emp-8">
+                <strong>6 – 8 osób</strong>
+                <span class="radio-card__note">+25% składki</span>
+              </label>
+            </div>
+            <div class="radio-card">
+              <input type="radio" name="employees" id="emp-9" value="ind">
+              <label for="emp-9">
+                <strong>9 i więcej</strong>
+                <span class="radio-card__note radio-card__note--amber">Ankieta</span>
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="param-group">
+          <span class="param-group__label">Rozszerzenie (Opcjonalnie)</span>
+          <div class="legal-option" onclick="BP.toggleLegal()" role="button" tabindex="0" aria-label="Ubezpieczenie Ochrony Prawnej">
+            <input type="checkbox" id="legal-protection" onclick="event.stopPropagation()">
+            <div class="legal-option__text">
+              <strong>Ubezpieczenie Ochrony Prawnej</strong>
+              <span>Koszty adwokata, suma 100 000 zł &mdash; <em class="legal-option__price">+92 zł / rok</em></span>
+              <button type="button" class="legal-option__details" onclick="event.stopPropagation(); BP.openModal('modal-klauzula')" aria-label="Przeczytaj treść klauzuli">Przeczytaj klauzulę →</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="results hidden" id="results-section" aria-live="polite" aria-label="Wyniki kalkulacji">
+
+      <div class="detected-tier" id="detected-tier-box">
+        <div>
+          <p class="detected-tier__label">Dopasowana taryfa</p>
+          <p class="detected-tier__value" id="detected-tier-msg"></p>
+        </div>
+        <span class="detected-tier__check" aria-hidden="true">✓</span>
+      </div>
+
+      <!-- Standard pricing cards -->
+      <div id="pricing-cards-container">
+        <h2 class="results__heading">Wybierz wariant ochrony</h2>
+        <div class="pricing-grid">
+
+          <article class="price-card" aria-label="Wariant Podstawowy">
+            <header class="price-card__header">
+              <span class="price-card__label">Podstawowy</span>
+              <span class="price-card__sum">100 000 zł</span>
+            </header>
+            <div class="price-card__body">
+              <p class="price-card__amount-label">Składka roczna</p>
+              <div class="price-card__amount"><span id="price-100k">---</span> <span>zł</span></div>
+            </div>
+            <footer class="price-card__footer">
+              <button id="btn-100k" class="btn btn--outline btn--full">Wybieram ten wariant</button>
+            </footer>
+          </article>
+
+          <article class="price-card price-card--featured" aria-label="Wariant Optymalny — rekomendowany">
+            <div class="price-card__ribbon">Rekomendacja Ekspertów</div>
+            <header class="price-card__header">
+              <span class="price-card__label">Optymalny</span>
+              <span class="price-card__sum">200 000 zł</span>
+            </header>
+            <div class="price-card__body">
+              <p class="price-card__amount-label">Składka roczna</p>
+              <div class="price-card__amount price-card__amount--featured"><span id="price-200k">---</span> <span>zł</span></div>
+            </div>
+            <footer class="price-card__footer">
+              <button id="btn-200k" class="btn btn--primary btn--full">Wybieram ten wariant</button>
+            </footer>
+          </article>
+
+          <article class="price-card" aria-label="Wariant Maksymalny">
+            <header class="price-card__header">
+              <span class="price-card__label">Maksymalny</span>
+              <span class="price-card__sum">300 000 zł</span>
+            </header>
+            <div class="price-card__body">
+              <p class="price-card__amount-label">Składka roczna</p>
+              <div class="price-card__amount"><span id="price-300k">---</span> <span>zł</span></div>
+              <p class="price-card__note">Wymaga wypełnienia ankiety</p>
+            </div>
+            <footer class="price-card__footer">
+              <button id="btn-300k" class="btn btn--outline btn--full">Wybieram ten wariant</button>
+            </footer>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- Individual pricing message -->
+      <div class="individual-msg hidden" id="individual-pricing-msg">
+        <span class="individual-msg__icon" aria-hidden="true">📋</span>
+        <div>
+          <strong>Wymagana indywidualna wycena</strong>
+          <p id="ind-pricing-reason"></p>
+          <button id="btn-ind" class="btn btn--primary">Wypełnij ankietę i uzyskaj wycenę</button>
+        </div>
+      </div>
+
+    </section><!-- /results -->
+
+  </div>
+</main>
+
+<!-- CONTACT STRIP -->
+<section class="contact-strip" aria-label="Kontakt">
+  <div class="container contact-strip__inner">
+    <div>
+      <h2 class="contact-strip__title">Masz pytania?</h2>
+      <p class="contact-strip__desc">Nasz broker odpowie w ciągu 24h</p>
+    </div>
+    <button class="btn btn--white" onclick="BP.openModal('modal-contact')">Skontaktuj się z nami</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" role="contentinfo">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <span class="footer__brand-name">BeautyPolisa</span>
+      <span class="footer__brand-by">by Aura Consulting</span>
+    </div>
+    <address class="footer__address">
+      ul. Bolkowska 2A/28, 01-466 Warszawa<br>
+      <a href="mailto:biuro@auraconsulting.pl">biuro@auraconsulting.pl</a>
+    </address>
+    <p class="footer__legal">Oferta dotyczy ubezpieczenia w ERGO Hestia. Aura Consulting działa jako broker ubezpieczeniowy.</p>
+  </div>
+</footer>
+
+<!-- MODAL: OFERTA -->
+<div class="modal hidden" id="modal-offer" role="dialog" aria-modal="true" aria-labelledby="modal-offer-title">
+  <div class="modal__backdrop" onclick="BP.closeModal('modal-offer')"></div>
+  <div class="modal__box">
+    <button class="modal__close" onclick="BP.closeModal('modal-offer')" aria-label="Zamknij">&times;</button>
+    <div class="modal__header">
+      <span class="modal__icon" aria-hidden="true">✨</span>
+      <h3 id="modal-offer-title" class="modal__title">Prawie gotowe!</h3>
+      <p class="modal__subtitle">Wariant: <strong id="modal-chosen-variant"></strong> &mdash; <strong id="modal-chosen-price"></strong></p>
+    </div>
+    <div id="modal-ankieta-warning" class="alert alert--amber hidden">
+      ⚠️ Ten wariant wymaga wypełnienia ankiety ERGO Hestia. Po wysłaniu formularza automatycznie rozpocznie się pobieranie pliku.
+    </div>
+    <form id="offer-form" onsubmit="BP.submitOffer(event)" novalidate>
+      <input type="hidden" name="access_key" value="45d66fa5-4c37-4adb-8d18-4e1d7f12c0f8">
+      <input type="hidden" name="subject" value="Nowe zapytanie o polisę — BeautyPolisa.com">
+      <input type="hidden" name="from_name" value="BeautyPolisa Kalkulator">
+      <input type="hidden" id="form-hidden-variant" name="wariant">
+      <input type="hidden" id="form-hidden-price" name="cena">
+      <input type="hidden" id="form-hidden-taryfa" name="taryfa">
+      <input type="hidden" id="form-hidden-procedures" name="zabiegi">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="offer-name" class="form-label">Imię i nazwisko <span aria-hidden="true">*</span></label>
+          <input type="text" id="offer-name" name="imie_nazwisko" class="form-input" required autocomplete="name">
+        </div>
+        <div class="form-field">
+          <label for="offer-salon" class="form-label">Nazwa salonu</label>
+          <input type="text" id="offer-salon" name="salon" class="form-input" autocomplete="organization">
+        </div>
+        <div class="form-field">
+          <label for="offer-email" class="form-label">E-mail <span aria-hidden="true">*</span></label>
+          <input type="email" id="offer-email" name="email" class="form-input" required autocomplete="email">
+        </div>
+        <div class="form-field">
+          <label for="offer-phone" class="form-label">Telefon <span aria-hidden="true">*</span></label>
+          <input type="tel" id="offer-phone" name="telefon" class="form-input" required autocomplete="tel">
+        </div>
+      </div>
+      <div class="form-field form-field--full">
+        <label class="form-checkbox" id="rodo-label">
+          <input type="checkbox" name="rodo" required>
+          <span>Wyrażam zgodę na przetwarzanie danych osobowych przez Aura Consulting w celu przygotowania oferty ubezpieczeniowej. <a href="#" class="link">Polityka prywatności</a>.</span>
+        </label>
+      </div>
+      <div class="form-field form-field--full hidden" id="ankieta-agreement-field">
+        <label class="form-checkbox">
+          <input type="checkbox" id="ankieta-agreement" name="ankieta_agree">
+          <span>Rozumiem, że ten wariant wymaga wypełnienia ankiety ERGO Hestia i zobowiązuję się ją odesłać.</span>
+        </label>
+      </div>
+      <button type="submit" id="submit-offer-btn" class="btn btn--primary btn--full btn--lg">Przekaż do weryfikacji</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: KONTAKT -->
+<div class="modal hidden" id="modal-contact" role="dialog" aria-modal="true" aria-labelledby="modal-contact-title">
+  <div class="modal__backdrop" onclick="BP.closeModal('modal-contact')"></div>
+  <div class="modal__box">
+    <button class="modal__close" onclick="BP.closeModal('modal-contact')" aria-label="Zamknij">&times;</button>
+    <div class="modal__header">
+      <span class="modal__icon" aria-hidden="true">💬</span>
+      <h3 id="modal-contact-title" class="modal__title">Skontaktuj się z nami</h3>
+      <p class="modal__subtitle">Oddzwonimy lub napiszemy w ciągu 24h</p>
+    </div>
+    <form id="contact-form" onsubmit="BP.submitContact(event)" novalidate>
+      <input type="hidden" name="access_key" value="45d66fa5-4c37-4adb-8d18-4e1d7f12c0f8">
+      <input type="hidden" name="subject" value="Szybki kontakt — BeautyPolisa.com">
+      <input type="hidden" name="from_name" value="BeautyPolisa Kontakt">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="contact-name" class="form-label">Imię <span aria-hidden="true">*</span></label>
+          <input type="text" id="contact-name" name="imie" class="form-input" required autocomplete="given-name">
+        </div>
+        <div class="form-field">
+          <label for="contact-phone" class="form-label">Telefon <span aria-hidden="true">*</span></label>
+          <input type="tel" id="contact-phone" name="telefon" class="form-input" required autocomplete="tel">
+        </div>
+      </div>
+      <div class="form-field form-field--full">
+        <label for="contact-msg" class="form-label">Wiadomość (opcjonalnie)</label>
+        <textarea id="contact-msg" name="wiadomosc" class="form-input form-textarea" rows="3" placeholder="Napisz, w czym możemy pomóc..."></textarea>
+      </div>
+      <button type="submit" id="submit-contact-btn" class="btn btn--primary btn--full">Proszę o kontakt</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: KLAUZULA PRAWNA -->
+<div class="modal hidden" id="modal-klauzula" role="dialog" aria-modal="true" aria-labelledby="modal-klauzula-title">
+  <div class="modal__backdrop" onclick="BP.closeModal('modal-klauzula')"></div>
+  <div class="modal__box modal__box--wide">
+    <button class="modal__close" onclick="BP.closeModal('modal-klauzula')" aria-label="Zamknij">&times;</button>
+    <h3 id="modal-klauzula-title" class="modal__title">Ubezpieczenie Ochrony Prawnej</h3>
+    <div class="modal__content">
+      <p>Rozszerzenie obejmuje pokrycie kosztów pomocy prawnej (adwokat, radca prawny) w sporach wynikłych z działalności ubezpieczonego salonu.</p>
+      <ul>
+        <li>Suma gwarancyjna: <strong>100 000 zł</strong></li>
+        <li>Składka roczna: <strong>92 zł</strong></li>
+        <li>Zakres: sprawy karne, cywilne i administracyjne związane z wykonywaniem zawodu</li>
+        <li>Ubezpieczyciel: ERGO Hestia</li>
+      </ul>
+    </div>
+    <button class="btn btn--primary" onclick="BP.closeModal('modal-klauzula')">Rozumiem</button>
+  </div>
+</div>
+
+<script src="bp-app.js"></script>
+</body>
+</html>
