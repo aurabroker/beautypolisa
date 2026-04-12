@@ -50,6 +50,11 @@
       "source": "anthropics/claude-code",
       "sourceType": "github",
       "computedHash": "e8118284a6365753790d44bb2758a6032b3af27fa84696428d9233f2be0f4e78"
+    },
+    "valyu-best-practices": {
+      "source": "valyuai/skills",
+      "sourceType": "github",
+      "computedHash": "40d76de811b2082566424975ff18af7990b6000b144d4b6187486783b517099b"
     }
   }
 }
