@@ -1,0 +1,14 @@
+{
+  "hooks": [
+    {
+      "event": "PreToolUse",
+      "matcher": "Edit",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'bp-app.js\\|bp-nav.js\\|index.html\\|new.html\\|tax-protect.html\\|medical.html\\|life1.html'; then echo '[connect-apps-plugin] Editing a core project file — remember to rebuild style.css if Tailwind classes changed.'; fi"
+        }
+      ]
+    }
+  ]
+}
