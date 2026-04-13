@@ -1,0 +1,12 @@
+---
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/HermeticOrmus/LibreUIUX-Claude-Code/discussions
+    about: Questions, brainstorming, and general discussions about UI/UX with Claude Code
+  - name: Troubleshooting Guide
+    url: https://github.com/HermeticOrmus/LibreUIUX-Claude-Code/blob/main/TROUBLESHOOTING.md
+    about: Common issues and solutions for Claude Code UI generation
+  - name: Quick Start
+    url: https://github.com/HermeticOrmus/LibreUIUX-Claude-Code/blob/main/QUICK_START.md
+    about: Get started in 5 minutes
