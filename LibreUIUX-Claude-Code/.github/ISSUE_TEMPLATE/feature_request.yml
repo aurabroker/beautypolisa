@@ -1,0 +1,89 @@
+---
+name: Feature Request
+description: Suggest a new template, plugin, or improvement
+title: "[FEATURE] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature! Please provide details
+        to help us understand your idea.
+
+  - type: checkboxes
+    id: preliminary-checks
+    attributes:
+      label: Preliminary Checks
+      options:
+        - label: I have searched existing issues for similar requests
+          required: true
+        - label: This is a constructive feature request
+          required: true
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: What kind of feature is this?
+      options:
+        - New CLAUDE.md Template
+        - New Plugin (agent/skill/command)
+        - New Prompt Template
+        - Documentation Improvement
+        - Workflow Guide
+        - Tool Integration
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Description
+      description: What problem does this feature solve?
+      placeholder: |
+        Currently, when I try to..., I have to...
+        This is frustrating because...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe your ideal solution
+      placeholder: |
+        I would like LibreUIUX to include...
+        This would allow users to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples
+      description: Show how this feature would be used
+      placeholder: |
+        **Example prompt:**
+        "Create a..."
+
+        **Expected output:**
+        ```html
+        <!-- code example -->
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Other solutions you've considered
+      placeholder: I also considered... but...
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I would be willing to contribute this feature myself
