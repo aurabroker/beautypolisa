@@ -72,8 +72,8 @@ async function fetchSalons() {
 
   const { data, error } = await sb
     .from("salons")
-    .select("id,name,city,address,description,lat,lng,salon_photos(url,is_cover),salon_services(id)")
-    .eq("is_published", true)
+    .select("id,name,slug,city,street,tagline,description,lat,lng,salon_photos(url,is_cover),salon_services(id)")
+    .eq("status", "active")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -161,9 +161,9 @@ function card(s) {
           ${cnt ? `<span class="bk-badge" style="flex-shrink:0">${cnt}&nbsp;zab.</span>` : ""}
         </div>
         <p style="font-size:.8rem;color:#64748b;margin-bottom:.5rem">
-          📍 ${BK.esc(s.city)}${s.address ? `, ${BK.esc(s.address)}` : ""}
+          📍 ${BK.esc(s.city)}${s.street ? `, ${BK.esc(s.street)}` : ""}
         </p>
-        ${s.description ? `<p style="font-size:.82rem;color:#475569;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:.5rem">${BK.esc(s.description)}</p>` : ""}
+        ${(s.tagline || s.description) ? `<p style="font-size:.82rem;color:#475569;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:.5rem">${BK.esc(s.tagline || s.description)}</p>` : ""}
         <span style="font-size:.8rem;color:#7c3aed;font-weight:700">Zobacz profil →</span>
       </div>
     </a>`;

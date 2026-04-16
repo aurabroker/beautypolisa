@@ -87,7 +87,7 @@ async function loadDashboard() {
 
   const [{ data: services }, { data: photos }] = await Promise.all([
     salon ? sb.from("salon_services").select("*").eq("salon_id", salon.id).order("created_at") : { data: [] },
-    salon ? sb.from("salon_photos").select("*").eq("salon_id", salon.id).order("order")       : { data: [] }
+    salon ? sb.from("salon_photos").select("*").eq("salon_id", salon.id).order("sort_order")   : { data: [] }
   ]);
 
   renderDashboard(services ?? [], photos ?? []);
@@ -145,8 +145,25 @@ function tabProfile() {
         </div>
       </div>
       <div style="margin-bottom:1rem">
-        <label class="bk-label" for="bp-addr">Adres</label>
-        <input id="bp-addr" type="text" class="bk-input" value="${BK.esc(s.address ?? "")}" placeholder="ul. Przykładowa 1">
+        <label class="bk-label" for="bp-tagline">Hasło reklamowe</label>
+        <input id="bp-tagline" type="text" class="bk-input" value="${BK.esc(s.tagline ?? "")}" placeholder="np. Ekskluzywny salon w centrum miasta">
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;margin-bottom:1rem">
+        <div>
+          <label class="bk-label" for="bp-street">Ulica i numer</label>
+          <input id="bp-street" type="text" class="bk-input" value="${BK.esc(s.street ?? "")}" placeholder="ul. Przykładowa 1">
+        </div>
+        <div>
+          <label class="bk-label" for="bp-postal">Kod pocztowy</label>
+          <input id="bp-postal" type="text" class="bk-input" value="${BK.esc(s.postal_code ?? "")}" placeholder="00-001">
+        </div>
+      </div>
+      <div style="margin-bottom:1rem">
+        <label class="bk-label" for="bp-voiv">Województwo</label>
+        <select id="bp-voiv" class="bk-input">
+          ${["mazowieckie","małopolskie","wielkopolskie","śląskie","dolnośląskie","łódzkie","pomorskie","kujawsko-pomorskie","warmińsko-mazurskie","podkarpackie","lubelskie","podlaskie","zachodniopomorskie","lubuskie","świętokrzyskie","opolskie"]
+            .map(v => `<option value="${v}"${s.voivodeship===v?" selected":""}>${v}</option>`).join("")}
+        </select>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
         <div>
@@ -165,19 +182,29 @@ function tabProfile() {
         </div>
         <div>
           <label class="bk-label" for="bp-email">E-mail kontaktowy</label>
-          <input id="bp-email" type="email" class="bk-input" value="${BK.esc(s.email ?? "")}" placeholder="salon@example.com">
+          <input id="bp-email" type="email" class="bk-input" value="${BK.esc(s.email_contact ?? "")}" placeholder="salon@example.com">
         </div>
       </div>
-      <div style="margin-bottom:1rem">
-        <label class="bk-label" for="bp-web">Strona internetowa</label>
-        <input id="bp-web" type="url" class="bk-input" value="${BK.esc(s.website ?? "")}" placeholder="https://mojsalon.pl">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem">
+        <div>
+          <label class="bk-label" for="bp-web">Strona www</label>
+          <input id="bp-web" type="url" class="bk-input" value="${BK.esc(s.website ?? "")}" placeholder="https://...">
+        </div>
+        <div>
+          <label class="bk-label" for="bp-ig">Instagram</label>
+          <input id="bp-ig" type="url" class="bk-input" value="${BK.esc(s.instagram_url ?? "")}" placeholder="https://instagram.com/...">
+        </div>
+        <div>
+          <label class="bk-label" for="bp-fb">Facebook</label>
+          <input id="bp-fb" type="url" class="bk-input" value="${BK.esc(s.facebook_url ?? "")}" placeholder="https://facebook.com/...">
+        </div>
       </div>
       <div style="margin-bottom:1.25rem">
         <label class="bk-label" for="bp-desc">Opis salonu</label>
         <textarea id="bp-desc" class="bk-input" rows="4" placeholder="Opisz swój salon — specjalizacje, atmosferę, doświadczenie...">${BK.esc(s.description ?? "")}</textarea>
       </div>
       <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;font-size:.875rem;font-weight:600;margin-bottom:1.5rem">
-        <input type="checkbox" id="bp-pub" ${s.is_published ? "checked" : ""} style="accent-color:#7c3aed;width:1rem;height:1rem">
+        <input type="checkbox" id="bp-pub" ${s.status === "active" ? "checked" : ""} style="accent-color:#7c3aed;width:1rem;height:1rem">
         Publikuj salon w katalogu (widoczny dla odwiedzających)
       </label>
       <button type="submit" id="bk-save-btn" class="bk-btn bk-btn-primary" style="padding:.65rem 2rem">
@@ -203,15 +230,17 @@ function tabServices(services) {
     </div>`;
 }
 
+const GROUP_NAMES = { 1:"Fryzjerstwo", 2:"Kosmetyka", 3:"Paznokcie", 4:"Masaż i SPA", 5:"Medycyna estetyczna" };
+
 function serviceList(services) {
   return `
     <div class="bk-card" style="overflow:hidden">
       ${services.map((sv, i) => `
         <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;${i ? "border-top:1px solid #f1f5f9" : ""}">
           <div style="flex:1;min-width:0">
-            <div style="font-weight:600;font-size:.875rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${BK.esc(sv.name)}</div>
+            <div style="font-weight:600;font-size:.875rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${BK.esc(sv.service_name)}</div>
             <div style="font-size:.73rem;color:#94a3b8;margin-top:.1rem">
-              ${sv.category ? BK.esc(sv.category) + " · " : ""}${sv.duration_min ? sv.duration_min + " min" : ""}
+              ${sv.group_id ? GROUP_NAMES[sv.group_id] + " · " : ""}${sv.duration_min ? sv.duration_min + " min" : ""}
             </div>
           </div>
           <div style="font-weight:700;color:#7c3aed;white-space:nowrap;font-size:.875rem">${priceStr(sv)}</div>
@@ -233,11 +262,14 @@ function serviceModal(sv = {}) {
     <form onsubmit="BKP.saveService(event,'${sv.id ?? ""}')">
       <div style="margin-bottom:1rem">
         <label class="bk-label">Nazwa zabiegu *</label>
-        <input name="name" type="text" class="bk-input" value="${BK.esc(sv.name ?? "")}" required placeholder="np. Manicure hybrydowy">
+        <input name="service_name" type="text" class="bk-input" value="${BK.esc(sv.service_name ?? "")}" required placeholder="np. Manicure hybrydowy">
       </div>
       <div style="margin-bottom:1rem">
-        <label class="bk-label">Kategoria</label>
-        <input name="category" type="text" class="bk-input" value="${BK.esc(sv.category ?? "")}" placeholder="np. Manicure, Fryzjerstwo, Masaż...">
+        <label class="bk-label">Grupa</label>
+        <select name="group_id" class="bk-input">
+          <option value="">— wybierz —</option>
+          ${Object.entries(GROUP_NAMES).map(([k,v]) => `<option value="${k}"${sv.group_id==k?" selected":""}>${v}</option>`).join("")}
+        </select>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;margin-bottom:1.5rem">
         <div>
@@ -402,18 +434,23 @@ window.BKP = {
     btn.disabled = true; btn.textContent = "Zapisywanie...";
 
     const payload = {
-      owner_id:     me.id,
-      name:         document.getElementById("bp-name").value.trim(),
-      slug:         BK.slug(document.getElementById("bp-name").value),
-      city:         document.getElementById("bp-city").value.trim(),
-      address:      document.getElementById("bp-addr").value.trim() || null,
-      lat:          parseFloat(document.getElementById("bp-lat").value) || null,
-      lng:          parseFloat(document.getElementById("bp-lng").value) || null,
-      phone:        document.getElementById("bp-phone").value.trim() || null,
-      email:        document.getElementById("bp-email").value.trim() || null,
-      website:      document.getElementById("bp-web").value.trim() || null,
-      description:  document.getElementById("bp-desc").value.trim() || null,
-      is_published: document.getElementById("bp-pub").checked
+      owner_id:      me.id,
+      name:          document.getElementById("bp-name").value.trim(),
+      slug:          BK.slug(document.getElementById("bp-name").value),
+      city:          document.getElementById("bp-city").value.trim(),
+      tagline:       document.getElementById("bp-tagline").value.trim() || null,
+      street:        document.getElementById("bp-street").value.trim() || null,
+      postal_code:   document.getElementById("bp-postal").value.trim() || null,
+      voivodeship:   document.getElementById("bp-voiv").value || null,
+      lat:           parseFloat(document.getElementById("bp-lat").value) || null,
+      lng:           parseFloat(document.getElementById("bp-lng").value) || null,
+      phone:         document.getElementById("bp-phone").value.trim() || null,
+      email_contact: document.getElementById("bp-email").value.trim() || null,
+      website:       document.getElementById("bp-web").value.trim() || null,
+      instagram_url: document.getElementById("bp-ig").value.trim() || null,
+      facebook_url:  document.getElementById("bp-fb").value.trim() || null,
+      description:   document.getElementById("bp-desc").value.trim() || null,
+      status:        document.getElementById("bp-pub").checked ? "active" : "draft"
     };
 
     let error;
@@ -444,11 +481,12 @@ window.BKP = {
     const num = key => { const v = fd.get(key); return v ? parseInt(v) : null; };
     const payload = {
       salon_id:     salon.id,
-      name:         fd.get("name"),
-      category:     fd.get("category") || null,
+      service_name: fd.get("service_name"),
+      group_id:     fd.get("group_id") ? parseInt(fd.get("group_id")) : null,
       price_from:   num("price_from"),
       price_to:     num("price_to"),
-      duration_min: num("duration_min")
+      duration_min: num("duration_min"),
+      is_available: true
     };
 
     const { error } = id
@@ -491,7 +529,7 @@ window.BKP = {
 
       const { data: { publicUrl } } = sb.storage.from("salon-photos").getPublicUrl(path);
       const isCover = done === 0 && (salon ? !(await sb.from("salon_photos").select("id").eq("salon_id", salon.id).limit(1)).data?.length : true);
-      await sb.from("salon_photos").insert({ salon_id: salon.id, url: publicUrl, is_cover: isCover, order: 99 });
+      await sb.from("salon_photos").insert({ salon_id: salon.id, url: publicUrl, is_cover: isCover, sort_order: 99 });
 
       done++;
       bar.style.width = `${(done / files.length) * 100}%`;

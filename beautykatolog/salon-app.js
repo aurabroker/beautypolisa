@@ -21,10 +21,11 @@ async function init() {
   if (!id && !slug) { renderError("Brak identyfikatora salonu."); return; }
 
   let q = sb.from("salons").select(`
-    id, name, slug, description, city, address, lat, lng,
-    phone, email, website, is_published,
-    salon_photos(id, url, is_cover, "order"),
-    salon_services(id, name, price_from, price_to, duration_min, category)
+    id, name, slug, tagline, description, city, street, postal_code,
+    lat, lng, phone, email_contact, website, status,
+    instagram_url, facebook_url,
+    salon_photos(id, url, is_cover, sort_order),
+    salon_services(id, service_name, price_from, price_to, duration_min, group_id, is_available)
   `);
 
   q = id ? q.eq("id", id) : q.eq("slug", slug);
@@ -33,7 +34,7 @@ async function init() {
 
   if (error)  { renderError(error.message); return; }
   if (!data)  { renderError("Salon nie został znaleziony."); return; }
-  if (!data.is_published) { renderError("Profil salonu jest nieaktywny."); return; }
+  if (data.status !== "active") { renderError("Profil salonu jest nieaktywny."); return; }
 
   renderSalon(data);
 }
@@ -54,13 +55,14 @@ function renderError(msg) {
 function renderSalon(s) {
   document.title = `${s.name} — BeautyKatalog`;
 
-  const photos   = (s.salon_photos ?? []).filter(p => p.url).sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+  const photos   = (s.salon_photos ?? []).filter(p => p.url).sort((a, b) => (a.sort_order ?? 99) - (b.sort_order ?? 99));
   const cover    = photos.find(p => p.is_cover)?.url ?? photos[0]?.url ?? "";
-  const services = s.salon_services ?? [];
+  const services = (s.salon_services ?? []).filter(sv => sv.is_available !== false);
 
+  const GROUP_NAMES = { 1:"Fryzjerstwo", 2:"Kosmetyka", 3:"Paznokcie", 4:"Masaż i SPA", 5:"Medycyna estetyczna" };
   const grouped = {};
   services.forEach(sv => {
-    const cat = sv.category?.trim() || "Pozostałe";
+    const cat = GROUP_NAMES[sv.group_id] || "Inne zabiegi";
     (grouped[cat] = grouped[cat] ?? []).push(sv);
   });
 
@@ -77,7 +79,7 @@ function renderSalon(s) {
           ${BK.esc(s.name)}
         </h1>
         <p style="opacity:.9;font-size:.9rem;margin-top:.3rem">
-          📍 ${BK.esc(s.city)}${s.address ? `, ${BK.esc(s.address)}` : ""}
+          📍 ${BK.esc(s.city)}${s.street ? `, ${BK.esc(s.street)}` : ""}${s.postal_code ? ` ${BK.esc(s.postal_code)}` : ""}
         </p>
       </div>
     </div>
@@ -108,7 +110,7 @@ function renderSalon(s) {
                   <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;
                               padding:.75rem 1rem;${i ? "border-top:1px solid #f1f5f9" : ""}">
                     <div>
-                      <div style="font-size:.9rem;font-weight:500">${BK.esc(sv.name)}</div>
+                      <div style="font-size:.9rem;font-weight:500">${BK.esc(sv.service_name)}</div>
                       ${sv.duration_min ? `<div style="font-size:.73rem;color:#94a3b8;margin-top:.1rem">⏱ ${sv.duration_min} min</div>` : ""}
                     </div>
                     <div style="text-align:right;font-weight:700;color:#7c3aed;white-space:nowrap;font-size:.88rem;flex-shrink:0">
@@ -139,7 +141,7 @@ function renderSalon(s) {
         <div class="bk-card" style="padding:1.25rem">
           <h3 style="font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#4c1d95;margin-bottom:.85rem">Kontakt</h3>
           ${contactRow("📞", s.phone ? `<a href="tel:${BK.esc(s.phone)}">${BK.esc(s.phone)}</a>` : "")}
-          ${contactRow("✉️", s.email ? `<a href="mailto:${BK.esc(s.email)}">${BK.esc(s.email)}</a>` : "")}
+          ${contactRow("✉️", s.email_contact ? `<a href="mailto:${BK.esc(s.email_contact)}">${BK.esc(s.email_contact)}</a>` : "")}
           ${contactRow("🌐", s.website ? `<a href="${BK.esc(s.website)}" target="_blank" rel="noopener" style="color:#7c3aed">Strona internetowa ↗</a>` : "")}
           ${!s.phone && !s.email && !s.website
             ? `<p style="font-size:.82rem;color:#94a3b8">Brak danych kontaktowych</p>` : ""}
