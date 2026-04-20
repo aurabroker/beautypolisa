@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>BeautyPolisa | Ubezpieczenie OC dla Salonów Beauty i Kosmetologów</title>
+  <meta name="description" content="Ekskluzywne ubezpieczenie OC dla salonów beauty, kosmetologów, fryzjerów i podologów. Zabezpiecz swój biznes na sumę do 300 000 zł. Oblicz składkę online w 2 minuty!">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#2a3b69">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "InsuranceAgency",
+    "name": "BeautyPolisa created by Aura Consulting",
+    "description": "Butik ubezpieczeniowy dedykowany branży beauty.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ul. Bolkowska 2A/28",
+      "addressLocality": "Warszawa",
+      "postalCode": "01-466",
+      "addressCountry": "PL"
+    }
+  }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #2a3b69;
+      --pink:   #e11d48;
+      --pink-light: #fff1f2;
+      --pink-mid:   #ffe4e6;
+      --slate-50:  #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-500: #64748b;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #fafafa;
+      color: var(--slate-800);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, .font-heading { font-family: 'Playfair Display', serif; }
+
+    /* ── Utility ── */
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .gap-2 { gap: 0.5rem; }
+
+    /* ── Top-bar ── */
+    .topbar {
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 6px 0;
+      position: relative;
+      z-index: 50;
+    }
+    .topbar__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    .topbar a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .topbar a:hover { color: #fff; }
+    .topbar a.active { color: #fff; border-bottom: 1px solid var(--pink); padding-bottom: 1px; }
+
+    /* ── Sticky nav ── */
+    .navbar {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--slate-100);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .navbar__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .navbar__brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .navbar__brand img {
+      height: 36px;
+      width: auto;
+    }
+    .navbar__broker {
+      display: none;
+      flex-direction: column;
+      border-left: 1px solid var(--slate-200);
+      padding-left: 0.75rem;
+    }
+    @media (min-width: 640px) { .navbar__broker { display: flex; } }
+    .navbar__broker-label {
+      font-size: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #94a3b8;
+    }
+    .navbar__broker-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .btn-cta {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 0.5rem 1.5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 14px rgba(42,59,105,0.25);
+    }
+    .btn-cta:hover { background: #1e2f5a; }
+    .btn-cta:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 50%, #ffffff 100%);
+      border-bottom: 1px solid var(--pink-mid);
+    }
+    /* Decorative blobs */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 380px; height: 380px;
+      background: #fff;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 300px; height: 300px;
+      background: #fecdd3;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .hero__inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    @media (min-width: 900px) {
+      .hero__inner {
+        grid-template-columns: 1fr 1fr;
+        padding: 5rem 2rem;
+        gap: 4rem;
+      }
+    }
+
+    /* Left column */
+    .hero__copy {}
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #fff;
+      border: 1px solid var(--pink-mid);
+      border-radius: 999px;
+      padding: 0.3rem 0.85rem;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--pink);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      margin-bottom: 1.25rem;
+    }
+    .hero__title {
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.22;
+      color: var(--slate-800);
+      margin-bottom: 1rem;
+    }
+    .hero__title em {
+      font-style: normal;
+      color: var(--pink);
+    }
+    .hero__desc {
+      font-size: 0.875rem;
+      line-height: 1.7;
+      color: var(--slate-500);
+      font-weight: 300;
+      max-width: 520px;
+      margin-bottom: 1.75rem;
+    }
+    .hero__desc strong { font-weight: 600; color: var(--slate-700); }
+    .hero__pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+    .hero__pill {
+      background: #fff;
+      border: 1px solid var(--pink-mid);
+      border-radius: 999px;
+      padding: 0.45rem 0.9rem;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--slate-700);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .hero__pill-check { color: #10b981; font-size: 14px; line-height: 1; }
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .btn-primary {
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 0.75rem 2rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+      box-shadow: 0 6px 20px rgba(225,29,72,0.3);
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: #be123c; transform: translateY(-1px); }
+    .btn-primary:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--navy);
+      border: 2px solid var(--navy);
+      border-radius: 999px;
+      padding: 0.7rem 1.75rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-secondary:hover { background: var(--navy); color: #fff; }
+    .btn-secondary:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+
+    /* Right column — video block */
+    .hero__media {
+      position: relative;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.6);
+      background: #0f172a;
+      aspect-ratio: 16 / 9;
+    }
+    /* When actual <video> or <iframe> is placed inside, it fills the block */
+    .hero__media video,
+    .hero__media iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      object-fit: cover;
+    }
+    /* Placeholder shown until video is added */
+    .hero__media-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      background: linear-gradient(135deg, #1e2f5a 0%, #2a3b69 60%, #3b4f8a 100%);
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .hero__play-icon {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: #fff;
+    }
+    .hero__media-label {
+      position: absolute;
+      bottom: 1rem; left: 1rem;
+      background: rgba(15,23,42,0.75);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 0.3rem 0.8rem;
+    }
+
+    /* ── Main ── */
+    main { flex: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Top utility bar -->
+  <nav class="topbar" aria-label="Menu pomocnicze">
+    <div class="topbar__inner">
+      <a href="index.html" class="active">OC</a>
+      <a href="tax-protect.html">Ochrona karno-skarbowa</a>
+      <a href="#">Prywatne L4</a>
+      <a href="#">Life</a>
+      <a href="#">Opieka medyczna</a>
+    </div>
+  </nav>
+
+  <!-- Sticky header -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <div class="navbar__brand">
+        <img src="BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" height="36">
+        <div class="navbar__broker" aria-label="Obsługa brokerska">
+          <span class="navbar__broker-label">Obsługa Brokerska</span>
+          <span class="navbar__broker-name">Aura Consulting</span>
+        </div>
+      </div>
+      <a href="#kalkulator" class="btn-cta">Rozpocznij Kalkulację</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════
+         HERO SECTION
+    ═══════════════════════════════════════════ -->
+    <section class="hero" aria-label="Sekcja główna">
+      <div class="hero__inner">
+
+        <!-- LEFT: copy -->
+        <div class="hero__copy">
+          <div class="hero__badge" aria-label="Kalkulator Składek 2026">
+            <span aria-hidden="true">&#10024;</span>
+            Kalkulator Składek 2026
+          </div>
+
+          <h1 class="hero__title font-heading">
+            Ekskluzywny Program Ochrony<br>
+            <em>dla Branży Beauty</em>
+          </h1>
+
+          <p class="hero__desc">
+            Zbudowany we współpracy z <strong>BeautyRazem</strong>. Zaznacz zabiegi,
+            które wykonujesz, a system automatycznie dopasuje optymalny wariant
+            ubezpieczenia OC dla Twojego gabinetu.
+          </p>
+
+          <div class="hero__pills" role="list" aria-label="Kluczowe cechy oferty">
+            <div class="hero__pill" role="listitem">
+              <span class="hero__pill-check" aria-hidden="true">&#10003;</span>
+              Dedykowane dla BeautyRazem
+            </div>
+            <div class="hero__pill" role="listitem">
+              <span class="hero__pill-check" aria-hidden="true">&#10003;</span>
+              Ochrona do 300 000 zł
+            </div>
+            <div class="hero__pill" role="listitem">
+              <span class="hero__pill-check" aria-hidden="true">&#10003;</span>
+              Ekspercka likwidacja szkód
+            </div>
+          </div>
+
+          <div class="hero__actions">
+            <a href="#kalkulator" class="btn-primary">Oblicz składkę — 2 minuty</a>
+            <a href="#zakres" class="btn-secondary">Zakres ochrony</a>
+          </div>
+        </div>
+
+        <!-- RIGHT: video -->
+        <div class="hero__media" aria-label="Wideo prezentacyjne">
+          <!--
+            WIDEO — wklej tutaj tag <video> lub <iframe> (YouTube/Vimeo).
+            Przykład local video:
+              <video autoplay muted loop playsinline poster="poster.jpg">
+                <source src="hero-video.mp4" type="video/mp4">
+              </video>
+            Przykład YouTube embed (bez autoplay):
+              <iframe src="https://www.youtube.com/embed/VIDEO_ID?rel=0"
+                      title="BeautyPolisa — prezentacja" allowfullscreen
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+              </iframe>
+          -->
+          <div class="hero__media-placeholder" aria-hidden="true">
+            <div class="hero__play-icon">&#9654;</div>
+            <span>Miejsce na Twoje wideo</span>
+          </div>
+          <span class="hero__media-label">BeautyPolisa 2026</span>
+        </div>
+
+      </div>
+    </section>
+    <!-- koniec hero -->
+
+  </main>
+
+</body>
+</html>
