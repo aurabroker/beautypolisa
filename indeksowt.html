@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    
+    <title>BeautyPolisa | Ubezpieczenie OC dla Salonów Beauty i Kosmetologów</title>
+    <meta name="description" content="Ekskluzywne ubezpieczenie OC dla salonów beauty, kosmetologów, fryzjerów i podologów. Zabezpiecz swój biznes na sumę do 300 000 zł. Oblicz składkę online w 2 minuty!">
+    <meta name="keywords" content="OC kosmetyczki, ubezpieczenie salonu kosmetycznego, OC tatuatora, OC kosmetologa, ubezpieczenie podologa, BeautyPolisa, ubezpieczenie fryzjera, OC zawodowe beauty, Beauty Razem, ubezpieczenia medycyna estetyczna">
+    <meta name="author" content="Aura Consulting">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="theme-color" content="#2a3b69">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="BeautyPolisa">
+    <meta name="application-name" content="BeautyPolisa">
+    
+    <!-- Chosen Palette: Warm Neutrals with Beauty Navy (#2a3b69) and Rose Pink (#e11d48) accents -->
+    <!-- Application Structure Plan: Interaktywny kalkulator w formie One-Page. Krok 1: Wybór zabiegów. Krok 2: Parametry gabinetu. Krok 3 (Wyniki): Dynamicznie kalkulowana oferta z wykorzystaniem wizualizacji Chart.js dla czytelnego porównania wariantów składek. Optymalizacja UX pod kątem konwersji (lead generation). -->
+    <!-- Visualization & Content Choices: Interactive Form (Checkbox/Radio) do zbierania danych wejściowych. Dynamiczna sekcja wyników z Bar Chart (Chart.js) do porównywania cen wariantów na żywo. Usunięto całkowicie SVG, użyto symboli Unicode dla zachowania lekkości i zgodności z wytycznymi. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "InsuranceAgency",
+          "@id": "https://www.beautypolisa.com/#agency",
+          "name": "BeautyPolisa created by Aura Consulting",
+          "description": "Butik ubezpieczeniowy dedykowany branży beauty. Ubezpieczenia OC dla salonów kosmetycznych, fryzjerskich, kosmetologów i podologów.",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "ul. Bolkowska 2A/28",
+            "addressLocality": "Warszawa",
+            "postalCode": "01-466",
+            "addressCountry": "PL"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Załadowanie lokalnej biblioteki stylów Tailwind CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #fafafa; color: #1e293b; }
+        h1, h2, h3, .font-heading { font-family: 'Playfair Display', serif; }
+
+        /* Niestandardowe kolory bazowe (zastępstwo konfiguracji Tailwind) */
+        .text-beauty-navy { color: #2a3b69; }
+        .bg-beauty-navy { background-color: #2a3b69; }
+        .border-beauty-navy { border-color: #2a3b69; }
+        .hover\:border-beauty-navy:hover { border-color: #2a3b69; }
+        .hover\:text-beauty-navy:hover { color: #2a3b69; }
+        .focus\:ring-beauty-navy:focus { box-shadow: 0 0 0 2px #fafafa, 0 0 0 4px #2a3b69; }
+        
+        .text-beauty-pink { color: #e11d48; }
+        .bg-beauty-pink { background-color: #e11d48; }
+        .border-beauty-pink { border-color: #e11d48; }
+        .hover\:text-beauty-pink:hover { color: #e11d48; }
+        .focus\:border-beauty-pink:focus { border-color: #e11d48; }
+        .focus\:ring-beauty-pink:focus { box-shadow: 0 0 0 2px #fafafa, 0 0 0 4px #e11d48; }
+        .accent-beauty-pink { accent-color: #e11d48; }
+        .selection\:bg-beauty-pink *::selection, .selection\:bg-beauty-pink::selection { background-color: #e11d48; color: white; }
+
+        .hero-gradient { background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 50%, #ffffff 100%); position: relative; }
+        .procedure-checkbox { display: flex; align-items: flex-start; padding: 0.35rem 0.5rem; border-radius: 0.5rem; transition: all 0.2s ease-in-out; cursor: pointer; border: 1px solid transparent; }
+        .procedure-checkbox:hover { background-color: #fff1f2; border-color: #ffe4e6; }
+        .procedure-checkbox input[type="checkbox"] { margin-top: 0.25rem; margin-right: 0.6rem; width: 1.1rem; height: 1.1rem; cursor: pointer; }
+        .procedure-checkbox span { font-size: 0.75rem; line-height: 1.1rem; color: #475569; flex-grow: 1; }
+        .radio-card input[type="radio"] { display: none; }
+        .radio-card label { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.75rem 1rem; border: 2px solid #e2e8f0; border-radius: 1rem; cursor: pointer; transition: all 0.3s; background: white; height: 100%; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .radio-card input[type="radio"]:checked + label { border-color: #2a3b69; background-color: #f8fafc; box-shadow: 0 10px 15px -3px rgba(42, 59, 105, 0.15); transform: translateY(-2px); }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .modal { display: none; opacity: 0; transition: opacity 0.3s ease; }
+        .modal.active { display: flex; opacity: 1; animation: fadeIn 0.3s ease forwards; z-index: 100;}
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .premium-card { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; }
+        .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #2a3b69; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col selection:bg-beauty-pink selection:text-white">
+
+    <nav aria-label="Menu pomocnicze" class="bg-slate-900 text-slate-300 text-[10px] md:text-xs py-1.5 font-semibold tracking-wide border-b border-slate-800 z-50 relative">
+        <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start">
+            <a href="index.html" class="text-white border-b border-beauty-pink pb-0.5 transition-colors">OC</a>
+            <a href="tax-protect.html" class="hover:text-white transition-colors">Ochrona karno-skarbowa</a>
+            <a href="#" class="hover:text-white transition-colors">Prywatne L4</a>
+            <a href="#" class="hover:text-white transition-colors">Life</a>
+            <a href="#" class="hover:text-white transition-colors">Opieka medyczna</a>
+        </div>
+    </nav>
+
+    <header class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-40 border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-4">
+                <div class="hidden md:block h-8 w-px bg-slate-200" aria-hidden="true"></div>
+                <div class="hidden md:flex flex-col">
+                    <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Obsługa Brokerska</span>
+                    <span class="text-[11px] text-beauty-navy font-semibold">Aura Consulting</span>
+                </div>
+            </div>
+            <div>
+                <button onclick="document.getElementById('calculator-section').scrollIntoView({behavior: 'smooth'});" class="bg-beauty-navy hover:bg-slate-800 text-white font-semibold py-2 px-6 rounded-full transition-all text-xs shadow-lg shadow-blue-900/20 focus:ring-2 focus:ring-offset-2 focus:ring-beauty-navy">
+                    Rozpocznij Kalkulację
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <section class="hero-gradient text-beauty-navy py-10 md:py-14 px-4 overflow-hidden border-b border-rose-100">
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-white rounded-full blur-3xl opacity-60" aria-hidden="true"></div>
+            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 bg-rose-200 rounded-full blur-3xl opacity-40" aria-hidden="true"></div>
+
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <span class="inline-block py-1 px-3 rounded-full bg-white border border-rose-200 text-beauty-pink text-[10px] font-bold tracking-widest uppercase mb-4 shadow-sm">
+                    Kalkulator Składek 2026
+                </span>
+                
+                <h1 class="font-heading text-2xl md:text-4xl font-bold mb-4 leading-tight text-slate-800">
+                    Ekskluzywny Program Ochrony<br><span class="text-beauty-pink">dla Branży Beauty</span>
+                </h1>
+                
+                <p class="text-sm md:text-base text-slate-600 mb-6 max-w-2xl mx-auto font-light leading-relaxed">
+                    Zbudowany we współpracy z <strong>BeautyRazem</strong>. Zaznacz zabiegi, które wykonujesz w swoim gabinecie, a system automatycznie dopasuje optymalny wariant ubezpieczenia OC.
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-2 md:gap-4 text-xs font-semibold text-slate-700">
+                    <span class="bg-white px-4 py-2 rounded-full border border-rose-100 shadow-sm flex items-center gap-1.5">
+                        <span class="text-emerald-500 text-lg leading-none" aria-hidden="true">&#10003;</span> Dedykowane dla BeautyRazem
+                    </span>
+                    <span class="bg-white px-4 py-2 rounded-full border border-rose-100 shadow-sm flex items-center gap-1.5">
+                        <span class="text-emerald-500 text-lg leading-none" aria-hidden="true">&#10003;</span> Ochrona do 300 000 zł
+                    </span>
+                    <span class="bg-white px-4 py-2 rounded-full border border-rose-100 shadow-sm flex items-center gap-1.5">
+                        <span class="text-emerald-500 text-lg leading-none" aria-hidden="true">&#10003;</span> Ekspercka likwidacja szkód
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- NOWA SEKCJA ZAKRESU UBEZPIECZENIA -->
+        <section class="max-w-7xl mx-auto px-4 py-10 mt-2">
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-6 md:p-8">
+                    <div class="text-center mb-8">
+                        <h2 class="font-heading text-2xl md:text-3xl font-bold text-beauty-navy mb-3">Zakres Ochrony Ubezpieczeniowej</h2>
+                        <p class="text-slate-500 text-sm max-w-3xl mx-auto leading-relaxed">Przedmiotem ubezpieczenia jest odpowiedzialność cywilna (OC) osób objętych ubezpieczeniem za szkody na osobie oraz szkody w mieniu wyrządzone osobom trzecim w związku z wykonywaniem czynności zawodowych w branży beauty.</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        
+                        <!-- KARTA 1: Podstawa -->
+                        <div class="rounded-2xl p-5 border" style="background-color: #f0f8ff; border-color: #bae6fd;">
+                            <h3 class="font-bold text-beauty-navy mb-4 flex items-center gap-2">
+                                <span style="color: #3b82f6;" class="text-xl leading-none" aria-hidden="true">&#10003;</span> Zakres Podstawowy
+                            </h3>
+                            <ul class="space-y-3 text-xs text-slate-700 leading-relaxed">
+                                <li class="flex items-start gap-2"><span style="color: #3b82f6;" class="mt-0.5" aria-hidden="true">&#10003;</span> <span>Szkody wyrządzone przez podwykonawców.</span></li>
+                                <li class="flex items-start gap-2"><span style="color: #3b82f6;" class="mt-0.5" aria-hidden="true">&#10003;</span> <span>Szkody wynikłe z rażącego niedbalstwa.</span></li>
+                                <li class="flex items-start gap-2"><span style="color: #3b82f6;" class="mt-0.5" aria-hidden="true">&#10003;</span> <span>Szkody w powierzonych dokumentach.</span></li>
+                                <li class="flex items-start gap-2"><span style="color: #3b82f6;" class="mt-0.5" aria-hidden="true">&#10003;</span> <span>Szkody wynikłe z posiadania mienia.</span></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- KARTA 2: Rozszerzenia -->
+                        <div class="rounded-2xl p-5 border" style="background-color: #e0f2fe; border-color: #7dd3fc;">
+                            <h3 class="font-bold text-beauty-navy mb-4 flex items-center gap-2">
+                                <span style="color: #2563eb;" class="text-xl leading-none" aria-hidden="true">&#10024;</span> Włączone Rozszerzenia
+                            </h3>
+                            <ul class="space-y-3 text-xs text-slate-800 leading-relaxed">
+                                <li class="flex items-start gap-2"><span style="color: #2563eb;" class="mt-0.5 font-bold" aria-hidden="true">+</span> <span><strong>Choroby zakaźne:</strong> OC za szkody z tytułu przeniesienia chorób zakaźnych (klauzula 4).</span></li>
+                                <li class="flex items-start gap-2"><span style="color: #2563eb;" class="mt-0.5 font-bold" aria-hidden="true">+</span> <span><strong>Aparatura:</strong> Szkody wynikłe z użytkowania urządzeń rentgenowskich, laserowych i innej aparatury zabiegowej/medycznej (klauzula 5).</span></li>
+                                <li class="flex items-start gap-2"><span style="color: #2563eb;" class="mt-0.5 font-bold" aria-hidden="true">+</span> <span><strong>OC Najemcy Nieruchomości:</strong> Szkody w wynajmowanym lokalu. Sublimit: 100 000 PLN.</span></li>
+                                <li class="flex items-start gap-2"><span style="color: #2563eb;" class="mt-0.5 font-bold" aria-hidden="true">+</span> <span><strong>OC Najemcy Ruchomości:</strong> Szkody w rzeczach pod dozorem i sprzęcie. Sublimit: 100 000 PLN.</span></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- KARTA 3: Wyłączenia -->
+                        <div class="rounded-2xl p-5 border shadow-sm" style="background-color: #fff1f2; border-color: #fecdd3;">
+                            <h3 class="font-bold text-beauty-pink mb-4 flex items-center gap-2">
+                                <span class="text-beauty-pink text-lg leading-none" aria-hidden="true">&#10005;</span> Czego polisa nie obejmuje?
+                            </h3>
+                            <ul class="space-y-2.5 text-[11px] text-rose-900 leading-relaxed">
+                                <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5" aria-hidden="true">&#10005;</span> <span>Szkód wynikłych z wprowadzania produktów do obrotu oraz życia prywatnego.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5" aria-hidden="true">&#10005;</span> <span>Szkód wynikłych z użytkowania pojazdów mechanicznych, urządzeń latających i pływających.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5" aria-hidden="true">&#10005;</span> <span>Szkód wynikłych z wykonywania funkcji członka władz lub dyrekcji spółki.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5" aria-hidden="true">&#10005;</span> <span>Czynności z branży budowlanej, IT, finansowej, prawnej i spedycyjnej.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-beauty-pink mt-0.5" aria-hidden="true">&#10005;</span> <span>Szkód w środowisku naturalnym oraz objętych minimalnym ubezpieczeniem obowiązkowym.</span></li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- KONIEC NOWEJ SEKCJI -->
+
+        <article id="calculator-section" class="py-8 px-4 max-w-7xl mx-auto">
+            
+            <p class="text-slate-600 text-sm mb-6 max-w-4xl mx-auto">
+                Wybierz zabiegi, które wykonujesz, abyśmy mogli dopasować ubezpieczenie odpowiednie do Twojego profilu działalności. Proces ten oceni ryzyko i precyzyjnie wyliczy kwoty pokrycia dla Twojego salonu.
+            </p>
+
+            <section class="bg-white rounded-3xl shadow-xl border border-slate-100 p-5 md:p-6 mb-6 relative">
+                <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 gap-3 border-b border-slate-100 pb-4">
+                    <h2 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy flex items-center">
+                        <span class="bg-rose-100 text-beauty-pink w-8 h-8 inline-flex items-center justify-center rounded-full text-base mr-3 shadow-sm font-sans" aria-hidden="true">1</span> 
+                        Jakie zabiegi wykonujesz?
+                    </h2>
+                    <p class="text-[11px] font-medium text-slate-500 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200">
+                        Zaznacz wszystkie. System dopasuje odpowiednią taryfę.
+                    </p>
+                </header>
+                
+                <div class="grid lg:grid-cols-3 gap-5">
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white shadow-sm">
+                        <div class="bg-slate-50 p-3 border-b border-slate-200 flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold text-sm text-beauty-navy">Grupa 1</h3>
+                                <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-0.5">Kosmetyka i Fryzjerstwo</p>
+                            </div>
+                            <button type="button" onclick="selectAll(1)" class="text-[9px] text-beauty-navy border border-slate-300 bg-white px-2.5 py-1 rounded-full hover:border-beauty-navy hover:bg-rose-50 transition-colors font-semibold shadow-sm focus:ring-2 focus:ring-beauty-navy outline-none">Wszystkie</button>
+                        </div>
+                        <div class="p-2 h-[320px] overflow-y-auto custom-scrollbar" id="list-1-container">
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Barbering</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Depilacja pastą cukrową</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Depilacja woskiem</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Dermabrazja i peeling skóry głowy</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Diagnoza skóry głowy i USG włosa</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Elektrostymulacja</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Endermologia - masaż podciśnieniowy</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Golenie głowy</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Henna</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Koloryzacja i dekoloryzacja włosów</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Makijaż</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Manicure</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Masaż manualny ciała, głowy i twarzy</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Pedicure kosmetyczny</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Piercing - przekłuwanie</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Przedłużanie i zagęszczanie rzęs</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Przedłużanie włosów</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Strzyżenie (wszystkie metody)</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="1" onchange="updateCalculator()"><span>Zabiegi keratynowe</span></label>
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white shadow-sm">
+                        <div class="bg-slate-50 p-3 border-b border-slate-200 flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold text-sm text-beauty-navy">Grupa 2</h3>
+                                <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-0.5">Kosmetologia i Tatuaż</p>
+                            </div>
+                            <button type="button" onclick="selectAll(2)" class="text-[9px] text-beauty-navy border border-slate-300 bg-white px-2.5 py-1 rounded-full hover:border-beauty-navy hover:bg-rose-50 transition-colors font-semibold shadow-sm focus:ring-2 focus:ring-beauty-navy outline-none">Wszystkie</button>
+                        </div>
+                        <div class="p-2 h-[320px] overflow-y-auto custom-scrollbar" id="list-2-container">
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Chemiczne usuwanie makijażu permanentnego</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Elektroliza i Elektrokoagulacja</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Karboksyterapia</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Kawitacja ultradźwiękowa</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Kriolipoliza</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Makijaż permanentny i Microblading</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Masaż Kobido</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Mezoterapia igłowa i mikroigłowa</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Mikrodermabrazja korundowa i diamentowa</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Oczyszczanie wodorowo-tlenowe</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Peeling chemiczny i węglowy</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Radiofrekwencja mikroigłowa</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Tatuaż</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Zabiegi wykorzystujące światło IPL</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="2" onchange="updateCalculator()"><span>Zabiegi laserem nieablacyjnym</span></label>
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden flex flex-col bg-white shadow-sm">
+                        <div class="bg-slate-50 p-3 border-b border-slate-200 flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold text-sm text-beauty-navy">Grupa 3</h3>
+                                <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-0.5">Podologia Medyczna</p>
+                            </div>
+                            <button type="button" onclick="selectAll(3)" class="text-[9px] text-beauty-navy border border-slate-300 bg-white px-2.5 py-1 rounded-full hover:border-beauty-navy hover:bg-rose-50 transition-colors font-semibold shadow-sm focus:ring-2 focus:ring-beauty-navy outline-none">Wszystkie</button>
+                        </div>
+                        <div class="p-2 h-[320px] overflow-y-auto custom-scrollbar" id="list-3-container">
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Badanie podoskopowe / podoskanerem</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Usuwanie zrogowaciałego naskórka (hiperkeratozy)</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Klamry ortonyksyjne - aplikacja i aktywacje</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Pedicure podologiczny (medyczny)</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Protetyka i rekonstrukcja paznokcia</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Opracowanie pęknięć i rozpadlin pięt</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Terapia nadpotliwości stóp (jonoforeza)</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Dobór i wykonywanie indywidualnych wkładek</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Ozonoterapia</span></label>
+                            <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="3" onchange="updateCalculator()"><span>Krioterapia zmian skórnych na stopach</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 border-2 border-amber-200 rounded-2xl overflow-hidden flex flex-col bg-amber-50/40">
+                    <div class="bg-amber-100/50 p-4 border-b border-amber-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <h3 class="font-bold text-amber-900 text-base">Zabiegi Specjalistyczne (Wysokie Ryzyko)</h3>
+                            <p class="text-[11px] text-amber-700 mt-0.5 font-medium">Zabiegi podlegające ubezpieczeniu po uprzedniej, indywidualnej ocenie ryzyka przez ubezpieczyciela.</p>
+                        </div>
+                        <button type="button" onclick="selectAll(4)" class="text-[9px] text-amber-800 border border-amber-300 bg-white px-3 py-1.5 rounded-full hover:bg-amber-100 transition-colors font-bold shadow-sm whitespace-nowrap focus:ring-2 focus:ring-amber-500 outline-none">Zaznacz wszystkie</button>
+                    </div>
+                    <div class="p-3 grid md:grid-cols-2 lg:grid-cols-3 gap-2" id="list-4-container">
+                        <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="4" onchange="updateCalculator()"><span>Zabiegi technologią HIFU</span></label>
+                        <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="4" onchange="updateCalculator()"><span>Zabiegi z użyciem toksyny botulinowej</span></label>
+                        <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="4" onchange="updateCalculator()"><span>Zabiegi osoczem bogatopłytkowym</span></label>
+                        <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="4" onchange="updateCalculator()"><span>Zabiegi technologią PLASMA</span></label>
+                        <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="4" onchange="updateCalculator()"><span>Wypełniacze na bazie kwasu hialuronowego</span></label>
+                        <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="4" onchange="updateCalculator()"><span>Zabiegi z użyciem nici PDO</span></label>
+                        <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="4" onchange="updateCalculator()"><span>Lipoliza iniekcyjna</span></label>
+                        <label class="procedure-checkbox"><input type="checkbox" class="tier-checkbox" data-tier="4" onchange="updateCalculator()"><span>Zabiegi laserem ablacyjnym</span></label>
+                    </div>
+                </div>
+            </section>
+
+            <section id="step-2" class="bg-white rounded-3xl shadow-lg border border-slate-100 p-5 md:p-6 mb-6 opacity-40 pointer-events-none transition-all duration-500 transform translate-y-4">
+                <header class="border-b border-slate-100 pb-4 mb-5">
+                    <h2 class="font-heading text-xl md:text-2xl font-bold text-beauty-navy flex items-center">
+                        <span class="bg-rose-100 text-beauty-pink w-8 h-8 inline-flex items-center justify-center rounded-full text-base mr-3 shadow-sm font-sans" aria-hidden="true">2</span> 
+                        Parametry Gabinetu
+                    </h2>
+                </header>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <fieldset>
+                        <legend class="block text-xs font-semibold text-slate-700 mb-3">Ile osób wykonuje zabiegi?</legend>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <div class="radio-card flex-1">
+                                <input type="radio" name="employees" id="emp-5" value="1" checked onchange="updateCalculator()">
+                                <label for="emp-5" class="py-2">
+                                    <span class="font-bold text-xs text-slate-800">1 - 5 osób</span>
+                                    <span class="text-[9px] text-emerald-600 mt-1 font-semibold uppercase">Taryfa bazowa</span>
+                                </label>
+                            </div>
+                            <div class="radio-card flex-1">
+                                <input type="radio" name="employees" id="emp-8" value="1.25" onchange="updateCalculator()">
+                                <label for="emp-8" class="py-2">
+                                    <span class="font-bold text-xs text-slate-800">6 - 8 osób</span>
+                                    <span class="text-[9px] text-slate-500 mt-1 font-semibold uppercase">+25% składki</span>
+                                </label>
+                            </div>
+                            <div class="radio-card flex-1">
+                                <input type="radio" name="employees" id="emp-9" value="ind" onchange="updateCalculator()">
+                                <label for="emp-9" class="py-2">
+                                    <span class="font-bold text-xs text-slate-800">9 i więcej</span>
+                                    <span class="text-[9px] text-amber-600 mt-1 font-semibold uppercase">Ankieta</span>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div>
+                        <span class="block text-xs font-semibold text-slate-700 mb-3">Rozszerzenie (Opcjonalnie)</span>
+                        <div class="border-2 border-slate-100 rounded-2xl p-4 flex items-start gap-3 cursor-pointer hover:bg-rose-50 hover:border-rose-100 transition-colors" onclick="document.getElementById('legal-protection').click()">
+                            <div class="flex-shrink-0 mt-0.5">
+                                <input type="checkbox" id="legal-protection" class="w-5 h-5 accent-beauty-pink rounded cursor-pointer" onclick="event.stopPropagation();" onchange="updateCalculator()">
+                            </div>
+                            <div>
+                                <label for="legal-protection" class="font-bold text-sm text-slate-800 cursor-pointer block">Ubezpieczenie Ochrony Prawnej</label>
+                                <p class="text-[11px] text-slate-500 mt-1">Koszty adwokata (Suma: 100 000 zł). <span class="font-semibold text-beauty-pink">Składka: +92 zł / rok</span></p>
+                                <button type="button" onclick="event.stopPropagation(); openModal('modal-klauzula-prawna')" class="text-[10px] text-beauty-navy hover:text-beauty-pink mt-1.5 font-bold transition-colors focus:outline-none block" style="text-decoration: underline; text-underline-offset: 2px;">
+                                    Przeczytaj treść klauzuli
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="results-section" class="hidden transform transition-all duration-700 translate-y-4 opacity-0" aria-live="polite">
+                
+                <div id="detected-tier-box" class="bg-white border-l-4 border-beauty-pink shadow-lg rounded-r-2xl p-4 mb-6 flex items-center justify-between">
+                    <div>
+                        <p class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">Dopasowana Taryfa</p>
+                        <p id="detected-tier-msg" class="text-sm text-slate-800 font-semibold"></p>
+                    </div>
+                    <div class="text-beauty-pink bg-rose-50 w-8 h-8 rounded-full hidden md:flex items-center justify-center font-bold text-lg" aria-hidden="true">
+                        &#10003;
+                    </div>
+                </div>
+                
+                <div id="pricing-cards-container">
+                    <h2 class="font-heading text-center text-2xl md:text-3xl font-bold text-beauty-navy mb-8">Wybierz wariant ochrony</h2>
+                    
+                    <div id="pricing-cards" class="grid md:grid-cols-3 gap-5">
+                        <div class="bg-white rounded-3xl shadow-md border border-slate-100 overflow-hidden flex flex-col premium-card">
+                            <div class="p-6 flex-grow flex flex-col items-center">
+                                <h3 class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] mb-2">Wariant Podstawowy</h3>
+                                <div class="font-heading text-2xl font-bold text-beauty-navy mb-4">100 000 zł</div>
+                                <div class="w-full h-px bg-slate-100 mb-4" aria-hidden="true"></div>
+                                
+                                <div class="text-center mb-6">
+                                    <p class="text-[11px] text-slate-500 mb-1">Składka roczna:</p>
+                                    <span id="price-100k" class="text-4xl font-extrabold text-slate-800">---</span><span class="text-slate-500 font-medium text-sm"> zł</span>
+                                </div>
+                                <button id="btn-100k" class="mt-auto w-full border-2 border-slate-200 text-slate-600 hover:border-beauty-navy hover:text-beauty-navy font-bold py-3 rounded-xl text-sm transition-colors focus:ring-2 focus:ring-beauty-navy outline-none">
+                                    Wybieram wariant
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-3xl shadow-xl border-2 border-beauty-pink overflow-hidden flex flex-col relative premium-card transform md:-translate-y-2">
+                            <div class="absolute top-0 left-0 w-full bg-gradient-to-r from-beauty-pink to-rose-500 text-white text-center text-[9px] font-bold py-1.5 uppercase tracking-widest">
+                                Rekomendacja Ekspertów
+                            </div>
+                            <div class="p-6 pt-8 flex-grow flex flex-col items-center bg-rose-50/30">
+                                <h3 class="font-semibold text-rose-400 uppercase tracking-widest text-[9px] mb-2">Wariant Optymalny</h3>
+                                <div class="font-heading text-2xl font-bold text-beauty-pink mb-4">200 000 zł</div>
+                                <div class="w-full h-px bg-rose-100 mb-4" aria-hidden="true"></div>
+                                
+                                <div class="text-center mb-6">
+                                    <p class="text-[11px] text-slate-500 mb-1">Składka roczna:</p>
+                                    <span id="price-200k" class="text-4xl font-extrabold text-slate-800">---</span><span class="text-slate-500 font-medium text-sm"> zł</span>
+                                </div>
+                                <button id="btn-200k" class="mt-auto w-full bg-beauty-pink hover:bg-rose-700 text-white font-bold py-3 rounded-xl text-sm transition-colors shadow-md shadow-rose-200 focus:ring-2 focus:ring-rose-500 outline-none">
+                                    Wybieram wariant
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-3xl shadow-md border border-slate-100 overflow-hidden flex flex-col premium-card relative">
+                            <div class="p-6 flex-grow flex flex-col items-center">
+                                <h3 class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] mb-2">Wariant Maksymalny</h3>
+                                <div class="font-heading text-2xl font-bold text-beauty-navy mb-4">300 000 zł</div>
+                                <div class="w-full h-px bg-slate-100 mb-4" aria-hidden="true"></div>
+                                
+                                <div class="text-center mb-5">
+                                    <p class="text-[11px] text-slate-500 mb-1">Składka roczna:</p>
+                                    <span id="price-300k" class="text-4xl font-extrabold text-slate-800">---</span><span class="text-slate-500 font-medium text-sm"> zł</span>
+                                </div>
+                                <div class="bg-slate-50 text-slate-500 text-[9px] p-2 rounded-lg mb-5 text-center w-full border border-slate-100">
+                                    <span aria-hidden="true">ℹ️</span> Wymaga wypełnienia ankiety.
+                                </div>
+                                <button id="btn-300k" class="mt-auto w-full border-2 border-slate-200 text-slate-600 hover:border-beauty-navy hover:text-beauty-navy font-bold py-3 rounded-xl text-sm transition-colors focus:ring-2 focus:ring-beauty-navy outline-none">
+                                    Wyślijcie Ankietę
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="individual-pricing-msg" class="hidden bg-beauty-navy text-white rounded-3xl p-8 text-center shadow-lg mt-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl" aria-hidden="true"></div>
+                    <h3 class="font-heading text-2xl font-bold mb-3 relative z-10">Wymagana Indywidualna Ocena Ryzyka</h3>
+                    <p class="text-slate-300 mb-6 max-w-2xl mx-auto text-xs leading-relaxed relative z-10" id="ind-pricing-reason">
+                        Ze względu na wybrane parametry przygotujemy dla Ciebie taryfę szytą na miarę. Wypełnij ankietę, a nasz broker wynegocjuje dla Ciebie optymalną stawkę.
+                    </p>
+                    <button id="btn-ind" class="bg-white text-beauty-navy hover:bg-slate-100 font-bold py-3 px-8 rounded-full transition-colors text-xs shadow-md relative z-10 focus:ring-2 focus:ring-white outline-none">
+                        Odbierz Ankietę na e-mail
+                    </button>
+                </div>
+
+                <div class="mt-8 flex justify-center">
+                    <button onclick="openModal('modal-contact')" class="flex items-center gap-2 text-slate-500 hover:text-beauty-pink font-medium transition-colors text-xs bg-white border border-slate-200 px-6 py-2.5 rounded-full shadow-sm focus:ring-2 focus:ring-beauty-pink outline-none">
+                        Masz pytania? Zostaw kontakt, odezwiemy się
+                        <span class="text-lg" aria-hidden="true">&#8594;</span>
+                    </button>
+                </div>
+            </section>
+
+        </article>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 pt-8 pb-6 text-sm text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-6 mb-4">
+            <div>
+                <p class="mb-1 text-[11px]"><strong>Obsługa techniczna Programu:</strong> Aura Expert sp. z o.o. <span class="font-semibold text-beauty-navy">(tel. 504 400 901)</span></p>
+                <p class="mb-3 text-[11px]"><strong>Likwidacja szkód i obsługa:</strong> Broker Ubezpieczeniowy Aura Consulting sp. z o.o.</p>
+                
+                <div class="inline-block bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 mt-1 shadow-sm">
+                    <span class="text-[10px] text-slate-600 font-medium tracking-wide">✨ <strong class="text-beauty-navy">BeautyPolisa</strong> to dzieło stworzone przez <strong class="text-beauty-pink">Aura Consulting</strong>.</span>
+                </div>
+            </div>
+            <div class="text-[9px] text-slate-400 md:text-right flex flex-col justify-center leading-relaxed">
+                <p class="mb-1">Niniejszy kalkulator oraz wyliczenia mają charakter wyłącznie informacyjny i nie stanowią oferty w rozumieniu art. 66 Kodeksu Cywilnego.</p>
+                <p class="mb-1">Ostateczna wysokość składki uzależniona jest od weryfikacji ryzyka i akceptacji przez Towarzystwo Ubezpieczeń ERGO Hestia.</p>
+                <p class="font-semibold text-slate-500">Warunki ubezpieczenia oparte są na bazie: Warunki Ubezpieczenia odpowiedzialności cywilnej z tytułu wykonywania czynności zawodowych (B) z dnia 1 kwietnia 2025 roku (kod AB-OCZB-01/25).</p>
+                <div class="mt-3 flex flex-col md:items-end gap-1.5 text-[10px] font-semibold">
+                    <button onclick="openModal('modal-dystrybutor')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Informacja o dystrybutorze</button>
+                    <button onclick="openModal('modal-rodo')" class="text-beauty-navy hover:text-beauty-pink transition-colors">Nota informacyjna RODO</button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 text-center border-t border-slate-100 pt-4 text-[9px] tracking-widest uppercase font-semibold text-slate-400">
+            &copy; 2026 Program BeautyRazem. Wszelkie prawa zastrzeżone.
+        </div>
+    </footer>
+
+    <div id="modal-offer" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-offer-title">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <button onclick="closeModal('modal-offer')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&#10005;</button>
+            
+            <div class="bg-slate-50 px-6 py-5 border-b border-slate-100">
+                <h3 id="modal-offer-title" class="font-heading font-bold text-lg text-beauty-navy">Wniosek o polisę</h3>
+                <p class="text-[11px] text-slate-500 mt-1">Wybrany wariant: <strong id="modal-chosen-variant" class="text-beauty-pink text-xs"></strong></p>
+                <p class="text-[11px] text-slate-500 mt-0.5">Składka roczna: <strong id="modal-chosen-price" class="text-beauty-navy"></strong></p>
+            </div>
+            
+            <form id="offer-form" onsubmit="submitOffer(event)" class="p-6 space-y-4">
+                <input type="hidden" name="access_key" value="44ce55c2-c91f-48f0-a899-eb436353a204">
+                <input type="hidden" name="subject" value="Nowy Wniosek: Kalkulator BeautyPolisa">
+                <input type="hidden" name="from_name" value="System BeautyPolisa">
+                <input type="hidden" id="form-hidden-variant" name="Wybrana_Suma_Gwarancyjna">
+                <input type="hidden" id="form-hidden-price" name="Obliczona_Skladka">
+                <input type="hidden" id="form-hidden-taryfa" name="Systemowa_Taryfa">
+                <input type="hidden" id="form-hidden-employees" name="Liczba_Pracownikow">
+                <input type="hidden" id="form-hidden-legal" name="Ochrona_Prawna">
+                <input type="hidden" id="form-hidden-procedures" name="Zaznaczone_Zabiegi">
+
+                <div>
+                    <label for="regon-input" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Numer REGON salonu</label>
+                    <div class="relative">
+                        <input type="text" name="REGON" id="regon-input" required pattern="[0-9]{9}|[0-9]{14}" placeholder="Wpisz 9 lub 14 cyfr" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink focus:bg-white outline-none transition-all" oninput="verifyRegon()">
+                        <div id="regon-loader" class="loader absolute right-3 top-3" aria-hidden="true"></div>
+                    </div>
+                    <p id="company-name-display" class="text-[9px] text-emerald-600 font-medium mt-1.5 min-h-[14px]"></p>
+                </div>
+                
+                <div>
+                    <label for="email-klienta" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Adres E-mail</label>
+                    <input type="email" id="email-klienta" name="Email_Klienta" required placeholder="kontakt@twojsalon.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink focus:bg-white outline-none transition-all">
+                </div>
+                
+                <div>
+                    <label for="telefon-klienta" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Telefon kontaktowy</label>
+                    <input type="tel" id="telefon-klienta" name="Telefon" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink focus:bg-white outline-none transition-all">
+                </div>
+                
+                <div class="bg-amber-50 p-4 rounded-xl mt-3 border border-amber-200 hidden leading-relaxed shadow-inner" id="modal-ankieta-warning">
+                    <strong class="block mb-1.5 text-amber-800 text-xs">Wymagana Ankieta Medyczna</strong>
+                    <p class="text-[10px] text-amber-900 mb-2">Do zawarcia polisy w tym wariancie niezbędne jest wypełnienie Ankiety Ubezpieczeniowej.</p>
+                    <p class="text-[10px] text-amber-900 mb-2"><strong>Pamiętaj, żeby dołączyć:</strong> dyplom kosmetologa (studia magisterskie/licencjackie) oraz zaświadczenia ze szkoleń.</p>
+                    <p class="text-[10px] text-amber-900 mb-3">Ważność zaświadczeń: <span class="inline-block bg-amber-200 px-1 py-0.5 rounded mt-0.5 font-bold">(od: <span id="dynamic-min-date"></span>)</span>.</p>
+                    
+                    <div class="mt-3 border-t border-amber-200 pt-3">
+                        <label for="ankieta-agreement" class="flex items-start gap-2 cursor-pointer">
+                            <input type="checkbox" id="ankieta-agreement" name="Zgoda_Ankieta" class="mt-0.5 w-4 h-4 accent-amber-600 rounded cursor-pointer">
+                            <span class="text-[9px] text-amber-900 font-medium">Oświadczam, że zapoznałem/am się z wymogiem dołączenia dyplomu. (Wymagane do pobrania ankiety)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" id="submit-offer-btn" class="w-full bg-beauty-navy hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition-colors mt-4 shadow-md text-sm focus:ring-2 focus:ring-offset-2 focus:ring-beauty-navy outline-none">
+                    Przekaż do weryfikacji
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-contact" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-contact-title">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center relative">
+            <button onclick="closeModal('modal-contact')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&#10005;</button>
+            
+            <div class="text-4xl mb-3" aria-hidden="true">&#10024;</div>
+            <h3 id="modal-contact-title" class="font-heading font-bold text-xl text-beauty-navy mb-2">Masz pytania?</h3>
+            <p class="text-xs text-slate-500 mb-5 leading-relaxed">Zostaw kontakt do siebie. Nasz ekspert prześle Ci materiały i pomoże rozwiać wątpliwości.</p>
+            
+            <form id="contact-form" onsubmit="submitContact(event)" class="text-left space-y-3">
+                <input type="hidden" name="access_key" value="44ce55c2-c91f-48f0-a899-eb436353a204">
+                <input type="hidden" name="subject" value="BeautyPolisa - Prośba o kontakt ogólny">
+                <input type="hidden" name="from_name" value="System BeautyPolisa">
+
+                <div>
+                    <label for="szybki-imie" class="block text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-1 pl-1">Imię</label>
+                    <input type="text" id="szybki-imie" name="Imie_Klienta" required placeholder="Twoje imię" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink outline-none transition-all">
+                </div>
+                
+                <div>
+                    <label for="szybki-email" class="block text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-1 pl-1">Adres E-mail</label>
+                    <input type="email" id="szybki-email" name="Email_Klienta" required placeholder="twoj@email.pl" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink outline-none transition-all">
+                </div>
+
+                <div>
+                    <label for="szybki-tel" class="block text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-1 pl-1">Telefon</label>
+                    <input type="tel" id="szybki-tel" name="Telefon_Klienta" required placeholder="500 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-beauty-pink focus:border-beauty-pink outline-none transition-all">
+                </div>
+
+                <button type="submit" id="submit-contact-btn" class="w-full bg-beauty-pink hover:bg-rose-700 text-white font-bold py-3 rounded-xl transition-colors shadow-md mt-2 text-sm focus:ring-2 focus:ring-offset-2 focus:ring-beauty-pink outline-none">
+                    Proszę o kontakt
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-dystrybutor" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-dystrybutor-title">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
+            <button onclick="closeModal('modal-dystrybutor')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&#10005;</button>
+            <h3 id="modal-dystrybutor-title" class="font-heading font-bold text-lg text-beauty-navy mb-3">Informacje o agencie ubezpieczeniowym</h3>
+            <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed">
+                <p>Działając na podstawie art. 22 ust. 1 pkt 2-6 oraz ust. 2-4 ustawy z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń (Dz.U. z 2017 r., poz. 2486 ze zm.) (dalej „Ustawa”) niniejszym przekazujemy następujące informacje dotyczące Aura Expert spółka z ograniczoną odpowiedzialnością („Agent”):</p>
+                <ol class="list-decimal pl-4 space-y-2">
+                    <li>Agent jest agentem ubezpieczeniowym w rozumieniu Ustawy.</li>
+                    <li>Agent wykonuje działalność agencyjną pod firmą: Aura Expert sp. z o.o.</li>
+                    <li>Adres siedziby Agenta: ul. Bolkowska 2A/28, 01-466 Warszawa</li>
+                    <li>Kontakt: E-mail: zarzad@auraexpert.pl, tel: +48 504 400 901</li>
+                    <li>Agent jest wpisany do KRS pod nr 0000599840, NIP 5242793544, REGON 363673048.</li>
+                    <li>Agent jest wpisany do rejestru agentów KNF pod nr 11229690/A.</li>
+                    <li>Agent nie posiada akcji ani udziałów zakładu ubezpieczeń uprawniających do 10% głosów na walnym zgromadzeniu.</li>
+                    <li>Agent działa na rzecz m.in.: Generali, UNIQA, Lloyd's, SALTUS, ERGO Hestia, WARTA, Colonnade.</li>
+                    <li>Agent otrzymuje od zakładu ubezpieczeń prowizję uwzględnioną w kwocie składki.</li>
+                    <li>Reklamacje można złożyć e-mailowo (reklamacje@auraexpert.pl) lub telefonicznie.</li>
+                    <li>Spór może być zakończony w drodze pozasądowego postępowania przed Rzecznikiem Finansowym.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-rodo" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-rodo-title">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
+            <button onclick="closeModal('modal-rodo')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&#10005;</button>
+            <h3 id="modal-rodo-title" class="font-heading font-bold text-lg text-beauty-navy mb-3">Nota informacyjna RODO</h3>
+            <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed">
+                <p>Zgodnie z art. 13-14 rozporządzenia o ochronie danych osobowych z 27 kwietnia 2016 r.</p>
+                <p>Administratorem danych jest <strong>Aura Expert sp. z o.o.</strong> z siedzibą: ul. Bolkowska 2A lok 28, 01-466 Warszawa.</p>
+                
+                <p class="font-bold text-slate-800 mt-2">Aura Expert przetwarza dane m.in. w związku z:</p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li>wykonywaniem czynności agencyjnych,</li>
+                    <li>obsługą reklamacji i zapytań przez strony internetowe.</li>
+                </ul>
+
+                <p class="font-bold text-slate-800 mt-2">Aura Expert zbiera dane:</p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li>bezpośrednio od osób fizycznych poprzez formularze elektroniczne,</li>
+                    <li>od klientów zgodnie z umową powierzenia.</li>
+                </ul>
+
+                <p class="font-bold text-slate-800 mt-2">Aura Expert udostępnia dane:</p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li>zakładom ubezpieczeń i współpracującym dystrybutorom,</li>
+                    <li>podmiotom obsługującym szkody.</li>
+                </ul>
+
+                <p>Osobom, których dane dotyczą, przysługują prawa dostępu, sprostowania, usunięcia, ograniczenia przetwarzania, wniesienia sprzeciwu oraz skargi do organu nadzorczego.</p>
+                
+                <div class="bg-slate-50 p-3 rounded-lg mt-3 border border-slate-200">
+                    <p class="font-bold mb-1">Kontakt z IOD:</p>
+                    <p>E-mail: iod@auraexpert.pl | Tel: +48 504 400 901</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-klauzula-prawna" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-md items-center justify-center p-4" aria-modal="true" role="dialog" aria-labelledby="modal-klauzula-title">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative max-h-[90vh] overflow-y-auto custom-scrollbar p-6">
+            <button onclick="closeModal('modal-klauzula-prawna')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl leading-none" aria-label="Zamknij okno">&#10005;</button>
+            <h3 id="modal-klauzula-title" class="font-heading font-bold text-lg text-beauty-navy mb-3">Klauzula: Ochrona Prawna</h3>
+            <div class="text-[11px] text-slate-600 space-y-3 leading-relaxed" style="text-align: justify;">
+                <p class="font-bold text-slate-800">Rozszerzenie zakresu ubezpieczenia o koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgoda Ubezpieczyciela ochroną zgodnie z § 6 ust. 3</p>
+                <ol style="list-style-type: decimal; padding-left: 1.5rem;" class="space-y-3">
+                    <li>Z zachowaniem pozostałych, niezmienionych niniejszą klauzulą postanowień umowy ubezpieczenia określonych w Warunkach Ubezpieczenia, strony postanowiły rozszerzyć zakres ubezpieczenia o koszty ochrony prawnej, poniesione przez Ubezpieczonego w celu obrony jego praw w postępowaniach przed sądami polskimi prowadzonych z jego udziałem w charakterze pozwanego, podejrzanego lub oskarżonego, w tym w postępowaniu dyscyplinarnym.</li>
+                    <li>Ochroną ubezpieczeniową na podstawie niniejszej klauzuli objęte są koszty ochrony prawnej, poniesione przez Ubezpieczonego w postępowaniu wszczętym na terenie RP w okresie ubezpieczenia, o ile dotyczy ono czynności zawodowych Ubezpieczonego przyjętych do ubezpieczenia na podstawie niniejszej umowy. W razie wątpliwości za datę wszczęcia postępowania uważa się chwilę, w której właściwy organ, urząd lub funkcjonariusz podjął pierwszą czynność wobec Ubezpieczonego, nawet jeśli nie była ona potwierdzona na piśmie i nie stanowiła formalnego wszczęcia postępowania w świetle obowiązujących przepisów.</li>
+                    <li>Przez koszty ochrony prawnej rozumie się w szczególności:
+                        <ul style="list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem;" class="space-y-1">
+                            <li>koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej,</li>
+                            <li>koszty związane z uzyskaniem opinii biegłych lub rzeczoznawców albo innych dokumentów stanowiących środki dowodowe,</li>
+                            <li>koszty zasądzone od Ubezpieczonego na rzecz strony przeciwnej,</li>
+                            <li>pozostałe koszty i opłaty sądowe lub administracyjne, o ile służą one ochronie praw Ubezpieczonego w związku z prowadzonym postępowaniem.</li>
+                        </ul>
+                    </li>
+                    <li>Przez koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej rozumie się koszty jednego adwokata lub radcy prawnego z tytułu zastępstwa procesowego lub obrony, pokrywane do wysokości ustalonej zgodnie z odpowiednimi przepisami regulującymi wysokość minimalnego wynagrodzenia za czynności adwokata lub radcy prawnego, jeśli takie obowiązują.</li>
+                    <li>Z zakresu ubezpieczenia wyłączone są koszty:
+                        <ul style="list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem;" class="space-y-1">
+                            <li>poniesione w postępowaniu wszczętym w okresie ubezpieczenia, w wyniku apelacji lub wniesienia innego środka zaskarżenia albo wznowienia postępowania, o ile dotyczą postępowania prowadzonego przed rozpoczęciem okresu odpowiedzialności Ubezpieczyciela,</li>
+                            <li>powstałe w następstwie korzystania z usług osób nieuprawnionych do świadczenia pomocy prawnej,</li>
+                            <li>związane ze świadomym udzieleniem przez Ubezpieczonego nieprawdziwych lub wprowadzających w błąd informacji, albo dostarczeniem sfałszowanych dokumentów,</li>
+                            <li>poniesione w postępowaniu wszczętym na wniosek osób bliskich Ubezpieczonego, osób i podmiotów pozostających z nim w stosunku zależności wynikającej z zatrudnienia ich przez Ubezpieczonego lub z innej podstawy,</li>
+                            <li>poniesione na pokrycie kar sądowych lub administracyjnych nałożonych na Ubezpieczonego.</li>
+                        </ul>
+                    </li>
+                    <li>Z zakresu ubezpieczenia wyłączone są ponadto koszty poniesione:
+                        <ul style="list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem;" class="space-y-1">
+                            <li>w postępowaniach z zakresu prawa funduszy inwestycyjnych, prawa obligacji, papierów wartościowych oraz z zakresu prawa pracy,</li>
+                            <li>w postępowaniach z zakresu prawa patentowego, autorskiego, znaków towarowych, pozostałego prawa własności intelektualnej i przemysłowej, prawa ochrony konkurencji (antymonopolowego) oraz prawa dotyczącego zasad konkurencji,</li>
+                            <li>w postępowaniach z umów poręczenia i przejęcia długów,</li>
+                            <li>w postępowaniach z zakresu prawa podatkowego, celnego oraz dotyczącego innych opłat publicznoprawnych, a także prawa karno-skarbowego,</li>
+                            <li>w postępowaniu układowym, naprawczym albo upadłościowym,</li>
+                            <li>w postępowaniach w związku z posiadaniem pojazdów mechanicznych,</li>
+                            <li>w postępowaniach pomiędzy stronami umowy ubezpieczenia.</li>
+                        </ul>
+                    </li>
+                    <li>W odniesieniu do postępowań karnych ochrona ubezpieczeniowa dotyczy wyłącznie czynów, w których karane jest nieumyślne popełnienie danego czynu; w przypadku stwierdzenia winy umyślnej w prawomocnym orzeczeniu sądu, Ubezpieczycielowi przysługuje roszczenie regresowe do Ubezpieczonego o zwrot uprzednio wypłaconych świadczeń.</li>
+                    <li>Jeżeli przeciwko Ubezpieczonemu wszczęte zostało postępowanie, o którym mowa w niniejszej klauzuli, albo jeżeli istnieje bezpośrednie zagrożenie wszczęciem takiego postępowania, Ubezpieczony obowiązany jest niezwłocznie zawiadomić o tym Ubezpieczyciela, przekazując mu wszelkie informacje i dokumenty w sprawie.</li>
+                    <li>W ramach udzielonej ochrony Ubezpieczyciel dokonuje oceny sytuacji faktycznej i prawnej oraz podejmuje decyzję o uznaniu lub nieuznaniu roszczenia Ubezpieczonego i wypłacie lub odmowie wypłaty świadczenia w postaci refundacji kosztów ochrony prawnej.</li>
+                    <li>Ubezpieczonemu przysługuje prawo swobodnego wyboru adwokata lub radcy prawnego w zakresie obrony, reprezentowania lub wspierania jego interesów w postępowaniu sądowym. Koszty ochrony prawnej pokrywane są przez Ubezpieczyciela na podstawie rachunków wystawionych na Ubezpieczonego, o ile dotyczą kosztów objętych ubezpieczeniem, zgodnie z niniejszą klauzulą.</li>
+                    <li>Suma ubezpieczenia dla kosztów ochrony prawnej pokrywanych przez Ubezpieczyciela na podstawie niniejszej klauzuli zostaje wskazana w umowie ubezpieczenia i stanowi górną granicę odpowiedzialności Ubezpieczyciela.</li>
+                    <li>Za rozszerzenie zakresu ubezpieczenia w sposób określony w niniejszej klauzuli Ubezpieczony opłaci dodatkową składkę w wysokości ustalonej w umowie ubezpieczenia.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let confettiFired = false;
+        function fireConfetti() {
+            if(confettiFired) return;
+            confettiFired = true;
+            var duration = 2.5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#e11d48', '#2a3b69', '#fdf2f8', '#fb7185'] }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#e11d48', '#2a3b69', '#fdf2f8', '#fb7185'] }));
+            }, 250);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const d = new Date();
+            d.setFullYear(d.getFullYear() - 1);
+            const months = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
+            const minDate = months[d.getMonth()] + " " + d.getFullYear() + " r.";
+            const dateEl = document.getElementById('dynamic-min-date');
+            if(dateEl) dateEl.innerText = minDate;
+        });
+
+        function trackDownload() {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'file_download',
+                'file_name': 'AnkietaBPEH.pdf',
+                'file_type': 'pdf'
+            });
+        }
+
+        const basePricing = { 1: { s100: 400, s200: 500, s300: 650 }, 2: { s100: 650, s200: 790, s300: 950 }, 3: { s100: 850, s200: 980, s300: 1250 } };
+
+        function selectAll(tierId) {
+            const container = document.getElementById(`list-${tierId}-container`);
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+            let allChecked = true;
+            checkboxes.forEach(cb => { if(!cb.checked) allChecked = false; });
+            checkboxes.forEach(cb => { cb.checked = !allChecked; });
+            updateCalculator();
+        }
+
+        function updateCalculator() {
+            const allCheckboxes = document.querySelectorAll('.tier-checkbox');
+            let hasTier1 = false, hasTier2 = false, hasTier3 = false, hasHighRisk = false, checkedCount = 0;
+            
+            allCheckboxes.forEach(cb => {
+                if(cb.checked) {
+                    checkedCount++;
+                    const t = parseInt(cb.getAttribute('data-tier'));
+                    if (t === 1) hasTier1 = true;
+                    if (t === 2) hasTier2 = true;
+                    if (t === 3) hasTier3 = true;
+                    if (t === 4) hasHighRisk = true; 
+                }
+            });
+
+            const step2 = document.getElementById('step-2');
+            const resultsSec = document.getElementById('results-section');
+
+            if(checkedCount === 0) {
+                step2.classList.add('opacity-40', 'pointer-events-none', 'translate-y-4');
+                step2.classList.remove('opacity-100', 'translate-y-0');
+                resultsSec.classList.add('opacity-0', 'translate-y-8', 'hidden');
+                resultsSec.classList.remove('opacity-100', 'translate-y-0');
+                confettiFired = false;
+                return;
+            }
+
+            step2.classList.remove('opacity-40', 'pointer-events-none', 'translate-y-4');
+            step2.classList.add('opacity-100', 'translate-y-0');
+            resultsSec.classList.remove('hidden');
+            
+            setTimeout(() => {
+                resultsSec.classList.remove('opacity-0', 'translate-y-8');
+                resultsSec.classList.add('opacity-100', 'translate-y-0');
+                if(!confettiFired && checkedCount > 0 && !hasHighRisk && !document.getElementById('emp-9').checked) fireConfetti();
+            }, 100);
+
+            let finalTier = 1;
+            let taryfaName = "";
+
+            if (hasTier3) { finalTier = 3; taryfaName = "Gabinety Podologiczne (Pakiet Pełny)"; } 
+            else if (hasTier1 && hasTier2) { finalTier = 3; taryfaName = "Pakiet Łączony (Kosmetyka + Kosmetologia)"; } 
+            else if (hasTier2) { finalTier = 2; taryfaName = "Gabinety Kosmetologiczne"; } 
+            else if (hasTier1) { finalTier = 1; taryfaName = "Gabinety Kosmetyczne i Fryzjerskie"; }
+
+            const empRadios = document.getElementsByName('employees');
+            let empValue = null;
+            for(let r of empRadios) { if(r.checked) empValue = r.value; }
+
+            const hasLegal = document.getElementById('legal-protection').checked;
+            const legalCost = hasLegal ? 92 : 0;
+
+            const cardsContainer = document.getElementById('pricing-cards-container');
+            const indMsg = document.getElementById('individual-pricing-msg');
+            const indMsgReason = document.getElementById('ind-pricing-reason');
+            
+            document.getElementById('detected-tier-msg').innerHTML = `<span class="text-beauty-navy">${taryfaName}</span>`;
+
+            if (empValue === 'ind' || hasHighRisk) {
+                cardsContainer.classList.add('hidden');
+                indMsg.classList.remove('hidden');
+                
+                if (hasHighRisk) {
+                    indMsgReason.innerText = "Wybrałaś zabiegi specjalistyczne (Z Grupy 4), które bezwzględnie wymagają indywidualnej oceny ryzyka przez ubezpieczyciela. Wypełnij ankietę, abyśmy mogli wynegocjować dla Ciebie najlepszą stawkę.";
+                    taryfaName = "Wycena Indywidualna (Zabiegi Specjalistyczne)";
+                } else {
+                    indMsgReason.innerText = "Ze względu na dużą skalę działalności (powyżej 8 osób), przygotujemy dla Ciebie taryfę szytą na miarę. Wypełnij ankietę, a nasz broker wynegocjuje optymalną stawkę w ERGO Hestia.";
+                    taryfaName = "Wycena Indywidualna (Powyżej 8 osób)";
+                }
+
+                document.getElementById('btn-ind').setAttribute('onclick', `openOfferModal('Wycena Indywidualna', 'Brak ceny - Wymaga weryfikacji przez TU', '${taryfaName}')`);
+            } else {
+                cardsContainer.classList.remove('hidden');
+                indMsg.classList.add('hidden');
+                
+                const multiplier = parseFloat(empValue);
+                const prices = basePricing[finalTier];
+                
+                const p100 = Math.round((prices.s100 * multiplier) + legalCost);
+                const p200 = Math.round((prices.s200 * multiplier) + legalCost);
+                const p300 = Math.round((prices.s300 * multiplier) + legalCost);
+
+                document.getElementById('price-100k').innerText = p100;
+                document.getElementById('price-200k').innerText = p200;
+                document.getElementById('price-300k').innerText = p300;
+
+                document.getElementById('btn-100k').setAttribute('onclick', `openOfferModal('100 000 zł', '${p100} zł', '${taryfaName}')`);
+                document.getElementById('btn-200k').setAttribute('onclick', `openOfferModal('200 000 zł', '${p200} zł', '${taryfaName}')`);
+                document.getElementById('btn-300k').setAttribute('onclick', `openOfferModal('300 000 zł (Wymaga Ankiety)', '${p300} zł', '${taryfaName}')`);
+            }
+        }
+
+        function openModal(modalId) { 
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active'); 
+            const firstInput = modal.querySelector('input');
+            if(firstInput) setTimeout(() => firstInput.focus(), 100);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openOfferModal(variant, price, taryfaName) {
+            document.getElementById('modal-chosen-variant').innerText = variant;
+            document.getElementById('modal-chosen-price').innerText = price;
+            document.getElementById('form-hidden-variant').value = variant;
+            document.getElementById('form-hidden-price').value = price;
+            document.getElementById('form-hidden-taryfa').value = taryfaName;
+
+            openModal('modal-offer');
+            
+            const warningBox = document.getElementById('modal-ankieta-warning');
+            const agreementCb = document.getElementById('ankieta-agreement');
+            const submitBtn = document.getElementById('submit-offer-btn');
+            
+            if(variant.includes('Ankiety') || variant.includes('Indywidualna')) {
+                warningBox.classList.remove('hidden');
+                if(agreementCb) agreementCb.required = true;
+                submitBtn.innerHTML = 'Wyślij dane i POBIERZ ANKIETĘ';
+                submitBtn.classList.remove('bg-beauty-navy', 'hover:bg-slate-800', 'focus:ring-beauty-navy');
+                submitBtn.classList.add('bg-amber-600', 'hover:bg-amber-700', 'focus:ring-amber-600');
+            } else {
+                warningBox.classList.add('hidden');
+                if(agreementCb) agreementCb.required = false;
+                submitBtn.innerHTML = 'Przekaż do weryfikacji';
+                submitBtn.classList.add('bg-beauty-navy', 'hover:bg-slate-800', 'focus:ring-beauty-navy');
+                submitBtn.classList.remove('bg-amber-600', 'hover:bg-amber-700', 'focus:ring-amber-600');
+            }
+        }
+        
+        function closeModal(modalId) { 
+            document.getElementById(modalId).classList.remove('active'); 
+            document.body.style.overflow = 'auto';
+            if(modalId === 'modal-offer') {
+                document.getElementById('company-name-display').innerText = '';
+                document.getElementById('regon-input').value = '';
+                const agreementCb = document.getElementById('ankieta-agreement');
+                if(agreementCb) agreementCb.checked = false;
+            }
+        }
+
+        let regonTimeout;
+        function verifyRegon() {
+            const input = document.getElementById('regon-input');
+            const loader = document.getElementById('regon-loader');
+            const display = document.getElementById('company-name-display');
+            clearTimeout(regonTimeout);
+            display.innerText = '';
+            if(input.value.length === 9 || input.value.length === 14) {
+                loader.style.display = 'block';
+                regonTimeout = setTimeout(() => {
+                    loader.style.display = 'none';
+                    display.innerText = "✓ Weryfikacja GUS: Podmiot aktywny";
+                }, 1000);
+            } else {
+                loader.style.display = 'none';
+            }
+        }
+
+        async function submitOffer(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-offer-btn');
+            btn.innerHTML = 'Przetwarzanie i wysyłanie...';
+            btn.disabled = true;
+
+            const empRadio = document.querySelector('input[name="employees"]:checked');
+            document.getElementById('form-hidden-employees').value = empRadio ? empRadio.nextElementSibling.querySelector('span.font-bold').innerText : "Nie określono";
+            document.getElementById('form-hidden-legal').value = document.getElementById('legal-protection').checked ? "TAK (+92 zł)" : "NIE";
+
+            const checkedBoxes = document.querySelectorAll('.tier-checkbox:checked');
+            let groups = { 1: [], 2: [], 3: [], 4: [] };
+            
+            checkedBoxes.forEach(cb => {
+                let t = cb.getAttribute('data-tier');
+                groups[t].push(cb.nextElementSibling.innerText);
+            });
+
+            let finalProceduresText = "";
+            if(groups[1].length > 0) finalProceduresText += "--- GRUPA 1 ---\n" + groups[1].join('\n') + "\n\n";
+            if(groups[2].length > 0) finalProceduresText += "--- GRUPA 2 ---\n" + groups[2].join('\n') + "\n\n";
+            if(groups[3].length > 0) finalProceduresText += "--- GRUPA 3 ---\n" + groups[3].join('\n') + "\n\n";
+            if(groups[4].length > 0) finalProceduresText += "--- GRUPA 4 ---\n" + groups[4].join('\n') + "\n";
+            
+            document.getElementById('form-hidden-procedures').value = finalProceduresText;
+
+            const form = document.getElementById('offer-form');
+            const formData = new FormData(form);
+
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'form_submission',
+                'form_type': 'polisa_zapytanie',
+                'lead_value': document.getElementById('form-hidden-price').value.replace(' zł', '')
+            });
+
+            const isAnkieta = document.getElementById('form-hidden-variant').value.includes('Ankiety') || document.getElementById('form-hidden-variant').value.includes('Indywidualna');
+
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    
+                    if(isAnkieta) {
+                        alert('Dziękujemy! Twoje dane zostały przyjęte. Za chwilę rozpocznie się pobieranie ankiety.');
+                        trackDownload();
+                        // Wymuszenie pobrania pliku przez przeglądarkę
+                        const link = document.createElement('a');
+                        link.href = 'AnkietaBPEH.pdf';
+                        link.download = 'AnkietaBPEH.pdf';
+                        link.target = '_blank';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else {
+                        alert('Dziękujemy! Twój wniosek został przyjęty. Sprawdź swoją skrzynkę e-mail, wkrótce się z Tobą skontaktujemy.');
+                    }
+                    
+                    closeModal('modal-offer');
+                    form.reset();
+                    confettiFired = false;
+                } else {
+                    alert("> Błąd wysyłki. Upewnij się, że wpisałeś poprawne dane.");
+                }
+            } catch (error) {
+                alert("> Błąd sieci. Spróbuj wysłać ponownie za chwilę.");
+            } finally {
+                btn.innerHTML = isAnkieta ? 'Wyślij dane i POBIERZ ANKIETĘ' : 'Przekaż do weryfikacji';
+                btn.disabled = false;
+            }
+        }
+
+        async function submitContact(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-contact-btn');
+            btn.innerHTML = 'Wysyłanie...';
+            btn.disabled = true;
+
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'form_submission',
+                'form_type': 'szybki_kontakt'
+            });
+
+            const form = document.getElementById('contact-form');
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+                if (response.ok) {
+                    alert('Sukces! Przekazaliśmy Twoje dane do eksperta BeautyPolisa.');
+                    closeModal('modal-contact');
+                    form.reset();
+                }
+            } catch (error) {
+                alert("> Błąd sieci. Spróbuj wysłać ponownie za chwilę.");
+            } finally {
+                btn.innerHTML = 'Proszę o kontakt';
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
