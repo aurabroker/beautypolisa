@@ -125,6 +125,9 @@ function openModal(id)  { const m=$(id); if(m){m.classList.add("active");    doc
 function closeModal(id) { const m=$(id); if(m){m.classList.remove("active"); document.body.style.overflow="auto";} }
 function showAlert(id, msg, type) { const e=$(id); if(!e)return; e.textContent=msg; e.className="bp-alert bp-alert-"+type; e.style.display="block"; }
 function hideAlert(id)  { const e=$(id); if(e)e.style.display="none"; }
+/* Wartości z bazy i z kont użytkowników wstawiamy do HTML wyłącznie przez esc():
+   bp_quotes i bp_analytics przyjmują wpisy od niezalogowanych odwiedzających. */
+function esc(v) { return String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 
 /* ── CSS ────────────────────────────────────────────────────── */
 document.head.insertAdjacentHTML("beforeend", `<style>
@@ -769,7 +772,7 @@ function renderAuthArea() {
     const name     = _user.user_metadata?.full_name || _user.email.split("@")[0];
     const isAdmin  = _profile?.is_admin;
     area.innerHTML = `
-      <span class="user-chip">👤 ${name.split(" ")[0]}</span>
+      <span class="user-chip">👤 ${esc(name.split(" ")[0])}</span>
       ${isAdmin ? `<button class="btn btn-xs btn-navy" onclick="openAdmin()">⚙️ Panel Admina</button>` : ""}
       <button class="btn btn-xs btn-outline" onclick="doLogout()">Wyloguj</button>`;
   } else {
@@ -822,7 +825,7 @@ async function doLogout() {
 }
 
 async function loadProfile() {
-  if (!_user) return;
+  if (!_user) { _profile = null; return; }
   const {data} = await sb.from("bp_profiles").select("*").eq("user_id",_user.id).maybeSingle();
   _profile = data;
 }
@@ -998,7 +1001,7 @@ async function loadLeads() {
   tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:1.5rem;color:#94a3b8">Ładowanie…</td></tr>`;
 
   const {data:quotes, error} = await sb.from("bp_quotes").select("*").order("created_at",{ascending:false}).limit(300);
-  if (error) { tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--pink)">Błąd: ${error.message}</td></tr>`; return; }
+  if (error) { tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--pink)">Błąd: ${esc(error.message)}</td></tr>`; return; }
 
   const today = new Date().toISOString().slice(0,10);
   const newCount   = (quotes||[]).filter(q=>q.status==="new").length;
@@ -1015,15 +1018,16 @@ async function loadLeads() {
   quotes.forEach(q => {
     const d = new Date(q.created_at);
     const dateStr = d.toLocaleDateString("pl-PL")+" "+d.toLocaleTimeString("pl-PL",{hour:"2-digit",minute:"2-digit"});
+    const sum = Number(q.sum_insured), premium = Number(q.annual_premium);
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td style="color:#64748b;white-space:nowrap;font-size:9px">${dateStr}</td>
-      <td><a href="mailto:${q.email||''}" style="color:var(--navy);font-weight:600;font-size:10px">${q.email||"—"}</a></td>
-      <td style="font-size:10px">${q.phone||"—"}</td>
-      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px" title="${q.specialization||''}">${q.specialization||"—"}</td>
-      <td style="white-space:nowrap;font-size:10px">${q.sum_insured?(q.sum_insured/1000).toFixed(0)+"k zł":"—"}</td>
-      <td style="font-weight:700;color:var(--navy);white-space:nowrap;font-size:10px">${q.annual_premium?q.annual_premium.toLocaleString("pl-PL")+" zł":"—"}</td>
-      <td><select class="ssel" data-id="${q.id}" onchange="updateQuoteStatus(this)">
+      <td style="color:#64748b;white-space:nowrap;font-size:9px">${esc(dateStr)}</td>
+      <td><a href="mailto:${esc(q.email)}" style="color:var(--navy);font-weight:600;font-size:10px">${esc(q.email||"—")}</a></td>
+      <td style="font-size:10px">${esc(q.phone||"—")}</td>
+      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px" title="${esc(q.specialization)}">${esc(q.specialization||"—")}</td>
+      <td style="white-space:nowrap;font-size:10px">${sum?esc((sum/1000).toFixed(0))+"k zł":"—"}</td>
+      <td style="font-weight:700;color:var(--navy);white-space:nowrap;font-size:10px">${premium?esc(premium.toLocaleString("pl-PL"))+" zł":"—"}</td>
+      <td><select class="ssel" data-id="${esc(q.id)}" onchange="updateQuoteStatus(this)">
         ${["new","sent","accepted","contact","rejected"].map(s=>`<option value="${s}" ${q.status===s?"selected":""}>${statusLabel[s]}</option>`).join("")}
       </select></td>`;
     tbody.appendChild(tr);
@@ -1085,9 +1089,9 @@ function renderBarChart(containerId, data, pinkBars) {
   data.forEach(([label, val]) => {
     const row = document.createElement("div");
     row.className = "bar-row";
-    row.innerHTML = `<div class="bar-label">${label}</div>
-      <div class="bar-track"><div class="bar-fill${pinkBars?" pink-bar":""}" style="width:${Math.round(val/max*100)}%"></div></div>
-      <div class="bar-val">${val}</div>`;
+    row.innerHTML = `<div class="bar-label">${esc(label)}</div>
+      <div class="bar-track"><div class="bar-fill${pinkBars?" pink-bar":""}" style="width:${Math.round(Number(val)/max*100)||0}%"></div></div>
+      <div class="bar-val">${esc(val)}</div>`;
     container.appendChild(row);
   });
 }
@@ -1182,10 +1186,11 @@ async function init() {
   if (localStorage.getItem("bp_dark") === "1") document.documentElement.classList.add("dark");
   buildPage();
   syncDarkToggle();
-  sb.auth.onAuthStateChange(async (_ev, session) => {
+  // Zapytania do Supabase uruchamiamy poza callbackiem: await na innej metodzie biblioteki
+  // wewnątrz onAuthStateChange blokuje ją (zakleszczenie) i strona wisi na „Ładowanie…”.
+  sb.auth.onAuthStateChange((_ev, session) => {
     _user = session?.user || null;
-    await loadProfile();
-    renderAuthArea();
+    setTimeout(async () => { await loadProfile(); renderAuthArea(); }, 0);
   });
   const {data:{user}} = await sb.auth.getUser();
   _user = user;
