@@ -1,0 +1,44 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://beautypolisa.eu/ubezpieczenia/oc-beauty#service",
+  "name": "OC dla branży beauty (ERGO Hestia)",
+  "alternateName": "Ubezpieczenie OC zawodowe dla salonów kosmetycznych, fryzjerskich i podologicznych",
+  "serviceType": "Ubezpieczenie odpowiedzialności cywilnej zawodowej",
+  "category": "Ubezpieczenia dla firm – OC zawodowe",
+  "description": "Program ubezpieczenia OC dla branży beauty realizowany z Sopockim Towarzystwem Ubezpieczeń ERGO Hestia S.A. we współpracy z Fundacją Beauty Razem. Zabiegi są przypisane do czterech grup ryzyka: od fryzjerstwa, kosmetyki pielęgnacyjnej, manicure i stylizacji rzęs (grupa 1), przez makijaż permanentny, mezoterapię, lasery nieablacyjne, IPL, tatuaż i peelingi chemiczne (grupa 2) oraz podologię (grupa 3), po zabiegi wysokiego ryzyka oceniane indywidualnie (grupa 4). Suma gwarancyjna do wyboru: 100 000, 200 000 lub 300 000 zł. Składka zależy od grupy ryzyka i sumy gwarancyjnej; zespoły powyżej 8 osób są wyceniane indywidualnie.",
+  "url": "https://beautypolisa.eu/ubezpieczenia/oc-beauty",
+  "provider": {
+    "@type": "Organization",
+    "@id": "https://beautypolisa.eu/#ergo-hestia",
+    "name": "Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A."
+  },
+  "broker": {
+    "@id": "https://beautypolisa.eu/#agency"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Polska"
+  },
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "salony kosmetyczne, kosmetolodzy, fryzjerzy, podolodzy, linergistki, stylistki paznokci, tatuażyści"
+  },
+  "termsOfService": "https://beautypolisa.eu/dokumenty/owu-oc-beauty-ergo-hestia",
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "name": "Kalkulator składki i formularz zapytania",
+    "serviceUrl": "https://beautypolisa.eu/kalkulator/oc",
+    "availableLanguage": "pl"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "PLN",
+    "lowPrice": 400,
+    "highPrice": 1250,
+    "offerCount": 9,
+    "url": "https://beautypolisa.eu/kalkulator/oc",
+    "eligibleRegion": "PL",
+    "description": "Orientacyjna składka roczna dla grup ryzyka 1–3 i sum gwarancyjnych 100 000–300 000 zł według kalkulatora; klauzula ochrony prawnej dodatkowo 92 zł rocznie. Zabiegi wysokiego ryzyka (grupa 4) i zespoły powyżej 8 osób – wycena indywidualna. Ostateczną składkę ustala ubezpieczyciel po ocenie wniosku."
+  }
+}

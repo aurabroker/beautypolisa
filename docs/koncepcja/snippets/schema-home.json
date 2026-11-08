@@ -1,0 +1,153 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://beautypolisa.eu/#organization",
+      "name": "Aura Consulting",
+      "legalName": "Aura Consulting sp. z o.o.",
+      "url": "https://beautypolisa.eu/o-nas",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "ul. Bolkowska 2A/28",
+        "postalCode": "01-466",
+        "addressLocality": "Warszawa",
+        "addressCountry": "PL"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Polska"
+      },
+      "brand": {
+        "@id": "https://beautypolisa.eu/#agency"
+      }
+    },
+    {
+      "@type": "InsuranceAgency",
+      "@id": "https://beautypolisa.eu/#agency",
+      "name": "BeautyPolisa",
+      "alternateName": "BeautyPolisa created by Aura Consulting",
+      "description": "BeautyPolisa to portal informacyjny Aura Consulting sp. z o.o. o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.",
+      "url": "https://beautypolisa.eu/",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://beautypolisa.eu/#logo",
+        "url": "https://beautypolisa.eu/images/logo-beautypolisa.png",
+        "contentUrl": "https://beautypolisa.eu/images/logo-beautypolisa.png",
+        "caption": "BeautyPolisa – logo"
+      },
+      "image": {
+        "@id": "https://beautypolisa.eu/#logo"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "ul. Bolkowska 2A/28",
+        "postalCode": "01-466",
+        "addressLocality": "Warszawa",
+        "addressCountry": "PL"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Polska"
+      },
+      "parentOrganization": {
+        "@id": "https://beautypolisa.eu/#organization"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://beautypolisa.eu/kontakt",
+        "availableLanguage": "pl",
+        "areaServed": "PL"
+      },
+      "knowsAbout": [
+        "ubezpieczenie OC zawodowe dla branży beauty",
+        "ubezpieczenie karno-skarbowe Tax Protect",
+        "ubezpieczenie utraty dochodu dla samozatrudnionych",
+        "ubezpieczenie NNW dzieci",
+        "ubezpieczenia grupowe na życie dla salonów",
+        "abonamenty medyczne ENEL-MED i LUX MED"
+      ],
+      "makesOffer": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "@id": "https://beautypolisa.eu/ubezpieczenia/oc-beauty#service",
+            "name": "OC dla branży beauty (ERGO Hestia)",
+            "url": "https://beautypolisa.eu/ubezpieczenia/oc-beauty"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "@id": "https://beautypolisa.eu/ubezpieczenia/tax-protect#service",
+            "name": "Tax Protect (Colonnade)",
+            "url": "https://beautypolisa.eu/ubezpieczenia/tax-protect"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "@id": "https://beautypolisa.eu/ubezpieczenia/utrata-dochodu#service",
+            "name": "Utrata dochodu",
+            "url": "https://beautypolisa.eu/ubezpieczenia/utrata-dochodu"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "@id": "https://beautypolisa.eu/ubezpieczenia/nnw-dzieci#service",
+            "name": "NNW dzieci",
+            "url": "https://beautypolisa.eu/ubezpieczenia/nnw-dzieci"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "@id": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#service",
+            "name": "Grupowe ERGO dla beauty",
+            "url": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "@id": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna#service",
+            "name": "Opieka medyczna (ENEL-MED / LUX MED)",
+            "url": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://beautypolisa.eu/#website",
+      "url": "https://beautypolisa.eu/",
+      "name": "BeautyPolisa",
+      "description": "Ubezpieczenia dla branży beauty: OC zawodowe, Tax Protect, utrata dochodu, NNW dzieci, grupowe i opieka medyczna.",
+      "inLanguage": "pl-PL",
+      "publisher": {
+        "@id": "https://beautypolisa.eu/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://beautypolisa.eu/#webpage",
+      "url": "https://beautypolisa.eu/",
+      "name": "Ubezpieczenia dla branży beauty | BeautyPolisa",
+      "inLanguage": "pl-PL",
+      "isPartOf": {
+        "@id": "https://beautypolisa.eu/#website"
+      },
+      "about": {
+        "@id": "https://beautypolisa.eu/#agency"
+      }
+    }
+  ]
+}

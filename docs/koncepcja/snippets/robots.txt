@@ -1,0 +1,63 @@
+# robots.txt dla https://beautypolisa.eu
+# Plik generowany przez app/robots.ts (Next.js App Router) – ten snippet jest wzorcem docelowej treści.
+# Warunek: w Cloudflare "Bot Preference Sync" WYŁĄCZONY, a polityki Search/Agent/Training ustawione na Allow –
+# w przeciwnym razie Cloudflare dopisze własne, zarządzane dyrektywy przed tą treścią.
+# robots.txt jest deklaracją preferencji; egzekwowanie dostępu odbywa się w Cloudflare AI Crawl Control / WAF.
+
+# --- Reguła domyślna: całość publiczna, poza API i panelem wewnętrznym ---
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /panel/
+Disallow: /dziekujemy
+# Content Signals (contentsignals.org) – sygnał dot. wykorzystania treści; "ai-train=yes" zmienić na "no",
+# jeśli zleceniodawca zdecyduje o blokadzie treningu (patrz 04-seo-geo-i-schema.md, Decyzja 6).
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+
+# --- Wyszukiwarki klasyczne i AI search (indeksowanie z cytowaniem i linkiem) – jawnie dopuszczone ---
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: OAI-SearchBot
+User-agent: PerplexityBot
+User-agent: Claude-SearchBot
+User-agent: Applebot
+User-agent: Amazonbot
+User-agent: DuckAssistBot
+User-agent: YouBot
+Allow: /
+Disallow: /api/
+Disallow: /panel/
+Disallow: /dziekujemy
+
+# --- Agenci działający na żądanie użytkownika (pobierają stronę, gdy ktoś pyta asystenta) – dopuszczone ---
+User-agent: ChatGPT-User
+User-agent: Perplexity-User
+User-agent: Claude-User
+User-agent: Meta-ExternalFetcher
+User-agent: MistralAI-User
+Allow: /
+Disallow: /api/
+Disallow: /panel/
+Disallow: /dziekujemy
+
+# --- Crawlery treningowe – DECYZJA ZLECENIODAWCY (rekomendacja w 04-seo-geo-i-schema.md: dopuścić) ---
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Meta-ExternalAgent
+User-agent: Applebot-Extended
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+Disallow: /panel/
+Disallow: /dziekujemy
+# Wariant "blokada treningu" – zamiast powyższego bloku:
+# User-agent: GPTBot
+# User-agent: ClaudeBot
+# User-agent: Google-Extended
+# User-agent: Meta-ExternalAgent
+# User-agent: Applebot-Extended
+# User-agent: CCBot
+# Disallow: /
+
+Sitemap: https://beautypolisa.eu/sitemap.xml

@@ -1,0 +1,47 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://beautypolisa.eu/baza-wiedzy/czy-kosmetyczka-musi-miec-oc#article",
+  "headline": "Czy kosmetyczka musi mieć OC? Przepisy, umowy i ryzyko po nieudanym zabiegu",
+  "description": "Czy OC jest obowiązkowe w branży beauty, kiedy wymagają go kontrahenci i co grozi bez polisy po nieudanym zabiegu. Odpowiedź doradcy z odesłaniem do OWU.",
+  "url": "https://beautypolisa.eu/baza-wiedzy/czy-kosmetyczka-musi-miec-oc",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://beautypolisa.eu/baza-wiedzy/czy-kosmetyczka-musi-miec-oc"
+  },
+  "image": [
+    "https://beautypolisa.eu/baza-wiedzy/czy-kosmetyczka-musi-miec-oc/opengraph-image"
+  ],
+  "datePublished": "2026-11-08T09:00:00+01:00",
+  "dateModified": "2026-11-08T09:00:00+01:00",
+  "inLanguage": "pl-PL",
+  "author": {
+    "@type": "Organization",
+    "@id": "https://beautypolisa.eu/#agency",
+    "name": "BeautyPolisa",
+    "url": "https://beautypolisa.eu/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://beautypolisa.eu/#organization",
+    "name": "Aura Consulting sp. z o.o.",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://beautypolisa.eu/images/logo-beautypolisa.png"
+    }
+  },
+  "isPartOf": {
+    "@id": "https://beautypolisa.eu/#website"
+  },
+  "about": {
+    "@id": "https://beautypolisa.eu/ubezpieczenia/oc-beauty#service"
+  },
+  "articleSection": "OC zawodowe",
+  "keywords": [
+    "OC kosmetyczki",
+    "OC dla kosmetologa",
+    "ubezpieczenie salonu kosmetycznego",
+    "odpowiedzialność za nieudany zabieg"
+  ],
+  "isAccessibleForFree": true
+}

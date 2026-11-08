@@ -1,0 +1,67 @@
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "@id": "https://beautypolisa.eu/szkoda#howto",
+  "name": "Jak zgłosić szkodę z OC salonu beauty",
+  "description": "Instrukcja krok po kroku dla właściciela salonu kosmetycznego, fryzjerskiego lub podologicznego: co zrobić po roszczeniu klienta i jak zgłosić szkodę z ubezpieczenia OC dla branży beauty (ERGO Hestia) za pośrednictwem BeautyPolisa.",
+  "url": "https://beautypolisa.eu/szkoda",
+  "inLanguage": "pl-PL",
+  "supply": [
+    {
+      "@type": "HowToSupply",
+      "name": "Numer polisy OC"
+    },
+    {
+      "@type": "HowToSupply",
+      "name": "Dokumentacja zabiegu: karta klienta, formularz zgody na zabieg, zdjęcia przed i po"
+    },
+    {
+      "@type": "HowToSupply",
+      "name": "Pisemne roszczenie klienta (lub notatka z ustnego zgłoszenia z datą)"
+    }
+  ],
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Zabezpiecz dokumentację zabiegu",
+      "text": "Zgromadź kartę klienta, podpisany formularz zgody na zabieg, zdjęcia przed i po, informacje o użytych produktach i urządzeniach oraz dane osoby wykonującej zabieg. Nie usuwaj ani nie poprawiaj wpisów po fakcie.",
+      "url": "https://beautypolisa.eu/szkoda#krok-1"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Przyjmij roszczenie, ale nie uznawaj winy",
+      "text": "Poproś klienta o roszczenie na piśmie (e-mail wystarczy), potwierdź jego odbiór i poinformuj, że sprawa zostanie przekazana ubezpieczycielowi. Nie składaj oświadczeń o uznaniu odpowiedzialności i nie zawieraj ugody na własną rękę – OWU zwykle uzależniają to od zgody ubezpieczyciela.",
+      "url": "https://beautypolisa.eu/szkoda#krok-2"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Zgłoś szkodę niezwłocznie",
+      "text": "Wypełnij formularz zgłoszenia szkody na beautypolisa.eu/szkoda – BeautyPolisa przekaże zgłoszenie do ERGO Hestii – albo zgłoś szkodę bezpośrednio do ubezpieczyciela. Terminy zgłoszenia określają OWU; im szybciej, tym lepiej.",
+      "url": "https://beautypolisa.eu/szkoda#krok-3"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Przekaż komplet dokumentów",
+      "text": "Dołącz numer polisy, roszczenie klienta, dokumentację zabiegu, oświadczenie osoby wykonującej zabieg oraz korespondencję z klientem. Brakujące dokumenty wydłużają likwidację szkody.",
+      "url": "https://beautypolisa.eu/szkoda#krok-4"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 5,
+      "name": "Współpracuj z likwidatorem",
+      "text": "Odpowiadaj na wezwania ubezpieczyciela w wyznaczonych terminach i uzgadniaj z nim każdą komunikację z klientem dotyczącą wysokości odszkodowania.",
+      "url": "https://beautypolisa.eu/szkoda#krok-5"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 6,
+      "name": "Zachowaj dokumentację po zakończeniu sprawy",
+      "text": "Przechowuj dokumenty szkody – wniosek o ubezpieczenie OC wymaga podania szkodowości z ostatnich 3 lat, a rzetelna historia ułatwia wznowienie polisy.",
+      "url": "https://beautypolisa.eu/szkoda#krok-6"
+    }
+  ]
+}

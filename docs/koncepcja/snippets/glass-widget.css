@@ -1,0 +1,328 @@
+/* ==========================================================================
+   BeautyPolisa · design tokens + glass widget
+   Źródło prawdy dla sekcji 07 (docs/koncepcja/07-design-ux-i-glass-widget.md).
+   Plik jest „czystym CSS” – w aplikacji Next.js te same wartości trafiają do
+   bloku @theme Tailwind 4 (patrz sekcja „Przekazanie do developmentu”).
+   Wszystkie współczynniki kontrastu policzone wg WCAG 2.x (sRGB, luminancja).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOKENY – tryb jasny (domyślny)
+   -------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  /* Marka */
+  --color-navy: #2a3b69;        /* tekst/wypełnienie; na białym 10.89:1 */
+  --color-navy-deep: #1e2f5a;   /* hover/pressed; na białym 13.05:1 */
+  --color-navy-soft: #eef2ff;   /* tło zaznaczenia, chip aktywny */
+  --color-rose: #e11d48;        /* WYŁĄCZNIE wypełnienia CTA; biały tekst 4.70:1 */
+  --color-rose-deep: #be123c;   /* hover wypełnienia ORAZ róż jako tekst: 6.29:1 na białym */
+  --color-rose-text: var(--color-rose-deep);
+  --color-rose-soft: #fff1f2;   /* tło akcentowe */
+  --color-rose-border: #fecdd3;
+
+  /* Neutralne */
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-text: #1e293b;        /* 14.63:1 */
+  --color-text-2: #475569;      /* 7.58:1 – tekst pomocniczy, etykiety */
+  --color-text-3: #64748b;      /* 4.76:1 – tylko ≥ 14 px, placeholdery */
+  --color-on-accent: #ffffff;
+
+  /* Semantyczne (tekst / tło) */
+  --color-success: #15803d;     /* 5.02:1 na białym */
+  --color-success-bg: #f0fdf4;
+  --color-warning: #b45309;     /* 5.02:1 */
+  --color-warning-bg: #fffbeb;
+  --color-error: #b91c1c;       /* 6.47:1 */
+  --color-error-bg: #fef2f2;
+  --color-info: #1d4ed8;        /* 6.70:1 */
+  --color-info-bg: #eff6ff;
+
+  /* Typografia */
+  --font-heading: "Montserrat", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --text-xs: 0.75rem;                                   /* 12 px – minimum (przypisy prawne) */
+  --text-sm: 0.875rem;                                  /* 14 px – UI, etykiety */
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);/* 16–17 px */
+  --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.8vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.25rem + 1.2vw, 2rem);
+  --text-3xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+  --text-4xl: clamp(2rem, 1.5rem + 2.5vw, 3.25rem);     /* H1 hero */
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-body: 1.6;
+  --tracking-heading: -0.015em;
+
+  /* Odstępy (baza 4 px) */
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+  --space-12: 3rem; --space-16: 4rem; --space-20: 5rem;
+
+  /* Promienie */
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+  --radius-xl: 24px;            /* glass widget, karty hero */
+  --radius-full: 9999px;
+
+  /* Cienie */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.10);
+  --shadow-lg: 0 16px 40px -12px rgba(15, 23, 42, 0.18);
+  --shadow-glass: 0 24px 60px -24px rgba(42, 59, 105, 0.35);
+
+  /* Ruch */
+  --dur-fast: 120ms; --dur-base: 200ms; --dur-slow: 320ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Siatka */
+  --container-sm: 42rem;   /* 672 px – artykuł (~65 znaków) */
+  --container-md: 60rem;   /* 960 px – kalkulator, formularze */
+  --container-lg: 80rem;   /* 1280 px – home, listy */
+  --gutter: 1rem;          /* 16 px → 24 px (md) → 32 px (lg) */
+
+  /* Fokus, cele dotykowe */
+  --focus-ring: 0 0 0 3px var(--color-surface), 0 0 0 6px var(--color-navy);
+  --tap-min: 44px;
+
+  /* Glass – jasny */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg-strong: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.35);
+  --glass-highlight: rgba(255, 255, 255, 0.60);
+  --glass-blur: 16px;      /* zakres 14–18 px */
+  --glass-saturate: 160%;
+  --glass-panel: rgba(255, 255, 255, 0.92); /* wewnętrzny panel na tekst */
+}
+
+@media (min-width: 48rem)  { :root { --gutter: 1.5rem; } }
+@media (min-width: 64rem)  { :root { --gutter: 2rem; } }
+
+/* --------------------------------------------------------------------------
+   2. TOKENY – tryb ciemny
+   Dwa wejścia: preferencja systemowa (gdy użytkownik nie wybrał ręcznie)
+   oraz jawny wybór data-theme="dark".
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-navy: #93c5fd;        /* akcent granatu w ciemnym: 9.90:1 na #0f172a */
+    --color-navy-deep: #bfdbfe;
+    --color-navy-soft: #1e3050;
+    --color-rose: #e11d48;        /* wypełnienie CTA bez zmian (biały tekst 4.70:1) */
+    --color-rose-deep: #be123c;
+    --color-rose-text: #fda4af;   /* róż jako tekst: 9.44:1 na #0f172a */
+    --color-rose-soft: #2a1a22;
+    --color-rose-border: #4c1d2b;
+    --color-bg: #0f172a;
+    --color-surface: #162032;
+    --color-surface-2: #1e293b;
+    --color-border: #334155;
+    --color-border-strong: #475569;
+    --color-text: #e2e8f0;        /* 14.48:1 */
+    --color-text-2: #cbd5e1;      /* 10.99:1 na surface */
+    --color-text-3: #94a3b8;      /* 6.96:1 */
+    --color-success: #4ade80; --color-success-bg: #052e16;
+    --color-warning: #fbbf24; --color-warning-bg: #3a2a08;
+    --color-error: #f87171;   --color-error-bg: #3f1212;
+    --color-info: #60a5fa;    --color-info-bg: #0f2347;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+    --shadow-glass: 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+    --glass-bg: rgba(15, 23, 42, 0.55);
+    --glass-bg-strong: rgba(15, 23, 42, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-highlight: rgba(255, 255, 255, 0.10);
+    --glass-panel: rgba(22, 32, 50, 0.92);
+    --focus-ring: 0 0 0 3px var(--color-bg), 0 0 0 6px var(--color-navy);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-navy: #93c5fd; --color-navy-deep: #bfdbfe; --color-navy-soft: #1e3050;
+  --color-rose: #e11d48; --color-rose-deep: #be123c; --color-rose-text: #fda4af;
+  --color-rose-soft: #2a1a22; --color-rose-border: #4c1d2b;
+  --color-bg: #0f172a; --color-surface: #162032; --color-surface-2: #1e293b;
+  --color-border: #334155; --color-border-strong: #475569;
+  --color-text: #e2e8f0; --color-text-2: #cbd5e1; --color-text-3: #94a3b8;
+  --color-success: #4ade80; --color-success-bg: #052e16;
+  --color-warning: #fbbf24; --color-warning-bg: #3a2a08;
+  --color-error: #f87171;   --color-error-bg: #3f1212;
+  --color-info: #60a5fa;    --color-info-bg: #0f2347;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+  --shadow-glass: 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+  --glass-bg: rgba(15, 23, 42, 0.55); --glass-bg-strong: rgba(15, 23, 42, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.14); --glass-highlight: rgba(255, 255, 255, 0.10);
+  --glass-panel: rgba(22, 32, 50, 0.92);
+  --focus-ring: 0 0 0 3px var(--color-bg), 0 0 0 6px var(--color-navy);
+}
+
+/* --------------------------------------------------------------------------
+   3. RUCH – jedna reguła globalna
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. GLASS WIDGET
+   Anatomia: .glass (tafla) > .glass__header | .glass__body | .glass__panel (wynik)
+   Zasady: tekst pomocniczy i liczby WYŁĄCZNIE w .glass__panel (krycie 92 %).
+   Na samej tafli dozwolony tylko --color-text i --color-navy (≥ 4.5:1 nawet nad
+   najciemniejszym fragmentem gradientu hero – policzone: 6.08:1 / 4.53:1).
+   -------------------------------------------------------------------------- */
+.glass {
+  position: relative;
+  isolation: isolate;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),   /* wewnętrzne podświetlenie krawędzi */
+    var(--shadow-glass);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  contain: paint;                           /* ogranicza obszar repaint do widgetu */
+  color: var(--color-text);
+}
+.glass--strong { background: var(--glass-bg-strong); }
+
+/* Delikatny połysk w górnym rogu – statyczny, bez animacji */
+.glass::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 60% at 0% 0%, var(--glass-highlight) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.glass__header { padding: var(--space-5) var(--space-5) 0; }
+.glass__body   { padding: var(--space-5); }
+
+/* Wewnętrzny panel o niemal pełnym kryciu – tu wolno używać --color-text-2/-3 */
+.glass__panel {
+  background: var(--glass-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+/* Fallback: przeglądarka bez backdrop-filter → tafla niemal kryjąca */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: var(--color-surface); border-color: var(--color-border); }
+  .glass::before { display: none; }
+}
+
+/* Preferencje użytkownika: mniej przezroczystości / większy kontrast → pełne tło */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .glass, .glass--strong {
+    background: var(--color-surface);
+    border-color: var(--color-border-strong);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .glass::before { display: none; }
+  .glass__panel { background: var(--color-surface-2); }
+}
+
+/* Wydajność: na urządzeniach z „coarse pointer” i małym ekranie blur 12 px */
+@media (max-width: 30rem) and (pointer: coarse) {
+  .glass { --glass-blur: 12px; }
+}
+
+/* --------------------------------------------------------------------------
+   5. POMOCNICZE KLASY UŻYWANE RAZEM Z GLASS (header, stepper, CTA)
+   -------------------------------------------------------------------------- */
+.glass-header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--glass-bg-strong);
+  border-bottom: 1px solid var(--color-border);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+  padding-top: env(safe-area-inset-top);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-header { background: var(--color-surface); }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .glass-header { background: var(--color-surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+
+/* Stepper kroków kalkulatora */
+.stepper { display: flex; gap: var(--space-2); list-style: none; margin: 0; padding: 0; }
+.stepper__item {
+  flex: 1; min-height: 6px; border-radius: var(--radius-full);
+  background: var(--color-border); position: relative;
+}
+.stepper__item[aria-current="step"] { background: var(--color-navy); }
+.stepper__item.is-done { background: var(--color-navy); opacity: 0.55; }
+
+/* Fokus – jedna definicja dla wszystkiego, co interaktywne */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+/* Minimalny cel dotykowy (WCAG 2.2: 24×24 wymagane, 44×44 zalecane) */
+.tap { min-width: var(--tap-min); min-height: var(--tap-min); }
+
+/* Przycisk CTA – róż WYŁĄCZNIE jako wypełnienie z białym tekstem */
+.btn-cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: var(--tap-min); padding: 0 var(--space-6);
+  border: 0; border-radius: var(--radius-full);
+  background: var(--color-rose); color: var(--color-on-accent);
+  font: 600 var(--text-sm) / 1 var(--font-heading);
+  box-shadow: 0 6px 18px -6px rgba(225, 29, 72, 0.45);
+  transition: background var(--dur-base) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.btn-cta:hover { background: var(--color-rose-deep); }
+.btn-cta:active { transform: translateY(1px); }
+
+/* Link/tekst w kolorze marki – zawsze wariant ciemniejszy */
+.text-rose { color: var(--color-rose-text); }
+
+/* --------------------------------------------------------------------------
+   6. TAILWIND 4 – odpowiednik (do wklejenia w app/globals.css)
+   --------------------------------------------------------------------------
+   @import "tailwindcss";
+   @theme {
+     --color-navy: #2a3b69;  --color-navy-deep: #1e2f5a;  --color-navy-soft: #eef2ff;
+     --color-rose: #e11d48;  --color-rose-deep: #be123c;  --color-rose-soft: #fff1f2;
+     --color-surface: #ffffff; --color-text: #1e293b; --color-text-2: #475569;
+     --font-heading: "Montserrat Variable", system-ui, sans-serif;
+     --font-body: "Inter Variable", system-ui, sans-serif;
+     --radius-xl: 24px;
+     --shadow-glass: 0 24px 60px -24px rgb(42 59 105 / 0.35);
+     --blur-glass: 16px;
+   }
+   @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+   @utility glass {
+     background: var(--glass-bg);
+     border: 1px solid var(--glass-border);
+     border-radius: var(--radius-xl);
+     box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-glass);
+     -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(160%);
+     backdrop-filter: blur(var(--blur-glass)) saturate(160%);
+     contain: paint;
+     @supports not (backdrop-filter: blur(1px)) { background: var(--color-surface); }
+     @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+       background: var(--color-surface); backdrop-filter: none;
+     }
+   }
+   -------------------------------------------------------------------------- */

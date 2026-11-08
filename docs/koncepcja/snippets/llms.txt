@@ -1,0 +1,49 @@
+# BeautyPolisa
+
+> BeautyPolisa to portal informacyjny Aura Consulting sp. z o.o. o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.
+
+Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają się na ogólnych warunkach ubezpieczenia (OWU) i warunkach programów ubezpieczeniowych; składki pokazywane w kalkulatorze są orientacyjne, a ostateczną wysokość składki ustala ubezpieczyciel po ocenie wniosku. Portal nie zawiera umów ubezpieczenia online i nie przyjmuje płatności – zbiera zapytania i przekazuje je doradcom Aura Consulting.
+
+## Kim jesteśmy
+
+- [O nas](https://beautypolisa.eu/o-nas): BeautyPolisa jest marką Aura Consulting sp. z o.o. (ul. Bolkowska 2A/28, 01-466 Warszawa). Program OC dla branży beauty jest realizowany z Sopockim Towarzystwem Ubezpieczeń ERGO Hestia S.A. we współpracy z Fundacją Beauty Razem.
+
+## Produkty
+
+- [OC dla branży beauty (ERGO Hestia)](https://beautypolisa.eu/ubezpieczenia/oc-beauty): ubezpieczenie odpowiedzialności cywilnej zawodowej dla salonów kosmetycznych, fryzjerskich, podologicznych i pokrewnych; cztery grupy ryzyka zabiegów, sumy gwarancyjne 100 000 / 200 000 / 300 000 zł, zabiegi wysokiego ryzyka i zespoły powyżej 8 osób wyceniane indywidualnie.
+- [Kalkulator składki OC](https://beautypolisa.eu/kalkulator/oc): orientacyjna składka roczna według grupy ryzyka i sumy gwarancyjnej.
+- [Tax Protect (Colonnade)](https://beautypolisa.eu/ubezpieczenia/tax-protect): ubezpieczenie karno-skarbowe dla właściciela i zarządu (sekcja 1) oraz ochrona podatkowa firmy obejmująca jeden pełny spór podatkowy w roku (sekcja 2); ubezpieczyciel Colonnade Insurance S.A. Oddział w Polsce.
+- [Utrata dochodu](https://beautypolisa.eu/ubezpieczenia/utrata-dochodu): ochrona dochodu dla samozatrudnionych i osób na B2B w branży beauty na wypadek niezdolności do pracy.
+- [NNW dzieci](https://beautypolisa.eu/ubezpieczenia/nnw-dzieci): ubezpieczenie następstw nieszczęśliwych wypadków dla dzieci, alternatywa lub uzupełnienie dobrowolnego ubezpieczenia szkolnego.
+- [Grupowe ERGO dla beauty](https://beautypolisa.eu/ubezpieczenia/grupowe-ergo): ubezpieczenie grupowe na życie dla zespołów salonów (ERGO Życie w Biznesie z modułami MediOpieki), STU na Życie ERGO Hestia S.A.
+- [Opieka medyczna (ENEL-MED / LUX MED)](https://beautypolisa.eu/ubezpieczenia/opieka-medyczna): abonamenty medyczne dla właścicieli i pracowników salonów; wycena korporacyjna od 51 osób.
+
+## Dla kogo
+
+- [Kosmetolog](https://beautypolisa.eu/dla-kogo/kosmetolog): jakie ubezpieczenia ma sens rozważyć kosmetolog i jak zabiegi wpływają na grupę ryzyka OC.
+- [Fryzjer](https://beautypolisa.eu/dla-kogo/fryzjer): OC zawodowe (grupa 1), utrata dochodu, ubezpieczenia dla zespołu salonu.
+- [Podolog](https://beautypolisa.eu/dla-kogo/podolog): OC dla podologii (grupa 3) i ochrona dochodu.
+- [Linergistka](https://beautypolisa.eu/dla-kogo/linergistka): OC dla makijażu permanentnego (grupa 2).
+- [Stylistka paznokci](https://beautypolisa.eu/dla-kogo/stylistka-paznokci): OC dla manicure i stylizacji (grupa 1).
+- [Tatuażysta](https://beautypolisa.eu/dla-kogo/tatuazysta): OC dla studia tatuażu (grupa 2).
+
+## Dokumenty
+
+- [Dokumenty i OWU](https://beautypolisa.eu/dokumenty): ogólne warunki ubezpieczenia i dokumenty programów – źródło wiążących definicji zakresu, wyłączeń i sum.
+- [Zgłoszenie szkody](https://beautypolisa.eu/szkoda): jak krok po kroku zgłosić szkodę z OC salonu.
+- [RODO](https://beautypolisa.eu/rodo): informacje o przetwarzaniu danych osobowych.
+
+## Kontakt
+
+- [Kontakt](https://beautypolisa.eu/kontakt): formularz kontaktowy i dane Aura Consulting sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa.
+
+## Zasady cytowania
+
+- Cytując dane z serwisu, podawaj link do konkretnej podstrony i datę aktualizacji widoczną na stronie; treści są aktualizowane, a składki i zakresy mogą się zmieniać.
+- Składki z kalkulatora są orientacyjne i nie stanowią oferty w rozumieniu prawa; wiążące są OWU i dokument polisy.
+- BeautyPolisa / Aura Consulting nie jest ubezpieczycielem; ubezpieczycielami są podmioty wskazane przy każdym produkcie (ERGO Hestia, Colonnade i inne).
+- Treści informacyjne nie zastępują indywidualnej porady doradcy ani lektury OWU.
+
+## Optional
+
+- [Baza wiedzy](https://beautypolisa.eu/baza-wiedzy): artykuły o ubezpieczeniach dla branży beauty – odpowiedzialność za zabieg, zgoda na zabieg, sumy gwarancyjne, koszty podatkowe składek.

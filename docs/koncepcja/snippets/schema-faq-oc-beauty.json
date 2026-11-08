@@ -1,0 +1,65 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://beautypolisa.eu/ubezpieczenia/oc-beauty#faq",
+  "url": "https://beautypolisa.eu/ubezpieczenia/oc-beauty",
+  "inLanguage": "pl-PL",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Czy kosmetyczka lub kosmetolog musi mieć ubezpieczenie OC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dla większości zawodów beauty obowiązek posiadania OC zawodowego nie wynika wprost z przepisów – inaczej niż w zawodach objętych ustawowym ubezpieczeniem obowiązkowym. W praktyce polisy OC wymagają jednak często umowy najmu stanowiska lub lokalu, sieci i marki, organizatorzy szkoleń oraz sami klienci. Niezależnie od obowiązku OC przenosi na ubezpieczyciela koszty roszczeń osób trzecich po powikłaniach lub nieudanym zabiegu – w granicach sumy gwarancyjnej i na warunkach określonych w OWU."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Co obejmuje OC dla branży beauty w programie ERGO Hestia?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr WA50/003353/24/A realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi są przypisane do grup ryzyka, a zabiegi wysokiego ryzyka wymagają indywidualnej oceny. Pełny zakres znajdziesz w dokumentach OWU na stronie beautypolisa.eu/dokumenty."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Jakie są grupy ryzyka zabiegów i jak wpływają na składkę?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Zabiegi są podzielone na cztery grupy ryzyka. Grupa 1 to m.in. fryzjerstwo, kosmetyka pielęgnacyjna, manicure i stylizacja rzęs. Grupa 2 to m.in. makijaż permanentny, mezoterapia, lasery nieablacyjne, IPL, tatuaż i peelingi chemiczne. Grupa 3 to podologia. Grupa 4 to zabiegi wysokiego ryzyka (m.in. HIFU, toksyna botulinowa, PRP, plazma, kwas hialuronowy, nici PDO, lipoliza iniekcyjna, laser ablacyjny), które wymagają indywidualnej oceny ubezpieczyciela. Składkę wyznacza grupa ryzyka oraz wybrana suma gwarancyjna."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Jaką sumę gwarancyjną wybrać: 100 000, 200 000 czy 300 000 zł?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Suma gwarancyjna to górna granica odpowiedzialności ubezpieczyciela określona w OWU. W programie do wyboru są trzy sumy: 100 000, 200 000 i 300 000 zł. Przy zabiegach pielęgnacyjnych i małej liczbie klientów niższa suma bywa wystarczająca; przy zabiegach z grupy 2 i 3, pracy na twarzy oraz większym zespole rozsądniej wybrać wyższą sumę, bo różnica w składce jest zwykle mniejsza niż koszt jednego poważnego roszczenia. Doradca BeautyPolisa pomaga dobrać sumę do profilu salonu."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Są to zabiegi wysokiego ryzyka (grupa 4), których nie wycenia kalkulator. Ich ubezpieczenie jest możliwe po indywidualnej ocenie ubezpieczyciela na podstawie ankiety: listy wykonywanych zabiegów, kwalifikacji personelu, stosowanych formularzy zgody na zabieg oraz szkodowości z ostatnich 3 lat. Zostaw kontakt przez formularz, a doradca przygotuje indywidualną ofertę."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ile kosztuje OC salonu kosmetycznego?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Według kalkulatora BeautyPolisa orientacyjna składka roczna wynosi od 400 zł (grupa 1, suma gwarancyjna 100 000 zł) do 1 250 zł (grupa 3, suma gwarancyjna 300 000 zł). Klauzula ochrony prawnej kosztuje dodatkowo 92 zł rocznie. Zespoły powyżej 8 osób oraz zabiegi wysokiego ryzyka są wyceniane indywidualnie. Ostateczną składkę ustala ubezpieczyciel po ocenie wniosku."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Jakie dane i dokumenty są potrzebne do zawarcia ubezpieczenia OC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Wniosek (ankieta ERGO Hestia) wymaga m.in. numerów NIP i REGON, daty rozpoczęcia działalności, liczby zatrudnionych, informacji o szkodach z ostatnich 3 lat, listy wykonywanych zabiegów wysokiego ryzyka, informacji o stosowanych formularzach zgody na zabieg oraz o kwalifikacjach personelu. Dane można przesłać przez formularz na stronie; doradca przygotuje ofertę i dokumenty do podpisu."
+      }
+    }
+  ]
+}

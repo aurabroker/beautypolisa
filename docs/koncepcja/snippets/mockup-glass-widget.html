@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BeautyPolisa – makieta glass widget</title>
+<meta name="description" content="Makieta koncepcyjna strony głównej BeautyPolisa: header z zakładkami produktów, hero z kalkulatorem OC w formie glass widget, produkty, FAQ. Cennik poglądowy.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2a3b69">
+<!-- Fonty: opcjonalnie Google Fonts; bez sieci działa stos systemowy. W produkcji: next/font (self-hosting). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" media="print" onload="this.media='all'">
+<script>
+/* Tryb ciemny: zastosuj zapisany wybór zanim strona się wyrenderuje (bez błysku). */
+(function(){try{var t=localStorage.getItem('bp-theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+document.documentElement.classList.add('js');
+</script>
+<style>
+/* ===== TOKENY (kopia z snippets/glass-widget.css – ten plik jest źródłem prawdy) ===== */
+:root{
+  color-scheme:light;
+  --color-navy:#2a3b69;--color-navy-deep:#1e2f5a;--color-navy-soft:#eef2ff;
+  --color-rose:#e11d48;--color-rose-deep:#be123c;--color-rose-text:#be123c;--color-rose-soft:#fff1f2;--color-rose-border:#fecdd3;
+  --color-bg:#f8fafc;--color-surface:#ffffff;--color-surface-2:#f1f5f9;--color-border:#e2e8f0;--color-border-strong:#cbd5e1;
+  --color-text:#1e293b;--color-text-2:#475569;--color-text-3:#64748b;--color-on-accent:#ffffff;
+  --color-success:#15803d;--color-success-bg:#f0fdf4;--color-warning:#b45309;--color-warning-bg:#fffbeb;
+  --color-error:#b91c1c;--color-error-bg:#fef2f2;--color-info:#1d4ed8;--color-info-bg:#eff6ff;
+  --font-heading:"Montserrat","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --text-xs:.75rem;--text-sm:.875rem;--text-base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --text-lg:clamp(1.125rem,1.05rem + .4vw,1.25rem);--text-xl:clamp(1.25rem,1.1rem + .8vw,1.5rem);
+  --text-2xl:clamp(1.5rem,1.25rem + 1.2vw,2rem);--text-3xl:clamp(1.75rem,1.4rem + 1.6vw,2.5rem);
+  --text-4xl:clamp(2rem,1.5rem + 2.5vw,3.25rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;--radius-full:9999px;
+  --shadow-sm:0 1px 2px rgba(15,23,42,.06);--shadow-md:0 4px 12px -2px rgba(15,23,42,.1);--shadow-lg:0 16px 40px -12px rgba(15,23,42,.18);
+  --shadow-glass:0 24px 60px -24px rgba(42,59,105,.35);
+  --dur-fast:120ms;--dur-base:200ms;--ease-out:cubic-bezier(.2,.8,.2,1);
+  --container-lg:80rem;--gutter:1rem;--tap-min:44px;
+  --focus-ring:0 0 0 3px var(--color-surface),0 0 0 6px var(--color-navy);
+  --glass-bg:rgba(255,255,255,.55);--glass-bg-strong:rgba(255,255,255,.72);--glass-border:rgba(255,255,255,.35);
+  --glass-highlight:rgba(255,255,255,.6);--glass-blur:16px;--glass-saturate:160%;--glass-panel:rgba(255,255,255,.92);
+  --hero-gradient:linear-gradient(135deg,#fff1f2 0%,#fdf2f8 35%,#f8fafc 65%,#e6ebf7 100%);
+  --hero-orb-1:rgba(225,29,72,.18);--hero-orb-2:rgba(42,59,105,.22);
+}
+@media (min-width:48rem){:root{--gutter:1.5rem}}
+@media (min-width:64rem){:root{--gutter:2rem}}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --color-navy:#93c5fd;--color-navy-deep:#bfdbfe;--color-navy-soft:#1e3050;
+    --color-rose-text:#fda4af;--color-rose-soft:#2a1a22;--color-rose-border:#4c1d2b;
+    --color-bg:#0f172a;--color-surface:#162032;--color-surface-2:#1e293b;--color-border:#334155;--color-border-strong:#475569;
+    --color-text:#e2e8f0;--color-text-2:#cbd5e1;--color-text-3:#94a3b8;
+    --color-success:#4ade80;--color-success-bg:#052e16;--color-warning:#fbbf24;--color-warning-bg:#3a2a08;
+    --color-error:#f87171;--color-error-bg:#3f1212;--color-info:#60a5fa;--color-info-bg:#0f2347;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);--shadow-md:0 4px 12px -2px rgba(0,0,0,.5);--shadow-lg:0 16px 40px -12px rgba(0,0,0,.6);--shadow-glass:0 24px 60px -24px rgba(0,0,0,.7);
+    --glass-bg:rgba(15,23,42,.55);--glass-bg-strong:rgba(15,23,42,.72);--glass-border:rgba(255,255,255,.14);--glass-highlight:rgba(255,255,255,.1);--glass-panel:rgba(22,32,50,.92);
+    --focus-ring:0 0 0 3px var(--color-bg),0 0 0 6px var(--color-navy);
+    --hero-gradient:linear-gradient(135deg,#0d1f3c 0%,#0f172a 55%,#1b1230 100%);
+    --hero-orb-1:rgba(251,113,133,.22);--hero-orb-2:rgba(147,197,253,.18);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --color-navy:#93c5fd;--color-navy-deep:#bfdbfe;--color-navy-soft:#1e3050;
+  --color-rose-text:#fda4af;--color-rose-soft:#2a1a22;--color-rose-border:#4c1d2b;
+  --color-bg:#0f172a;--color-surface:#162032;--color-surface-2:#1e293b;--color-border:#334155;--color-border-strong:#475569;
+  --color-text:#e2e8f0;--color-text-2:#cbd5e1;--color-text-3:#94a3b8;
+  --color-success:#4ade80;--color-success-bg:#052e16;--color-warning:#fbbf24;--color-warning-bg:#3a2a08;
+  --color-error:#f87171;--color-error-bg:#3f1212;--color-info:#60a5fa;--color-info-bg:#0f2347;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);--shadow-md:0 4px 12px -2px rgba(0,0,0,.5);--shadow-lg:0 16px 40px -12px rgba(0,0,0,.6);--shadow-glass:0 24px 60px -24px rgba(0,0,0,.7);
+  --glass-bg:rgba(15,23,42,.55);--glass-bg-strong:rgba(15,23,42,.72);--glass-border:rgba(255,255,255,.14);--glass-highlight:rgba(255,255,255,.1);--glass-panel:rgba(22,32,50,.92);
+  --focus-ring:0 0 0 3px var(--color-bg),0 0 0 6px var(--color-navy);
+  --hero-gradient:linear-gradient(135deg,#0d1f3c 0%,#0f172a 55%,#1b1230 100%);
+  --hero-orb-1:rgba(251,113,133,.22);--hero-orb-2:rgba(147,197,253,.18);
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+/* ===== BAZA ===== */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+@media (min-width:48rem){body{padding-bottom:0}}
+h1,h2,h3{font-family:var(--font-heading);letter-spacing:-.015em;line-height:1.15;margin:0;color:var(--color-text)}
+h1{font-size:var(--text-4xl);font-weight:800}
+h2{font-size:var(--text-2xl);font-weight:700}
+h3{font-size:var(--text-lg);font-weight:700}
+p{margin:0}
+a{color:var(--color-navy);text-decoration-thickness:1px;text-underline-offset:.15em}
+a:hover{color:var(--color-navy-deep)}
+button{font:inherit;color:inherit}
+svg{display:inline-block;vertical-align:middle;flex-shrink:0}
+.icon{width:1.25rem;height:1.25rem;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.container{max-width:var(--container-lg);margin-inline:auto;padding-inline:max(var(--gutter),env(safe-area-inset-left)) max(var(--gutter),env(safe-area-inset-right))}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip-link{position:absolute;left:var(--space-4);top:-100px;z-index:100;background:var(--color-navy);color:#fff;padding:var(--space-3) var(--space-4);border-radius:var(--radius-sm);font-weight:600}
+.skip-link:focus{top:var(--space-4)}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--radius-sm)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--space-2);font:600 var(--text-xs)/1 var(--font-heading);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-2)}
+.lead{font-size:var(--text-lg);color:var(--color-text-2);max-width:34rem}
+.section{padding-block:var(--space-12)}
+@media (min-width:64rem){.section{padding-block:var(--space-16)}}
+.section__head{max-width:40rem;margin-bottom:var(--space-8)}
+.section__head p{color:var(--color-text-2);margin-top:var(--space-3)}
+
+/* Przyciski */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);min-height:var(--tap-min);padding:0 var(--space-5);border-radius:var(--radius-full);border:1px solid transparent;font:600 var(--text-sm)/1 var(--font-heading);text-decoration:none;cursor:pointer;transition:background var(--dur-base) var(--ease-out),color var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:active{transform:translateY(1px)}
+.btn--cta{background:var(--color-rose);color:var(--color-on-accent);box-shadow:0 6px 18px -6px rgba(225,29,72,.45)}
+.btn--cta:hover{background:var(--color-rose-deep);color:#fff}
+.btn--primary{background:var(--color-navy);color:var(--color-bg)}
+:root[data-theme="dark"] .btn--primary{color:#0f172a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn--primary{color:#0f172a}}
+.btn--primary:hover{background:var(--color-navy-deep)}
+.btn--ghost{background:transparent;color:var(--color-navy);border-color:var(--color-border-strong)}
+.btn--ghost:hover{background:var(--color-surface-2)}
+.btn--block{width:100%}
+
+/* ===== HEADER ===== */
+.header{position:sticky;top:0;z-index:50;background:var(--glass-bg-strong);border-bottom:1px solid var(--color-border);-webkit-backdrop-filter:blur(12px) saturate(140%);backdrop-filter:blur(12px) saturate(140%);padding-top:env(safe-area-inset-top)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.header{background:var(--color-surface)}}
+@media (prefers-reduced-transparency:reduce),(prefers-contrast:more){.header{background:var(--color-surface);backdrop-filter:none;-webkit-backdrop-filter:none}}
+.header__row{display:flex;align-items:center;gap:var(--space-3);min-height:60px}
+.brand{display:flex;flex-direction:column;text-decoration:none;color:var(--color-text);margin-right:auto;min-height:var(--tap-min);justify-content:center}
+.brand__name{font:800 1.25rem/1 var(--font-heading);letter-spacing:-.02em;color:var(--color-navy)}
+.brand__sub{font-size:var(--text-xs);color:var(--color-text-2);margin-top:3px}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:var(--tap-min);height:var(--tap-min);border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);cursor:pointer}
+.theme-toggle:hover{border-color:var(--color-navy)}
+.theme-toggle .icon--sun{display:none}
+:root[data-theme="dark"] .theme-toggle .icon--sun{display:inline-block}
+:root[data-theme="dark"] .theme-toggle .icon--moon{display:none}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .theme-toggle .icon--sun{display:inline-block}
+  :root:not([data-theme="light"]) .theme-toggle .icon--moon{display:none}
+}
+.header__cta{display:none}
+@media (min-width:30rem){.header__cta{display:inline-flex}}
+.tabs{position:relative}
+.tabs__list{display:flex;gap:var(--space-1);list-style:none;margin:0;padding:0 0 var(--space-2);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.tabs__list::-webkit-scrollbar{display:none}
+.tabs::after{content:"";position:absolute;right:0;top:0;bottom:var(--space-2);width:2.5rem;background:linear-gradient(90deg,transparent,var(--color-bg));pointer-events:none}
+@media (min-width:64rem){.tabs::after{display:none}}
+.tab{display:inline-flex;align-items:center;gap:var(--space-2);min-height:var(--tap-min);padding:0 var(--space-4);border-radius:var(--radius-full);border:1px solid transparent;color:var(--color-text-2);font:600 var(--text-sm)/1 var(--font-heading);text-decoration:none;white-space:nowrap;scroll-snap-align:start}
+.tab .icon{width:1.1rem;height:1.1rem}
+.tab:hover{background:var(--color-surface-2);color:var(--color-navy)}
+.tab[aria-current="page"]{background:var(--color-navy-soft);border-color:var(--color-border);color:var(--color-navy)}
+
+/* ===== HERO ===== */
+.hero{position:relative;overflow:hidden;background:var(--hero-gradient);border-bottom:1px solid var(--color-border)}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none}
+.hero::before{width:28rem;height:28rem;right:-8rem;top:-10rem;background:var(--hero-orb-1)}
+.hero::after{width:24rem;height:24rem;left:-8rem;bottom:-10rem;background:var(--hero-orb-2)}
+.hero__grid{position:relative;z-index:1;display:grid;gap:var(--space-8);padding-block:var(--space-10)}
+@media (min-width:64rem){.hero__grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;gap:var(--space-12);padding-block:var(--space-16)}}
+.hero__copy h1{margin:var(--space-4) 0}
+.hero__copy h1 em{font-style:normal;color:var(--color-rose-text)}
+.facts{display:flex;flex-wrap:wrap;gap:var(--space-2);list-style:none;margin:var(--space-6) 0 0;padding:0}
+.facts li{display:inline-flex;align-items:center;gap:var(--space-2);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-full);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-2)}
+.facts .icon{width:1rem;height:1rem;color:var(--color-success)}
+.hero__actions{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-6)}
+
+/* ===== GLASS WIDGET ===== */
+.glass{position:relative;isolation:isolate;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius-xl);box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-glass);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturate));backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturate));contain:paint;color:var(--color-text)}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(120% 60% at 0% 0%,var(--glass-highlight) 0%,transparent 55%);pointer-events:none;z-index:-1}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass{background:var(--color-surface);border-color:var(--color-border)}.glass::before{display:none}}
+@media (prefers-reduced-transparency:reduce),(prefers-contrast:more){.glass{background:var(--color-surface);border-color:var(--color-border-strong);-webkit-backdrop-filter:none;backdrop-filter:none}.glass::before{display:none}.glass__panel{background:var(--color-surface-2)}}
+@media (max-width:30rem) and (pointer:coarse){.glass{--glass-blur:12px}}
+.glass__header{padding:var(--space-5) var(--space-5) 0}
+.glass__body{padding:var(--space-5)}
+.glass__panel{background:var(--glass-panel);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-4)}
+.widget__title{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.widget__title h2{font-size:var(--text-xl)}
+.widget__badge{font:600 var(--text-xs)/1 var(--font-heading);color:var(--color-navy);background:var(--color-navy-soft);border:1px solid var(--color-border);border-radius:var(--radius-full);padding:6px 10px;white-space:nowrap}
+.stepper{display:flex;gap:var(--space-2);list-style:none;margin:var(--space-4) 0 0;padding:0}
+.stepper li{flex:1;height:6px;border-radius:var(--radius-full);background:var(--color-border)}
+.stepper li.is-done{background:var(--color-navy);opacity:.5}
+.stepper li[aria-current="step"]{background:var(--color-navy)}
+.step{border:0;margin:0;padding:0;min-width:0}
+.step legend{font:700 var(--text-base)/1.3 var(--font-heading);color:var(--color-text);padding:0;margin-bottom:var(--space-1)}
+.step__hint{font-size:var(--text-sm);color:var(--color-text);opacity:.85;margin-bottom:var(--space-3)}
+.js .step:not(.is-active){display:none}
+.choice-grid{display:grid;gap:var(--space-2)}
+.choice-grid--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.choice-grid--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:22.5rem){.choice-grid--3{grid-template-columns:1fr}}
+.choice{position:relative;display:block}
+.choice input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.choice__card{display:flex;flex-direction:column;gap:2px;min-height:var(--tap-min);padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface);transition:border-color var(--dur-base),box-shadow var(--dur-base)}
+.choice__card strong{font:600 var(--text-sm)/1.3 var(--font-heading);color:var(--color-text)}
+.choice__card span{font-size:var(--text-xs);color:var(--color-text-2);line-height:1.4}
+.choice input:hover+.choice__card{border-color:var(--color-border-strong)}
+.choice input:checked+.choice__card{border-color:var(--color-navy);box-shadow:inset 0 0 0 1px var(--color-navy);background:var(--color-navy-soft)}
+.choice input:focus-visible+.choice__card{box-shadow:var(--focus-ring)}
+.choice--warn input:checked+.choice__card{border-color:var(--color-warning);box-shadow:inset 0 0 0 1px var(--color-warning);background:var(--color-warning-bg)}
+.choice__tag{display:inline-block;margin-top:2px;font:600 .6875rem/1 var(--font-heading);letter-spacing:.04em;text-transform:uppercase;color:var(--color-rose-text)}
+.check{display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface);margin-top:var(--space-3);cursor:pointer}
+.check input{width:1.25rem;height:1.25rem;margin:2px 0 0;accent-color:var(--color-navy);flex-shrink:0}
+.check strong{font:600 var(--text-sm)/1.3 var(--font-heading)}
+.check span{display:block;font-size:var(--text-xs);color:var(--color-text-2)}
+.step__nav{display:flex;justify-content:space-between;gap:var(--space-3);margin-top:var(--space-4)}
+.js .step__nav{display:flex}
+.step__nav{display:none}
+.result{margin-top:var(--space-4)}
+.result__label{font:600 var(--text-xs)/1 var(--font-heading);letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-2)}
+.result__price{display:flex;align-items:baseline;gap:var(--space-2);margin-top:var(--space-2);font-family:var(--font-heading);font-variant-numeric:tabular-nums}
+.result__price strong{font-size:var(--text-3xl);font-weight:800;line-height:1;color:var(--color-text)}
+.result__price span{font-size:var(--text-sm);color:var(--color-text-2)}
+.result__meta{font-size:var(--text-sm);color:var(--color-text-2);margin-top:var(--space-2)}
+.result__compare{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-2);margin-top:var(--space-3);font-size:var(--text-xs);color:var(--color-text-2)}
+.result__compare div{border:1px solid var(--color-border);border-radius:var(--radius-sm);padding:var(--space-2) var(--space-1);text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+.result__compare div b{display:block;font-family:var(--font-heading);color:var(--color-text);font-size:var(--text-sm)}
+.result__compare div.is-selected{border-color:var(--color-navy);background:var(--color-navy-soft)}
+.result__actions{display:flex;flex-direction:column;gap:var(--space-2);margin-top:var(--space-4)}
+.result__note{font-size:var(--text-xs);color:var(--color-text-2);margin-top:var(--space-3);line-height:1.5}
+.result--individual .result__price strong{font-size:var(--text-xl)}
+.notice{display:flex;gap:var(--space-2);align-items:flex-start;padding:var(--space-3);border-radius:var(--radius-md);font-size:var(--text-sm);background:var(--color-warning-bg);color:var(--color-text);border:1px solid var(--color-border)}
+.notice .icon{color:var(--color-warning);margin-top:2px}
+
+/* ===== PASEK ZAUFANIA ===== */
+.trust{border-bottom:1px solid var(--color-border);background:var(--color-surface)}
+.trust__inner{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3) var(--space-6);padding-block:var(--space-5)}
+.trust__label{font:600 var(--text-xs)/1.3 var(--font-heading);letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-2)}
+.trust__list{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-6);list-style:none;margin:0;padding:0}
+.trust__list li{font:700 var(--text-base)/1 var(--font-heading);color:var(--color-text-2);letter-spacing:.01em}
+
+/* ===== PRODUKTY ===== */
+.products{display:grid;gap:var(--space-4)}
+@media (min-width:48rem){.products{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:64rem){.products{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-6)}}
+.card{position:relative;display:flex;flex-direction:column;gap:var(--space-3);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5);box-shadow:var(--shadow-sm);transition:box-shadow var(--dur-base) var(--ease-out),border-color var(--dur-base)}
+.card:hover{box-shadow:var(--shadow-md);border-color:var(--color-border-strong)}
+.card:focus-within{box-shadow:var(--focus-ring)}
+.card__icon{display:inline-flex;align-items:center;justify-content:center;width:2.75rem;height:2.75rem;border-radius:var(--radius-md);background:var(--color-navy-soft);color:var(--color-navy)}
+.card__icon .icon{width:1.5rem;height:1.5rem}
+.card h3 a{color:inherit;text-decoration:none}
+.card h3 a::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.card h3 a:focus-visible{box-shadow:none;outline:none}
+.card__insurer{font-size:var(--text-xs);color:var(--color-text-2);margin-top:-6px}
+.card p{font-size:var(--text-sm);color:var(--color-text-2);flex:1}
+.card__more{display:inline-flex;align-items:center;gap:var(--space-1);font:600 var(--text-sm)/1 var(--font-heading);color:var(--color-navy)}
+.card__more .icon{width:1rem;height:1rem;transition:transform var(--dur-base) var(--ease-out)}
+.card:hover .card__more .icon{transform:translateX(3px)}
+
+/* ===== FAQ ===== */
+.faq{max-width:46rem}
+.faq details{border-bottom:1px solid var(--color-border)}
+.faq summary{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);min-height:var(--tap-min);padding:var(--space-4) 0;cursor:pointer;list-style:none;font:600 var(--text-base)/1.4 var(--font-heading)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .icon{color:var(--color-navy);transition:transform var(--dur-base) var(--ease-out)}
+.faq details[open] summary .icon{transform:rotate(180deg)}
+.faq details>div{padding:0 0 var(--space-5);color:var(--color-text-2);max-width:60ch}
+
+/* ===== STOPKA ===== */
+.footer{background:var(--color-surface);border-top:1px solid var(--color-border);padding-block:var(--space-10) var(--space-8);font-size:var(--text-sm);color:var(--color-text-2)}
+.footer__grid{display:grid;gap:var(--space-8)}
+@media (min-width:48rem){.footer__grid{grid-template-columns:1.2fr 1fr 1fr}}
+.footer h2{font-size:var(--text-sm);text-transform:uppercase;letter-spacing:.06em;color:var(--color-text);margin-bottom:var(--space-3)}
+.footer ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--space-2)}
+.footer li a{display:inline-flex;align-items:center;min-height:32px}
+.footer__legal{margin-top:var(--space-8);padding-top:var(--space-5);border-top:1px solid var(--color-border);font-size:var(--text-xs);display:grid;gap:var(--space-2)}
+
+/* ===== STICKY CTA MOBILE ===== */
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);padding:var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom));background:var(--glass-bg-strong);border-top:1px solid var(--color-border);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.sticky-cta{background:var(--color-surface)}}
+@media (prefers-reduced-transparency:reduce),(prefers-contrast:more){.sticky-cta{background:var(--color-surface);backdrop-filter:none;-webkit-backdrop-filter:none}}
+.sticky-cta.is-hidden{transform:translateY(110%);visibility:hidden}
+.sticky-cta{transition:transform var(--dur-base) var(--ease-out),visibility var(--dur-base)}
+@media (min-width:48rem){.sticky-cta{display:none}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#tresc">Przejdź do treści</a>
+
+<header class="header">
+  <div class="container">
+    <div class="header__row">
+      <a class="brand" href="/" aria-label="BeautyPolisa – strona główna">
+        <span class="brand__name">BeautyPolisa</span>
+        <span class="brand__sub">created by Aura Consulting</span>
+      </a>
+      <button class="theme-toggle" type="button" id="theme-toggle" aria-pressed="false" aria-label="Włącz tryb ciemny">
+        <svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <a class="btn btn--cta header__cta" href="#kalkulator">Oblicz składkę</a>
+    </div>
+    <nav class="tabs" aria-label="Produkty">
+      <ul class="tabs__list">
+        <li><a class="tab" href="/ubezpieczenia/oc-beauty" aria-current="page"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>OC beauty</a></li>
+        <li><a class="tab" href="/ubezpieczenia/tax-protect"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Tax Protect</a></li>
+        <li><a class="tab" href="/ubezpieczenia/utrata-dochodu"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>Utrata dochodu</a></li>
+        <li><a class="tab" href="/ubezpieczenia/nnw-dzieci"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>NNW dzieci</a></li>
+        <li><a class="tab" href="/ubezpieczenia/grupowe-ergo"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Grupowe ERGO</a></li>
+        <li><a class="tab" href="/ubezpieczenia/opieka-medyczna"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 2v2M5 2v2M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg>Opieka medyczna</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="tresc" tabindex="-1">
+
+  <!-- HERO + GLASS WIDGET -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <span class="eyebrow">Ubezpieczenia dla branży beauty</span>
+        <h1 id="hero-title">Ochrona gabinetu i zespołu, <em>bez niespodzianek w OWU</em></h1>
+        <p class="lead">OC dla branży beauty w programie z ERGO Hestią, ochrona karnoskarbowa, grupowe i opieka medyczna. Porównaj warianty, policz składkę i zamów ofertę – resztą zajmie się doradca Aura Consulting.</p>
+        <ul class="facts" aria-label="Kluczowe fakty">
+          <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Suma gwarancyjna do 300 000 zł</li>
+          <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>4 grupy ryzyka zabiegów</li>
+          <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>We współpracy z Fundacją Beauty Razem</li>
+        </ul>
+        <div class="hero__actions">
+          <a class="btn btn--cta" href="#kalkulator">Oblicz składkę OC</a>
+          <a class="btn btn--ghost" href="/ubezpieczenia/oc-beauty">Zakres ochrony i wyłączenia</a>
+        </div>
+      </div>
+
+      <div class="glass" id="kalkulator" aria-labelledby="calc-title" role="region">
+        <div class="glass__header">
+          <div class="widget__title">
+            <h2 id="calc-title">Kalkulator OC beauty</h2>
+            <span class="widget__badge">Cennik poglądowy</span>
+          </div>
+          <ol class="stepper" id="stepper" aria-label="Postęp: 3 kroki">
+            <li aria-current="step"><span class="sr-only">Krok 1 z 3: zabiegi</span></li>
+            <li><span class="sr-only">Krok 2 z 3: zespół</span></li>
+            <li><span class="sr-only">Krok 3 z 3: suma gwarancyjna</span></li>
+          </ol>
+        </div>
+        <form class="glass__body" id="calc-form" novalidate>
+          <!-- KROK 1 -->
+          <fieldset class="step is-active" data-step="1">
+            <legend>1. Jakie zabiegi wykonujesz?</legend>
+            <p class="step__hint">Wybierz grupę o najwyższym ryzyku spośród zabiegów w ofercie gabinetu.</p>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="group" value="1"><span class="choice__card"><strong>Grupa 1 – fryzjerstwo i kosmetyka pielęgnacyjna</strong><span>Strzyżenie, koloryzacja, manicure, pedicure kosmetyczny, rzęsy, makijaż, depilacja</span></span></label>
+              <label class="choice"><input type="radio" name="group" value="2"><span class="choice__card"><strong>Grupa 2 – kosmetologia i tatuaż</strong><span>Makijaż permanentny, mezoterapia, lasery nieablacyjne, IPL, peelingi chemiczne, tatuaż</span></span></label>
+              <label class="choice"><input type="radio" name="group" value="3"><span class="choice__card"><strong>Grupa 3 – podologia</strong><span>Pedicure podologiczny, klamry ortonyksyjne, usuwanie modzeli i odcisków</span></span></label>
+              <label class="choice choice--warn"><input type="radio" name="group" value="4"><span class="choice__card"><strong>Grupa 4 – zabiegi wysokiego ryzyka</strong><span>HIFU, toksyna botulinowa, osocze bogatopłytkowe, kwas hialuronowy, nici PDO, laser ablacyjny</span><span class="choice__tag">Indywidualna ocena ryzyka</span></span></label>
+            </div>
+            <div class="step__nav"><span></span><button type="button" class="btn btn--primary" data-next>Dalej: zespół</button></div>
+          </fieldset>
+
+          <!-- KROK 2 -->
+          <fieldset class="step" data-step="2">
+            <legend>2. Ile osób wykonuje zabiegi?</legend>
+            <p class="step__hint">Licz właścicielkę i każdą osobę pracującą przy klientach, niezależnie od formy zatrudnienia.</p>
+            <div class="choice-grid choice-grid--3">
+              <label class="choice"><input type="radio" name="team" value="1-5" checked><span class="choice__card"><strong>1–5 osób</strong><span>Taryfa bazowa</span></span></label>
+              <label class="choice"><input type="radio" name="team" value="6-8"><span class="choice__card"><strong>6–8 osób</strong><span>Składka wyższa</span></span></label>
+              <label class="choice"><input type="radio" name="team" value="9+"><span class="choice__card"><strong>9 i więcej</strong><span>Wycena indywidualna</span></span></label>
+            </div>
+            <div class="step__nav"><button type="button" class="btn btn--ghost" data-prev>Wstecz</button><button type="button" class="btn btn--primary" data-next>Dalej: suma</button></div>
+          </fieldset>
+
+          <!-- KROK 3 -->
+          <fieldset class="step" data-step="3">
+            <legend>3. Jaką sumę gwarancyjną wybierasz?</legend>
+            <p class="step__hint">Suma to maksymalna kwota, jaką ubezpieczyciel wypłaci poszkodowanym w okresie ubezpieczenia.</p>
+            <div class="choice-grid choice-grid--3">
+              <label class="choice"><input type="radio" name="sum" value="0"><span class="choice__card"><strong>100 000 zł</strong><span>Podstawowa</span></span></label>
+              <label class="choice"><input type="radio" name="sum" value="1" checked><span class="choice__card"><strong>200 000 zł</strong><span>Najczęściej wybierana</span></span></label>
+              <label class="choice"><input type="radio" name="sum" value="2"><span class="choice__card"><strong>300 000 zł</strong><span>Maksymalna</span></span></label>
+            </div>
+            <label class="check"><input type="checkbox" name="legal" value="1"><span><strong>Dodaj klauzulę ochrony prawnej (+92 zł/rok)</strong><span>Koszty pomocy prawnej w sporze z klientem. Szczegóły w OWU.</span></span></label>
+            <div class="step__nav"><button type="button" class="btn btn--ghost" data-prev>Wstecz</button><span></span></div>
+          </fieldset>
+
+          <!-- WYNIK -->
+          <div class="glass__panel result" id="result" aria-live="polite" aria-atomic="true">
+            <p class="result__label">Składka roczna – cennik poglądowy</p>
+            <p class="result__price" id="result-price"><strong>—</strong></p>
+            <p class="result__meta" id="result-meta">Wybierz grupę zabiegów w kroku 1, aby zobaczyć składkę.</p>
+            <div class="result__compare" id="result-compare" hidden></div>
+            <div class="result__actions">
+              <a class="btn btn--cta btn--block" id="result-cta" href="/kontakt">Poproś o ofertę</a>
+            </div>
+            <p class="result__note">Kwoty mają charakter informacyjny i nie stanowią oferty w rozumieniu art. 66 Kodeksu cywilnego. Ostateczna składka zależy od oceny ryzyka przez ERGO Hestię.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASEK ZAUFANIA -->
+  <section class="trust" aria-label="Ubezpieczyciele i partnerzy programu">
+    <div class="container trust__inner">
+      <span class="trust__label">Ubezpieczyciele i partnerzy</span>
+      <ul class="trust__list">
+        <li>ERGO Hestia</li>
+        <li>Colonnade</li>
+        <li>ENEL-MED</li>
+        <li>LUX MED</li>
+        <li>Fundacja Beauty Razem</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PRODUKTY -->
+  <section class="section" aria-labelledby="products-title">
+    <div class="container">
+      <div class="section__head">
+        <span class="eyebrow">Sześć produktów</span>
+        <h2 id="products-title" style="margin-top:var(--space-3)">Co ubezpieczymy w Twoim gabinecie</h2>
+        <p>Każdy produkt ma osobną stronę z zakresem, wyłączeniami, dokumentami OWU i formularzem zapytania. Nie sprzedajemy polis online – przygotowujemy ofertę i prowadzimy przez wniosek.</p>
+      </div>
+      <div class="products">
+        <article class="card">
+          <span class="card__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+          <h3><a href="/ubezpieczenia/oc-beauty">OC dla branży beauty</a></h3>
+          <p class="card__insurer">ERGO Hestia</p>
+          <p>Odpowiedzialność cywilna za szkody wyrządzone klientom przy zabiegach. Sumy 100 000–300 000 zł, 4 grupy ryzyka, składka od 400 zł rocznie.</p>
+          <span class="card__more">Zakres i kalkulator <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </article>
+        <article class="card">
+          <span class="card__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>
+          <h3><a href="/ubezpieczenia/tax-protect">Tax Protect</a></h3>
+          <p class="card__insurer">Colonnade</p>
+          <p>Ochrona karnoskarbowa właścicielki i zarządu oraz ochrona podatkowa firmy – koszty jednego pełnego sporu podatkowego w roku. Sumy od 50 000 zł do 3 000 000 zł.</p>
+          <span class="card__more">Warianty i zakres <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </article>
+        <article class="card">
+          <span class="card__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></span>
+          <h3><a href="/ubezpieczenia/utrata-dochodu">Utrata dochodu</a></h3>
+          <p class="card__insurer">Dla samozatrudnionych i B2B</p>
+          <p>Świadczenie, gdy choroba lub wypadek uniemożliwia pracę w gabinecie. Na co zwrócić uwagę: definicja niezdolności do pracy, karencja, wyłączenia.</p>
+          <span class="card__more">Jak to działa <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </article>
+        <article class="card">
+          <span class="card__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span>
+          <h3><a href="/ubezpieczenia/nnw-dzieci">NNW dzieci</a></h3>
+          <p class="card__insurer">Ubezpieczenie następstw nieszczęśliwych wypadków</p>
+          <p>Ubezpieczenie szkolne jest dobrowolne – NNW dziecka można dobrać samodzielnie, porównując sumy i zakres zamiast najniższej składki.</p>
+          <span class="card__more">Zakres i pytania <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </article>
+        <article class="card">
+          <span class="card__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          <h3><a href="/ubezpieczenia/grupowe-ergo">Grupowe ERGO dla beauty</a></h3>
+          <p class="card__insurer">ERGO Hestia</p>
+          <p>Życie i zdrowie zespołu: pakiety od 58 zł za osobę miesięcznie oraz moduły MediOpieki – diagnostyka, rehabilitacja, zdrowie psychiczne, assistance.</p>
+          <span class="card__more">Pakiety i moduły <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </article>
+        <article class="card">
+          <span class="card__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 2v2M5 2v2M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg></span>
+          <h3><a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a></h3>
+          <p class="card__insurer">ENEL-MED / LUX MED</p>
+          <p>Abonamenty medyczne dla właścicielki i zespołu w sieciach ENEL-MED i LUX MED. Wycena korporacyjna od 51 osób.</p>
+          <span class="card__more">Porównanie abonamentów <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" aria-labelledby="faq-title" style="background:var(--color-surface);border-top:1px solid var(--color-border)">
+    <div class="container">
+      <div class="section__head">
+        <span class="eyebrow">Najczęstsze pytania</span>
+        <h2 id="faq-title" style="margin-top:var(--space-3)">Zanim policzysz składkę</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Dla kogo jest OC dla branży beauty?<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div>Dla gabinetów i salonów wykonujących zabiegi z grup 1–3: fryzjerstwo, kosmetyka pielęgnacyjna, stylizacja paznokci i rzęs, makijaż permanentny, mezoterapia, lasery nieablacyjne, tatuaż, podologia. Zabiegi z grupy 4 (np. toksyna botulinowa, kwas hialuronowy, HIFU) wymagają indywidualnej oceny ryzyka przez ERGO Hestię.</div>
+        </details>
+        <details>
+          <summary>Jak grupa ryzyka wpływa na składkę?<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div>O taryfie decyduje zabieg o najwyższym ryzyku w ofercie. Grupa 1 to składka od 400 zł rocznie przy sumie 100 000 zł, grupa 2 od 650 zł, grupa 3 od 850 zł. Wyższa suma gwarancyjna podnosi składkę, a klauzula ochrony prawnej dodaje 92 zł rocznie.</div>
+        </details>
+        <details>
+          <summary>Którą sumę gwarancyjną wybrać?<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div>Do wyboru są 100 000, 200 000 i 300 000 zł. Suma to górny limit wypłat dla wszystkich szkód w okresie ubezpieczenia. Przy zabiegach na twarzy i z użyciem aparatury roszczenia bywają wyższe, dlatego wariant 200 000 zł jest wybierany najczęściej.</div>
+        </details>
+        <details>
+          <summary>Czy wynik z kalkulatora jest wiążący?<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div>Nie. Kalkulator pokazuje cennik poglądowy. Po wysłaniu zapytania doradca potwierdza dane z wniosku (m.in. NIP, data rozpoczęcia działalności, liczba osób, szkodowość z 3 lat) i przekazuje ofertę do akceptacji ubezpieczyciela.</div>
+        </details>
+        <details>
+          <summary>Co, jeśli zespół liczy więcej niż 8 osób?<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div>Przy 9 i więcej osobach wykonujących zabiegi składka jest wyceniana indywidualnie. Zostaw kontakt – przygotujemy ankietę i wycenę dopasowaną do profilu gabinetu.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer" id="kontakt">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <h2>BeautyPolisa</h2>
+        <p>Portal informacyjny o ubezpieczeniach dla branży beauty. Obsługa: Aura Consulting sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa.</p>
+        <p style="margin-top:var(--space-3)"><a href="/kontakt">Formularz kontaktowy</a> · <a href="/szkoda">Zgłoś szkodę</a></p>
+      </div>
+      <nav aria-label="Produkty – stopka">
+        <h2>Ubezpieczenia</h2>
+        <ul>
+          <li><a href="/ubezpieczenia/oc-beauty">OC dla branży beauty</a></li>
+          <li><a href="/ubezpieczenia/tax-protect">Tax Protect</a></li>
+          <li><a href="/ubezpieczenia/utrata-dochodu">Utrata dochodu</a></li>
+          <li><a href="/ubezpieczenia/nnw-dzieci">NNW dzieci</a></li>
+          <li><a href="/ubezpieczenia/grupowe-ergo">Grupowe ERGO dla beauty</a></li>
+          <li><a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Informacje">
+        <h2>Informacje</h2>
+        <ul>
+          <li><a href="/baza-wiedzy">Baza wiedzy</a></li>
+          <li><a href="/dla-kogo/kosmetolog">Dla kogo</a></li>
+          <li><a href="/dokumenty">Dokumenty OWU</a></li>
+          <li><a href="/o-nas">O nas</a></li>
+          <li><a href="/rodo">RODO i prywatność</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer__legal">
+      <p>Informacje na stronie nie stanowią oferty w rozumieniu art. 66 Kodeksu cywilnego. Zakres ochrony określają ogólne warunki ubezpieczenia poszczególnych ubezpieczycieli dostępne w sekcji Dokumenty.</p>
+      <p>© 2026 BeautyPolisa created by Aura Consulting. Makieta koncepcyjna – cennik poglądowy.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky-cta" aria-label="Szybkie akcje">
+  <a class="btn btn--cta" href="#kalkulator">Oblicz składkę</a>
+  <a class="btn btn--ghost" href="#kontakt">Kontakt</a>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Tryb ciemny ---------- */
+  var root = document.documentElement;
+  var toggle = document.getElementById("theme-toggle");
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+  function isDark() {
+    var t = root.getAttribute("data-theme");
+    return t ? t === "dark" : mq.matches;
+  }
+  function syncToggle() {
+    var dark = isDark();
+    toggle.setAttribute("aria-pressed", String(dark));
+    toggle.setAttribute("aria-label", dark ? "Wyłącz tryb ciemny" : "Włącz tryb ciemny");
+  }
+  toggle.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("bp-theme", next); } catch (e) {}
+    syncToggle();
+  });
+  if (mq.addEventListener) mq.addEventListener("change", syncToggle);
+  syncToggle();
+
+  /* ---------- Kalkulator – cennik poglądowy z briefu ---------- */
+  var PRICES = { 1: [400, 500, 650], 2: [650, 790, 950], 3: [850, 980, 1250] };
+  var LEGAL = 92;
+  var SUMS = ["100 000 zł", "200 000 zł", "300 000 zł"];
+  /* Mnożnik dla zespołu 6–8 osób: [założenie wg obecnego kodu bp-app.js, do potwierdzenia] */
+  var TEAM_MULT = { "1-5": 1, "6-8": 1.25, "9+": null };
+
+  var form = document.getElementById("calc-form");
+  var result = document.getElementById("result");
+  var priceEl = document.getElementById("result-price");
+  var metaEl = document.getElementById("result-meta");
+  var compareEl = document.getElementById("result-compare");
+  var ctaEl = document.getElementById("result-cta");
+  var fmt = new Intl.NumberFormat("pl-PL");
+
+  function val(name) {
+    var el = form.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : null;
+  }
+
+  function render() {
+    var group = val("group");
+    var team = val("team");
+    var sumIdx = parseInt(val("sum") || "1", 10);
+    var legal = form.querySelector('input[name="legal"]').checked;
+    result.classList.remove("result--individual");
+    compareEl.hidden = true;
+    compareEl.innerHTML = "";
+
+    if (!group) {
+      priceEl.innerHTML = "<strong>—</strong>";
+      metaEl.textContent = "Wybierz grupę zabiegów w kroku 1, aby zobaczyć składkę.";
+      ctaEl.textContent = "Poproś o ofertę";
+      return;
+    }
+    if (group === "4" || team === "9+") {
+      result.classList.add("result--individual");
+      priceEl.innerHTML = "<strong>Wycena indywidualna</strong>";
+      metaEl.textContent = group === "4"
+        ? "Zabiegi z grupy 4 wymagają indywidualnej oceny ryzyka przez ERGO Hestię. Przygotujemy ankietę i ofertę szytą na miarę."
+        : "Zespół 9 i więcej osób wyceniamy indywidualnie. Zostaw kontakt – odezwiemy się z ankietą.";
+      ctaEl.textContent = "Umów rozmowę z doradcą";
+      return;
+    }
+    var mult = TEAM_MULT[team] || 1;
+    var base = PRICES[group];
+    var prices = base.map(function (p) { return Math.round(p * mult) + (legal ? LEGAL : 0); });
+    priceEl.innerHTML = "<strong>" + fmt.format(prices[sumIdx]) + " zł</strong><span>/ rok</span>";
+    metaEl.textContent = "Grupa " + group + " · " + team + " os. · suma " + SUMS[sumIdx] + (legal ? " · z ochroną prawną (+" + LEGAL + " zł)" : "");
+    ctaEl.textContent = "Poproś o ofertę na " + SUMS[sumIdx];
+    compareEl.hidden = false;
+    prices.forEach(function (p, i) {
+      var d = document.createElement("div");
+      if (i === sumIdx) d.className = "is-selected";
+      d.innerHTML = "<b>" + fmt.format(p) + " zł</b>" + SUMS[i];
+      compareEl.appendChild(d);
+    });
+  }
+  form.addEventListener("change", render);
+  form.addEventListener("submit", function (e) { e.preventDefault(); });
+  render();
+
+  /* ---------- Stepper (3 kroki) ---------- */
+  var steps = Array.prototype.slice.call(form.querySelectorAll(".step"));
+  var dots = Array.prototype.slice.call(document.querySelectorAll("#stepper li"));
+  var current = 0;
+  function show(i, focus) {
+    current = Math.max(0, Math.min(steps.length - 1, i));
+    steps.forEach(function (s, idx) { s.classList.toggle("is-active", idx === current); });
+    dots.forEach(function (d, idx) {
+      d.classList.toggle("is-done", idx < current);
+      if (idx === current) d.setAttribute("aria-current", "step"); else d.removeAttribute("aria-current");
+    });
+    if (focus) {
+      var legend = steps[current].querySelector("legend");
+      legend.setAttribute("tabindex", "-1");
+      legend.focus({ preventScroll: true });
+    }
+  }
+  form.addEventListener("click", function (e) {
+    var next = e.target.closest("[data-next]");
+    var prev = e.target.closest("[data-prev]");
+    if (next) {
+      if (current === 0 && !val("group")) {
+        metaEl.textContent = "Najpierw wybierz grupę zabiegów.";
+        form.querySelector('input[name="group"]').focus();
+        return;
+      }
+      show(current + 1, true);
+    }
+    if (prev) show(current - 1, true);
+  });
+  show(0, false);
+
+  /* ---------- Sticky CTA (mobile): chowaj, gdy kalkulator jest na ekranie ---------- */
+  var sticky = document.querySelector(".sticky-cta");
+  var calc = document.getElementById("kalkulator");
+  if (sticky && calc && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      sticky.classList.toggle("is-hidden", entries[0].isIntersecting);
+    }, { threshold: 0.15 }).observe(calc);
+  }
+})();
+</script>
+</body>
+</html>

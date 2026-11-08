@@ -1,0 +1,319 @@
+# 03 · Code review obecnego kodu i konfiguracji
+
+**TL;DR**
+
+- Obecne repozytorium to zbiór prototypów landing page'y (7 plików HTML, 2 pliki JS, skompilowany `style.css`), nie aplikacja: trzy równoległe wersje strony OC (`indeksowt.html`, `new.html` + `bp-app.js`, `nowy.html`), dwie strony Life, a `index.html` zawiera tylko „Hello World”.
+- Cztery problemy krytyczne: (1) skrypt „anti-inspect” z pętlą `debugger`, która czyści całe `document.body`; (2) publiczny portal spięty kluczem `anon` ze **współdzielonym** projektem Supabase (158 tabel innych modułów Aura) i otwartą rejestracją kont w tym samym Auth; (3) formularze leadowe na 4 z 5 stron produktowych nie wysyłają nigdzie danych (`setTimeout` + `alert`); (4) symulowana „weryfikacja GUS”, która po 1–1,2 s zawsze pokazuje „Podmiot zweryfikowany”.
+- Wartościowe i do przeniesienia: logika kalkulatora OC (4 grupy ryzyka, cennik, mnożnik zespołu, progi „9+” i „grupa 4”), słowniki zabiegów `PROCS`, teksty zakresu/wyłączeń/klauzuli, noty IDD/RODO, zdarzenia `dataLayer` – ale jako **dane zweryfikowane z ubezpieczycielem**, nie jako kod.
+- Konfiguracja: polityki RLS na `bp_*` są zaprojektowane poprawnie (ograniczony INSERT, trigger `bp_profiles_guard`), ale brakuje `REVOKE` dla TRUNCATE/DELETE, limitów częstotliwości i Turnstile; w Cloudflare do zmiany: min TLS 1.0 → 1.2, SSL Full → Full (strict), HSTS, polityka botów AI blokująca cele GEO.
+- Werdykt: **Request Changes** dla obecnych plików (lista 10 poprawek „na już”) oraz rekomendacja budowy portalu od nowa w stosie opisanym w 02-… – przenosimy dane, treści i reguły, nie kod.
+
+## Podsumowanie
+
+Kod jest czytelny i powstał z wyraźną troską o UX (wyszukiwarka zabiegów, `aria-live`, tryb ciemny, komentarz tłumaczący zakleszczenie `onAuthStateChange`), ale architektonicznie to prototyp: całe UI i panel administracyjny budowane są w przeglądarce z jednego pliku, zapisy do bazy idą bezpośrednio z klienta, a strony produktowe poza OC mają tylko makiety formularzy. Największe ryzyka nie leżą w pojedynczych linijkach, lecz w decyzjach: współdzielony projekt Supabase, brak warstwy serwerowej dla leadów i „ochrona” kodu kosztem dostępności i SEO. Dla portalu, którego priorytetem nr 1 jest bezpieczeństwo i stabilność, a nr 4 SEO/GEO, obecne pliki powinny posłużyć jako źródło treści i reguł biznesowych, nie jako fundament.
+
+## Problemy krytyczne
+
+| # | Plik | Linia/fragment | Problem | Dlaczego to ważne | Rekomendacja | Waga |
+|---|------|----------------|---------|-------------------|--------------|------|
+| K1 | `bp-app.js` | 8–17: blokada `contextmenu`, F12, Ctrl+Shift+I/J/C/K, Ctrl+U/S/P; linia 17: `setInterval(... debugger ... document.body.innerHTML = "")` co 4 s | „Anti-inspect” czyści całą stronę, gdy instrukcja `debugger` trwa > 100 ms (czyli gdy otwarte są DevTools lub pauza w wątku). Blokuje też drukowanie, zapis strony i menu kontekstowe. | **Dostępność:** menu kontekstowe i skróty są używane przez technologie asystujące i użytkowników klawiatury; Ctrl+P/S to podstawowe funkcje. **SEO/GEO:** Googlebot renderuje JS przez headless Chromium sterowane protokołem DevTools – nie można wykluczyć, że `debugger` zatrzyma renderer i indeksowana będzie pusta strona [hipoteza – do weryfikacji w GSC „Sprawdź URL”]; crawlery AI bez renderowania JS i tak widzą pusty `<body>` (zob. K16). **Wydajność:** timer co 4 s utrzymuje aktywny wątek i może dawać fałszywe trafienia przy pauzach GC. **Zaufanie:** każdy deweloper, audytor, partner (ERGO Hestia, Beauty Razem) otwierający DevTools widzi pustą stronę. **Ochrona:** zerowa – kod pobiera się `curl`-em. | Usunąć cały blok 8–17. Nie przenosić w żadnej formie. | 🔴 |
+| K2 | `bp-app.js` | 20–26: adres projektu i klucz `anon` sklejane z fragmentów tablicy | Klucz `anon` Supabase **jest publiczny z założenia** – trafia do każdej przeglądarki; „obfuskacja” przez `join("")` nie daje nic. Prawdziwą granicą bezpieczeństwa są: RLS, granty na tabelach, funkcje RPC dostępne dla `anon` i ustawienia Auth. Problem nie w tym, że klucz jest widoczny, lecz **do czego daje dostęp**: wg 01-audyt jest to współdzielony projekt „aurabroker” (158 tabel CRM i innych modułów, 21 funkcji `SECURITY DEFINER` wykonywalnych przez `anon`, 44 tabele z RLS bez polityk). | Każdy odwiedzający portal dostaje token roli `anon` do bazy z danymi CRM Aura. Błąd w jednej polityce dowolnego z 158 obiektów = wyciek lub modyfikacja danych nienależących do portalu. To największe pojedyncze ryzyko (potwierdzone w 01-audyt, pkt 5.1). | Oddzielny projekt Supabase dla portalu (założenie nr 4 w 01-audyt). Klucz publiczny w przeglądarce – tylko do odczytu treści publicznych, jeśli w ogóle; zapisy przez warstwę serwerową (zob. Decyzja 3). | 🔴 |
+| K3 | `bp-app.js` | 807–820 `doRegister()` → 816 `sb.auth.signUp(...)`; 779–781 przyciski „Zaloguj się / Załóż konto” dla każdego gościa | Otwarta, samoobsługowa rejestracja kont w Auth współdzielonego projektu. Każdy może założyć konto i otrzymać rolę `authenticated` w bazie z CRM. | Eskalacja do `is_admin` jest zablokowana triggerem (01-audyt), ale rola `authenticated` jest wspólna dla wszystkich modułów. Każda polityka RLS w pozostałych tabelach typu `TO authenticated USING (true)` staje się publiczna [do weryfikacji w `pg_policies` – audyt tego nie badał]. Dodatkowo ochrona przed wyciekłymi hasłami jest wyłączona. | Portal leadowy nie potrzebuje kont klientów. Usunąć rejestrację/logowanie z publicznej strony; panel wewnętrzny jako osobna aplikacja z zaproszeniami (`invite`), nie `signUp`. | 🔴 |
+| K4 | `tax-protect.html`, `life.html`, `life1.html`, `medical.html` | `tax-protect.html` 419–431 `submitModalForm`: `setTimeout(() => { alert('Dziękujemy! ...') }, 1500)` bez żadnego żądania; `life.html` 395 i `life1.html` 250: `onsubmit="event.preventDefault(); alert(...)"`; `medical.html` 646–669: generuje „sygnaturę” `BP/MED/...` i pokazuje ją w `alert`, nic nie wysyła | Formularze leadowe na czterech stronach produktowych **nie zapisują ani nie wysyłają danych**. Użytkownik dostaje komunikat o przyjęciu zgłoszenia (w `medical.html` nawet z „numerem sprawy”). | Jeśli którakolwiek z tych stron jest wdrożona (01-audyt: `tax.` → Pages `taxbp`) [założenie: ten sam kod], leady są bezpowrotnie tracone, a klient jest wprowadzany w błąd. Dla portalu leadowego to defekt biznesowy pierwszej kategorii. | Natychmiast: albo podpiąć realny zapis (ta sama ścieżka co OC), albo zastąpić formularz uczciwym CTA (telefon/e-mail) do czasu wdrożenia backendu. Docelowo jeden serwerowy endpoint leadów (02-…, 04-…). | 🔴 |
+| K5 | `indeksowt.html`, `tax-protect.html`, `medical.html` | `indeksowt.html` 894–909: po 1 s `"✓ Weryfikacja GUS: Podmiot aktywny"`; `tax-protect.html` 394–410 i `medical.html` 629–644: po 1,2 s `"✓ Podmiot zweryfikowany w bazie GUS"`; etykieta pola 262 „NIP Firmy (Weryfikacja API)” | Symulacja weryfikacji w rejestrze GUS: loader + `setTimeout` + stały komunikat sukcesu dla **dowolnych** 9/10/14 cyfr. Żadne API nie jest wywoływane. | Komunikat przypisuje systemowi kompetencję, której nie ma. Dla dystrybutora ubezpieczeń (IDD, obowiązki informacyjne) i w relacji z UOKiK to ryzyko reputacyjne i prawne; dla zespołu sprzedaży – fałszywe poczucie, że NIP/REGON był sprawdzony. | Usunąć tekst o GUS; zostawić walidację formatu (jak uczciwie robi `bp-app.js` 881–895: „Poprawny format REGON”). Docelowo weryfikacja po stronie serwera w BIR1 GUS, jeśli jest potrzebna (Decyzja 7). | 🔴 |
+| K6 | `new.html` + `bp-nav.js` + `bp-app.js` | `new.html` 25 `<script src="bp-nav.js">` (synchroniczny, w `<body>`) i 26 `<script src="bp-app.js" defer>`; `bp-nav.js` 136–140: gdy `readyState === "loading"` czeka na `DOMContentLoaded`; `bp-app.js` 433–453 `buildPage()` szuka `#bp-header`, gdy go nie ma – buduje własny header | Kolejność wykonania wg specyfikacji HTML: skrypt `defer` uruchamia się po sparsowaniu dokumentu, **przed** `DOMContentLoaded`. Więc `buildPage()` wykona się, zanim `bp-nav.js` wstawi header → `bp-app.js` zbuduje własny header (bez paska produktów), a chwilę później `bp-nav.js` wstawi drugi `#bp-header` na początku `<body>`. | Dwa nagłówki, zduplikowane `id` (`bp-header`), dwa przełączniki trybu ciemnego, slot `#bp-hdr-auth` pusty. [hipoteza o wysokim prawdopodobieństwie – do potwierdzenia w przeglądarce; nie mogłem wykonać renderu w tej sesji]. Pokazuje kruchość podejścia „dwa skrypty budują DOM niezależnie”. | Na już: w `bp-nav.js` budować header natychmiast (skrypt i tak jest w `<body>` po `<noscript>`), albo w `bp-app.js` czekać na `DOMContentLoaded`. Docelowo: jeden layout serwerowy (RSC), zero budowania nagłówka w kliencie. | 🟠 |
+| K7 | `bp-app.js` | 925–1097: `buildAdminPanel()`, `loadLeads()` (1003 `select("*")` z `bp_quotes`), `updateQuoteStatus()` (1037–1040), `loadAnalytics()` (1043 `limit(5000)` z `bp_analytics`); 773 `isAdmin = _profile?.is_admin` z odczytu klienta (827–831) | Panel administracyjny (lista leadów z e-mailami i telefonami, zmiana statusów, analityka) jest częścią publicznego bundla i dopina się do DOM dla każdego odwiedzającego; widoczność przycisku zależy od flagi odczytanej w kliencie. | Dane chroni wyłącznie RLS (SELECT dla admina) – i to działa (01-audyt). Ale: cały kod panelu, nazwy tabel i kolumn, logika statusów są publiczne; powierzchnia ataku i rozmiar bundla rosną; każda regresja RLS = wyciek danych osobowych do przeglądarki gościa. Flaga po stronie klienta to UI, nie autoryzacja – i tak trzeba ją traktować. | Panel wewnętrzny jako osobna aplikacja/route group z autoryzacją serwerową (Supabase Auth + sprawdzenie roli po stronie serwera), poza publicznym bundlem (Decyzja 4). | 🟠 |
+| K8 | `bp-app.js`, `indeksowt.html` | `bp-app.js` 41–56 `trackVisit()` (INSERT do `bp_analytics` przy każdym wejściu), 849–858 i 870–875 (INSERT do `bp_quotes`); `indeksowt.html` 514, 573: klucz dostępu Web3Forms w HTML | Brak Cloudflare Turnstile, brak limitów częstotliwości, brak weryfikacji e-mail/telefonu; walidacja tylko w kliencie (polityki RLS ograniczają długość pól i zakresy, ale nie częstotliwość). Klucz Web3Forms jest publiczny z założenia, ale bez CAPTCHA pozwala każdemu zalewać skrzynkę. | Spam leadów i analityki jest trywialny (`curl` w pętli), zatruwa statystyki i obciąża zespół sprzedaży; w skrajnym przypadku koszt/limity Supabase. 01-audyt pkt 5.1: „brak ograniczeń częstotliwości wstawiania”. | Turnstile + limit na IP/sesję + honeypot po stronie serwera; walidacja schematem (np. zod) przed zapisem; analityka przez Cloudflare (zob. Decyzja 6). | 🟠 |
+| K9 | `bp-app.js` | 868–878 `submitContact()`: `await sb.from("bp_quotes").insert(...)` bez odczytu `error`, zaraz po tym `showAlert(..., "Sukces!", "success")`; 1037–1040 `updateQuoteStatus()` ignoruje wynik | Brak obsługi błędów: odrzucenie przez RLS, brak sieci lub limit API kończy się komunikatem sukcesu. Zmiana statusu w panelu może się nie zapisać bez żadnej informacji. | Utrata leadów bez śladu; admin widzi status, którego baza nie ma. | Sprawdzać `error`, pokazywać komunikat i zachować dane w formularzu; przy błędzie statusu przywracać poprzednią wartość `<select>`. | 🟠 |
+| K10 | 6 plików HTML | `indeksowt.html` 5, `new.html` 5, `tax-protect.html` 5, `life.html` 15, `life1.html` 5, `medical.html` 5: `maximum-scale=1.0, user-scalable=no` (wyjątek: `nowy.html` 5 – poprawnie) | Blokada powiększania. | Narusza WCAG 2.x 1.4.4 (Resize text) i 1.4.10; część przeglądarek (Safari iOS) ignoruje, ale Chrome/Android respektuje. Treść ma 8–11 px (zob. S4), więc zoom jest realnie potrzebny. | `<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">`. | 🟠 |
+| K11 | `life.html`, `life1.html`, `medical.html` | `life.html` 5–13 (GA4 ładowane **przed** `<meta charset>` w linii 14), `life1.html` 12–18, `medical.html` 12–18: `gtag('config', ...)` bez zgody; dwa różne identyfikatory GA4 na stronach tego samego serwisu; brak jakiegokolwiek bannera zgody | Analityka Google uruchamiana przed zgodą użytkownika, bez Consent Mode; dwa osobne „property” rozbijają dane. | Wymóg zgody na cookies analityczne (art. 173 PT, RODO) – ryzyko prawne; dane niespójne między stronami. | Jedna konfiguracja GA4/GTM z Consent Mode v2 i CMP, ładowana po zgodzie; lub analityka bez cookies (Cloudflare Web Analytics) jako domyślna. | 🟠 |
+| K12 | `tax-protect.html` 16, `life.html` 32, `life1.html` 21, `medical.html` 20 | `<script src="https://cdn.tailwindcss.com">` (runtime JIT w przeglądarce); dodatkowo `life.html` 22 ładuje **także** skompilowany `style.css` (Tailwind v4.2.1) – dwa silniki Tailwind różnych wersji na jednej stronie | CDN Tailwind generuje CSS w czasie wykonania; sam dostawca oznacza go jako narzędzie deweloperskie, nie produkcyjne (komentarz w `life.html` 31 to przyznaje). | Kilkaset KB JS blokującego render, FOUC, zależność od zewnętrznego hosta, konflikt klas v3/v4. Priorytet „szybkość” jest przez to nie do spełnienia. | Jeden build Tailwind CSS 4 w pipeline (02-…), zero CDN w produkcji. | 🟠 |
+| K13 | `new.html` 20, `indeksowt.html` 46, `life.html` 20 | `supabase-js@2` (pływająca wersja major, skrypt blokujący w `<head>`), `canvas-confetti@1.6.0`, widget ElevenLabs z `unpkg.com` bez wersji; żaden `<script>` nie ma `integrity`/`crossorigin` (grep `integrity` – 0 trafień) | Zewnętrzne CDN bez Subresource Integrity i bez przypięcia pełnej wersji. | Kompromitacja CDN lub paczki = wykonanie dowolnego kodu w kontekście strony (dostęp do formularzy i tokenu Supabase). Pływająca wersja = niekontrolowane zmiany. | Zależności z `node_modules` w buildzie; jeśli skrypt musi być zewnętrzny – pełna wersja + SRI + `crossorigin="anonymous"`; CSP z `script-src` bez `unsafe-inline`. | 🟠 |
+| K14 | `index.html`, `indeksowt.html` 95, `nowy.html` 376 | `index.html` = 13 bajtów „Hello World”; linki „OC” w nawigacji `indeksowt.html` i `nowy.html` prowadzą do `index.html`; `bp-nav.js` 11 i `bp-app.js` 444 linkują do `new.html` | Plik wejściowy serwisu jest pusty; nawigacja wskazuje różne strony główne zależnie od pliku. | Jeśli hosting serwuje `index.html` jako stronę główną – użytkownik i robot widzą „Hello World”. Niespójna nawigacja = utrata użytkownika po jednym kliknięciu. | Usunąć/zastąpić; w nowym portalu jedna struktura URL wg konwencji (`/`, `/ubezpieczenia/...`). | 🟠 |
+| K15 | `bp-app.js` vs `indeksowt.html` | **Nota IDD:** `indeksowt.html` 599–620 (11 punktów z art. 22 ustawy o dystrybucji, reklamacje, Rzecznik Finansowy, brak udziałów w ZU) vs `bp-app.js` 1156–1162 (3 akapity, bez reklamacji i trybu pozasądowego). **Status podmiotu:** nagłówek `indeksowt.html` 108 „Obsługa Brokerska” i stopka 482 „Broker Ubezpieczeniowy Aura Consulting”, a nota 602 „Informacje o agencie ubezpieczeniowym” o Aura Expert (wpis KNF jako agent). **RODO:** `bp-app.js` 1165–1172 skrócone vs `indeksowt.html` 622–656. | Nowsza wersja (`bp-app.js`) **regresuje** treści obowiązkowe; strony podają jednocześnie, że dystrybutorem jest broker (Aura Consulting) i agent (Aura Expert). | Obowiązki informacyjne IDD różnią się dla brokera i agenta; niespójność na stronie publicznej to realne ryzyko regulacyjne. 01-audyt pkt 2 oznacza to jako „do potwierdzenia”. | Jedna, pełna nota IDD i RODO jako treść zarządzana centralnie (strona `/o-nas`, `/rodo`), po ustaleniu statusu podmiotu (Pytanie 1). | 🟠 |
+| K16 | `bp-app.js` | 436 `document.body.innerHTML = ""` (kasuje wszystko, co było w HTML, i buduje stronę od zera); `new.html` 22–27: `<body>` zawiera tylko `<noscript>` i trzy `<script>`; brak `<h1>`, `<main>` w HTML (grep `<h1` w `new.html` – 0) | 100% treści (H1, opis zakresu, cennik, FAQ-podobne teksty, stopka z IDD) istnieje wyłącznie po wykonaniu JS. | Googlebot renderuje JS, ale z opóźnieniem drugiej fali i budżetem; większość crawlerów AI (cel GEO) i narzędzi podglądu linków **nie renderuje JS** – widzi pustą stronę. Przy priorytecie SEO/GEO to dyskwalifikujące. | Renderowanie po stronie serwera (RSC/SSG) – treść w HTML, JS tylko do interakcji kalkulatora. | 🟡 |
+| K17 | `indeksowt.html`, `new.html`, `nowy.html` | `indeksowt.html` 28: `"@id": "https://www.beautypolisa.com/#agency"` (domena `.com`, z `www`); `new.html` 16 i `nowy.html` 11–25: JSON-LD bez `@id`/`url`; brak `<link rel="canonical">` we wszystkich plikach; brak `robots.txt`, `sitemap.xml`, `llms.txt` w repo; `new.html` 7 i `indeksowt.html` 9 `meta keywords` (ignorowane przez wyszukiwarki) | Dane strukturalne wskazują inną domenę niż docelowa (`beautypolisa.eu`), trzy strony OC o identycznym `<title>` bez kanonicznego adresu. | Duplikacja treści między `indeksowt`/`new`/`nowy`, rozmycie sygnałów; encja w grafie wiedzy przypięta do złej domeny. | `canonical` na każdej stronie, JSON-LD z `@id` na `https://beautypolisa.eu/#organization`, `sitemap.xml` i `robots.txt` generowane w buildzie (05-…). | 🟡 |
+| K18 | `tax-protect.html` | 330 (baner): „Przedawnienie w prawie podatkowym to aż 5 lat. **Polisa chroni wstecz**.” vs 224 (FAQ): „Sprawy rozpoczęte przed zawarciem umowy lub w trakcie karencji **nie są objęte** ochroną.” Ponadto 101–106: odwołania do konkretnych paragrafów OWU (§ 5, § 6, § 7) i progi „do 30%”, „do 75% Sumy Ubezpieczenia”; 355–360: składki (1 532 … 2 901 zł) | Treści merytoryczne sprzeczne ze sobą; parametry produktu i składki zaszyte w kodzie. 01-audyt pkt 3.2: składki w bazie mają komentarz „DO POTWIERDZENIA z Colonnade”. | Błędna informacja o zakresie ochrony to ryzyko roszczeń i naruszenia obowiązków informacyjnych; składki niepotwierdzone przez ubezpieczyciela nie powinny być publikowane. | Usunąć zdanie o ochronie wstecz do czasu potwierdzenia; wszystkie liczby i cytaty z OWU weryfikować z Colonnade przed migracją treści (sekcja „Co przenieść”). | 🟠 |
+| K19 | `bp-app.js` | 854: `sum_insured: parseInt((fh-variant).replace(/\D/g,"")) …` z domyślną wartością `100000` (operator „lub” przy pustym wyniku) | Dla wariantu „Wycena Indywidualna” (wartość bez cyfr) lead dostaje `sum_insured = 100000`, choć suma nie została wybrana. | Fałszywe dane w `bp_quotes`; zespół sprzedaży widzi „100k”, podczas gdy klient wybrał grupę 4 lub zespół 9+. | `sum_insured: null` dla wyceny indywidualnej; typ wyceny jako osobne pole (`quote_type`). | 🟡 |
+| K20 | `bp-app.js`, `indeksowt.html` | `bp-app.js` 841–847: `notes` sklejane jako tekst („REGON: …\nPracownicy: 1.25\nOchrona prawna: TAK\n--- Gr.2 ---\n…”); `indeksowt.html` 929–935 analogicznie do pola Web3Forms | Dane wniosku (REGON, liczba osób jako mnożnik `1.25`, lista zabiegów) trafiają do jednej kolumny tekstowej. | Nie da się filtrować leadów po grupie ryzyka ani zabiegach, mnożnik zamiast przedziału jest nieczytelny dla sprzedaży, brak walidacji REGON po stronie bazy. | Kolumny/JSONB: `regon`, `team_size_band`, `legal_protection boolean`, `procedures jsonb` (identyfikatory ze słownika), `risk_group`. | 🟡 |
+| K21 | `indeksowt.html` vs `bp-app.js` vs `life.html`/`life1.html` | Trzy strony OC (`indeksowt.html` 1014 linii, `new.html`+`bp-app.js`, `nowy.html` tylko hero); dwie Life; **rozjazd reguł**: `indeksowt.html` 794–797 (gr. 3 → „Podologiczne”; gr. 1+2 → taryfa 3) vs `bp-app.js` 716–720 (dodatkowo „Gabinet Wieloprofilowy” dla gr. 3 + inne); `indeksowt.html` 445–450, 842 wariant 300 000 zł „wymaga ankiety” + zgoda 543–555 – w `bp-app.js` ten wymóg **zniknął**; listy zabiegów: `indeksowt.html` 236–325 (19/15/11/8 pozycji) vs `bp-app.js` 66–119 (41/38/31/8) | Ta sama reguła biznesowa istnieje w dwóch implementacjach, które już się rozjechały. | Nie wiadomo, która wersja jest zgodna z ustaleniami z ERGO Hestia; każda poprawka musi być robiona dwa razy. | Jedno źródło prawdy dla słowników i reguł (dane, nie kod) – potwierdzone z ubezpieczycielem (Pytanie 3). | 🟡 |
+| K22 | `life.html` | 20: `<elevenlabs-convai agent-id="…">` + skrypt z `unpkg.com` bez wersji i SRI, ładowany dla każdego odwiedzającego przed zgodą; 25–29: `speculationrules` z `href_matches: "/*"` | Agent głosowy strony trzeciej (przetwarza głos użytkownika) uruchamiany bez zgody i bez informacji w nocie RODO; prefetch wszystkich linków. | Przetwarzanie danych głosowych przez podmiot trzeci wymaga podstawy prawnej i umowy powierzenia; identyfikator agenta jest publiczny z założenia, ale widget może być osadzony na obcych stronach. | Ładować tylko po zgodzie i po decyzji biznesowej (Pytanie 7); prefetch ograniczyć do konkretnych tras. | 🟡 |
+
+### Fragmenty źródłowe kluczowych ustaleń
+
+`bp-app.js`, linie 8–17 (K1):
+
+```js
+/* ── ANTI-INSPECT ───────────────────────────────────────────── */
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("keydown", e => {
+  if (e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey && ["I","J","C","K"].includes(e.key)) ||
+    (e.ctrlKey && ["u","s","p"].includes(e.key.toLowerCase()))) {
+    e.preventDefault(); return false;
+  }
+});
+setInterval(() => { const t = performance.now(); debugger; if (performance.now() - t > 100) document.body.innerHTML = ""; }, 4000);
+```
+
+`tax-protect.html`, linie 419–431 (K4) – formularz, który nic nie wysyła:
+
+```js
+function submitModalForm(e) {
+    e.preventDefault();
+    const btn = document.getElementById('m-btn');
+    btn.innerHTML = 'Wysyłanie danych...';
+    btn.disabled = true;
+    setTimeout(() => {
+        alert('Dziękujemy! Twoje dane zostały przyjęte. Skontaktujemy się z Tobą telefonicznie.');
+        closeModal('modal-tax-offer');
+        // ...reset formularza – żadne żądanie HTTP nie zostało wykonane
+    }, 1500);
+}
+```
+
+`indeksowt.html`, linie 900–905 (K5) – symulowana weryfikacja GUS:
+
+```js
+if(input.value.length === 9 || input.value.length === 14) {
+    loader.style.display = 'block';
+    regonTimeout = setTimeout(() => {
+        loader.style.display = 'none';
+        display.innerText = "✓ Weryfikacja GUS: Podmiot aktywny";
+    }, 1000);
+}
+```
+
+`bp-app.js`, linie 868–878 (K9) – sukces niezależnie od wyniku:
+
+```js
+async function submitContact(e) {
+  e.preventDefault();
+  await sb.from("bp_quotes").insert({ /* ... */ status: "contact", notes: `Imię: ...` });
+  showAlert("ct-alert","Sukces! Skontaktujemy się.","success");
+  setTimeout(()=>closeModal("modal-contact"),2000);
+}
+```
+
+`new.html`, linie 24–26 (K6) – kolejność, która najpewniej daje dwa nagłówki:
+
+```html
+<script>window.BP_PAGE = 'oc';</script>
+<script src="bp-nav.js"></script>        <!-- czeka na DOMContentLoaded -->
+<script src="bp-app.js" defer></script>  <!-- wykona się PRZED DOMContentLoaded -->
+```
+
+## Sugestie
+
+| # | Plik | Linia | Sugestia | Kategoria |
+|---|------|-------|----------|-----------|
+| S1 | `bp-app.js`, `bp-nav.js`, wszystkie HTML | `bp-app.js` – 34 wystąpienia `onclick=`/`onchange=`/`oninput=`; `indeksowt.html` – 75; `medical.html` – 20; `bp-nav.js` 126 | Inline handlery uniemożliwiają CSP bez `'unsafe-inline'`; w nowym stosie wyłącznie `addEventListener`/propsy React, CSP z nonce. | Bezpieczeństwo |
+| S2 | `bp-app.js` | 133–428 | ~300 linii CSS w szablonie JS wstrzykiwanym `insertAdjacentHTML` – FOUC, brak cache'owania osobno od logiki, brak lintingu. Przenieść do arkusza/Tailwind. | Utrzymanie |
+| S3 | `bp-app.js` | 1102–1153 (modale), 1108–1116, 1136–1137, 1148–1150 | `<label class="mlabel">` bez `for`/powiązania z `input`; modale bez `role="dialog"`, `aria-modal`, `aria-labelledby` i pułapki fokusu – regresja względem `indeksowt.html` 503, 564, 599 (ma `role="dialog"` i `aria-labelledby`). | Dostępność |
+| S4 | `bp-app.js`, `bp-nav.js` | `bp-app.js` 145 (`.hdr-sub` 8px), 173 (9px), 178, 190, 198, 218, 227, 236, 266, 425; `bp-nav.js` 42 (7px) | Rozmiary tekstu 7–9 px i kolor `#94a3b8` na białym (kontrast ok. 2,9:1) – poniżej WCAG 1.4.3 (4,5:1). Minimalny rozmiar treści 14–16 px, tokeny kolorów sprawdzone kontrastem. | Dostępność |
+| S5 | `bp-app.js` | 455–493 | Brak landmarku `<main>`; hero to `<section>`, kalkulator to `<div class="bp-main">`. `indeksowt.html` 120 ma `<main>` i `<article>`. | Dostępność |
+| S6 | `bp-app.js` | 772 | `_user.email.split("@")[0]` – wyjątek, gdy konto nie ma e-maila (np. logowanie telefonem); użyć `?.` lub fallbacku. | Poprawność |
+| S7 | `bp-app.js` | 46 | `page: pathname.split("/").pop()` z domyślną wartością `"BP_index.html"` – domyślna nazwa nie odpowiada żadnemu plikowi; zapisywać pełną ścieżkę. | Poprawność |
+| S8 | `bp-app.js` | 1043 | `select("*").limit(5000)` z `bp_analytics` i agregacja w przeglądarce – agregować w SQL (widok/RPC) albo nie budować własnej analityki (Decyzja 6). | Wydajność |
+| S9 | `life.html` | 487 | `container.innerHTML += …` w pętli – każda iteracja reparsuje całą zawartość; użyć `DocumentFragment`/jednorazowego `innerHTML`. | Wydajność |
+| S10 | `bp-nav.js` | 69–78 | Tryb ciemny przez selektory klas Tailwind z `!important` (`.bg-white`, `.text-slate-600`…) – kruche, łamie się przy każdej zmianie klas; użyć tokenów CSS i wariantu `dark:`. | Utrzymanie |
+| S11 | `bp-app.js`, `bp-nav.js` | `bp-app.js` 920, 1186; `bp-nav.js` 87, 102 | Tryb ciemny tylko z `localStorage`, bez `prefers-color-scheme`; przy pierwszym wejściu ignoruje ustawienie systemowe. | Dostępność |
+| S12 | `indeksowt.html` | 708–723, 788 | Konfetti przy każdym pokazaniu ceny – ignoruje `prefers-reduced-motion`, dodatkowa biblioteka. W produkcie finansowym raczej obniża powagę niż konwersję [hipoteza]. | Wydajność |
+| S13 | `indeksowt.html` | 955, 966, 973, 976, 1001, 1006; `tax-protect.html` 425; `life.html` 395; `life1.html` 250; `medical.html` 662 | `alert()` jako komunikat sukcesu/błędu – blokuje wątek, nieczytelny dla czytników ekranu, nie da się ostylować. `bp-app.js` robi to lepiej (`showAlert` + `aria-live`). | Dostępność |
+| S14 | `indeksowt.html` | 824, 840–842 | `setAttribute('onclick', \`openOfferModal('…', '${p100} zł', '${taryfaName}')\`)` – budowanie kodu ze stringów; dziś wartości są stałe, ale wzorzec zaprasza do XSS przy pierwszym dynamicznym polu. | Bezpieczeństwo |
+| S15 | `indeksowt.html`, `new.html` | 47, 19; `nowy.html` 27; pozostałe | Fonty z Google Fonts (żądanie do Google przy każdym wejściu, kwestia transferu danych – orzecznictwo niemieckie 2022); `indeksowt.html` i `nowy.html` ładują dodatkowo Playfair Display, którego nowsze strony nie używają. Self-hosting fontów (`next/font`), subset latin-ext. | Wydajność |
+| S16 | wszystkie HTML | brak `<link rel="icon">`; `new.html` 13 tylko `og:title` (brak `og:description`, `og:image`, `og:url`, `twitter:card`) | Brak favicon i kompletu Open Graph – podgląd linku w Messengerze/LinkedIn bez obrazu. | SEO |
+| S17 | `tax-protect.html`, `medical.html`, `life.html` | `tax-protect.html` 197–231, `medical.html` 288, `life.html` 345 | Sekcje FAQ bez `FAQPage` w JSON-LD; nagłówki `h3` (tax-protect 98, 114) bez nadrzędnego `h2` – hierarchia nagłówków do uporządkowania. | SEO |
+| S18 | `life.html` | 5–14 | Skrypt GA przed `<meta charset>`; `charset` powinien być pierwszym elementem `<head>` (w pierwszych 1024 bajtach). | Poprawność |
+| S19 | `nowy.html` | 446 | `aria-label` na `<div>` bez roli – ignorowane przez AT; użyć `<figure>`/`role="img"` lub usunąć. | Dostępność |
+| S20 | `bp-app.js` | 124–125 | `closeModal` ustawia `overflow="auto"` zamiast przywracać poprzednią wartość – przy zagnieżdżonych modalach przewijanie tła wraca za wcześnie. | Poprawność |
+| S21 | `bp-app.js` | 1108, 1116, 1136–1137 | Brak `autocomplete="email"`, `"tel"`, `"name"` oraz `inputmode` na polach kontaktowych – wolniejsze wypełnianie na mobile. | Dostępność |
+| S22 | `README.md` | 10, 12, 18, 20, 27, 33 | Dokumentacja nieaktualna: Web3Forms (zastąpione Supabase w `bp-app.js`), „Schema.org (Product…)” (brak), komenda Tailwind v3 CLI przy `style.css` z Tailwind v4.2.1, instrukcja podmiany klucza. Komentarz `indeksowt.html` 18 wspomina Chart.js, który nie jest ładowany. | Utrzymanie |
+| S23 | `indeksowt.html`, `bp-app.js`, `tax-protect.html`, `life*.html`, `medical.html` | stopki: `indeksowt.html` 481–482, `bp-app.js` 499–500, `tax-protect.html` 238–239, `life.html` 573–574, `life1.html` 304–305, `medical.html` (stopka) | Telefon, nazwy podmiotów i kody OWU powtórzone w 6 miejscach – jedna konfiguracja (`site.config`) i komponent stopki. | Utrzymanie |
+| S24 | `bp-app.js`, `indeksowt.html` | `bp-app.js` 637–638, `indeksowt.html` 416–418 | Etykieta „Rekomendacja Ekspertów” na wariancie 200 000 zł bez analizy potrzeb klienta – pod IDD rekomendacja powinna wynikać z APK; rozważyć neutralne „Najczęściej wybierany” lub rekomendację po ankiecie [do konsultacji prawnej]. | Poprawność |
+| S25 | `style.css` | nagłówek: Tailwind v4.2.1, 1532 linie, 0 wariantów `dark`, brak `@font-face` | Skompilowany CSS pasuje tylko do `indeksowt.html`; `life.html` ładuje go nadmiarowo. W nowym stosie plik do wyrzucenia – build od zera. | Utrzymanie |
+
+## Konfiguracja Supabase i Cloudflare
+
+Ocena wyłącznie na podstawie faktów z 01-audyt (pkt 5 i 6); żadne ustawienie nie było w tej sesji sprawdzane bezpośrednio.
+
+### Supabase – co jest OK
+
+| Element | Stan (01-audyt) | Ocena |
+|---------|-----------------|-------|
+| RLS na `bp_quotes`, `bp_analytics`, `bp_profiles`, `bp_policies` | włączone; polityki w `pg_policies` zweryfikowane | Dobrze. INSERT do `bp_quotes` ograniczony do statusów `new`/`contact`, limitów długości i zakresów sum/składek – to realna walidacja po stronie bazy, lepsza niż w wielu produkcyjnych wdrożeniach. |
+| `bp_profiles_guard` | trigger blokuje zmianę `is_admin` przez role inne niż `service_role`; eskalacja sprawdzona jako niemożliwa | Dobrze. Wzorzec do powielenia w nowym projekcie. |
+| `bp_analytics` SELECT | tylko admin | Dobrze (dane sesji, referrerów i UTM nie wyciekają). |
+| `bp_policies` | SELECT tylko właściciel, brak polityk zapisu | Dobrze (domyślne „deny”). |
+| Projekt „BEAUTY”: `crm_lead_intake` | INSERT dla `anon` tylko z `rodo = true`, `processed = false`, `status = 'nowy'` | Dobry wzorzec – jeśli jakikolwiek zapis z klienta ma zostać, to w tej formie. |
+
+### Supabase – co poprawić (w kolejności)
+
+1. **Decyzja architektoniczna przed kodem:** portal nie korzysta z projektu „aurabroker”. Oddzielny projekt (lub, jako minimum, dedykowany schemat w „BEAUTY” z własną rolą i `exposed schemas`) – 01-audyt, założenie 4. Bez tego pozostałe punkty tylko łagodzą objawy.
+2. **Granty na tabelach `bp_*`:** `anon`/`authenticated` mają domyślne uprawnienia DELETE/UPDATE/TRUNCATE. RLS neutralizuje DELETE/UPDATE, ale **TRUNCATE nie podlega RLS**. Do wykonania od razu w obecnym projekcie:
+
+```sql
+revoke truncate, delete on table public.bp_quotes, public.bp_analytics, public.bp_profiles, public.bp_policies
+  from anon, authenticated;
+revoke update on table public.bp_quotes, public.bp_analytics, public.bp_policies from anon;
+-- UPDATE dla authenticated zostaje: admin zmienia statusy przez RLS.
+```
+
+3. **Limity częstotliwości:** brak w bazie i w kliencie. W obecnej architekturze jedyną szybką opcją jest Cloudflare Rate Limiting na hostname portalu (plan Free ma ograniczone reguły) albo Turnstile weryfikowane w Edge Function. Docelowo – warstwa serwerowa (Decyzja 3).
+4. **Security advisor „aurabroker”:** 21 funkcji `SECURITY DEFINER` wykonywalnych przez `anon` (m.in. `is_admin()`, `submit_apk`, `ud_offer_by_token`), 15 funkcji z mutowalnym `search_path`, `unaccent` w `public`, wyłączona ochrona przed wyciekłymi hasłami. To zadania właściciela projektu współdzielonego, nie portalu – ale dopóki portal używa tego klucza, dziedziczy te ryzyka. Minimum: `revoke execute ... from anon` dla funkcji, które nie muszą być publiczne; `set search_path = ''` w definicjach; włączyć HaveIBeenPwned.
+5. **Projekt „BEAUTY” (jeśli zostanie wybrany jako dom dla portalu):** 3 widoki `SECURITY DEFINER` z poziomem ERROR (`public_catalog_*`, `public_salon_reviews`) → `security_invoker = true`; `tax_wnioski` i `mienie_*` z RLS bez polityk (dziś: pełne „deny” – formularz Tax Protect nie ma jak zapisać bez klucza serwisowego); 17 funkcji `SECURITY DEFINER` dla `anon` (w tym `katalog_set_admin`, `rls_auto_enable` – do natychmiastowego `revoke`); widok zmaterializowany `salon_search_index` w API.
+6. **Auth:** wyłączyć publiczne `signUp` dla projektu portalu (lub całkowicie zrezygnować z Auth na stronie publicznej); panel wewnętrzny – zaproszenia i MFA.
+
+### Cloudflare – co jest OK
+
+Always HTTPS, TLS 1.3, HTTP/3, Brotli – włączone. Resend z DKIM na subdomenach wysyłkowych. Istnieje Worker `security-headers` (KV `SECURITY_POLICIES`) – gotowy mechanizm nagłówków, tylko bez trasy. Istnieje Worker `aura-analytics-collector` (Analytics Engine) na trasie `beautypolisa.eu/*` – własna, bezcookie'sowa analityka, którą można zachować.
+
+### Cloudflare – co poprawić (w kolejności)
+
+| Krok | Ustawienie | Dziś | Docelowo | Uwagi |
+|------|-----------|------|----------|-------|
+| 1 | Minimum TLS | 1.0 | 1.2 | Zmiana natychmiastowa, bez ryzyka dla nowoczesnych klientów; TLS 1.0/1.1 są wycofane w przeglądarkach od 2020. |
+| 2 | SSL/TLS mode | Full | Full (strict) | Oryginy to Pages/Workers z certyfikatami Cloudflare – `strict` nie powinien niczego zepsuć; sprawdzić subdomeny z innymi oryginami (poczta M365 to MX, nie HTTP). |
+| 3 | HSTS | wyłączony | włączony: `max-age=15552000` (6 mies.) bez `includeSubDomains` na start, po 1–2 miesiącach rozważyć `includeSubDomains` + preload | Dopiero po potwierdzeniu, że **każda** subdomena (`app.`, `crm.`, `portal.`, `tax.`, `ergo.`, `konsultacja.`) serwuje poprawne HTTPS. HSTS jest nieodwracalny na czas `max-age`. |
+| 4 | Rekord apex / `www` | brak | apex → Worker portalu (OpenNext); `www` → 301 na apex | Dziś domena główna nie serwuje nic. Konwencja: kanoniczna `https://beautypolisa.eu` bez `www`. |
+| 5 | Trasa `beautypolisa.eu/*` → `aura-analytics-collector` | aktywna | decyzja: (a) kolektor jako biblioteka/`fetch` z nowej aplikacji, albo (b) Worker kolektora wywołuje aplikację przez Service Binding | Każde żądanie do apexu przechodzi przez ten Worker – jeśli zostanie na `/*`, musi przekazywać ruch do aplikacji; inaczej portal nie wystartuje. Rozstrzygnięcie w 02-…. |
+| 6 | Nagłówki bezpieczeństwa | Worker `security-headers` bez trasy | nagłówki ustawiane w aplikacji (Next.js `headers()`/middleware) lub trasa Workera na apex | Wymagane: CSP z nonce, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options`/`frame-ancestors`. Jeden mechanizm, nie dwa. |
+| 7 | Bot management / AI | `ai_bots_protection: block`, `ai_search: disabled`, `ai_user: disabled`, `is_robots_txt_managed: true` | zezwolić na kategorie *AI search* i *AI user/agent*; *training* wg decyzji zleceniodawcy; `robots.txt` zarządzany przez aplikację | Obecne ustawienie wprost blokuje cel GEO (cytowanie w ChatGPT/Perplexity/AI Overviews). Zarządzany `robots.txt` nadpisze plik z aplikacji – wyłączyć, jeśli `robots.txt`/`llms.txt` mają być kontrolowane w repo (05-…). |
+| 8 | Early Hints, 0-RTT | off | Early Hints on; 0-RTT pozostaje off | 0-RTT niesie ryzyko replay dla nieidempotentnych żądań (formularze) – zostawić wyłączone. |
+| 9 | Cache / reguły | TTL 4 h, brak page rules, tylko managed rulesets | reguły cache dla `/_next/static/*` (immutable), rate limiting dla `POST /api/*` | Workers Static Assets obsługują hashowane assety; reguły WAF ograniczone na planie Free – Turnstile pozostaje główną barierą. |
+
+## Co działa dobrze
+
+- **Neutralizacja HTML:** `esc()` w `bp-app.js` 130 z komentarzem wyjaśniającym (128–129), konsekwentnie używana w panelu (`loadLeads` 1024–1031, `renderBarChart` 1092–1094). Commit `91a5f88` pokazuje, że przegląd kodu już raz zadziałał.
+- **Projekt RLS** dla `bp_quotes` (walidacja zakresów w polityce INSERT) i trigger `bp_profiles_guard` – poprawne myślenie „baza jako ostatnia linia obrony”.
+- **Komentarz o zakleszczeniu `onAuthStateChange`** (`bp-app.js` 1189–1190) i obejście przez `setTimeout(…, 0)` – udokumentowana lekcja, warta przeniesienia do dokumentacji nowego stosu.
+- **Logika kalkulatora** (`updateCalculator` 700–755) jest czytelna i deterministyczna: wykrycie grup → taryfa → mnożnik → ceny; łatwo ją przepisać na czystą funkcję z testami.
+- **Słowniki zabiegów `PROCS`** (66–119) – największa wartość merytoryczna repozytorium: 118 pozycji pogrupowanych wg ryzyka, z rozróżnieniem np. „Pedicure kosmetyczny (niezastrzeżony dla podologów)”.
+- **UX kalkulatora:** wyszukiwarka zabiegów (898–909), przyciski „Wszystkie/Odznacz”, `aria-live="polite"` na wynikach (625), `fieldset`/`legend` dla liczby osób (600–601), zamykanie modali Escape (519–522), `inputmode="numeric"` i `maxlength` na REGON (1133).
+- **Uczciwa walidacja REGON** w `bp-app.js` 881–895 („Poprawny format REGON”) – w przeciwieństwie do symulacji GUS w starszych plikach.
+- **Teksty prawne** w `indeksowt.html`: pełna nota IDD (599–620), nota RODO (622–656), klauzula ochrony prawnej (658–705), zastrzeżenie art. 66 KC i odwołanie do OWU AB-OCZB-01/25 (489–491).
+- **`dataLayer`** w `indeksowt.html` (735–741, 940–945, 989–993): zdarzenia `form_submission` z `form_type` i `lead_value`, `file_download` – gotowy słownik zdarzeń dla GTM.
+- **Podstawy SEO:** `lang="pl"` wszędzie, sensowne `<title>` i `description`, `theme-color`, `preconnect` do fontów (`new.html` 17–18), `<noscript>` (`new.html` 23).
+- **Tokeny designu** (`bp-app.js` 134–135, `bp-nav.js` 21–28): granat `#2a3b69`, róż `#e11d48`, zdefiniowane także dla trybu ciemnego.
+- **`nowy.html`** jako jedyny ma poprawny `viewport`, `<img alt>` (388), `role="list"` na pillsach (424) – dobry kierunek dla nowego layoutu.
+
+## Co przenieść do nowego portalu
+
+Wszystko poniżej przenosimy jako **dane/treść**, nie jako kod. Kolumna „Weryfikacja” mówi, kto musi potwierdzić przed publikacją.
+
+| Element | Źródło (plik, linie) | Forma w nowym portalu | Weryfikacja |
+|---------|----------------------|------------------------|-------------|
+| Listy zabiegów `PROCS` (gr. 1–4) | `bp-app.js` 66–119 (pełniejsza), `indeksowt.html` 236–325 (krótsza) | tabela `procedures` (id, nazwa, grupa ryzyka, synonimy do wyszukiwarki, slug do `/dla-kogo/<zawod>`), wersjonowana | **ERGO Hestia / Beauty Razem** – która lista jest zgodna z ankietą `AnkietaBPEH.pdf`; czy np. „Makijaż okolicznościowy” w gr. 2 to zamierzone |
+| Cennik `PRICING` i `LEGAL = 92` | `bp-app.js` 59–64, `indeksowt.html` 743, 374 | tabela `tariffs` (grupa, suma, składka, obowiązuje_od/do); kalkulator liczy **po stronie serwera** lub z danych pobranych z serwera | **ERGO Hestia** – aktualność stawek 2026, status klauzuli ochrony prawnej (+92 zł) |
+| Reguły taryfy | `bp-app.js` 716–720; `indeksowt.html` 794–797 | czysta funkcja `resolveTariff(groups, teamBand, legal)` z testami; reguły jako konfiguracja | **ERGO Hestia** – czy gr. 1 + gr. 2 → taryfa 3 (podologiczna) jest intencją programu; nazwa „Gabinet Wieloprofilowy” |
+| Progi: 6–8 osób ×1,25; 9+ wycena indywidualna; gr. 4 → wycena indywidualna; 300 000 zł wymaga ankiety | `bp-app.js` 603–608, 729–737; `indeksowt.html` 343–362, 445–450, 543–555, 842 | konfiguracja + ścieżka „wycena indywidualna” jako osobny typ leada | **ERGO Hestia** – czy wymóg ankiety i dyplomu dla 300 000 zł obowiązuje (zniknął w `bp-app.js`) |
+| Zakres podstawowy / rozszerzenia (klauzule 4, 5, OC najemcy 100 000 zł) / wyłączenia | `indeksowt.html` 152–207; `bp-app.js` 539–571 | treść strony `/ubezpieczenia/oc-beauty` + `/dokumenty` z OWU | **ERGO Hestia** – zgodność sformułowań z OWU AB-OCZB-01/25; czy skróty z `bp-app.js` („Branże: budowlana, IT, prawna”) nie zniekształcają wyłączeń |
+| Treść klauzuli ochrony prawnej | `indeksowt.html` 658–705 | strona `/dokumenty` (pełny tekst) + skrót na stronie produktu | **ERGO Hestia** – zgoda na publikację treści klauzuli; literówka „zgoda” → „zgodą” (663) |
+| Nota IDD (pełna) i RODO | `indeksowt.html` 599–656 | `/o-nas` (dystrybutor), `/rodo`; jedna wersja dla całego portalu, administrator danych per produkt | **Zleceniodawca / prawnik** – status agent vs broker, administrator (Aura Expert vs Aura Consulting), dane kontaktowe IOD |
+| Tax Protect: sekcje 1–2, warianty sum, progi przychodów, FAQ (karencja 21 dni) | `tax-protect.html` 91–128, 135–159, 196–231, 355–360 | `/ubezpieczenia/tax-protect` + FAQ z `FAQPage`; składki z tabeli `tax_warianty` po potwierdzeniu | **Colonnade** – składki (komentarz „DO POTWIERDZENIA”), progi 30%/75%, odwołania do § OWU; usunąć „polisa chroni wstecz” (K18) |
+| Grupowe ERGO: pakiety 58/68/76 zł, sumy, moduły MediOpieki i ich ceny, argumentacja „koszt rotacji 10–15 tys. zł” | `life.html` 161, 184–219, 261–263, 410–482 | `/ubezpieczenia/grupowe-ergo`; moduły jako dane; kalkulator „osoby × pakiet + dodatki” | **ERGO Hestia (STU na Życie)** – zgodność z EZwB 01/25 i MA 01/25, aktualność cen dodatków (np. 0,80 zł/os) i limitów; źródło liczby „15 000 zł” (dziś brak) |
+| Opieka medyczna: tabele cen ENEL-MED / LUX MED wg wielkości zespołu, porównywarka pakietów, próg 51+ | `medical.html` 500–577, 246–247 | `/ubezpieczenia/opieka-medyczna`; porównywarka jako komponent z danymi | **Operatorzy / zespół produktowy** – ceny 2026, zakresy specjalizacji; nazewnictwo „ENEL” → „ENEL-MED” (konwencja) |
+| Życie indywidualne (Squarelife / Leadenhall) | `life1.html` | **nie** jako produkt w nawigacji (brak w zleceniu) – ewentualnie wzmianka w `/ubezpieczenia/utrata-dochodu` po decyzji | **Zleceniodawca** – czy produkt pozostaje w ofercie BeautyPolisa |
+| Zdarzenia `dataLayer` | `indeksowt.html` 735–741, 940–945, 989–993 | słownik zdarzeń GA4/GTM: `form_submission{form_type, product, lead_value}`, `file_download`, `calculator_result`; emisja dopiero po zgodzie (Consent Mode) | **Zespół marketingu** – docelowa konfiguracja GTM, konwersje Ads |
+| Ankieta `AnkietaBPEH.pdf` i przepływ „wyślij dane → pobierz ankietę” | `indeksowt.html` 954–964, 734–741 | `/dokumenty` + opcjonalnie gating przez formularz (z minimalizacją danych) | **Zleceniodawca** – czy pobranie ankiety ma wymagać danych kontaktowych (Pytanie 11) |
+| Tokeny designu, tryb ciemny, hero z glass-boxem produktów | `bp-app.js` 134–135, 166–190; `bp-nav.js` 21–28 | design tokens Tailwind 4 (`@theme`), komponent „glass widget” z fallbackiem i `prefers-reduced-transparency` | design critique (06-…) |
+| Disclaimery: art. 66 KC, zależność składki od akceptacji ERGO Hestia | `indeksowt.html` 489–491; `bp-app.js` 504–505 | komponent stopki/kalkulatora | prawnik – brzmienie |
+
+## Czego nie przenosić
+
+- Skrypt anti-inspect i blokady klawiszy (`bp-app.js` 8–17) – w żadnej postaci.
+- Budowanie całej strony w kliencie i `document.body.innerHTML = ""` (`bp-app.js` 433–533); CSS w stringu JS (133–428); dwa niezależne skrypty wstrzykujące nagłówek (`bp-nav.js` + fallback w `bp-app.js`).
+- Bezpośrednie zapisy do bazy z przeglądarki (INSERT `bp_quotes`, `bp_analytics`), klucz `anon` współdzielonego projektu, własna analityka `bp_analytics` z klienta.
+- Panel administracyjny w publicznym bundlu; logowanie/rejestracja klientów na stronie publicznej („Panel Klienta”).
+- Symulacje weryfikacji GUS i „numery sprawy” generowane w kliencie (`medical.html` 651–657).
+- Formularze-makiety z `alert()` (`tax-protect.html`, `life.html`, `life1.html`, `medical.html`).
+- Tailwind z CDN, `supabase-js` z CDN bez wersji, widgety z `unpkg` bez SRI; konfetti.
+- Inline handlery `onclick=`; `setAttribute('onclick', …)` ze stringów.
+- `user-scalable=no`; rozmiary tekstu 7–9 px; `meta keywords`.
+- GA4 ładowane bez zgody; dwa identyfikatory GA; widget głosowy bez zgody.
+- Web3Forms (zastąpione; klucz w HTML do dezaktywacji po migracji).
+- Duplikaty stron (`indeksowt`/`new`/`nowy`, `life`/`life1`), adresy `*.html`, JSON-LD z domeną `.com`, `index.html` „Hello World”.
+- Nadpisywanie klas Tailwind przez `!important` dla trybu ciemnego (`bp-nav.js` 69–78).
+- Rotujący baner „faktów” (`tax-protect.html` 325–344, `medical.html` 414–430) – ruchoma treść co 5,5 s bez pauzy (WCAG 2.2.2), a część twierdzeń jest niepotwierdzona („u nas: do 5 dni”).
+
+## Werdykt
+
+**Request Changes** – zarówno dla obecnych plików (nie powinny być publicznie serwowane w tym stanie), jak i dla kierunku „rozwijać `bp-app.js` dalej”.
+
+Uzasadnienie:
+
+1. Dwa z czterech problemów krytycznych (K4 – martwe formularze, K5 – fałszywa weryfikacja GUS) wprowadzają użytkownika w błąd; dla dystrybutora ubezpieczeń to nie jest „dług techniczny”, tylko ryzyko regulacyjne i utrata leadów.
+2. K2/K3 (współdzielony projekt Supabase z otwartą rejestracją) to problem architektury, którego nie da się załatać w kliencie. Sam klucz `anon` nie jest błędem – błędem jest to, do czego ten klucz prowadzi.
+3. K1 (anti-inspect) i K16 (zero treści w HTML) stoją w sprzeczności z priorytetami zlecenia: dostępność/stabilność oraz SEO/GEO.
+4. Jednocześnie **nie ma powodu do „Needs Discussion”** w kwestii kierunku: założenia z 01-audyt (oddzielny projekt Supabase, OpenNext na Workers, portal leadowy) są jednoznaczne, a wartościowa część repozytorium (słowniki, cennik, reguły, treści) daje się przenieść niezależnie od kodu. Dyskusji wymagają wyłącznie fakty produktowe (sekcja „Pytania otwarte”).
+
+Ocena per obszar: bezpieczeństwo – niedostateczne (architektura), wydajność – słabe (CDN Tailwind, render w kliencie), poprawność – niedostateczne (K4, K5, K9, K19), utrzymanie – słabe (duplikaty, CSS-in-JS), dostępność – słabe (K10, S3–S5), SEO – słabe (K16, K17).
+
+## Minimalne poprawki na już
+
+Zmiany w obecnych plikach, do wdrożenia przed migracją – zakładając, że którykolwiek z plików jest lub będzie publicznie dostępny [założenie: nie wiadomo, które pliki są wdrożone na subdomenach; Pytanie 2].
+
+| # | Zmiana | Pliki | Pracochłonność |
+|---|--------|-------|----------------|
+| 1 | Usunąć blok anti-inspect (linie 8–17). | `bp-app.js` | 15 min |
+| 2 | Zdjąć `maximum-scale=1.0, user-scalable=no` z `viewport`. | 6 plików HTML | 15 min |
+| 3 | Naprawić kolejność skryptów: w `bp-nav.js` budować header natychmiast (lub w `bp-app.js` czekać na `DOMContentLoaded`); sprawdzić w przeglądarce, że jest jeden `#bp-header`. | `bp-nav.js` lub `bp-app.js`, `new.html` | 30 min + test |
+| 4 | Martwe formularze: podpiąć zapis do `bp_quotes` tą samą ścieżką co OC (z obsługą błędów) **albo** zastąpić je uczciwym CTA „zadzwoń / napisz” do czasu backendu. | `tax-protect.html`, `life.html`, `life1.html`, `medical.html` | 1 h (CTA) / 3–4 h (zapis) |
+| 5 | Usunąć komunikaty o weryfikacji GUS; zostawić walidację formatu NIP/REGON; zmienić etykietę „(Weryfikacja API)”. | `indeksowt.html` 894–909, `tax-protect.html` 262, 394–410, `medical.html` 629–644 | 30 min |
+| 6 | Obsłużyć `error` w `submitContact` i `updateQuoteStatus`; `sum_insured: null` dla wyceny indywidualnej. | `bp-app.js` 854, 868–878, 1037–1040 | 45 min |
+| 7 | Ukryć przyciski „Zaloguj się / Załóż konto” na stronie publicznej; logowanie admina pod osobnym parametrem/URL; w Supabase wyłączyć publiczne `signUp` (jeśli projekt na to pozwala bez wpływu na inne moduły – do sprawdzenia). | `bp-app.js` 779–781; ustawienia Auth | 1 h |
+| 8 | Poprawić JSON-LD (`https://beautypolisa.eu/#organization`), dodać `canonical`, statyczne `robots.txt` i `sitemap.xml`; usunąć `meta keywords`. | `indeksowt.html`, `new.html`, `nowy.html`, nowe pliki | 1 h |
+| 9 | Przypiąć pełne wersje i SRI dla skryptów z CDN; usunąć `cdn.tailwindcss.com` tam, gdzie jest `style.css`; GA4 ładować dopiero po zgodzie lub tymczasowo wyłączyć. | `new.html` 20, `indeksowt.html` 46, `life*.html`, `medical.html`, `tax-protect.html` | 1–2 h |
+| 10 | Supabase: `REVOKE TRUNCATE, DELETE` na `bp_*` dla `anon`/`authenticated` (SQL z sekcji wyżej). Cloudflare: min TLS 1.2, SSL Full (strict). | konsola Supabase / Cloudflare | 30 min |
+
+Łącznie: ok. 1–1,5 dnia roboczego. Poza listą (wymaga decyzji): usunięcie zdania „Polisa chroni wstecz” (K18) – 10 min po potwierdzeniu z Colonnade.
+
+## Decyzje
+
+1. **Obecny kod traktujemy jako prototyp i źródło treści; portal budujemy od nowa w stosie z 02-… (Next.js App Router, RSC, OpenNext na Workers).**
+   Uzasadnienie: problemy K1, K2, K7, K16 wynikają z architektury „wszystko w kliencie z jednego pliku”; refaktoryzacja `bp-app.js` kosztowałaby więcej niż przepisanie 1 200 linii, a nie rozwiązałaby renderowania serwerowego.
+   Odrzucone: (a) stopniowa refaktoryzacja `bp-app.js` – utrwala budowanie DOM w kliencie; (b) pozostanie przy statycznym HTML + Tailwind CLI – nie daje SSR dla formularzy, API leadów i panelu.
+
+2. **Słowniki (`PROCS`), cennik, reguły taryfy i progi stają się wersjonowanymi danymi (tabele w Supabase lub pliki JSON w repo z migracjami), zatwierdzanymi przez ubezpieczyciela, a kalkulacja odbywa się w czystej funkcji z testami, uruchamianej po stronie serwera lub na danych z serwera.**
+   Uzasadnienie: K21 – dwie implementacje już się rozjechały; zmiana stawki nie może wymagać deploya; audyt wymaga śladu „kto zatwierdził”.
+   Odrzucone: stałe w kodzie (status quo) – brak wersjonowania i weryfikowalności; CMS zewnętrzny na start – nadmiarowy dla ~150 rekordów.
+
+3. **Leady zapisuje wyłącznie warstwa serwerowa (Route Handler/Server Action w Workerze) z kluczem serwisowym do oddzielnego projektu Supabase, po weryfikacji Turnstile, limicie częstotliwości i walidacji schematem; przeglądarka nie trzyma klucza do bazy.**
+   Uzasadnienie: K2, K8, K9 – Turnstile, rate limit, deduplikacja, powiadomienie e-mail (Resend) i audit log są możliwe tylko po stronie serwera; sekrety zostają w Workerze.
+   Odrzucone: INSERT z klienta kluczem `anon` + RLS (wzorzec `crm_lead_intake`) – dobry jako fallback, ale nie daje anty-botu ani powiadomień; Web3Forms – brak kontroli danych osobowych i brak bazy.
+
+4. **Portal publiczny nie ma logowania ani kont klientów. Panel wewnętrzny (leady, statusy) to osobna aplikacja lub chroniona grupa tras poza publicznym bundlem, z Supabase Auth (zaproszenia, MFA) i autoryzacją sprawdzaną na serwerze.**
+   Uzasadnienie: K3, K7 – portal jest informacyjno-leadowy (założenie 1 w 01-audyt); konta klientów nie mają dziś żadnej funkcji poza przyciskiem „Panel Admina”.
+   Odrzucone: „Panel Klienta” w portalu – zwiększa powierzchnię ataku bez wartości dla użytkownika; panel w istniejącym `crm.beautypolisa.eu` – do rozważenia w 04-…, ale zależy od właściciela tej aplikacji.
+
+5. **Przed migracją wdrażamy 10 poprawek „na już” w obecnych plikach.**
+   Uzasadnienie: jeśli którykolwiek plik jest publicznie dostępny, K1, K4, K5 i K10 szkodzą użytkownikom i marce dziś; koszt ~1,5 dnia.
+   Odrzucone: zamrożenie wszystkiego do startu nowego portalu – akceptuje tracenie leadów i wprowadzanie w błąd przez kolejne tygodnie.
+
+6. **Rezygnujemy z własnej analityki `bp_analytics` wstawianej z klienta. Analityka bazowa: Cloudflare (istniejący kolektor Analytics Engine lub Web Analytics, bez cookies); analityka marketingowa: GA4/GTM wyłącznie po zgodzie (Consent Mode v2, jedna konfiguracja).**
+   Uzasadnienie: K8, K11, S8 – własne INSERT-y bez limitów to wektor spamu; dwie GA bez zgody to ryzyko prawne.
+   Odrzucone: utrzymanie `bp_analytics` z agregacją w SQL – duplikuje to, co Cloudflare daje za darmo i bez danych osobowych.
+
+7. **Weryfikacja NIP/REGON: albo prawdziwa (serwerowe zapytanie do API BIR1 GUS z buforowaniem), albo wyłącznie walidacja formatu z uczciwym komunikatem. Nigdy symulacja.**
+   Uzasadnienie: K5. Decyzja „czy w ogóle” zależy od wartości dla sprzedaży (autouzupełnienie nazwy firmy) vs koszt utrzymania klucza GUS.
+   Odrzucone: zapytanie do GUS z przeglądarki – klucz API w kliencie, CORS; pozostawienie „loadera na niby” – nieuczciwe.
+
+8. **Zero skryptów stron trzecich przed zgodą; wszystkie zależności w buildzie; CSP z nonce bez `unsafe-inline`.**
+   Uzasadnienie: K11, K12, K13, K22, S1 – priorytet nr 1 zlecenia to bezpieczeństwo; SRI i CSP są tanie w nowym stosie, drogie w obecnych plikach.
+   Odrzucone: CDN z SRI jako docelowe rozwiązanie – nadal zależność od hostów zewnętrznych i brak tree-shakingu.
+
+## Pytania otwarte do zleceniodawcy
+
+1. **Status dystrybutora:** czy dystrybutorem produktów jest Aura Expert sp. z o.o. (agent, wpis KNF – `indeksowt.html` 599–620) czy Aura Consulting sp. z o.o. (broker – nagłówki i stopki)? Czy różni się to per produkt? Od tego zależy treść `/o-nas`, nota IDD i administrator danych w `/rodo`.
+2. **Co jest wdrożone:** czy pliki z repozytorium (w szczególności `tax-protect.html`, `life.html`, `medical.html`) są dziś serwowane na którejkolwiek subdomenie (`tax.`, `app.`, inne)? Jeśli tak – poprawki 4 i 5 z listy „na już” są pilne.
+3. **Kanoniczne reguły OC:** która lista zabiegów (`bp-app.js` 118 pozycji vs `indeksowt.html` 53) i które reguły są zgodne z programem ERGO Hestia? Konkretnie: (a) czy kosmetyka + kosmetologia bez podologii ma być liczona wg taryfy 3; (b) czy wariant 300 000 zł wymaga ankiety i dyplomu; (c) czy mnożnik 1,25 dla 6–8 osób i próg „9+” są aktualne; (d) czy klauzula ochrony prawnej kosztuje nadal 92 zł.
+4. **Tax Protect:** potwierdzenie z Colonnade składek (1 532–2 901 zł), progów 30%/75%, karencji 21 dni oraz decyzja o usunięciu twierdzenia „polisa chroni wstecz”.
+5. **Grupowe ERGO i opieka medyczna:** czy ceny pakietów (58/68/76 zł), dodatków MediOpieki i abonamentów ENEL-MED/LUX MED mogą być publikowane jako oferta orientacyjna, czy tylko „od … zł” z wyceną indywidualną?
+6. **Produkt Squarelife/Leadenhall (`life1.html`):** pozostaje w ofercie BeautyPolisa? Jeśli tak – pod którą pozycją nawigacji (nie ma go w sześciu produktach ze zlecenia)?
+7. **Agent głosowy ElevenLabs (`life.html` 20):** czy ma być częścią portalu? Jeśli tak – potrzebna umowa powierzenia, informacja w RODO i uruchamianie po zgodzie.
+8. **Analityka i zgody:** która własność GA4 jest docelowa (dziś dwie)? Czy jest używany GTM? Jaki CMP (banner zgód) preferuje zleceniodawca?
+9. **Web3Forms:** czy skrzynka powiązana z kluczem z `indeksowt.html` jest jeszcze monitorowana? Po migracji klucz należy unieważnić.
+10. **Konta klientów:** czy w jakimkolwiek horyzoncie planowany jest „Panel Klienta” (podgląd polis `bp_policies`)? Jeśli nie – usuwamy Auth z portalu całkowicie (Decyzja 4).
+11. **Ankieta PDF:** czy pobranie `AnkietaBPEH.pdf` ma wymagać podania danych kontaktowych (dzisiejszy przepływ w `indeksowt.html`), czy ma być dostępne swobodnie w `/dokumenty`?
+12. **Worker `aura-analytics-collector` na trasie `beautypolisa.eu/*`:** kto jest jego właścicielem i czy ma pozostać warstwą przed nowym portalem (wariant (b) z tabeli Cloudflare), czy zostanie zastąpiony wywołaniem z aplikacji?
+13. **Etykieta „Rekomendacja Ekspertów”** na wariancie 200 000 zł: czy wynika z analizy potrzeb typowego klienta programu (i może zostać udokumentowana), czy jest zabiegiem sprzedażowym do zastąpienia neutralnym „najczęściej wybierany”?
