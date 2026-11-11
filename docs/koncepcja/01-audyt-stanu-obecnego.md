@@ -32,21 +32,21 @@ Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeń
 
 ### 3.1 OC beauty (kalkulator `bp-app.js`)
 - 4 grupy ryzyka zabiegów: gr. 1 (fryzjerstwo, kosmetyka pielęgnacyjna, manicure, rzęsy…), gr. 2 (makijaż permanentny, mezoterapia, lasery nieablacyjne, IPL, tatuaż, peelingi chemiczne…), gr. 3 (podologia), gr. 4 = wysokie ryzyko wymagające indywidualnej oceny (HIFU, toksyna botulinowa, PRP, PLASMA, kwas hialuronowy, nici PDO, lipoliza iniekcyjna, laser ablacyjny).
-- Sumy gwarancyjne: 100 000 / 200 000 / 300 000 zł. Cennik w kodzie (składka roczna): gr.1: 400/500/650 zł; gr.2: 650/790/950 zł; gr.3: 850/980/1250 zł; klauzula ochrony prawnej +92 zł. Zespół powyżej 8 osób → wycena indywidualna.
+- Sumy gwarancyjne: 100 000 / 200 000 / 300 000 zł. Cennik programu zapisany w kodzie (taryfa, składka roczna; składki są sztywne – stan potwierdzony przez zleceniodawcę 11.11.2026): gr.1: 400/500/650 zł; gr.2: 650/790/950 zł; gr.3: 850/980/1250 zł; klauzula ochrony prawnej +92 zł; zespół 6–8 osób – składka ×1,25. Gr. 4 oraz zespół od 9 osób → wycena indywidualna (ankieta ERGO Hestii).
 - Wniosek (ankieta ERGO Hestia) wymaga m.in.: NIP, REGON, data rozpoczęcia działalności, liczba zatrudnionych, szkodowość z 3 lat, lista zabiegów wysokiego ryzyka, formularze zgody na zabieg, kwalifikacje personelu.
 - Lead trafia do tabeli `bp_quotes` w Supabase (status: new/sent/accepted/contact/rejected).
 
 ### 3.2 Tax Protect (Colonnade)
 - Sekcja 1: ochrona karnoskarbowa dla właściciela/zarządu; sekcja 2: ochrona podatkowa dla firmy (jeden pełny spór podatkowy w roku).
 - Warianty sum: 50 000 / 100 000 zł (sekcja 1), 250 000 / 500 000 / 1 000 000 / 3 000 000 zł; przychody powyżej 3 mln zł → wycena indywidualna.
-- Tabela `tax_warianty` w projekcie Supabase „BEAUTY” ma komentarz: „Wartości składek DO POTWIERDZENIA z Colonnade”.
+- Tabela `tax_warianty` w projekcie Supabase „BEAUTY” ma komentarz: „Wartości składek DO POTWIERDZENIA z Colonnade”. Komentarz jest nieaktualny – rozstrzygnięte 11.11.2026: zleceniodawca potwierdził, że składki Tax Protect są sztywne (taryfa programu); strona może pokazywać kwoty z taryfy (wartości z `tax_warianty` lub przekazane przez zleceniodawcę).
 
 ### 3.3 Grupowe życie ERGO (life.html)
-- Pakiety od 58 / 68 / 76 zł za osobę miesięcznie; sumy (przykłady z kodu): 100 000 / 210 000 zł, 80 000 / 170 000, 75 000 / 160 000; moduły MediOpieki: assistance domowy (limit 10 000 zł/rok), diagnostyka (20 konsultacji, rezonans, tomografia), onkologia, zdrowie psychiczne, tele-EKG, rehabilitacja; Global Doctors.
+- Pakiety (warianty I / II / III): 58 / 68 / 76 zł za osobę miesięcznie wg cennika programu; sumy (przykłady z kodu): 100 000 / 210 000 zł, 80 000 / 170 000, 75 000 / 160 000; moduły MediOpieki: assistance domowy (limit 10 000 zł/rok), diagnostyka (20 konsultacji, rezonans, tomografia), onkologia, zdrowie psychiczne, tele-EKG, rehabilitacja; Global Doctors.
 - Argumentacja sprzedażowa: „tarcza anty-rotacyjna”, koszt rotacji pracownika ok. 15 000 zł, pakiet zamiast podwyżki 50 zł.
 
 ### 3.4 Opieka medyczna
-- ENEL-MED i LUX MED, abonamenty miesięczne (przykładowe ceny w kodzie: 131–478 zł), wycena korporacyjna 51+ osób.
+- ENEL-MED i LUX MED, abonamenty miesięczne wg cennika programu zapisanego w kodzie (131–478 zł miesięcznie, zależnie od wariantu i liczby osób: 3–10 / 11–20 / 21–50), wycena korporacyjna 51+ osób.
 
 ### 3.5 Utrata dochodu i NNW dzieci
 - Brak jakichkolwiek danych produktowych w repo. Z researchu rynkowego: produkt „utrata dochodu” kierowany do samozatrudnionych/B2B (min. ok. 80% przychodów z własnej działalności), istotne: definicja niezdolności do pracy, karencja, wyłączenia, kwestia kosztu podatkowego (interpretacje niejednoznaczne). NNW dzieci: rynek 2026/27 – składki indywidualne zwykle 40–150 zł/rok, sumy 5 000–220 000 zł, ubezpieczenie szkolne jest dobrowolne. **Konkretna oferta BeautyPolisa w tych dwóch liniach musi zostać dostarczona przez zespół produktowy.**
