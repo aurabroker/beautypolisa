@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#2A3B68" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">Stylistka paznokci</title>
+  <rect x="37" y="15" width="22" height="35" rx="5" />
+  <path d="M31 50H65C72 50 76 55 74 63L69 79C68 82 66 83 62 83H34C30 83 28 82 27 79L22 63C20 55 24 50 31 50Z" />
+  <path d="M48 51V66" stroke-width="4" />
+  <path d="M29 64C36 69 43 69 50 65C57 61 63 61 67 64L63 76H33Z" fill="#ED145B" stroke="none" />
+</svg>

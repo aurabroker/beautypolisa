@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#2A3B68" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">Bezpieczeństwo danych</title>
+  <path d="M30 43V32C30 21 37 15 48 15C59 15 66 21 66 32V43" />
+  <rect x="18" y="43" width="60" height="39" rx="8" />
+  <path d="M48 53C39 53 38 64 44 67L42 74H54L52 67C58 64 57 53 48 53Z" fill="#ED145B" stroke="none" />
+</svg>

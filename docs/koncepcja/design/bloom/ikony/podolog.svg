@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#2A3B68" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">Podolog</title>
+  <path d="M51 15V35C51 44 47 50 41 56L25 70C21 72 17 74 17 78C17 81 20 82 25 82H65C73 82 78 77 77 69L72 46V15" />
+  <path d="M31 26C32 26 33 27 33 29C34 35 37 38 43 39C46 40 46 42 43 43C37 44 34 47 33 53C32 56 30 56 29 53C28 47 25 44 19 43C16 42 16 40 19 39C25 38 28 35 29 29C29 27 30 26 31 26Z" fill="#ED145B" stroke="none" />
+</svg>

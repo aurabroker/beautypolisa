@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#2A3B68" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">Zgłoszenie szkody</title>
+  <path d="M34 23H26C22 23 19 26 19 30V76C19 80 22 83 26 83H70C74 83 77 80 77 76V30C77 26 74 23 70 23H62" />
+  <path d="M41 20V18C41 14 44 11 48 11C52 11 55 14 55 18V20H61V30H35V20Z" />
+  <path d="M43 43C43 36 53 36 53 43L51 60C51 64 45 64 45 60ZM53 73A5 5 0 1 1 43 73A5 5 0 1 1 53 73Z" fill="#ED145B" stroke="none" />
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#2A3B68" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">NNW dzieci</title>
+  <path d="M28 32C17 33 16 18 25 16C30 15 34 18 35 22M61 22C63 17 67 15 72 17C80 21 77 33 69 32" />
+  <path d="M70 38C70 52 61 60 48 60C35 60 26 52 26 38C26 26 35 20 48 20C61 20 70 26 70 38Z" />
+  <path d="M33 56C27 59 24 64 25 72M63 56C69 58 73 63 73 69M35 79C42 83 54 83 61 79" />
+  <ellipse cx="28" cy="73" rx="11" ry="10" />
+  <ellipse cx="67" cy="73" rx="11" ry="10" />
+  <path d="M25 55C18 55 15 59 17 65M71 54C79 54 82 59 80 65" />
+  <circle cx="40" cy="36" r="2.5" fill="#2A3B68" stroke="none" />
+  <circle cx="56" cy="36" r="2.5" fill="#2A3B68" stroke="none" />
+  <path d="M45 45H51L48 48Z" fill="#2A3B68" stroke-width="2" />
+  <rect x="66" y="55" width="19" height="10" rx="5" transform="rotate(-30 75.5 60)" fill="#ED145B" stroke="none" />
+</svg>

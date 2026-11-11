@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#2A3B68" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">Serce BeautyPolisa</title>
+  <path d="M48 80C40 73 15 55 15 36C15 18 35 12 48 29V80Z" fill="#ED145B" stroke="none" />
+  <path d="M48 80C56 73 81 55 81 36C81 18 61 12 48 29V80Z" fill="#D30C54" stroke="none" />
+  <path d="M48 80C40 73 15 55 15 36C15 18 35 12 48 29C61 12 81 18 81 36C81 55 56 73 48 80Z" />
+</svg>

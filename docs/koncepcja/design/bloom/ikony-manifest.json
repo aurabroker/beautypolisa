@@ -1,0 +1,107 @@
+[
+  {
+    "slug": "oc-beauty",
+    "bloom_id": "shield-heart",
+    "title": "OC dla branży beauty"
+  },
+  {
+    "slug": "tax-protect",
+    "bloom_id": "tax-scale",
+    "title": "Tax Protect – ochrona karno-skarbowa"
+  },
+  {
+    "slug": "utrata-dochodu",
+    "bloom_id": "wallet-pulse",
+    "title": "Utrata dochodu"
+  },
+  {
+    "slug": "nnw-dzieci",
+    "bloom_id": "teddy-plaster",
+    "title": "NNW dzieci"
+  },
+  {
+    "slug": "grupowe-ergo",
+    "bloom_id": "team-heart",
+    "title": "Grupowe ERGO dla beauty"
+  },
+  {
+    "slug": "opieka-medyczna",
+    "bloom_id": "stethoscope-heart",
+    "title": "Opieka medyczna"
+  },
+  {
+    "slug": "kalkulator",
+    "bloom_id": "calculator",
+    "title": "Kalkulator składki"
+  },
+  {
+    "slug": "kosmetolog",
+    "bloom_id": "serum-dropper",
+    "title": "Kosmetolog"
+  },
+  {
+    "slug": "fryzjer",
+    "bloom_id": "scissors-comb",
+    "title": "Fryzjer i barber"
+  },
+  {
+    "slug": "podolog",
+    "bloom_id": "foot-sparkle",
+    "title": "Podolog"
+  },
+  {
+    "slug": "linergistka",
+    "bloom_id": "brow-pen",
+    "title": "Linergistka – makijaż permanentny"
+  },
+  {
+    "slug": "stylistka-paznokci",
+    "bloom_id": "nail-polish",
+    "title": "Stylistka paznokci"
+  },
+  {
+    "slug": "tatuazysta",
+    "bloom_id": "tattoo-machine",
+    "title": "Tatuażysta"
+  },
+  {
+    "slug": "dokumenty",
+    "bloom_id": "document-check",
+    "title": "Dokumenty i OWU"
+  },
+  {
+    "slug": "doradca",
+    "bloom_id": "chat-dots",
+    "title": "Rozmowa z doradcą"
+  },
+  {
+    "slug": "szkoda",
+    "bloom_id": "clipboard-alert",
+    "title": "Zgłoszenie szkody"
+  },
+  {
+    "slug": "szybka-wycena",
+    "bloom_id": "stopwatch-bolt",
+    "title": "Szybka wycena"
+  },
+  {
+    "slug": "bezpieczenstwo",
+    "bloom_id": "padlock",
+    "title": "Bezpieczeństwo danych"
+  },
+  {
+    "slug": "grupy-ryzyka",
+    "bloom_id": "gauge",
+    "title": "Grupy ryzyka zabiegów"
+  },
+  {
+    "slug": "w-zakresie",
+    "bloom_id": "circle-check",
+    "title": "W zakresie ochrony"
+  },
+  {
+    "slug": "serce",
+    "bloom_id": "brand-heart",
+    "title": "Serce BeautyPolisa"
+  }
+]

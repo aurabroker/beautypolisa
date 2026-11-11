@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#2A3B68" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">Grupowe ERGO dla beauty</title>
+  <circle cx="48" cy="43" r="10" />
+  <circle cx="22" cy="48" r="8" />
+  <circle cx="74" cy="48" r="8" />
+  <path d="M32 80V70C32 60 38 55 48 55C58 55 64 60 64 70V80ZM16 80V70C16 64 20 60 26 60M80 80V70C80 64 76 60 70 60" />
+  <path d="M48 30C44 27 37 22 37 17C37 11 44 10 48 15C52 10 59 11 59 17C59 22 52 27 48 30Z" fill="#ED145B" stroke="none" />
+</svg>

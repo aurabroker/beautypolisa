@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#2A3B68" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">Szybka wycena</title>
+  <path d="M48 24V14M40 14H56M72 31L78 25" />
+  <circle cx="48" cy="55" r="30" />
+  <path d="M52 33L34 56C32 59 33 61 36 61H44L41 76L61 51C63 49 62 47 59 47H51L55 35C56 32 54 31 52 33Z" fill="#ED145B" stroke="none" />
+</svg>

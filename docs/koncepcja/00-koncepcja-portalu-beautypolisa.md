@@ -16,7 +16,7 @@
 4. **SEO/GEO zaczyna się w Cloudflare:** strefa beautypolisa.eu blokuje dziś wszystkie crawlery AI i nie ma rekordu DNS dla domeny głównej. Bez odblokowania kategorii *AI Search* i *Agent* żadna treść nie będzie cytowana w ChatGPT, Perplexity ani AI Overviews (sekcja 04).
 5. **Treść jest przewagą konkurencyjną:** BeautyPolisa jest pierwotnym źródłem dla programu OC ERGO Hestia (Beauty Razem), czterech grup ryzyka zabiegów i listy zabiegów wysokiego ryzyka. Pierwsze 5 tygodni kalendarza to klaster OC i prawo salonowe (sekcja 05).
 6. **Lejki:** cztery magnesy wg ramy MAGNET, z quizem grup ryzyka jako głównym wejściem (bez bramki e-mail), pełną serią pielęgnującą w Resend, osobnymi zgodami RODO/e-mail/telefon i warstwowym spełnieniem obowiązków IDD (sekcja 06).
-7. **Design „spokojny premium”:** granat i róż zostają, ale róż tekstowy zmienia się na wariant spełniający kontrast 4,5:1; glass widget (glassmorphism) ogranicza się do trzech miejsc i ma pełne fallbacki dostępnościowe; makieta w `snippets/mockup-glass-widget.html` działa bez sieci i została zweryfikowana w Chrome od 360 px do 1536 px (sekcja 07).
+7. **Design v2 z Bloom:** marka BeautyPolisa założona w Bloom z prawdziwego logo (granat `#2A3B68`, róż serca `#ED145B` i `#D30C54`, Poppins). W Bloom powstało od zera 21 ikon i ilustracja hero. Glass widget to kalkulator OC na tle serca marki. Makieta `design/makieta-v2.html` działa bez builda i przeszła test w Chrome oraz przegląd zgodności z marką w Bloom (sekcja 09; sekcja 07 jest częściowo zastąpiona).
 8. **Dwa produkty nie mają jeszcze oferty** (Utrata dochodu, NNW dzieci) – w v1 startują jako strony edukacyjne w trybie „zapytaj o ofertę”. Cenniki Tax Protect i cennik OC wymagają potwierdzenia z ubezpieczycielami przed publikacją.
 9. **Plan:** tydzień 0 to szybkie wygrane na obecnej infrastrukturze (TLS 1.2, SSL strict, HSTS, odblokowanie botów AI, REVOKE zbędnych grantów, usunięcie anti-inspect), potem 4 fazy: MVP → baza wiedzy i GEO → lejki → skalowanie (sekcja 08).
 
@@ -43,9 +43,11 @@ Przyjęta interpretacja (szczegóły i założenia w `01-audyt-stanu-obecnego.md
 | `04-seo-geo-i-schema.md` | Architektura informacji, title/meta, SEO techniczne w Next.js, JSON-LD, polityka crawlerów AI, llms.txt, audyt promptów, pomiar | SEO, content, developer |
 | `05-strategia-tresci.md` | Persony, filary i klastry, luki, kolejka priorytetów, kalendarz 12 tygodni, linkowanie, standardy E-E-A-T, proces | Content, broker-recenzent |
 | `06-lead-magnety-lejki-i-kampania.md` | Cztery magnesy (MAGNET), pełny lejek quizu, e-maile, zgody i IDD, brief kampanii 30 dni, kalendarz, copy, KPI | Marketing, prawnik, developer |
-| `07-design-ux-i-glass-widget.md` | Krytyka obecnego designu, kierunek, design system, komponenty, specyfikacja glass widgetu, responsywność, WCAG 2.2, mikrocopy, szablony | Projektant, front-end |
+| `07-design-ux-i-glass-widget.md` | Krytyka obecnego designu, komponenty, responsywność, WCAG 2.2, mikrocopy, szablony (warstwa wizualna zastąpiona przez 09) | Projektant, front-end |
 | `08-plan-wdrozenia.md` | Szybkie wygrane, fazy, WBS, ryzyka, KPI/SLO, Definition of Done, rejestr decyzji, skonsolidowane pytania otwarte | Kierownik projektu, zleceniodawca |
-| `snippets/` | `robots.txt`, `llms.txt`, 6 plików JSON-LD, `glass-widget.css`, `mockup-glass-widget.html` | Developer – gotowe do użycia |
+| `09-design-v2-bloom.md` | Design v2: proces w Bloom, paleta z kontrastami, typografia, 21 ikon, strona główna, kalkulator, wyniki testów i przeglądu marki | Projektant, front-end, zleceniodawca |
+| `design/` | `makieta-v2.html` (działająca makieta), `tokens-v2.css`, `bloom/` (ikony SVG, sprite, arkusze, ilustracja hero) | Projektant, developer |
+| `snippets/` | `robots.txt`, `llms.txt`, 6 plików JSON-LD, pliki SQL, CI i nagłówków bezpieczeństwa | Developer – gotowe do użycia |
 
 ## 3. Cele i kryteria sukcesu
 
@@ -113,8 +115,8 @@ Kluczowe decyzje (pełne uzasadnienia i odrzucone alternatywy w sekcjach; rejest
 | D10 | Strony produktowe jako schema `Service`, nie `Product`; `AggregateOffer` tylko dla OC z potwierdzonego cennika | 04 |
 | D11 | Huby = strony produktowe i kalkulator; start od klastra OC i prawa salonowego; rytm 2 publikacje + 1 aktualizacja tygodniowo | 05 |
 | D12 | Quiz grup ryzyka bez bramki e-mail; double opt-in dla serii pielęgnującej; trzy osobne zgody | 06 |
-| D13 | Róż `#e11d48` tylko jako wypełnienie CTA; róż tekstowy `#be123c` (jasny) / `#fda4af` (ciemny) | 07 |
-| D14 | Glass widget w maksymalnie trzech miejscach, maksymalnie dwie tafle naraz, pełne fallbacki | 07 |
+| D13 | Paleta i font wyłącznie z logo: granat `#2A3B68`, CTA `#D30C54` (biały tekst 5,32:1), `#ED145B` tylko do grafiki; Poppins; tylko tryb jasny do czasu logo na ciemne tło | 09 |
+| D14 | Ikony własne z Bloom (21 sztuk, jeden różowy akcent); glass widget tylko tam, gdzie coś jest za szkłem: kalkulator na tle serca, plakietka hero, nagłówek | 09 |
 | D15 | Utrata dochodu i NNW dzieci w v1 jako strony edukacyjne „zapytaj o ofertę” | 05, 08 |
 
 ## 7. Bezpieczeństwo i stabilność – zasady nienegocjowalne
@@ -154,7 +156,7 @@ Budżety egzekwowane w CI: LCP ≤ 2,0 s (cel) / 2,5 s (próg), INP ≤ 200 ms, 
 
 ## 11. Design
 
-Kierunek „spokojny premium”: zaufanie i precyzja ubezpieczyciela, lekkość branży beauty. Design system w CSS custom properties przenoszonych 1:1 do Tailwind 4 `@theme`; Montserrat (nagłówki) + Inter (tekst) self-hosted; tryb ciemny; natywne elementy (`<details>`, `<dialog>`) przed komponentami; formularz leadowy jako strona, nie modal; nawigacja z sześcioma realnymi zakładkami bez emoji. Glass widget: blur 14–18 px z saturacją, obramowanie 1 px, fallback `@supports`, `prefers-reduced-transparency` i `prefers-contrast: more` przełączają na tła kryjące; tekst drugorzędny tylko na panelu o kryciu 92 %. Makieta i arkusz tokenów w `snippets/`.
+Design v2 powstał od zera w Bloom po odrzuceniu wersji v1 (szczegóły: `09-design-v2-bloom.md`). Marka BeautyPolisa w Bloom została założona z prawdziwego logo: granat `#2A3B68` prowadzi, róż serca `#ED145B` jest akcentem, przyciski CTA mają `#D30C54` dla kontrastu, font to Poppins. W Bloom powstało 21 własnych ikon (produkty, zawody, interfejs) z jednym różowym akcentem w każdej oraz ilustracja hero w tym samym stylu linii. Glass widget to kalkulator OC jako szklana karta na tle dużego serca marki; szkło ma fallback `@supports`, `prefers-reduced-transparency` i `prefers-contrast: more`. Tryb ciemny wróci, gdy powstanie logo na ciemne tło. Makieta: `design/makieta-v2.html`, tokeny: `design/tokens-v2.css`, ikony: `design/bloom/`.
 
 ## 12. Plan w skrócie
 

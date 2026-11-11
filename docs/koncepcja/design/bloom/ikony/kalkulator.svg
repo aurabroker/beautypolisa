@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#2A3B68" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">Kalkulator składki</title>
+  <rect x="21" y="16" width="54" height="65" rx="9" />
+  <rect x="31" y="26" width="34" height="15" rx="2" stroke-width="4" />
+  <path d="M32 52H35M47 52H50M62 52H65M32 65H35M47 65H50" />
+  <path d="M60 61H69V73H60Z" fill="#ED145B" stroke="none" />
+  <path d="M62 65H67M62 69H67" stroke-width="2" />
+</svg>

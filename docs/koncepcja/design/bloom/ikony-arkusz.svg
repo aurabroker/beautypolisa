@@ -1,0 +1,148 @@
+<svg width="1024" height="768" viewBox="0 0 1024 768" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(8 168) scale(1.5)" stroke="#2A3B68" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <g id="shield-heart">
+      <path d="M48 16C38 24 28 27 18 28V47C18 65 30 76 48 83C66 76 78 65 78 47V28C68 27 58 24 48 16Z"></path>
+      <path d="M48 61C44 58 34 51 34 44C34 36 43 33 48 40C53 33 62 36 62 44C62 51 52 58 48 61Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="tax-scale" transform="translate(96)">
+      <path d="M23 80H72C75 80 77 78 77 75V30L63 16H23C20 16 18 18 18 21V75C18 78 20 80 23 80Z"></path>
+      <path d="M62 17V31H76M48 35V68M37 68H59M28 42H68"></path>
+      <path d="M29 43L22 58H36L29 43ZM67 43L60 58H74L67 43Z" stroke-width="4"></path>
+      <path d="M22 58C22 65 36 65 36 58" stroke-width="4"></path>
+      <path d="M60 58H74C74 68 60 68 60 58Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="wallet-pulse" transform="translate(192)">
+      <path d="M18 35V30C18 25 21 22 26 21L66 15C70 14 73 17 73 21V32"></path>
+      <path d="M72 32H25C20 32 17 36 17 41V72C17 77 20 80 25 80H73C78 80 81 77 81 72V63M81 47V40C81 35 78 32 72 32Z"></path>
+      <path d="M80 47H70C65 47 62 50 62 55C62 60 65 63 70 63H81V47Z"></path>
+      <circle cx="71" cy="55" r="2" fill="#2A3B68" stroke="none"></circle>
+      <path d="M24 52H31L35 57L42 39C43 36 47 37 48 40L53 63L57 53H61V59H61L55 73C54 76 50 75 49 72L44 51L39 64C38 66 35 67 33 65L28 58H24C20 58 20 52 24 52Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="teddy-plaster" transform="translate(288)">
+      <path d="M28 32C17 33 16 18 25 16C30 15 34 18 35 22M61 22C63 17 67 15 72 17C80 21 77 33 69 32"></path>
+      <path d="M70 38C70 52 61 60 48 60C35 60 26 52 26 38C26 26 35 20 48 20C61 20 70 26 70 38Z"></path>
+      <path d="M33 56C27 59 24 64 25 72M63 56C69 58 73 63 73 69M35 79C42 83 54 83 61 79"></path>
+      <ellipse cx="28" cy="73" rx="11" ry="10"></ellipse>
+      <ellipse cx="67" cy="73" rx="11" ry="10"></ellipse>
+      <path d="M25 55C18 55 15 59 17 65M71 54C79 54 82 59 80 65"></path>
+      <circle cx="40" cy="36" r="2.5" fill="#2A3B68" stroke="none"></circle>
+      <circle cx="56" cy="36" r="2.5" fill="#2A3B68" stroke="none"></circle>
+      <path d="M45 45H51L48 48Z" fill="#2A3B68" stroke-width="2"></path>
+      <rect x="66" y="55" width="19" height="10" rx="5" transform="rotate(-30 75.5 60)" fill="#ED145B" stroke="none"></rect>
+    </g>
+
+    <g id="team-heart" transform="translate(384)">
+      <circle cx="48" cy="43" r="10"></circle>
+      <circle cx="22" cy="48" r="8"></circle>
+      <circle cx="74" cy="48" r="8"></circle>
+      <path d="M32 80V70C32 60 38 55 48 55C58 55 64 60 64 70V80ZM16 80V70C16 64 20 60 26 60M80 80V70C80 64 76 60 70 60"></path>
+      <path d="M48 30C44 27 37 22 37 17C37 11 44 10 48 15C52 10 59 11 59 17C59 22 52 27 48 30Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="stethoscope-heart" transform="translate(480)">
+      <path d="M26 18H23C18 18 16 22 16 27V38C16 50 23 58 34 58C45 58 52 50 52 38V27C52 22 50 18 45 18H42M34 58V64C34 75 40 81 51 81C64 81 73 74 73 62V57"></path>
+      <path d="M26 16V22M42 16V22"></path>
+      <path d="M73 57C69 54 60 48 60 42C60 34 69 32 73 38C77 32 86 34 86 42C86 48 77 54 73 57Z" fill="#ED145B" stroke-width="4"></path>
+    </g>
+
+    <g id="calculator" transform="translate(576)">
+      <rect x="21" y="16" width="54" height="65" rx="9"></rect>
+      <rect x="31" y="26" width="34" height="15" rx="2" stroke-width="4"></rect>
+      <path d="M32 52H35M47 52H50M62 52H65M32 65H35M47 65H50"></path>
+      <path d="M60 61H69V73H60Z" fill="#ED145B" stroke="none"></path>
+      <path d="M62 65H67M62 69H67" stroke-width="2"></path>
+    </g>
+
+    <g id="serum-dropper" transform="translate(0 96)">
+      <path d="M40 31V20C40 15 43 12 48 12C53 12 56 15 56 20V31"></path>
+      <rect x="33" y="32" width="30" height="11" rx="3"></rect>
+      <path d="M39 43V51H34C29 51 25 55 25 60V77C25 81 28 84 32 84H64C68 84 71 81 71 77V60C71 55 67 51 62 51H57V43M48 43V54"></path>
+      <path d="M48 57C45 62 39 68 39 73C39 84 57 84 57 73C57 68 51 62 48 57Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="scissors-comb" transform="translate(96 96)">
+      <circle cx="26" cy="72" r="10"></circle>
+      <circle cx="48" cy="72" r="10"></circle>
+      <path d="M31 63L52 19C53 17 53 15 52 14M43 63L21 19C20 17 20 15 21 14"></path>
+      <path d="M69 18V80H79M69 18H79M69 28H79M69 38H79M69 48H79M69 58H79M69 68H79"></path>
+      <circle cx="37" cy="49" r="5" fill="#ED145B" stroke="none"></circle>
+    </g>
+
+    <g id="foot-sparkle" transform="translate(192 96)">
+      <path d="M51 15V35C51 44 47 50 41 56L25 70C21 72 17 74 17 78C17 81 20 82 25 82H65C73 82 78 77 77 69L72 46V15"></path>
+      <path d="M31 26C32 26 33 27 33 29C34 35 37 38 43 39C46 40 46 42 43 43C37 44 34 47 33 53C32 56 30 56 29 53C28 47 25 44 19 43C16 42 16 40 19 39C25 38 28 35 29 29C29 27 30 26 31 26Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="brow-pen" transform="translate(288 96)">
+      <path d="M17 44C29 31 48 30 62 40M17 65C30 50 49 50 63 65C49 79 30 79 17 65Z"></path>
+      <path d="M34 57C29 65 33 73 41 73C49 73 53 65 48 57" stroke-width="4"></path>
+      <path d="M60 29L72 14C74 12 77 12 79 14L82 17C84 19 84 21 82 24L69 39Z"></path>
+      <path d="M60 29L69 39L59 45L54 46L55 41Z" fill="#ED145B" stroke="none"></path>
+      <path d="M65 23L76 33" stroke-width="4"></path>
+    </g>
+
+    <g id="nail-polish" transform="translate(384 96)">
+      <rect x="37" y="15" width="22" height="35" rx="5"></rect>
+      <path d="M31 50H65C72 50 76 55 74 63L69 79C68 82 66 83 62 83H34C30 83 28 82 27 79L22 63C20 55 24 50 31 50Z"></path>
+      <path d="M48 51V66" stroke-width="4"></path>
+      <path d="M29 64C36 69 43 69 50 65C57 61 63 61 67 64L63 76H33Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="tattoo-machine" transform="translate(480 96)">
+      <path d="M42 22L53 14L79 31L74 42M38 27L32 37L65 58L74 43Z"></path>
+      <path d="M47 34L39 46M57 40L49 52M67 46L59 58" stroke-width="4"></path>
+      <path d="M35 43L26 57L41 67L51 53M28 60L23 75L37 65M30 31L23 26M53 15L57 10" stroke-width="5"></path>
+      <path d="M70 64C67 69 63 74 63 78C63 87 77 87 77 78C77 74 73 69 70 64Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="document-check" transform="translate(576 96)">
+      <path d="M25 15H59L77 33V75C77 79 74 82 70 82H25C21 82 18 79 18 75V22C18 18 21 15 25 15Z"></path>
+      <path d="M59 16V33H76M30 37H45M30 48H63M30 59H47"></path>
+      <path d="M49 67L55 73L69 58C72 55 76 59 73 62L58 79C56 81 54 81 52 79L45 72C42 69 46 64 49 67Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="chat-dots" transform="translate(0 192)">
+      <path d="M29 20H67C76 20 82 26 82 35V58C82 67 76 73 67 73H43L25 85V72C18 70 14 65 14 58V35C14 26 20 20 29 20Z"></path>
+      <path d="M37 47A5 5 0 1 1 27 47A5 5 0 1 1 37 47ZM53 47A5 5 0 1 1 43 47A5 5 0 1 1 53 47ZM69 47A5 5 0 1 1 59 47A5 5 0 1 1 69 47Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="clipboard-alert" transform="translate(96 192)">
+      <path d="M34 23H26C22 23 19 26 19 30V76C19 80 22 83 26 83H70C74 83 77 80 77 76V30C77 26 74 23 70 23H62"></path>
+      <path d="M41 20V18C41 14 44 11 48 11C52 11 55 14 55 18V20H61V30H35V20Z"></path>
+      <path d="M43 43C43 36 53 36 53 43L51 60C51 64 45 64 45 60ZM53 73A5 5 0 1 1 43 73A5 5 0 1 1 53 73Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="stopwatch-bolt" transform="translate(192 192)">
+      <path d="M48 24V14M40 14H56M72 31L78 25"></path>
+      <circle cx="48" cy="55" r="30"></circle>
+      <path d="M52 33L34 56C32 59 33 61 36 61H44L41 76L61 51C63 49 62 47 59 47H51L55 35C56 32 54 31 52 33Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="padlock" transform="translate(288 192)">
+      <path d="M30 43V32C30 21 37 15 48 15C59 15 66 21 66 32V43"></path>
+      <rect x="18" y="43" width="60" height="39" rx="8"></rect>
+      <path d="M48 53C39 53 38 64 44 67L42 74H54L52 67C58 64 57 53 48 53Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="gauge" transform="translate(384 192)">
+      <path d="M16 73C9 50 26 26 48 26C70 26 87 50 80 73"></path>
+      <path d="M48 36V41M29 43L33 47M20 60H25M67 43L63 47M76 60H71" stroke-width="4"></path>
+      <path d="M47 64L63 47C66 44 70 48 67 51L51 68Z" fill="#ED145B" stroke="none"></path>
+      <circle cx="48" cy="69" r="6"></circle>
+    </g>
+
+    <g id="circle-check" transform="translate(480 192)">
+      <circle cx="48" cy="48" r="33"></circle>
+      <path d="M28 46C30 44 33 44 35 46L43 55L61 35C63 33 66 33 68 35C70 37 70 39 68 41L47 65C45 68 41 68 39 65L28 53C26 51 26 48 28 46Z" fill="#ED145B" stroke="none"></path>
+    </g>
+
+    <g id="brand-heart" transform="translate(576 192)">
+      <path d="M48 80C40 73 15 55 15 36C15 18 35 12 48 29V80Z" fill="#ED145B" stroke="none"></path>
+      <path d="M48 80C56 73 81 55 81 36C81 18 61 12 48 29V80Z" fill="#D30C54" stroke="none"></path>
+      <path d="M48 80C40 73 15 55 15 36C15 18 35 12 48 29C61 12 81 18 81 36C81 55 56 73 48 80Z"></path>
+    </g>
+  </g>
+</svg>

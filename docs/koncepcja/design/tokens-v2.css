@@ -1,0 +1,112 @@
+/* =====================================================================
+   BeautyPolisa · tokeny designu v2 (marka z Bloom)
+   Źródło: marka BeautyPolisa w Bloom (paleta i font z logo),
+   makieta docs/koncepcja/design/makieta-v2.html.
+   Zastępuje docs/koncepcja/snippets/glass-widget.css (v1).
+
+   Zasady:
+   - Granat prowadzi, róż jest akcentem.
+   - #ED145B tylko do grafiki, ikon i dużego tekstu (biały tekst 4,33:1).
+   - #D30C54 do przycisków i różowego tekstu (biały tekst 5,32:1).
+   - Tylko tryb jasny, dopóki nie powstanie logo na ciemne tło.
+   ===================================================================== */
+
+:root {
+  /* Kolory marki (z logo) */
+  --bp-navy: #2A3B68;          /* nagłówki, ikony, nawigacja – 10,92:1 na bieli */
+  --bp-navy-deep: #1C2748;     /* hover przycisków granatowych */
+  --bp-navy-100: #DDE3F1;      /* obramowania aktywnych elementów */
+  --bp-navy-50: #EEF1F8;       /* tła etykiet i odznak */
+  --bp-pink: #ED145B;          /* serce, akcenty ikon, ilustracje */
+  --bp-pink-strong: #D30C54;   /* przyciski CTA, różowy tekst */
+  --bp-pink-hover: #B80A49;    /* hover CTA – 6,61:1 */
+  --bp-blush: #FDF1F5;         /* tła sekcji */
+  --bp-blush-2: #FCE7EE;       /* plamy tła w ilustracjach */
+
+  /* Neutralne */
+  --bp-text: #2A3B68;          /* nagłówki = granat marki */
+  --bp-body: #4A5468;          /* tekst akapitów – 7,6:1 na bieli, 6,9:1 na blush */
+  --bp-muted: #5B6478;         /* opisy, podpisy – 5,93:1 na bieli */
+  --bp-line: #E4E7EF;
+  --bp-bg: #FFFFFF;
+  --bp-bg-soft: #F7F8FB;
+
+  /* Typografia */
+  --bp-font: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --bp-fs-h1: clamp(2.1rem, 1.45rem + 2.7vw, 3.4rem);
+  --bp-fs-h2: clamp(1.7rem, 1.35rem + 1.4vw, 2.4rem);
+  --bp-fs-h3: 1.125rem;
+  --bp-fs-body: 1rem;
+  --bp-fs-small: .875rem;
+  --bp-fs-min: .75rem;          /* nic poniżej 12 px */
+  --bp-lh-body: 1.65;
+
+  /* Kształt i głębia */
+  --bp-radius-s: 12px;
+  --bp-radius: 20px;
+  --bp-radius-l: 28px;
+  --bp-shadow-1: 0 1px 2px rgba(28,39,72,.06), 0 6px 16px -8px rgba(28,39,72,.16);
+  --bp-shadow-2: 0 2px 6px rgba(28,39,72,.06), 0 28px 56px -24px rgba(28,39,72,.32);
+
+  /* Układ */
+  --bp-container: 1200px;
+  --bp-gutter: clamp(16px, 4vw, 32px);
+  --bp-section-y: clamp(56px, 8vw, 104px);
+  --bp-touch: 44px;
+
+  /* Ikony z Bloom */
+  --bp-icon-accent: var(--bp-pink);
+  --bp-icon-accent-dark: var(--bp-pink-strong);
+}
+
+/* ---------- Ikony (sprite: design/bloom/ikony-sprite.svg) ----------
+   <svg class="bp-icon" aria-hidden="true"><use href="#bp-oc-beauty"/></svg>
+   viewBox 96×96, linia 6 = 1,5 px przy 24 px i 3 px przy 48 px. */
+.bp-icon {
+  width: 24px; height: 24px; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 6;
+  stroke-linecap: round; stroke-linejoin: round;
+  color: var(--bp-navy);
+}
+.bp-icon--32 { width: 32px; height: 32px; }
+.bp-icon--40 { width: 40px; height: 40px; }
+.bp-icon--48 { width: 48px; height: 48px; }
+
+/* ---------- Glass widget v2 ----------
+   Stosować tylko: kalkulator OC (na tle serca marki), pływająca
+   plakietka w hero, przyklejony nagłówek. Maks. dwie tafle w widoku. */
+.bp-glass {
+  background: rgba(255,255,255,.66);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255,255,255,.75);
+  box-shadow: var(--bp-shadow-2), inset 0 1px 0 rgba(255,255,255,.9);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .bp-glass { background: rgba(255,255,255,.96); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .bp-glass { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  .bp-glass { background: #fff; border-color: var(--bp-navy); }
+}
+
+/* ---------- Tailwind CSS 4: mapowanie do @theme ----------
+@theme {
+  --color-navy: #2A3B68;
+  --color-navy-deep: #1C2748;
+  --color-navy-50: #EEF1F8;
+  --color-navy-100: #DDE3F1;
+  --color-pink: #ED145B;
+  --color-pink-strong: #D30C54;
+  --color-pink-hover: #B80A49;
+  --color-blush: #FDF1F5;
+  --color-body: #4A5468;
+  --color-muted: #5B6478;
+  --color-line: #E4E7EF;
+  --font-sans: 'Poppins', system-ui, sans-serif;
+  --radius-card: 20px;
+  --radius-panel: 28px;
+}
+*/
