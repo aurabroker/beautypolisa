@@ -1,0 +1,134 @@
+<svg width="1024" height="768" viewBox="0 0 1024 768" fill="none" stroke="#2A3B68" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0 164.5714) scale(1.5238095)">
+    <g id="oc-beauty">
+      <path d="M48 17C39 27 29 29 19 28V45C19 62 29 73 48 80C67 73 77 62 77 45V28C67 29 57 27 48 17Z"></path>
+      <path d="M48 24C40 31 32 34 25 34V45C25 59 33 68 48 74C63 68 71 59 71 45V34C64 34 56 31 48 24Z"></path>
+      <path d="M48 59C44 55 35 49 35 43C35 35 45 34 48 41C51 34 61 35 61 43C61 49 52 55 48 59Z"></path>
+    </g>
+    <g id="tax-protect" transform="translate(96 0)">
+      <path d="M48 24V72M43 72H53L61 78H35Z"></path>
+      <circle cx="48" cy="20" r="3"></circle>
+      <path d="M22 30C30 34 36 23 44 28M52 28C60 23 66 34 74 30"></path>
+      <path d="M22 30L12 57H32ZM74 30L64 57H84" transform="translate(4 0) scale(.916667 1)"></path>
+      <path d="M16 57H36C34 63 30 66 26 66C22 66 18 63 16 57ZM60 57H80C78 63 74 66 70 66C66 66 62 63 60 57"></path>
+    </g>
+    <g id="utrata-dochodu" transform="translate(192 0)">
+      <circle cx="51" cy="31" r="13"></circle>
+      <path d="M45 24C48 21 54 21 57 24M17 61L29 51C33 48 37 47 42 49L49 52H58C64 52 64 59 58 60H45"></path>
+      <path d="M61 54L72 45C76 42 81 46 77 50L66 61C63 64 59 66 55 67L45 70C40 72 34 67 29 70L21 77"></path>
+    </g>
+    <g id="nnw-dzieci" transform="translate(288 0)">
+      <path d="M18 69Q48 91 78 69M22 65Q48 84 74 65"></path>
+      <path d="M30 52L25 68M37 52L34 72M58 51L65 71M64 47L72 67"></path>
+      <path d="M28 52C28 44 32 38 38 38H51C52 30 55 24 62 22L68 17L69 25L76 38C76 41 71 43 69 39L64 35C61 40 61 47 64 51C53 57 40 57 28 52Z"></path>
+      <path d="M38 38V44C38 51 51 52 53 44L54 37M54 32C57 25 60 24 64 24"></path>
+      <path d="M30 41C25 34 20 38 20 46C20 51 18 54 16 55"></path>
+    </g>
+    <g id="grupowe-ergo" transform="translate(384 0)">
+      <ellipse cx="48" cy="23" rx="5" ry="7"></ellipse>
+      <ellipse cx="27" cy="31" rx="4.5" ry="6"></ellipse>
+      <ellipse cx="69" cy="31" rx="4.5" ry="6"></ellipse>
+      <path d="M44 30L39 34C37 36 37 41 38 46L41 58L42 78M52 30L57 34C59 36 59 41 58 46L55 58L54 78M48 56V77"></path>
+      <path d="M23 37L19 40C17 43 18 48 19 52L21 61L22 78M31 37L35 40M32 53L32 61L32 78M27 60V77"></path>
+      <path d="M65 37L61 40M65 53L64 61V78M73 37L77 40C79 43 78 48 77 52L75 61L74 78M69 60V77"></path>
+    </g>
+    <g id="opieka-medyczna" transform="translate(480 0)">
+      <path d="M27 22H23C18 22 17 27 18 32L22 46C24 53 28 57 33 57C38 57 42 53 44 46L48 32C49 27 48 22 43 22"></path>
+      <path d="M26 19H30V24H26ZM39 19H43V24H39Z"></path>
+      <path d="M33 57V64C33 82 65 84 65 63V58"></path>
+      <path d="M65 58C61 54 54 49 54 44C54 38 62 36 65 42C68 36 76 38 76 44C76 49 69 54 65 58Z"></path>
+      <path d="M23 47C27 59 39 59 43 47"></path>
+    </g>
+    <g id="kalkulator" transform="translate(576 0)">
+      <rect x="25" y="17" width="46" height="62" rx="4"></rect>
+      <rect x="31" y="23" width="34" height="13" rx="1"></rect>
+      <path d="M33 45H36M46 45H49M59 45H62M33 54H36M46 54H49M59 54H62M33 63H36M46 63H49M33 72H36M46 72H49M60 63V72"></path>
+    </g>
+    <g id="kosmetolog" transform="translate(0 96)">
+      <path d="M43 32V23C43 15 53 15 53 23V32"></path>
+      <path d="M39 32H57V43H39ZM42 43V48C34 51 33 54 33 60V75C33 78 35 79 38 79H58C61 79 63 78 63 75V60C63 54 62 51 54 48V43"></path>
+      <path d="M44 35V40M48 35V40M52 35V40M48 48V61"></path>
+      <path d="M48 65C46 68 44 70 44 72C44 77 52 77 52 72C52 70 50 68 48 65Z"></path>
+    </g>
+    <g id="fryzjer" transform="translate(96 96)">
+      <ellipse cx="25" cy="69" rx="7" ry="8" transform="rotate(23 25 69)"></ellipse>
+      <ellipse cx="46" cy="69" rx="7" ry="8" transform="rotate(-23 46 69)"></ellipse>
+      <path d="M29 62L49 19L40 51L43 61M42 62L22 19L31 51L28 61M48 76L52 79"></path>
+      <circle cx="36" cy="53" r="2"></circle>
+      <path d="M64 20H75V78H64C61 78 60 76 60 73V25C60 22 61 20 64 20ZM65 25H75M65 30H75M65 35H75M65 40H75M65 45H75M65 50H75M65 55H75M65 60H75M65 65H75M65 70H75M65 75H75"></path>
+    </g>
+    <g id="podolog" transform="translate(192 96)">
+      <path d="M55 18C53 35 49 49 39 59C34 64 27 67 21 69C16 70 16 75 21 76L34 78C40 79 46 77 51 73L60 66C64 63 70 66 74 61C77 57 72 51 71 45C69 36 72 26 75 18"></path>
+      <path d="M23 70C21 72 21 74 22 76M29 70C26 73 27 76 28 77M35 70C32 73 32 76 34 78M62 47C66 48 67 52 64 55"></path>
+    </g>
+    <g id="linergistka" transform="translate(288 96)">
+      <path d="M18 34C29 17 49 17 64 29M21 35C32 25 47 25 59 31"></path>
+      <path d="M18 52C31 35 48 35 62 48C47 61 32 60 18 52Z"></path>
+      <path d="M35 42C29 50 35 57 41 56C47 55 50 48 46 42"></path>
+      <path d="M41 45V48"></path>
+      <path d="M49 72L69 44L75 48L55 76ZM69 44L74 38L80 34L78 42L75 48M49 72L45 80L55 76M54 66L60 70"></path>
+    </g>
+    <g id="stylistka-paznokci" transform="translate(384 96)">
+      <path d="M40 19Q48 16 56 19L57 46H39Z"></path>
+      <path d="M40 46L30 55L36 78H60L66 55L56 46M30 55L38 59L36 78M66 55L58 59L60 78M38 59H58M40 46L38 59M56 46L58 59"></path>
+      <path d="M48 51V70"></path>
+    </g>
+    <g id="tatuazysta" transform="translate(480 96)">
+      <g transform="rotate(21 48 48)">
+        <path d="M38 27H66V45H38ZM43 31V41M48 31V41M56 31V41M61 31V41"></path>
+        <path d="M35 24H69V28H35ZM35 44H69V48H35M48 24V17H57V21H52V24"></path>
+        <path d="M41 48V54H52V48M40 54H53V70H40ZM40 59H53M40 65H53M43 70V76H50V70M46.5 76V81"></path>
+        <path d="M35 28V44M69 28V44"></path>
+      </g>
+    </g>
+    <g id="dokumenty" transform="translate(576 96)">
+      <path d="M25 23L68 18V35L77 34L73 78L27 75L29 51"></path>
+      <path d="M25 23L20 51H39M57 51H69L68 18M34 72L68 74L70 56"></path>
+      <path d="M48 43C51 41 54 44 54 46C58 47 59 51 57 54C58 57 55 60 52 60C50 63 46 63 44 60C40 60 38 57 39 54C37 51 39 47 42 46C43 43 45 42 48 43Z"></path>
+      <circle cx="48" cy="52" r="5"></circle>
+    </g>
+    <g id="doradca" transform="translate(0 192)">
+      <path d="M19 38C21 25 75 25 77 38M27 39C32 34 38 33 41 34M55 34C58 33 64 34 69 39"></path>
+      <path d="M20 38C15 41 15 46 17 49H31C33 44 31 40 27 39ZM69 39C65 40 63 44 65 49H79C81 46 81 41 76 38"></path>
+      <path d="M39 38C38 45 35 50 31 55L23 66V70H73V66L65 55C61 50 58 45 57 38M21 71H75V78H21Z"></path>
+      <circle cx="48" cy="57" r="12"></circle>
+      <circle cx="48" cy="57" r="6"></circle>
+      <path d="M48 48V49M55 51L54 52M57 58H56M52 65L51 64M43 65L44 64M39 58H40M41 51L42 52"></path>
+      <path d="M31 24Q48 19 65 24"></path>
+    </g>
+    <g id="szkoda" transform="translate(96 192)">
+      <path d="M25 18H56L71 33V78H25ZM56 18V33H71"></path>
+      <path d="M33 40H58M33 48H49M33 56H42"></path>
+      <circle cx="57" cy="64" r="11"></circle>
+      <path d="M57 58V65M57 70V70.5"></path>
+    </g>
+    <g id="szybka-wycena" transform="translate(192 192)">
+      <circle cx="43" cy="52" r="25"></circle>
+      <circle cx="43" cy="52" r="21"></circle>
+      <path d="M38 27V23H48V27M36 22C30 13 55 13 50 22M43 34V37M43 67V70M25 52H28M58 52H61M30 39L32 41M54 63L56 65M30 65L32 63M54 41L56 39M43 52L33 44M43 52L52 40"></path>
+      <circle cx="43" cy="52" r="1.5"></circle>
+      <path d="M53 23C61 23 68 30 71 36M72 40L74 46M75 50L76 56M76 60V66M76 70L75 75"></path>
+      <ellipse cx="74" cy="78" rx="2.5" ry="3"></ellipse>
+    </g>
+    <g id="bezpieczenstwo" transform="translate(288 192)">
+      <path d="M44 43C38 48 29 43 29 36C29 30 33 26 39 26C39 14 57 14 57 26C63 26 67 30 67 36C67 43 58 48 52 43V77H45V48"></path>
+      <path d="M43 35C36 40 32 30 39 30H44V25C44 19 52 19 52 25V30H57C64 30 60 40 53 35"></path>
+      <path d="M45 52H52M52 63H62V68H58V72H62V77H52"></path>
+    </g>
+    <g id="grupy-ryzyka" transform="translate(384 192)">
+      <path d="M17 70V64C17 47 31 33 48 33C65 33 79 47 79 64V70Z"></path>
+      <path d="M22 62H26M26 49L30 51M35 39L37 43M48 37V42M61 39L59 43M70 49L66 51M74 62H70"></path>
+      <circle cx="48" cy="64" r="3"></circle>
+      <path d="M50 62L64 47"></path>
+    </g>
+    <g id="w-zakresie" transform="translate(480 192)">
+      <path d="M22 31C14 51 23 69 44 75L53 80M74 31C82 51 73 69 52 75L43 80"></path>
+      <path d="M23 33C19 26 24 22 31 19C31 25 28 30 23 33ZM21 43C14 40 14 34 15 29C20 33 23 37 21 43ZM23 54C15 53 13 47 13 42C20 45 23 49 23 54ZM28 64C20 65 16 61 14 56C21 56 26 59 28 64ZM37 72C30 77 24 74 20 70C27 68 32 69 37 72"></path>
+      <path d="M73 33C77 26 72 22 65 19C65 25 68 30 73 33ZM75 43C82 40 82 34 81 29C76 33 73 37 75 43ZM73 54C81 53 83 47 83 42C76 45 73 49 73 54ZM68 64C76 65 80 61 82 56C75 56 70 59 68 64ZM59 72C66 77 72 74 76 70C69 68 64 69 59 72"></path>
+      <path d="M35 50L44 59L62 39"></path>
+    </g>
+    <g id="serce" transform="translate(576 192)">
+      <path d="M48 77C41 69 18 53 18 37C18 17 41 15 48 33C55 15 78 17 78 37C78 53 55 69 48 77Z"></path>
+    </g>
+  </g>
+</svg>
