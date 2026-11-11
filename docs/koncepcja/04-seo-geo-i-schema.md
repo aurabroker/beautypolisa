@@ -6,7 +6,7 @@
 
 - Apex `beautypolisa.eu` nie ma dziś rekordu DNS, a strefa Cloudflare **blokuje wszystkie crawlery AI** (`ai_search`/`ai_user` wyłączone, `ai_training: disallow`, zarządzany robots.txt). Najtańsza i najważniejsza zmiana „GEO” to polityki Search i Agent na *Allow* oraz wyłączenie Bot Preference Sync – bez tego reszta tej sekcji nie działa.
 - Architektura: huby `/ubezpieczenia`, `/dla-kogo`, `/baza-wiedzy`, 6 stron produktowych, kalkulator, `/szkoda`, `/dokumenty`. Jeden H1, self-canonical, JSON-LD komponowany na serwerze w `@graph` z trwałymi `@id`.
-- Strony produktowe to `Service`, nie `Product` – składka OC zależy od grupy ryzyka i sumy, więc sztywna cena byłaby nieprawdziwa. `AggregateOffer` tylko dla OC i tylko z aktywnej wersji cennika, z której liczy kalkulator.
+- Strony produktowe to `Service`, nie `Product` – składka OC wg taryfy programu zależy od grupy ryzyka i sumy, więc jedna cena dla produktu byłaby nieprawdziwa. `AggregateOffer` tylko dla OC i tylko z aktywnej wersji cennika, z której liczy kalkulator.
 - `FAQPage` i `HowTo` nie dają już rich results w Google (ograniczenia z 2023 r.) – wdrażamy je dla czytelności maszynowej i cytowalności w asystentach AI.
 - GEO w praktyce: treść w HTML z serwera, blok „W skrócie”, nagłówki-pytania, liczby z odesłaniem do OWU, imienny autor i data aktualizacji, spójna encja (NAP, jedno zdanie o marce), `llms.txt`, comiesięczny **ręczny** audyt 20 promptów. Nie raportujemy wymyślonych „wyników widoczności” i nie obiecujemy pozycji.
 - Pomiar: GSC, Bing Webmaster, referrery AI we własnej analityce; wnioski po 30 dniach, ocena po 90.
@@ -67,12 +67,12 @@ Przykłady (długości sprawdzone skryptem):
 | `/ubezpieczenia/utrata-dochodu` | Utrata dochodu – ubezpieczenie dla beauty \| BeautyPolisa | Ubezpieczenie utraty dochodu dla kosmetologów, fryzjerów i stylistek na B2B. Świadczenie przy niezdolności do pracy, karencja, wyłączenia – po ludzku. |
 | `/ubezpieczenia/nnw-dzieci` | NNW dzieci – ubezpieczenie całoroczne \| BeautyPolisa | NNW dziecka: jak porównać sumy, zakres i wyłączenia oraz czym różni się polisa szkolna od indywidualnej. Zamów ofertę dla rodziny lub zespołu salonu. |
 | `/ubezpieczenia/grupowe-ergo` | Grupowe ERGO dla beauty – ochrona zespołu \| BeautyPolisa | Ubezpieczenie grupowe ERGO Hestia dla salonów beauty: ochrona życia i zdrowia pracowników oraz moduły MediOpieki. Pakiet zamiast podwyżki – zapytaj. |
-| `/ubezpieczenia/opieka-medyczna` | Opieka medyczna ENEL-MED / LUX MED \| BeautyPolisa | Abonamenty medyczne ENEL-MED i LUX MED dla właścicieli i zespołów salonów beauty. Porównanie pakietów, wycena dla firm od 1 do 50+ osób. Zamów ofertę. |
-| `/kalkulator/oc` | Kalkulator składki OC dla salonu beauty \| BeautyPolisa | Wybierz grupę ryzyka zabiegów i sumę gwarancyjną (100, 200 lub 300 tys. zł), a kalkulator pokaże orientacyjną składkę roczną OC. Bez zobowiązań. |
+| `/ubezpieczenia/opieka-medyczna` | Opieka medyczna ENEL-MED / LUX MED \| BeautyPolisa | Abonamenty medyczne ENEL-MED i LUX MED dla zespołów salonów beauty. Pakiety wg cennika programu (3–50 osób), od 51 osób wycena indywidualna. Zamów ofertę. |
+| `/kalkulator/oc` | Kalkulator składki OC dla salonu beauty \| BeautyPolisa | Wybierz grupę ryzyka zabiegów i sumę gwarancyjną (100, 200 lub 300 tys. zł), a kalkulator pokaże składkę roczną OC wg taryfy programu. Bez zobowiązań. |
 | `/dla-kogo/kosmetolog` | Ubezpieczenie dla kosmetologa – OC i więcej \| BeautyPolisa | Jakie ubezpieczenie potrzebuje kosmetolog: OC zawodowe na zabiegi pielęgnacyjne i inwazyjne, ochrona dochodu, Tax Protect. Przewodnik i kalkulator składki. |
 | `/baza-wiedzy/czy-kosmetyczka-musi-miec-oc` | Czy kosmetyczka musi mieć OC? Przepisy, umowy \| BeautyPolisa | Czy OC jest obowiązkowe w branży beauty, kiedy wymagają go kontrahenci i co grozi bez polisy po nieudanym zabiegu. Odpowiedź doradcy z odesłaniem do OWU. |
 
-Zasady: żadnych cen w title do potwierdzenia cenników (01, pkt 3.1–3.2), żadnych „najtańsze/najlepsze” (YMYL), nazwa ubezpieczyciela w title produktu, bo jest wyszukiwana razem z marką.
+Zasady: żadnych kwot w title – składka wg taryfy programu zależy od grupy ryzyka lub wariantu i sumy (01, pkt 3.1–3.2), więc tabela i widełki są w treści strony, nie w title; żadnych „najtańsze/najlepsze” (YMYL), nazwa ubezpieczyciela w title produktu, bo jest wyszukiwana razem z marką.
 
 Canonical i OG:
 
@@ -234,17 +234,17 @@ Jeden `<h1>` = główne zapytanie (na artykułach pytanie); `<h2>` to pytania lu
 
 ### 4.3 Produkty: `Service`, nie `Product`
 
-`Product` z `Offer.price` wymaga jednej ceny i jest czytany przez Google jako oferta handlowa (merchant listing: `priceValidUntil`, `availability`). Składka OC zależy od grupy ryzyka, sumy gwarancyjnej, liczebności zespołu (>8 osób – indywidualnie) i oceny ubezpieczyciela; Tax Protect ma składki „do potwierdzenia”; utrata dochodu i NNW dzieci nie mają oferty. Jedna cena byłaby fałszywa – w YMYL to ryzyko reputacyjne i regulacyjne.
+`Product` z `Offer.price` wymaga jednej ceny i jest czytany przez Google jako oferta handlowa (merchant listing: `priceValidUntil`, `availability`). Składka OC wg taryfy programu zależy od grupy ryzyka, sumy gwarancyjnej, klauzuli ochrony prawnej i liczebności zespołu (6–8 osób ×1,25; grupa 4 i zespoły od 9 osób – wycena indywidualna na podstawie ankiety ERGO Hestii); Tax Protect ma własną taryfę wariantów (`tax_warianty`), a przy przychodach powyżej 3 mln zł – wycenę indywidualną; utrata dochodu i NNW dzieci nie mają oferty. Jedna cena byłaby fałszywa – w YMYL to ryzyko reputacyjne i regulacyjne.
 
 `Service` (`schema-produkt-oc-beauty.json`) opisuje to, co jest prawdą niezależnie od wyceny: `provider` = ERGO Hestia, `broker` = BeautyPolisa (w schema.org `broker` to dowolny pośrednik; nie przesądza statusu z ustawy o dystrybucji – pytanie 1), `areaServed`, `audience`, `termsOfService` → strona OWU, `availableChannel` → kalkulator.
 
-`AggregateOffer` (`lowPrice`/`highPrice`) **tylko dla OC**, bo tylko tam istnieje publiczny kalkulator z jawną tabelą składek (400–1250 zł rocznie dla grup 1–3, +92 zł klauzula ochrony prawnej – 01, pkt 3.1), a `description` mówi wprost o składce orientacyjnej. Warunki: wartości generowane z aktywnej wersji cennika (`pricing_versions`/`pricing_oc_tiers`, 02 pkt 2.3) – nigdy ręcznie; cennik potwierdzony przed startem, inaczej `offers` wypada, a `Service` zostaje. `priceRange` na `InsuranceAgency` opisywałby całą agencję, nie produkt – nie używamy.
+`AggregateOffer` (`lowPrice`/`highPrice`) **tylko dla OC**, bo tylko tam istnieje publiczny kalkulator z jawną tabelą składek (400–1250 zł rocznie dla grup 1–3, +92 zł klauzula ochrony prawnej – 01, pkt 3.1), a `description` mówi wprost, że to składka roczna wg taryfy programu dla grup 1–3 (grupa 4 i zespoły od 9 osób – wycena indywidualna). Warunki: wartości generowane z aktywnej wersji cennika (`pricing_versions`/`pricing_oc_tiers`, 02 pkt 2.3) – nigdy ręcznie; wersjonowanie zostaje, bo taryfa może się zmienić w czasie – nowa wersja z datą obowiązywania (`valid_from`) zmienia jednocześnie kalkulator, tabelę na stronie i `offers`. `priceRange` na `InsuranceAgency` opisywałby całą agencję, nie produkt – nie używamy.
 
 ### 4.4 `FAQPage` – uczciwie
 
 Od sierpnia 2023 Google pokazuje FAQ w wynikach tylko dla autorytatywnych witryn rządowych i zdrowotnych – portal ubezpieczeniowy ich nie dostanie. Wdrażamy `FAQPage`, bo asystenci AI czytają JSON-LD i format pytanie–odpowiedź cytuje się najłatwiej, a schemat wymusza dyscyplinę: każde pytanie widoczne na stronie w identycznym brzmieniu, odpowiedź zgodna z OWU.
 
-Obecne strony nie mają FAQ (kalkulator ma tylko modal „Masz pytania?”; `tax-protect.html`, `life.html`, `medical.html` to opisy), więc `schema-faq-oc-beauty.json` zawiera 7 **zaproponowanych** pytań z odpowiedziami zbudowanymi z faktów audytu. Status: **do weryfikacji merytorycznej** – zwłaszcza pytanie 1 (obowiązek OC – przegląd prawny), 6 (składki – potwierdzenie cennika) i 2 (zakres – zgodność z OWU programu WA50/003353/24/A). FAQ pozostałych produktów powstaje w ramach 05 po dostarczeniu materiałów.
+Obecne strony nie mają FAQ (kalkulator ma tylko modal „Masz pytania?”; `tax-protect.html`, `life.html`, `medical.html` to opisy), więc `schema-faq-oc-beauty.json` zawiera 7 **zaproponowanych** pytań z odpowiedziami zbudowanymi z faktów audytu. Status: **do weryfikacji merytorycznej** – zwłaszcza pytanie 1 (obowiązek OC – przegląd prawny) i 2 (zakres – zgodność z OWU programu WA50/003353/24/A); w pytaniu 6 kwoty są sztywne (taryfa programu) i generowane z aktywnej wersji cennika, nie przepisywane. FAQ pozostałych produktów powstaje w ramach 05 po dostarczeniu materiałów.
 
 ### 4.5 `BreadcrumbList`, `Article`, `HowTo`, pozostałe
 
@@ -280,7 +280,7 @@ Przed wdrożeniem: Schema Markup Validator (poprawność słownika) i Rich Resul
 | `robots.txt` | wzorzec dla `robots.ts`/Route Handlera, bloki search/user/training | gotowy; blok training wg Decyzji 6 |
 | `llms.txt` | marka, produkty, zawody, dokumenty, kontakt, zasady cytowania (PL) | gotowy; linkowane strony muszą istnieć na starcie |
 | `schema-home.json` | Organization, InsuranceAgency, WebSite, WebPage | gotowy; brak sameAs/telefonu |
-| `schema-produkt-oc-beauty.json` | Service + AggregateOffer | `offers` do potwierdzenia cennika |
+| `schema-produkt-oc-beauty.json` | Service + AggregateOffer | gotowy; `offers` wg taryfy programu, generowane z aktywnej wersji cennika |
 | `schema-faq-oc-beauty.json` | FAQPage, 7 pytań | odpowiedzi do weryfikacji merytorycznej |
 | `schema-artykul.json` | Article (autor-organizacja) | autor do podmiany na Person |
 | `schema-breadcrumb.json` | BreadcrumbList, 3 poziomy | gotowy |
@@ -349,9 +349,9 @@ Standard każdej strony produktowej i artykułu (szczegóły redakcyjne w 05):
 
 1. **„W skrócie”** pod H1: 3–5 zdań odpowiadających wprost na pytanie strony – fragment najczęściej trafiający do odpowiedzi AI.
 2. **Nagłówki-pytania** z odpowiedzią w pierwszym zdaniu akapitu.
-3. **Tabele porównawcze** (grupy ryzyka × sumy × składka orientacyjna; sekcja 1 vs 2 Tax Protect; polisa szkolna vs indywidualna NNW).
+3. **Tabele porównawcze** (grupy ryzyka × sumy × składka roczna wg taryfy programu; sekcja 1 vs 2 Tax Protect; polisa szkolna vs indywidualna NNW).
 4. **Definicje** „X to …” z linkiem do słownika.
-5. **Liczby ze źródłem**: „suma gwarancyjna 100/200/300 tys. zł (warunki programu WA50/003353/24/A)”, „składka orientacyjna wg kalkulatora, stan na <data>”. Bez liczb, których nie da się przypisać do OWU, ustawy lub własnego cennika.
+5. **Liczby ze źródłem**: „suma gwarancyjna 100/200/300 tys. zł (warunki programu WA50/003353/24/A)”, „składka roczna wg taryfy programu, cennik obowiązujący od <data>”. Bez liczb, których nie da się przypisać do OWU, ustawy lub własnego cennika.
 6. **Autor z kwalifikacjami i data aktualizacji** w widocznym bloku i w JSON-LD; recenzent przy treściach o zakresie ochrony.
 7. **Jeden temat na stronę** – „OC dla podologa” to własna strona, nie akapit.
 
@@ -423,7 +423,7 @@ Kolumna „zgodność” jest ważniejsza niż „wzmianka”: błędna odpowied
 - [ ] Cloudflare: Search/Agent = Allow, Training wg Decyzji 6, Bot Preference Sync i „Block AI bots” off; `curl -A` dla UA z 5.2 → 200 + pełny HTML.
 - [ ] DNS apex i `www`; `www` → 301; reguła dla `tax.` przygotowana; decyzja o `.com`.
 - [ ] `robots.txt`, `sitemap.xml`, `llms.txt` dostępne; każda strona: 1× H1, title ≤60, description ≤155, self-canonical, OG image, `lang="pl"`.
-- [ ] JSON-LD: test CI zielony; Rich Results Test i Schema Markup Validator bez błędów dla home, produktu, artykułu, `/szkoda`; FAQ na stronie = FAQ w schemie; cennik potwierdzony albo `offers` usunięte.
+- [ ] JSON-LD: test CI zielony; Rich Results Test i Schema Markup Validator bez błędów dla home, produktu, artykułu, `/szkoda`; FAQ na stronie = FAQ w schemie; `offers` i kwoty w FAQ z aktywnej wersji cennika programu, zgodne z kalkulatorem.
 - [ ] Autorzy i recenzent wskazani, bio na `/o-nas`; `/baza-wiedzy` startuje z ≥6 artykułami albo wcale.
 - [ ] Lighthouse CI w budżecie na mobile; 404 zwraca 404; stare `.html` → 301; brak zoom-lock.
 - [ ] GSC i Bing zweryfikowane, sitemap wysłana, IndexNow działa; wizytówka Google i profile z tym samym NAP i zdaniem o marce; `sameAs` uzupełnione.
@@ -455,7 +455,7 @@ Kolumna „zgodność” jest ważniejsza niż „wzmianka”: błędna odpowied
 
 1. **Domena kanoniczna `https://beautypolisa.eu` bez `www`; `tax.` i (jeśli możliwe) `.com` → 301.** Jedna domena = jedna encja i skumulowane sygnały; audyt wskazuje niespójność `.com`. Odrzucone: `tax.` jako osobny serwis (duplikacja), `www` jako kanoniczne (niezgodne z konwencją).
 2. **Brak hreflang.** Jeden język i rynek; błędny hreflang szkodzi, poprawny nic nie daje. Odrzucone: `hreflang="pl-PL"` + `x-default` „na zapas”.
-3. **`Service` zamiast `Product`; `AggregateOffer` tylko dla OC i tylko z aktywnej wersji cennika.** Składka zależy od ryzyka – sztywna cena byłaby fałszywa (YMYL). Odrzucone: `Product` + `Offer.price` (fałszywa precyzja, wymogi merchant listing); brak informacji o cenie (fallback, jeśli cennik niepotwierdzony).
+3. **`Service` zamiast `Product`; `AggregateOffer` tylko dla OC i tylko z aktywnej wersji cennika.** Składka wg taryfy programu zależy od grupy ryzyka i sumy – jedna cena dla produktu byłaby fałszywa (YMYL). Odrzucone: `Product` + `Offer.price` (jedna cena zamiast tabeli taryfy, wymogi merchant listing); brak informacji o cenie (składki są sztywne i jawne w cenniku programu – rozstrzygnięte 11.11.2026).
 4. **JSON-LD komponowany per strona w komponencie serwerowym, `@graph` z trwałymi `@id`, `schema-dts`, walidacja w CI.** Odrzucone: jeden globalny blok w layoucie (nie opisuje strony), Microdata (trudne w komponentach), schemat dopisywany w kliencie (niewidoczny dla fetcherów).
 5. **`FAQPage` i `HowTo` mimo braku rich results.** Koszt bliski zeru przy generowaniu z frontmatter, realna wartość dla cytowań. Odrzucone: pominięcie; FAQ ukryte w schemie bez treści na stronie (naruszenie wytycznych).
 6. **Crawlery: Search i Agent = Allow; Training = Allow (rekomendacja), decyzja zleceniodawcy; Bot Preference Sync off; `robots.ts` w repo jako źródło prawdy.** Cel portalu to bycie znanym i cytowanym; treść nie ma wartości ekskluzywnej; blokada treningu nie zwiększa cytowań. Odrzucone: zarządzany robots.txt Cloudflare (poza kontrolą wersji), blokada treningu jako domyślna (udokumentowany wariant w snippecie), `Disallow` dla botów ignorujących robots (egzekwowanie należy do AI Crawl Control/WAF).
@@ -475,7 +475,7 @@ Kolumna „zgodność” jest ważniejsza niż „wzmianka”: błędna odpowied
 5. `tax.beautypolisa.eu`: czy jest w GSC, ma ruch/linki, kiedy przełączyć na przekierowanie?
 6. Decyzja o crawlerach treningowych (GPTBot, ClaudeBot, Google-Extended, Meta-ExternalAgent, CCBot, Applebot-Extended): Allow czy Disallow?
 7. Które OWU/warunki programów można opublikować na `/dokumenty` (program WA50/003353/24/A, OWU Colonnade 25.01.2023, EZwB 01/25, MA 01/25) i czy ubezpieczyciele wymagają zgody?
-8. Potwierdzenie cennika OC (400–1250 zł, klauzula 92 zł) i składek Tax Protect – warunek `AggregateOffer` i FAQ o cenie.
+8. Cennik OC (400–1250 zł, klauzula 92 zł) i składki Tax Protect – rozstrzygnięte 11.11.2026: składki są sztywne (taryfa programu; Tax Protect – tabela `tax_warianty`). `AggregateOffer` i FAQ o cenie opierają się na aktywnej wersji cennika bez zastrzeżenia „do potwierdzenia” (zostaje standardowa nota: informacja nie stanowi oferty w rozumieniu art. 66 KC, zakres ochrony określają OWU).
 9. Utrata dochodu i NNW dzieci: kiedy będzie oferta; strony „wkrótce” z `noindex` czy czekają?
 10. Czy planowane jest wideo z doradcami (YouTube) – `VideoObject`, earned mentions?
 11. Zgoda Fundacji Beauty Razem na wzajemne linkowanie i wspólny komunikat.

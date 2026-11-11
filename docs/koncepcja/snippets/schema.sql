@@ -25,7 +25,7 @@ create table pricing_versions (
   valid_from        date not null,
   valid_to          date,
   is_active         boolean not null default false,
-  source_note       text not null,            -- skąd liczby, np. "wg kodu kalkulatora bp-app.js (audyt §3.1) – DO POTWIERDZENIA z ERGO Hestia"
+  source_note       text not null,            -- źródło wersji taryfy, np. "taryfa programu OC ERGO Hestia (audyt §3.1); składki sztywne – stan z 11.11.2026"
   approved_by       uuid references auth.users(id) on delete set null,
   approved_by_label text,                     -- trwały ślad audytowy (e-mail/nazwisko), niezależny od auth.users
   approved_at       timestamptz,
@@ -55,7 +55,7 @@ create table pricing_tax_variants (
   version_id     uuid not null references pricing_versions(id) on delete cascade,
   section        smallint not null check (section in (1, 2)), -- 1: karnoskarbowa, 2: podatkowa
   sum_insured    integer not null,
-  annual_premium numeric(10,2),         -- NULL = składka niepotwierdzona (nie wyświetlamy kwoty)
+  annual_premium numeric(10,2) not null check (annual_premium > 0), -- składka roczna wg taryfy programu (źródło: tax_warianty)
   revenue_limit  integer,               -- np. 3 000 000; powyżej → wycena indywidualna
   unique (version_id, section, sum_insured)
 );

@@ -46,7 +46,7 @@ Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeń
 - Argumentacja sprzedażowa: „tarcza anty-rotacyjna”, koszt rotacji pracownika ok. 15 000 zł, pakiet zamiast podwyżki 50 zł.
 
 ### 3.4 Opieka medyczna
-- ENEL-MED i LUX MED, abonamenty miesięczne wg cennika programu zapisanego w kodzie (131–478 zł miesięcznie, zależnie od wariantu i liczby osób: 3–10 / 11–20 / 21–50), wycena korporacyjna 51+ osób.
+- ENEL-MED i LUX MED, abonamenty wg cennika programu zapisanego w kodzie (120–478 zł miesięcznie, zależnie od sieci, zakresu – pracownik / partner / rodzina – i liczby osób: 3–10 / 11–20 / 21–50), wycena korporacyjna 51+ osób.
 
 ### 3.5 Utrata dochodu i NNW dzieci
 - Brak jakichkolwiek danych produktowych w repo. Z researchu rynkowego: produkt „utrata dochodu” kierowany do samozatrudnionych/B2B (min. ok. 80% przychodów z własnej działalności), istotne: definicja niezdolności do pracy, karencja, wyłączenia, kwestia kosztu podatkowego (interpretacje niejednoznaczne). NNW dzieci: rynek 2026/27 – składki indywidualne zwykle 40–150 zł/rok, sumy 5 000–220 000 zł, ubezpieczenie szkolne jest dobrowolne. **Konkretna oferta BeautyPolisa w tych dwóch liniach musi zostać dostarczona przez zespół produktowy.**

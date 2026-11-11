@@ -1,6 +1,6 @@
 # 05 · Strategia treści i autorytet tematyczny
 
-> Sekcja koncepcji portalu **beautypolisa.eu**. Fakty o produktach, cenach, konkurencji w SERP i infrastrukturze pochodzą wyłącznie z `01-audyt-stanu-obecnego.md`; magazyn treści (MDX/JSON w repozytorium, walidacja Zod, przegląd w PR) i model leada – z `02-architektura-i-bezpieczenstwo.md`; schema, `llms.txt` i dostęp crawlerów AI – z `04-seo-geo-i-schema.md`. Narzędzia keyword research były niedostępne (01, pkt 7), więc każdy wolumen wyszukiwań jest **hipotezą** w skali wysoki / średni / niski. Bez sekretów i identyfikatorów.
+> Sekcja koncepcji portalu **beautypolisa.eu**. Fakty o produktach, cenach, konkurencji w SERP i infrastrukturze pochodzą wyłącznie z `01-audyt-stanu-obecnego.md` (składki programu są sztywne – taryfa programu, rozstrzygnięte przez zleceniodawcę 11.11.2026); magazyn treści (MDX/JSON w repozytorium, walidacja Zod, przegląd w PR) i model leada – z `02-architektura-i-bezpieczenstwo.md`; schema, `llms.txt` i dostęp crawlerów AI – z `04-seo-geo-i-schema.md`. Narzędzia keyword research były niedostępne (01, pkt 7), więc każdy wolumen wyszukiwań jest **hipotezą** w skali wysoki / średni / niski. Bez sekretów i identyfikatorów.
 
 ## TL;DR
 
@@ -67,7 +67,7 @@ H. Pracownicy i benefity                 H1 Zatrudnienie i odpowiedzialność ·
 | B2.1 | Kontrola skarbowa w salonie | kontrola skarbowa salon kosmetyczny | N | inf. | poradnik procesowy |
 | B2.2 | Kasa fiskalna, terminal, gotówka – ryzyka podatkowe | kasa fiskalna salon kosmetyczny | Ś | inf. | lista ryzyk |
 | B2.3 | Sekcja 1 a sekcja 2 (jeden pełny spór w roku) | tax protect colonnade | N (naw.) | kom. | porównanie |
-| B2.4 | Z czego składają się koszty sporu podatkowego | koszty sporu podatkowego | N | inf. | wyjaśnienie (bez kwot) |
+| B2.4 | Z czego składają się koszty sporu podatkowego | koszty sporu podatkowego | N | inf. | wyjaśnienie (składki wg taryfy programu; inne kwoty tylko ze źródłem) |
 | C1.1 | „Prywatne L4” dla kosmetyczki na JDG | prywatne l4 jdg | Ś | inf. | przewodnik |
 | C1.2 | ZUS chorobowe na JDG a prywatna polisa | chorobowe jdg a ubezpieczenie utraty dochodu | Ś | kom. | porównanie (bez kwot) |
 | C1.3 | Choroby zawodowe fryzjerów i kosmetyczek | choroby zawodowe fryzjerów | Ś | inf. | poradnik |
@@ -120,11 +120,11 @@ Backlog: arkusz „koszt rotacji vs koszt benefitu” (E2.2) – gdy zespół do
 | Wniosek (szkodowość, zgody, kwalifikacje) | ankieta PDF (`AnkietaBPEH.pdf`) | brak | checklista przygotowania – unikalna, skraca sprzedaż |
 | Szkody, nieudany zabieg | brak | Prawo.pl (perspektywa klientki) | perspektywa salonu: jak zgłosić, dokumentować; powiązanie ze `/szkoda` |
 | Zgoda na zabieg | brak | blog Booksy | wzór powiązany z wymaganiami wniosku OC – mocniejszy niż ogólny poradnik |
-| Tax Protect | `tax-protect.html`, sekcje 1 i 2, warianty sum; składki „do potwierdzenia” | nisza bez treści dla beauty | kontrola skarbowa, kasa, gotówka w salonie; **bez składek** do potwierdzenia z Colonnade |
+| Tax Protect | `tax-protect.html`, sekcje 1 i 2, warianty sum; komentarz „DO POTWIERDZENIA” przy składkach w `tax_warianty` jest nieaktualny – składki sztywne wg taryfy programu (rozstrzygnięte 11.11.2026; 01, pkt 3.2) | nisza bez treści dla beauty | kontrola skarbowa, kasa, gotówka w salonie; warianty sum ze składką roczną wg taryfy programu, przychody powyżej 3 mln zł → wycena indywidualna |
 | Utrata dochodu | brak danych; wzmianka o Squarelife w `life.html` | Poradnik Przedsiębiorcy, CUK, Firmove, podatki.biz | konkurencja pisze dla „przedsiębiorcy”, my dla JDG w beauty; do czasu oferty – edukacja |
 | NNW dzieci | brak danych | Rankomat, Mubi, Portal Oświatowy, PZU Edukacja, InterRisk | nie wygramy ogólnego „nnw dzieci”; wygrywamy kontekst benefitu dla pracownic i rozmowy z klientką we wrześniu |
 | Grupowe ERGO | `life.html` / `life1.html`: pakiety, moduły, argument anty-rotacyjny | brak treści dla beauty | rotacja w salonach, pakiet zamiast podwyżki – liczby tylko ze źródłem |
-| Opieka medyczna | `medical.html`: przykładowe ceny, próg 51+ | operatorzy, porównywarki | zakresy dla zespołu 2–10 osób, medycyna pracy |
+| Opieka medyczna | `medical.html`: cennik programu (abonamenty 131–478 zł/mies.), próg 51+ | operatorzy, porównywarki | zakresy dla zespołu 2–10 osób, medycyna pracy |
 | Prawo i kontrole | brak | rozproszone (Booksy, portale prawne) | hub łączący kontrolę z ubezpieczeniem – leady na Tax Protect i OC |
 
 Tam, gdzie jesteśmy pierwotnym źródłem, treść musi być w stu procentach zgodna z OWU – to szansa na cytowalność w AI i obowiązek precyzji (01, pkt 7). Obecna treść jest zaszyta w HTML/JS i zduplikowana (01, pkt 4.8), więc migracja do MDX (02, pkt 2.5) jest pierwszym zadaniem redakcyjnym.
@@ -247,7 +247,7 @@ Start w pierwszym pełnym tygodniu po uruchomieniu; przyjęto **styczeń** [zał
 | Tydz. | Publikacja 1 | Publikacja 2 | Aktualizacja strony produktowej / hubu | Uwagi |
 |---|---|---|---|---|
 | 1 | A2.1 Cztery grupy ryzyka | G1.1 Zgoda na zabieg + generator | `/ubezpieczenia/oc-beauty`: sekcja „grupy ryzyka” → A2.1, FAQ z `FAQPage` | PŹ + lead magnet 1 |
-| 2 | A1.1 OC kosmetyczki | B1.1 Karno-skarbowe | `/ubezpieczenia/tax-protect`: sekcje 1 i 2, warianty sum, bez składek | sezon podatkowy |
+| 2 | A1.1 OC kosmetyczki | B1.1 Karno-skarbowe | `/ubezpieczenia/tax-protect`: sekcje 1 i 2, warianty sum ze składką roczną wg taryfy programu, przychody > 3 mln zł → wycena indywidualna | sezon podatkowy |
 | 3 | A4.1 Zgłoszenie szkody | B2.1 Kontrola skarbowa | `/szkoda`: instrukcja, lista dokumentów → A4.1 | |
 | 4 | A1.2 Ubezpieczenie salonu | A2.3 Quiz grup ryzyka | `/kalkulator/oc`: wejście z quizu (parametr grupy), opis grup | narzędzie 2 |
 | 5 | A2.2 Zabiegi wysokiego ryzyka | G2.1 Checklista kontroli | `/dla-kogo/kosmetolog` → A2.2, quiz, kalkulator | lead magnet 2 |
@@ -320,7 +320,7 @@ Treści o ubezpieczeniach, podatkach i odpowiedzialności cywilnej są YMYL: bł
 1. **Imienny autor z opisaną rolą** (bio na `/o-nas`); nie publikujemy pod „Zespół BeautyPolisa”. Treści prawne i podatkowe mają autora lub współautora z kompetencjami w tej dziedzinie.
 2. **Recenzent z uprawnieniami do dystrybucji ubezpieczeń** przegląda każdy tekst o zakresie ochrony, wyłączeniach, składkach i szkodach, porównując z OWU; nazwisko i data widoczne pod tytułem (`reviewedBy`, `reviewedAt`).
 3. **Wersja OWU i data aktualizacji**: `owuVersion` wskazuje dokument źródłowy (OWU Tax Protect 25.01.2023; EZwB 01/25 i MediOpieka MA 01/25; numer programu OC); `updatedAt` zmienia się tylko przy zmianie merytorycznej.
-4. **Źródła**: każda liczba ma źródło – OWU, cennik wersjonowany w bazie (02, decyzja 4) lub akt prawny. Liczby bez źródła (koszt rotacji z obecnych stron – 01, pkt 3.3) nie są publikowane. Dane rynkowe spoza oferty (np. przedziały składek NNW z researchu) są opisane jako „orientacyjne dane rynkowe”, nigdy jako nasza oferta.
+4. **Źródła**: każda liczba ma źródło – OWU, cennik programu (taryfa) wersjonowany w bazie (02, decyzja 4) lub akt prawny. Liczby bez źródła (koszt rotacji z obecnych stron – 01, pkt 3.3) nie są publikowane. Dane rynkowe spoza oferty (np. przedziały składek NNW z researchu) są opisane jako „orientacyjne dane rynkowe”, nigdy jako nasza oferta.
 5. **Zastrzeżenia prawne** w trzech wariantach renderowane z jednego źródła. Projekt wariantu podstawowego:
 
 ```text
@@ -328,8 +328,9 @@ Treści o ubezpieczeniach, podatkach i odpowiedzialności cywilnej są YMYL: bł
 Materiał ma charakter informacyjny i nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego,
 porady prawnej ani podatkowej. Zakres ochrony, wyłączenia i obowiązki określają wyłącznie Ogólne
 Warunki Ubezpieczenia i dokument polisy – przed zawarciem umowy zapoznaj się z OWU na /dokumenty.
-Składki z kalkulatora są orientacyjne i zależą od oceny ryzyka. Dystrybutor: Aura Consulting
-sp. z o.o. – informacje wymagane ustawą o dystrybucji ubezpieczeń: /o-nas.
+Kalkulator pokazuje składkę roczną wg taryfy programu; zabiegi grupy 4 i zespoły od 9 osób wymagają
+wyceny indywidualnej (ankieta ERGO Hestii). Dystrybutor: Aura Consulting sp. z o.o. – informacje
+wymagane ustawą o dystrybucji ubezpieczeń: /o-nas.
 ```
 
 6. **Zakaz obietnic**: nie piszemy „gwarantujemy wypłatę”, „najtańsze OC”, „pełna ochrona”, „bez wyłączeń”; konkurencję oceniamy tylko przez cytowanie publicznych OWU; nie udzielamy indywidualnych porad podatkowych – przy koszcie podatkowym utraty dochodu opisujemy niejednoznaczność interpretacji (01, pkt 3.5) i odsyłamy do doradcy.
@@ -405,7 +406,7 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 ## Decyzje
 
 1. **Huby = strony produktowe i kalkulator; baza wiedzy to szprychy.** Fraza komercyjna ma jedno miejsce docelowe, strona produktowa zyskuje linki i treść pomocniczą. Odrzucone: „pillar pages” w bazie wiedzy (dublują intencję stron produktowych), blog bez struktury.
-2. **Pierwsze pięć tygodni to klaster OC + prawo salonowe.** Tam jest przewaga pierwotnego źródła i jedyny produkt z pełnym cennikiem w audycie. Odrzucone: start od sześciu produktów naraz (rozproszenie, brak danych dla dwóch).
+2. **Pierwsze pięć tygodni to klaster OC + prawo salonowe.** Tam jest przewaga pierwotnego źródła i jedyny produkt z kalkulatorem taryfy programu (grupy ryzyka × sumy gwarancyjne). Odrzucone: start od sześciu produktów naraz (rozproszenie, brak danych dla dwóch).
 3. **Wolumeny jako hipotezy w trzech progach, jednorazowa weryfikacja 52 fraz, potem GSC jako źródło prawdy.** Narzędzia były niedostępne (01, pkt 7); w niszy dane GSC po 2–3 miesiącach będą wiarygodniejsze niż estymaty. Odrzucone: czekanie na narzędzia, publikacja bez weryfikacji.
 4. **Rytm 2 publikacje + 1 aktualizacja huba tygodniowo, produkcja w dwutygodniowych partiach.** Wystarcza do zbudowania klastra OC w kwartał przy zespole 1 autor + 1 recenzent. Odrzucone: 1/tydz. (klaster w pół roku), codzienne publikacje AI (ryzyko YMYL, obciążenie recenzenta).
 5. **Pięć treści narzędziowych, bramka e-mailowa tylko dla wzoru zgody i checklisty kontroli.** Quiz i kalkulatory bez bramki zbierają linki i prowadzą do kalkulatora OC. Odrzucone: bramkowanie wszystkiego (spadek zasięgu), brak bramek (brak bazy do nurture – 06-…).
@@ -421,7 +422,7 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 2. Czy ERGO Hestia i Fundacja Beauty Razem wymagają akceptacji materiałów o programie OC (numer, logo, zasady grup ryzyka) przed publikacją? Tryb i czas akceptacji wpływają na SLA kroku 3.
 3. Czy lista zabiegów w grupach 1–4 z kalkulatora (01, pkt 3.1) jest kompletna i może być opublikowana jako „pełna lista”? Do której grupy należą zabiegi trychologiczne i inne nieobecne na liście?
 4. Kiedy zespół produktowy dostarczy parametry „Utrata dochodu” i „NNW dzieci” (ubezpieczyciel, definicje, karencje, sumy)? Czy tryb „zapytaj o ofertę” do tego czasu jest akceptowalny?
-5. Czy składki Tax Protect zostaną potwierdzone z Colonnade przed startem (pytanie 7 sekcji 02)? Bez tego B2.3 i B2.4 nie zawierają kwot.
+5. Rozstrzygnięte 11.11.2026 (pytanie 7 sekcji 02): składki Tax Protect są sztywne (taryfa programu) – B2.3, B2.4 i `/ubezpieczenia/tax-protect` podają składkę roczną wg taryfy (wartości z `tax_warianty` lub od zleceniodawcy); przychody powyżej 3 mln zł → wycena indywidualna.
 6. Czy liczby z obecnej argumentacji grupowego (koszt rotacji, pakiet zamiast podwyżki – 01, pkt 3.3) mają cytowalne źródło? Bez niego znikają z treści.
 7. Czy zleceniodawca udostępni jednorazowy eksport z Senuto lub Semrush dla 52 fraz oraz dostęp do GSC po uruchomieniu?
 8. Czy można dopuścić crawlery AI kategorii *search* i *user* przy utrzymaniu blokady *training* (01, pkt 6; 04, pkt 5.1)? Bez tego metryka cytowań nie ma sensu.

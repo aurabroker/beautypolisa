@@ -98,7 +98,7 @@ Poza kontrastem: cele dotykowe (checkbox 13,6 px w `bp-app.js`, przyciski „Wsz
 
 Zasady:
 
-1. **Zaufanie jak u ubezpieczyciela.** Każda liczba ma jednostkę, kontekst i źródło (sumę gwarancyjną objaśniamy jednym zdaniem; przy składce stoi „cennik poglądowy” i nota o art. 66 KC). Nic nie miga, nie odlicza, nie straszy.
+1. **Zaufanie jak u ubezpieczyciela.** Każda liczba ma jednostkę, kontekst i źródło (sumę gwarancyjną objaśniamy jednym zdaniem; przy składce stoi „składka wg taryfy programu” i nota, że informacja na stronie nie stanowi oferty w rozumieniu art. 66 KC, a zakres ochrony określają OWU). Nic nie miga, nie odlicza, nie straszy.
 2. **Lekkość jak w gabinecie.** Dużo światła, miękkie promienie (16–24 px), jeden gradient róż → granat tylko w hero, cienie długie i rozmyte, a nie „karty na karcie”.
 3. **Jeden akcent, jedno działanie.** Róż `#e11d48` to wyłącznie wypełnienie głównego CTA – maksymalnie jeden taki przycisk w widoku (plus sticky CTA na mobile). Wszystko inne jest granatowe lub neutralne.
 4. **Szkło to narzędzie, nie motyw.** Glass widget zwraca uwagę na kalkulator i header, nie dekoruje artykułów ani tabel.
@@ -203,7 +203,7 @@ Kontenery: `--container-sm` 42 rem (artykuł), `--container-md` 60 rem (kalkulat
 
 ## Glass widget – specyfikacja
 
-**Anatomia:** tafla (`.glass`) z obramowaniem 1 px, wewnętrznym podświetleniem górnej krawędzi i długim cieniem; nagłówek (`.glass__header`: tytuł, badge „Cennik poglądowy”, stepper); ciało (`.glass__body`: aktywny krok z kartami wyboru); panel wyniku (`.glass__panel`: tło kryjące 92 %, cena, metadane, porównanie sum, CTA, nota prawna).
+**Anatomia:** tafla (`.glass`) z obramowaniem 1 px, wewnętrznym podświetleniem górnej krawędzi i długim cieniem; nagłówek (`.glass__header`: tytuł, badge „Cennik programu”, stepper); ciało (`.glass__body`: aktywny krok z kartami wyboru); panel wyniku (`.glass__panel`: tło kryjące 92 %, cena, metadane, porównanie sum, CTA, nota prawna).
 
 ```css
 .glass {
@@ -400,7 +400,7 @@ Stany puste: wynik przed wyborem – „Wybierz grupę zabiegów w kroku 1, aby 
 
 **Tokeny.** `design/tokens-v2.css` (zastępuje `snippets/glass-widget.css` z v1) przepisujemy do `app/globals.css` jako `@theme` (kolory, fonty, promienie, cienie, breakpointy, blur) oraz zwykłe `:root` dla wartości, których Tailwind nie mapuje na utility (`--glass-*`, `--focus-ring`, `--tap-min`). Tryb ciemny: `@custom-variant dark` oparty na `[data-theme="dark"]`, a preferencja systemowa obsłużona skryptem inline w `<head>` (`layout.tsx`), który ustawia `data-theme` przed hydracją – bez błysku i bez `!important`. Fonty przez `next/font/google` z `subsets: ["latin", "latin-ext"]`, `display: "swap"`, zmienne `--font-heading`/`--font-body`. Snippet zawiera też klasy bazowe `.glass-header`, `.glass-bar` (sticky CTA), `.stepper`, pierścień fokusu, `[id] { scroll-margin-top }` i blok `forced-colors` – w Next.js stają się komponentami `Header`, `StickyCta`, `Stepper`.
 
-**Nazewnictwo.** Komponenty w `components/`: `Header`, `ProductTabs`, `ThemeToggle`, `Hero`, `GlassWidget`, `CalculatorOC` (`Stepper`, `ChoiceCard`, `ResultPanel`), `TrustBar`, `ProductCard`, `ComparisonTable`, `FaqAccordion`, `LeadForm` (`Field`, `FieldError`), `StickyCta`, `ConsentBanner`, `Toast`, `Skeleton`, `DocumentList`, `Breadcrumbs`, `Button`, `Notice`. Pliki `PascalCase.tsx`, warianty przez props (`variant="cta" | "primary" | "ghost"`), stany przez atrybuty danych (`data-state="open"`), nie przez klasy modyfikatorów. Logika wyceny OC w `lib/pricing/oc.ts` – czysta funkcja `quoteOC({ group, team, sumIndex, legal })` z testami jednostkowymi na przypadki z cennika (400/500/650, 650/790/950, 850/980/1250, +92, grupa 4 i 9+ → indywidualna); mnożnik dla zespołu 6–8 osób pozostaje parametrem konfiguracyjnym [hipoteza – obecny kod używa ×1,25; do potwierdzenia z ERGO Hestią].
+**Nazewnictwo.** Komponenty w `components/`: `Header`, `ProductTabs`, `ThemeToggle`, `Hero`, `GlassWidget`, `CalculatorOC` (`Stepper`, `ChoiceCard`, `ResultPanel`), `TrustBar`, `ProductCard`, `ComparisonTable`, `FaqAccordion`, `LeadForm` (`Field`, `FieldError`), `StickyCta`, `ConsentBanner`, `Toast`, `Skeleton`, `DocumentList`, `Breadcrumbs`, `Button`, `Notice`. Pliki `PascalCase.tsx`, warianty przez props (`variant="cta" | "primary" | "ghost"`), stany przez atrybuty danych (`data-state="open"`), nie przez klasy modyfikatorów. Logika wyceny OC w `lib/pricing/oc.ts` – czysta funkcja `quoteOC({ group, team, sumIndex, legal })` z testami jednostkowymi na przypadki z cennika (400/500/650, 650/790/950, 850/980/1250, +92, ×1,25 dla zespołu 6–8 osób, grupa 4 i 9+ → indywidualna); stawki i mnożnik zespołu to sztywna taryfa programu, trzymana w wersjonowanej konfiguracji cennika z datą obowiązywania, żeby zmiana taryfy w czasie zostawiała ślad.
 
 **Storybook (opcjonalnie).** Dla zespołu 1–2 osób wystarczy trasa `/dev/styleguide` dostępna tylko w środowisku deweloperskim, renderująca każdy komponent w stanach i w obu trybach. Storybook ma sens, jeśli projekt będzie rozwijany dłużej niż pół roku lub przez więcej osób – wtedy stories jako źródło testów wizualnych.
 
@@ -438,9 +438,9 @@ Stany puste: wynik przed wyborem – „Wybierz grupę zabiegów w kroku 1, aby 
 
 1. Czy BeautyPolisa/Aura Consulting występuje jako broker czy agent? Od tego zależy jedna formuła w headerze, stopce i na `/o-nas` (dziś w kodzie cztery różne).
 2. Czy mamy prawo użyć logotypów ERGO Hestia, Colonnade, ENEL-MED, LUX MED i Fundacji Beauty Razem w pasku zaufania, czy pozostajemy przy nazwach tekstowych?
-3. Czy mnożnik składki dla zespołów 6–8 osób (×1,25 w obecnym kodzie) jest potwierdzony z ERGO Hestią, czy kalkulator ma pokazywać dla tego przedziału „wycena indywidualna”?
+3. Czy mnożnik składki dla zespołów 6–8 osób (×1,25 w obecnym kodzie) jest potwierdzony z ERGO Hestią, czy kalkulator ma pokazywać dla tego przedziału „wycena indywidualna”? **Rozstrzygnięte 11.11.2026:** składki są sztywne (taryfa programu); ×1,25 dla zespołów 6–8 osób jest częścią taryfy, więc kalkulator pokazuje dla tego przedziału składkę wg taryfy, a wycena indywidualna dotyczy grupy 4 i zespołów od 9 osób.
 4. Czy istnieją wytyczne brandowe (księga znaku, wersje logo na ciemne tło, minimalna wielkość)? Makieta używa logotypu tekstowego; plik PNG z repo wymaga wersji SVG.
-5. Czy portal ma pokazywać ceny „od” dla Tax Protect, grupowych i abonamentów medycznych (wartości w kodzie są oznaczone jako „do potwierdzenia”), czy wyłącznie dla OC?
+5. Czy portal ma pokazywać ceny „od” dla Tax Protect, grupowych i abonamentów medycznych (wartości w kodzie są oznaczone jako „do potwierdzenia”), czy wyłącznie dla OC? **Rozstrzygnięte 11.11.2026:** składki są sztywne (taryfa programu), a oznaczenie „do potwierdzenia” w kodzie jest nieaktualne – strony Tax Protect (kwoty z tabeli `tax_warianty`), Grupowego ERGO dla beauty (58/68/76 zł za osobę miesięcznie) i abonamentów medycznych mogą pokazywać ceny „od” z cennika programu; Tax Protect przy przychodach powyżej 3 mln zł – wycena indywidualna.
 6. Jaki jest deklarowany czas odpowiedzi doradcy po wysłaniu formularza (komunikat sukcesu) i godziny kontaktu na `/kontakt`?
 7. Czy w v1 będzie jakakolwiek analityka wymagająca zgody (piksele reklamowe), co uruchamia banner zgód, czy wyłącznie pomiar bez cookies?
 8. Czy Utrata dochodu i NNW dzieci mają w v1 strony informacyjne z formularzem (bez cennika), czy pozostają w nawigacji jako „w przygotowaniu” – i do kiedy zespół produktowy dostarczy zakres?
