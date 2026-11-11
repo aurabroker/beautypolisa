@@ -16,7 +16,7 @@
 4. **SEO/GEO zaczyna się w Cloudflare:** strefa beautypolisa.eu blokuje dziś wszystkie crawlery AI i nie ma rekordu DNS dla domeny głównej. Bez odblokowania kategorii *AI Search* i *Agent* żadna treść nie będzie cytowana w ChatGPT, Perplexity ani AI Overviews (sekcja 04).
 5. **Treść jest przewagą konkurencyjną:** BeautyPolisa jest pierwotnym źródłem dla programu OC ERGO Hestia (Beauty Razem), czterech grup ryzyka zabiegów i listy zabiegów wysokiego ryzyka. Pierwsze 5 tygodni kalendarza to klaster OC i prawo salonowe (sekcja 05).
 6. **Lejki:** cztery magnesy wg ramy MAGNET, z quizem grup ryzyka jako głównym wejściem (bez bramki e-mail), pełną serią pielęgnującą w Resend, osobnymi zgodami RODO/e-mail/telefon i warstwowym spełnieniem obowiązków IDD (sekcja 06).
-7. **Design v2 z Bloom:** marka BeautyPolisa założona w Bloom z prawdziwego logo (granat `#2A3B68`, róż serca `#ED145B` i `#D30C54`, Poppins). W Bloom powstało od zera 21 ikon i ilustracja hero. Glass widget to kalkulator OC na tle serca marki. Makieta `design/makieta-v2.html` działa bez builda i przeszła test w Chrome oraz przegląd zgodności z marką w Bloom (sekcja 09; sekcja 07 jest częściowo zastąpiona).
+7. **Design v3 – old money w szkle:** po odrzuceniu v2 („jak ilustracja komiksu”) marka w Bloom dostała kierunek old money: nocny granat `#141C33`, granat `#2A3B68`, kość słoniowa `#F7F3EC`, złoto `#B8975A` tylko jako ozdoba, Cormorant Garamond i Poppins. Cała strona stoi na mrożonym szkle nad czterema zdjęciami z Bloom (salon, jedwab, marmur, martwa natura). W Bloom powstało 21 nowych ikon cienką linią. Makieta `design/v3/makieta-v3.html` działa bez builda i przeszła test w Chrome przy 1280 i 390 px (sekcja 10; sekcje 07 i 09 są w części wizualnej zastąpione).
 8. **Dwa produkty nie mają jeszcze oferty** (Utrata dochodu, NNW dzieci) – w v1 startują jako strony edukacyjne w trybie „zapytaj o ofertę”. Składki pozostałych produktów są sztywne (taryfa programu) i portal pokazuje je bez zastrzeżeń „orientacyjne” – potwierdzenie zleceniodawcy z 11.11.2026.
 9. **Plan:** tydzień 0 to szybkie wygrane na obecnej infrastrukturze (TLS 1.2, SSL strict, HSTS, odblokowanie botów AI, REVOKE zbędnych grantów, usunięcie anti-inspect), potem 4 fazy: MVP → baza wiedzy i GEO → lejki → skalowanie (sekcja 08).
 
@@ -43,10 +43,11 @@ Przyjęta interpretacja (szczegóły i założenia w `01-audyt-stanu-obecnego.md
 | `04-seo-geo-i-schema.md` | Architektura informacji, title/meta, SEO techniczne w Next.js, JSON-LD, polityka crawlerów AI, llms.txt, audyt promptów, pomiar | SEO, content, developer |
 | `05-strategia-tresci.md` | Persony, filary i klastry, luki, kolejka priorytetów, kalendarz 12 tygodni, linkowanie, standardy E-E-A-T, proces | Content, broker-recenzent |
 | `06-lead-magnety-lejki-i-kampania.md` | Cztery magnesy (MAGNET), pełny lejek quizu, e-maile, zgody i IDD, brief kampanii 30 dni, kalendarz, copy, KPI | Marketing, prawnik, developer |
-| `07-design-ux-i-glass-widget.md` | Krytyka obecnego designu, komponenty, responsywność, WCAG 2.2, mikrocopy, szablony (warstwa wizualna zastąpiona przez 09) | Projektant, front-end |
-| `08-plan-wdrozenia.md` | Szybkie wygrane, fazy, WBS, ryzyka, KPI/SLO, Definition of Done, rejestr decyzji, skonsolidowane pytania otwarte | Kierownik projektu, zleceniodawca |
-| `09-design-v2-bloom.md` | Design v2: proces w Bloom, paleta z kontrastami, typografia, 21 ikon, strona główna, kalkulator, wyniki testów i przeglądu marki | Projektant, front-end, zleceniodawca |
-| `design/` | `makieta-v2.html` (działająca makieta), `tokens-v2.css`, `bloom/` (ikony SVG, sprite, arkusze, ilustracja hero) | Projektant, developer |
+| `07-design-ux-i-glass-widget.md` | Krytyka obecnego designu, komponenty, responsywność, WCAG 2.2, mikrocopy, szablony (warstwa wizualna zastąpiona przez 10) | Projektant, front-end |
+| `08-plan-wdrozenia.md` *(w przygotowaniu – plik jeszcze nie powstał)* | Szybkie wygrane, fazy, WBS, ryzyka, KPI/SLO, Definition of Done, rejestr decyzji, skonsolidowane pytania otwarte | Kierownik projektu, zleceniodawca |
+| `09-design-v2-bloom.md` | Design v2 (nieaktualny, zastąpiony przez 10): proces w Bloom, reguły kalkulatora, historia przeglądu marki | Projektant, front-end |
+| `10-design-v3-old-money.md` | Design v3: kierunek old money, paleta z kontrastami, typografia, ikony, zasady szkła, zdjęcia, sekcje strony, kalkulator, testy, decyzje | Projektant, front-end, zleceniodawca |
+| `design/` | `v3/` (aktualna: `makieta-v3.html`, `tokens-v3.css`, `img/`, `ikony/`, sprite i arkusz ikon); `makieta-v2.html`, `tokens-v2.css`, `bloom/` jako historia v2 | Projektant, developer |
 | `snippets/` | `robots.txt`, `llms.txt`, 6 plików JSON-LD, pliki SQL, CI i nagłówków bezpieczeństwa | Developer – gotowe do użycia |
 
 ## 3. Cele i kryteria sukcesu
@@ -115,8 +116,8 @@ Kluczowe decyzje (pełne uzasadnienia i odrzucone alternatywy w sekcjach; rejest
 | D10 | Strony produktowe jako schema `Service`, nie `Product`; `AggregateOffer` dla OC z taryfy programu (składki sztywne) | 04 |
 | D11 | Huby = strony produktowe i kalkulator; start od klastra OC i prawa salonowego; rytm 2 publikacje + 1 aktualizacja tygodniowo | 05 |
 | D12 | Quiz grup ryzyka bez bramki e-mail; double opt-in dla serii pielęgnującej; trzy osobne zgody | 06 |
-| D13 | Paleta i font wyłącznie z logo: granat `#2A3B68`, CTA `#D30C54` (biały tekst 5,32:1), `#ED145B` tylko do grafiki; Poppins; tylko tryb jasny do czasu logo na ciemne tło | 09 |
-| D14 | Ikony własne z Bloom (21 sztuk, jeden różowy akcent); glass widget tylko tam, gdzie coś jest za szkłem: kalkulator na tle serca, plakietka hero, nagłówek | 09 |
+| D13 | Paleta old money: midnight `#141C33`, navy `#2A3B68`, ivory `#F7F3EC`, parchment `#EDE5D8`, gold `#B8975A` tylko jako dekor, gold light `#D9C089` do tekstu na ciemnym; Cormorant Garamond i Poppins; róż tylko w logo | 10 |
+| D14 | Całość w szkle na zdjęciach z Bloom (jasne, mocne i ciemne szkło ze złotą ramką) z obowiązkowymi wyjściami awaryjnymi; ikony z Bloom cienką linią, jeden kolor | 10 |
 | D15 | Utrata dochodu i NNW dzieci w v1 jako strony edukacyjne „zapytaj o ofertę” | 05, 08 |
 
 ## 7. Bezpieczeństwo i stabilność – zasady nienegocjowalne
@@ -156,7 +157,7 @@ Budżety egzekwowane w CI: LCP ≤ 2,0 s (cel) / 2,5 s (próg), INP ≤ 200 ms, 
 
 ## 11. Design
 
-Design v2 powstał od zera w Bloom po odrzuceniu wersji v1 (szczegóły: `09-design-v2-bloom.md`). Marka BeautyPolisa w Bloom została założona z prawdziwego logo: granat `#2A3B68` prowadzi, róż serca `#ED145B` jest akcentem, przyciski CTA mają `#D30C54` dla kontrastu, font to Poppins. W Bloom powstało 21 własnych ikon (produkty, zawody, interfejs) z jednym różowym akcentem w każdej oraz ilustracja hero w tym samym stylu linii. Glass widget to kalkulator OC jako szklana karta na tle dużego serca marki; szkło ma fallback `@supports`, `prefers-reduced-transparency` i `prefers-contrast: more`. Tryb ciemny wróci, gdy powstanie logo na ciemne tło. Makieta: `design/makieta-v2.html`, tokeny: `design/tokens-v2.css`, ikony: `design/bloom/`.
+Aktualny jest design v3 (szczegóły: `10-design-v3-old-money.md`). Powstał po odrzuceniu v1 i v2; v2 zleceniodawca ocenił jako „ilustrację z komiksu” i poprosił o glamour w stylu old money oraz szkło na całej stronie. W Bloom zmieniono kierunek marki: nocny granat, kość słoniowa, pergamin i szampańskie złoto, nagłówki w Cormorant Garamond, tekst w Poppins. Płaskie ilustracje zastąpiły cztery zdjęcia z Bloom (salon, jedwab, marmur, martwa natura), a każda tafla szkła leży na zdjęciu. Szkło ma trzy warianty (jasne, mocne, ciemne) ze złotą ramką i wyjściami awaryjnymi `@supports`, `prefers-reduced-transparency` i `prefers-contrast: more`. W Bloom powstało 21 nowych ikon cienką linią, w jednym kolorze. Złoto `#B8975A` ma 2,49:1 na kości słoniowej, więc służy tylko jako ozdoba. Makieta: `design/v3/makieta-v3.html`, tokeny: `design/v3/tokens-v3.css`, ikony i zdjęcia: `design/v3/`.
 
 ## 12. Plan w skrócie
 
@@ -168,7 +169,7 @@ Design v2 powstał od zera w Bloom po odrzuceniu wersji v1 (szczegóły: `09-des
 | Faza 3 | Lejki: quiz, magnesy, seria Resend, kampania startowa | 3–5 tygodni |
 | Faza 4 | Skalowanie: integracja z CRM Aura, przejęcie `tax.`, ewentualna sprzedaż online | wg decyzji |
 
-Pełny plan z WBS, rejestrem ryzyk, KPI/SLO i checklistami Definition of Done: `08-plan-wdrozenia.md`.
+Pełny plan z WBS, rejestrem ryzyk, KPI/SLO i checklistami Definition of Done trafi do `08-plan-wdrozenia.md` (w przygotowaniu).
 
 ## 13. Decyzje zleceniodawcy blokujące start fazy 1
 
@@ -181,7 +182,7 @@ Pełny plan z WBS, rejestrem ryzyk, KPI/SLO i checklistami Definition of Done: `
 7. **Imienny autor i recenzent** treści z uprawnieniami.
 8. **Dane kontaktowe i profile** (telefon, e-mail, LinkedIn/Facebook/Instagram, Google Business Profile, KRS/NIP) do stopki, `ContactPoint` i `sameAs`.
 
-Pełna, skonsolidowana lista pytań otwartych: `08-plan-wdrozenia.md`.
+Pełna, skonsolidowana lista pytań otwartych trafi do `08-plan-wdrozenia.md` (w przygotowaniu).
 
 ## 14. Jak powstał ten pakiet i jakie ma ograniczenia
 

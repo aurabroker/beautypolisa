@@ -1,5 +1,7 @@
 # 09 · Design v2 – marka i ikony z Bloom
 
+> **Uwaga – wersja zastąpiona.** Zleceniodawca odrzucił v2 jako „ilustrację z komiksu”. Aktualny jest design v3 w stylu old money, opisany w `10-design-v3-old-money.md` (makieta: `design/v3/makieta-v3.html`, tokeny: `design/v3/tokens-v3.css`). Z tej sekcji nadal obowiązują reguły kalkulatora OC i opis pracy z Bloom. Paleta z różem, ikony z różowym akcentem, ilustracja hero i makieta v2 są nieaktualne.
+
 > Ta sekcja zastępuje część wizualną sekcji `07-design-ux-i-glass-widget.md`: paletę, typografię, ikony, ilustracje i makietę. Z sekcji 07 nadal obowiązują: lista kontrolna dostępności WCAG 2.2 AA, zasady responsywności, inwentarz komponentów, mikrocopy i szablony stron.
 
 ## TL;DR

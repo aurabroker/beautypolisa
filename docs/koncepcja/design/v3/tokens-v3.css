@@ -1,0 +1,129 @@
+/* =====================================================================
+   BeautyPolisa · tokeny designu v3 (old money, całość w szkle)
+   Źródło: marka BeautyPolisa w Bloom po zmianie na old money,
+   makieta docs/koncepcja/design/v3/makieta-v3.html.
+   Zastępuje docs/koncepcja/design/tokens-v2.css.
+
+   Zasady:
+   - Granat i nocny granat prowadzą, kość słoniowa jest tłem, złoto ozdobą.
+   - Złoto #B8975A ma 2,49:1 na kości słoniowej, więc tylko linie, ramki
+     i ozdobniki. Złoty tekst wyłącznie #D9C089 na #141C33 (9,53:1).
+   - Każda tafla szkła leży na zdjęciu z Bloom, nigdy na płaskim kolorze.
+   - Nic poniżej 12 px (.75rem).
+   ===================================================================== */
+
+:root {
+  /* Kolory (kontrast WCAG w komentarzu) */
+  --bp-midnight: #141C33;      /* tło ciemnych sekcji – ivory na nim 15,27:1 */
+  --bp-navy: #2A3B68;          /* nagłówki, przyciski, ikony – 9,87:1 na ivory */
+  --bp-navy-deep: #1E2B4F;     /* hover przycisków granatowych */
+  --bp-ink: #1B2233;           /* tekst akapitów – 14,35:1 na ivory */
+  --bp-taupe: #5F574D;         /* podpisy, etykiety – 6,42:1 na ivory */
+  --bp-ivory: #F7F3EC;         /* tło bazowe, jasne szkło */
+  --bp-parchment: #EDE5D8;     /* tekst na ciemnym – 13,51:1 na midnight */
+  --bp-gold: #B8975A;          /* linie, ramki – tylko dekor */
+  --bp-gold-light: #D9C089;    /* ikony i etykiety na ciemnym – 9,53:1 */
+
+  /* Typografia */
+  --bp-serif: 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
+  --bp-sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --bp-fs-h1: clamp(2.75rem, 1.7rem + 4.2vw, 5rem);
+  --bp-fs-h2: clamp(2.1rem, 1.5rem + 2.4vw, 3.4rem);
+  --bp-fs-h3: 1.65rem;
+  --bp-fs-body: 1rem;
+  --bp-fs-min: .75rem;          /* etykiety w wersalikach, rozstrzelenie .2–.24em */
+  --bp-lh-body: 1.7;
+
+  /* Kształt i głębia: małe promienie, długi miękki cień */
+  --bp-radius: 6px;
+  --bp-radius-s: 3px;
+  --bp-shadow: 0 40px 80px -40px rgba(20,28,51,.45);
+
+  /* Układ */
+  --bp-container: 1240px;
+  --bp-gutter: clamp(16px, 4vw, 40px);
+  --bp-touch: 44px;
+}
+
+/* ---------- Szkło ---------- */
+.bp-glass {
+  position: relative;
+  border-radius: var(--bp-radius);
+  background: rgba(247,243,236,.7);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid rgba(255,255,255,.6);
+  box-shadow: var(--bp-shadow), inset 0 1px 0 rgba(255,255,255,.75);
+}
+.bp-glass--strong { background: rgba(247,243,236,.82); }   /* nagłówek, menu */
+.bp-glass--dark {
+  background: rgba(20,28,51,.56);
+  border-color: rgba(217,192,137,.26);
+  -webkit-backdrop-filter: blur(22px) saturate(120%);
+  backdrop-filter: blur(22px) saturate(120%);
+  box-shadow: 0 40px 80px -40px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08);
+  color: var(--bp-parchment);
+}
+/* Wewnętrzna złota ramka 9 px – znak rozpoznawczy v3 */
+.bp-frame::before {
+  content: ""; position: absolute; inset: 9px; pointer-events: none;
+  border: 1px solid rgba(184,151,90,.5); border-radius: calc(var(--bp-radius) - 3px);
+}
+.bp-glass--dark.bp-frame::before { border-color: rgba(217,192,137,.32); }
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .bp-glass { background: rgba(247,243,236,.95); }
+  .bp-glass--dark { background: rgba(20,28,51,.92); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .bp-glass { background: var(--bp-ivory); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .bp-glass--dark { background: var(--bp-midnight); }
+}
+@media (prefers-contrast: more) {
+  .bp-glass { background: var(--bp-ivory); border-color: var(--bp-navy); }
+  .bp-glass--dark { background: var(--bp-midnight); border-color: var(--bp-gold-light); }
+}
+
+/* ---------- Ikony (sprite: design/v3/ikony-v3-sprite.svg) ----------
+   <svg class="bp-lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg>
+   viewBox 96×96, cienka linia jak grawer: 2,5 przy 44 px, 3 przy 32 px, 4 przy 22 px. */
+.bp-lux-icon {
+  width: 44px; height: 44px; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 2.5;
+  stroke-linecap: round; stroke-linejoin: round;
+  color: var(--bp-navy);
+}
+.bp-lux-icon--md { width: 32px; height: 32px; stroke-width: 3; }
+.bp-lux-icon--sm { width: 22px; height: 22px; stroke-width: 4; }
+.bp-dark .bp-lux-icon { color: var(--bp-gold-light); }
+
+/* ---------- Przyciski: wersaliki, rozstrzelenie, mały promień ---------- */
+.bp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  min-height: 50px; padding: 14px 28px; border-radius: var(--bp-radius-s);
+  border: 1px solid transparent; font: 500 .75rem/1 var(--bp-sans);
+  letter-spacing: .2em; text-transform: uppercase; text-decoration: none;
+}
+.bp-btn--navy { background: var(--bp-navy); color: var(--bp-ivory); border-color: var(--bp-navy); }
+.bp-btn--navy:hover { background: var(--bp-navy-deep); }
+.bp-btn--ghost { background: rgba(247,243,236,.4); color: var(--bp-navy); border-color: rgba(42,59,104,.45); }
+.bp-btn--ivory { background: var(--bp-ivory); color: var(--bp-navy); border-color: var(--bp-ivory); }
+.bp-btn--ghost-dark { background: transparent; color: var(--bp-ivory); border-color: rgba(217,192,137,.6); }
+
+/* ---------- Tailwind CSS 4: mapowanie do @theme ----------
+@theme {
+  --color-midnight: #141C33;
+  --color-navy: #2A3B68;
+  --color-navy-deep: #1E2B4F;
+  --color-ink: #1B2233;
+  --color-taupe: #5F574D;
+  --color-ivory: #F7F3EC;
+  --color-parchment: #EDE5D8;
+  --color-gold: #B8975A;
+  --color-gold-light: #D9C089;
+  --font-serif: 'Cormorant Garamond', Garamond, serif;
+  --font-sans: 'Poppins', system-ui, sans-serif;
+  --radius-card: 6px;
+  --radius-btn: 3px;
+}
+*/
