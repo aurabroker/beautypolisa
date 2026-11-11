@@ -297,6 +297,37 @@
 /* Link/tekst w kolorze marki – zawsze wariant ciemniejszy */
 .text-rose { color: var(--color-rose-text); }
 
+/* Sticky CTA mobile (szkło + safe-area); od md ukryty */
+.glass-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2);
+  padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom));
+  background: var(--glass-bg-strong);
+  border-top: 1px solid var(--color-border);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transition: transform var(--dur-base) var(--ease-out), visibility var(--dur-base);
+}
+.glass-bar.is-hidden { transform: translateY(110%); visibility: hidden; }
+@media (min-width: 48rem) { .glass-bar { display: none; } }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-bar { background: var(--color-surface); }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .glass-bar { background: var(--color-surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+
+/* Kotwice i cele fokusu pod sticky headerem (WCAG 2.4.11) */
+[id] { scroll-margin-top: 8rem; }
+
+/* Windows High Contrast / forced-colors: szkło i karty dostają systemowe obramowania */
+@media (forced-colors: active) {
+  .glass, .glass__panel, .glass-header, .glass-bar { border: 1px solid CanvasText; }
+  .stepper__item { border: 1px solid CanvasText; }
+  .stepper__item[aria-current="step"], .stepper__item.is-done { background: Highlight; }
+  .btn-cta { border: 1px solid ButtonText; }
+}
+
 /* --------------------------------------------------------------------------
    6. TAILWIND 4 – odpowiednik (do wklejenia w app/globals.css)
    --------------------------------------------------------------------------

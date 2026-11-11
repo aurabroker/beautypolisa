@@ -17,7 +17,7 @@
 document.documentElement.classList.add('js');
 </script>
 <style>
-/* ===== TOKENY (kopia z snippets/glass-widget.css – ten plik jest źródłem prawdy) ===== */
+/* ===== TOKENY – kopia 1:1 z snippets/glass-widget.css (źródłem prawdy jest TAMTEN plik; makieta ma być samodzielna, więc tokeny są wklejone) ===== */
 :root{
   color-scheme:light;
   --color-navy:#2a3b69;--color-navy-deep:#1e2f5a;--color-navy-soft:#eef2ff;
@@ -151,9 +151,10 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
 
 /* ===== HERO ===== */
 .hero{position:relative;overflow:hidden;background:var(--hero-gradient);border-bottom:1px solid var(--color-border)}
-.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none}
-.hero::before{width:28rem;height:28rem;right:-8rem;top:-10rem;background:var(--hero-orb-1)}
-.hero::after{width:24rem;height:24rem;left:-8rem;bottom:-10rem;background:var(--hero-orb-2)}
+/* Orby w tle: radial-gradient zamiast filter:blur() – bez dodatkowej warstwy z filtrem (zasada wydajności z sekcji 07) */
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.hero::before{width:40rem;height:40rem;right:-14rem;top:-16rem;background:radial-gradient(circle,var(--hero-orb-1) 0%,transparent 65%)}
+.hero::after{width:36rem;height:36rem;left:-14rem;bottom:-16rem;background:radial-gradient(circle,var(--hero-orb-2) 0%,transparent 65%)}
 .hero__grid{position:relative;z-index:1;display:grid;gap:var(--space-8);padding-block:var(--space-10)}
 @media (min-width:64rem){.hero__grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;gap:var(--space-12);padding-block:var(--space-16)}}
 .hero__copy h1{margin:var(--space-4) 0}
@@ -196,7 +197,7 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
 .choice input:checked+.choice__card{border-color:var(--color-navy);box-shadow:inset 0 0 0 1px var(--color-navy);background:var(--color-navy-soft)}
 .choice input:focus-visible+.choice__card{box-shadow:var(--focus-ring)}
 .choice--warn input:checked+.choice__card{border-color:var(--color-warning);box-shadow:inset 0 0 0 1px var(--color-warning);background:var(--color-warning-bg)}
-.choice__tag{display:inline-block;margin-top:2px;font:600 .6875rem/1 var(--font-heading);letter-spacing:.04em;text-transform:uppercase;color:var(--color-rose-text)}
+.choice__tag{display:inline-block;margin-top:2px;font:600 var(--text-xs)/1 var(--font-heading);letter-spacing:.04em;text-transform:uppercase;color:var(--color-rose-text)}
 .check{display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface);margin-top:var(--space-3);cursor:pointer}
 .check input{width:1.25rem;height:1.25rem;margin:2px 0 0;accent-color:var(--color-navy);flex-shrink:0}
 .check strong{font:600 var(--text-sm)/1.3 var(--font-heading)}
@@ -259,8 +260,8 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
 .footer__grid{display:grid;gap:var(--space-8)}
 @media (min-width:48rem){.footer__grid{grid-template-columns:1.2fr 1fr 1fr}}
 .footer h2{font-size:var(--text-sm);text-transform:uppercase;letter-spacing:.06em;color:var(--color-text);margin-bottom:var(--space-3)}
-.footer ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--space-2)}
-.footer li a{display:inline-flex;align-items:center;min-height:32px}
+.footer ul{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.footer li a{display:flex;align-items:center;min-height:var(--tap-min)} /* pełna szerokość kolumny = cel ≥ 44 px także w poziomie */
 .footer__legal{margin-top:var(--space-8);padding-top:var(--space-5);border-top:1px solid var(--color-border);font-size:var(--text-xs);display:grid;gap:var(--space-2)}
 
 /* ===== STICKY CTA MOBILE ===== */
@@ -270,6 +271,19 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
 .sticky-cta.is-hidden{transform:translateY(110%);visibility:hidden}
 .sticky-cta{transition:transform var(--dur-base) var(--ease-out),visibility var(--dur-base)}
 @media (min-width:48rem){.sticky-cta{display:none}}
+
+/* ===== KOTWICE POD STICKY HEADEREM (WCAG 2.4.11 – fokus nie może być zasłonięty) ===== */
+[id]{scroll-margin-top:8rem}
+
+/* ===== TRYB WYSOKIEGO KONTRASTU (Windows, forced-colors) ===== */
+@media (forced-colors:active){
+  .glass,.glass__panel,.card,.choice__card,.check,.notice,.header,.sticky-cta,.facts li,.widget__badge{border:1px solid CanvasText}
+  .choice input:checked+.choice__card{outline:3px solid Highlight;outline-offset:-3px}
+  .stepper li{border:1px solid CanvasText}
+  .stepper li[aria-current="step"],.stepper li.is-done{background:Highlight}
+  .btn{border:1px solid ButtonText}
+  .tabs::after{display:none}
+}
 </style>
 </head>
 <body>
@@ -308,7 +322,7 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
     <div class="container hero__grid">
       <div class="hero__copy">
         <span class="eyebrow">Ubezpieczenia dla branży beauty</span>
-        <h1 id="hero-title">Ochrona gabinetu i zespołu, <em>bez niespodzianek w OWU</em></h1>
+        <h1 id="hero-title">Ochrona gabinetu i&nbsp;zespołu, <em>bez niespodzianek w&nbsp;OWU</em></h1>
         <p class="lead">OC dla branży beauty w programie z ERGO Hestią, ochrona karnoskarbowa, grupowe i opieka medyczna. Porównaj warianty, policz składkę i zamów ofertę – resztą zajmie się doradca Aura Consulting.</p>
         <ul class="facts" aria-label="Kluczowe fakty">
           <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Suma gwarancyjna do 300 000 zł</li>
@@ -373,13 +387,17 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
           </fieldset>
 
           <!-- WYNIK -->
-          <div class="glass__panel result" id="result" aria-live="polite" aria-atomic="true">
-            <p class="result__label">Składka roczna – cennik poglądowy</p>
-            <p class="result__price" id="result-price"><strong>—</strong></p>
-            <p class="result__meta" id="result-meta">Wybierz grupę zabiegów w kroku 1, aby zobaczyć składkę.</p>
-            <div class="result__compare" id="result-compare" hidden></div>
+          <div class="glass__panel result" id="result">
+            <div id="result-live" aria-live="polite" aria-atomic="true">
+              <p class="result__label">Składka roczna – cennik poglądowy</p>
+              <p class="result__price" id="result-price"><strong>—</strong></p>
+              <p class="result__meta" id="result-meta">Wybierz grupę zabiegów w kroku 1, aby zobaczyć składkę.</p>
+              <div class="result__compare" id="result-compare" hidden></div>
+            </div>
+            <noscript><p class="result__meta">Przeliczenie składki wymaga włączonego JavaScriptu. Możesz od razu poprosić o ofertę – doradca policzy składkę na podstawie wniosku.</p></noscript>
             <div class="result__actions">
-              <a class="btn btn--cta btn--block" id="result-cta" href="/kontakt">Poproś o ofertę</a>
+              <!-- Produkcja: /kontakt?produkt=oc&grupa=…&suma=… – w makiecie kotwica do stopki, żeby link działał lokalnie -->
+              <a class="btn btn--cta btn--block" id="result-cta" href="#kontakt">Poproś o ofertę</a>
             </div>
             <p class="result__note">Kwoty mają charakter informacyjny i nie stanowią oferty w rozumieniu art. 66 Kodeksu cywilnego. Ostateczna składka zależy od oceny ryzyka przez ERGO Hestię.</p>
           </div>
@@ -407,7 +425,7 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
     <div class="container">
       <div class="section__head">
         <span class="eyebrow">Sześć produktów</span>
-        <h2 id="products-title" style="margin-top:var(--space-3)">Co ubezpieczymy w Twoim gabinecie</h2>
+        <h2 id="products-title" style="margin-top:var(--space-3)">Co ubezpieczymy w&nbsp;Twoim gabinecie</h2>
         <p>Każdy produkt ma osobną stronę z zakresem, wyłączeniami, dokumentami OWU i formularzem zapytania. Nie sprzedajemy polis online – przygotowujemy ofertę i prowadzimy przez wniosek.</p>
       </div>
       <div class="products">
@@ -527,10 +545,10 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
   </div>
 </footer>
 
-<div class="sticky-cta" aria-label="Szybkie akcje">
+<nav class="sticky-cta" aria-label="Szybkie akcje">
   <a class="btn btn--cta" href="#kalkulator">Oblicz składkę</a>
   <a class="btn btn--ghost" href="#kontakt">Kontakt</a>
-</div>
+</nav>
 
 <script>
 (function () {
@@ -544,10 +562,12 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
     var t = root.getAttribute("data-theme");
     return t ? t === "dark" : mq.matches;
   }
+  var metaTheme = document.querySelector('meta[name="theme-color"]');
   function syncToggle() {
     var dark = isDark();
     toggle.setAttribute("aria-pressed", String(dark));
     toggle.setAttribute("aria-label", dark ? "Wyłącz tryb ciemny" : "Włącz tryb ciemny");
+    if (metaTheme) metaTheme.setAttribute("content", dark ? "#0f172a" : "#2a3b69");
   }
   toggle.addEventListener("click", function () {
     var next = isDark() ? "light" : "dark";
@@ -652,13 +672,21 @@ svg{display:inline-block;vertical-align:middle;flex-shrink:0}
   });
   show(0, false);
 
-  /* ---------- Sticky CTA (mobile): chowaj, gdy kalkulator jest na ekranie ---------- */
+  /* ---------- Sticky CTA (mobile): chowaj, gdy JAKIKOLWIEK fragment kalkulatora jest na ekranie
+     (threshold 0 – dzięki temu w widoku są naraz najwyżej 2 elementy z backdrop-filter: header + widget) ---------- */
   var sticky = document.querySelector(".sticky-cta");
   var calc = document.getElementById("kalkulator");
   if (sticky && calc && "IntersectionObserver" in window) {
     new IntersectionObserver(function (entries) {
       sticky.classList.toggle("is-hidden", entries[0].isIntersecting);
-    }, { threshold: 0.15 }).observe(calc);
+    }, { threshold: 0 }).observe(calc);
+  }
+
+  /* ---------- Zakładki: aktywna zakładka widoczna po załadowaniu (bez przewijania strony) ---------- */
+  var activeTab = document.querySelector('.tab[aria-current="page"]');
+  var tabList = document.querySelector(".tabs__list");
+  if (activeTab && tabList && activeTab.offsetLeft + activeTab.offsetWidth > tabList.clientWidth) {
+    tabList.scrollLeft = activeTab.offsetLeft - 16;
   }
 })();
 </script>
