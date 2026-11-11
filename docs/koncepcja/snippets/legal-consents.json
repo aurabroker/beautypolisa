@@ -1,0 +1,52 @@
+{
+  "$comment": "Treści zgód per kanał. Każda zmiana treści = nowa wersja (nowy identyfikator), nigdy edycja w miejscu. Identyfikator zapisywany w consents.text_version. Minimalne formuły do potwierdzenia z prawnikiem (art. 6 ust. 1 lit. a RODO; art. 398 PKE – zgoda na kanał). Pola text = wartości robocze.",
+  "consents": [
+    {
+      "purpose": "marketing_email",
+      "version": "marketing-email-v1-2026-11",
+      "legalBasis": "art. 6 ust. 1 lit. a RODO; art. 398 PKE [do potwierdzenia]",
+      "channel": "e-mail / SMS",
+      "defaultChecked": false,
+      "text": "Chcę otrzymywać od Aura Consulting sp. z o.o. informacje handlowe o ubezpieczeniach dla branży beauty na podany adres e-mail. Zgodę mogę wycofać w każdej chwili, klikając link w wiadomości.",
+      "withdrawalPath": "/zgody/wycofaj"
+    },
+    {
+      "purpose": "marketing_phone",
+      "version": "marketing-phone-v1-2026-11",
+      "legalBasis": "art. 6 ust. 1 lit. a RODO; art. 398 PKE [do potwierdzenia]",
+      "channel": "telefon",
+      "defaultChecked": false,
+      "text": "Zgadzam się na kontakt telefoniczny Aura Consulting sp. z o.o. w celach marketingowych na podany numer. Zgodę mogę wycofać w każdej chwili.",
+      "withdrawalPath": "/zgody/wycofaj"
+    },
+    {
+      "purpose": "newsletter",
+      "version": "newsletter-v1-2026-11",
+      "legalBasis": "art. 6 ust. 1 lit. a RODO; art. 398 PKE [do potwierdzenia]; double opt-in",
+      "channel": "e-mail",
+      "defaultChecked": false,
+      "text": "Zapisuję się do newslettera BeautyPolisa. Subskrypcję potwierdzę linkiem z wiadomości; mogę zrezygnować w każdej chwili linkiem w stopce.",
+      "withdrawalPath": "/newsletter/wypisz"
+    }
+  ],
+  "notices": [
+    {
+      "kind": "privacyNotice",
+      "version": "rodo-v1-2026-11",
+      "file": "privacy-notice.mdx",
+      "requiresCheckbox": false
+    },
+    {
+      "kind": "distributorNotice",
+      "version": "idd-v1-2026-11",
+      "file": "distributor.json",
+      "requiresCheckbox": false
+    },
+    {
+      "kind": "cookieBanner",
+      "version": "cookie-banner-v1-2026-11",
+      "file": "cookie-banner.json",
+      "requiresCheckbox": false
+    }
+  ]
+}

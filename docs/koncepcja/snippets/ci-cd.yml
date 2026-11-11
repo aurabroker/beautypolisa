@@ -1,0 +1,73 @@
+# .github/workflows/ci-cd.yml (skrót; wersje akcji przypięte do SHA w realnym pliku)
+name: ci-cd
+on:
+  pull_request:
+  push: { branches: [main] }
+permissions: { contents: read, pull-requests: write }
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    concurrency:                              # anulowanie TYLKO dla weryfikacji
+      group: verify-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@<sha>
+      - uses: pnpm/action-setup@<sha>
+      - uses: actions/setup-node@<sha>
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level=high
+      - run: pnpm typecheck && pnpm lint
+      - run: pnpm test --coverage            # pricing, schematy, treść, pliki prawne, uprawnienia SQL
+      - run: pnpm build:cf                    # jeden build dla obu środowisk (bez NEXT_PUBLIC_* per env)
+      - run: pnpm size-limit                  # budżety JS per trasa
+      - uses: actions/upload-artifact@<sha>
+        with: { name: open-next, path: .open-next }
+
+  preview:
+    needs: verify
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    environment: staging                      # sekrety stagingu, baza stagingowa, Service Token Access
+    concurrency:
+      group: preview-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@<sha>          # + pnpm/setup-node/install jak w verify
+      - uses: actions/download-artifact@<sha>
+        with: { name: open-next, path: .open-next }
+      - id: upload
+        run: |
+          pnpm wrangler versions upload --env staging --message "pr-${{ github.event.number }}" --json > version.json
+          echo "url=$(jq -r .preview_url version.json)" >> "$GITHUB_OUTPUT"   # pola JSON do potwierdzenia z dokumentacją Wranglera
+      - run: pnpm playwright test --config=playwright.smoke.ts
+        env:
+          BASE_URL: ${{ steps.upload.outputs.url }}
+          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+      - run: pnpm lhci autorun                 # lighthouserc.json: budżety + extraHeaders z tokenem Access; w v1 opcjonalnie
+
+  deploy-production:
+    needs: verify
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production                   # akceptacja drugiej osoby (może być właściciel biznesowy)
+    concurrency:                              # NIGDY nie przerywać wdrożenia: anulowanie po `db push`, a przed
+      group: deploy-production                # `versions deploy` zostawiłoby nowy schemat ze starym kodem
+      cancel-in-progress: false               # albo ruch podzielony na dwie wersje na czas nieokreślony
+    steps:
+      - uses: actions/checkout@<sha>          # + pnpm/setup-node/install jak w verify
+      - uses: actions/download-artifact@<sha>
+        with: { name: open-next, path: .open-next }
+      - run: supabase db push --linked        # migracje addytywne; token i hasło z sekretów środowiska
+      - id: upload
+        run: |
+          pnpm wrangler versions upload --env production --json > version.json
+          echo "id=$(jq -r .id version.json)" >> "$GITHUB_OUTPUT"
+          echo "prev=$(pnpm wrangler deployments list --env production --json | jq -r '.[0].versions[0].version_id')" >> "$GITHUB_OUTPUT"
+      # v1 (pkt 1.4): pominąć krok kanarka i wdrożyć od razu 100 %; rollback: `wrangler rollback`
+      - run: pnpm wrangler versions deploy --env production -y "${{ steps.upload.outputs.id }}@10%" "${{ steps.upload.outputs.prev }}@90%"
+      - run: pnpm playwright test --config=playwright.smoke.ts
+        env: { BASE_URL: "https://beautypolisa.eu" }
+      - run: pnpm wrangler versions deploy --env production -y "${{ steps.upload.outputs.id }}@100%"

@@ -1,0 +1,46 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "beautypolisa-web",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
+  // Zmienne czytane w RUNTIME (getCloudflareContext().env) – bez prefiksu NEXT_PUBLIC_, bo jeden build
+  // obsługuje oba środowiska; wartości publiczne trafiają do komponentów jako props z RSC (4.5).
+  "vars": {
+    "SITE_URL": "https://beautypolisa.eu",
+    "SUPABASE_URL": "https://<projekt-prod>.supabase.co",
+    "TURNSTILE_SITE_KEY": "<klucz-publiczny-widgetu-prod>",
+    "APP_ENV": "production"
+  },
+  // Sekrety WYŁĄCZNIE przez `wrangler secret put --env <env>`:
+  // SUPABASE_SECRET_KEY, TURNSTILE_SECRET_KEY, RESEND_API_KEY, SENTRY_DSN, CONSENT_HMAC_KEY, UNSUBSCRIBE_HMAC_KEY
+  "routes": [{ "pattern": "beautypolisa.eu", "custom_domain": true }],
+  "kv_namespaces": [{ "binding": "NEXT_INC_CACHE_KV", "id": "<kv-prod>" }],
+  "services": [{ "binding": "ANALYTICS", "service": "aura-analytics-collector" }],
+  // Binding rate limit: klucz najwyższego poziomu `ratelimits` (Wrangler ≥ 4.36), nie `unsafe.bindings`;
+  // `period` może wynosić tylko 10 lub 60 s; licznik liczony osobno w każdej lokalizacji Cloudflare.
+  "ratelimits": [
+    { "name": "LEAD_RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+  ],
+  "env": {
+    "staging": {
+      "name": "beautypolisa-web-staging",
+      "routes": [{ "pattern": "staging.beautypolisa.eu", "custom_domain": true }],
+      "vars": {
+        "SITE_URL": "https://staging.beautypolisa.eu",
+        "SUPABASE_URL": "https://<projekt-staging>.supabase.co",
+        "TURNSTILE_SITE_KEY": "<klucz-publiczny-widgetu-staging>",
+        "APP_ENV": "staging"
+      },
+      // Bindingi NIE są dziedziczone przez środowiska – każdy trzeba powtórzyć,
+      // inaczej na stagingu env.LEAD_RATE_LIMITER byłby undefined i ta warstwa nie byłaby testowana.
+      "kv_namespaces": [{ "binding": "NEXT_INC_CACHE_KV", "id": "<kv-staging>" }],
+      "services": [{ "binding": "ANALYTICS", "service": "aura-analytics-collector" }],
+      "ratelimits": [
+        { "name": "LEAD_RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }
+      ]
+    }
+  }
+}
