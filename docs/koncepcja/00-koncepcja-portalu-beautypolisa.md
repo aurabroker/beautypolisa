@@ -17,7 +17,7 @@
 5. **Treść jest przewagą konkurencyjną:** BeautyPolisa jest pierwotnym źródłem dla programu OC ERGO Hestia (Beauty Razem), czterech grup ryzyka zabiegów i listy zabiegów wysokiego ryzyka. Pierwsze 5 tygodni kalendarza to klaster OC i prawo salonowe (sekcja 05).
 6. **Lejki:** cztery magnesy wg ramy MAGNET, z quizem grup ryzyka jako głównym wejściem (bez bramki e-mail), pełną serią pielęgnującą w Resend, osobnymi zgodami RODO/e-mail/telefon i warstwowym spełnieniem obowiązków IDD (sekcja 06).
 7. **Design v2 z Bloom:** marka BeautyPolisa założona w Bloom z prawdziwego logo (granat `#2A3B68`, róż serca `#ED145B` i `#D30C54`, Poppins). W Bloom powstało od zera 21 ikon i ilustracja hero. Glass widget to kalkulator OC na tle serca marki. Makieta `design/makieta-v2.html` działa bez builda i przeszła test w Chrome oraz przegląd zgodności z marką w Bloom (sekcja 09; sekcja 07 jest częściowo zastąpiona).
-8. **Dwa produkty nie mają jeszcze oferty** (Utrata dochodu, NNW dzieci) – w v1 startują jako strony edukacyjne w trybie „zapytaj o ofertę”. Cenniki Tax Protect i cennik OC wymagają potwierdzenia z ubezpieczycielami przed publikacją.
+8. **Dwa produkty nie mają jeszcze oferty** (Utrata dochodu, NNW dzieci) – w v1 startują jako strony edukacyjne w trybie „zapytaj o ofertę”. Składki pozostałych produktów są sztywne (taryfa programu) i portal pokazuje je bez zastrzeżeń „orientacyjne” – potwierdzenie zleceniodawcy z 11.11.2026.
 9. **Plan:** tydzień 0 to szybkie wygrane na obecnej infrastrukturze (TLS 1.2, SSL strict, HSTS, odblokowanie botów AI, REVOKE zbędnych grantów, usunięcie anti-inspect), potem 4 fazy: MVP → baza wiedzy i GEO → lejki → skalowanie (sekcja 08).
 
 ## 1. Zlecenie i jego interpretacja
@@ -112,7 +112,7 @@ Kluczowe decyzje (pełne uzasadnienia i odrzucone alternatywy w sekcjach; rejest
 | D7 | E-mail przez Resend z tabelą outbox i retry; bez kolejek | 02 |
 | D8 | Panel w tej samej aplikacji, za Cloudflare Access + Supabase Auth (MFA) + RLS | 02 |
 | D9 | Cloudflare: SSL Full (strict), min TLS 1.2, HSTS etapami, AI Search i Agent dopuszczone, robots.txt z repozytorium | 02, 04 |
-| D10 | Strony produktowe jako schema `Service`, nie `Product`; `AggregateOffer` tylko dla OC z potwierdzonego cennika | 04 |
+| D10 | Strony produktowe jako schema `Service`, nie `Product`; `AggregateOffer` dla OC z taryfy programu (składki sztywne) | 04 |
 | D11 | Huby = strony produktowe i kalkulator; start od klastra OC i prawa salonowego; rytm 2 publikacje + 1 aktualizacja tygodniowo | 05 |
 | D12 | Quiz grup ryzyka bez bramki e-mail; double opt-in dla serii pielęgnującej; trzy osobne zgody | 06 |
 | D13 | Paleta i font wyłącznie z logo: granat `#2A3B68`, CTA `#D30C54` (biały tekst 5,32:1), `#ED145B` tylko do grafiki; Poppins; tylko tryb jasny do czasu logo na ciemne tło | 09 |
@@ -175,7 +175,7 @@ Pełny plan z WBS, rejestrem ryzyk, KPI/SLO i checklistami Definition of Done: `
 1. **Status dystrybutora** (broker czy agent) – wpływa na stopkę, klauzule, dane strukturalne i treść.
 2. **Administrator danych i IOD** (Aura Consulting czy Aura Expert) oraz akceptacja podstaw prawnych i retencji.
 3. **Zgoda na nowy projekt Supabase** i koszt stały ok. 30 USD miesięcznie [hipoteza] (Supabase Pro + Workers Paid).
-4. **Potwierdzenie cennika OC** (400–1250 zł, klauzula ochrony prawnej 92 zł, mnożnik dla zespołów 6–8 osób) z ERGO Hestią i składek Tax Protect z Colonnade.
+4. ~~Potwierdzenie cenników~~ – **rozstrzygnięte 11.11.2026:** składki są sztywne (taryfa programu). Do dostarczenia zostają tylko aktualne tabele składek Tax Protect, Grupowego ERGO i abonamentów, jeśli różnią się od wartości w obecnym kodzie.
 5. **Decyzja o crawlerach AI** (Search/Agent – rekomendujemy dopuścić; Training – do decyzji).
 6. **Dokumenty OWU do publikacji** i zasady użycia nazw oraz logotypów ubezpieczycieli i Fundacji Beauty Razem.
 7. **Imienny autor i recenzent** treści z uprawnieniami.

@@ -9,7 +9,7 @@
 - W Bloom powstał od zera zestaw 21 ikon (produkty, zawody, interfejs) w dwóch wersjach: arkusz wzorcowy PNG i wektor SVG. Ikony są rozcięte na pojedyncze pliki i sprite z `currentColor`.
 - W Bloom powstała ilustracja hero w tym samym stylu linii. Po generacji przyciszono róż na fotelu i liściach, zgodnie z zasadą „granat prowadzi, róż jest akcentem”.
 - Nowa makieta strony głównej `design/makieta-v2.html` działa bez builda, liczy składkę OC według reguł obecnego kalkulatora i została sprawdzona w Chrome przy 390 px i 1280 px.
-- Bloom przeprowadził przegląd zgodności z marką. Wykryte rozbieżności (ciemniejszy granat nagłówków, cena bez potwierdzenia w hero) zostały poprawione.
+- Bloom przeprowadził przegląd zgodności z marką. Ciemniejszy granat nagłówków został poprawiony. Uwagę o cenie rozstrzygnął zleceniodawca: składki są sztywne (taryfa programu), więc cena „od 400 zł” jest w hero i w kalkulatorze bez zastrzeżeń.
 
 ## 1. Dlaczego v1 nie działał
 
@@ -110,7 +110,7 @@ Kolejność sekcji i ich cel:
 | Zespół 9 i więcej osób | Wycena indywidualna | – |
 | Ochrona prawna | +92 zł | – |
 
-Cennik jest oznaczony jako poglądowy i wymaga potwierdzenia przez ERGO Hestię przed publikacją.
+Składki są sztywne – to stała taryfa programu, nie wycena szacunkowa (potwierdzenie zleceniodawcy z 11.11.2026). Kalkulator pokazuje je bez dopisków „poglądowy” czy „orientacyjny”. Pod wynikiem zostaje jedno zdanie o taryfie i o wycenie indywidualnej dla grupy 4 i zespołów od 9 osób.
 
 ## 7. Weryfikacja
 
@@ -129,7 +129,7 @@ Cennik jest oznaczony jako poglądowy i wymaga potwierdzenia przez ERGO Hestię 
 | Kontrola | Werdykt Bloom | Co zrobiono |
 |---|---|---|
 | Kolor | Nagłówki w `#1C2748` zamiast `#2A3B68`; przyciski i serce zgodne | Nagłówki przestawione na `#2A3B68` |
-| Copy | Ton zgodny z marką; cena 400 zł i sumy wymagają zatwierdzonych danych produktu | Cena usunięta z plakietki hero; cena zostaje tylko w kalkulatorze z oznaczeniem „cennik poglądowy”. Potwierdzenie cennika jest warunkiem publikacji |
+| Copy | Ton zgodny z marką; cena 400 zł i sumy wymagają zatwierdzonych danych produktu | Zleceniodawca potwierdził, że składki są sztywne (taryfa programu). Cena „od 400 zł rocznie” wróciła do plakietki hero, a kalkulator ma etykietę „Stała taryfa programu” |
 | Logo | Niepewny – zrzut za mały, by potwierdzić detale | Używany jest oryginalny plik PNG bez zmian; w produkcji zalecany SVG logo |
 | Typografia | Niepewny – większość liter zgodna z Poppins | Bez zmian; to ograniczenie rozdzielczości zrzutu |
 
@@ -151,7 +151,7 @@ Cennik jest oznaczony jako poglądowy i wymaga potwierdzenia przez ERGO Hestię 
 ## Pytania otwarte do zleceniodawcy
 
 1. Czy istnieje logo w wersji SVG oraz w wersji na ciemne tło? Bez nich nie wrócimy do trybu ciemnego.
-2. Czy cennik OC z obecnego kalkulatora (400–1250 zł, ochrona prawna 92 zł, mnożnik 1,25) jest aktualny i potwierdzony przez ERGO Hestię?
+2. ~~Czy cennik OC jest aktualny i potwierdzony?~~ Rozstrzygnięte 11.11.2026: składki są sztywne (taryfa programu: 400–1250 zł, ochrona prawna 92 zł, zespół 6–8 osób ×1,25).
 3. Czy można publicznie wymienić Fundację Beauty Razem i ubezpieczycieli z nazwy w pasku partnerów? Logotypy wymagają zgody, nazwy tekstowe zwykle nie, ale to decyzja prawna.
 4. Czy chcesz kolejne ilustracje z Bloom: dla każdej strony produktu i dla stron zawodów?
 5. Czy płótno Design ma zostać udostępnione zespołowi lub agencji, która będzie budować portal?

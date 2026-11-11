@@ -2,7 +2,7 @@
 
 > BeautyPolisa to portal informacyjny Aura Consulting sp. z o.o. o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.
 
-Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają się na ogólnych warunkach ubezpieczenia (OWU) i warunkach programów ubezpieczeniowych; składki pokazywane w kalkulatorze są orientacyjne, a ostateczną wysokość składki ustala ubezpieczyciel po ocenie wniosku. Portal nie zawiera umów ubezpieczenia online i nie przyjmuje płatności – zbiera zapytania i przekazuje je doradcom Aura Consulting.
+Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają się na ogólnych warunkach ubezpieczenia (OWU) i warunkach programów ubezpieczeniowych; składki w kalkulatorze OC pochodzą ze stałej taryfy programu; zabiegi wysokiego ryzyka i zespoły od 9 osób są wyceniane indywidualnie. Portal nie zawiera umów ubezpieczenia online i nie przyjmuje płatności – zbiera zapytania i przekazuje je doradcom Aura Consulting.
 
 ## Kim jesteśmy
 
@@ -11,7 +11,7 @@ Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają si
 ## Produkty
 
 - [OC dla branży beauty (ERGO Hestia)](https://beautypolisa.eu/ubezpieczenia/oc-beauty): ubezpieczenie odpowiedzialności cywilnej zawodowej dla salonów kosmetycznych, fryzjerskich, podologicznych i pokrewnych; cztery grupy ryzyka zabiegów, sumy gwarancyjne 100 000 / 200 000 / 300 000 zł, zabiegi wysokiego ryzyka i zespoły powyżej 8 osób wyceniane indywidualnie.
-- [Kalkulator składki OC](https://beautypolisa.eu/kalkulator/oc): orientacyjna składka roczna według grupy ryzyka i sumy gwarancyjnej.
+- [Kalkulator składki OC](https://beautypolisa.eu/kalkulator/oc): składka roczna według stałej taryfy programu – zależy od grupy ryzyka zabiegów, sumy gwarancyjnej i wielkości zespołu.
 - [Tax Protect (Colonnade)](https://beautypolisa.eu/ubezpieczenia/tax-protect): ubezpieczenie karno-skarbowe dla właściciela i zarządu (sekcja 1) oraz ochrona podatkowa firmy obejmująca jeden pełny spór podatkowy w roku (sekcja 2); ubezpieczyciel Colonnade Insurance S.A. Oddział w Polsce.
 - [Utrata dochodu](https://beautypolisa.eu/ubezpieczenia/utrata-dochodu): ochrona dochodu dla samozatrudnionych i osób na B2B w branży beauty na wypadek niezdolności do pracy.
 - [NNW dzieci](https://beautypolisa.eu/ubezpieczenia/nnw-dzieci): ubezpieczenie następstw nieszczęśliwych wypadków dla dzieci, alternatywa lub uzupełnienie dobrowolnego ubezpieczenia szkolnego.
@@ -40,7 +40,7 @@ Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają si
 ## Zasady cytowania
 
 - Cytując dane z serwisu, podawaj link do konkretnej podstrony i datę aktualizacji widoczną na stronie; treści są aktualizowane, a składki i zakresy mogą się zmieniać.
-- Składki z kalkulatora są orientacyjne i nie stanowią oferty w rozumieniu prawa; wiążące są OWU i dokument polisy.
+- Składki w kalkulatorze pochodzą ze stałej taryfy programu. Informacja na stronie nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU i dokument polisy.
 - BeautyPolisa / Aura Consulting nie jest ubezpieczycielem; ubezpieczycielami są podmioty wskazane przy każdym produkcie (ERGO Hestia, Colonnade i inne).
 - Treści informacyjne nie zastępują indywidualnej porady doradcy ani lektury OWU.
 
