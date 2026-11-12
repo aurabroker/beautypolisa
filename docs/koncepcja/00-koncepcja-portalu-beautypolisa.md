@@ -49,8 +49,8 @@ Przyjęta interpretacja (szczegóły i założenia w `01-audyt-stanu-obecnego.md
 | `09-design-v2-bloom.md` | Design v2 (nieaktualny, zastąpiony przez 10): proces w Bloom, reguły kalkulatora, historia przeglądu marki | Projektant, front-end |
 | `10-design-v3-old-money.md` | Design v3: kierunek old money, paleta z kontrastami, typografia, ikony, zasady szkła, zdjęcia, sekcje strony, kalkulator, testy, decyzje | Projektant, front-end, zleceniodawca |
 | `11-strefa-klienta.md` | Strefa Klienta: konto salonu z polisami, tablica „Dam pracę”, „Szkolenia” z kontami organizatorów; role, ścieżki, model danych i RLS (`snippets/strefa-klienta.sql`), uwierzytelnianie, RODO, zagrożenia, plan etapów Z0–Z3 | Właściciel produktu, developer, osoba odpowiedzialna za bezpieczeństwo, prawnik/IOD |
-| `design/` | `v3/` (aktualna: `makieta-v3.html`, `tokens-v3.css`, `img/`, `ikony/`, sprite i arkusz ikon); `makieta-v2.html`, `tokens-v2.css`, `bloom/` jako historia v2 | Projektant, developer |
-| `snippets/` | `robots.txt`, `llms.txt`, 7 plików JSON-LD (w tym `schema-produkt-tax-protect.json`), `legal-distributor.json` i `legal-consents.json`, pliki SQL, CI i nagłówków bezpieczeństwa | Developer – gotowe do użycia |
+| `design/` | `v3/` (aktualna: `makieta-v3.html`, `oc-beauty.html` – strona OC z pełną listą zabiegów i treścią klauzuli ochrony prawnej, `tokens-v3.css`, `img/`, `ikony/`, sprite i arkusz ikon, `strefa/` – makiety Strefy Klienta); `makieta-v2.html`, `tokens-v2.css`, `bloom/` jako historia v2 | Projektant, developer |
+| `snippets/` | `robots.txt`, `llms.txt`, 7 plików JSON-LD (w tym `schema-produkt-tax-protect.json`), `legal-distributor.json` i `legal-consents.json`, `zabiegi-oc-beauty.json` (kanoniczna lista 117 zabiegów OC – D29), `klauzula-ochrona-prawna.json` (dosłowna treść klauzuli – D30), pliki SQL, CI i nagłówków bezpieczeństwa | Developer – gotowe do użycia |
 
 ## 3. Cele i kryteria sukcesu
 
@@ -77,8 +77,8 @@ Obietnica marki (jedno zdanie używane wszędzie, także w danych strukturalnych
 W zakresie:
 
 - Strona główna z glass widgetem kalkulatora OC (3 kroki: grupa ryzyka → zespół → suma gwarancyjna) i paskiem zaufania.
-- Sześć stron produktowych (`/ubezpieczenia/...`) z FAQ, dokumentami OWU, formularzem „poproś o ofertę”; Utrata dochodu i NNW dzieci w trybie edukacyjnym „zapytaj o ofertę” do czasu dostarczenia parametrów.
-- Pełny kalkulator OC (`/kalkulator/oc`) z listą zabiegów w czterech grupach i regułami z obecnego kodu (grupa 4 i zespół powyżej 8 osób → wycena indywidualna).
+- Sześć stron produktowych (`/ubezpieczenia/...`) z FAQ, dokumentami OWU, formularzem „poproś o ofertę”; Utrata dochodu i NNW dzieci w trybie edukacyjnym „zapytaj o ofertę” do czasu dostarczenia parametrów. Strona OC ma pełną listę 117 zabiegów z grupami ryzyka (`#zabiegi`, D29) i pełną treść klauzuli ochrony prawnej (`#ochrona-prawna`, D30) – makieta `design/v3/oc-beauty.html`.
+- Pełny kalkulator OC (`/kalkulator/oc`) z wyszukiwarką zabiegów („Sprawdź, w której grupie jest Twój zabieg” – dane z `snippets/zabiegi-oc-beauty.json`), regułami z obecnego kodu (grupa 4 i zespół powyżej 8 osób → wycena indywidualna) i dialogiem z treścią klauzuli przy polu ochrony prawnej.
 - Sześć stron `/dla-kogo/<zawód>`, baza wiedzy (MDX), `/dokumenty`, `/o-nas`, `/kontakt`, `/szkoda`, `/rodo`.
 - Formularze leadowe z Turnstile, limitem częstotliwości, walidacją serwerową, zapisem przez funkcję SQL, e-mailem do zespołu (Resend) i zdarzeniem analitycznym first-party.
 - Panel wewnętrzny `/panel` (lista leadów, statusy) za Cloudflare Access i Supabase Auth z MFA.
@@ -201,8 +201,9 @@ Pełny plan z WBS, rejestrem ryzyk, KPI/SLO i checklistami Definition of Done tr
 7. **Imienny autor i recenzent** treści z uprawnieniami.
 8. **Dane kontaktowe i profile** (telefon i e-mail biura, LinkedIn/Facebook/Instagram, Google Business Profile) do stopki, `ContactPoint` i `sameAs`. Dane rejestrowe Aura Expert sp. z o.o. (KRS, NIP, REGON, kapitał zakładowy, wpis w RPU) i strona spółki www.auraexpert.pl – podane 12.11.2026.
 9. **Identyfikatory Google** (D27): identyfikator pomiaru GA4 – na starych stronach są dwa różne (`life.html`/`life1.html` i `medical.html`), więc zleceniodawca wskazuje docelowy – oraz identyfikator kontenera GTM, jeśli jest używany; w razie konwersji Google Ads – ich identyfikatory.
+10. **Lista zabiegów i klauzula przed publikacją** (D29, D30; blokuje publikację sekcji `#zabiegi` i `#ochrona-prawna`, nie start prac nad fazą 1): odpowiedzi na 16 pytań z pola `do_potwierdzenia` w `snippets/zabiegi-oc-beauty.json` – m.in. pedicure w trzech grupach, makijaż i makijaż okolicznościowy, jonoforeza w grupach 2 i 3, granica między elektrostymulacją (gr. 1) a prądami (gr. 2), urządzenia ultradźwiękowe a HIFU (gr. 4), zakres „PLASMA”, zabiegi pokrewne grupie 4 bez własnej pozycji, usługi bez pozycji na liście (np. manicure hybrydowy), pisownia nazw do porównania z załącznikiem programu, brak zawodu „stylistka rzęs i brwi”; porównanie treści klauzuli ochrony prawnej z oryginałem dokumentu programu ERGO Hestii; zgoda ERGO Hestii i Fundacji Beauty Razem na publikację listy i klauzuli (pkt 6).
 
-**Strefa Klienta** (nie blokuje fazy 1): rozstrzygnięte 11.11.2026 – konto przy każdej polisie, brak odcięcia konta po wygaśnięciu polis, „Dam pracę” jako sama tablica bez wpisu do KRAZ, organizatorzy szkoleń. Otwarte (pełna lista w 11 §21): role RODO przy danych uczestników szkoleń – organizator jako odrębny administrator czy Aura jako podmiot przetwarzający (prawnik i IOD, blokuje Z2); właściciel konta, gdy ubezpieczającym jest spółka; akceptacja obowiązkowego TOTP dla właścicieli salonów; okres przechowywania dokumentów polis przy koncie bez daty wygaśnięcia; zasady weryfikacji i ewentualne opłaty dla organizatorów; formularz kontaktowy w ogłoszeniach czy wyłącznie bezpośredni e-mail lub telefon salonu; opinia prawna przed włączeniem nieaktywnego „Szukam pracy” (KRAZ, RODO, DSA – nie blokuje etapów).
+**Strefa Klienta** (nie blokuje fazy 1): rozstrzygnięte 11.11.2026 – konto przy każdej polisie, brak odcięcia konta po wygaśnięciu polis, „Dam pracę” jako sama tablica bez wpisu do KRAZ, organizatorzy szkoleń; rozstrzygnięte 12.11.2026 – drugi składnik wyłącznie w aplikacji uwierzytelniającej, bez SMS (D28). Otwarte (pełna lista w 11 §21): role RODO przy danych uczestników szkoleń – organizator jako odrębny administrator czy Aura jako podmiot przetwarzający (prawnik i IOD, blokuje Z2); właściciel konta, gdy ubezpieczającym jest spółka; procedura resetu drugiego składnika przez doradcę (weryfikacja tożsamości – do regulaminu, D28); okres przechowywania dokumentów polis przy koncie bez daty wygaśnięcia; zasady weryfikacji i ewentualne opłaty dla organizatorów; formularz kontaktowy w ogłoszeniach czy wyłącznie bezpośredni e-mail lub telefon salonu; opinia prawna przed włączeniem nieaktywnego „Szukam pracy” (KRAZ, RODO, DSA – nie blokuje etapów).
 
 Pełna, skonsolidowana lista pytań otwartych trafi do `08-plan-wdrozenia.md` (w przygotowaniu).
 
@@ -215,6 +216,6 @@ Pełna, skonsolidowana lista pytań otwartych trafi do `08-plan-wdrozenia.md` (w
 
 ## 15. Następne kroki
 
-1. Przegląd i akceptacja koncepcji przez zleceniodawcę, w szczególności decyzji D1–D27 i odpowiedzi na pytania z rozdziału 13.
+1. Przegląd i akceptacja koncepcji przez zleceniodawcę, w szczególności decyzji D1–D30 i odpowiedzi na pytania z rozdziału 13.
 2. Wykonanie szybkich wygranych tygodnia 0 (sekcja 08, rozdział 1) – są niezależne od budowy portalu i usuwają realne ryzyka już dziś.
 3. Po akceptacji: szczegółowy plan implementacji fazy 1 (zadania, kolejność, testy) i start od szkieletu aplikacji z bramkami CI, zanim powstanie jakakolwiek strona.
