@@ -2,6 +2,8 @@
 
 > Ta sekcja zastępuje warstwę wizualną sekcji `09-design-v2-bloom.md` (paleta, typografia, ikony, ilustracje, makieta). Z sekcji 07 nadal obowiązują: lista kontrolna WCAG 2.2 AA, zasady responsywności, inwentarz komponentów, mikrocopy i szablony stron. Z sekcji 09 nadal obowiązują: reguły kalkulatora OC i opis procesu pracy z Bloom.
 
+> **Aktualizacja 12.11.2026 – przejście TURBO.** Makieta przeszła recenzję z czterech perspektyw, weryfikację i wdrożenie 41 poprawek. Doszła warstwa opowieści (rozdziały I–VII, „Jeden dzień w salonie”), ruch sterowany przewijaniem i rozdział „Strefa Klienta” z makietami ekranów. Szczegóły w rozdziale 14. Tokeny w `design/v3/tokens-v3.css` mają teraz nazwy zgodne z `@theme` Tailwind 4.
+
 ## TL;DR
 
 - Zleceniodawca odrzucił v2 jako „ilustrację z komiksu” i poprosił o totalny redesign: całość w glassmorphizmie, glamour w stylu old money.
@@ -141,3 +143,39 @@ Narzędzie: Playwright i Chromium, zrzuty całej strony przy 1280 i 390 px.
 1. **Logo na ciemne tło:** w stopce logo stoi na jasnym polu. Potrzebna jest wersja jasna (kość słoniowa i złoto) oraz logo w SVG zamiast PNG.
 2. **Zdjęcia:** czy zleceniodawca akceptuje zdjęcia generowane w Bloom na produkcji, czy planuje sesję w prawdziwym salonie w tym samym stylu?
 3. **Tryb ciemny:** w v3 strona ma już ciemne sekcje. Osobny tryb ciemny dla całej strony nie jest potrzebny w fazie 1.
+
+## 14. Przejście TURBO (12.11.2026)
+
+**Jak powstało.** Cztery niezależne recenzje makiety, każda z innym skillem: luksus wizualny i opowieść (design-critique, brand-review), dostępność i telefony (accessibility-review), teksty i konwersja (ux-copy, lead-magnets-and-funnels, insurance-customer-experience), wydajność, semantyka i system (technical-seo, design-system). Wyniki przed zmianami: 6, 6, 5 i 6 na 10. Ze 49 propozycji 43 przyjęto, każdą sprawdził weryfikator, który próbował ją obalić. Wdrożenie odbyło się w dwóch przejściach. Potem nastąpiła kontrola jakości przed i po oraz runda poprawek. Kontrola jakości po zmianach: strona główna 7,5/10, Strefa Klienta 8/10.
+
+**Inspiracje zleceniodawcy.** Gucci „La Famiglia: Mystery Unfolds” (opowieść, odkrywanie zamiast menu) i Agrumea Farm (powolna, filmowa podróż w przewijaniu). Strony nie były osiągalne z sesji, więc przejęto zasady z opisów: rozdziały, odkrywanie, filmowe tempo. Nie przejęto ani elementów, ani układów. Bez WebGL, bez bibliotek i bez przejmowania przewijania, bo szybkość i dostępność mają pierwszeństwo.
+
+### 14.1 Opowieść
+- Rozdziały I–VII w etykietach sekcji (rzymskie cyfry, kursywa szeryfowa).
+- **I · „Jeden dzień w salonie. Sześć chwil.”** – sześć sytuacji od 9:40 do 20:00 (reakcja klientki po zabiegu, zawiadomienie o kontroli podatkowej, uraz właścicielki, wypadek dziecka w szkole, pytanie o benefity, ból pleców po dniu przy fotelu). Każdą odsłania się jak wskazówkę (`<details>`, działa bez JS) i każda prowadzi do właściwej ochrony. Do tego licznik „Odsłonięte: x z 6”, linia „rano → wieczór” i przycisk „Odsłoń wszystkie”. Opisy ochrony są ogólne, z zastrzeżeniem „zgodnie z OWU”.
+- **VI · Strefa Klienta** – rozdział na marmurze z przykładową kartą klienta (dane jawnie fikcyjne, kwota z taryfy: 790 zł + 92 zł = 882 zł) i linkami do makiet strefy. W nagłówku jest link „Strefa Klienta”, w stopce „Dam pracę” i „Szkolenia”.
+- **Epilog (#kontakt)** – formularz rozmowy z doradcą w panelu CTA: wybór produktu, minimum pól, zgody z `snippets/legal-consents.json`.
+
+### 14.2 Ruch
+- Ruch sterowany przewijaniem (`animation-timeline: view()`) jest zamknięty w `@supports` i `prefers-reduced-motion: no-preference`. Gdy przeglądarka go nie obsługuje, zastępuje go `IntersectionObserver`.
+- Efekty: nagłówki odsłaniane „kurtyną” (z zapasem na polskie znaki diakrytyczne), złote linie rysujące się przy wejściu, odsłonięcie zdjęcia martwej natury, delikatne ziarno na tłach.
+- Wejście strony trwa najwyżej 1,15 s i obejmuje tylko ozdoby (ramka panelu, linia). H1 i zdjęcie hero nie czekają na animację, LCP to H1 po około 220 ms.
+- Nagłówek kurczy się przy przewijaniu i chowa przy przewijaniu w dół. Nigdy nie chowa się przy otwartym menu, przy fokusie w środku ani przy ograniczonym ruchu.
+- Cena w kalkulatorze „tyka” przy zmianie (Web Animations, wyłączone przy ograniczonym ruchu). Na telefonie przy dolnej krawędzi ekranu jest pasek z aktualną składką.
+- Bez JavaScriptu cała treść jest widoczna. Przy ograniczonym ruchu nie ma żadnych animacji.
+
+### 14.3 Wydajność i dostępność
+- Najwyżej 3 tafle `backdrop-filter` w widoku (2 na telefonie). Produkty, zawody, kroki i FAQ są jedną taflą z liniami włoskowymi zamiast wielu kart.
+- Zdjęcie hero jest `<img fetchpriority="high">` w `<picture>` (1024 px na telefonie), a nie tłem w CSS. Tła pozostałych scen ładują się przy zbliżeniu.
+- Fonty: Cormorant 600 i 600 kursywa (500), Poppins 400 i 500. Do tego fonty zastępcze o zgodnych metrykach, więc nie ma skoku układu (CLS 0,006).
+- Brak atrybutów `style` (zgodność z CSP z nonce). Jest blok `forced-colors`. Wynik kalkulatora jest ogłaszany przez jeden `role="status"`.
+- Twarde spacje i polska typografia w całym tekście. Kontrast zmierzono na wyrenderowanym szkle i zdjęciach: wszystkie teksty przechodzą AA.
+
+### 14.4 Makiety Strefy Klienta
+`design/v3/strefa/`: `strefa.css` (wspólna warstwa aplikacji na tokenach v3), `logowanie.html`, `panel.html`, `dam-prace.html`, `szkolenia.html`. Opis funkcji jest w `11-strefa-klienta.md`. Ekrany przełącza się paskiem makiety na górze strony. Bez JS wszystkie ekrany są widoczne jeden pod drugim. „Szukam pracy” jest tylko podglądem z oznaczeniem „funkcja nieaktywna” (D-E).
+
+### 14.5 Do dostarczenia
+- Logo w SVG oraz jasna wersja na ciemne tła. Do tego czasu: zmniejszona wersja PNG (obecny plik ma 3000 px i 41 KB).
+- Wersje AVIF czterech zdjęć, które dadzą około 60% mniej danych, oraz kadr hero 4:3 na telefon. Wszystko można zrobić z istniejących plików.
+- Dane do stopki i schema.org: telefon, e-mail, KNF/KRS/NIP. W makiecie są oznaczone jako miejsca do uzupełnienia.
+
