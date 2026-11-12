@@ -165,7 +165,7 @@
 <!-- Adnotacja makiety: w produkcji usuwana -->
 <div class="mock-bar" role="note">
   <strong>Makieta</strong>
-  <span>Strefa Klienta&nbsp;– wersja nieaktywna (na stronie głównej link „Szkolenia” ma dopisek „wkrótce”). Szkolenia, organizatorzy i&nbsp;osoby są fikcyjne, stan na 11&nbsp;listopada 2026&nbsp;r.</span>
+  <span>„Szkolenia” – katalog, zapisy i&nbsp;widok organizatora (D-D). Szkolenia, organizatorzy i&nbsp;osoby są fikcyjne, stan na 11&nbsp;listopada 2026&nbsp;r.</span>
   <nav aria-label="Ekrany makiety">
     <a href="#katalog">Katalog</a>
     <a href="#szkolenie">Strona szkolenia</a>
@@ -215,6 +215,7 @@
 
   <!-- ======================= menu boczne: jasne szkło (tafla 2/3) ======================= -->
   <nav class="sidenav glass glass--strong" id="sidenav" aria-label="Strefa Klienta">
+    <button class="drawer-close nav-close" type="button" aria-label="Zamknij menu"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <p class="sidenav-title label-caps"><span class="salon-only">Salon Przykładowy</span><span class="org-only">Organizator szkoleń</span></p>
     <ul class="salon-only">
       <li><a href="panel.html#pulpit"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Pulpit</a></li>
@@ -343,7 +344,7 @@
             <div class="tr-main">
               <p class="label-caps">Techniki zabiegowe&nbsp;· stacjonarne</p>
               <h3><a href="#szkolenie">Pielęgnacja dłoni&nbsp;– warsztat dla zespołu (przykład)</a></h3>
-              <p class="tr-meta"><time datetime="2026-12-09T10:00">9&nbsp;grudnia 2026&nbsp;r., 10:00–14:00</time>&nbsp;· Warszawa</p>
+              <p class="tr-meta"><time datetime="2026-12-09T10:00">9&nbsp;grudnia 2026&nbsp;r., 10:00–14:00</time>&nbsp;· Kraków</p>
               <p class="org"><strong>Salon Przykładowy</strong> <span class="xsmall muted">salon</span> <span class="badge badge--verified">Organizator zweryfikowany przez Aura Consulting (dane firmy)</span></p>
             </div>
             <div class="tr-side">
@@ -742,7 +743,7 @@
             <thead><tr><th scope="col">Szkolenie</th><th scope="col">Termin</th><th scope="col">Status</th><th scope="col">Zapisy</th><th scope="col"><span class="sr-only">Akcje</span></th></tr></thead>
             <tbody>
               <tr>
-                <th scope="row" data-label="Szkolenie">Pielęgnacja dłoni&nbsp;– warsztat dla zespołu (przykład)<br><span class="muted small">stacjonarne&nbsp;· Warszawa&nbsp;· bezpłatne</span></th>
+                <th scope="row" data-label="Szkolenie">Pielęgnacja dłoni&nbsp;– warsztat dla zespołu (przykład)<br><span class="muted small">stacjonarne&nbsp;· Kraków&nbsp;· bezpłatne</span></th>
                 <td data-label="Termin"><time datetime="2026-12-09">9.12.2026</time></td>
                 <td data-label="Status"><span class="badge badge--ok">Opublikowane</span></td>
                 <td data-label="Zapisy"><div>7 z&nbsp;12<br><span class="muted small">rezerwowi: 0</span></div></td>
@@ -781,7 +782,7 @@
                 <td class="cell-actions"><button class="btn btn-ghost btn-sm" type="button">Wycofaj do szkicu<span class="sr-only">: Makijaż okolicznościowy</span></button></td>
               </tr>
               <tr>
-                <th scope="row" data-label="Szkolenie">Laminacja rzęs&nbsp;– praktyka (przykład)<br><span class="muted small">stacjonarne&nbsp;· Warszawa&nbsp;· bezpłatne</span></th>
+                <th scope="row" data-label="Szkolenie">Laminacja rzęs&nbsp;– praktyka (przykład)<br><span class="muted small">stacjonarne&nbsp;· Kraków&nbsp;· bezpłatne</span></th>
                 <td data-label="Termin"><time datetime="2027-02-04">4.02.2027</time></td>
                 <td data-label="Status"><div><span class="badge badge--error">Odrzucone</span>
                   <span class="reject"><strong>Powód:</strong> opis zawiera numer telefonu. Usuń dane kontaktowe&nbsp;– zapisy prowadzi Strefa Klienta.</span></div></td>
@@ -789,21 +790,21 @@
                 <td class="cell-actions"><a class="btn btn-ghost btn-sm" href="#dodaj">Popraw i&nbsp;wyślij ponownie<span class="sr-only">: Laminacja rzęs</span></a></td>
               </tr>
               <tr>
-                <th scope="row" data-label="Szkolenie">Stylizacja paznokci&nbsp;– przegląd technik (przykład)<br><span class="muted small">stacjonarne&nbsp;· Warszawa</span></th>
+                <th scope="row" data-label="Szkolenie">Stylizacja paznokci&nbsp;– przegląd technik (przykład)<br><span class="muted small">stacjonarne&nbsp;· Kraków</span></th>
                 <td data-label="Termin"><time datetime="2027-02-18">18.02.2027</time></td>
                 <td data-label="Status"><span class="badge badge--warn">Szkic</span></td>
                 <td data-label="Zapisy">–</td>
                 <td class="cell-actions"><div class="actions"><a class="btn btn-ghost btn-sm" href="#dodaj">Edytuj<span class="sr-only">: Stylizacja paznokci</span></a><button class="btn btn-quiet btn-sm" type="button">Wyślij do moderacji<span class="sr-only">: Stylizacja paznokci</span></button></div></td>
               </tr>
               <tr>
-                <th scope="row" data-label="Szkolenie">Dokumentacja zabiegu i&nbsp;zgoda klientki (przykład)<br><span class="muted small">stacjonarne&nbsp;· Warszawa&nbsp;· 320&nbsp;zł brutto (przykład)</span></th>
+                <th scope="row" data-label="Szkolenie">Dokumentacja zabiegu i&nbsp;zgoda klientki (przykład)<br><span class="muted small">stacjonarne&nbsp;· Kraków&nbsp;· 320&nbsp;zł brutto (przykład)</span></th>
                 <td data-label="Termin"><time datetime="2026-11-10">10.11.2026</time></td>
                 <td data-label="Status"><span class="badge badge--off">Zakończone</span></td>
                 <td data-label="Zapisy">12 z&nbsp;12</td>
                 <td class="cell-actions"><a class="btn btn-ghost btn-sm" href="#uczestnicy">Uczestnicy i&nbsp;obecność<span class="sr-only">: Dokumentacja zabiegu</span></a></td>
               </tr>
               <tr>
-                <th scope="row" data-label="Szkolenie">Masaż twarzy&nbsp;– techniki manualne (przykład)<br><span class="muted small">stacjonarne&nbsp;· Warszawa&nbsp;· bezpłatne</span></th>
+                <th scope="row" data-label="Szkolenie">Masaż twarzy&nbsp;– techniki manualne (przykład)<br><span class="muted small">stacjonarne&nbsp;· Kraków&nbsp;· bezpłatne</span></th>
                 <td data-label="Termin"><time datetime="2026-11-25">25.11.2026</time></td>
                 <td data-label="Status"><div><span class="badge badge--off">Odwołane</span><br><span class="muted small">2.11.2026&nbsp;– zapisani dostali <span class="nowrap">e-mail</span></span></div></td>
                 <td data-label="Zapisy">–</td>
@@ -824,7 +825,7 @@
           <dl class="kv kv--rows">
             <div><dt>Nazwa przy szkoleniach</dt><dd>Salon Przykładowy</dd></div>
             <div><dt>Rodzaj</dt><dd>salon z&nbsp;kontem w&nbsp;Strefie Klienta</dd></div>
-            <div><dt>Miasto</dt><dd>Warszawa</dd></div>
+            <div><dt>Miasto</dt><dd>Kraków</dd></div>
             <div><dt>Weryfikacja</dt><dd><time datetime="2026-10-20">20&nbsp;października 2026&nbsp;r.</time> (przykład)</dd></div>
             <div><dt>Umowa organizatora</dt><dd>wersja 1.0 (przykład)</dd></div>
           </dl>
@@ -1017,7 +1018,7 @@
           <div>
             <p class="eyebrow">Uczestnicy</p>
             <h1 id="t-ucz">Dokumentacja zabiegu i&nbsp;zgoda klientki <em>(przykład)</em></h1>
-            <p class="lead"><time datetime="2026-11-10T10:00">10&nbsp;listopada 2026&nbsp;r., 10:00–14:00</time>&nbsp;· stacjonarne&nbsp;· Warszawa&nbsp;· 320&nbsp;zł brutto (przykład)</p>
+            <p class="lead"><time datetime="2026-11-10T10:00">10&nbsp;listopada 2026&nbsp;r., 10:00–14:00</time>&nbsp;· stacjonarne&nbsp;· Kraków&nbsp;· 320&nbsp;zł brutto (przykład)</p>
           </div>
           <div class="badges"><span class="badge badge--off">Zakończone</span><span class="badge badge--role">12 z&nbsp;12&nbsp;miejsc</span></div>
         </div>
@@ -1098,7 +1099,7 @@
     <aside class="mock-annot" aria-labelledby="t-annot">
       <h2 id="t-annot">Uwagi do makiety</h2>
       <ul>
-        <li>Strefa Klienta jest w&nbsp;wersji nieaktywnej: na stronie głównej linki „Szkolenia” i&nbsp;„Dla organizatorów szkoleń” mają dopisek „wkrótce” i&nbsp;nie prowadzą do tej makiety.</li>
+        <li>Na stronie głównej linki „Szkolenia” i&nbsp;„Dla organizatorów szkoleń” prowadzą do tej makiety (katalog i&nbsp;<code>#organizator</code>).</li>
         <li><strong>Założenie <span class="nowrap">Z-6</span>:</strong> katalog jest publiczny, zapis tylko z&nbsp;konta salonu (gość widzi „Zaloguj się, aby się zapisać”). Czy katalog ma być publiczny&nbsp;– pytanie Q10.</li>
         <li><strong>Decyzja <span class="nowrap">D-D</span>:</strong> szkolenia dodają salony i&nbsp;firmy szkoleniowe. Organizator nie potrzebuje polisy; konto dostaje z&nbsp;zaproszenia po weryfikacji przez Aura Consulting (<strong>Założenie Z-16</strong>). Salon-organizator ma osobny profil i&nbsp;przełącza się w&nbsp;menu konta&nbsp;– ten sam widok ma firma szkoleniowa, np. „Organizator przykładowy”.</li>
         <li>RODO: organizator jest administratorem danych uczestników swoich szkoleń; rola Aura Consulting (odrębny administrator albo podmiot przetwarzający)&nbsp;– do decyzji prawnika i&nbsp;IOD (Q1). Organizator widzi tylko imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status, nazwę salonu tylko przy szkoleniu płatnym; dane usuwane 30&nbsp;dni po szkoleniu (<strong>Założenie Z-17</strong>).</li>
@@ -1144,6 +1145,27 @@
   var scrim = null;
 
   function all(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+
+  /* ---------- warstwy modalne: wszystko poza otwartą warstwą dostaje inert; pętla Tab jako zapas ---------- */
+  var inerted = [];
+  function release() { inerted.forEach(function (n) { n.inert = false; }); inerted = []; }
+  function isolate(layer) {
+    release();
+    for (var n = layer; n && n.parentNode && n !== document.body; n = n.parentNode) {
+      Array.prototype.forEach.call(n.parentNode.children, function (s) {
+        if (s === n || s.tagName === 'SCRIPT' || s.inert || s.classList.contains('nav-scrim')) { return; }
+        s.inert = true; inerted.push(s);
+      });
+    }
+  }
+  function trapTab(layer, e) {
+    if (e.key !== 'Tab') { return; }
+    var f = Array.prototype.filter.call(layer.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select,textarea,summary'), function (el) { return el.tabIndex >= 0 && el.getClientRects().length > 0; });
+    if (!f.length) { return; }
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
 
   /* ---------- widoki ---------- */
   function render(focus) {
@@ -1324,20 +1346,27 @@
   });
   document.getElementById('d-szkic').addEventListener('click', function () { document.getElementById('d-szkic-ok').hidden = false; });
 
-  /* ---------- menu boczne jako szuflada na telefonach ---------- */
-  function closeNav() {
+  /* ---------- menu boczne strefy jako szuflada na telefonach (reszta strony dostaje inert) ---------- */
+  function closeNav(restore) {
     if (!sidenav.classList.contains('is-open')) { return; }
     sidenav.classList.remove('is-open'); toggle.setAttribute('aria-expanded', 'false');
     if (scrim) { scrim.remove(); scrim = null; }
+    release();
+    if (restore) { toggle.focus(); }
   }
   toggle.addEventListener('click', function () {
     if (sidenav.classList.contains('is-open')) { closeNav(); return; }
     sidenav.classList.add('is-open'); toggle.setAttribute('aria-expanded', 'true');
     scrim = document.createElement('div'); scrim.className = 'nav-scrim';
-    scrim.addEventListener('click', closeNav); document.body.appendChild(scrim);
-    var first = sidenav.querySelector('a'); if (first) { first.focus(); }
+    scrim.addEventListener('click', function () { closeNav(true); }); document.body.appendChild(scrim);
+    isolate(sidenav);
+    sidenav.querySelector('.nav-close').focus();
   });
+  sidenav.querySelector('.nav-close').addEventListener('click', function () { closeNav(true); });
+  sidenav.addEventListener('keydown', function (e) { if (sidenav.classList.contains('is-open')) { trapTab(sidenav, e); } });
   sidenav.addEventListener('click', function (e) { if (e.target.closest('a')) { closeNav(); } });
+  var desktop = window.matchMedia('(min-width:1024px)');
+  if (desktop.addEventListener) { desktop.addEventListener('change', function (e) { if (e.matches) { closeNav(); } }); }
 
   /* ---------- menu konta i Esc ---------- */
   document.addEventListener('click', function (e) {
@@ -1346,7 +1375,7 @@
   });
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') { return; }
-    if (sidenav.classList.contains('is-open')) { closeNav(); toggle.focus(); return; }
+    if (sidenav.classList.contains('is-open')) { closeNav(true); return; }
     var acc = document.getElementById('account');
     if (acc.open) { acc.open = false; acc.querySelector('summary').focus(); return; }
     var open = document.querySelector('.view.is-active details.mini[open]');

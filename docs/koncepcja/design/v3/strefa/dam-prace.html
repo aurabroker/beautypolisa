@@ -285,6 +285,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
   <!-- ======================= menu boczne strefy: jasne szkło (tafla 2/3) ======================= -->
   <!-- „Szukam pracy” (D-E) – przy wyłączonym przełączniku nie ma go w nawigacji ani w żadnym linku strefy. -->
   <nav class="sidenav glass glass--strong ctx-zone" id="sidenav" aria-label="Strefa Klienta">
+    <button class="drawer-close nav-close" type="button" aria-label="Zamknij menu"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <p class="sidenav-title label-caps">Salon Przykładowy</p>
     <ul>
       <li><a href="panel.html#pulpit"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Pulpit</a></li>
@@ -946,7 +947,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
           <div>
             <p class="eyebrow">Podgląd projektu&nbsp;– funkcja nieaktywna</p>
             <h1 id="t-sp">Szukam pracy</h1>
-            <p class="lead">Ogłoszenia osób szukających pracy w&nbsp;branży beauty. Funkcja jest zaprojektowana i&nbsp;przygotowana, ale wyłączona&nbsp;– włączy ją zleceniodawca po sprawdzeniu prawnym.</p>
+            <p class="lead">Ogłoszenia osób szukających pracy w&nbsp;branży beauty. Funkcja jest zaprojektowana i&nbsp;przygotowana, ale wyłączona&nbsp;– Aura Consulting włączy ją dopiero po sprawdzeniu prawnym.</p>
           </div>
           <span class="badge badge--off">Funkcja nieaktywna</span>
         </div>
@@ -965,7 +966,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
           <li><strong>KRAZ</strong><p>Opinia prawna, czy ogłoszenia osób szukających pracy i&nbsp;przekazywanie wiadomości salonów pozostają prowadzeniem tablicy&nbsp;– to nowa okoliczność względem tablicy samych ofert.</p></li>
           <li><strong>RODO</strong><p>Podstawa prawna, klauzula informacyjna, regulamin „Szukam pracy”, okresy przechowywania, wpis w&nbsp;rejestrze czynności i&nbsp;ocena potrzeby DPIA.</p></li>
           <li><strong>DSA</strong><p>Zasady moderacji w&nbsp;regulaminie, mechanizm zgłoszeń, szablony uzasadnień decyzji.</p></li>
-          <li><strong>Decyzja zleceniodawcy na piśmie</strong><p>Z&nbsp;odwołaniem do opinii. Dopiero wtedy administrator Aura włącza przełącznik w&nbsp;panelu personelu; zmiana trafia do dziennika.</p></li>
+          <li><strong>Decyzja Aura Consulting na piśmie</strong><p>Z&nbsp;odwołaniem do opinii. Dopiero wtedy administrator Aura włącza przełącznik w&nbsp;panelu personelu; zmiana trafia do dziennika.</p></li>
         </ol>
       </section>
 
@@ -1258,6 +1259,27 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
   function each(sel, fn, ctx) { Array.prototype.forEach.call((ctx || document).querySelectorAll(sel), fn); }
   var NBSP = ' ';
 
+  /* ---------- warstwy modalne: wszystko poza otwartą warstwą dostaje inert; pętla Tab jako zapas ---------- */
+  var inerted = [];
+  function release() { inerted.forEach(function (n) { n.inert = false; }); inerted = []; }
+  function isolate(layer) {
+    release();
+    for (var n = layer; n && n.parentNode && n !== document.body; n = n.parentNode) {
+      Array.prototype.forEach.call(n.parentNode.children, function (s) {
+        if (s === n || s.tagName === 'SCRIPT' || s.inert || s.classList.contains('nav-scrim')) { return; }
+        s.inert = true; inerted.push(s);
+      });
+    }
+  }
+  function trapTab(layer, e) {
+    if (e.key !== 'Tab') { return; }
+    var f = Array.prototype.filter.call(layer.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select,textarea,summary'), function (el) { return el.tabIndex >= 0 && el.getClientRects().length > 0; });
+    if (!f.length) { return; }
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
   /* ---------- widoki i kontekst (strona publiczna / Strefa Klienta) ---------- */
   function render(focus) {
     var id = location.hash.slice(1);
@@ -1433,20 +1455,27 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
     location.hash = 'ogloszenie-wyslane';
   });
 
-  /* ---------- menu boczne strefy jako szuflada na telefonach ---------- */
-  function closeNav() {
+  /* ---------- menu boczne strefy jako szuflada na telefonach (reszta strony dostaje inert) ---------- */
+  function closeNav(restore) {
     if (!sidenav.classList.contains('is-open')) { return; }
     sidenav.classList.remove('is-open'); toggle.setAttribute('aria-expanded', 'false');
     if (scrim) { scrim.remove(); scrim = null; }
+    release();
+    if (restore) { toggle.focus(); }
   }
   toggle.addEventListener('click', function () {
     if (sidenav.classList.contains('is-open')) { closeNav(); return; }
     sidenav.classList.add('is-open'); toggle.setAttribute('aria-expanded', 'true');
     scrim = document.createElement('div'); scrim.className = 'nav-scrim';
-    scrim.addEventListener('click', closeNav); document.body.appendChild(scrim);
-    var first = sidenav.querySelector('a'); if (first) { first.focus(); }
+    scrim.addEventListener('click', function () { closeNav(true); }); document.body.appendChild(scrim);
+    isolate(sidenav);
+    sidenav.querySelector('.nav-close').focus();
   });
+  sidenav.querySelector('.nav-close').addEventListener('click', function () { closeNav(true); });
+  sidenav.addEventListener('keydown', function (e) { if (sidenav.classList.contains('is-open')) { trapTab(sidenav, e); } });
   sidenav.addEventListener('click', function (e) { if (e.target.closest('a')) { closeNav(); } });
+  var desktop = window.matchMedia('(min-width:1024px)');
+  if (desktop.addEventListener) { desktop.addEventListener('change', function (e) { if (e.matches) { closeNav(); } }); }
 
   /* ---------- menu konta i menu strony publicznej: zamknij po kliknięciu obok i klawiszem Esc ---------- */
   var acc = byId('account'), pub = byId('pub-menu');
@@ -1458,7 +1487,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
   pub.addEventListener('click', function (e) { if (e.target.closest('a')) { pub.open = false; } });
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') { return; }
-    if (sidenav.classList.contains('is-open')) { closeNav(); toggle.focus(); return; }
+    if (sidenav.classList.contains('is-open')) { closeNav(true); return; }
     if (acc.open) { acc.open = false; acc.querySelector('summary').focus(); return; }
     if (pub.open) { pub.open = false; pub.querySelector('summary').focus(); }
   });

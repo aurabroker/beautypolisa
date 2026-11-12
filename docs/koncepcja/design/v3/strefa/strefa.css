@@ -425,6 +425,7 @@ html.drawer-lock,html:has(.drawer:target){overflow:hidden}
 .drawer-head h2{font-size:1.9rem}
 .drawer-close{display:inline-grid;place-items:center;width:44px;height:44px;flex:none;border:1px solid rgba(42,59,104,.35);border-radius:var(--radius-btn);color:var(--color-navy);text-decoration:none;background:transparent;cursor:pointer}
 .drawer-close:hover{border-color:var(--color-navy)}
+.nav-close{display:none}
 .drawer-body{overflow-y:auto;overscroll-behavior:contain;padding:20px 24px;display:grid;gap:22px;align-content:start}
 .drawer-body h3{font-size:1.3rem}
 .drawer-foot{display:flex;flex-wrap:wrap;gap:10px;padding:16px 24px;border-top:1px solid var(--bp-line-gold-soft);background:var(--color-parchment)}
@@ -490,6 +491,7 @@ html.drawer-lock,html:has(.drawer:target){overflow:hidden}
   .sidenav{position:static}
   .js .sidenav{display:none}
   .js .sidenav.is-open{display:block;position:fixed;z-index:var(--bp-z-drawer);top:0;left:0;bottom:0;width:min(320px,86vw);overflow-y:auto;border-radius:0 var(--radius-card) var(--radius-card) 0;background:var(--color-ivory);-webkit-backdrop-filter:none;backdrop-filter:none;padding-top:22px}
+  .js .sidenav.is-open .nav-close{display:grid;margin:0 6px 6px auto}
   .nav-scrim{position:fixed;inset:0;z-index:calc(var(--bp-z-drawer) - 1);background:rgba(20,28,51,.5)}
 }
 @media (max-width:767px){
