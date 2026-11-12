@@ -117,7 +117,7 @@ function build() {
       <a class="bp-hdr-logo" href="new.html">
         <div>
           <div class="bp-hdr-logo-text">BeautyPolisa</div>
-          <div class="bp-hdr-logo-sub">Aura Consulting</div>
+          <div class="bp-hdr-logo-sub">Aura Expert</div>
         </div>
       </a>
       <div class="bp-hdr-sep"></div>

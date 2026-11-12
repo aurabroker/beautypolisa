@@ -52,7 +52,7 @@ Wzrok trafia najpierw na różową połowę H1 („dla Branży Beauty”), potem
 | Ikonografia | emoji 🛡️ ⚖️ 🩺 ➕ 💙 ⭐ 🌙 ☀️ 🔍 ✨ ℹ️ (różne glify na iOS/Android/Windows) + znaki Unicode ✓ ✕ | Lucide, 20/24 px, stroke 1,75 |
 | Tryb ciemny | `bp-nav.js`: nadpisania klas Tailwinda przez `!important`; `bp-app.js`: zmienne CSS; strony Play CDN: brak | `data-theme` + tokeny; brak `!important` |
 | Promienie i rozmiary przycisków | `.55rem/.6rem/.65rem/1rem/1.1rem/1.2rem/9999px`; `.btn-xs` 10 px, `.btn-sm` 11 px, `.btn-md` 12 px | Skala 8/12/16/24 px + pełny; przyciski 44 px, tekst 14 px |
-| Komunikat o dystrybutorze | „Obsługa Brokerska” (header), „Informacje o agencie ubezpieczeniowym” (modal), „Broker Ubezpieczeniowy” (stopka), „Agent działa na rzecz…” (`bp-app.js`) | Jedna formuła prawna po potwierdzeniu statusu (pytanie otwarte; obowiązki IDD – `02-architektura-i-bezpieczenstwo.md`) |
+| Komunikat o dystrybutorze | „Obsługa Brokerska” (header; od 12.11.2026 „Obsługa Programu”), „Informacje o agencie ubezpieczeniowym” (modal), „Broker Ubezpieczeniowy” (stopka; usunięte 12.11.2026), „Agent działa na rzecz…” (`bp-app.js`) | Jedna formuła prawna po potwierdzeniu statusu (pytanie otwarte; obowiązki IDD – `02-architektura-i-bezpieczenstwo.md`) |
 | Dane kontaktowe | dwa różne numery telefonu „obsługi technicznej” w stopkach (`indeksowt.html`/`tax-protect.html` vs `medical.html`) | Jedno źródło danych firmowych w konfiguracji |
 | Domena | `https://www.beautypolisa.com/#agency` w JSON-LD | `https://beautypolisa.eu` (bez www) |
 
@@ -393,7 +393,7 @@ Stany puste: wynik przed wyborem – „Wybierz grupę zabiegów w kroku 1, aby 
 | **Produkt** `/ubezpieczenia/<slug>` | okruszki → hero (nazwa, ubezpieczyciel, cena „od” z kontekstem, CTA) → dla kogo (chipy zawodów → `/dla-kogo/…`) → zakres / rozszerzenia / wyłączenia (3 kolumny, bez szkła) → warianty (tabela sum) → jak kupić (kroki) → dokumenty OWU → FAQ produktu → formularz „Poproś o ofertę” → produkty powiązane | strona musi odpowiadać na „co, dla kogo, ile, czego nie obejmuje, jak kupić” bez przewijania w nieskończoność; `Service` + `FAQPage` wg `04-seo-geo-i-schema.md` |
 | **Kalkulator** `/kalkulator/oc` | okruszki → H1 + stepper → krok 1–3 → panel wyniku (sticky od 1024 px) → ściąga zabiegów per grupa → zakres ochrony → FAQ kalkulatora | jedno pytanie na ekran; wynik zawsze w zasięgu; ściąga odpowiada „do której grupy należy mój zabieg” |
 | **Artykuł** `/baza-wiedzy/<slug>` | okruszki → H1, autor/recenzent, data aktualizacji, czas czytania → TL;DR (3 punkty) → spis treści → treść 42 rem z H2/H3, tabelami, cytatami z OWU → box „Policz składkę” po pierwszej trzeciej → źródła → FAQ artykułu → powiązane → CTA | E-E-A-T z `05-strategia-tresci.md`; bez glass; obrazy tylko merytoryczne |
-| **Landing lead magnetu** `/baza-wiedzy/<slug>` z formularzem lub `/dla-kogo/<zawod>` | hero (co dostajesz, dla kogo, 3 punkty) → podgląd materiału (spis treści, 1 strona) → formularz (e-mail + zgoda, Turnstile) → kto za tym stoi (Aura Consulting, Beauty Razem) → FAQ → stopka | jeden formularz, jedna obietnica; po wysyłce strona potwierdzenia z linkiem do kalkulatora |
+| **Landing lead magnetu** `/baza-wiedzy/<slug>` z formularzem lub `/dla-kogo/<zawod>` | hero (co dostajesz, dla kogo, 3 punkty) → podgląd materiału (spis treści, 1 strona) → formularz (e-mail + zgoda, Turnstile) → kto za tym stoi (Aura Expert, Beauty Razem) → FAQ → stopka | jeden formularz, jedna obietnica; po wysyłce strona potwierdzenia z linkiem do kalkulatora |
 | **Kontakt / Szkoda** `/kontakt`, `/szkoda` | H1 → wybór tematu (oferta / polisa / szkoda / inne) → formularz dostosowany do tematu → dane firmy i godziny [do uzupełnienia] → „co dalej” (kroki po zgłoszeniu) → RODO (skrót + link) | szkoda: lista potrzebnych informacji przed formularzem (numer polisy, data zdarzenia, opis, dokumenty), bez presji czasowej; `HowTo` wg `04-seo-geo-i-schema.md` |
 
 ## Przekazanie do developmentu
@@ -436,7 +436,7 @@ Stany puste: wynik przed wyborem – „Wybierz grupę zabiegów w kroku 1, aby 
 
 ## Pytania otwarte do zleceniodawcy
 
-1. Czy BeautyPolisa/Aura Consulting występuje jako broker czy agent? Od tego zależy jedna formuła w headerze, stopce i na `/o-nas` (dziś w kodzie cztery różne).
+1. Czy BeautyPolisa/Aura Expert występuje jako broker czy agent? Od tego zależy jedna formuła w headerze, stopce i na `/o-nas` (w audytowanym kodzie cztery różne).
 2. Czy mamy prawo użyć logotypów ERGO Hestia, Colonnade, ENEL-MED, LUX MED i Fundacji Beauty Razem w pasku zaufania, czy pozostajemy przy nazwach tekstowych?
 3. Czy mnożnik składki dla zespołów 6–8 osób (×1,25 w obecnym kodzie) jest potwierdzony z ERGO Hestią, czy kalkulator ma pokazywać dla tego przedziału „wycena indywidualna”? **Rozstrzygnięte 11.11.2026:** składki są sztywne (taryfa programu); ×1,25 dla zespołów 6–8 osób jest częścią taryfy, więc kalkulator pokazuje dla tego przedziału składkę wg taryfy, a wycena indywidualna dotyczy grupy 4 i zespołów od 9 osób.
 4. Czy istnieją wytyczne brandowe (księga znaku, wersje logo na ciemne tło, minimalna wielkość)? Makieta używa logotypu tekstowego; plik PNG z repo wymaga wersji SVG.

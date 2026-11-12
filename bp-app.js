@@ -1,6 +1,6 @@
 /* ================================================================
    BeautyPolisa · bp-app.js  v4.0
-   © 2026 Aura Consulting sp. z o.o.
+   © 2026 Aura Expert sp. z o.o.
 ================================================================ */
 (function () {
 "use strict";
@@ -442,10 +442,10 @@ function buildPage() {
     hdr.id = "bp-header";
     hdr.innerHTML = `<div class="hdr-inner">
       <a class="hdr-brand" href="new.html">
-        <div><div class="hdr-logo">BeautyPolisa</div><div class="hdr-sub">Created by Aura Consulting</div></div>
+        <div><div class="hdr-logo">BeautyPolisa</div><div class="hdr-sub">Created by Aura Expert</div></div>
       </a>
       <div class="hdr-sep" style="display:none" id="hdr-sep-el"></div>
-      <div class="hdr-broker" id="hdr-broker-txt" style="display:none">Obsługa brokerska: Aura Consulting</div>
+      <div class="hdr-broker" id="hdr-broker-txt" style="display:none">Obsługa programu: Aura Expert</div>
       <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()" title="Przełącz tryb ciemny">🌙</button>
       <div id="hdr-auth" style="display:flex;align-items:center;gap:.5rem"></div>
     </div>`;
@@ -497,8 +497,8 @@ function buildPage() {
   foot.innerHTML = `<div class="footer-inner">
     <div>
       <p style="margin:0 0 .25rem;font-size:9px"><strong>Obsługa techniczna:</strong> Aura Expert sp. z o.o. <span style="color:var(--navy);font-weight:600">(tel. 504 400 901)</span></p>
-      <p style="margin:0 0 .4rem;font-size:9px"><strong>Likwidacja szkód:</strong> Broker Ubezpieczeniowy Aura Consulting sp. z o.o.</p>
-      <span style="font-size:8px;color:#94a3b8;font-weight:700">✨ BeautyPolisa · Aura Consulting</span>
+      <p style="margin:0 0 .4rem;font-size:9px"><strong>Likwidacja szkód:</strong> Aura Expert sp. z o.o.</p>
+      <span style="font-size:8px;color:#94a3b8;font-weight:700">✨ BeautyPolisa · Aura Expert</span>
     </div>
     <div style="font-size:9px;color:#94a3b8;display:flex;flex-direction:column;justify-content:center;gap:.25rem;text-align:right">
       <p style="margin:0">Kalkulator ma charakter informacyjny i nie stanowi oferty (art. 66 KC).</p>
@@ -509,7 +509,7 @@ function buildPage() {
       </div>
     </div>
   </div>
-  <div class="footer-copy">© 2026 Program BeautyRazem · Aura Consulting sp. z o.o.</div>`;
+  <div class="footer-copy">© 2026 Program BeautyRazem · Aura Expert sp. z o.o.</div>`;
   document.body.appendChild(foot);
 
   buildModals();
@@ -1100,7 +1100,7 @@ function renderBarChart(containerId, data, pinkBars) {
 function buildModals() {
   // Auth modal
   appendModal("modal-auth", `
-    <div class="mbox-hd"><div><h3>Panel Klienta</h3><p>BeautyPolisa · Aura Consulting</p></div><button class="mclose" onclick="closeModal('modal-auth')">&#10005;</button></div>
+    <div class="mbox-hd"><div><h3>Panel Klienta</h3><p>BeautyPolisa · Aura Expert</p></div><button class="mclose" onclick="closeModal('modal-auth')">&#10005;</button></div>
     <div class="mtabs"><button class="mtab active" id="atab-login" onclick="switchAuthTab('login')">Zaloguj się</button><button class="mtab" id="atab-register" onclick="switchAuthTab('register')">Załóż konto</button></div>
     <div class="mbox-body">
       <div id="af-alert" class="bp-alert" style="display:none"></div>

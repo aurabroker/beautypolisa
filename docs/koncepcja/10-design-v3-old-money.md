@@ -85,7 +85,7 @@ Zasada: złoty tekst tylko na ciemnym tle. Na jasnym złoto rysuje linie i ramki
 
 ## 8. Strona główna – sekcje
 
-1. **Nagłówek:** jasne szkło, logo z podpisem „created by Aura Consulting”, nawigacja (Ubezpieczenia, Kalkulator, Dla kogo, Jak to działa, Pytania) i przycisk „Umów rozmowę”.
+1. **Nagłówek:** jasne szkło, logo z podpisem „created by Aura Expert”, nawigacja (Ubezpieczenia, Kalkulator, Dla kogo, Jak to działa, Pytania) i przycisk „Umów rozmowę”.
 2. **Hero na zdjęciu salonu:** panel szkła ze złotą ramką, eyebrow „Program ubezpieczeń dla branży beauty” i H1 „Ochrona szyta *na miarę* Twojego salonu”. Przyciski „Oblicz składkę OC” i „Poznaj ubezpieczenia”. Liczby: „od 400 zł” (składka OC rocznie), „300 tys. zł” (najwyższa suma) i „4” (grupy ryzyka). Pod panelem szklany pasek partnerów: ERGO Hestia, Colonnade, ENEL-MED, LUX MED, Fundacja Beauty Razem.
 3. **Ubezpieczenia na jedwabiu:** H2 „Sześć ubezpieczeń. Jeden doradca.” i sześć ciemnych kart szkła ze złotymi ikonami i tagami ubezpieczyciela.
 4. **Kalkulator na marmurze:** H2 „Sprawdź składkę *w dwie minuty*”. Formularz w jasnym szkle i granatowy panel wyniku z polami Taryfa i Składka roczna oraz przyciskiem „Poproś o polisę”.
@@ -177,5 +177,5 @@ Narzędzie: Playwright i Chromium, zrzuty całej strony przy 1280 i 390 px.
 ### 14.5 Do dostarczenia
 - Logo w SVG oraz jasna wersja na ciemne tła. Do tego czasu: zmniejszona wersja PNG (obecny plik ma 3000 px i 41 KB).
 - Wersje AVIF czterech zdjęć, które dadzą około 60% mniej danych, oraz kadr hero 4:3 na telefon. Wszystko można zrobić z istniejących plików.
-- Dane do stopki i schema.org: telefon, e-mail, KNF/KRS/NIP. W makiecie są oznaczone jako miejsca do uzupełnienia.
+- Dane do stopki i schema.org: telefon i e-mail biura, status dystrybutora (agent albo broker) i numer w rejestrze KNF. W makiecie są oznaczone jako miejsca do uzupełnienia. KRS, NIP i REGON Aura Expert sp. z o.o. są już wpisane w stopce makiety (dane od zleceniodawcy z 12.11.2026).
 

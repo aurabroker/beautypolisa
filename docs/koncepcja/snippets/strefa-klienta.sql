@@ -310,7 +310,8 @@ insert into app_feature_flags (key, enabled) values ('szukam_pracy', false);
 -- współpracy, doświadczenie, dostępność od, krótki opis ≤ 500 znaków. Bez zdjęcia, nazwiska, telefonu;
 -- e-mail nigdy nie jest pokazywany (brak grantu kolumnowego). Tylko osoby pełnoletnie (oświadczenie).
 -- Widoczne wyłącznie dla zalogowanych członków aktywnych kont salonów i tylko przy włączonym przełączniku;
--- anon nie ma żadnego grantu (strony noindex, nigdy publiczne). Ważność 30 dni. Administrator danych: Aura.
+-- anon nie ma żadnego grantu (strony noindex, nigdy publiczne). Ważność 30 dni. Administrator danych:
+-- Aura Expert sp. z o.o. (decyzja zleceniodawcy z 12.11.2026).
 create table candidate_ads (
   id                 uuid primary key default gen_random_uuid(),
   status             text not null default 'unconfirmed'
@@ -384,7 +385,7 @@ create index candidate_ad_contact_log_account_idx on candidate_ad_contact_log (a
 -- Organizator szkoleń: firma szkoleniowa albo salon. Nie wymaga polisy. Profil zakłada i weryfikuje
 -- personel Aura (NIP/KRS/CEIDG, adres e-mail w domenie firmy, telefon zwrotny, podpisana umowa
 -- organizatora – Założenie); organizator tylko czyta swój profil (zmiany na wniosek, P1: samodzielna
--- edycja opisu z ponowną moderacją). Znaczek: „Organizator zweryfikowany przez Aura Consulting
+-- edycja opisu z ponowną moderacją). Znaczek: „Organizator zweryfikowany przez Aura Expert
 -- (dane firmy)” – potwierdza tożsamość, nie jakość szkoleń.
 create table training_organizers (
   id              uuid primary key default gen_random_uuid(),

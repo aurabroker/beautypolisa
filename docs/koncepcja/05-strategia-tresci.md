@@ -135,7 +135,7 @@ Tam, gdzie jesteśmy pierwotnym źródłem, treść musi być w stu procentach z
 
 | Intencja | Przykładowe frazy [hipoteza] | Typ treści | URL docelowy | CTA |
 |---|---|---|---|---|
-| Nawigacyjna | beautypolisa, aura consulting ubezpieczenia beauty, beauty razem ubezpieczenie oc | strona główna, `/o-nas` | `/`, `/o-nas`, `/ubezpieczenia/oc-beauty` | kalkulator / kontakt |
+| Nawigacyjna | beautypolisa, aura expert ubezpieczenia beauty, beauty razem ubezpieczenie oc | strona główna, `/o-nas` | `/`, `/o-nas`, `/ubezpieczenia/oc-beauty` | kalkulator / kontakt |
 | Informacyjna „co to / jak działa” | oc kosmetyczki, ubezpieczenie karno skarbowe, prywatne l4 jdg | poradnik, wyjaśnienie, słownik | `/baza-wiedzy/<slug>` | link do produktu + zapis na aktualizacje |
 | Informacyjna „jak zrobić” | zgoda na zabieg kosmetyczny wzór, kontrola sanepidu salon kosmetyczny | checklista, poradnik procesowy, generator | `/baza-wiedzy/<slug>`, `/szkoda` | lead magnet (PDF za e-mail) |
 | Komercyjna – porównanie | ubezpieczenie grupowe czy pakiet medyczny, abonament medyczny dla firm porównanie | porównanie z tabelą | `/baza-wiedzy/<slug>` → `/ubezpieczenia/*` | „zapytaj o ofertę” |
@@ -329,7 +329,7 @@ Materiał ma charakter informacyjny i nie stanowi oferty w rozumieniu art. 66 Ko
 porady prawnej ani podatkowej. Zakres ochrony, wyłączenia i obowiązki określają wyłącznie Ogólne
 Warunki Ubezpieczenia i dokument polisy – przed zawarciem umowy zapoznaj się z OWU na /dokumenty.
 Kalkulator pokazuje składkę roczną wg taryfy programu; zabiegi grupy 4 i zespoły od 9 osób wymagają
-wyceny indywidualnej (ankieta ERGO Hestii). Dystrybutor: Aura Consulting sp. z o.o. – informacje
+wyceny indywidualnej (ankieta ERGO Hestii). Dystrybutor: Aura Expert sp. z o.o. – informacje
 wymagane ustawą o dystrybucji ubezpieczeń: /o-nas.
 ```
 
@@ -426,6 +426,6 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 6. Czy liczby z obecnej argumentacji grupowego (koszt rotacji, pakiet zamiast podwyżki – 01, pkt 3.3) mają cytowalne źródło? Bez niego znikają z treści.
 7. Czy zleceniodawca udostępni jednorazowy eksport z Senuto lub Semrush dla 52 fraz oraz dostęp do GSC po uruchomieniu?
 8. Czy można dopuścić crawlery AI kategorii *search* i *user* przy utrzymaniu blokady *training* (01, pkt 6; 04, pkt 5.1)? Bez tego metryka cytowań nie ma sensu.
-9. Kto zatwierdza prawnie wzór zgody na zabieg i checklistę kontroli (dokumenty stosowane przez klientów w praktyce) i czy Aura Consulting akceptuje wydawanie ich pod swoją marką? Czy w A4.2 możemy użyć zanonimizowanych realnych szkód z praktyki Aura?
+9. Kto zatwierdza prawnie wzór zgody na zabieg i checklistę kontroli (dokumenty stosowane przez klientów w praktyce) i czy Aura Expert akceptuje wydawanie ich pod swoją marką? Czy w A4.2 możemy użyć zanonimizowanych realnych szkód z praktyki Aura?
 10. Czy newsletter (nurture po pobraniu lead magnetu) jest w zakresie v1 i kto odpowiada za treść zgód marketingowych (02 – zgody wersjonowane; 06-… – lejek)?
 11. Jakie zasoby redakcyjne są dostępne (autor wewnętrzny czy zewnętrzny, godziny recenzenta tygodniowo)? Od tego zależy, czy rytm 2 + 1 jest realny, czy startujemy od 1 + 1.

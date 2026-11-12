@@ -7,7 +7,7 @@
       "legalBasis": "art. 6 ust. 1 lit. a RODO; art. 398 PKE [do potwierdzenia]",
       "channel": "e-mail / SMS",
       "defaultChecked": false,
-      "text": "Chcę otrzymywać od Aura Consulting sp. z o.o. informacje handlowe o ubezpieczeniach dla branży beauty na podany adres e-mail. Zgodę mogę wycofać w każdej chwili, klikając link w wiadomości.",
+      "text": "Chcę otrzymywać od Aura Expert sp. z o.o. informacje handlowe o ubezpieczeniach dla branży beauty na podany adres e-mail. Zgodę mogę wycofać w każdej chwili, klikając link w wiadomości.",
       "withdrawalPath": "/zgody/wycofaj"
     },
     {
@@ -16,7 +16,7 @@
       "legalBasis": "art. 6 ust. 1 lit. a RODO; art. 398 PKE [do potwierdzenia]",
       "channel": "telefon",
       "defaultChecked": false,
-      "text": "Zgadzam się na kontakt telefoniczny Aura Consulting sp. z o.o. w celach marketingowych na podany numer. Zgodę mogę wycofać w każdej chwili.",
+      "text": "Zgadzam się na kontakt telefoniczny Aura Expert sp. z o.o. w celach marketingowych na podany numer. Zgodę mogę wycofać w każdej chwili.",
       "withdrawalPath": "/zgody/wycofaj"
     },
     {

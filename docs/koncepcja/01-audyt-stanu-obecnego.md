@@ -21,11 +21,12 @@ Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeń
 
 ## 2. Marka i podmioty
 
-- Marka: **BeautyPolisa** („BeautyPolisa created by Aura Consulting”). Obsługa brokerska: Aura Consulting sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa.
+- Marka: **BeautyPolisa** („BeautyPolisa created by Aura Expert”).
 - Partner branżowy: **Beauty Razem** (od 2024 Fundacja Beauty Razem, założyciel Michał Łenczyński) – logo na ankiecie ERGO Hestii (`AnkietaBPEH.pdf`).
 - Administrator danych dla abonamentów medycznych: Aura Expert sp. z o.o. (iod@auraexpert.pl).
-- **Dane spółki podane przez zleceniodawcę 12.11.2026:** Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa, KRS 0000599840, NIP 5242793544, REGON 363673048. W makietach wpisana jako operator serwisu. Relacja z Aura Consulting sp. z o.o. (ten sam adres, w starych plikach „obsługa brokerska”) – do potwierdzenia.
-- W kodzie występują równolegle oznaczenia „Obsługa Brokerska” i „Informacje o agencie ubezpieczeniowym” – status dystrybutora (broker vs agent) **do potwierdzenia**; ma to znaczenie dla obowiązków informacyjnych z ustawy o dystrybucji ubezpieczeń (IDD).
+- **Decyzja zleceniodawcy 12.11.2026 – jeden podmiot:** Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa, KRS 0000599840, NIP 5242793544, REGON 363673048 (dane podane przez zleceniodawcę). Aura Expert jest operatorem portalu, administratorem danych portalu i Strefy Klienta, podmiotem wskazywanym w zgodach marketingowych i dystrybutorem ubezpieczeń w informacjach IDD.
+- Ślad zmiany: stara strona podawała jako „obsługę brokerską” spółkę o innej nazwie; decyzją zleceniodawcy z 12.11.2026 ta nazwa została usunięta i zastąpiona przez Aura Expert sp. z o.o.
+- W kodzie występowały równolegle oznaczenia „Obsługa Brokerska” (12.11.2026 zmienione na „Obsługa Programu”) i „Informacje o agencie ubezpieczeniowym” – status dystrybutora (broker vs agent) i numer wpisu w rejestrze KNF **do potwierdzenia**; ma to znaczenie dla obowiązków informacyjnych z ustawy o dystrybucji ubezpieczeń (IDD).
 - Paleta obecna: granat `#2a3b69` (beauty-navy), róż `#e11d48` (beauty-pink), tło `#fafafa`, tekst `#1e293b`; font Montserrat (Playfair Display w najstarszej wersji, później usunięto szeryfy); tryb ciemny `#0f172a`.
 - Domeny: w JSON-LD obecnie `https://www.beautypolisa.com/#agency`, docelowa domena wg zlecenia: **beautypolisa.eu**. Niespójność do usunięcia.
 
@@ -103,7 +104,7 @@ Ustalenia z przeglądu kodu (szczegóły w `03-code-review-obecnego-kodu.md`):
 
 ## 8. Założenia przyjęte w koncepcji (do potwierdzenia przez zleceniodawcę)
 
-1. Portal jest **informacyjno-leadowy**, nie sprzedaje polis online (brak płatności, brak zawierania umów na stronie); sprzedaż domyka zespół Aura Consulting.
+1. Portal jest **informacyjno-leadowy**, nie sprzedaje polis online (brak płatności, brak zawierania umów na stronie); sprzedaż domyka zespół Aura Expert.
 2. Jeden język (PL), jeden rynek (PL); domena kanoniczna `https://beautypolisa.eu` (bez `www`).
 3. Istniejące subdomeny (`tax.`, `app.`, `crm.`, `portal.`, `ergo.`, `konsultacja.`) pozostają; portal na apexie linkuje do nich i docelowo przejmuje treści `tax.`.
 4. Dane portalu trafiają do **oddzielnego projektu Supabase** (lub dedykowanego schematu w projekcie „BEAUTY”), nigdy do współdzielonego „aurabroker”.

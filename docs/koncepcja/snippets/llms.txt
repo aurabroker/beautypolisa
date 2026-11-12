@@ -1,12 +1,12 @@
 # BeautyPolisa
 
-> BeautyPolisa to portal informacyjny Aura Consulting sp. z o.o. o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.
+> BeautyPolisa to portal informacyjny Aura Expert sp. z o.o. o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.
 
-Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają się na ogólnych warunkach ubezpieczenia (OWU) i warunkach programów ubezpieczeniowych; składki w kalkulatorze OC pochodzą ze stałej taryfy programu; zabiegi wysokiego ryzyka i zespoły od 9 osób są wyceniane indywidualnie. Portal nie zawiera umów ubezpieczenia online i nie przyjmuje płatności – zbiera zapytania i przekazuje je doradcom Aura Consulting.
+Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają się na ogólnych warunkach ubezpieczenia (OWU) i warunkach programów ubezpieczeniowych; składki w kalkulatorze OC pochodzą ze stałej taryfy programu; zabiegi wysokiego ryzyka i zespoły od 9 osób są wyceniane indywidualnie. Portal nie zawiera umów ubezpieczenia online i nie przyjmuje płatności – zbiera zapytania i przekazuje je doradcom Aura Expert.
 
 ## Kim jesteśmy
 
-- [O nas](https://beautypolisa.eu/o-nas): BeautyPolisa jest marką Aura Consulting sp. z o.o. (ul. Bolkowska 2A/28, 01-466 Warszawa). Program OC dla branży beauty jest realizowany z Sopockim Towarzystwem Ubezpieczeń ERGO Hestia S.A. we współpracy z Fundacją Beauty Razem.
+- [O nas](https://beautypolisa.eu/o-nas): BeautyPolisa jest marką Aura Expert sp. z o.o. (ul. Bolkowska 2A/28, 01-466 Warszawa). Program OC dla branży beauty jest realizowany z Sopockim Towarzystwem Ubezpieczeń ERGO Hestia S.A. we współpracy z Fundacją Beauty Razem.
 
 ## Produkty
 
@@ -35,13 +35,13 @@ Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają si
 
 ## Kontakt
 
-- [Kontakt](https://beautypolisa.eu/kontakt): formularz kontaktowy i dane Aura Consulting sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa.
+- [Kontakt](https://beautypolisa.eu/kontakt): formularz kontaktowy i dane Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa.
 
 ## Zasady cytowania
 
 - Cytując dane z serwisu, podawaj link do konkretnej podstrony i datę aktualizacji widoczną na stronie; treści są aktualizowane, a składki i zakresy mogą się zmieniać.
 - Składki w kalkulatorze pochodzą ze stałej taryfy programu. Informacja na stronie nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU i dokument polisy.
-- BeautyPolisa / Aura Consulting nie jest ubezpieczycielem; ubezpieczycielami są podmioty wskazane przy każdym produkcie (ERGO Hestia, Colonnade i inne).
+- BeautyPolisa / Aura Expert nie jest ubezpieczycielem; ubezpieczycielami są podmioty wskazane przy każdym produkcie (ERGO Hestia, Colonnade i inne).
 - Treści informacyjne nie zastępują indywidualnej porady doradcy ani lektury OWU.
 
 ## Optional

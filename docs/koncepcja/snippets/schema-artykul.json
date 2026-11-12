@@ -24,7 +24,7 @@
   "publisher": {
     "@type": "Organization",
     "@id": "https://beautypolisa.eu/#organization",
-    "name": "Aura Consulting sp. z o.o.",
+    "name": "Aura Expert sp. z o.o.",
     "logo": {
       "@type": "ImageObject",
       "url": "https://beautypolisa.eu/images/logo-beautypolisa.png"

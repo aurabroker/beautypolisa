@@ -1,17 +1,14 @@
 {
-  "$comment": "Dane dystrybutora ubezpieczeń (IDD) – jedno źródło dla stopki, formularzy, e-maili i /informacje-prawne. Wartości null = do uzupełnienia; test CI blokuje wdrożenie produkcyjne, gdy registryNumber === null. Zakres pól do potwierdzenia z prawnikiem (ustawa o dystrybucji ubezpieczeń, art. 22/32).",
+  "$comment": "Dane dystrybutora ubezpieczeń (IDD) – jedno źródło dla stopki, formularzy, e-maili i /informacje-prawne. Decyzja zleceniodawcy z 12.11.2026: jedna spółka – Aura Expert sp. z o.o. – jest operatorem portalu, administratorem danych i dystrybutorem; adres, KRS, NIP i REGON podał zleceniodawca. Wartości null = do uzupełnienia (m.in. status agent/broker, numer w rejestrze KNF, kontakt do IOD portalu); test CI blokuje wdrożenie produkcyjne, gdy registryNumber === null. Zakres pól do potwierdzenia z prawnikiem (ustawa o dystrybucji ubezpieczeń, art. 22/32).",
   "version": "idd-v1-2026-11",
-  "legalName": "Aura Consulting sp. z o.o.",
+  "legalName": "Aura Expert sp. z o.o.",
   "address": "ul. Bolkowska 2A/28, 01-466 Warszawa",
-  "brand": "BeautyPolisa created by Aura Consulting",
-  "siteOperator": {
-    "$comment": "Dane podane przez zleceniodawcę 12.11.2026. Relacja z Aura Consulting sp. z o.o. (dystrybutor w legalName) – do potwierdzenia.",
-    "legalName": "Aura Expert sp. z o.o.",
-    "address": "ul. Bolkowska 2A/28, 01-466 Warszawa",
-    "krs": "0000599840",
-    "nip": "5242793544",
-    "regon": "363673048"
-  },
+  "krs": "0000599840",
+  "nip": "5242793544",
+  "regon": "363673048",
+  "brand": "BeautyPolisa created by Aura Expert",
+  "dataController": "Aura Expert sp. z o.o.",
+  "dpoEmail": null,
   "registryType": null,
   "registryTypeOptions": [
     "agent",
@@ -42,11 +39,8 @@
     }
   ],
   "medicalSubscriptions": {
-    "$comment": "Abonamenty ENEL-MED / LUX MED nie są ubezpieczeniem – osobny administrator danych (audyt §2).",
+    "$comment": "Abonamenty ENEL-MED / LUX MED nie są ubezpieczeniem (bez informacji IDD); administrator danych ten sam co w portalu (audyt §2). Adres IOD – z dotychczasowych stron abonamentów medycznych.",
     "dataController": "Aura Expert sp. z o.o.",
-    "dpoEmail": "iod@auraexpert.pl",
-    "krs": "0000599840",
-    "nip": "5242793544",
-    "regon": "363673048"
+    "dpoEmail": "iod@auraexpert.pl"
   }
 }

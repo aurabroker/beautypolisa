@@ -89,7 +89,7 @@ Pełne tokeny wraz z mapowaniem do Tailwind CSS 4 są w `design/tokens-v2.css`.
 
 Kolejność sekcji i ich cel:
 
-1. **Nagłówek** – logo z podpisem „created by Aura Consulting”, pięć pozycji menu, przycisk „Oblicz składkę OC”. Na telefonie menu w `<details>` działa bez JavaScriptu.
+1. **Nagłówek** – logo z podpisem „created by Aura Expert”, pięć pozycji menu, przycisk „Oblicz składkę OC”. Na telefonie menu w `<details>` działa bez JavaScriptu.
 2. **Hero** – nagłówek „Ubezpieczenie, które rozumie Twoje zabiegi”, dwa przyciski, trzy fakty z ikoną `w-zakresie`, ilustracja Bloom i szklana plakietka „Wycena OC w 2 minuty”. Pod spodem tekstowa lista partnerów.
 3. **Ubezpieczenia** – sześć kart z ikoną, nazwą ubezpieczyciela w etykiecie i jednym linkiem. Utrata dochodu i NNW dzieci mają etykietę „Zapytaj o ofertę”.
 4. **Szybka wycena OC (glass widget)** – kalkulator jako szklana karta na tle dużego, dwukolorowego serca marki. Serce prześwituje przez szkło, a jego górne łuki wychodzą ponad kartę.
@@ -98,7 +98,7 @@ Kolejność sekcji i ich cel:
 7. **Zgłoszenie szkody** – baner z linkiem do instrukcji.
 8. **FAQ** – cztery pytania oparte na faktach z obecnego kalkulatora i ankiety ERGO Hestii.
 9. **CTA** – granatowy blok „Porozmawiajmy o ochronie Twojego salonu”, zdanie zaproponowane w wytycznych głosu w Bloom.
-10. **Stopka** – dane Aura Consulting i miejsce na dane rejestrowe dystrybutora.
+10. **Stopka** – dane Aura Expert sp. z o.o. i miejsce na jej dane jako dystrybutora: status (agent albo broker) i numer w rejestrze KNF.
 
 **Kalkulator.** Reguły są przeniesione 1:1 z obecnego `bp-app.js`:
 

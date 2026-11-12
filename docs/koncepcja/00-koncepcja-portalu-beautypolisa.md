@@ -27,7 +27,7 @@ Zlecenie: koncepcja portalu BeautyPolisa (React/Next.js, beautypolisa.eu) z info
 
 Przyjęta interpretacja (szczegóły i założenia w `01-audyt-stanu-obecnego.md`, rozdział 8):
 
-- Portal **informuje i zbiera leady**; nie sprzedaje polis online, nie przyjmuje płatności, nie zawiera umów. Domknięcie sprzedaży należy do zespołu Aura Consulting.
+- Portal **informuje i zbiera leady**; nie sprzedaje polis online, nie przyjmuje płatności, nie zawiera umów. Domknięcie sprzedaży należy do zespołu Aura Expert.
 - Produktów jest **sześć**, bo istniejąca strona opieki medycznej (ENEL-MED / LUX MED) jest częścią oferty i pozostaje w nawigacji.
 - Jeden język (polski), jeden rynek, domena kanoniczna `https://beautypolisa.eu` bez `www`.
 - „Glass widget” rozumiemy jako półprzezroczystą kartę kalkulatora/CTA w stylu glassmorphism, z pełnym fallbackiem dla przeglądarek i użytkowników, którzy przezroczystości nie chcą lub nie obsługują.
@@ -70,7 +70,7 @@ Wszystkie wartości liczbowe spoza audytu są hipotezami do skalibrowania po pie
 
 Główne persony (pełny opis w sekcji 05): właścicielka salonu 1–8 osób, kosmetolog na JDG, fryzjer/barber, podolog, linergistka, stylistka paznokci, tatuażysta, trycholog, manager sieci. Łączy ich to, że ingerują w ciało klienta, pracują na własny rachunek lub prowadzą mały zespół i są kontrolowani przez sanepid, ZUS i urząd skarbowy.
 
-Obietnica marki (jedno zdanie używane wszędzie, także w danych strukturalnych i llms.txt): *BeautyPolisa to program ubezpieczeń dla branży beauty prowadzony przez Aura Consulting – OC dla salonów i gabinetów w programie z ERGO Hestią, ochrona karno-skarbowa, ochrona dochodu, ubezpieczenia grupowe i opieka medyczna, z kalkulatorem składki i doradcą, który zna specyfikę zabiegów.*
+Obietnica marki (jedno zdanie używane wszędzie, także w danych strukturalnych i llms.txt): *BeautyPolisa to program ubezpieczeń dla branży beauty prowadzony przez Aura Expert – OC dla salonów i gabinetów w programie z ERGO Hestią, ochrona karno-skarbowa, ochrona dochodu, ubezpieczenia grupowe i opieka medyczna, z kalkulatorem składki i doradcą, który zna specyfikę zabiegów.*
 
 ## 5. Zakres funkcjonalny v1
 
@@ -130,6 +130,7 @@ Kluczowe decyzje (pełne uzasadnienia i odrzucone alternatywy w sekcjach; rejest
 | D21 | **Decyzja zleceniodawcy 11.11.2026:** szkolenia dodają zweryfikowani organizatorzy (firmy szkoleniowe i salony) z publikacją po moderacji; organizator widzi minimalne dane uczestników tylko swoich szkoleń; bez płatności online w MVP | 11 |
 | D22 | **Decyzje zleceniodawcy 11.11.2026:** konto przy każdej polisie kupionej przez BeautyPolisa; po wygaśnięciu polis konto i dostęp do „Dam pracę” i „Szkoleń” zostają | 11 |
 | D23 | **Decyzja zleceniodawcy 11.11.2026:** „Szukam pracy” (ogłoszenia osób szukających pracy) na tablicy „Dam pracę” – przygotowane, ale **nieaktywne**: wyłączone przełącznikiem do decyzji zleceniodawcy po sprawdzeniu prawnym (KRAZ, RODO, DSA); bez kont kandydatów, widoczne tylko dla zalogowanych salonów, kontakt formularzem bez przechowywania treści; nadal tylko tablica – bez polecania i dopasowywania kandydatów | 11 |
+| D24 | **Decyzja zleceniodawcy 12.11.2026:** jeden podmiot – Aura Expert sp. z o.o. (KRS 0000599840): operator portalu, administrator danych portalu i Strefy Klienta, podmiot wskazywany w zgodach marketingowych i dystrybutor ubezpieczeń w informacjach IDD; linia marki „BeautyPolisa created by Aura Expert”. Otwarte: status agent czy broker i numer wpisu w rejestrze KNF (rozdział 13) | 01, 02 |
 
 ## 7. Bezpieczeństwo i stabilność – zasady nienegocjowalne
 
@@ -185,14 +186,14 @@ Pełny plan z WBS, rejestrem ryzyk, KPI/SLO i checklistami Definition of Done tr
 
 ## 13. Decyzje zleceniodawcy blokujące start fazy 1
 
-1. **Status dystrybutora** (broker czy agent) – wpływa na stopkę, klauzule, dane strukturalne i treść.
-2. **Administrator danych i IOD** (Aura Consulting czy Aura Expert) oraz akceptacja podstaw prawnych i retencji.
+1. **Status dystrybutora Aura Expert sp. z o.o.** (broker czy agent) i numer wpisu w rejestrze KNF – wpływa na stopkę, klauzule, dane strukturalne i treść.
+2. **IOD oraz akceptacja podstaw prawnych i retencji.** Administrator danych – rozstrzygnięte 12.11.2026: Aura Expert sp. z o.o. (operator portalu, administrator danych portalu i Strefy Klienta). Kontakt do IOD portalu – do potwierdzenia.
 3. **Zgoda na nowy projekt Supabase** i koszt stały ok. 30 USD miesięcznie [hipoteza] (Supabase Pro + Workers Paid).
 4. ~~Potwierdzenie cenników~~ – **rozstrzygnięte 11.11.2026:** składki są sztywne (taryfa programu). Do dostarczenia zostają tylko aktualne tabele składek Tax Protect, Grupowego ERGO i abonamentów, jeśli różnią się od wartości w obecnym kodzie.
 5. **Decyzja o crawlerach AI** (Search/Agent – rekomendujemy dopuścić; Training – do decyzji).
 6. **Dokumenty OWU do publikacji** i zasady użycia nazw oraz logotypów ubezpieczycieli i Fundacji Beauty Razem.
 7. **Imienny autor i recenzent** treści z uprawnieniami.
-8. **Dane kontaktowe i profile** (telefon, e-mail, LinkedIn/Facebook/Instagram, Google Business Profile, KRS/NIP) do stopki, `ContactPoint` i `sameAs`.
+8. **Dane kontaktowe i profile** (telefon i e-mail biura, LinkedIn/Facebook/Instagram, Google Business Profile) do stopki, `ContactPoint` i `sameAs`. Dane rejestrowe Aura Expert sp. z o.o. (KRS, NIP, REGON) – podane 12.11.2026.
 
 **Strefa Klienta** (nie blokuje fazy 1): rozstrzygnięte 11.11.2026 – konto przy każdej polisie, brak odcięcia konta po wygaśnięciu polis, „Dam pracę” jako sama tablica bez wpisu do KRAZ, organizatorzy szkoleń. Otwarte (pełna lista w 11 §21): role RODO przy danych uczestników szkoleń – organizator jako odrębny administrator czy Aura jako podmiot przetwarzający (prawnik i IOD, blokuje Z2); właściciel konta, gdy ubezpieczającym jest spółka; akceptacja obowiązkowego TOTP dla właścicieli salonów; okres przechowywania dokumentów polis przy koncie bez daty wygaśnięcia; zasady weryfikacji i ewentualne opłaty dla organizatorów; formularz kontaktowy w ogłoszeniach czy wyłącznie bezpośredni e-mail lub telefon salonu; opinia prawna przed włączeniem nieaktywnego „Szukam pracy” (KRAZ, RODO, DSA – nie blokuje etapów).
 
@@ -207,6 +208,6 @@ Pełna, skonsolidowana lista pytań otwartych trafi do `08-plan-wdrozenia.md` (w
 
 ## 15. Następne kroki
 
-1. Przegląd i akceptacja koncepcji przez zleceniodawcę, w szczególności decyzji D1–D23 i odpowiedzi na pytania z rozdziału 13.
+1. Przegląd i akceptacja koncepcji przez zleceniodawcę, w szczególności decyzji D1–D24 i odpowiedzi na pytania z rozdziału 13.
 2. Wykonanie szybkich wygranych tygodnia 0 (sekcja 08, rozdział 1) – są niezależne od budowy portalu i usuwają realne ryzyka już dziś.
 3. Po akceptacji: szczegółowy plan implementacji fazy 1 (zadania, kolejność, testy) i start od szkieletu aplikacji z bramkami CI, zanim powstanie jakakolwiek strona.

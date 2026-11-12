@@ -178,7 +178,7 @@ Układ od góry: nagłówek i podtytuł → widżet quizu (karta „glass” z f
 | Korzyść 1 | Wynik od razu na ekranie – bez PDF-a i czekania na skrzynkę. |
 | Korzyść 2 | Lista zabiegów z programu, nie ogólniki: od manicure i rzęs po HIFU, nici PDO i laser ablacyjny. |
 | Korzyść 3 | Składka roczna wg taryfy programu (od 400 zł/rok w grupie 1) i jasna informacja, kiedy potrzebna jest ocena indywidualna. |
-| Dowód (fakty, bez opinii) | Program OC dla branży beauty realizowany z Sopockim TU ERGO Hestia S.A. (nr WA50/003353/24/A) we współpracy z Fundacją Beauty Razem; obsługa brokerska Aura Consulting sp. z o.o. [status dystrybutora do potwierdzenia]; 4 grupy ryzyka i 3 sumy gwarancyjne (100 000 / 200 000 / 300 000 zł). Opinie klientów pojawią się dopiero, gdy będą prawdziwe i za zgodą autorów – do tego czasu sekcja „dowód” zawiera wyłącznie fakty o programie. |
+| Dowód (fakty, bez opinii) | Program OC dla branży beauty realizowany z Sopockim TU ERGO Hestia S.A. (nr WA50/003353/24/A) we współpracy z Fundacją Beauty Razem; dystrybutor: Aura Expert sp. z o.o. [status – agent czy broker – do potwierdzenia]; 4 grupy ryzyka i 3 sumy gwarancyjne (100 000 / 200 000 / 300 000 zł). Opinie klientów pojawią się dopiero, gdy będą prawdziwe i za zgodą autorów – do tego czasu sekcja „dowód” zawiera wyłącznie fakty o programie. |
 | CTA główne | Zacznij quiz |
 | FAQ 1 | **Czy wynik quizu oznacza, że mam ochronę?** Nie. Quiz pokazuje, do której grupy ryzyka programu należą Twoje zabiegi i jaka jest składka roczna wg taryfy programu. Informacja nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU, a zawarcie umowy poprzedza ocena wniosku (ankieta pyta m.in. o NIP, REGON, datę rozpoczęcia działalności, liczbę zatrudnionych, szkodowość z 3 lat, zabiegi wysokiego ryzyka, formularze zgody i kwalifikacje personelu). |
 | FAQ 2 | **Co z zabiegami z grupy 4?** HIFU, toksyna botulinowa, PRP, PLASMA, kwas hialuronowy, nici PDO, lipoliza iniekcyjna i laser ablacyjny wymagają indywidualnej oceny. Quiz nie poda składki – przekieruje Cię do formularza „poproś o indywidualną ocenę”. |
@@ -215,7 +215,7 @@ Treść:
 > Bez kliknięcia nie wyślę nic więcej. {Wariant bez zgody: Na tym kończę – nie wyślę kolejnych wiadomości, chyba że sama/sam o to poprosisz.}
 >
 > {podpis brokera}
-> Aura Consulting sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa · {status dystrybutora – do potwierdzenia} · Informacje o dystrybutorze: beautypolisa.eu/o-nas · Polityka prywatności: beautypolisa.eu/rodo
+> Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa · {status dystrybutora – do potwierdzenia} · Informacje o dystrybutorze: beautypolisa.eu/o-nas · Polityka prywatności: beautypolisa.eu/rodo
 
 (ok. 190 słów; jeden przycisk CTA zależny od wariantu).
 
@@ -358,7 +358,7 @@ Przykładowe wywołanie wysyłki (bez sekretów):
 {
   "from": "Imię Nazwisko · BeautyPolisa <imie.nazwisko@send.beautypolisa.eu>",
   "to": ["subskrybent@example.com"],
-  "reply_to": "imie.nazwisko@auraconsulting.example",
+  "reply_to": "imie.nazwisko@auraexpert.example",
   "subject": "Co właściwie obejmuje OC w Twojej grupie",
   "html": "<!-- szablon E1 z gałęzi default -->",
   "text": "…",
@@ -391,21 +391,21 @@ Odrzucone: prowadzenie serii w Broadcasts / Automations Resend jako silniku (roz
 
 ### 2.6 Zgody i prawo
 
-**Trzy osobne elementy przy formularzu** (kolejność: informacja → zgoda e-mail → zgoda telefon). Treści przykładowe – **do weryfikacji przez prawnika**; administrator danych do potwierdzenia (02, pytanie 1: Aura Consulting sp. z o.o. czy Aura Expert sp. z o.o.). Identyfikator wersji tekstu (np. `rodo-v1-2026-11`) trafia do `consents.text_version` (02).
+**Trzy osobne elementy przy formularzu** (kolejność: informacja → zgoda e-mail → zgoda telefon). Treści przykładowe – **do weryfikacji przez prawnika**; administratorem danych jest Aura Expert sp. z o.o. (decyzja zleceniodawcy z 12.11.2026), kontakt do IOD – do potwierdzenia (02, pytanie 1). Identyfikator wersji tekstu (np. `rodo-v1-2026-11`) trafia do `consents.text_version` (02). Jeżeli zgody marketingowe zebrane dotąd (stara strona, CRM Aura) wskazują spółkę pod nazwą wycofaną decyzją z 12.11.2026 (pełna nazwa – w historii repozytorium, wersja sprzed 12.11.2026; 01, pkt 2), prawnik musi potwierdzić, czy pozostają ważne dla Aura Expert sp. z o.o., czy trzeba je zebrać ponownie.
 
 1. **Informacja RODO** (tekst stale widoczny pod formularzem; checkbox „zapoznałam/em się” tylko jeśli prawnik tego wymaga – nie jest zgodą):
 
-> Administratorem Twoich danych jest Aura Consulting sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa [do potwierdzenia]. Adres e-mail, imię i wynik quizu przetwarzamy, aby dostarczyć Ci zamówiony wynik i – jeśli wyrazisz zgodę – wysyłać informacje o ubezpieczeniach dla branży beauty. Podstawa: podjęcie działań na Twoje żądanie (art. 6 ust. 1 lit. b RODO) [alternatywnie lit. f – do rozstrzygnięcia] oraz Twoja zgoda (art. 6 ust. 1 lit. a RODO). Dane przechowujemy do wycofania zgody, a niepotwierdzone adresy usuwamy po 7 dniach. Masz prawo dostępu, sprostowania, usunięcia, ograniczenia, przenoszenia, sprzeciwu i skargi do Prezesa UODO. Pełna informacja: beautypolisa.eu/rodo.
+> Administratorem Twoich danych jest Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa. Adres e-mail, imię i wynik quizu przetwarzamy, aby dostarczyć Ci zamówiony wynik i – jeśli wyrazisz zgodę – wysyłać informacje o ubezpieczeniach dla branży beauty. Podstawa: podjęcie działań na Twoje żądanie (art. 6 ust. 1 lit. b RODO) [alternatywnie lit. f – do rozstrzygnięcia] oraz Twoja zgoda (art. 6 ust. 1 lit. a RODO). Dane przechowujemy do wycofania zgody, a niepotwierdzone adresy usuwamy po 7 dniach. Masz prawo dostępu, sprostowania, usunięcia, ograniczenia, przenoszenia, sprzeciwu i skargi do Prezesa UODO. Pełna informacja: beautypolisa.eu/rodo.
 
 2. **Zgoda na e-mail** (checkbox, domyślnie odznaczony, niewymagany do otrzymania wyniku):
 
-> ☐ Chcę otrzymywać od Aura Consulting sp. z o.o. na podany adres e-mail informacje o ubezpieczeniach dla branży beauty: serię 4 wiadomości o OC oraz okazjonalne aktualizacje. Zgodę mogę wycofać w każdej chwili linkiem w wiadomości.
+> ☐ Chcę otrzymywać od Aura Expert sp. z o.o. na podany adres e-mail informacje o ubezpieczeniach dla branży beauty: serię 4 wiadomości o OC oraz okazjonalne aktualizacje. Zgodę mogę wycofać w każdej chwili linkiem w wiadomości.
 
 Podstawa wskazana w zadaniu: art. 10 ustawy o świadczeniu usług drogą elektroniczną. **Uwaga [hipoteza – do weryfikacji przez prawnika]:** od 10.11.2024 r. obowiązuje Prawo komunikacji elektronicznej, które zastąpiło art. 172 Prawa telekomunikacyjnego i uchyliło art. 10 u.ś.u.d.e. – zgoda na komunikację marketingową opiera się obecnie na art. 398 PKE. Treść klauzuli i odwołanie do przepisu ma ustalić prawnik; mechanika (osobny checkbox, dowód w `consents`, double opt-in) nie zależy od tego, który przepis zostanie wskazany.
 
 3. **Zgoda na kontakt telefoniczny** (checkbox wyłącznie tam, gdzie zbieramy numer: formularz leada, „Umów rozmowę”; w quizie numeru nie ma, więc checkbox nie występuje):
 
-> ☐ Wyrażam zgodę na kontakt telefoniczny ze strony Aura Consulting sp. z o.o. pod podanym numerem w celu przedstawienia informacji o ubezpieczeniach dla branży beauty. Zgodę mogę wycofać w każdej chwili.
+> ☐ Wyrażam zgodę na kontakt telefoniczny ze strony Aura Expert sp. z o.o. pod podanym numerem w celu przedstawienia informacji o ubezpieczeniach dla branży beauty. Zgodę mogę wycofać w każdej chwili.
 
 Podstawa wskazana w zadaniu: art. 172 Prawa telekomunikacyjnego – ta sama uwaga o PKE jak wyżej.
 
@@ -441,7 +441,7 @@ Rama „Canva creator” ma sześć etapów: brief → kalendarz → inwentarz z
 | Ton | Ekspercki, ciepły, konkretny. Mówimy „Ty”, unikamy form rodzajowych tam, gdzie się da („Twoje zabiegi”, „wykonujesz”). Zakaz straszenia („jedno roszczenie zrujnuje Twój salon”), pilności, wykrzykników, emoji w nadmiarze |
 | Elementy marki (01, pkt 2) | Granat `#2a3b69` – tła i typografia; róż `#e11d48` – akcent CTA, maks. ok. 10 % powierzchni; tło `#fafafa`; tekst `#1e293b`; tryb ciemny `#0f172a` (Stories); Montserrat Bold (nagłówki) / Regular i Medium (treść); logo poziome PNG z repo (`BeautyPolisa_logo_podstawowe_poziome.png`) – brak wersji białej i monochromatycznej [luka] |
 | Ubezpieczyciele i partnerzy jako dowód | ERGO Hestia (program nr WA50/003353/24/A), Colonnade, ENEL-MED, LUX MED, Fundacja Beauty Razem – **wyłącznie jako nazwy tekstowe** do czasu potwierdzenia umownego zasad użycia logotypów i treści (05, pytanie 2) |
-| Kanały | Instagram (feed, Reels, Stories), Facebook (strona), LinkedIn (strona Aura Consulting + profil brokera [założenie]), e-mail (tylko adresy z udokumentowaną zgodą) |
+| Kanały | Instagram (feed, Reels, Stories), Facebook (strona), LinkedIn (strona Aura Expert + profil brokera [założenie]), e-mail (tylko adresy z udokumentowaną zgodą) |
 | Zakazy | Ceny inne niż z cennika programu (kwoty zawsze jako „składka wg taryfy programu”, z zastrzeżeniem art. 66 KC i odwołaniem do OWU w nocie dystrybutora lub stopce); składki Tax Protect spoza taryfy wariantów (`tax_warianty`) i kwoty przy przychodach powyżej 3 mln zł (tam wyłącznie „wycena indywidualna”); obietnice ochrony; wymyślone opinie i „historie klientek”; liczby bez źródła (koszt rotacji 15 000 zł); logotypy partnerów; grafiki z generowanymi osobami przedstawianymi jako klientki lub zespół |
 | Zgody | Posty organiczne – bez dodatkowych; e-maile kampanii C1–C3 – wyłącznie do subskrybentów portalu z potwierdzoną zgodą oraz do kontaktów z CRM Aura **tylko po audycie zgód** (01, pkt 5.2: `crm_companies`, `email_messages` – status zgód nieznany) |
 | Budżet mediowy | Brak płatnych kampanii w pierwszych 30 dniach [założenie]; decyzja o Meta Ads po danych z lejka i wdrożeniu zgód na piksele przez Zaraz (02) |
@@ -502,7 +502,7 @@ Razem: 17 pozycji Canva, 3 e-maile, 4 posty LinkedIn, 3 Reels, 3 posty tekstowe 
 |---|---|---|
 | 1 (okładka) | `Cover_Title` (≤ 50 zn.), `Cover_Sub` (≤ 80 zn.), `Logo`, `Swipe_Hint` | tło granat, akcent różowy pasek, typografia jak w A |
 | 2–4 (treść) | `Slide_Number`, `Slide_Title` (≤ 40 zn.), `Slide_Body` (≤ 60 słów), `Slide_Icon` | tło `#fafafa`, tekst `#1e293b`, ikona liniowa granatowa 160 px |
-| 5 (CTA) | `CTA_Title` (≤ 40 zn.), `CTA_Text` (≤ 90 zn.), `URL`, `Logo`, `Distributor_Note` (≤ 120 zn.) | tło granat; nota dystrybutora: „Aura Consulting sp. z o.o. – [status do potwierdzenia]. Informacja, nie oferta.” |
+| 5 (CTA) | `CTA_Title` (≤ 40 zn.), `CTA_Text` (≤ 90 zn.), `URL`, `Logo`, `Distributor_Note` (≤ 120 zn.) | tło granat; nota dystrybutora: „Aura Expert sp. z o.o. – [status do potwierdzenia]. Informacja, nie oferta.” |
 
 **Tabela luk (w repozytorium są wyłącznie: logo poziome PNG, `AEX.png`, `AnkietaBPEH.pdf`):**
 
@@ -543,9 +543,9 @@ Wszystkie ceny wyłącznie z cennika programu, opisane jako „składka wg taryf
 
 **Dwa posty LinkedIn**
 
-Post 1 (dzień 1, profil brokera / strona Aura Consulting):
+Post 1 (dzień 1, profil brokera / strona Aura Expert):
 
-> Od dziś działa beautypolisa.eu – portal o ubezpieczeniach dla branży beauty, który prowadzimy w Aura Consulting.
+> Od dziś działa beautypolisa.eu – portal o ubezpieczeniach dla branży beauty, który prowadzimy w Aura Expert.
 >
 > Powód jest prosty. Program OC dla branży beauty realizowany z ERGO Hestią we współpracy z Fundacją Beauty Razem nie ma dotąd żadnego publicznego opisu: ani listy zabiegów w czterech grupach ryzyka, ani zasad, kiedy potrzebna jest indywidualna ocena. Kosmetolożki pytają o to na grupach, a odpowiedzi są przypadkowe.
 >
@@ -734,11 +734,11 @@ R – wykonuje, A – zatwierdza, C – konsultuje, I – informowany.
 ## Pytania otwarte do zleceniodawcy
 
 1. Jaki jest potwierdzony status dystrybutora (broker vs agent)? Decyduje o treści stopki, klauzul i informacji IDD (01, pkt 2; 02, pytanie 9).
-2. Kto jest administratorem danych portalu i kto pełni funkcję IOD (02, pytanie 1)? Bez tego klauzule z pkt 2.6 pozostają szkicem.
-3. Kto zatwierdza prawnie wzór zgody na zabieg i checklistę kontroli oraz czy mogą być wydawane pod marką BeautyPolisa / Aura Consulting (05, pytanie 9)?
+2. Kto pełni funkcję IOD i jaki adres kontaktowy IOD podajemy w klauzulach z pkt 2.6 (02, pytanie 1)? Administrator danych portalu jest rozstrzygnięty: Aura Expert sp. z o.o. (decyzja zleceniodawcy z 12.11.2026).
+3. Kto zatwierdza prawnie wzór zgody na zabieg i checklistę kontroli oraz czy mogą być wydawane pod marką BeautyPolisa / Aura Expert (05, pytanie 9)?
 4. Czy prawnik potwierdzi aktualną podstawę prawną zgód (art. 398 PKE vs art. 10 u.ś.u.d.e. i art. 172 Pt) oraz oceni, czy e-mail E0 z linkiem do strony wyniku jest informacją handlową?
 5. Czy można używać nazwy „ERGO Hestia” i numeru programu w postach i e-mailach, i na jakich zasadach umownych wolno użyć logotypów ERGO Hestia, Colonnade, ENEL-MED, LUX MED i Fundacji Beauty Razem?
-6. Czy istnieje baza kontaktów z udokumentowaną zgodą marketingową (CRM Aura, `email_messages`) do e-maili C1–C3 i kto przeprowadzi audyt zgód przed wysyłką?
+6. Czy istnieje baza kontaktów z udokumentowaną zgodą marketingową (CRM Aura, `email_messages`) do e-maili C1–C3 i kto przeprowadzi audyt zgód przed wysyłką – w tym ocenę, czy zgody zebrane dotąd pod poprzednią nazwą spółki są ważne dla Aura Expert sp. z o.o. (pkt 2.6)?
 7. Czy liczby „koszt rotacji ok. 15 000 zł” i „pakiet zamiast podwyżki 50 zł” mają cytowalne źródło (05, pytanie 6)? Bez niego kalkulator rotacji pracuje tylko na liczbach użytkownika.
 8. Czy seria pielęgnująca wchodzi do v1 (02 i 05, pytanie 11) i kto jest imiennym nadawcą e-maili (05, decyzja 6)? Czy broker może odpowiadać w SLA 1 dnia roboczego?
 9. Kto nadaje dostęp do Canva (Brand Kit, szablony), Meta Business Suite, LinkedIn i Resend, i czy właściciel akceptuje budżet generowania z pkt 3.4?

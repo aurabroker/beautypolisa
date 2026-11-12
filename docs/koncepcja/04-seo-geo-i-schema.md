@@ -36,7 +36,7 @@ Model **hub-and-spoke**: produkt jest szprychą huba `/ubezpieczenia`, zawód �
 | `/dla-kogo/<zawod>` (6) | landing segmentowy | informacyjno-komercyjna | „ubezpieczenie dla podologa” itd. | WebPage (`about`→Service), FAQPage, BreadcrumbList | „Policz składkę” |
 | `/baza-wiedzy` (+`/strona/<n>`) | hub + paginacja | informacyjna | „ubezpieczenia beauty poradnik” | CollectionPage, BreadcrumbList | lead magnet (05) |
 | `/baza-wiedzy/<slug>` | artykuł | informacyjna (long tail) | pytania użytkowników | Article, BreadcrumbList, opc. FAQPage | kontekstowe CTA |
-| `/o-nas` | o firmie | E-E-A-T | „BeautyPolisa Aura Consulting” | AboutPage, Organization, Person | kontakt |
+| `/o-nas` | o firmie | E-E-A-T | „BeautyPolisa Aura Expert” | AboutPage, Organization, Person | kontakt |
 | `/kontakt` | kontakt | nawigacyjna | „BeautyPolisa kontakt” | ContactPage | formularz |
 | `/szkoda` | procedura | informacyjna (po sprzedaży) | „jak zgłosić szkodę z OC salonu” | HowTo, BreadcrumbList | formularz zgłoszenia |
 | `/dokumenty` (+`/<slug>`) | repozytorium OWU | informacyjna | „OWU OC ERGO Hestia beauty” | CollectionPage, DigitalDocument | pobierz PDF |
@@ -230,7 +230,7 @@ Jeden `<h1>` = główne zapytanie (na artykułach pytanie); `<h2>` to pytania lu
 
 ### 4.2 Home
 
-`schema-home.json`: `Organization` to podmiot prawny (Aura Consulting sp. z o.o., adres z audytu), `InsuranceAgency` to marka BeautyPolisa (`parentOrganization` w jedną stronę, `brand` w drugą). `contactPoint` wskazuje `/kontakt` i język `pl`; telefon i e-mail po otrzymaniu. `makesOffer` wylicza 6 usług przez `@id` – asystent czytający home dostaje pełną listę produktów z linkami. `sameAs` pominięto (adresy profili nieznane). `WebSite` bez `SearchAction`, bo na starcie nie ma wyszukiwarki w serwisie.
+`schema-home.json`: `Organization` to podmiot prawny (Aura Expert sp. z o.o., adres z audytu; KRS, NIP i REGON podane przez zleceniodawcę 12.11.2026 – w `identifier` i `taxID`), `InsuranceAgency` to marka BeautyPolisa (`parentOrganization` w jedną stronę, `brand` w drugą). `contactPoint` wskazuje `/kontakt` i język `pl`; telefon i e-mail po otrzymaniu. `makesOffer` wylicza 6 usług przez `@id` – asystent czytający home dostaje pełną listę produktów z linkami. `sameAs` pominięto (adresy profili nieznane). `WebSite` bez `SearchAction`, bo na starcie nie ma wyszukiwarki w serwisie.
 
 ### 4.3 Produkty: `Service`, nie `Product`
 
@@ -286,7 +286,7 @@ Przed wdrożeniem: Schema Markup Validator (poprawność słownika) i Rich Resul
 | `schema-breadcrumb.json` | BreadcrumbList, 3 poziomy | gotowy |
 | `schema-howto-szkoda.json` | HowTo, 6 kroków | terminy z OWU do uzupełnienia |
 
-Pola celowo pominięte (fakt nieznany – bez wartości zastępczych): `telephone`/`email`; `sameAs` (LinkedIn, Facebook, Instagram, YouTube, wizytówka Google, rejestr KNF); `taxID`/KRS/REGON – w obecnym `indeksowt.html` jest nota „Agent jest wpisany do KRS…” z numerami, **do weryfikacji w KRS**, czy dotyczą Aura Consulting sp. z o.o.; `foundingDate`, `founder`, `openingHoursSpecification`, `geo`; `author` jako `Person` i `reviewedBy`; `url`/`sameAs` ubezpieczycieli w `provider`; adresy plików OWU dla `termsOfService`/`DigitalDocument` (program WA50/003353/24/A, OWU Colonnade 25.01.2023) i zgoda na publikację; plik logo pod `/images/logo-beautypolisa.png` (w repo `BeautyPolisa_logo_podstawowe_poziome.png`); terminy zgłoszenia szkody w HowTo; prawdziwe daty i obrazy artykułów.
+Pola celowo pominięte (fakt nieznany – bez wartości zastępczych): `telephone`/`email`; `sameAs` (LinkedIn, Facebook, Instagram, YouTube, wizytówka Google, rejestr KNF); `foundingDate`, `founder`, `openingHoursSpecification`, `geo`; `author` jako `Person` i `reviewedBy`; `url`/`sameAs` ubezpieczycieli w `provider`; adresy plików OWU dla `termsOfService`/`DigitalDocument` (program WA50/003353/24/A, OWU Colonnade 25.01.2023) i zgoda na publikację; plik logo pod `/images/logo-beautypolisa.png` (w repo `BeautyPolisa_logo_podstawowe_poziome.png`); terminy zgłoszenia szkody w HowTo; prawdziwe daty i obrazy artykułów.
 
 ## 5. GEO – widoczność w asystentach AI
 
@@ -357,11 +357,11 @@ Standard każdej strony produktowej i artykułu (szczegóły redakcyjne w 05):
 
 ### 5.6 Spójność encji
 
-- **NAP**: „Aura Consulting sp. z o.o.” + marka „BeautyPolisa”, „ul. Bolkowska 2A/28, 01-466 Warszawa”, jeden telefon i e-mail – identyczne w stopce, `/kontakt`, `/o-nas`, JSON-LD, wizytówce Google, LinkedIn, stopkach e-maili z Resend, rejestrze KNF.
-- **Jedno zdanie o marce** wszędzie (stopka, `/o-nas`, `description` w schemie, llms.txt, profile): *„BeautyPolisa to portal informacyjny Aura Consulting sp. z o.o. o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.”* Słowo „broker/agent” po rozstrzygnięciu statusu.
+- **NAP**: „Aura Expert sp. z o.o.” + marka „BeautyPolisa”, „ul. Bolkowska 2A/28, 01-466 Warszawa”, jeden telefon i e-mail – identyczne w stopce, `/kontakt`, `/o-nas`, JSON-LD, wizytówce Google, LinkedIn, stopkach e-maili z Resend, rejestrze KNF.
+- **Jedno zdanie o marce** wszędzie (stopka, `/o-nas`, `description` w schemie, llms.txt, profile): *„BeautyPolisa to portal informacyjny Aura Expert sp. z o.o. o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.”* Słowo „broker/agent” po rozstrzygnięciu statusu.
 - **`sameAs`** w obie strony: profile linkują do domeny, schema do profili.
-- **Google Business Profile** dla Aura Consulting (kategoria „agencja ubezpieczeniowa”, adres jak wyżej) – jedno z niewielu źródeł o lokalnych firmach, które asystenci traktują jako pewne.
-- **KRS/NIP/REGON w stopce** razem z informacją o dystrybutorze (sekcja prawna koncepcji), po weryfikacji numerów.
+- **Google Business Profile** dla Aura Expert (kategoria „agencja ubezpieczeniowa”, adres jak wyżej) – jedno z niewielu źródeł o lokalnych firmach, które asystenci traktują jako pewne.
+- **KRS/NIP/REGON w stopce** (KRS 0000599840, NIP 5242793544, REGON 363673048 – dane od zleceniodawcy z 12.11.2026) razem z informacją o dystrybutorze (sekcja prawna koncepcji); status (agent albo broker) i numer w rejestrze KNF – po rozstrzygnięciu.
 - **Wikidata**: nie na starcie – marka nie ma niezależnych źródeł, wpis zostałby usunięty; wracamy po pierwszych publikacjach branżowych.
 
 ### 5.7 Źródła poza witryną, które cytuje AI
@@ -468,7 +468,7 @@ Kolumna „zgodność” jest ważniejsza niż „wzmianka”: błędna odpowied
 
 ## Pytania otwarte do zleceniodawcy
 
-1. Status dystrybutora – broker czy agent? Wpływa na `broker` w `Service`, stopkę, bio autorów i słownictwo. Czy numery KRS/NIP/REGON z noty w `indeksowt.html` dotyczą Aura Consulting sp. z o.o.?
+1. Status dystrybutora Aura Expert sp. z o.o. – broker czy agent – i numer wpisu w rejestrze KNF? Wpływa na `broker` w `Service`, stopkę, bio autorów i słownictwo. (Podmiot i numery KRS/NIP/REGON – rozstrzygnięte decyzją zleceniodawcy z 12.11.2026.)
 2. Telefon i e-mail do `ContactPoint`; adresy profili (LinkedIn, Facebook, Instagram, YouTube), stan wizytówki Google, link do wpisu w rejestrze KNF – do `sameAs`.
 3. Kto jest imiennym autorem i recenzentem treści (imię, stanowisko, uprawnienia, zgoda na bio i zdjęcie)?
 4. Czy zleceniodawca kontroluje DNS `beautypolisa.com`? Czy domena serwowała strony (indeksacja, linki)? Zgoda na 301 na `.eu`.

@@ -1,6 +1,6 @@
 # BeautyPolisa - Kalkulator Składek OC
 
-Interaktywny landing page oraz kalkulator ubezpieczeniowy dedykowany branży beauty (salony kosmetyczne, fryzjerskie, kosmetologiczne i podologiczne). Projekt stworzony we współpracy z BeautyRazem oraz obsługiwany przez Aura Consulting.
+Interaktywny landing page oraz kalkulator ubezpieczeniowy dedykowany branży beauty (salony kosmetyczne, fryzjerskie, kosmetologiczne i podologiczne). Projekt stworzony we współpracy z BeautyRazem oraz obsługiwany przez Aura Expert.
 
 ## 🚀 Główne funkcjonalności
 
@@ -35,4 +35,4 @@ Projekt wykorzystuje darmowe API Web3Forms do obsługi zapytań bez koniecznośc
 
 ## 📄 Licencja
 
-Projekt komercyjny. Wszelkie prawa zastrzeżone dla Aura Consulting / Program BeautyRazem 2026.
+Projekt komercyjny. Wszelkie prawa zastrzeżone dla Aura Expert / Program BeautyRazem 2026.
