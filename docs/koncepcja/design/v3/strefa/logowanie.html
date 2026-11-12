@@ -33,6 +33,7 @@
     <a href="#s-totp">3. Kod z&nbsp;aplikacji</a>
     <a href="#s-zaproszenie">Zaproszenie</a>
     <a href="#s-pierwsze">Pierwsze logowanie</a>
+    <a href="#s-zapas">Zapasowa aplikacja</a>
     <a href="#s-stany">Stany logowania</a>
   </nav>
   <nav aria-label="Ekrany makiety – rejestracja">
@@ -85,7 +86,7 @@
         <hr class="rule">
         <p class="small">Konto klienta zakłada Aura Expert po zawarciu polisy&nbsp;– salon nie musi się rejestrować. Pracodawcy i&nbsp;osoby szukające pracy zakładają konto sami.</p>
         <!-- Rejestracja w programie (zakup polisy) – decyzja zleceniodawcy 12.11.2026: beautyrazem.pl/polisa -->
-        <p class="small"><strong>Nie masz jeszcze polisy?</strong> Zarejestruj się na <a href="https://beautyrazem.pl/polisa">beautyrazem.pl/polisa</a>.</p>
+        <p class="small"><strong>Nie masz polisy OC dla branży beauty?</strong> Zarejestruj się na <a href="https://beautyrazem.pl/polisa">beautyrazem.pl/polisa</a>.</p>
         <div class="actions"><a class="link-lux" href="#s-rej">Załóż konto</a><a class="link-quiet" href="../makieta-v3.html#kontakt">Salon z&nbsp;polisą bez zaproszenia? Napisz do doradcy</a></div>
       </div>
     </section>
@@ -191,10 +192,11 @@
         <ol class="stepper" aria-label="Pierwsze logowanie">
           <li aria-current="step">Regulamin</li>
           <li>Drugi składnik</li>
+          <li>Zapasowa aplikacja</li>
         </ol>
         <h1 id="t-pierwsze">Witamy w&nbsp;Strefie Klienta</h1>
         <p class="auth-who"><span>Zalogowano jako</span> <strong>anna@salon-przykladowy.example</strong> <span class="badge badge--role">Właścicielka · Salon Przykładowy</span></p>
-        <form class="form" id="f-pierwsze" action="panel.html" method="post" novalidate>
+        <form class="form" id="f-pierwsze" action="#s-zapas" method="post" novalidate>
           <fieldset class="field">
             <legend>Regulamin</legend>
             <label class="check-row"><input type="checkbox" id="regulamin" name="regulamin" required aria-describedby="reg-err"> <span>Akceptuję <a href="#regulamin-tresc">Regulamin Strefy Klienta</a> (wersja 1.0, przykład).</span></label>
@@ -217,15 +219,47 @@
             </div>
             <div class="alert alert--info">
               <svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>
-              <strong class="alert-title">Dodaj zapasowe urządzenie</strong>
-              <p class="small">Po zapisaniu dodaj w&nbsp;„Ustawieniach” drugą aplikację uwierzytelniającą&nbsp;– na innym telefonie albo w&nbsp;menedżerze haseł. Gdy zgubisz telefon, zalogujesz się kodem z&nbsp;zapasowego urządzenia. Kodów zapasowych nie ma; po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości.</p>
+              <strong class="alert-title">Następny krok: zapasowe urządzenie</strong>
+              <p class="small">Po zapisaniu zaproponujemy dodanie drugiej aplikacji uwierzytelniającej&nbsp;– na innym telefonie albo w&nbsp;menedżerze haseł. Gdy zgubisz telefon, zalogujesz się kodem z&nbsp;zapasowego urządzenia. Kodów zapasowych nie ma; po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości.</p>
             </div>
           </fieldset>
           <div class="form-foot">
-            <button class="btn btn-navy" type="submit">Zapisz i&nbsp;przejdź do pulpitu</button>
+            <button class="btn btn-navy" type="submit">Zapisz i&nbsp;przejdź dalej</button>
             <button class="btn btn-quiet" type="button" disabled aria-describedby="later-note">Później</button>
           </div>
           <p class="xsmall" id="later-note"><span class="mock-note">Wariant pracownika</span> Pracownik może pominąć drugi składnik przyciskiem „Później” i&nbsp;włączyć go w&nbsp;„Ustawieniach”. Właściciel i&nbsp;organizator&nbsp;– nie.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ 5a · zapasowa aplikacja (00, D28a; 11 §6.1 K4, §8) – zaraz po włączeniu drugiego składnika; można pominąć,
+         wtedy przypomnienie w „Ustawieniach” (panel.html#ustawienia). Produkcja: drugi czynnik TOTP w Supabase Auth MFA, w sesji aal2,
+         zdarzenie w dzienniku audytu i e-mail do właściciela konta. ============ -->
+    <section class="screen" id="s-zapas" aria-labelledby="t-zapas">
+      <div class="auth-card auth-card--wide glass glass--strong frame">
+        <ol class="stepper" aria-label="Pierwsze logowanie">
+          <li class="done">Regulamin<span class="sr-only"> – zrobione</span></li>
+          <li class="done">Drugi składnik<span class="sr-only"> – zrobione</span></li>
+          <li aria-current="step">Zapasowa aplikacja</li>
+        </ol>
+        <h1 id="t-zapas">Dodaj zapasową aplikację</h1>
+        <p class="lead">Drugi składnik jest włączony. Dodaj teraz drugą aplikację uwierzytelniającą&nbsp;– na innym telefonie albo w&nbsp;menedżerze haseł. Gdy zgubisz telefon, zalogujesz się kodem z&nbsp;zapasowej aplikacji.</p>
+        <form class="form" id="f-zapas" action="panel.html" method="post" novalidate>
+          <div class="qr-row">
+            <div class="qr" role="img" aria-label="Kod QR do zapasowej aplikacji uwierzytelniającej – zastępnik makiety"><span>kod QR<br>(przykład)</span></div>
+            <div class="field">
+              <span class="label">Klucz do wpisania ręcznie</span>
+              <span class="secret">EFGH IJKL MNOP QRST <span class="mock-note">przykład</span></span>
+              <label for="totp-zapas" class="label">Kod z&nbsp;zapasowej aplikacji</label>
+              <input class="code-input" type="text" id="totp-zapas" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
+              <p class="field-error" id="totp-zapas-err" hidden></p>
+            </div>
+          </div>
+          <p class="small">Kodów zapasowych nie ma. Po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości. O&nbsp;dodaniu urządzenia powiadomimy Cię e-mailem.</p>
+          <div class="form-foot">
+            <button class="btn btn-navy" type="submit">Dodaj i&nbsp;przejdź do pulpitu</button>
+            <a class="btn btn-quiet" href="panel.html">Pomiń&nbsp;– przypomnij w&nbsp;Ustawieniach</a>
+          </div>
         </form>
       </div>
     </section>
@@ -834,6 +868,13 @@
     if (!setErr(box, 'reg-err', box.checked ? '' : 'Zaakceptuj regulamin, aby przejść dalej.')) { bad.push(box); }
     if (!setErr(code, 'totp-new-err', /^\d{6}$/.test(code.value.trim()) ? '' : 'Wpisz sześciocyfrowy kod z aplikacji – bez niego nie włączymy drugiego składnika.')) { bad.push(code); }
     if (bad.length) { bad[0].focus(); return; }
+    go('s-zapas');
+  });
+  /* zapasowa aplikacja (00, D28a): opcjonalna – „Pomiń” prowadzi do pulpitu, przypomnienie zostaje w „Ustawieniach” */
+  byId('f-zapas').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var c = byId('totp-zapas');
+    if (!setErr(c, 'totp-zapas-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz sześciocyfrowy kod z zapasowej aplikacji albo wybierz „Pomiń”.')) { c.focus(); return; }
     location.href = 'panel.html';
   });
 

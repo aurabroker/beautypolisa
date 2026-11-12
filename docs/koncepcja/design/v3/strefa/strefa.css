@@ -222,6 +222,8 @@ ul,ol{margin:0}
 .js .view:not(.is-active){display:none}
 /* bez JS widoki stoją pod sobą: rozmyty jest tylko nagłówek pierwszego widoku (najwyżej 3 tafle w widoku: pasek, menu, nagłówek) */
 html:not(.js) .view ~ .view .page-head{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--color-ivory)}
+/* logowanie.html bez JS: ekrany stoją pod sobą – rozmyta jest tylko karta pierwszego ekranu (tafla 1/1 poza paskiem) */
+html:not(.js) .auth-screens > .screen ~ .screen .auth-card{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--color-ivory)}
 .no-js-only{display:none}
 html:not(.js) .no-js-only{display:block}
 
@@ -399,7 +401,8 @@ fieldset.field > legend{padding:0;margin-bottom:6px}
 .track{display:flex;flex-wrap:wrap;gap:0;list-style:none;padding:0;margin:0}
 .track li{position:relative;flex:1 1 0;min-width:110px;display:grid;justify-items:start;gap:6px;padding:20px 12px 0 0;font-size:var(--text-sm);color:var(--color-taupe)}
 .track li::before{content:"";position:absolute;top:6px;left:0;right:0;height:1px;background:var(--bp-line-gold)}
-.track li::after{content:"";position:absolute;top:1px;left:0;width:11px;height:11px;border:1px solid var(--color-gold);background:var(--color-ivory);transform:rotate(45deg)}
+/* obrys rombu oczekującego: taupe (#5F574D na #F7F3EC ≈ 6,3:1) – złoto miało 2,49:1, poniżej 3:1 z WCAG 1.4.11 */
+.track li::after{content:"";position:absolute;top:1px;left:0;width:11px;height:11px;border:1px solid var(--color-taupe);background:var(--color-ivory);transform:rotate(45deg)}
 .track li[aria-current="step"]{color:var(--color-navy);font-weight:500}
 .track li[aria-current="step"]::after,.track li.done::after{background:var(--color-navy);border-color:var(--color-navy)}
 
@@ -645,7 +648,10 @@ html:has(.klauzula[open]){overflow:hidden}
   :focus-visible{outline:2px dashed CanvasText}
   .glass,.surface,.badge,.alert,.banner,.drawer-panel{border:1px solid CanvasText}
   .frame::before,.banner::before,.invite::before{display:none}
-  .badge::before,.track li::after,.stepper li::before{forced-color-adjust:none;background:CanvasText;border-color:CanvasText}
+  .badge::before{forced-color-adjust:none;background:CanvasText;border-color:CanvasText}
+  /* kroki: oczekujący – pusty romb, zrobiony i bieżący – pełny (różnica kształtu, nie tylko koloru) */
+  .track li::after,.stepper li::before{forced-color-adjust:none;background:Canvas;border-color:CanvasText}
+  .track li.done::after,.track li[aria-current="step"]::after,.stepper li.done::before,.stepper li[aria-current="step"]::before{background:CanvasText;border-color:CanvasText}
   .sidenav a[aria-current="page"]{outline:2px solid Highlight}
   .tabs [role="tab"][aria-selected="true"]::after{background:Highlight}
 }
