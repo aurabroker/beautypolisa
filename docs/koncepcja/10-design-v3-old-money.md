@@ -126,6 +126,7 @@ Narzędzie: Playwright i Chromium, zrzuty całej strony przy 1280 i 390 px.
 ## 11. Pliki
 
 - `design/v3/makieta-v3.html`: makieta strony głównej (sprite ikon wbudowany).
+- `design/v3/oc-beauty.html`: makieta strony `/ubezpieczenia/oc-beauty` – lista 117 zabiegów (`#zabiegi`), treść klauzuli ochrony prawnej (`#ochrona-prawna`), taryfa i FAQ (rozdział 15).
 - `design/v3/tokens-v3.css`: tokeny, szkło, ikony, przyciski i mapowanie do `@theme` Tailwind 4.
 - `design/v3/img/`: cztery zdjęcia w dwóch rozmiarach.
 - `design/v3/ikony/`, `ikony-v3-sprite.svg`, `ikony-arkusz-v3.svg`, `ikony-v3-manifest.json`: ikony.
@@ -137,6 +138,8 @@ Narzędzie: Playwright i Chromium, zrzuty całej strony przy 1280 i 390 px.
 |---|---|
 | D13 (zmieniona) | Paleta old money: midnight `#141C33`, navy `#2A3B68`, ivory `#F7F3EC`, parchment `#EDE5D8`, gold `#B8975A` (tylko dekor), gold light `#D9C089` (tekst na ciemnym). Nagłówki w Cormorant Garamond, tekst w Poppins. Róż tylko w logo. |
 | D14 (zmieniona) | Całość w szkle na zdjęciach z Bloom (jasne, mocne i ciemne szkło ze złotą ramką). Ikony z Bloom cienką linią, jeden kolor. Wyjścia awaryjne szkła są obowiązkowe. |
+| D29 (00) | Pełna lista 117 zabiegów z jednego pliku danych: wyszukiwarka (combobox) w kalkulatorze i długa lista z kotwicami na stronie OC (rozdział 15) |
+| D30 (00) | Treść klauzuli ochrony prawnej dosłownie: natywny dialog w kalkulatorze, sekcja `#ochrona-prawna` na stronie OC, karta polisy w Strefie Klienta (rozdział 15) |
 
 ## 13. Otwarte pytania
 
@@ -177,5 +180,39 @@ Narzędzie: Playwright i Chromium, zrzuty całej strony przy 1280 i 390 px.
 ### 14.5 Do dostarczenia
 - Logo w SVG oraz jasna wersja na ciemne tła. Do tego czasu: zmniejszona wersja PNG (obecny plik ma 3000 px i 41 KB).
 - Wersje AVIF czterech zdjęć, które dadzą około 60% mniej danych, oraz kadr hero 4:3 na telefon. Wszystko można zrobić z istniejących plików.
-- Dane do stopki i schema.org: telefon i e-mail biura – w makiecie oznaczone jako miejsce do uzupełnienia. KRS, NIP i REGON Aura Expert sp. z o.o. są już wpisane w stopce makiety. Status i numer wpisu są znane od 12.11.2026: Aura Expert jest agentem ubezpieczeniowym (nie brokerem), wpis w Rejestrze Pośredników Ubezpieczeniowych nr 11229690/A, IOD: iod@auraexpert.pl – nawias „do uzupełnienia” w stopce makiety trzeba zastąpić tym zapisem (skrót w stopce, pełna formuła na `/informacje-prawne`; `snippets/legal-distributor.json`).
+- Dane do stopki i schema.org: telefon i e-mail biura – w makiecie oznaczone jako miejsce do uzupełnienia.
+
+## 15. Strona OC i nowe komponenty (00, D29, D30)
+
+Lista zabiegów (`snippets/zabiegi-oc-beauty.json`) i treść klauzuli ochrony prawnej (`snippets/klauzula-ochrona-prawna.json`) wchodzą do interfejsu w trzech nowych komponentach. Makiety: wyszukiwarka i dialog w kalkulatorze `makieta-v3.html`, długa lista i pełna klauzula w `oc-beauty.html`. Treść list i klauzuli w makietach jest generowana z tych plików, bez ręcznych zmian.
+
+**Wyszukiwarka zabiegów w kalkulatorze (combobox).**
+- Wzorzec ARIA 1.2: pole `role="combobox"` z `aria-autocomplete="list"` i lista `role="listbox"`; bez automatycznego wyboru – zabieg wybiera się Enterem albo kliknięciem. Strzałki, Home/End, Esc (zamyka listę, drugi raz czyści pole) i `aria-activedescendant` jak we wzorcu; fokus zostaje w polu.
+- Widoczna etykieta „Sprawdź, w której grupie jest Twój zabieg” i stały opis pod polem (`aria-describedby`): „Pokażemy grupę ryzyka, do której zabieg przypisano w programie. Zakres i wyłączenia określają warunki ubezpieczenia programu.” Wyszukiwarka nie rozstrzyga o objęciu ochroną.
+- Szukanie po nazwie i synonimach, bez względu na wielkość liter i polskie znaki. Najwyżej 8 podpowiedzi, każda z plakietką „Grupa N”; trafienie przez synonim pokazuje „inna nazwa: …”. Pod listą link „Pokaż wszystkie wyniki na liście zabiegów” do `oc-beauty.html#zabiegi`.
+- Wybór zaznacza kafelek grupy i dodaje zabieg do „Wybranych zabiegów” (trafiają do zgłoszenia jako identyfikatory – 02, pkt 2.3). Usunięcie zabiegu nie odznacza grupy – grupę odznacza się kafelkiem. Przy grupie 4 komunikat dodaje: „Zabiegi z grupy 4 wymagają ankiety ERGO Hestii i oceny ryzyka przez ubezpieczyciela.”
+- Brak wyniku: „Nie znaleźliśmy „…” na liście zabiegów programu. Nie ma Twojego zabiegu? Zapytaj doradcę”. Bez podpowiedzi „podobnych” zabiegów z innej grupy.
+- Komunikaty dla czytników ekranu idą przez jeden `role="status"` kalkulatora, z opóźnieniem (bez czytania każdego znaku).
+- Opcje mają co najmniej 48 px wysokości; lista przewija się wewnątrz (`max-height: min(440px, 58vh)`), strona się nie przesuwa w poziomie.
+- Lista podpowiedzi nie jest taflą szkła (pełne tło ivory) – limit 3 tafli `backdrop-filter` w widoku zostaje.
+- Bez JavaScriptu wyszukiwarka jest ukryta, a pod kafelkami grup zostaje link „Pełna lista zabiegów (117)”.
+
+**Dialog z treścią klauzuli.**
+- Natywny `<dialog>` otwierany `showModal()` z przycisku „Treść klauzuli” przy polu ochrony prawnej (+92 zł) i z odnośnika w FAQ. Esc i „Zamknij” zamykają, fokus wraca do przycisku, który otworzył dialog.
+- Nagłówek „Klauzula ochrony prawnej”, pod nim pełna treść: tytuł klauzuli i 12 punktów z wyliczeniami w pkt 3, 5 i 6 – dosłownie, bez skrótów i parafrazy. Treść przewija się wewnątrz obszaru `role="region"` z `tabindex="0"` (przewijanie klawiaturą).
+- Tło ivory bez `backdrop-filter` (to nie jest tafla szkła), tło za dialogiem midnight 72 %.
+- Bez JavaScriptu przycisk jest zwykłym odnośnikiem do `/ubezpieczenia/oc-beauty#ochrona-prawna`.
+
+**Długa lista zabiegów (strona OC, `#zabiegi`).**
+- Cała lista jest w HTML z serwera: cztery sekcje grup z nagłówkami H3, opisem z pliku, liczbą zabiegów i stawkami z taryfy (grupa 4: „wycena indywidualna – ankieta ERGO Hestii”), a zabiegi w `<details open>` – bez JS wszystko jest widoczne.
+- Nawigacja „Przejdź do grupy” z liczbą zabiegów w grupie (`#grupa-1`…`#grupa-4`).
+- Filtr `role="search"` (ulepszenie, ukryty bez JS): zawęża listę w miejscu, pokazuje „inna nazwa: …” przy trafieniu przez synonim i aktualizuje liczniki „n z 40”; wynik ogłasza licznik `aria-live="polite"` z opóźnieniem 350 ms. Brak wyniku: komunikat z linkiem „zapytaj doradcę”.
+- Każdy zabieg ma kotwicę równą `slug` z pliku. Odnośnik z zewnątrz (np. z `/dla-kogo/<zawod>`) czyści filtr, rozwija grupę i przewija do zabiegu; zabieg wskazany kotwicą wyróżnia granatowa linia z lewej (`:target`), w trybie wymuszonych kolorów – obrys.
+- Grupy i narzędzia listy to jasne tafle `glass--tint` bez `backdrop-filter`, więc długa lista nie podnosi liczby tafli w widoku.
+- Pod listą stałe zdanie: lista przypisuje zabiegi do grup ryzyka programu; zakres ochrony i wyłączenia określają warunki ubezpieczenia programu; zabiegi z grupy 4 wymagają ankiety ERGO Hestii i oceny ryzyka przez ubezpieczyciela. Obok reguły łączenia grup z taryfy i przyciski „Policz składkę” i „Nie ma Twojego zabiegu? Zapytaj doradcę”.
+- Kwoty są stałe (taryfa programu) – bez słów „orientacyjna”, „szacunkowa”, „przykładowa”. Żaden wariant ani grupa nie ma oznaczenia „polecany”.
+
+**Klauzula na stronie OC (`#ochrona-prawna`).** Ta sama treść co w dialogu, jako lista numerowana z cyframi w Cormorant Garamond; obok krótkie wprowadzenie prostym językiem (nie zastępuje treści) i fakty: składka 92 zł rocznie, także przy zespole 6–8 osób. W Strefie Klienta ta sama treść jest na karcie polisy OC z ochroną prawną (11, pkt 4.4).
+
+Wspólne wymagania dla trzech komponentów: brak tekstu poniżej 12 px, kontrast AA na wyrenderowanym tle, brak poziomego przewijania od 360 do 1440 px, ruch tylko jako ulepszenie (`prefers-reduced-motion` wyłącza animacje). Przed publikacją sekcji `#zabiegi` i `#ochrona-prawna` – odpowiedzi na pytania z 00, rozdział 13, pkt 10. KRS, NIP i REGON Aura Expert sp. z o.o. są już wpisane w stopce makiety. Status i numer wpisu są znane od 12.11.2026: Aura Expert jest agentem ubezpieczeniowym (nie brokerem), wpis w Rejestrze Pośredników Ubezpieczeniowych nr 11229690/A, IOD: iod@auraexpert.pl – nawias „do uzupełnienia” w stopce makiety trzeba zastąpić tym zapisem (skrót w stopce, pełna formuła na `/informacje-prawne`; `snippets/legal-distributor.json`).
 

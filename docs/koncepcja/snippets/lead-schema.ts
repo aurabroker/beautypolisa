@@ -36,6 +36,13 @@ export const OcCalcInput = z.object({
   sumInsured: z.union([z.literal(100_000), z.literal(200_000), z.literal(300_000)]),
   legalProtection: z.boolean().default(false),
   teamSize: z.number().int().min(1).max(50),
+  // Zabiegi wybrane w wyszukiwarce kalkulatora (00, D29): identyfikatory z kanonicznej listy
+  // snippets/zabiegi-oc-beauty.json (format gN-NN, 117 pozycji). Schemat sprawdza format, limit
+  // i brak powtórzeń; serwer dodatkowo odrzuca (422) identyfikator spoza listy importowanej przy
+  // budowaniu, a grupę taryfową liczy z riskGroup i grup wybranych zabiegów (reguły taryfy).
+  procedureIds: z.array(z.string().regex(/^g[1-4]-\d{2}$/)).max(117)
+    .refine((ids) => new Set(ids).size === ids.length, "Zabieg wybrany dwa razy")
+    .default([]),
 });
 
 export const LeadInput = z.object({

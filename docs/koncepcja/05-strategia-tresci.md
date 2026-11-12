@@ -55,11 +55,11 @@ H. Pracownicy i benefity                 H1 Zatrudnienie i odpowiedzialność ·
 | A1.2 | Ubezpieczenie salonu – co obowiązkowe | ubezpieczenie salonu kosmetycznego | Ś | inf. | przewodnik |
 | A1.3 | OC zawodowe a OC działalności | oc zawodowe kosmetologa | N | inf. | wyjaśnienie |
 | A1.4 | Suma 100 / 200 / 300 tys. zł – jak dobrać | suma gwarancyjna oc kosmetyczka | N | kom. | poradnik |
-| A2.1 | Cztery grupy ryzyka zabiegów – pełna lista | grupy ryzyka zabiegów kosmetycznych ubezpieczenie | N | inf. | tabela (PŹ) |
+| A2.1 | Cztery grupy ryzyka zabiegów – pełna lista | grupy ryzyka zabiegów kosmetycznych ubezpieczenie | N | inf. | tabela (PŹ); **stan 12.11.2026:** dane gotowe (`snippets/zabiegi-oc-beauty.json`, 117 zabiegów – 00, D29), strona w makiecie (`design/v3/oc-beauty.html#zabiegi`) |
 | A2.2 | Zabiegi wysokiego ryzyka (gr. 4) – ocena indywidualna | oc kosmetologa medycyna estetyczna | Ś | inf. / kom. | opis procesu (PŹ) |
 | A2.3 | Quiz „Czy Twoje zabiegi są w grupie ryzyka?” | ubezpieczenie oc zabiegi lista | N | kom. | narzędzie |
 | A3.1 | Co przygotować do wniosku (NIP, REGON, szkodowość 3 lat, zabiegi, zgody, kwalifikacje) | wniosek oc kosmetyczka dokumenty | N | trans. | checklista |
-| A3.2 | Klauzula ochrony prawnej | ochrona prawna dla kosmetyczki | N | inf. | wyjaśnienie |
+| A3.2 | Klauzula ochrony prawnej | ochrona prawna dla kosmetyczki | N | inf. | wyjaśnienie; pełna treść klauzuli jest już na stronie OC (`#ochrona-prawna`, 00, D30) – artykuł ją objaśnia i linkuje, nie streszcza zamiast niej |
 | A3.3 | Zespół > 8 osób – wycena indywidualna | oc salon kosmetyczny pracownicy | N | kom. | poradnik |
 | A4.1 | Nieudany zabieg – zgłoszenie szkody krok po kroku | odszkodowanie za nieudany zabieg kosmetyczny | W | inf. | poradnik procesowy |
 | A4.2 | Poparzenie, uczulenie, migracja pigmentu – scenariusze (hipotetyczne) | roszczenie klientki salon kosmetyczny | N | inf. | studia przypadków |
@@ -311,6 +311,8 @@ hypotheticalCases: false
 
 Schemat Zod z 02 (`title`, `description`, `product`, `updatedAt`, `reviewedBy`, `owuVersion`) rozszerzamy o `pillar`, `cluster`, `personas`, `keyword`, `related` (2–5 slugów), `cta`, `author`, `reviewedAt`, `disclaimer`, `hypotheticalCases`; reguła: artykuł z `product` innym niż `none` musi mieć `owuVersion`, a brak `reviewedBy` odrzuca PR w CI.
 
+**A2.1 – „pełna lista” (stan 12.11.2026, 00, D29).** Dane są gotowe: `snippets/zabiegi-oc-beauty.json` – 117 zabiegów z `bp-app.js` (grupa 1: 40, grupa 2: 38, grupa 3: 31, grupa 4: 8; grupa 4 w brzmieniu ankiety ERGO Hestii), z synonimami do wyszukiwarki i polem `zawody`. Pełna lista stoi na stronie produktu (`/ubezpieczenia/oc-beauty#zabiegi`, makieta `design/v3/oc-beauty.html`), więc artykuł A2.1 jej nie przepisuje: pokazuje listę z tego samego pliku (import przy budowaniu, bez kopii w MDX), objaśnia zasady łączenia grup (grupy 1 i 2 razem oraz grupa 3 z grupą 1 lub 2 – stawki grupy 3) i linkuje do kotwic zabiegów (`#<slug>`). Strony `/dla-kogo/<zawod>` biorą zabiegi z pola `zawody`. W każdym miejscu z listą stoi zdanie: lista pokazuje, do której grupy ryzyka zabieg przypisano w programie; zakres i wyłączenia określają warunki ubezpieczenia programu, a grupa 4 wymaga ankiety ERGO Hestii i oceny ryzyka przez ubezpieczyciela. Publikacja czeka na odpowiedzi z pola `do_potwierdzenia` i zgodę ERGO Hestii (pytania 2 i 3).
+
 ---
 
 ## Standardy redakcyjne E-E-A-T dla YMYL
@@ -420,7 +422,7 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 
 1. Kto będzie imiennym autorem, a kto recenzentem z uprawnieniami do dystrybucji ubezpieczeń? Status dystrybutora – rozstrzygnięty 12.11.2026: agent ubezpieczeniowy (RPU 11229690/A; 01, pkt 2) – zastrzeżenia i stopki używają formuły agenta.
 2. Czy ERGO Hestia i Fundacja Beauty Razem wymagają akceptacji materiałów o programie OC (numer, logo, zasady grup ryzyka) przed publikacją? Tryb i czas akceptacji wpływają na SLA kroku 3.
-3. Czy lista zabiegów w grupach 1–4 z kalkulatora (01, pkt 3.1) jest kompletna i może być opublikowana jako „pełna lista”? Do której grupy należą zabiegi trychologiczne i inne nieobecne na liście?
+3. ~~Czy lista zabiegów w grupach 1–4 z kalkulatora (01, pkt 3.1) jest kompletna i może być opublikowana jako „pełna lista”?~~ – **rozstrzygnięte 12.11.2026 (00, D29):** kanoniczna lista to 117 zabiegów w `snippets/zabiegi-oc-beauty.json`; zabiegi trychologiczne mają na niej pozycje w grupie 1 (np. „Kosmetyczna diagnostyka trychologiczna”, „Kosmetyczny zabieg trychologiczny”), co przybliża stronę `/dla-kogo/trycholog` (decyzja 10). Otwarte: pytania z pola `do_potwierdzenia` w tym pliku – m.in. usługi bez własnej pozycji na liście, pozycje w kilku grupach, pisownia nazw względem załącznika programu – oraz zgoda ERGO Hestii na publikację listy (pytanie 2).
 4. Kiedy zespół produktowy dostarczy parametry „Utrata dochodu” i „NNW dzieci” (ubezpieczyciel, definicje, karencje, sumy)? Czy tryb „zapytaj o ofertę” do tego czasu jest akceptowalny?
 5. Rozstrzygnięte 11.11.2026 (pytanie 7 sekcji 02): składki Tax Protect są sztywne (taryfa programu) – B2.3, B2.4 i `/ubezpieczenia/tax-protect` podają składkę roczną wg taryfy potwierdzonej 12.11.2026 (01, pkt 3.2: suma 50 000 zł – 1 532–1 932 zł, suma 100 000 zł – 2 501–2 901 zł za 1 spór, zależnie od przychodu); przychody powyżej 3 mln zł lub 2–4 spory → wycena indywidualna. Bez słów „orientacyjnie” i „szacunkowo”.
 6. Czy liczby z obecnej argumentacji grupowego (koszt rotacji, pakiet zamiast podwyżki – 01, pkt 3.3) mają cytowalne źródło? Bez niego znikają z treści.

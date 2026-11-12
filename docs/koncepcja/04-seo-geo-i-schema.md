@@ -45,6 +45,13 @@ Model **hub-and-spoke**: produkt jest szprychą huba `/ubezpieczenia`, zawód �
 
 Strony `/dla-kogo/*` muszą mieć **własną** substancję (zabiegi z przypisaniem do grup ryzyka, typowe roszczenia, rekomendowane produkty), nie szablon z podmienionym zawodem – inaczej są cienką treścią (pkt 8).
 
+**Strona OC: lista zabiegów i klauzula ochrony prawnej (00, D29, D30; makieta `design/v3/oc-beauty.html`).** `/ubezpieczenia/oc-beauty` ma dwie sekcje renderowane z plików danych w repozytorium:
+
+- `#zabiegi` – „Lista zabiegów w programie (117)” z `snippets/zabiegi-oc-beauty.json`: cztery grupy z kotwicami `#grupa-1`…`#grupa-4` (`kotwica` w pliku), przy grupach 1–3 stawki z taryfy, przy grupie 4 „wycena indywidualna – ankieta ERGO Hestii”, a przy każdym zabiegu kotwica równa jego `slug` (np. `/ubezpieczenia/oc-beauty#henna`). Cała lista jest w HTML z serwera – filtr i rozwijanie grup to tylko ulepszenie, bez JS widać wszystkie 117 pozycji. Pod listą stoi zdanie, że lista pokazuje przypisanie zabiegu do grupy ryzyka w programie, a zakres i wyłączenia określają warunki ubezpieczenia programu; grupa 4 wymaga ankiety ERGO Hestii i oceny ryzyka przez ubezpieczyciela.
+- `#ochrona-prawna` – pełna, dosłowna treść klauzuli z `snippets/klauzula-ochrona-prawna.json` (tytuł i 12 punktów) i dopłata 92 zł rocznie.
+
+Linkowanie: strona `/dla-kogo/<zawod>` linkuje do zabiegów, które mają ten zawód w polu `zawody` (adres `…/oc-beauty#<slug>`; odnośnik rozwija grupę przed przewinięciem), i do grupy właściwej dla zawodu (np. `/dla-kogo/podolog` → `#grupa-3`); kalkulator linkuje do `#zabiegi` (link „Pełna lista zabiegów (117)” – działa także bez JS) i do `#ochrona-prawna` (wersja bez JS dialogu z klauzulą). Kotwice nie trafiają do sitemapy, a zabiegi nie dostają osobnych adresów w v1 – 117 cienkich podstron byłoby treścią bez własnej substancji (pkt 8).
+
 ## 2. Title, meta description, canonical, Open Graph
 
 Sufiks `| BeautyPolisa` (14 znaków) dokleja `title.template` w `app/layout.tsx`; we frontmatter trzymamy tytuł bez sufiksu. Limity: title ≤60 znaków z sufiksem, description ≤155.
@@ -228,6 +235,8 @@ Jeden `<h1>` = główne zapytanie (na artykułach pytanie); `<h2>` to pytania lu
 | Person | `/o-nas`, autorzy | brak | E-E-A-T |
 | VideoObject | artykuły z wideo (opcjonalnie) | wideo w wynikach | transkrypcja = cytowalny tekst |
 
+**Lista zabiegów bez `ItemList` (00, D29).** Sekcja `#zabiegi` na stronie OC nie dostaje `ItemList` ani `DefinedTermSet`. Wyniki z listą w Google obsługują tylko wybrane typy z osobnymi stronami (np. przepisy, kursy, filmy), a zabiegi to kotwice na jednej stronie – znacznik nie dałby efektu w wyszukiwarce, a 117 elementów powiększyłoby JSON-LD bez nowych faktów. Dla asystentów AI wystarcza lista w HTML z serwera, krótki opis grup w `Service.description` (już jest) i `llms.txt` z liczbą zabiegów w grupach. Wrócimy do tego, jeśli zabiegi dostaną własne strony.
+
 ### 4.2 Home
 
 `schema-home.json`: `Organization` to podmiot prawny (`legalName` „Aura Expert spółka z ograniczoną odpowiedzialnością”, `alternateName` „Aura Expert sp. z o.o.”, adres z audytu; KRS, NIP, REGON i numer w Rejestrze Pośredników Ubezpieczeniowych 11229690/A podane przez zleceniodawcę 12.11.2026 – w `identifier` i `taxID`; `description` mówi wprost, że to agent ubezpieczeniowy; `url` = własna strona spółki https://www.auraexpert.pl/ – ta sama encja, więc `url`, a nie `sameAs`; `contactPoint` inspektora ochrony danych z adresem iod@auraexpert.pl), `InsuranceAgency` to marka BeautyPolisa (`parentOrganization` w jedną stronę, `brand` w drugą). `contactPoint` wskazuje `/kontakt` i język `pl`; telefon i e-mail po otrzymaniu. `makesOffer` wylicza 6 usług przez `@id` – asystent czytający home dostaje pełną listę produktów z linkami. `sameAs` pominięto (adresy profili nieznane). `WebSite` bez `SearchAction`, bo na starcie nie ma wyszukiwarki w serwisie.
@@ -244,7 +253,7 @@ Jeden `<h1>` = główne zapytanie (na artykułach pytanie); `<h2>` to pytania lu
 
 Od sierpnia 2023 Google pokazuje FAQ w wynikach tylko dla autorytatywnych witryn rządowych i zdrowotnych – portal ubezpieczeniowy ich nie dostanie. Wdrażamy `FAQPage`, bo asystenci AI czytają JSON-LD i format pytanie–odpowiedź cytuje się najłatwiej, a schemat wymusza dyscyplinę: każde pytanie widoczne na stronie w identycznym brzmieniu, odpowiedź zgodna z OWU.
 
-Obecne strony nie mają FAQ (kalkulator ma tylko modal „Masz pytania?”; `tax-protect.html`, `life.html`, `medical.html` to opisy), więc `schema-faq-oc-beauty.json` zawiera 7 **zaproponowanych** pytań z odpowiedziami zbudowanymi z faktów audytu. Status: **do weryfikacji merytorycznej** – zwłaszcza pytanie 1 (obowiązek OC – przegląd prawny) i 2 (zakres – zgodność z OWU programu WA50/003353/24/A); w pytaniu 6 kwoty są sztywne (taryfa programu) i generowane z aktywnej wersji cennika, nie przepisywane. FAQ pozostałych produktów powstaje w ramach 05 po dostarczeniu materiałów.
+Obecne strony nie mają FAQ (kalkulator ma tylko modal „Masz pytania?”; `tax-protect.html`, `life.html`, `medical.html` to opisy), więc `schema-faq-oc-beauty.json` zawiera **zaproponowane** pytania z odpowiedziami zbudowanymi z faktów audytu. **Stan 12.11.2026:** plik ma 5 pytań w brzmieniu i kolejności FAQ z makiety strony OC (`design/v3/oc-beauty.html#faq`): zakres programu, grupy ryzyka (z odesłaniem do `#zabiegi` – „Wszystkie 117 zabiegów z przypisaniem do grup…”), cena, klauzula ochrony prawnej (z odesłaniem do `#ochrona-prawna`; 00, D30) i zabiegi z grupy 4. W JSON-LD odpowiedź to ten sam tekst co na stronie, bez znaczników HTML. Z wcześniejszej wersji wypadły trzy pytania, których nie ma na stronie: „Jaką sumę gwarancyjną wybrać” (odpowiedź doradzała wariant, a propozycja wymaga wcześniejszej analizy potrzeb – IDD), „Czy kosmetyczka musi mieć OC” (przegląd prawny) i „Jakie dane i dokumenty są potrzebne” (A3.1 w 05) – wracają razem z widocznym pytaniem na stronie, po weryfikacji. Status: **do weryfikacji merytorycznej** – zwłaszcza zakres (zgodność z OWU programu WA50/003353/24/A) i streszczenie klauzuli w pytaniu 4 (pełna treść stoi obok, dosłownie); kwoty w pytaniu o cenę są sztywne (taryfa programu) i generowane z aktywnej wersji cennika, nie przepisywane. Test CI porównuje pytania i odpowiedzi w JSON-LD z widocznym FAQ (pkt 7). FAQ pozostałych produktów powstaje w ramach 05 po dostarczeniu materiałów.
 
 ### 4.5 `BreadcrumbList`, `Article`, `HowTo`, pozostałe
 
@@ -282,7 +291,9 @@ Przed wdrożeniem: Schema Markup Validator (poprawność słownika) i Rich Resul
 | `schema-home.json` | Organization (pełne dane rejestrowe, RPU, IOD), InsuranceAgency, WebSite, WebPage | gotowy; brak sameAs/telefonu |
 | `schema-produkt-oc-beauty.json` | Service + AggregateOffer | gotowy; `offers` wg taryfy programu, generowane z aktywnej wersji cennika |
 | `schema-produkt-tax-protect.json` | Service + AggregateOffer (taryfa Tax Protect, 8 wariantów) | gotowy; `offers` generowane z aktywnej wersji `pricing_tax_variants`; adres OWU Colonnade do uzupełnienia |
-| `schema-faq-oc-beauty.json` | FAQPage, 7 pytań | odpowiedzi do weryfikacji merytorycznej |
+| `schema-faq-oc-beauty.json` | FAQPage, 5 pytań = widoczne FAQ strony OC (w tym grupy zabiegów i klauzula ochrony prawnej) | odpowiedzi do weryfikacji merytorycznej (pkt 4.4) |
+| `zabiegi-oc-beauty.json` | kanoniczna lista 117 zabiegów (grupy, `slug` = kotwica, `zawody`) – źródło `#zabiegi`, linków z `/dla-kogo/*` i liczb w `llms.txt` (00, D29) | dane gotowe; pytania `do_potwierdzenia` i zgoda ERGO Hestii na publikację – otwarte |
+| `klauzula-ochrona-prawna.json` | dosłowna treść klauzuli ochrony prawnej – źródło `#ochrona-prawna` (00, D30) | gotowy; przed publikacją porównanie z oryginałem dokumentu programu |
 | `schema-artykul.json` | Article (autor-organizacja) | autor do podmiany na Person |
 | `schema-breadcrumb.json` | BreadcrumbList, 3 poziomy | gotowy |
 | `schema-howto-szkoda.json` | HowTo, 6 kroków | terminy z OWU do uzupełnienia |
@@ -342,7 +353,7 @@ Fetchery AI zwykle nie wykonują JavaScriptu. Obecny `bp-app.js` buduje DOM w kl
 
 ### 5.4 `llms.txt`
 
-`snippets/llms.txt` – po polsku, format llmstxt.org: H1, blockquote z jednym zdaniem o marce, sekcje „Kim jesteśmy”, „Produkty”, „Dla kogo”, „Dokumenty”, „Kontakt”, „Zasady cytowania”, `## Optional`. Uczciwie: **żaden duży dostawca nie potwierdził, że jego crawler czyta llms.txt**; to tania konwencja porządkująca opis serwisu, używana przez narzędzia agentowe. Generujemy go Route Handlerem z tego samego źródła co sitemap; `llms-full.txt` odkładamy.
+`snippets/llms.txt` – po polsku, format llmstxt.org: H1, blockquote z jednym zdaniem o marce, sekcje „Kim jesteśmy”, „Produkty” (w tym link do `/ubezpieczenia/oc-beauty#zabiegi` z liczbą zabiegów w czterech grupach i do `#ochrona-prawna` z dopłatą 92 zł – liczby z `zabiegi-oc-beauty.json`, 00, D29, D30), „Dla kogo”, „Dokumenty”, „Kontakt”, „Zasady cytowania”, `## Optional`. Uczciwie: **żaden duży dostawca nie potwierdził, że jego crawler czyta llms.txt**; to tania konwencja porządkująca opis serwisu, używana przez narzędzia agentowe. Generujemy go Route Handlerem z tego samego źródła co sitemap; `llms-full.txt` odkładamy.
 
 ### 5.5 Wzorce treści „do cytowania”
 
@@ -467,6 +478,7 @@ Kolumna „zgodność” jest ważniejsza niż „wzmianka”: błędna odpowied
 10. **Obrazy OG z `opengraph-image.tsx` po weryfikacji w PoC na Workers; fallback PNG z CI.** Odrzucone: jeden statyczny obraz (niższy CTR z social), zewnętrzny generator (zależność).
 11. **Paginacja `/baza-wiedzy/strona/<n>` indeksowalna z self-canonical; kategorie od ≥5 artykułów.** Odrzucone: canonical do strony 1, `noindex` paginacji, `?strona=`.
 12. **Budżet wydajności jako warunek merge (LCP ≤2,5 s, INP ≤200 ms, CLS ≤0,1 mobile); zero skryptów firm trzecich poza Turnstile – tag Google (GA4) tylko po zgodzie przez Zaraz z Consent Mode v2; glass widget tylko na karcie CTA.** Odrzucone: pomiar „po fakcie”, przeniesienie Chart.js/confetti.
+13. **Pełna lista zabiegów i treść klauzuli ochrony prawnej na stronie OC (`#zabiegi`, `#ochrona-prawna`) z plików danych w repozytorium; kotwica przy każdym zabiegu = `slug`; `/dla-kogo/*` linkują do zabiegów z polem `zawody`; bez `ItemList` i bez osobnych stron zabiegów w v1 (00, D29, D30).** Strona produktu jest pierwotnym źródłem przypisania zabiegów do grup, a jedna lista nie rozjedzie się między kalkulatorem, stroną OC, `/dla-kogo/*` i `llms.txt`. Odrzucone: 117 podstron zabiegów (cienka treść), `ItemList` dla kotwic (brak efektu w Google, większy JSON-LD), streszczenie klauzuli zamiast pełnej treści.
 
 ## Pytania otwarte do zleceniodawcy
 
@@ -483,3 +495,4 @@ Kolumna „zgodność” jest ważniejsza niż „wzmianka”: błędna odpowied
 11. Zgoda Fundacji Beauty Razem na wzajemne linkowanie i wspólny komunikat.
 12. Budżet na Cloudflare Pro (Markdown for Agents, lepsza analityka botów) – opcjonalne.
 13. Identyfikator pomiaru GA4 (która z dwóch usług ze starych stron jest docelowa) i – jeśli jest używany – identyfikator kontenera GTM; przy kampaniach identyfikator i etykiety konwersji Google Ads (pkt 6; 02, pkt 4.12).
+14. Strona OC (00, D29, D30): odpowiedzi na pytania z pola `do_potwierdzenia` w `snippets/zabiegi-oc-beauty.json` (od nich zależą m.in. nazwy na liście i linki z `/dla-kogo/*` – brak zawodu „stylistka rzęs i brwi”), porównanie treści klauzuli ochrony prawnej z oryginałem dokumentu programu ERGO Hestii oraz zgoda ERGO Hestii i Fundacji Beauty Razem na publikację listy i klauzuli (pytanie 7). Do tego czasu sekcje `#zabiegi` i `#ochrona-prawna` nie są publikowane.
