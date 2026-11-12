@@ -648,7 +648,9 @@ html:has(.klauzula[open]){overflow:hidden}
    żeby tekst, przy którym czytelnik się zatrzymał, nigdy nie został półprzezroczysty (kontrast AA) */
 @keyframes curtain{from{translate:0 .6em}to{translate:0 0}}
 @keyframes rise{from{translate:0 56px;scale:.96}to{translate:0 0;scale:1}}
-@keyframes float-in{from{translate:36px 80px;scale:.9}to{translate:0 0;scale:1}}
+@keyframes float-in{from{translate:var(--float-x,36px) 80px;scale:.9}to{translate:0 0;scale:1}}
+/* poniżej 360 px karta zajmuje całą szerokość – wejście bez przesunięcia w bok, żeby nie było przewijania w poziomie (WCAG 1.4.10 od 320 px) */
+@media (max-width:359px){.rv-float{--float-x:0px}}
 @keyframes fade-in{from{opacity:0}to{opacity:1}}
 @keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @keyframes draw-y{from{transform:scaleY(0)}to{transform:scaleY(1)}}
@@ -719,7 +721,7 @@ html:has(.klauzula[open]){overflow:hidden}
   /* rezerwa bez animation-timeline (Safari < 26, Firefox): IntersectionObserver dodaje html.io-reveal dopiero po podpięciu */
   html.io-reveal .rv-curtain:not(.is-in){opacity:0;translate:0 .6em}
   html.io-reveal .rv-rise:not(.is-in){opacity:0;translate:0 56px;scale:.96}
-  html.io-reveal .rv-float:not(.is-in){opacity:0;translate:36px 80px;scale:.9}
+  html.io-reveal .rv-float:not(.is-in){opacity:0;translate:var(--float-x,36px) 80px;scale:.9}
   html.io-reveal .rv-eyebrow:not(.is-in)::before{transform:scaleX(0)}
   html.io-reveal .rv-curtain,html.io-reveal .rv-rise,html.io-reveal .rv-float{transition:translate 1.1s var(--ease-lux),scale 1.1s var(--ease-lux),opacity .9s var(--ease-lux)}
   html.io-reveal .rv-float{transition-duration:1.4s,1.4s,1s}
@@ -879,7 +881,7 @@ html:has(.klauzula[open]){overflow:hidden}
       <!-- details bez atrybutu name: wszystkie chwile mogą być otwarte jednocześnie; działa bez JS -->
       <ol class="clues glass glass--dark" id="day-clues">
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="09:40">9:40</time><span class="clue-risk">Dzień po zabiegu klientka dzwoni: skóra wciąż jest podrażniona, pyta o&nbsp;odszkodowanie.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
-          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><div><h3>OC dla branży beauty</h3><p>Roszczenia klientów za szkody wyrządzone podczas zabiegów to obszar OC w&nbsp;programie z&nbsp;ERGO Hestią. Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#oc-beauty">Zobacz ubezpieczenie<span class="sr-only">: OC dla branży beauty</span></a></div></div></details></li>
+          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><div><h3>OC dla branży beauty</h3><p>Roszczenia klientów za szkody wyrządzone podczas zabiegów to obszar OC w&nbsp;programie z&nbsp;ERGO Hestią. Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p><a class="link-lux" href="#oc-beauty">Zobacz ubezpieczenie<span class="sr-only">: OC dla branży beauty</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="11:15">11:15</time><span class="clue-risk">W&nbsp;skrzynce czeka zawiadomienie o&nbsp;zamiarze wszczęcia kontroli podatkowej.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
           <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><div><h3>Tax Protect</h3><p>Ochrona karnoskarbowa dla właściciela i&nbsp;ochrona podatkowa dla salonu (Colonnade). Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#tax-protect">Zobacz ubezpieczenie<span class="sr-only">: Tax Protect</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="13:30">13:30</time><span class="clue-risk">Właścicielka skręca nadgarstek i&nbsp;przez kilka tygodni nie może przyjmować klientek.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
@@ -905,7 +907,7 @@ html:has(.klauzula[open]){overflow:hidden}
         <p class="lead rv-rise">Każde rozwiązanie ma własnego partnera i&nbsp;własne warunki, a&nbsp;Ty – jednego doradcę w&nbsp;Aura Expert.</p>
       </div>
       <div class="ledger glass glass--dark">
-        <article class="product rv-rise" id="oc-beauty"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="tag">ERGO Hestia</span></div><h3>OC dla branży beauty</h3><p>Odpowiedzialność cywilna za szkody wyrządzone klientom podczas zabiegów – w&nbsp;programie z&nbsp;ERGO Hestią. Składka zależy od grupy ryzyka i&nbsp;sumy gwarancyjnej, zakres – zgodnie z&nbsp;OWU.</p><div class="product-actions"><a class="link-lux" href="#kalkulator" data-calc="oc">Oblicz składkę<span class="sr-only"> OC</span></a><a class="link-quiet" href="/ubezpieczenia/oc-beauty">Poznaj ubezpieczenie<span class="sr-only">: OC dla branży beauty</span></a></div></article>
+        <article class="product rv-rise" id="oc-beauty"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="tag">ERGO Hestia</span></div><h3>OC dla branży beauty</h3><p>Odpowiedzialność cywilna za szkody wyrządzone klientom podczas zabiegów – w&nbsp;programie z&nbsp;ERGO Hestią. Składka zależy od grupy ryzyka i&nbsp;sumy gwarancyjnej, a&nbsp;zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p><div class="product-actions"><a class="link-lux" href="#kalkulator" data-calc="oc">Oblicz składkę<span class="sr-only"> OC</span></a><a class="link-quiet" href="/ubezpieczenia/oc-beauty">Poznaj ubezpieczenie<span class="sr-only">: OC dla branży beauty</span></a></div></article>
         <article class="product rv-rise" id="tax-protect"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="tag">Colonnade</span></div><h3>Tax Protect</h3><p>Ochrona karnoskarbowa dla właściciela i&nbsp;ochrona podatkowa dla salonu – jeden pełny spór podatkowy w&nbsp;roku, zgodnie z&nbsp;OWU. Stała taryfa: od 1&nbsp;532&nbsp;zł rocznie, zależnie od przychodów i&nbsp;sumy gwarancyjnej.</p><div class="product-actions"><a class="link-lux" href="#kalkulator-tax">Oblicz składkę<span class="sr-only"> Tax Protect</span></a><a class="link-quiet" href="/ubezpieczenia/tax-protect">Poznaj ubezpieczenie<span class="sr-only">: Tax Protect</span></a></div></article>
         <article class="product rv-rise" id="utrata-dochodu"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="tag">Oferta indywidualna</span></div><h3>Utrata dochodu</h3><p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią pracę. Ofertę i&nbsp;warunki przedstawi doradca.</p><div class="product-actions"><a class="link-lux" href="/ubezpieczenia/utrata-dochodu">Poznaj ubezpieczenie<span class="sr-only">: utrata dochodu</span></a><a class="link-quiet" href="#kontakt" data-produkt="utrata-dochodu">Zapytaj doradcę<span class="sr-only"> o&nbsp;ubezpieczenie utraty dochodu</span></a></div></article>
         <article class="product rv-rise" id="nnw-dzieci"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="tag">Oferta indywidualna</span></div><h3>NNW dzieci</h3><p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków. Zakres – zgodnie z&nbsp;OWU oferty, którą przedstawi doradca.</p><div class="product-actions"><a class="link-lux" href="/ubezpieczenia/nnw-dzieci">Poznaj ubezpieczenie<span class="sr-only">: NNW dzieci</span></a><a class="link-quiet" href="#kontakt" data-produkt="nnw-dzieci">Zapytaj doradcę<span class="sr-only"> o&nbsp;NNW dzieci</span></a></div></article>
@@ -939,7 +941,8 @@ html:has(.klauzula[open]){overflow:hidden}
           <fieldset>
             <legend>Jakie zabiegi wykonujesz?<small>Zaznacz wszystkie pasujące grupy ryzyka</small></legend>
             <!-- Wyszukiwarka zabiegów – wzorzec ARIA 1.2 combobox + listbox (lista bez automatycznego wyboru). Bez JS ukryta; zostaje link do pełnej listy pod kafelkami.
-                 Dane: <script type="application/json" id="zabiegi-data"> na końcu body (z snippets/zabiegi-oc-beauty.json). Szukanie po nazwie i synonimach,
+                 Dane: <script type="application/json" id="zabiegi-data"> na końcu body (z snippets/zabiegi-oc-beauty.json). Szukanie po nazwie z listy programu
+                 (lista 1:1; synonimy odłożone w snippets/zabiegi-oc-beauty-propozycje.json – generator dołączy je dopiero po przyjęciu),
                  bez względu na wielkość liter i polskie znaki. Wybór zaznacza kafelek grupy i dodaje zabieg do „Wybranych zabiegów” (trafiają do zgłoszenia);
                  usunięcie zabiegu z listy nie odznacza grupy – grupę odznacza się kafelkiem. Wyszukiwarka pokazuje tylko grupę ryzyka z listy programu:
                  nie rozstrzyga, czy zabieg jest objęty ochroną (zakres i wyłączenia – warunki ubezpieczenia programu). -->
@@ -950,7 +953,7 @@ html:has(.klauzula[open]){overflow:hidden}
                 <input type="text" id="zab-q" class="zab-input" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="zab-lista" aria-describedby="zab-opis" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" placeholder="Wpisz zabieg, np. mezoterapia">
                 <div class="zab-pop" id="zab-pop" hidden>
                   <ul class="zab-list" id="zab-lista" role="listbox" aria-label="Pasujące zabiegi"></ul>
-                  <p class="zab-more"><a href="oc-beauty.html#zabiegi" id="zab-wszystkie">Pokaż wszystkie wyniki na liście zabiegów</a></p>
+                  <p class="zab-more"><a href="oc-beauty.html#zabiegi" id="zab-wszystkie">Zobacz pełną listę zabiegów (117)</a></p>
                 </div>
               </div>
               <p class="zab-opis" id="zab-opis">Pokażemy grupę ryzyka, do której zabieg przypisano w&nbsp;programie. Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p>
@@ -964,7 +967,7 @@ html:has(.klauzula[open]){overflow:hidden}
               <div class="opt opt--check"><input type="checkbox" id="g1" name="grupa" value="1" checked><label for="g1"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-fryzjer"/></svg><span>Grupa 1<small>fryzjerstwo, manicure, rzęsy, koloryzacja</small></span></label></div>
               <div class="opt opt--check"><input type="checkbox" id="g2" name="grupa" value="2"><label for="g2"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-kosmetolog"/></svg><span>Grupa 2<small>makijaż permanentny, tatuaż, mezoterapia, IPL</small></span></label></div>
               <div class="opt opt--check"><input type="checkbox" id="g3" name="grupa" value="3"><label for="g3"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-podolog"/></svg><span>Grupa 3<small>podologia, pedicure medyczny</small></span></label></div>
-              <div class="opt opt--check"><input type="checkbox" id="g4" name="grupa" value="4"><label for="g4"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupy-ryzyka"/></svg><span>Grupa 4 – wysokie ryzyko<small>HIFU, toksyna botulinowa, wypełniacze</small></span></label></div>
+              <div class="opt opt--check"><input type="checkbox" id="g4" name="grupa" value="4"><label for="g4"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupy-ryzyka"/></svg><span>Grupa 4 – zabiegi specjalistyczne<small>HIFU, toksyna botulinowa, wypełniacze</small></span></label></div>
             </div>
             <!-- strona produktu OC (oc-beauty.html, produkcyjnie /ubezpieczenia/oc-beauty#zabiegi) – tabela 117 zabiegów z grupami; liczba z snippets/zabiegi-oc-beauty.json -->
             <p class="zab-full"><a class="link-quiet" href="oc-beauty.html#zabiegi">Pełna lista zabiegów (117)<span aria-hidden="true">&nbsp;→</span></a></p>
@@ -1004,7 +1007,7 @@ html:has(.klauzula[open]){overflow:hidden}
             <p class="label">Co dalej?</p>
             <p>Doradca Aura Expert sprawdzi z&nbsp;Tobą zakres i&nbsp;poprosi o&nbsp;dane do wniosku, m.in. NIP, REGON, szkodowość z&nbsp;ostatnich 3&nbsp;lat i&nbsp;kwalifikacje zespołu.</p>
           </div>
-          <p class="note" id="calc-note">Stała taryfa programu OC z&nbsp;ERGO Hestią dla branży beauty, zakres – zgodnie z&nbsp;OWU. Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – wycena indywidualna.</p>
+          <p class="note" id="calc-note">Stała taryfa programu OC z&nbsp;ERGO Hestią dla branży beauty. Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu. Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – wycena indywidualna.</p>
         </div>
         <p class="sr-only" id="calc-status" role="status" aria-atomic="true"></p>
       </form>
@@ -1012,16 +1015,16 @@ html:has(.klauzula[open]){overflow:hidden}
         <summary>Pełna taryfa OC</summary>
         <div class="table-scroll" role="region" tabindex="0" aria-label="Pełna taryfa OC">
         <table>
-          <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią</caption>
-          <thead><tr><th scope="col">Grupa zabiegów</th><th scope="col">100&nbsp;tys. zł</th><th scope="col">200&nbsp;tys. zł</th><th scope="col">300&nbsp;tys. zł</th></tr></thead>
+          <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią – zespół do 5&nbsp;osób</caption>
+          <thead><tr><th scope="col">Grupa ryzyka</th><th scope="col">100&nbsp;tys.&nbsp;zł</th><th scope="col">200&nbsp;tys.&nbsp;zł</th><th scope="col">300&nbsp;tys.&nbsp;zł</th></tr></thead>
           <tbody>
             <tr><th scope="row">Grupa 1<small>m.in. fryzjerstwo, manicure, rzęsy</small></th><td>400&nbsp;zł</td><td>500&nbsp;zł</td><td>650&nbsp;zł</td></tr>
             <tr><th scope="row">Grupa 2<small>m.in. makijaż permanentny, mezoterapia, tatuaż</small></th><td>650&nbsp;zł</td><td>790&nbsp;zł</td><td>950&nbsp;zł</td></tr>
-            <tr><th scope="row">Grupa 3<small>podologia</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1250&nbsp;zł</td></tr>
+            <tr><th scope="row">Grupa 3<small>podologia</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1&nbsp;250&nbsp;zł</td></tr>
           </tbody>
         </table>
         </div>
-        <p class="tariff-note">Grupy 1 i&nbsp;2 razem oraz grupa 3 z&nbsp;grupą 1 lub 2 – stawki grupy 3. Ochrona prawna +92&nbsp;zł. Zespół 6–8&nbsp;osób – składka z&nbsp;taryfy ×1,25 (ochrona prawna bez zmian). Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – wycena indywidualna.</p>
+        <p class="tariff-note">Grupy 1 i&nbsp;2 razem oraz grupa 3 z&nbsp;grupą 1 lub 2 – stawki grupy 3. Ochrona prawna +92&nbsp;zł. Zespół 6–8&nbsp;osób – składka z&nbsp;taryfy wyższa o&nbsp;25% (ochrona prawna bez zmian). Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – wycena indywidualna.</p>
       </details>
       </div>
 
@@ -1183,7 +1186,7 @@ html:has(.klauzula[open]){overflow:hidden}
       <div class="how glass glass--dark">
         <span class="how-line" aria-hidden="true"></span>
         <ol class="steps">
-          <li class="step rv-rise"><span class="numeral" aria-hidden="true">1</span><h3>Policz składkę</h3><p>Wybierz ubezpieczenie: OC – grupy zabiegów, zespół i&nbsp;sumę gwarancyjną, Tax Protect – przychody i&nbsp;sumę. Składkę z&nbsp;taryfy widzisz od razu, bez logowania.</p></li>
+          <li class="step rv-rise"><span class="numeral" aria-hidden="true">1</span><h3>Policz składkę</h3><p>Wybierz ubezpieczenie: OC – grupy ryzyka, zespół i&nbsp;sumę gwarancyjną, Tax Protect – przychody i&nbsp;sumę. Składkę z&nbsp;taryfy widzisz od razu, bez logowania.</p></li>
           <li class="step rv-rise"><span class="numeral" aria-hidden="true">2</span><h3>Zostaw kontakt</h3><p>Wynik kalkulatora dołączymy do zgłoszenia. Doradca Aura Expert sprawdzi z&nbsp;Tobą zakres i&nbsp;poprosi o&nbsp;dane do wniosku.</p></li>
           <li class="step rv-rise"><span class="numeral" aria-hidden="true">3</span><h3>Podpisz polisę</h3><p>Dokumenty dostajesz do podpisu. Z&nbsp;polisą masz konto w&nbsp;Strefie Klienta&nbsp;– polisy i&nbsp;dokumenty, „Dam&nbsp;pracę” i&nbsp;Szkolenia w&nbsp;jednym miejscu.</p></li>
         </ol>
@@ -1281,19 +1284,20 @@ html:has(.klauzula[open]){overflow:hidden}
         <p class="eyebrow">Pytania</p>
         <h2 id="faq-title" class="rv-curtain">Najczęstsze pytania <em>o&nbsp;OC beauty</em></h2>
       </div>
-      <!-- JSON-LD FAQPage strony głównej (schema-home.json) – tylko pytania widoczne tutaj, łącznie z&nbsp;pytaniem o&nbsp;konto w&nbsp;Strefie Klienta -->
+      <!-- JSON-LD FAQPage strony głównej – do dodania: snippets/schema-home.json ma dziś tylko Organization, InsuranceAgency, WebSite i&nbsp;WebPage.
+           Przy dodawaniu: wyłącznie pytania widoczne tutaj (łącznie z&nbsp;pytaniem o&nbsp;konto w&nbsp;Strefie Klienta), odpowiedzi przeniesione 1:1 z&nbsp;tego FAQ. -->
       <div class="faq glass">
         <details id="jak-zglosic-szkode"><summary>Jak zgłosić szkodę z&nbsp;OC?</summary>
           <ol>
             <li><strong>Zabezpiecz dokumentację zabiegu</strong> – kartę klienta, podpisany formularz zgody, zdjęcia przed i&nbsp;po zabiegu. Nie poprawiaj wpisów po fakcie.</li>
             <li><strong>Poproś o&nbsp;roszczenie na piśmie</strong> – potwierdź jego odbiór, ale nie uznawaj winy i&nbsp;nie zawieraj ugody na własną rękę.</li>
-            <li><strong>Zgłoś szkodę niezwłocznie</strong> – przez BeautyPolisa, która przekaże zgłoszenie do ERGO Hestii, albo bezpośrednio u&nbsp;ubezpieczyciela. Terminy określają OWU.</li>
+            <li><strong>Zgłoś szkodę niezwłocznie</strong> – przez BeautyPolisa, która przekaże zgłoszenie do ERGO Hestii, albo bezpośrednio u&nbsp;ubezpieczyciela. Terminy określają warunki ubezpieczenia programu.</li>
             <li><strong>Przekaż komplet dokumentów</strong> – numer polisy, roszczenie klienta, dokumentację zabiegu i&nbsp;korespondencję z&nbsp;klientem.</li>
           </ol></details>
         <details><summary>Od czego zależy składka OC?</summary><p>Od grupy ryzyka wykonywanych zabiegów, wybranej sumy gwarancyjnej (100, 200 lub 300&nbsp;tys.&nbsp;zł), liczby osób wykonujących zabiegi oraz rozszerzeń, takich jak ochrona prawna. Kwoty wynikają ze stałej taryfy programu – pełną taryfę znajdziesz w&nbsp;<a href="#taryfa-tabela">tabeli pod kalkulatorem</a>.</p></details>
         <details><summary>Jak sprawdzić, w&nbsp;której grupie jest mój zabieg?</summary><p>Wpisz nazwę zabiegu w&nbsp;wyszukiwarce w&nbsp;<a href="#kalkulator" data-calc="oc">kalkulatorze OC</a> – zobaczysz jego grupę ryzyka, a&nbsp;kalkulator zaznaczy ją za Ciebie. Wszystkie 117 zabiegów przypisanych do grup ryzyka w&nbsp;programie znajdziesz na <a href="oc-beauty.html#zabiegi">liście zabiegów na stronie OC</a>. Zabiegi z&nbsp;grupy 4 wymagają ankiety ERGO Hestii i&nbsp;oceny ryzyka przez ubezpieczyciela. Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu. Nie ma Twojego zabiegu na liście? <a href="#kontakt">Zapytaj doradcę</a>.</p></details>
         <details><summary>Co, jeśli wykonuję zabiegi wysokiego ryzyka?</summary><p>Zabiegi takie jak HIFU, toksyna botulinowa, osocze bogatopłytkowe czy wypełniacze z&nbsp;kwasem hialuronowym wymagają indywidualnej oceny ryzyka przez ERGO Hestię. Wypełnisz ankietę ERGO Hestii z&nbsp;pytaniami m.in. o&nbsp;zabiegi, kwalifikacje zespołu i&nbsp;formularze zgody.</p></details>
-        <details id="faq-ochrona-prawna"><summary>Co obejmuje ochrona prawna za 92&nbsp;zł?</summary><p>To rozszerzenie OC o&nbsp;koszty obrony Twoich praw w&nbsp;postępowaniach przed sądami polskimi, w&nbsp;których jesteś pozwanym, podejrzanym lub oskarżonym, także w&nbsp;postępowaniu dyscyplinarnym – jeśli postępowanie wszczęto w&nbsp;okresie ubezpieczenia i&nbsp;dotyczy ono Twoich czynności zawodowych objętych umową. Adwokata lub radcę prawnego wybierasz sam, a&nbsp;górną granicą zwrotu kosztów jest suma ubezpieczenia wskazana w&nbsp;umowie. Klauzula ma wyłączenia (np. postępowania z&nbsp;zakresu prawa pracy i&nbsp;prawa podatkowego), a&nbsp;w&nbsp;sprawach karnych dotyczy tylko czynów, za których nieumyślne popełnienie grozi kara – przeczytaj <a href="oc-beauty.html#ochrona-prawna" data-klauzula>pełną treść klauzuli</a>.</p></details>
+        <details id="faq-ochrona-prawna"><summary>Co obejmuje ochrona prawna za 92&nbsp;zł?</summary><p>To rozszerzenie OC o&nbsp;koszty obrony Twoich praw przed sądami polskimi, gdy jesteś pozwanym, podejrzanym lub oskarżonym, także w&nbsp;postępowaniu dyscyplinarnym. Postępowanie musi być wszczęte w&nbsp;okresie ubezpieczenia i&nbsp;dotyczyć Twoich czynności zawodowych objętych umową. Adwokata lub radcę prawnego wybierasz sam. Ubezpieczyciel zwraca koszty jednego pełnomocnika do wysokości stawek minimalnych z&nbsp;przepisów o&nbsp;wynagrodzeniu adwokatów i&nbsp;radców prawnych, a&nbsp;górną granicą zwrotu jest suma ubezpieczenia wskazana w&nbsp;umowie. Klauzula ma wyłączenia, np. postępowania z&nbsp;zakresu prawa pracy i&nbsp;prawa podatkowego. W&nbsp;sprawach karnych dotyczy tylko czynów, za których nieumyślne popełnienie grozi kara. Jeśli sąd prawomocnie stwierdzi winę umyślną, ubezpieczyciel może żądać zwrotu wypłaconych kwot. O&nbsp;wszczęciu postępowania albo jego bezpośredniej groźbie zawiadom ubezpieczyciela niezwłocznie. Przeczytaj <a href="oc-beauty.html#ochrona-prawna" data-klauzula>pełną treść klauzuli</a>.</p></details>
         <details><summary>Jakie dane i&nbsp;dokumenty przygotować do wniosku?</summary><p>Doradca poprosi m.in. o&nbsp;NIP i&nbsp;REGON, datę rozpoczęcia działalności, liczbę zatrudnionych, informację o&nbsp;szkodach z&nbsp;ostatnich 3&nbsp;lat, listę zabiegów wysokiego ryzyka (jeśli je wykonujesz), formularze zgody na zabieg i&nbsp;informacje o&nbsp;kwalifikacjach zespołu. W&nbsp;formularzu kontaktowym ich nie podajesz.</p></details>
         <details><summary>Co, jeśli zabiegi wykonuje zespół od 9&nbsp;osób?</summary><p>Dla zespołów od 9&nbsp;osób wykonujących zabiegi przygotowujemy wycenę indywidualną. Zostaw kontakt, a&nbsp;doradca ustali szczegóły.</p></details>
         <details><summary>Kto obsługuje polisę?</summary><p>Program OC dla branży beauty działa z&nbsp;ERGO Hestią we współpracy z&nbsp;Fundacją Beauty Razem. Prowadzi go Aura Expert sp.&nbsp;z&nbsp;o.o. z&nbsp;Warszawy – agent ubezpieczeniowy wpisany do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A: doradca pomaga dobrać zakres, przygotowuje dokumenty i&nbsp;wspiera przy zgłoszeniu szkody.</p></details>
@@ -1448,12 +1452,12 @@ html:has(.klauzula[open]){overflow:hidden}
     var zespol=val('zespol','1'), suma=val('suma','s100');
     var w=el('wynik');
     if(!g.length){
-      w.dataset.state='individual';el('taryfa').textContent='—';el('cena').textContent='Zaznacz grupę zabiegów';el('cena-dop').textContent='';
+      w.dataset.state='individual';el('taryfa').textContent='—';el('cena').textContent='Zaznacz grupę ryzyka';el('cena-dop').textContent='';
       cta.textContent='Najpierw zaznacz grupę';cta.setAttribute('aria-disabled','true');
     }else{
       cta.removeAttribute('aria-disabled');
       if(h4||zespol==='ind'){
-        w.dataset.state='individual';el('taryfa').textContent=h4?'Zabiegi wysokiego ryzyka':'Zespół od 9 osób';el('cena').textContent='Wycena indywidualna';el('cena-dop').textContent='';
+        w.dataset.state='individual';el('taryfa').textContent=h4?'Grupa 4 – zabiegi specjalistyczne':'Zespół od 9 osób';el('cena').textContent='Wycena indywidualna';el('cena-dop').textContent='';
         cta.textContent=h4?'Wypełnij ankietę ERGO Hestii':'Poproś o wycenę indywidualną';
       }else{
         w.dataset.state='price';
@@ -1463,7 +1467,7 @@ html:has(.klauzula[open]){overflow:hidden}
     }
     peek();
     var now=el('cena').textContent;if(prevPrice!==null&&now!==prevPrice)tick();prevPrice=now;
-    if(!silent)say(g.length?summary():'Zaznacz co najmniej jedną grupę zabiegów, aby zobaczyć składkę.');
+    if(!silent)say(g.length?summary():'Zaznacz co najmniej jedną grupę ryzyka, aby zobaczyć składkę.');
   }
   /* wynik trafia do formularza kontaktu jako pola strukturalne; zdanie #kontakt-wynik tylko do wyświetlenia */
   function doFormularza(){
@@ -1500,6 +1504,8 @@ html:has(.klauzula[open]){overflow:hidden}
     var Z;try{Z=JSON.parse(src.textContent)}catch(err){return}
     if(!Z||!Z.length) return;
     var chips=chosen.querySelector('ul'), MAX=8, hits=[], active=-1;
+    /* link pod wynikami prowadzi do pełnej, niefiltrowanej listy (strona OC nie przyjmuje frazy) – stała etykieta z liczbą pozycji z danych */
+    if(more)more.textContent='Zobacz pełną listę zabiegów ('+Z.length+')';
     /* bez wielkości liter i polskich znaków (ł nie rozkłada się w NFD) */
     function norm(s){return String(s).toLowerCase().replace(/ł/g,'l').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim()}
     Z.forEach(function(z){z._n=norm(z.nazwa);z._s=(z.synonimy||[]).map(norm)});
@@ -1537,9 +1543,11 @@ html:has(.klauzula[open]){overflow:hidden}
       setActive(-1);list.textContent='';hits=[];brak.hidden=true;
       if(!res){close();return}
       if(!res.length){
-        close();brak.textContent='Nie znaleźliśmy „'+q.value.trim()+'” na liście zabiegów programu. Nie ma Twojego zabiegu? ';
-        var a=document.createElement('a');a.href='#kontakt';a.textContent='Zapytaj doradcę';brak.appendChild(a);brak.hidden=false;
-        if(announce)say('Brak wyników. Nie ma Twojego zabiegu? Zapytaj doradcę – odnośnik pod polem wyszukiwania.');
+        close();brak.textContent='Nie znaleźliśmy „'+q.value.trim()+'” na liście zabiegów programu. Przejrzyj ';
+        var full=document.createElement('a');full.href='oc-beauty.html#zabiegi';full.textContent='pełną listę zabiegów ('+Z.length+')';
+        var a=document.createElement('a');a.href='#kontakt';a.textContent='zapytaj doradcę';
+        brak.appendChild(full);brak.appendChild(document.createTextNode(' albo '));brak.appendChild(a);brak.appendChild(document.createTextNode('.'));brak.hidden=false;
+        if(announce)say('Brak wyników. Pod polem wyszukiwania są odnośniki do pełnej listy zabiegów i do doradcy.');
         return;
       }
       hits=res.slice(0,MAX);
@@ -1554,7 +1562,6 @@ html:has(.klauzula[open]){overflow:hidden}
         if(h.syn)name.insertBefore(sep(),name.lastChild);
         li.appendChild(name);li.appendChild(sep());li.appendChild(badge);list.appendChild(li);
       });
-      more.textContent='Pokaż wszystkie wyniki'+(res.length>MAX?' ('+res.length+')':'')+' na liście zabiegów';
       open();
       if(announce)say('Znaleziono '+res.length+' '+plural(res.length)+(res.length>MAX?', pokazujemy '+MAX:'')+'. Strzałka w dół przenosi do wyników.');
     }

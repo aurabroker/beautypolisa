@@ -58,7 +58,7 @@ Uwaga do nazwy: tytuł z zadania („…są objęte OC”) obiecuje potwierdzeni
 
 | Krok | Pole | Typ | Źródło wartości |
 |---|---|---|---|
-| 1 | Zabiegi, które wykonujesz | wielokrotny wybór, lista alfabetyczna bez etykiet grup (żeby nie sugerować wyniku) | lista zabiegów gr. 1–4 z `bp-app.js` (01, pkt 3.1) jako JSON w `packages/content` |
+| 1 | Zabiegi, które wykonujesz | wielokrotny wybór, lista alfabetyczna bez etykiet grup (żeby nie sugerować wyniku) | lista zabiegów gr. 1–4 z `snippets/zabiegi-oc-beauty.json` (00, D29) – jedyne źródło także dla quizu, bez osobnej kopii (w aplikacji `packages/content/oc/zabiegi.json`) |
 | 2 | Ile osób wykonuje zabiegi | 1 / 2–8 / 9 i więcej | próg „zespół powyżej 8 osób → wycena indywidualna” (01, pkt 3.1) |
 | 3 | Twój zawód (opcjonalnie) | lista: kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta, inny | enum `Profession` z 02; prewypełnione, gdy wejście z `/dla-kogo/<zawod>` |
 | wynik | – | – | – |

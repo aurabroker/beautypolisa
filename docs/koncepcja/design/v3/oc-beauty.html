@@ -236,6 +236,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .zsearch-row{display:flex;gap:10px}
 .zsearch input{flex:1 1 auto;width:100%;min-width:0;min-height:52px;padding:10px 16px;border:1px solid var(--bp-line-field);border-radius:var(--radius-btn);background:rgba(255,255,255,.85);font:400 var(--text-base)/1.4 var(--font-sans);color:var(--color-ink);-webkit-appearance:none;appearance:none}
 .zsearch input::placeholder{color:var(--color-taupe);opacity:1}
+.zsearch input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
 .zsearch input:focus-visible{outline:2px solid var(--color-navy);outline-offset:2px;border-color:var(--color-navy)}
 .zsearch .btn{min-height:52px;padding-inline:20px}
 .zhint{font-size:var(--text-sm);color:var(--color-ink)}
@@ -270,7 +271,6 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .zlist > li{break-inside:avoid;position:relative;padding:9px 8px 9px 22px;border-bottom:1px solid var(--bp-line-gold-soft);font-size:var(--text-body);line-height:1.45;color:var(--color-ink);scroll-margin-top:120px}
 .zlist > li::before{content:"";position:absolute;left:5px;top:calc(9px + .62em);width:5px;height:5px;background:var(--color-gold);transform:rotate(45deg)}
 .zlist > li:target{background:rgba(255,255,255,.92);box-shadow:inset 3px 0 0 var(--color-navy);color:var(--color-navy);font-weight:500}
-.z-via{display:block;margin-top:2px;font-size:var(--text-xs);font-weight:400;line-height:1.5;color:var(--color-taupe)}
 .zempty{padding:22px 24px;border-left:2px solid var(--color-gold);background:rgba(255,255,255,.6);font-size:var(--text-body);color:var(--color-ink)}
 .zempty a,.zrules p a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
 .zback{margin-top:14px}
@@ -513,7 +513,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 @media (max-width:767px){.scene--silk{background-image:url(img/tlo-jedwab-1024.webp)}.scene--marble{background-image:url(img/tlo-marmur-len-1024.webp)}}
 </style></noscript>
 <!-- GEN:jsonld (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
-<!-- JSON-LD: WebPage, BreadcrumbList, Service (= snippets/schema-produkt-oc-beauty.json, bez „broker”), FAQPage (= widoczne pytania) -->
+<!-- JSON-LD: WebPage, BreadcrumbList, Service (= snippets/schema-produkt-oc-beauty.json, bez „broker”), Organization i InsuranceAgency (minimalne węzły z snippets/schema-home.json – cel odwołań publisher/offeredBy), FAQPage (= widoczne pytania) -->
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -603,6 +603,64 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    }
   },
   {
+   "@type": "Organization",
+   "@id": "https://beautypolisa.eu/#organization",
+   "name": "Aura Expert",
+   "legalName": "Aura Expert spółka z ograniczoną odpowiedzialnością",
+   "alternateName": "Aura Expert sp. z o.o.",
+   "description": "Agent ubezpieczeniowy wpisany do Rejestru Pośredników Ubezpieczeniowych prowadzonego przez KNF pod numerem 11229690/A; operator portalu BeautyPolisa.",
+   "url": "https://www.auraexpert.pl/",
+   "identifier": [
+    {
+     "@type": "PropertyValue",
+     "propertyID": "KRS",
+     "value": "0000599840"
+    },
+    {
+     "@type": "PropertyValue",
+     "propertyID": "NIP",
+     "value": "5242793544"
+    },
+    {
+     "@type": "PropertyValue",
+     "propertyID": "REGON",
+     "value": "363673048"
+    },
+    {
+     "@type": "PropertyValue",
+     "propertyID": "RPU (KNF)",
+     "name": "Rejestr Pośredników Ubezpieczeniowych",
+     "value": "11229690/A",
+     "url": "https://rpu.knf.gov.pl/"
+    }
+   ],
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ul. Bolkowska 2A/28",
+    "postalCode": "01-466",
+    "addressLocality": "Warszawa",
+    "addressCountry": "PL"
+   }
+  },
+  {
+   "@type": "InsuranceAgency",
+   "@id": "https://beautypolisa.eu/#agency",
+   "name": "BeautyPolisa",
+   "alternateName": "BeautyPolisa created by Aura Expert",
+   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.",
+   "url": "https://beautypolisa.eu/",
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ul. Bolkowska 2A/28",
+    "postalCode": "01-466",
+    "addressLocality": "Warszawa",
+    "addressCountry": "PL"
+   },
+   "parentOrganization": {
+    "@id": "https://beautypolisa.eu/#organization"
+   }
+  },
+  {
    "@type": "FAQPage",
    "@id": "https://beautypolisa.eu/ubezpieczenia/oc-beauty#faq",
    "url": "https://beautypolisa.eu/ubezpieczenia/oc-beauty",
@@ -621,7 +679,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
      "name": "Jakie są grupy ryzyka zabiegów i jak wpływają na składkę?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Zabiegi są podzielone na cztery grupy ryzyka. Grupa 1 to m.in. fryzjerstwo, kosmetyka pielęgnacyjna, manicure i stylizacja rzęs. Grupa 2 to m.in. makijaż permanentny, mezoterapia, lasery nieablacyjne, IPL, tatuaż i peelingi chemiczne. Grupa 3 to podologia. Grupa 4 to zabiegi wysokiego ryzyka (m.in. HIFU, toksyna botulinowa, PRP, plazma, kwas hialuronowy, nici PDO, lipoliza iniekcyjna, laser ablacyjny), które wymagają indywidualnej oceny ubezpieczyciela. Składkę wyznacza grupa ryzyka oraz wybrana suma gwarancyjna. Wszystkie 117 zabiegów z przypisaniem do grup znajdziesz w sekcji Lista zabiegów w programie."
+      "text": "Zabiegi są przypisane do czterech grup ryzyka programu. Grupa 1 – Kosmetyka i fryzjerstwo: m.in. strzyżenie, koloryzacja włosów, manicure, przedłużanie rzęs. Grupa 2 – Kosmetologia i tatuaż: m.in. makijaż permanentny, mezoterapia, zabiegi IPL, tatuaż, peelingi chemiczne. Grupa 3 – Podologia medyczna: zabiegi podologiczne. Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko): m.in. HIFU, toksyna botulinowa, PRP, PLASMA, wypełniacze z kwasem hialuronowym, nici PDO, lipoliza iniekcyjna, laser ablacyjny – wymagają indywidualnej oceny ryzyka przez ERGO Hestię. Składkę wyznacza grupa ryzyka oraz wybrana suma gwarancyjna. Wszystkie 117 zabiegów z przypisaniem do grup znajdziesz w sekcji Lista zabiegów w programie."
      }
     },
     {
@@ -721,7 +779,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
         <dl class="figures">
           <div><dt>Składka OC rocznie</dt><dd>od 400&nbsp;zł</dd></div>
           <div><dt>Sumy gwarancyjne</dt><dd>100–300&nbsp;tys.&nbsp;zł</dd></div>
-          <div><dt>Zabiegi w&nbsp;programie</dt><dd>117</dd></div>
+          <div><dt>Zabiegi w&nbsp;programie</dt><dd data-gen="liczba-zabiegow">117</dd></div>
         </dl>
       </div>
     </div>
@@ -736,18 +794,19 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       <div class="section-head">
         <span class="chapter-no" aria-hidden="true">I</span>
         <p class="eyebrow">Grupy ryzyka</p>
-        <h2 id="zab-title" class="rv-curtain">Lista zabiegów w&nbsp;programie <em>(117)</em></h2>
+        <h2 id="zab-title" class="rv-curtain">Lista zabiegów w&nbsp;programie <em>(<span data-gen="liczba-zabiegow">117</span>)</em></h2>
         <p class="lead">Sprawdź, w&nbsp;której grupie jest Twój zabieg. Grupa decyduje o&nbsp;stawce z&nbsp;taryfy programu.</p>
+        <p>Lista pokazuje, do której grupy ryzyka program przypisuje zabieg. Zakres ochrony i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p>
       </div>
 
       <div class="ztools glass glass--tint">
         <form class="zsearch" id="z-szukaj-form" role="search" aria-label="Zabiegi w programie" hidden>
           <label for="z-szukaj">Wpisz nazwę zabiegu</label>
           <div class="zsearch-row">
-            <input type="search" id="z-szukaj" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. mezoterapia, henna, klamra" aria-describedby="z-licznik">
+            <input type="search" id="z-szukaj" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. mezoterapia, henna, klamry" aria-describedby="z-licznik">
             <button class="btn btn-ghost" type="reset" id="z-wyczysc" hidden>Wyczyść</button>
           </div>
-          <p class="zcount" id="z-licznik" aria-live="polite" aria-atomic="true">Wszystkie zabiegi w&nbsp;programie: <strong>117</strong></p>
+          <p class="zcount" id="z-licznik" aria-live="polite" aria-atomic="true">Wszystkie zabiegi w&nbsp;programie: <strong data-gen="liczba-zabiegow">117</strong></p>
         </form>
         <!-- GEN:zabiegi-skok (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
         <nav class="zjump" aria-labelledby="z-skok-tytul">
@@ -767,7 +826,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       <div class="zgroups">
         <!-- GEN:zabiegi (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
         <section class="zgroup glass glass--tint" id="grupa-1" aria-labelledby="grupa-1-tytul">
-          <div class="zgroup-head rv-rise">
+          <div class="zgroup-head">
             <div class="zgroup-title">
               <p class="eyebrow">40 zabiegów</p>
               <h3 id="grupa-1-tytul">Grupa 1 – Kosmetyka i fryzjerstwo</h3>
@@ -829,7 +888,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           </details>
         </section>
         <section class="zgroup glass glass--tint" id="grupa-2" aria-labelledby="grupa-2-tytul">
-          <div class="zgroup-head rv-rise">
+          <div class="zgroup-head">
             <div class="zgroup-title">
               <p class="eyebrow">38 zabiegów</p>
               <h3 id="grupa-2-tytul">Grupa 2 – Kosmetologia i tatuaż</h3>
@@ -889,7 +948,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           </details>
         </section>
         <section class="zgroup glass glass--tint" id="grupa-3" aria-labelledby="grupa-3-tytul">
-          <div class="zgroup-head rv-rise">
+          <div class="zgroup-head">
             <div class="zgroup-title">
               <p class="eyebrow">31 zabiegów</p>
               <h3 id="grupa-3-tytul">Grupa 3 – Podologia medyczna</h3>
@@ -942,7 +1001,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           </details>
         </section>
         <section class="zgroup glass glass--tint" id="grupa-4" aria-labelledby="grupa-4-tytul">
-          <div class="zgroup-head rv-rise">
+          <div class="zgroup-head">
             <div class="zgroup-title">
               <p class="eyebrow">8 zabiegów</p>
               <h3 id="grupa-4-tytul">Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)</h3>
@@ -974,11 +1033,11 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       </div>
 
       <div class="zrules glass glass--tint">
-        <h3>Kilka grup zabiegów w&nbsp;jednym salonie</h3>
+        <h3>Kilka grup zabiegów lub większy zespół</h3>
         <!-- GEN:zabiegi-reguly (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
         <ul>
           <li>Grupy 1 i 2 razem oraz grupa 3 z grupą 1 lub 2 – stawki grupy 3.</li>
-          <li>Zespół 6–8 osób – składka z taryfy ×1,25 (ochrona prawna +92 zł bez zmian).</li>
+          <li>Zespół 6–8 osób – składka z taryfy wyższa o 25% (ochrona prawna +92 zł bez zmian).</li>
           <li>Grupa 4 lub zespół od 9 osób – wycena indywidualna (ankieta ERGO Hestii).</li>
         </ul>
         <!-- /GEN:zabiegi-reguly -->
@@ -1069,21 +1128,21 @@ h1,h2,h3{font-variant-numeric:lining-nums}
         <span class="chapter-no" aria-hidden="true">III</span>
         <p class="eyebrow">Taryfa programu</p>
         <h2 id="tar-title" class="rv-curtain">Ile kosztuje OC <em>w&nbsp;programie</em></h2>
-        <p class="lead">Składki są stałe – wynikają z&nbsp;taryfy programu, a&nbsp;nie z&nbsp;indywidualnej wyceny.</p>
+        <p class="lead">Składki dla grup 1–3 są stałe – wynikają z&nbsp;taryfy programu. Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – wycena indywidualna.</p>
       </div>
       <div class="tariff-table glass glass--tint">
         <div class="table-scroll" role="region" tabindex="0" aria-label="Taryfa OC dla branży beauty">
         <table>
-          <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią</caption>
-          <thead><tr><th scope="col">Grupa zabiegów</th><th scope="col">100&nbsp;tys. zł</th><th scope="col">200&nbsp;tys. zł</th><th scope="col">300&nbsp;tys. zł</th></tr></thead>
+          <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią – zespół do 5&nbsp;osób</caption>
+          <thead><tr><th scope="col">Grupa zabiegów</th><th scope="col">100&nbsp;tys.&nbsp;zł</th><th scope="col">200&nbsp;tys.&nbsp;zł</th><th scope="col">300&nbsp;tys.&nbsp;zł</th></tr></thead>
           <tbody>
             <tr><th scope="row">Grupa 1<small>m.in. fryzjerstwo, manicure, rzęsy</small></th><td>400&nbsp;zł</td><td>500&nbsp;zł</td><td>650&nbsp;zł</td></tr>
             <tr><th scope="row">Grupa 2<small>m.in. makijaż permanentny, mezoterapia, tatuaż</small></th><td>650&nbsp;zł</td><td>790&nbsp;zł</td><td>950&nbsp;zł</td></tr>
-            <tr><th scope="row">Grupa 3<small>podologia</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1250&nbsp;zł</td></tr>
+            <tr><th scope="row">Grupa 3<small>podologia</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1&nbsp;250&nbsp;zł</td></tr>
           </tbody>
         </table>
         </div>
-        <p class="tariff-note">Grupy 1 i&nbsp;2 razem oraz grupa 3 z&nbsp;grupą 1 lub 2 – stawki grupy 3. Ochrona prawna +92&nbsp;zł. Zespół 6–8&nbsp;osób – składka z&nbsp;taryfy ×1,25 (ochrona prawna bez zmian). Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – wycena indywidualna.</p>
+        <p class="tariff-note">Grupy 1 i&nbsp;2 razem oraz grupa 3 z&nbsp;grupą 1 lub 2 – stawki grupy 3. Ochrona prawna +92&nbsp;zł. Zespół 6–8&nbsp;osób – składka z&nbsp;taryfy wyższa o&nbsp;25% (ochrona prawna bez zmian). Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – wycena indywidualna.</p>
       </div>
       <div class="tariff-actions">
         <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Policz składkę</a>
@@ -1093,7 +1152,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   </section>
 
   <!-- IV · PYTANIA: widoczne pytania = FAQPage w JSON-LD (oba bloki generuje ten sam skrypt z jednej listy).
-       Pytania 1, 2, 4 i 5 – z schema-faq-oc-beauty.json (odp. 4 bez obietnicy oferty, odp. 2 z odesłaniem do listy); pytanie 3 – nowe, z treści klauzuli. -->
+       Pytania 1–5 = schema-faq-oc-beauty.json (oba bloki generuje ten sam skrypt). -->
   <section class="section section--flush-top" id="faq" aria-labelledby="faq-title">
     <div class="container faq-grid">
       <div class="section-head faq-head">
@@ -1103,10 +1162,10 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       <div class="faq glass">
         <!-- GEN:faq (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
         <details id="pytanie-1"><summary>Co obejmuje OC dla branży beauty w programie ERGO Hestia?</summary><p>Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr WA50/003353/24/A realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi są przypisane do grup ryzyka, a zabiegi wysokiego ryzyka wymagają indywidualnej oceny. Pełny zakres znajdziesz w dokumentach OWU na stronie <a href="/dokumenty">beautypolisa.eu/dokumenty</a>.</p></details>
-        <details id="pytanie-2"><summary>Jakie są grupy ryzyka zabiegów i jak wpływają na składkę?</summary><p>Zabiegi są podzielone na cztery grupy ryzyka. Grupa 1 to m.in. fryzjerstwo, kosmetyka pielęgnacyjna, manicure i stylizacja rzęs. Grupa 2 to m.in. makijaż permanentny, mezoterapia, lasery nieablacyjne, IPL, tatuaż i peelingi chemiczne. Grupa 3 to podologia. Grupa 4 to zabiegi wysokiego ryzyka (m.in. HIFU, toksyna botulinowa, PRP, plazma, kwas hialuronowy, nici PDO, lipoliza iniekcyjna, laser ablacyjny), które wymagają indywidualnej oceny ubezpieczyciela. Składkę wyznacza grupa ryzyka oraz wybrana suma gwarancyjna. Wszystkie 117 zabiegów z przypisaniem do grup znajdziesz w sekcji <a href="#zabiegi">Lista zabiegów w programie</a>.</p></details>
+        <details id="pytanie-2"><summary>Jakie są grupy ryzyka zabiegów i jak wpływają na składkę?</summary><p>Zabiegi są przypisane do czterech grup ryzyka programu. Grupa 1 – Kosmetyka i fryzjerstwo: m.in. strzyżenie, koloryzacja włosów, manicure, przedłużanie rzęs. Grupa 2 – Kosmetologia i tatuaż: m.in. makijaż permanentny, mezoterapia, zabiegi IPL, tatuaż, peelingi chemiczne. Grupa 3 – Podologia medyczna: zabiegi podologiczne. Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko): m.in. HIFU, toksyna botulinowa, PRP, PLASMA, wypełniacze z kwasem hialuronowym, nici PDO, lipoliza iniekcyjna, laser ablacyjny – wymagają indywidualnej oceny ryzyka przez ERGO Hestię. Składkę wyznacza grupa ryzyka oraz wybrana suma gwarancyjna. Wszystkie 117 zabiegów z przypisaniem do grup znajdziesz w sekcji <a href="#zabiegi">Lista zabiegów w programie</a>.</p></details>
         <details id="pytanie-3"><summary>Ile kosztuje OC salonu kosmetycznego?</summary><p>Według stałej taryfy programu składka roczna wynosi od 400 zł (grupa 1, suma gwarancyjna 100 000 zł) do 1 250 zł (grupa 3, suma gwarancyjna 300 000 zł) dla zespołu do 5 osób. Dla zespołów 6–8 osób składka jest wyższa o 25%. Klauzula ochrony prawnej kosztuje dodatkowo 92 zł rocznie. Zespoły od 9 osób oraz zabiegi wysokiego ryzyka (grupa 4) są wyceniane indywidualnie.</p></details>
         <details id="pytanie-4"><summary>Czym jest klauzula ochrony prawnej i ile kosztuje?</summary><p>To rozszerzenie OC w programie o koszty ochrony prawnej w postępowaniach przed sądami polskimi, w których ubezpieczony występuje jako pozwany, podejrzany lub oskarżony, także w postępowaniu dyscyplinarnym. Postępowanie musi być wszczęte na terenie RP w okresie ubezpieczenia i dotyczyć czynności zawodowych objętych umową. Klauzula kosztuje dodatkowo 92 zł rocznie. Pełną treść, w tym wyłączenia, znajdziesz w sekcji <a href="#ochrona-prawna">Klauzula ochrony prawnej</a>.</p></details>
-        <details id="pytanie-5"><summary>Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?</summary><p>Są to zabiegi wysokiego ryzyka (grupa 4), których nie wycenia kalkulator. Ich ubezpieczenie jest możliwe po indywidualnej ocenie ubezpieczyciela na podstawie ankiety: listy wykonywanych zabiegów, kwalifikacji personelu, stosowanych formularzy zgody na zabieg oraz szkodowości z ostatnich 3 lat. Zostaw kontakt przez formularz – doradca przekaże Ci ankietę ERGO Hestii. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka.</p></details>
+        <details id="pytanie-5"><summary>Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?</summary><p>Są to zabiegi wysokiego ryzyka (grupa 4), których nie wycenia kalkulator. Ich ubezpieczenie jest możliwe po indywidualnej ocenie ubezpieczyciela na podstawie ankiety: listy wykonywanych zabiegów, kwalifikacji personelu, stosowanych formularzy zgody na zabieg oraz szkodowości z ostatnich 3 lat. Zostaw kontakt przez <a href="makieta-v3.html#kontakt">formularz</a> – doradca przekaże Ci ankietę ERGO Hestii. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka.</p></details>
         <!-- /GEN:faq -->
       </div>
     </div>
@@ -1144,7 +1203,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           <!-- „Zgłoś szkodę”: w makiecie makieta-v3.html#jak-zglosic-szkode, produkcyjnie /szkoda; „Polityka prywatności”: /rodo -->
           <div class="rv-rise"><h2 class="footer-title">BeautyPolisa</h2><ul><li><a href="/o-nas">O&nbsp;nas</a></li><li><a href="/dokumenty">Dokumenty i&nbsp;OWU</a></li><li><a href="makieta-v3.html#jak-zglosic-szkode">Zgłoś szkodę</a></li><li><a href="/rodo">Polityka prywatności</a></li><li><a href="makieta-v3.html#kontakt">Kontakt</a></li></ul></div>
           <!-- produkcyjnie /strefa-klienta/logowanie, /dam-prace, /strefa-klienta/rejestracja/szukam-pracy, /szkolenia, /szkolenia#dla-organizatorow -->
-          <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę – ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy – dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="makieta-v3.html#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="https://beautyrazem.pl/polisa">Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę – ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy – dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="makieta-v3.html#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
         </nav>
       </div>
       <div class="legal">
@@ -1172,11 +1231,11 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 <a class="sticky-cta" href="makieta-v3.html#kalkulator" hidden>Policz składkę</a>
 <script>
 /* Lista zabiegów: wyszukiwarka (bez JS ukryta – lista i tak jest cała widoczna).
-   Szuka w nazwach i synonimach (data-syn), bez polskich znaków i wielkości liter; każde wpisane słowo musi pasować.
-   Synonimy służą tylko wyszukiwaniu – nie rozszerzają zakresu. Przy dopasowaniu po synonimie pokazuje, czego szukano. */
+   Szuka w nazwach zabiegów z listy programu (1:1), bez polskich znaków i wielkości liter; każde wpisane słowo musi
+   pasować do początku jakiegoś wyrazu nazwy. Słowa od 5 znaków porównuje bez ostatniej litery (klamra → klamry). */
 (function(){
   var root=document.getElementById('zabiegi'), form=document.getElementById('z-szukaj-form'); if(!root||!form) return;
-  var input=document.getElementById('z-szukaj'), clear=document.getElementById('z-wyczysc'), count=document.getElementById('z-licznik'), empty=document.getElementById('z-brak');
+  var input=document.getElementById('z-szukaj'), clear=document.getElementById('z-wyczysc'), count=document.getElementById('z-licznik'), empty=document.getElementById('z-brak'), jumpNav=document.querySelector('.zjump');
   var groups=[].slice.call(root.querySelectorAll('.zgroup')), TOTAL=0, saved=null, timer=null, lastQ='';
   function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ł/g,'l').replace(/[^a-z0-9]+/g,' ').trim()}
   function plural(n){var d=n%10,h=n%100;return n===1?'zabieg':(d>=2&&d<=4&&(h<12||h>14))?'zabiegi':'zabiegów'}
@@ -1184,24 +1243,11 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     return {g:g,det:g.querySelector('details'),sumN:g.querySelector('[data-z-ile]'),jump:document.querySelector('.zjump a[href="#'+g.id+'"]'),
       items:[].slice.call(g.querySelectorAll('.zlist > li')).map(function(li){
         TOTAL++;
-        var syn=(li.getAttribute('data-syn')||'').split('|').filter(Boolean).map(function(s){return {raw:s,n:norm(s)}});
-        var name=norm(li.querySelector('.z-name').textContent);
-        return {li:li,name:name,syn:syn,hay:[name].concat(syn.map(function(s){return s.n})).join(' | ')};
+        return {li:li,name:' '+norm(li.querySelector('.z-name').textContent)};
       })};
   });
-  function via(li,txt){
-    var v=li.querySelector('.z-via');
-    if(!txt){if(v)v.remove();return}
-    if(!v){v=document.createElement('span');v.className='z-via';li.appendChild(v)}
-    v.textContent='inna nazwa: „'+txt+'”';
-  }
   function match(it,toks){
-    if(!toks.length) return {hit:true};
-    function all(h){return toks.every(function(t){return h.indexOf(t)>-1})}
-    if(all(it.name)) return {hit:true};
-    for(var i=0;i<it.syn.length;i++) if(all(it.syn[i].n)) return {hit:true,via:it.syn[i].raw};
-    if(all(it.hay)){var s=it.syn.filter(function(x){return toks.some(function(t){return x.n.indexOf(t)>-1})})[0];return {hit:true,via:s?s.raw:''}}
-    return {hit:false};
+    return toks.every(function(t){return it.name.indexOf(' '+(t.length>=5?t.slice(0,-1):t))>-1});
   }
   function apply(){
     var raw=input.value, q=norm(raw), toks=q?q.split(' '):[], found=0;
@@ -1209,7 +1255,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     if(toks.length&&!saved) saved=data.map(function(d){return d.det.open});
     data.forEach(function(d,i){
       var n=0;
-      d.items.forEach(function(it){var m=match(it,toks);it.li.hidden=!m.hit;via(it.li,m.hit?m.via:'');if(m.hit)n++});
+      d.items.forEach(function(it){var hit=!toks.length||match(it,toks);it.li.hidden=!hit;if(hit)n++});
       found+=n;
       d.g.hidden=toks.length>0&&n===0;
       if(d.jump){d.jump.parentNode.hidden=d.g.hidden;d.jump.querySelector('span').textContent=toks.length?n+' z '+d.items.length:String(d.items.length)}
@@ -1217,6 +1263,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       if(toks.length){if(n)d.det.open=true}else if(saved){d.det.open=saved[i]}
     });
     if(!toks.length) saved=null;
+    if(jumpNav) jumpNav.hidden=toks.length>0&&!found;
     clear.hidden=!raw;
     if(toks.length&&!found){
       empty.textContent='';
@@ -1247,7 +1294,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 
 /* Odnośniki do pozycji w <details> (zabieg z /dla-kogo, grupa, pytanie): rozwijają ją przed przewinięciem */
 (function(){
-  function target(id){var t=id&&document.getElementById(id);if(!t)return null;return t.tagName==='DETAILS'?t:t.closest('details')}
+  function target(id){var t=id&&document.getElementById(id);if(!t)return null;return t.tagName==='DETAILS'?t:(t.closest('details')||t.querySelector('.zdetails'))}
   function open(id){
     var d=target(id);if(!d)return false;
     for(var p=d;p;p=p.parentElement&&p.parentElement.closest('details'))p.open=true;
