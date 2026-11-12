@@ -210,9 +210,15 @@ ul,ol{margin:0}
 .sidenav .ui-icon{width:22px;height:22px}
 .sidenav hr{margin:10px 14px;border:0;border-top:1px solid var(--bp-line-gold-soft)}
 .sidenav-foot{display:grid;gap:4px;padding:6px 14px 0;font-size:var(--text-xs);line-height:1.55;color:var(--color-ink)}
+/* podpunkty menu bocznego (np. „Dam pracę” → „Szukam pracy”, „Szkolenia” → „Katalog szkoleń”) */
+.sidenav .sub{padding:0 0 4px 34px;gap:0}
+.sidenav .sub a{min-height:44px;padding:4px 12px;font:400 var(--text-sm)/1.35 var(--font-sans);letter-spacing:0;text-transform:none}
+.sidenav .sub a[aria-current="page"]::before{top:12px;bottom:12px}
 .main{min-width:0;display:grid;gap:24px;padding-bottom:40px}
 .view{display:grid;gap:24px;align-content:start;min-width:0}
 .js .view:not(.is-active){display:none}
+/* bez JS widoki stoją pod sobą: rozmyty jest tylko nagłówek pierwszego widoku (najwyżej 3 tafle w widoku: pasek, menu, nagłówek) */
+html:not(.js) .view ~ .view .page-head{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--color-ivory)}
 .no-js-only{display:none}
 html:not(.js) .no-js-only{display:block}
 

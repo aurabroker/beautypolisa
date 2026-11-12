@@ -11,14 +11,16 @@
 <meta name="color-scheme" content="only light">
 <!-- Produkcja: publiczne /szkolenia i /szkolenia/<slug> (index&nbsp;– Założenie Z-6; schema.org EducationEvent; dane z cache bez sesji,
      stan zapisu użytkownika w osobnym fragmencie dynamicznym no-store). /strefa-klienta/szkolenia i /strefa-klienta/organizator/* –
-     dynamiczne, no-store, noindex, bez klienta Supabase w przeglądarce; uprawnienia egzekwuje RLS (11 §9). -->
+     dynamiczne, no-store, noindex, bez klienta Supabase w przeglądarce; uprawnienia egzekwuje RLS (11 §9).
+     Bez tagu Google (GA4, Zaraz) w Strefie Klienta. W produkcji fonty lokalnie (next/font/local), bez fonts.googleapis.com
+     i fonts.gstatic.com; Google Fonts tylko w makiecie. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="strefa.css">
 <style>
 /* =====================================================================
-   Szkolenia – style tej strony. Wspólny arkusz strefa.css bez zmian;
+   Szkolenia – style tej strony (wspólne klasy są w strefa.css);
    w produkcji te reguły trafiają do arkusza modułu (CSP z nonce).
    ===================================================================== */
 
@@ -28,10 +30,7 @@
 [data-role="organizer"] .salon-only{display:none!important}
 [data-role="organizer"] .sidenav ul.org-only{display:grid!important}
 
-/* menu boczne: podpunkty „Szkolenia” */
-.sidenav .sub{padding:0 0 4px 34px;gap:0}
-.sidenav .sub a{min-height:44px;padding:4px 12px;font:400 var(--text-sm)/1.35 var(--font-sans);letter-spacing:0;text-transform:none}
-.sidenav .sub a[aria-current="page"]::before{top:12px;bottom:12px}
+/* menu boczne: podpunkty „Szkolenia” – wspólne reguły .sidenav .sub są w strefa.css */
 
 /* filtry katalogu */
 .filters{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) max-content;gap:18px 22px;align-items:start}
@@ -190,7 +189,7 @@
 <!-- Adnotacja makiety: w produkcji usuwana -->
 <div class="mock-bar" role="note">
   <strong>Makieta</strong>
-  <span>„Szkolenia” – katalog, zapisy, widok organizatora (D-D) i&nbsp;plany organizatorów (P1d). Szkolenia, organizatorzy, osoby, daty planów i&nbsp;numery faktur są fikcyjne, stan na 11&nbsp;listopada 2026&nbsp;r.</span>
+  <span>„Szkolenia” – katalog, zapisy, widok organizatora (D-D) i&nbsp;plany organizatorów (P1d). Szkolenia, organizatorzy, osoby, daty planów i&nbsp;numery faktur są fikcyjne, stan na 12&nbsp;listopada 2026&nbsp;r.</span>
   <nav aria-label="Ekrany makiety">
     <a href="#katalog">Katalog</a>
     <a href="#dla-organizatorow">Plany organizatorów</a>
@@ -361,7 +360,7 @@
               <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
             </div>
             <div class="tr-side">
-              <p class="price">Bezpłatne <small>dla klientów BeautyPolisa <span class="mock-note">Założenie&nbsp;– dane demo</span></small></p>
+              <p class="price">Bezpłatne</p>
               <div class="seats"><span>Wolne miejsca: 6 z&nbsp;20</span><span class="seats-bar" aria-hidden="true"><i class="f70"></i></span></div>
               <a class="btn btn-navy btn-sm" href="#szkolenie">Szczegóły i&nbsp;zapis<span class="sr-only">: Higiena i&nbsp;bezpieczeństwo zabiegów (przykład)</span></a>
             </div>
@@ -570,7 +569,7 @@
             <div class="alert alert--success">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
               <strong class="alert-title" id="t-zapisano">Zapisano</strong>
-              <p class="small">Zapis z&nbsp;<time datetime="2026-11-11">11&nbsp;listopada 2026&nbsp;r.</time> Potwierdzenie wysłaliśmy na adres anna@salon-przykladowy.example. Przypomnienie wyślemy <span class="nowrap">e-mailem</span> 24&nbsp;h przed szkoleniem&nbsp;– <time datetime="2026-12-02T10:00">2&nbsp;grudnia 2026&nbsp;r. o&nbsp;10:00</time>.</p>
+              <p class="small">Zapis z&nbsp;<time datetime="2026-11-12">12&nbsp;listopada 2026&nbsp;r.</time> Potwierdzenie wysłaliśmy na adres anna@salon-przykladowy.example. Przypomnienie wyślemy <span class="nowrap">e-mailem</span> 24&nbsp;h przed szkoleniem&nbsp;– <time datetime="2026-12-02T10:00">2&nbsp;grudnia 2026&nbsp;r. o&nbsp;10:00</time>.</p>
             </div>
             <p><span class="badge badge--ok" data-status>Zapisano</span></p>
             <div class="private">
@@ -1027,6 +1026,7 @@
                 <option>Obsługa klienta</option>
                 <option>Prowadzenie salonu</option>
               </select>
+              <p class="field-error" id="d-temat-err" hidden></p>
             </div>
             <div class="field">
               <span class="label">Adresaci</span>
@@ -1075,6 +1075,7 @@
               <div class="field">
                 <label for="d-koniec">Zakończenie</label>
                 <input type="datetime-local" id="d-koniec" name="koniec" min="2026-11-12T00:00" required>
+                <p class="field-error" id="d-koniec-err" hidden></p>
               </div>
               <div class="field">
                 <label for="d-zapisy">Koniec zapisów <span>(opcjonalnie)</span></label>
@@ -1090,6 +1091,7 @@
               <div class="field">
                 <label for="d-miejsca">Liczba miejsc</label>
                 <input type="number" id="d-miejsca" name="miejsca" min="1" max="200" inputmode="numeric" required>
+                <p class="field-error" id="d-miejsca-err" hidden></p>
               </div>
               <div class="field">
                 <label for="d-limit">Limit miejsc na salon</label>
@@ -1108,6 +1110,7 @@
               <label for="d-cena">Cena brutto w&nbsp;zł <span>(tylko szkolenie płatne)</span></label>
               <input type="text" id="d-cena" name="cena" inputmode="decimal" aria-describedby="d-cena-hint">
               <p class="hint" id="d-cena-hint">Płatności online nie ma&nbsp;– w&nbsp;katalogu pokażemy cenę z&nbsp;dopiskiem „fakturę wystawia organizator”. <span class="mock-note">Założenie</span></p>
+              <p class="field-error" id="d-cena-err" hidden></p>
             </div>
           </div>
 
@@ -1191,8 +1194,8 @@
               <thead><tr><th scope="col">Uczestnik</th><th scope="col">Salon</th><th scope="col">Status</th><th scope="col">Obecność</th></tr></thead>
               <tbody>
                 <tr>
-                  <th scope="row" data-label="Uczestnik"><div class="person"><span class="monogram" aria-hidden="true">JP</span><div><strong>Joanna Przykładowa</strong><span>joanna@studio-przykladowe.example</span></div></div></th>
-                  <td data-label="Salon">Studio Przykładowe</td>
+                  <th scope="row" data-label="Uczestnik"><div class="person"><span class="monogram" aria-hidden="true">JP</span><div><strong>Joanna Przykładowa</strong><span>joanna@instytut-przykladowy.example</span></div></div></th>
+                  <td data-label="Salon">Instytut Przykładowy</td>
                   <td data-label="Status"><span class="badge badge--ok">Obecność potwierdzona</span></td>
                   <td data-label="Obecność"><fieldset class="seg"><legend class="sr-only">Obecność: Joanna Przykładowa</legend><span><input type="radio" id="ob1t" name="ob1" value="tak" checked><label for="ob1t">Tak</label></span><span><input type="radio" id="ob1n" name="ob1" value="nie"><label for="ob1n">Nie</label></span></fieldset></td>
                 </tr>
@@ -1209,8 +1212,8 @@
                   <td data-label="Obecność"><fieldset class="seg"><legend class="sr-only">Obecność: Kamil Przykładowy</legend><span><input type="radio" id="ob3t" name="ob3" value="tak"><label for="ob3t">Tak</label></span><span><input type="radio" id="ob3n" name="ob3" value="nie" checked><label for="ob3n">Nie</label></span></fieldset></td>
                 </tr>
                 <tr>
-                  <th scope="row" data-label="Uczestnik"><div class="person"><span class="monogram" aria-hidden="true">OP</span><div><strong>Ola Przykładowa</strong><span>ola@studio-przykladowe.example</span></div></div></th>
-                  <td data-label="Salon">Studio Przykładowe</td>
+                  <th scope="row" data-label="Uczestnik"><div class="person"><span class="monogram" aria-hidden="true">OP</span><div><strong>Ola Przykładowa</strong><span>ola@instytut-przykladowy.example</span></div></div></th>
+                  <td data-label="Salon">Instytut Przykładowy</td>
                   <td data-label="Status"><span class="badge badge--warn">Do oznaczenia</span></td>
                   <td data-label="Obecność"><fieldset class="seg"><legend class="sr-only">Obecność: Ola Przykładowa</legend><span><input type="radio" id="ob4t" name="ob4" value="tak"><label for="ob4t">Tak</label></span><span><input type="radio" id="ob4n" name="ob4" value="nie"><label for="ob4n">Nie</label></span></fieldset></td>
                 </tr>
@@ -1246,7 +1249,7 @@
     <aside class="mock-annot" aria-labelledby="t-annot">
       <h2 id="t-annot">Uwagi do makiety</h2>
       <ul>
-        <li>Na stronie głównej linki „Szkolenia” i&nbsp;„Dla organizatorów szkoleń” prowadzą do tej makiety (katalog i&nbsp;<code>#organizator</code>). Oferta planów dla firm, które nie są jeszcze organizatorami, jest w&nbsp;katalogu pod <code>#dla-organizatorow</code>.</li>
+        <li>Na stronie głównej link „Szkolenia” prowadzi do katalogu, a&nbsp;„Dla organizatorów szkoleń” i&nbsp;„Oferta dla organizatorów”&nbsp;– do oferty planów dla firm, które nie są jeszcze organizatorami (<code>#dla-organizatorow</code>). Widok organizatora (<code>#organizator</code>) otwiera się po zalogowaniu, z&nbsp;menu konta. Katalog jest tu pokazany w&nbsp;koncie salonu; wariantu publicznego <code>/szkolenia</code> dla gościa (Z-6: bez paska strefy, „Zaloguj się, aby się zapisać”) ta makieta jeszcze nie ma&nbsp;– do dodania.</li>
         <li><strong>Decyzja <span class="nowrap">P1d</span> (12.11.2026):</strong> organizator płaci za plan&nbsp;– promocja na otwarcie portalu: 10&nbsp;000&nbsp;zł netto za 12&nbsp;miesięcy albo 1&nbsp;000&nbsp;zł netto za miesiąc; pozostałe warunki&nbsp;– do ustalenia (Q16). Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy tylko przy aktywnym planie (11 §12.4, S12, O5); po końcu planu zapisani zachowują miejsca i&nbsp;szczegóły, a&nbsp;organizator&nbsp;– listę uczestników. Ekrany: blok „Dla organizatorów szkoleń” w&nbsp;katalogu, stan planu w&nbsp;„Moich szkoleniach” organizatora, widok „Profil i&nbsp;plan” z&nbsp;wariantami „kończy się” i&nbsp;„brak aktywnego planu” oraz kontrola terminu w&nbsp;„Dodaj szkolenie”.</li>
         <li><strong>Założenia <span class="nowrap">Z-22</span> i&nbsp;<span class="nowrap">Z-41</span>:</strong> plan ustawia, przedłuża i&nbsp;anuluje wyłącznie personel w&nbsp;<code>/panel</code>; fakturę wystawia Aura Expert poza portalem (bez płatności online); plan nie limituje liczby szkoleń; plan obejmuje szkolenia zaczynające się w&nbsp;jego okresie; plan bez numeru faktury wygasa po 14&nbsp;dniach (Q22). Daty planu i&nbsp;numer faktury w&nbsp;makiecie są fikcyjne.</li>
         <li><strong>Decyzja <span class="nowrap">L1</span>:</strong> stopka ma pełną formułę Aura Expert sp.&nbsp;z&nbsp;o.o. (agent ubezpieczeniowy, wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych nr 11229690/A, link do <code>rpu.knf.gov.pl</code>) i&nbsp;kontakt do IOD. Lista zakładów ubezpieczeń&nbsp;– do potwierdzenia; procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta&nbsp;– do uzupełnienia.</li>
@@ -1266,11 +1269,11 @@
 
 <footer class="app-footer">
   <div class="app-footer-inner">
-    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="#katalog">Szkolenia</a><a href="#dla-organizatorow">Dla organizatorów szkoleń</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a></nav>
+    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
     <!-- L1 (12.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy; informacje agenta ubezpieczeniowego (IDD).
          Lista zakładów – do potwierdzenia; procedura reklamacyjna i charakter wynagrodzenia – do uzupełnienia (bez zgadywania). -->
-    <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st.&nbsp;Warszawy, XII&nbsp;Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
-    <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń: Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A., Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. oraz Colonnade Insurance S.A. Oddział w&nbsp;Polsce <span class="mock-note">Lista&nbsp;– do potwierdzenia</span>. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A). Procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta&nbsp;– [do uzupełnienia przed publikacją].</p>
+    <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
+    <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest agentem ubezpieczeniowym i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń: Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A., Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. oraz Colonnade Insurance S.A. Oddział w&nbsp;Polsce <span class="mock-note">lista do potwierdzenia</span>. Wpis sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych prowadzonym przez KNF: <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>. Procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta&nbsp;– [do uzupełnienia].</p>
     <p>Inspektor ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Informacje w&nbsp;serwisie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego. Zakres ochrony określają ogólne warunki ubezpieczenia.</p>
   </div>
 </footer>
@@ -1461,25 +1464,47 @@
   function syncPrice() { price.disabled = !document.getElementById('d-c-paid').checked; }
   all('input[name="cena_rodzaj"]', fd).forEach(function (r) { r.addEventListener('change', syncPrice); });
   syncPrice();
-  function setErr(input, errId, bad) {
-    var hint = input.getAttribute('aria-describedby').split(' ')[0];
-    input.setAttribute('aria-invalid', bad ? 'true' : 'false');
-    input.setAttribute('aria-describedby', bad ? hint + ' ' + errId : hint);
-    document.getElementById(errId).hidden = !bad;
+  /* błąd pod polem: komunikat, aria-invalid i aria-describedby (pole może nie mieć podpowiedzi) */
+  function setErr(input, errId, msg) {
+    var err = document.getElementById(errId);
+    if (!('desc' in input.dataset)) { input.dataset.desc = input.getAttribute('aria-describedby') || ''; }
+    var base = input.dataset.desc;
+    if (msg) {
+      err.textContent = msg; err.hidden = false; input.setAttribute('aria-invalid', 'true');
+      if ((' ' + base + ' ').indexOf(' ' + errId + ' ') < 0) { input.setAttribute('aria-describedby', (base ? base + ' ' : '') + errId); }
+    } else {
+      err.hidden = true; input.removeAttribute('aria-invalid');
+      if (base) { input.setAttribute('aria-describedby', base); } else { input.removeAttribute('aria-describedby'); }
+    }
+    return !msg;
   }
+  var NB = '\u00a0';
   fd.addEventListener('submit', function (e) {
     e.preventDefault();
-    var title = document.getElementById('d-tytul'), link = document.getElementById('d-link'), start = document.getElementById('d-start');
-    var badTitle = title.value.trim().length < 5;
+    var byId = function (id) { return document.getElementById(id); };
+    var title = byId('d-tytul'), topic = byId('d-temat'), start = byId('d-start'), end = byId('d-koniec'), seats = byId('d-miejsca'), link = byId('d-link');
+    var bad = [];
+    if (!setErr(title, 'd-tytul-err', title.value.trim().length < 5 ? 'Wpisz tytuł szkolenia (co najmniej 5' + NB + 'znaków).' : '')) { bad.push(title); }
+    if (!setErr(topic, 'd-temat-err', topic.value ? '' : 'Wybierz temat z' + NB + 'listy.')) { bad.push(topic); }
+    /* P1d / Z-41: termin musi przypadać w okresie planu (w produkcji sprawdza to baza – app_moderate_training) */
+    var sm = !start.value ? 'Podaj datę i' + NB + 'godzinę rozpoczęcia.'
+      : (start.value < start.min ? 'Termin nie może być w' + NB + 'przeszłości.'
+      : (start.value > start.max ? 'Termin wypada po końcu planu (20' + NB + 'października 2027' + NB + 'r.). Takiego szkolenia nie opublikujemy' + NB + '– zmień termin albo poproś doradcę o' + NB + 'kolejny plan.' : ''));
+    if (!setErr(start, 'd-start-err', sm)) { bad.push(start); }
+    var em = !end.value ? 'Podaj datę i' + NB + 'godzinę zakończenia.' : (start.value && end.value <= start.value ? 'Zakończenie musi być później niż rozpoczęcie.' : '');
+    if (!setErr(end, 'd-koniec-err', em)) { bad.push(end); }
+    var n = Number(seats.value);
+    if (!setErr(seats, 'd-miejsca-err', (seats.value !== '' && Number.isInteger(n) && n >= 1 && n <= 200) ? '' : 'Podaj liczbę miejsc od 1 do 200.')) { bad.push(seats); }
+    /* S7: szkolenie płatne ma cenę w ustrukturyzowanym polu (kwota brutto w zł) */
+    if (byId('d-c-paid').checked) {
+      var p = price.value.trim().replace(/\s/g, '').replace(',', '.');
+      if (!setErr(price, 'd-cena-err', (/^\d+(\.\d{1,2})?$/.test(p) && +p > 0) ? '' : 'Podaj cenę brutto w' + NB + 'zł, np. 280' + NB + '– przy szkoleniu płatnym jest obowiązkowa.')) { bad.push(price); }
+    } else { setErr(price, 'd-cena-err', ''); }
     var url = link.value.trim();
     var badLink = url !== '' && !/^https:\/\/([a-z0-9-]+\.)*(zoom\.us|teams\.microsoft\.com|meet\.google\.com)(\/\S*)?$/i.test(url);
-    /* P1d / Z-41: termin musi przypadać w okresie planu (w produkcji sprawdza to baza – app_moderate_training) */
-    var badStart = start.value !== '' && start.value > start.max;
-    setErr(title, 'd-tytul-err', badTitle);
-    setErr(start, 'd-start-err', badStart);
-    setErr(link, 'd-link-err', badLink);
-    var box = document.getElementById('dodaj-err');
-    if (badTitle || badStart || badLink) { box.hidden = false; (badTitle ? title : (badStart ? start : link)).focus(); return; }
+    if (!setErr(link, 'd-link-err', badLink ? 'Link musi prowadzić do zoom.us, teams.microsoft.com albo meet.google.com i' + NB + 'zaczynać się od https://.' : '')) { bad.push(link); }
+    var box = byId('dodaj-err');
+    if (bad.length) { box.hidden = false; bad[0].focus(); return; }
     box.hidden = true;
     document.getElementById('org-wyslane-tytul').textContent = '„' + title.value.trim() + '”';
     /* nowy wiersz „W moderacji” na liście organizatora (treść jako tekst, bez innerHTML) */

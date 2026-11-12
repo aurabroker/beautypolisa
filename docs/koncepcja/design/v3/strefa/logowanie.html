@@ -11,7 +11,8 @@
 <meta name="color-scheme" content="only light">
 <!-- Produkcja: /strefa-klienta/logowanie, /strefa-klienta/zaproszenie, /strefa-klienta/rejestracja(/pracodawca|/szukam-pracy), /strefa-klienta/telefon –
      dynamiczne, no-store, noindex, CSP z nonce, Turnstile (host już w CSP), Referrer-Policy: no-referrer.
-     GUS (API BIR) i bramka SMS – wyłącznie z serwera (Worker); przeglądarka nie łączy się z nowymi hostami. Bez tagu Google. -->
+     GUS (API BIR) i bramka SMS – wyłącznie z serwera (Worker); przeglądarka nie łączy się z nowymi hostami. Bez tagu Google (GA4, Zaraz) w Strefie Klienta.
+     W produkcji fonty lokalnie (next/font/local), bez fonts.googleapis.com i fonts.gstatic.com; Google Fonts tylko w makiecie. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
@@ -104,6 +105,7 @@
             <label for="kod">Kod z&nbsp;e-maila</label>
             <input class="code-input" type="text" id="kod" name="kod" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="kod-hint">
             <p class="hint" id="kod-hint">Sześć cyfr. Nie widzisz wiadomości? Sprawdź folder „Oferty” lub „Spam”.</p>
+            <p class="field-error" id="kod-err" hidden></p>
           </div>
           <div class="turnstile-slot" role="img" aria-label="Miejsce na weryfikację Cloudflare Turnstile">
             <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
@@ -131,16 +133,18 @@
         </ol>
         <h1 id="t-totp">Drugi składnik logowania</h1>
         <p class="lead">Otwórz aplikację uwierzytelniającą w&nbsp;telefonie i&nbsp;wpisz kod dla konta „BeautyPolisa&nbsp;– Strefa Klienta”.</p>
-        <form class="form" id="f-totp" action="panel.html" method="get" novalidate>
+        <form class="form" id="f-totp" action="panel.html" method="post" novalidate>
           <div class="field" id="totp-field">
             <label for="totp">Kod z&nbsp;aplikacji</label>
             <input class="code-input" type="text" id="totp" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="totp-hint">
             <p class="hint" id="totp-hint">Kod zmienia się co 30&nbsp;sekund.</p>
+            <p class="field-error" id="totp-err" hidden></p>
           </div>
           <div class="field" id="backup-field" hidden>
             <label for="backup">Kod zapasowy</label>
             <input type="text" id="backup" name="backup" autocomplete="one-time-code" spellcheck="false" aria-describedby="backup-hint">
             <p class="hint" id="backup-hint">Każdy kod zapasowy działa jeden raz. Po użyciu ostatniego poproś doradcę o&nbsp;reset drugiego składnika.</p>
+            <p class="field-error" id="backup-err" hidden></p>
           </div>
           <div class="form-foot">
             <button class="btn btn-navy" type="submit">Potwierdź</button>
@@ -171,7 +175,7 @@
           <!-- token z części # adresu przenosi skrypt (nonce) do treści POST; bez JS – pole poniżej -->
           <noscript>
             <div class="field">
-              <label for="kod-zapr-ns">Kod zaproszenia <span>(z tego samego e-maila)</span></label>
+              <label for="kod-zapr-ns">Kod zaproszenia <span>(z&nbsp;tego samego e-maila)</span></label>
               <input type="text" id="kod-zapr-ns" name="kod_zaproszenia" autocomplete="off" spellcheck="false" required>
             </div>
           </noscript>
@@ -191,7 +195,7 @@
         </ol>
         <h1 id="t-pierwsze">Witamy w&nbsp;Strefie Klienta</h1>
         <p class="auth-who"><span>Zalogowano jako</span> <strong>anna@salon-przykladowy.example</strong> <span class="badge badge--role">Właścicielka · Salon Przykładowy</span></p>
-        <form class="form" id="f-pierwsze" action="panel.html" method="get" novalidate>
+        <form class="form" id="f-pierwsze" action="panel.html" method="post" novalidate>
           <fieldset class="field">
             <legend>Regulamin</legend>
             <label class="check-row"><input type="checkbox" id="regulamin" name="regulamin" required aria-describedby="reg-err"> <span>Akceptuję <a href="#regulamin-tresc">Regulamin Strefy Klienta</a> (wersja 1.0, przykład).</span></label>
@@ -208,7 +212,8 @@
                 <span class="label">Klucz do wpisania ręcznie</span>
                 <span class="secret">ABCD EFGH IJKL MNOP <span class="mock-note">przykład</span></span>
                 <label for="totp-new" class="label">Kod z&nbsp;aplikacji</label>
-                <input class="code-input" type="text" id="totp-new" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6">
+                <input class="code-input" type="text" id="totp-new" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
+                <p class="field-error" id="totp-new-err" hidden></p>
               </div>
             </div>
             <p class="hint">Kody zapasowe pokażemy jeden raz po włączeniu drugiego składnika&nbsp;– zapisz je w&nbsp;bezpiecznym miejscu <span class="mock-note">[do weryfikacji – wsparcie w&nbsp;Supabase]</span>.</p>
@@ -255,7 +260,7 @@
           <p class="label-caps">Przyjęcie zaproszenia bez JavaScriptu</p>
           <p class="small">Link z&nbsp;e-maila przekazuje zaproszenie skryptem. Gdy przeglądarka blokuje JavaScript, strona prosi o&nbsp;kod z&nbsp;tego samego e-maila.</p>
           <div class="field">
-            <label for="kod-zapr">Kod zaproszenia <span>(z tego samego e-maila)</span></label>
+            <label for="kod-zapr">Kod zaproszenia <span>(z&nbsp;tego samego e-maila)</span></label>
             <input type="text" id="kod-zapr" name="kod_zaproszenia" autocomplete="off" spellcheck="false">
           </div>
           <button class="btn btn-navy" type="button">Przyjmij zaproszenie</button>
@@ -368,7 +373,7 @@
         <h1 id="t-rej-kod">Wpisz kod z&nbsp;e-maila</h1>
         <div class="alert alert--info" role="status">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3.5 6l8.5 7 8.5-7"/></svg>
-          <p>Jeśli adres <strong class="js-rej-email">biuro@studio-przyklad.example</strong> może zostać użyty, wysłaliśmy na niego sześciocyfrowy kod. Kod jest ważny 10&nbsp;minut.</p>
+          <p>Jeśli adres <strong class="js-rej-email-out">biuro@studio-przyklad.example</strong> może zostać użyty, wysłaliśmy na niego sześciocyfrowy kod. Kod jest ważny 10&nbsp;minut.</p>
         </div>
         <form class="form" id="f-rej-kod" action="#s-rp-nip" method="post" novalidate>
           <div class="field">
@@ -397,8 +402,8 @@
         <form class="form" id="f-nip" action="#s-rp-firma" method="post" novalidate>
           <div class="field">
             <label for="nip">NIP</label>
-            <input type="text" id="nip" name="nip" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="13" required value="000-000-00-00" aria-describedby="nip-hint">
-            <p class="hint" id="nip-hint">10&nbsp;cyfr, z&nbsp;kreskami lub bez. W&nbsp;makiecie: <span class="nowrap">000-000-00-00</span> (przykład).</p>
+            <input type="text" id="nip" name="nip" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="13" required value="000-000-11-00" aria-describedby="nip-hint">
+            <p class="hint" id="nip-hint">10&nbsp;cyfr, z&nbsp;kreskami lub bez. W&nbsp;makiecie: <span class="nowrap">000-000-11-00</span> (przykład).</p>
             <p class="field-error" id="nip-err" hidden></p>
           </div>
           <div class="turnstile-slot" role="img" aria-label="Miejsce na weryfikację Cloudflare Turnstile">
@@ -426,7 +431,7 @@
           <dl class="kv kv--rows">
             <div><dt>Nazwa z&nbsp;rejestru</dt><dd>Studio Przykładowe Ewa Przykładowa (przykład)</dd></div>
             <div><dt>Miejscowość</dt><dd>Kraków</dd></div>
-            <div><dt>NIP</dt><dd><span class="nowrap">000-000-00-00</span> (przykład)</dd></div>
+            <div><dt>NIP</dt><dd><span class="nowrap">000-000-11-00</span> (przykład)</dd></div>
             <div><dt>REGON</dt><dd>000000000 (przykład)</dd></div>
           </dl>
           <p class="xsmall">Tych danych nie zmienisz&nbsp;– pochodzą z&nbsp;rejestru. Jeśli są nieaktualne, zaktualizuj je w&nbsp;CEIDG lub KRS.</p>
@@ -442,7 +447,7 @@
             <p class="hint" id="nazwa-hint">Domyślnie nazwa z&nbsp;rejestru. Nazwę handlową sprawdzi Aura Expert przed pierwszym użyciem. Niedozwolone: Aura, BeautyPolisa, ERGO, Hestia, Colonnade, LUX MED, ENEL-MED.</p>
             <p class="field-error" id="nazwa-err" hidden></p>
           </div>
-          <label class="check-row"><input type="checkbox" id="reg-dp" name="regulamin" required aria-describedby="reg-dp-err"> <span>Akceptuję Regulamin „Dam pracę” (wersja 1.0, przykład).</span></label>
+          <label class="check-row"><input type="checkbox" id="reg-dp" name="regulamin" required aria-describedby="reg-dp-err"> <span>Akceptuję <a href="#regulamin-dp">Regulamin „Dam pracę”</a> (wersja 1.0, przykład).</span></label>
           <p class="field-error" id="reg-dp-err" hidden></p>
           <details class="disclose-lite">
             <summary class="link-quiet">Informacja o&nbsp;przetwarzaniu danych</summary>
@@ -473,7 +478,11 @@
         <ol class="stepper" data-flow="s" aria-label="Etapy zakładania konta – szukam pracy" hidden>
           <li class="done">E-mail</li><li aria-current="step">Telefon</li><li>Oświadczenie</li>
         </ol>
+        <ol class="stepper" data-flow="o" aria-label="Włączanie „Dam pracę” w&nbsp;koncie salonu" hidden>
+          <li class="done">NIP salonu</li><li aria-current="step">Telefon</li>
+        </ol>
         <h1 id="t-sms">Potwierdź numer telefonu</h1>
+        <p class="small" data-flow="o" hidden><span class="mock-note">Wariant salonu z&nbsp;polisą</span> Właściciel konta salonu potwierdza telefon raz, przy pierwszym wejściu do „Dam pracę”. Drugi składnik ma już włączony.</p>
         <p class="lead">Wyślemy SMS z&nbsp;sześciocyfrowym kodem. Numer służy tylko do potwierdzenia konta&nbsp;– nie pokazujemy go nikomu i&nbsp;nie logujesz się nim.</p>
         <form class="form" id="f-tel" action="#s-sms" method="post" novalidate>
           <div class="field">
@@ -555,7 +564,8 @@
         </dl>
         <p class="small">Rejestr potwierdza, że firma istnieje, a&nbsp;SMS&nbsp;– numer telefonu. Zanim zobaczysz ogłoszenia osób szukających pracy, Aura Expert potwierdzi, że reprezentujesz firmę: np. adresem e-mail w&nbsp;domenie firmy, telefonem na numer z&nbsp;rejestru lub ze strony firmy albo kodem wysłanym listem na adres siedziby. <span class="mock-note">Założenie</span></p>
         <div class="actions">
-          <a class="btn btn-navy" href="dam-prace.html#nowe-ogloszenie">Dodaj pierwsze ogłoszenie</a>
+          <a class="btn btn-navy" href="dam-prace.html?konto=pracodawca#nowe-ogloszenie">Dodaj pierwsze ogłoszenie</a>
+          <a class="link-lux" href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy">Przejdź do pulpitu pracodawcy</a>
           <a class="link-quiet" href="dam-prace.html#oferty">Zobacz tablicę ogłoszeń</a>
         </div>
       </div>
@@ -573,7 +583,7 @@
             <legend>Wymagane</legend>
             <label class="check-row"><input type="checkbox" id="pelnoletnia" name="pelnoletnia" required aria-describedby="pelnoletnia-err"> <span>Mam ukończone 18&nbsp;lat.</span></label>
             <p class="field-error" id="pelnoletnia-err" hidden></p>
-            <label class="check-row"><input type="checkbox" id="reg-sp" name="regulamin" required aria-describedby="reg-sp-err"> <span>Akceptuję Regulamin „Szukam pracy” (wersja 1.0, przykład).</span></label>
+            <label class="check-row"><input type="checkbox" id="reg-sp" name="regulamin" required aria-describedby="reg-sp-err"> <span>Akceptuję <a href="#regulamin-sp">Regulamin „Szukam pracy”</a> (wersja 1.0, przykład).</span></label>
             <p class="field-error" id="reg-sp-err" hidden></p>
           </fieldset>
           <details class="disclose-lite">
@@ -691,11 +701,25 @@
     <p class="small">Administratorem danych w&nbsp;Strefie Klienta jest Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
     <p class="small">Kontakt z&nbsp;inspektorem ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Pełną treść przygotuje zleceniodawca z&nbsp;prawnikiem. <span class="mock-note">miejsce na treść</span></p>
   </section>
+  <section class="surface card auth-card auth-card--wide" id="regulamin-dp" aria-labelledby="t-reg-dp">
+    <h2 id="t-reg-dp">Regulamin „Dam pracę”</h2>
+    <p class="small">Zasady tablicy ogłoszeń pracodawców: moderacja treści przed publikacją, ograniczenia, reguły przeciw oszustwom i&nbsp;środki zautomatyzowane (np. oznaczanie fraz ryzyka). Treść przygotuje zleceniodawca z&nbsp;prawnikiem (etap Z0). <span class="mock-note">miejsce na treść</span></p>
+  </section>
+  <section class="surface card auth-card auth-card--wide" id="regulamin-sp" aria-labelledby="t-reg-sp">
+    <h2 id="t-reg-sp">Regulamin „Szukam pracy”</h2>
+    <p class="small">Zasady ogłoszeń osób szukających pracy: tylko osoby pełnoletnie, kontakt wyłącznie przez formularz, moderacja przed publikacją, ukrywanie ogłoszenia przed wybranymi firmami, środki zautomatyzowane. Treść przygotuje zleceniodawca z&nbsp;prawnikiem (etap Z0). <span class="mock-note">miejsce na treść</span></p>
+  </section>
+  <section class="surface card auth-card auth-card--wide" id="punkty-kontaktowe" aria-labelledby="t-pk">
+    <h2 id="t-pk">Punkty kontaktowe (DSA)</h2>
+    <p class="small">Punkt kontaktowy dla organów państw członkowskich, Komisji Europejskiej i&nbsp;Europejskiej Rady ds. Usług Cyfrowych (art.&nbsp;11 DSA) oraz dla użytkowników serwisu (art.&nbsp;12 DSA): adres <span class="nowrap">e-mail</span> [do uzupełnienia przez zleceniodawcę]. Język kontaktu: polski. <span class="mock-note">Q24</span></p>
+    <p class="small">Usługodawca: Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
+    <p class="small">Treść konkretnego ogłoszenia zgłaszasz przyciskiem „Zgłoś” przy ogłoszeniu. W&nbsp;produkcji osobna, publiczna strona <code>/punkty-kontaktowe</code>.</p>
+  </section>
 </main>
 
 <footer class="app-footer">
   <div class="app-footer-inner">
-    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="#klauzula">Klauzula informacyjna</a></nav>
+    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
     <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
     <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest agentem ubezpieczeniowym i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń: Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A., Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. oraz Colonnade Insurance S.A. Oddział w&nbsp;Polsce <span class="mock-note">lista do potwierdzenia</span>. Wpis sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych prowadzonym przez KNF: <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>. Procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta&nbsp;– [do uzupełnienia].</p>
     <p>Inspektor ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Informacje w&nbsp;serwisie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego. Zakres ochrony określają ogólne warunki ubezpieczenia.</p>
@@ -711,14 +735,14 @@
 
 <script>
 /* Makieta: przełączanie ekranów (hash), przejścia formularzy, odliczanie, kod zapasowy, ścieżki rejestracji
-   (pracodawca / szukam pracy), walidacja NIP (suma kontrolna) i numeru, stany SMS.
-   Bez JS wszystkie ekrany są widoczne pod sobą. */
+   (pracodawca / szukam pracy / salon z polisą włączający „Dam pracę” – logowanie.html?dla=salon#s-sms),
+   walidacja kodów, NIP (suma kontrolna) i numeru, stany SMS. Bez JS wszystkie ekrany są widoczne pod sobą. */
 (function () {
   'use strict';
   var screens = Array.prototype.slice.call(document.querySelectorAll('.screen'));
   var mockLinks = document.querySelectorAll('.mock-bar nav a');
   var timers = {};
-  var flow = 'p';
+  var flow = /[?&]dla=salon(&|$)/.test(location.search) ? 'o' : 'p';
   function byId(id) { return document.getElementById(id); }
   function each(sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
   var FLOW_OF = { 's-rp-email': 'p', 's-rp-nip': 'p', 's-rp-firma': 'p', 's-rp-totp': 'p', 's-rp-gotowe': 'p', 's-rs-email': 's', 's-rs-zgody': 's', 's-rs-gotowe': 's' };
@@ -726,17 +750,17 @@
   function setFlow(f) {
     flow = f;
     each('[data-flow]', function (el) { el.hidden = el.getAttribute('data-flow') !== f; });
-    byId('f-rej-kod').setAttribute('action', f === 'p' ? '#s-rp-nip' : '#s-sms');
-    byId('f-sms').setAttribute('action', f === 'p' ? '#s-rp-totp' : '#s-rs-zgody');
+    byId('f-rej-kod').setAttribute('action', f === 's' ? '#s-sms' : '#s-rp-nip');
+    byId('f-sms').setAttribute('action', f === 'p' ? '#s-rp-totp' : (f === 's' ? '#s-rs-zgody' : 'dam-prace.html#wlacz-gotowe'));
   }
 
   function show(id, focus) {
     var target = document.getElementById(id);
     if (!target || !target.classList.contains('screen')) { target = screens[0]; }
-    if (FLOW_OF[target.id]) { setFlow(FLOW_OF[target.id]); }
+    setFlow(FLOW_OF[target.id] || (target.id === 's-rej-kod' && flow === 'o' ? 'p' : flow));
     screens.forEach(function (s) { s.classList.toggle('is-active', s === target); });
     mockLinks.forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('href') === '#' + target.id ? 'true' : 'false'); });
-    ['regulamin-tresc', 'klauzula'].forEach(function (x) { byId(x).hidden = location.hash !== '#' + x; });
+    ['regulamin-tresc', 'klauzula', 'regulamin-dp', 'regulamin-sp', 'punkty-kontaktowe'].forEach(function (x) { byId(x).hidden = location.hash !== '#' + x; });
     if (target.id === 's-kod') { countdown('resend', 59); }
     if (target.id === 's-rej-kod') { countdown('rej-resend', 59); }
     if (target.id === 's-sms') { resetSms(); }
@@ -785,11 +809,28 @@
     document.querySelector('.js-email').textContent = input.value.trim();
     go('s-kod');
   });
-  byId('f-kod').addEventListener('submit', function (e) { e.preventDefault(); go('s-totp'); });
+  byId('f-kod').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var c = byId('kod');
+    if (!setErr(c, 'kod-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz sześć cyfr z e-maila.')) { c.focus(); return; }
+    go('s-totp');
+  });
+  /* drugi składnik: kod z aplikacji (6 cyfr) albo kod zapasowy; w produkcji POST, kod nigdy w adresie */
+  byId('f-totp').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var useBackup = !byId('backup-field').hidden, c = byId(useBackup ? 'backup' : 'totp');
+    var ok = useBackup ? c.value.trim() !== '' : /^\d{6}$/.test(c.value.trim());
+    if (!setErr(c, useBackup ? 'backup-err' : 'totp-err', ok ? '' : (useBackup ? 'Wpisz kod zapasowy.' : 'Wpisz sześciocyfrowy kod z aplikacji.'))) { c.focus(); return; }
+    location.href = 'panel.html';
+  });
   byId('f-zapr').addEventListener('submit', function (e) { e.preventDefault(); go('s-pierwsze'); });
   byId('f-pierwsze').addEventListener('submit', function (e) {
-    var box = byId('regulamin'), err = byId('reg-err');
-    if (!box.checked) { e.preventDefault(); err.hidden = false; box.setAttribute('aria-invalid', 'true'); box.focus(); }
+    e.preventDefault();
+    var box = byId('regulamin'), code = byId('totp-new'), bad = [];
+    if (!setErr(box, 'reg-err', box.checked ? '' : 'Zaakceptuj regulamin, aby przejść dalej.')) { bad.push(box); }
+    if (!setErr(code, 'totp-new-err', /^\d{6}$/.test(code.value.trim()) ? '' : 'Wpisz sześciocyfrowy kod z aplikacji – bez niego nie włączymy drugiego składnika.')) { bad.push(code); }
+    if (bad.length) { bad[0].focus(); return; }
+    location.href = 'panel.html';
   });
   byId('use-backup').addEventListener('click', function () {
     var b = byId('backup-field'), t = byId('totp-field');
@@ -806,7 +847,7 @@
       var input = form.querySelector('input[type="email"]');
       if (!setErr(input, input.id + '-err', EMAIL_RE.test(input.value.trim()) ? '' : 'Wpisz adres e-mail w formacie nazwa@domena.pl.')) { input.focus(); return; }
       setFlow(form.getAttribute('data-flow-set'));
-      document.querySelector('.js-rej-email').textContent = input.value.trim();
+      document.querySelector('#s-rej-kod .js-rej-email-out').textContent = input.value.trim();
       go('s-rej-kod');
     });
   });
@@ -875,6 +916,7 @@
     setErr(c, 'sms-err', '');
     clearInterval(timers['sms-resend']);
     byId('f-tel').hidden = false;
+    if (flow === 'o') { location.href = 'dam-prace.html#wlacz-gotowe'; return; }
     go(flow === 'p' ? 's-rp-totp' : 's-rs-zgody');
   });
 
