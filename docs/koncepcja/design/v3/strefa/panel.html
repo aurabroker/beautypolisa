@@ -82,7 +82,7 @@
       <li><a href="#pulpit" data-view="pulpit"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Pulpit</a></li>
       <li class="owner-only"><a href="#polisy" data-view="polisy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Polisy<span class="count" aria-label="2 aktualne">2</span></a></li>
       <!-- „Sprawy w toku” (11 §4.4a; 00, D32): tylko właściciel z sesją aal2 i tylko gdy CRM ma otwarte sprawy OC konta; pracownik nie widzi -->
-      <li class="owner-only"><a href="#sprawy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Sprawy w&nbsp;toku<span class="count" aria-label="2 otwarte">2</span></a></li>
+      <li class="owner-only"><a href="#sprawy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Sprawy w&nbsp;toku<span class="count" aria-label="1 otwarta">1</span></a></li>
       <li>
         <a href="dam-prace.html#moje-ogloszenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Dam&nbsp;pracę</a>
         <ul class="sub owner-only">
@@ -122,22 +122,26 @@
         </div>
       </header>
 
-      <!-- przypomnienie o odnowieniu (Cron: 60, 30 i 14 dni przed końcem – Założenie) -->
+      <!-- przypomnienie o odnowieniu (Cron: 60, 30 i 14 dni przed końcem – Założenie).
+           Tu CRM ma otwartą sprawę odnowienia tej polisy (client_cases, rodzaj „odnowienie”) – baner prowadzi do „Spraw w toku”.
+           Wariant bez otwartej sprawy odnowienia (11 §4.5, P5): „Ochrona kończy się 31 grudnia 2026 r.” + formularz POST „Odnów z doradcą” (tworzy lead).
+           „Odnów z doradcą” tylko wtedy – inaczej doradca dostałby drugą sprawę dla tej samej polisy. -->
       <div class="banner" id="odnowienie" role="region" aria-labelledby="t-odnow">
         <svg class="lux-icon" aria-hidden="true"><use href="#lux-doradca"/></svg>
         <div>
-          <strong id="t-odnow">Ochrona kończy się 31&nbsp;grudnia 2026&nbsp;r.</strong>
-          <p>OC dla branży beauty, polisa BP/2026/000123 (przykład). Odnowienie przygotuje doradca Aura Expert, a&nbsp;składka wynika z&nbsp;taryfy programu.</p>
-          <p class="js-renew-status" role="status" hidden>Prośba o&nbsp;odnowienie trafiła do doradcy. Doradca skontaktuje się z&nbsp;Tobą e-mailem lub telefonicznie.</p>
+          <strong id="t-odnow">Odnowienie w&nbsp;toku&nbsp;– dokończ APK i&nbsp;wniosek</strong>
+          <p>OC dla branży beauty, polisa BP/2026/000123 (przykład), ochrona do 31&nbsp;grudnia 2026&nbsp;r. Odnowienie przygotował doradca Aura Expert, a&nbsp;składka wynika z&nbsp;taryfy programu.</p>
         </div>
-        <form action="#odnowienie" method="post" class="js-renew"><button class="btn btn-ivory" type="submit">Odnów z&nbsp;doradcą</button></form>
+        <a class="btn btn-ivory" href="#sprawy">Przejdź do sprawy</a>
       </div>
 
       <!-- Sprawy w toku (11 §4.4a; 00, D32; 12): sprawy OC tego konta prowadzone w CRM Aura Expert („aurabroker”, crm_renewals) – tylko właściciel z sesją aal2,
            pracownik nie widzi (widok owner + owner-only). Etap 1: wyłącznie OC dla branży beauty. Lista z projekcji client_cases – bez kodu, adresu linku,
-           e-maila, treści APK i wniosku ani składek. Produkcja: „Dokończ APK i wniosek” to formularz POST /strefa-klienta/sprawy/[id]/dokoncz (bez JS też działa);
-           serwer sprawdza konto, ważność i stan, pobiera link z CRM i odpowiada 303 na https://portal.beautypolisa.eu/w/<kod> (no-referrer, no-store) –
-           kod nie trafia do HTML, ciasteczek, localStorage ani logów. W makiecie odnośnik z zastępnikiem XXXXXXXXXX. -->
+           e-maila, treści APK i wniosku ani składek. Ta sama lista jest pod trasą /strefa-klienta/sprawy (pozycja „Sprawy w toku” w menu); w makiecie – kotwica #sprawy.
+           „Dokończ APK i wniosek” to formularz POST /strefa-klienta/sprawy/[id]/dokoncz (bez JS też działa, bez Server Action); serwer sprawdza konto,
+           ważność i stan, pobiera kod z CRM i odpowiada 303 na https://portal.beautypolisa.eu/w/<kod> (no-referrer, no-store) – kod nie trafia do HTML,
+           ciasteczek, localStorage ani logów. W makiecie formularz ma action="#sprawy", a skrypt zamiast przekierowania pokazuje opis – adres z XXXXXXXXXX
+           nie jest otwierany. -->
       <section class="card surface owner-only" id="sprawy" aria-labelledby="t-sprawy">
         <div class="card-head">
           <div><h2 class="card-title" id="t-sprawy">Sprawy w&nbsp;toku</h2><p class="card-sub">Analiza potrzeb (APK) i&nbsp;wniosek o&nbsp;polisę OC przygotowane przez doradcę Aura Expert</p></div>
@@ -145,38 +149,65 @@
         <ul class="list cases">
           <li>
             <div class="grow">
-              <span class="label-caps">Odnowienie</span>
-              <strong>OC dla branży beauty&nbsp;– program ERGO Hestia</strong>
+              <h3 class="case-title"><span class="label-caps">Odnowienie</span> OC dla branży beauty&nbsp;– program ERGO Hestia</h3>
               <span class="meta">Link ważny do <time datetime="2026-12-31">31&nbsp;grudnia 2026&nbsp;r.</time> · stan: APK wypełniona, wniosek do podpisu</span>
             </div>
-            <div class="row-actions">
-              <a class="btn btn-navy btn-sm" href="https://portal.beautypolisa.eu/w/XXXXXXXXXX" rel="noreferrer" aria-describedby="sprawy-domena">Dokończ APK i&nbsp;wniosek<span class="sr-only"> – odnowienie OC, otwiera serwis portal.beautypolisa.eu</span></a>
-            </div>
+            <form class="row-actions js-case-open" action="#sprawy" method="post">
+              <button class="btn btn-navy btn-sm" type="submit" aria-describedby="sprawy-domena">Dokończ APK i&nbsp;wniosek<span class="sr-only"> – odnowienie OC, otwiera serwis portal.beautypolisa.eu</span></button>
+            </form>
             <ol class="track" aria-label="Stan sprawy: odnowienie OC">
               <li class="done">Wysłano<span class="sr-only"> – zrobione</span></li>
               <li class="done">Otwarto<span class="sr-only"> – zrobione</span></li>
               <li aria-current="step">APK wypełniona</li>
               <li>Wniosek złożony</li>
             </ol>
-          </li>
-          <li>
-            <div class="grow">
-              <span class="label-caps">Nowa polisa</span>
-              <strong>OC dla branży beauty&nbsp;– program ERGO Hestia</strong>
-              <span class="meta">Link ważny do <time datetime="2026-11-26">26&nbsp;listopada 2026&nbsp;r.</time> · stan: wysłano, oczekuje na APK</span>
-            </div>
-            <div class="row-actions">
-              <a class="btn btn-ghost btn-sm" href="https://portal.beautypolisa.eu/w/XXXXXXXXXX" rel="noreferrer" aria-describedby="sprawy-domena">Dokończ APK i&nbsp;wniosek<span class="sr-only"> – nowa polisa OC, otwiera serwis portal.beautypolisa.eu</span></a>
-            </div>
-            <ol class="track" aria-label="Stan sprawy: nowa polisa OC">
-              <li aria-current="step">Wysłano</li>
-              <li>Otwarto</li>
-              <li>APK wypełniona</li>
-              <li>Wniosek złożony</li>
-            </ol>
+            <p class="case-status small js-case-status" role="status" hidden><span class="mock-note">Makieta</span> W&nbsp;produkcji: POST <code>/strefa-klienta/sprawy/[id]/dokoncz</code> → 303 na <code>portal.beautypolisa.eu/w/XXXXXXXXXX</code>. Makieta nie otwiera tego adresu.</p>
           </li>
         </ul>
-        <p class="case-note small" id="sprawy-domena"><svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg><span>Przycisk otwiera serwis <strong>portal.beautypolisa.eu</strong>&nbsp;– tam wypełnisz APK i&nbsp;wniosek i&nbsp;je podpiszesz. Link do sprawy jest osobisty i&nbsp;zawsze prowadzi do tej domeny; nie przekazuj go innym osobom. Ten sam link doradca wysłał Ci e-mailem. Polisa pojawi się w&nbsp;Strefie Klienta po wystawieniu.</span></p>
+        <p class="case-note small" id="sprawy-domena"><svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg><span>Przycisk otwiera serwis <strong>portal.beautypolisa.eu</strong>&nbsp;– tam wypełnisz APK i&nbsp;wniosek i&nbsp;je podpiszesz. Link do sprawy jest osobisty, ma termin ważności i&nbsp;zawsze prowadzi do tej domeny; nie przekazuj go innym osobom. Przed pokazaniem danych i&nbsp;przed podpisem poprosimy o&nbsp;kod wysłany na adres e-mail podany w&nbsp;sprawie; na ten adres przyszedł też link do sprawy. Aura Expert nigdy nie poprosi Cię o&nbsp;link ani o&nbsp;kod przez telefon. Polisa pojawi się w&nbsp;Strefie Klienta po wystawieniu.</span></p>
+
+        <!-- Warianty karty (11 §4.4a pkt 4; 12 §5.3) – w strefie właściciel widzi tylko jeden, bieżący stan sprawy -->
+        <div class="case-variants">
+          <p class="xsmall"><span class="mock-note">Warianty karty</span> Ta sama sprawa w&nbsp;innych stanach. Rodzaj „Nowa polisa” wygląda tak samo, z&nbsp;innym podpisem.</p>
+          <ul class="list cases">
+            <li>
+              <div class="grow">
+                <h3 class="case-title"><span class="mock-note">Wariant: link po terminie</span><span class="label-caps">Odnowienie</span> OC dla branży beauty&nbsp;– program ERGO Hestia</h3>
+                <span class="meta">Link wygasł <time datetime="2026-11-10">10&nbsp;listopada 2026&nbsp;r.</time> · stan: otwarto, APK niewypełniona</span>
+              </div>
+              <!-- produkcja: tworzy lead z kontekstem konta i sprawy (jak P5); nowy link wysyła CRM e-mailem na adres ze sprawy -->
+              <form class="row-actions js-case-newlink" action="#sprawy" method="post">
+                <button class="btn btn-ghost btn-sm" type="submit">Poproś doradcę o&nbsp;nowy link<span class="sr-only"> – odnowienie OC</span></button>
+              </form>
+              <ol class="track" aria-label="Stan sprawy: odnowienie OC, link po terminie">
+                <li class="done">Wysłano<span class="sr-only"> – zrobione</span></li>
+                <li aria-current="step">Otwarto</li>
+                <li>APK wypełniona</li>
+                <li>Wniosek złożony</li>
+              </ol>
+              <p class="case-status small js-case-status" role="status" hidden>Prośba trafiła do doradcy Aura Expert. Nowy link przyjdzie e-mailem na adres podany w&nbsp;sprawie.</p>
+            </li>
+            <li>
+              <div class="grow">
+                <h3 class="case-title"><span class="mock-note">Wariant: wniosek złożony</span><span class="label-caps">Odnowienie</span> OC dla branży beauty&nbsp;– program ERGO Hestia</h3>
+                <span class="meta">Wniosek złożony <time datetime="2026-11-12">12&nbsp;listopada 2026&nbsp;r.</time></span>
+              </div>
+              <p class="case-done small">Wniosek złożony. Polisa pojawi się tutaj po wystawieniu.</p>
+              <ol class="track" aria-label="Stan sprawy: odnowienie OC, wniosek złożony">
+                <li class="done">Wysłano<span class="sr-only"> – zrobione</span></li>
+                <li class="done">Otwarto<span class="sr-only"> – zrobione</span></li>
+                <li class="done">APK wypełniona<span class="sr-only"> – zrobione</span></li>
+                <li aria-current="step">Wniosek złożony</li>
+              </ol>
+            </li>
+          </ul>
+          <!-- Jeden neutralny komunikat dla każdej odmowy „Dokończ” (sprawa innego konta, link wygasł, wniosek złożony, błąd CRM) – nie zdradza powodu (11 §4.4a pkt 4).
+               Produkcja: po odmowie serwer wraca na listę spraw z tym komunikatem (role="alert"), bez przekierowania na portal.beautypolisa.eu. -->
+          <div class="alert alert--warn case-refusal">
+            <svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>
+            <p class="small"><span class="mock-note">Wzór komunikatu odmowy</span> Nie udało się otworzyć linku&nbsp;– spróbuj za chwilę albo skorzystaj z&nbsp;linku z&nbsp;e-maila. <a href="../makieta-v3.html#kontakt">Napisz do doradcy</a></p>
+          </div>
+        </div>
       </section>
 
       <div class="section-title">
@@ -640,7 +671,9 @@
             <li><div class="grow"><strong>Telefon&nbsp;– aplikacja uwierzytelniająca</strong><span class="meta">dodano <time datetime="2025-11-04">4&nbsp;listopada 2025&nbsp;r.</time></span></div><span class="badge badge--ok">Aktywne</span></li>
           </ul>
           <p class="small" id="totp-backup-hint"><strong>Masz jedno urządzenie.</strong> Dodaj zapasowe&nbsp;– drugą aplikację uwierzytelniającą na innym telefonie albo w&nbsp;menedżerze haseł. Gdy zgubisz telefon, zalogujesz się kodem z&nbsp;zapasowego urządzenia. Kodów zapasowych nie ma.</p>
-          <div class="actions"><button class="btn btn-navy btn-sm" type="button" aria-describedby="totp-backup-hint">Dodaj zapasowe urządzenie</button><button class="btn btn-ghost btn-sm" type="button">Zmień aplikację</button></div>
+          <!-- 11 §6.1 K4, §8: dodanie i usunięcie czynnika tylko w sesji aal2 po ponownym podaniu kodu TOTP; zdarzenie w dzienniku audytu i e-mail do właściciela konta -->
+          <div class="actions"><button class="btn btn-navy btn-sm" type="button" aria-describedby="totp-backup-hint totp-add-hint">Dodaj zapasowe urządzenie</button><button class="btn btn-ghost btn-sm" type="button" aria-describedby="totp-add-hint">Zmień aplikację</button></div>
+          <p class="xsmall muted" id="totp-add-hint">Poprosimy o&nbsp;kod z&nbsp;obecnej aplikacji. O&nbsp;dodaniu lub usunięciu urządzenia powiadomimy Cię e-mailem.</p>
           <p class="xsmall muted">Nie masz dostępu do żadnego urządzenia z&nbsp;aplikacją? Dostęp przywróci doradca Aura Expert po weryfikacji tożsamości&nbsp;– <a href="../makieta-v3.html#kontakt">napisz do doradcy</a>.</p>
           <p class="xsmall"><span class="mock-note">Wariant pracownika</span> Pracownik ma tu aktywny przełącznik „Włącz / Wyłącz”.</p>
         </section>
@@ -696,7 +729,7 @@
       <h2 id="t-annot">Uwagi do makiety</h2>
       <ul>
         <li><strong>Założenie:</strong> konto aktywuje Aura Expert po zawarciu polisy dowolnego produktu (D-A). Polisy (numer, okres) pochodzą z&nbsp;CRM Aura Expert (<code>crm_renewals.nr_polisy</code> / <code>polisa_id</code>; 00, D32), ręczne wprowadzanie w&nbsp;<code>/panel</code> – tryb przejściowy; bez integracji z&nbsp;ubezpieczycielem w&nbsp;MVP.</li>
-        <li>„Sprawy w&nbsp;toku” (11 §4.4a; 00, D32): tylko właściciel z&nbsp;sesją <code>aal2</code>, pracownik nie widzi. Etap 1&nbsp;– wyłącznie sprawy OC dla branży beauty. Stan: wysłano → otwarto → APK wypełniona → wniosek złożony. Warianty: po terminie <code>wazny_do</code> zamiast „Dokończ” przycisk „Poproś doradcę o&nbsp;nowy link”; po złożeniu wniosku – „Wniosek złożony. Polisa pojawi się tutaj po wystawieniu”. Adres w&nbsp;przykładach wyłącznie <code>https://portal.beautypolisa.eu/w/XXXXXXXXXX</code>; w&nbsp;produkcji kod nie trafia do HTML (POST <code>/strefa-klienta/sprawy/[id]/dokoncz</code> → 303).</li>
+        <li>„Sprawy w&nbsp;toku” (11 §4.4a; 00, D32): tylko właściciel z&nbsp;sesją <code>aal2</code>, pracownik nie widzi. Etap 1&nbsp;– wyłącznie sprawy OC dla branży beauty. Stan: wysłano → otwarto → APK wypełniona → wniosek złożony. Warianty pokazane pod listą: po terminie <code>wazny_do</code> zamiast „Dokończ” przycisk „Poproś doradcę o&nbsp;nowy link”; po złożeniu wniosku – „Wniosek złożony. Polisa pojawi się tutaj po wystawieniu”; jeden neutralny komunikat dla każdej odmowy. Trasa <code>/strefa-klienta/sprawy</code> pokazuje tę samą listę co karta na pulpicie (w&nbsp;makiecie pozycja menu prowadzi do kotwicy <code>#sprawy</code>). „Dokończ APK i&nbsp;wniosek” to formularz POST <code>/strefa-klienta/sprawy/[id]/dokoncz</code> → 303 na <code>https://portal.beautypolisa.eu/w/XXXXXXXXXX</code>; kod nie trafia do HTML, a&nbsp;makieta nie otwiera tego adresu. Gdy sprawa odnowienia jest otwarta, baner i&nbsp;szuflada polisy prowadzą do „Spraw w&nbsp;toku” zamiast „Odnów z&nbsp;doradcą” (11 §4.5).</li>
         <li>Drugi składnik (00, D28a): bez kodów zapasowych&nbsp;– zapasem jest drugie zarejestrowane urządzenie z&nbsp;aplikacją uwierzytelniającą; po utracie wszystkich urządzeń reset przez doradcę po weryfikacji tożsamości (procedura – Q25, regulamin).</li>
         <li>Klauzula ochrony prawnej na karcie polisy OC i&nbsp;w&nbsp;szczegółach: „Treść klauzuli” otwiera natywny <code>&lt;dialog&gt;</code> z&nbsp;dosłowną treścią z&nbsp;<code>snippets/klauzula-ochrona-prawna.json</code> (znaczniki <code>gen:klauzula</code>); bez JS – odnośnik do <code>oc-beauty.html#ochrona-prawna</code>.</li>
         <li>Kwoty OC wyłącznie z&nbsp;taryfy: grupa 2, suma 200&nbsp;tys.&nbsp;zł = 790&nbsp;zł, klauzula ochrony prawnej +92&nbsp;zł, razem 882&nbsp;zł (zespół 1–5&nbsp;osób). Grupowe ERGO i&nbsp;Tax Protect bez kwot.</li>
@@ -745,9 +778,10 @@
         <p class="xsmall muted">Plik pobierasz przez jednorazowy link ważny 60&nbsp;sekund. Pobranie zapisujemy w&nbsp;historii konta.</p>
       </div>
     </div>
+    <!-- „Odnów z doradcą” (11 §4.5) tylko bez otwartej sprawy odnowienia tej polisy; tu sprawa jest w toku – przycisk prowadzi do „Spraw w toku” -->
     <div class="drawer-foot">
       <a class="btn btn-navy" href="#szkoda">Zgłoś szkodę</a>
-      <a class="btn btn-ghost" href="#odnowienie">Odnów z&nbsp;doradcą</a>
+      <a class="btn btn-ghost" href="#sprawy">Dokończ odnowienie</a>
     </div>
   </section>
 </div>
@@ -1004,11 +1038,27 @@
   });
 
   /* ---------- formularze demonstracyjne ---------- */
-  document.querySelector('.js-renew').addEventListener('submit', function (e) {
-    e.preventDefault();
-    document.querySelector('.js-renew-status').hidden = false;
-    this.querySelector('button').disabled = true;
-    this.querySelector('button').textContent = 'Prośba wysłana';
+  /* „Odnów z doradcą” – tylko w wariancie bez otwartej sprawy odnowienia (11 §4.5) */
+  var renew = document.querySelector('.js-renew');
+  if (renew) {
+    renew.addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.querySelector('.js-renew-status').hidden = false;
+      this.querySelector('button').disabled = true;
+      this.querySelector('button').textContent = 'Prośba wysłana';
+    });
+  }
+  /* „Sprawy w toku”: makieta nie otwiera portal.beautypolisa.eu – w produkcji POST /strefa-klienta/sprawy/[id]/dokoncz → 303 (11 §4.4a) */
+  document.querySelectorAll('.js-case-open, .js-case-newlink').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var st = form.parentNode.querySelector('.js-case-status');
+      if (st) { st.hidden = false; }
+      if (form.classList.contains('js-case-newlink')) {
+        var b = form.querySelector('button');
+        b.disabled = true; b.textContent = 'Prośba wysłana';
+      }
+    });
   });
   document.getElementById('team-ok').addEventListener('click', function () {
     document.querySelector('.js-team-status').hidden = false;

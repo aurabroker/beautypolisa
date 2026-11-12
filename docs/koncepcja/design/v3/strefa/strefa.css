@@ -401,7 +401,7 @@ fieldset.field > legend{padding:0;margin-bottom:6px}
 .track{display:flex;flex-wrap:wrap;gap:0;list-style:none;padding:0;margin:0}
 .track li{position:relative;flex:1 1 0;min-width:110px;display:grid;justify-items:start;gap:6px;padding:20px 12px 0 0;font-size:var(--text-sm);color:var(--color-taupe)}
 .track li::before{content:"";position:absolute;top:6px;left:0;right:0;height:1px;background:var(--bp-line-gold)}
-/* obrys rombu oczekującego: taupe (#5F574D na #F7F3EC ≈ 6,3:1) – złoto miało 2,49:1, poniżej 3:1 z WCAG 1.4.11 */
+/* obrys rombu oczekującego: taupe (#5F574D na #F7F3EC ≈ 6,4:1) – złoto miało 2,49:1, poniżej 3:1 z WCAG 1.4.11 */
 .track li::after{content:"";position:absolute;top:1px;left:0;width:11px;height:11px;border:1px solid var(--color-taupe);background:var(--color-ivory);transform:rotate(45deg)}
 .track li[aria-current="step"]{color:var(--color-navy);font-weight:500}
 .track li[aria-current="step"]::after,.track li.done::after{background:var(--color-navy);border-color:var(--color-navy)}
@@ -555,6 +555,13 @@ html.drawer-lock,html:has(.drawer:target){overflow:hidden}
 .cases .grow{gap:4px}
 .cases .row-actions{margin-left:0}
 .cases .track{grid-column:1 / -1}
+/* nagłówek sprawy: h3 z rodzajem nad produktem – wygląd jak wiersz listy, nie jak tytuł karty */
+.cases .case-title{display:grid;justify-items:start;gap:4px;font:500 var(--text-body)/1.45 var(--font-sans);letter-spacing:0;color:var(--color-ink)}
+.cases form{margin:0}
+.cases .case-status,.cases .case-done{grid-column:1 / -1;margin:0}
+.cases .case-done{color:var(--color-navy);font-weight:500}
+.case-variants{display:grid;gap:12px;padding-top:16px;border-top:1px dashed var(--bp-line-gold-soft)}
+.case-refusal .mock-note{margin-right:6px}
 .case-note{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:12px 14px;border:1px solid var(--bp-line-gold-soft);border-left:3px solid var(--color-gold);border-radius:var(--radius-btn);background:rgba(255,255,255,.6)}
 .case-note .lux-icon{width:28px;height:28px;stroke-width:3;color:var(--color-navy)}
 .case-note strong{font-weight:500;color:var(--color-navy)}
