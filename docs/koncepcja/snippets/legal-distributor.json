@@ -4,6 +4,14 @@
   "legalName": "Aura Consulting sp. z o.o.",
   "address": "ul. Bolkowska 2A/28, 01-466 Warszawa",
   "brand": "BeautyPolisa created by Aura Consulting",
+  "siteOperator": {
+    "$comment": "Dane podane przez zleceniodawcę 12.11.2026. Relacja z Aura Consulting sp. z o.o. (dystrybutor w legalName) – do potwierdzenia.",
+    "legalName": "Aura Expert sp. z o.o.",
+    "address": "ul. Bolkowska 2A/28, 01-466 Warszawa",
+    "krs": "0000599840",
+    "nip": "5242793544",
+    "regon": "363673048"
+  },
   "registryType": null,
   "registryTypeOptions": [
     "agent",
@@ -36,6 +44,9 @@
   "medicalSubscriptions": {
     "$comment": "Abonamenty ENEL-MED / LUX MED nie są ubezpieczeniem – osobny administrator danych (audyt §2).",
     "dataController": "Aura Expert sp. z o.o.",
-    "dpoEmail": "iod@auraexpert.pl"
+    "dpoEmail": "iod@auraexpert.pl",
+    "krs": "0000599840",
+    "nip": "5242793544",
+    "regon": "363673048"
   }
 }

@@ -24,6 +24,7 @@ Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeń
 - Marka: **BeautyPolisa** („BeautyPolisa created by Aura Consulting”). Obsługa brokerska: Aura Consulting sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa.
 - Partner branżowy: **Beauty Razem** (od 2024 Fundacja Beauty Razem, założyciel Michał Łenczyński) – logo na ankiecie ERGO Hestii (`AnkietaBPEH.pdf`).
 - Administrator danych dla abonamentów medycznych: Aura Expert sp. z o.o. (iod@auraexpert.pl).
+- **Dane spółki podane przez zleceniodawcę 12.11.2026:** Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa, KRS 0000599840, NIP 5242793544, REGON 363673048. W makietach wpisana jako operator serwisu. Relacja z Aura Consulting sp. z o.o. (ten sam adres, w starych plikach „obsługa brokerska”) – do potwierdzenia.
 - W kodzie występują równolegle oznaczenia „Obsługa Brokerska” i „Informacje o agencie ubezpieczeniowym” – status dystrybutora (broker vs agent) **do potwierdzenia**; ma to znaczenie dla obowiązków informacyjnych z ustawy o dystrybucji ubezpieczeń (IDD).
 - Paleta obecna: granat `#2a3b69` (beauty-navy), róż `#e11d48` (beauty-pink), tło `#fafafa`, tekst `#1e293b`; font Montserrat (Playfair Display w najstarszej wersji, później usunięto szeryfy); tryb ciemny `#0f172a`.
 - Domeny: w JSON-LD obecnie `https://www.beautypolisa.com/#agency`, docelowa domena wg zlecenia: **beautypolisa.eu**. Niespójność do usunięcia.
