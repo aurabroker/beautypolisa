@@ -635,7 +635,13 @@
           </div>
           <button class="switch" type="button" role="switch" aria-checked="true" disabled aria-describedby="totp-why">Drugi składnik</button>
           <p class="small" id="totp-why">Dla właściciela konta drugi składnik jest obowiązkowy i&nbsp;nie można go wyłączyć.</p>
-          <div class="actions"><button class="btn btn-ghost btn-sm" type="button">Zmień aplikację</button><button class="btn btn-quiet btn-sm" type="button">Nowe kody zapasowe</button></div>
+          <!-- 00, D28a: Supabase Auth nie wydaje kodów zapasowych – zapasem jest drugi zarejestrowany czynnik TOTP; reset po utracie wszystkich – doradca (Q25) -->
+          <ul class="list" aria-label="Urządzenia z aplikacją uwierzytelniającą">
+            <li><div class="grow"><strong>Telefon&nbsp;– aplikacja uwierzytelniająca</strong><span class="meta">dodano <time datetime="2025-11-04">4&nbsp;listopada 2025&nbsp;r.</time></span></div><span class="badge badge--ok">Aktywne</span></li>
+          </ul>
+          <p class="small" id="totp-backup-hint"><strong>Masz jedno urządzenie.</strong> Dodaj zapasowe&nbsp;– drugą aplikację uwierzytelniającą na innym telefonie albo w&nbsp;menedżerze haseł. Gdy zgubisz telefon, zalogujesz się kodem z&nbsp;zapasowego urządzenia. Kodów zapasowych nie ma.</p>
+          <div class="actions"><button class="btn btn-navy btn-sm" type="button" aria-describedby="totp-backup-hint">Dodaj zapasowe urządzenie</button><button class="btn btn-ghost btn-sm" type="button">Zmień aplikację</button></div>
+          <p class="xsmall muted">Nie masz dostępu do żadnego urządzenia z&nbsp;aplikacją? Dostęp przywróci doradca Aura Expert po weryfikacji tożsamości&nbsp;– <a href="../makieta-v3.html#kontakt">napisz do doradcy</a>.</p>
           <p class="xsmall"><span class="mock-note">Wariant pracownika</span> Pracownik ma tu aktywny przełącznik „Włącz / Wyłącz”.</p>
         </section>
       </div>
@@ -689,8 +695,11 @@
     <aside class="mock-annot" aria-labelledby="t-annot">
       <h2 id="t-annot">Uwagi do makiety</h2>
       <ul>
-        <li><strong>Założenie:</strong> konto aktywuje Aura Expert po zawarciu polisy dowolnego produktu (D-A); polisy i&nbsp;pliki PDF dodaje doradca – bez integracji z&nbsp;ubezpieczycielem w&nbsp;MVP.</li>
-        <li>Kwoty OC wyłącznie z&nbsp;taryfy: grupa 2, suma 200&nbsp;tys.&nbsp;zł = 790&nbsp;zł, ochrona prawna +92&nbsp;zł, razem 882&nbsp;zł (zespół 1–5&nbsp;osób). Grupowe ERGO i&nbsp;Tax Protect bez kwot.</li>
+        <li><strong>Założenie:</strong> konto aktywuje Aura Expert po zawarciu polisy dowolnego produktu (D-A). Polisy (numer, okres) pochodzą z&nbsp;CRM Aura Expert (<code>crm_renewals.nr_polisy</code> / <code>polisa_id</code>; 00, D32), ręczne wprowadzanie w&nbsp;<code>/panel</code> – tryb przejściowy; bez integracji z&nbsp;ubezpieczycielem w&nbsp;MVP.</li>
+        <li>„Sprawy w&nbsp;toku” (11 §4.4a; 00, D32): tylko właściciel z&nbsp;sesją <code>aal2</code>, pracownik nie widzi. Etap 1&nbsp;– wyłącznie sprawy OC dla branży beauty. Stan: wysłano → otwarto → APK wypełniona → wniosek złożony. Warianty: po terminie <code>wazny_do</code> zamiast „Dokończ” przycisk „Poproś doradcę o&nbsp;nowy link”; po złożeniu wniosku – „Wniosek złożony. Polisa pojawi się tutaj po wystawieniu”. Adres w&nbsp;przykładach wyłącznie <code>https://portal.beautypolisa.eu/w/XXXXXXXXXX</code>; w&nbsp;produkcji kod nie trafia do HTML (POST <code>/strefa-klienta/sprawy/[id]/dokoncz</code> → 303).</li>
+        <li>Drugi składnik (00, D28a): bez kodów zapasowych&nbsp;– zapasem jest drugie zarejestrowane urządzenie z&nbsp;aplikacją uwierzytelniającą; po utracie wszystkich urządzeń reset przez doradcę po weryfikacji tożsamości (procedura – Q25, regulamin).</li>
+        <li>Klauzula ochrony prawnej na karcie polisy OC i&nbsp;w&nbsp;szczegółach: „Treść klauzuli” otwiera natywny <code>&lt;dialog&gt;</code> z&nbsp;dosłowną treścią z&nbsp;<code>snippets/klauzula-ochrona-prawna.json</code> (znaczniki <code>gen:klauzula</code>); bez JS – odnośnik do <code>oc-beauty.html#ochrona-prawna</code>.</li>
+        <li>Kwoty OC wyłącznie z&nbsp;taryfy: grupa 2, suma 200&nbsp;tys.&nbsp;zł = 790&nbsp;zł, klauzula ochrony prawnej +92&nbsp;zł, razem 882&nbsp;zł (zespół 1–5&nbsp;osób). Grupowe ERGO i&nbsp;Tax Protect bez kwot.</li>
         <li>Po wygaśnięciu ostatniej polisy konto zostaje, a&nbsp;polisy przechodzą do archiwum (D-B).</li>
         <li>„Szukam pracy” (P1a)&nbsp;– aktywne od startu: zakładka w&nbsp;„Dam pracę” (<code>dam-prace.html#szukam-pracy</code>) i&nbsp;podpunkt w&nbsp;menu bocznym, tylko dla właściciela konta (salon z&nbsp;polisą ma poziom&nbsp;2 z&nbsp;urzędu); pracownik ich nie widzi. Przełącznik <code>szukam_pracy</code> zostaje&nbsp;– wyłącza go tylko admin, a&nbsp;wtedy zakładka i&nbsp;linki znikają.</li>
         <li>Pierwsze wejście właściciela do „Dam pracę” (4.8): NIP salonu z&nbsp;konta → sprawdzenie w&nbsp;GUS → telefon z&nbsp;kodem SMS (<code>dam-prace.html#wlacz-dam-prace</code>). Potwierdzony numer widać w&nbsp;„Ustawieniach”. Pracodawca bez polisy ma własny kontekst w&nbsp;<code>dam-prace.html?konto=pracodawca</code>.</li>

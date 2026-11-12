@@ -1,7 +1,7 @@
 # Podgląd roboczy makiet na Cloudflare Workers
 
 Zamknięty podgląd makiet z `docs/koncepcja/design/v3` (strona główna, strony produktów, Strefa Klienta)
-pod adresem `beautypolisa-podglad.<subdomena>.workers.dev`. To nie jest produkcja.
+pod adresem https://podglad.beautypolisa.eu (Workers Custom Domain; workers.dev wyłączone). To nie jest produkcja.
 
 - Dostęp tylko z hasłem (HTTP Basic, użytkownik `beautypolisa`). Hasło jest wyłącznie sekretem Workera
   `PODGLAD_HASLO` – nigdy w repozytorium. Bez sekretu Worker zwraca 503 dla wszystkiego.

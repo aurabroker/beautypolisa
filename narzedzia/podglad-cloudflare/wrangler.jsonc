@@ -4,7 +4,8 @@
   "name": "beautypolisa-podglad",
   "main": "src/worker.js",
   "compatibility_date": "2026-10-01",
-  "workers_dev": true,
+  "workers_dev": false,
+  "routes": [{ "pattern": "podglad.beautypolisa.eu", "custom_domain": true }],
   "preview_urls": false,
   "rules": [
     { "type": "Text", "globs": ["**/*.html", "**/*.css", "**/*.txt", "**/*.svg"], "fallthrough": false },

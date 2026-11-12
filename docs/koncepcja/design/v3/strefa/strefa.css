@@ -546,6 +546,48 @@ html.drawer-lock,html:has(.drawer:target){overflow:hidden}
   .subnav a[aria-current="page"]::after{background:Highlight}
 }
 
+/* ---------- „Sprawy w toku” (11 §4.4a; 00, D32): sprawa OC z CRM – rodzaj, produkt, ważność linku, stan, „Dokończ APK i wniosek” ---------- */
+.cases > li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:12px 18px}
+.cases .grow{gap:4px}
+.cases .row-actions{margin-left:0}
+.cases .track{grid-column:1 / -1}
+.case-note{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:12px 14px;border:1px solid var(--bp-line-gold-soft);border-left:3px solid var(--color-gold);border-radius:var(--radius-btn);background:rgba(255,255,255,.6)}
+.case-note .lux-icon{width:28px;height:28px;stroke-width:3;color:var(--color-navy)}
+.case-note strong{font-weight:500;color:var(--color-navy)}
+@media (max-width:599px){
+  .cases > li{grid-template-columns:minmax(0,1fr)}
+  .cases .row-actions .btn{width:100%}
+}
+
+/* ---------- klauzula ochrony prawnej: natywny <dialog> (jak .klauzula w makieta-v3.html) ----------
+   Kryjące ivory bez backdrop-filter – nie liczy się do limitu 3 tafli; treść przewija się wewnątrz; ruch ≤ 200 ms. */
+.klauzula{width:min(calc(100% - 32px),780px);max-width:none;max-height:min(calc(100dvh - 32px),920px);padding:0;border:1px solid var(--bp-line-gold);border-radius:var(--radius-card);background:var(--color-ivory);color:var(--color-ink);box-shadow:0 40px 80px -30px rgba(20,28,51,.65);overflow:hidden}
+.klauzula[open]{display:flex;flex-direction:column}
+.klauzula::backdrop{background:rgba(20,28,51,.72)}
+.klauzula-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px clamp(18px,4vw,32px) 16px;border-bottom:1px solid var(--bp-line-gold-soft)}
+.klauzula-head > div{display:grid;gap:6px;min-width:0}
+.klauzula h2{font-size:var(--text-h3);line-height:1.15}
+.klauzula-close{flex:none;min-height:44px;padding:10px 16px;border:1px solid var(--color-navy);border-radius:var(--radius-btn);background:transparent;color:var(--color-navy);font:500 var(--text-xs)/1 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;cursor:pointer}
+.klauzula-close:hover{background:var(--color-navy);color:var(--color-ivory)}
+.klauzula-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:20px clamp(18px,4vw,32px) 24px;font-size:var(--text-body);line-height:1.65}
+.klauzula-body:focus-visible{outline-offset:-4px}
+.klauzula-tytul{margin-bottom:16px;font:600 var(--text-serif-sm)/1.35 var(--font-serif);color:var(--color-navy)}
+.klauzula-body ol{margin:0;padding-left:1.5em;display:grid;gap:12px}
+.klauzula-body ol > li::marker{font-weight:500;color:var(--color-navy)}
+.klauzula-body ul{margin:8px 0 0;padding-left:1.2em;display:grid;gap:6px;list-style:disc}
+.klauzula-body ul > li::marker{color:var(--color-gold)}
+.klauzula-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 24px;padding:12px clamp(18px,4vw,32px) 14px;border-top:1px solid var(--bp-line-gold-soft);background:var(--color-parchment)}
+.klauzula-foot p{flex:1 1 300px;font-size:var(--text-sm);line-height:1.5;color:var(--color-ink)}
+html:has(.klauzula[open]){overflow:hidden}
+@media (prefers-reduced-motion:no-preference){
+  .klauzula[open]{animation:klauzula-in .2s var(--ease-lux)}
+  .klauzula[open]::backdrop{animation:klauzula-tlo .2s ease-out}
+  @keyframes klauzula-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes klauzula-tlo{from{opacity:0}to{opacity:1}}
+}
+@media (forced-colors:active){.klauzula,.case-note{border:1px solid CanvasText}}
+@media print{.klauzula{display:none}}
+
 /* ---------- responsywność ---------- */
 @media (max-width:1023px){
   .app{grid-template-columns:minmax(0,1fr);padding-top:16px}

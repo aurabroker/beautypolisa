@@ -41,9 +41,9 @@ export default {
     if (!ok) return deny();
     const url = new URL(request.url);
     let path = decodeURIComponent(url.pathname);
+    if (path === '/strefa' || path === '/strefa/') path = '/strefa/logowanie.html';
     if (path.endsWith('/')) path += 'index.html';
     let hit = ASSETS[path] || ASSETS[path + '.html'];
-    if (!hit && path.endsWith('/index.html')) hit = ASSETS['/index.html'];
     if (!hit) return harden(new Response('Nie ma takiej strony w podglądzie.', { status: 404, headers: { 'Content-Type': 'text/plain; charset=utf-8' } }));
     if (request.method !== 'GET' && request.method !== 'HEAD') return harden(new Response(null, { status: 405 }));
     return harden(new Response(request.method === 'HEAD' ? null : hit[0], { headers: { 'Content-Type': hit[1] } }));
