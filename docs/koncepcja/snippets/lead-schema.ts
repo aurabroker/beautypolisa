@@ -45,6 +45,15 @@ export const OcCalcInput = z.object({
     .default([]),
 });
 
+// Kalkulator Tax Protect (02 §2.3; taryfa stała – 00, D26): 4 progi przychodu × 2 sumy gwarancyjne,
+// składka za 1 spór w roku. Przychód powyżej 3 mln zł albo 2–4 spory → wycena indywidualna (bez kwoty).
+// Wartości jak w makiecie design/v3/makieta-v3.html#kalkulator-tax; serwer przelicza składkę sam.
+export const TaxCalcInput = z.object({
+  revenueBand: z.enum(["250000", "500000", "1000000", "3000000", "powyzej-3000000"]),
+  sumInsured: z.union([z.literal(50_000), z.literal(100_000)]),
+  disputes: z.enum(["1", "2-4"]),
+});
+
 export const LeadInput = z.object({
   idempotencyKey: z.string().uuid(),
   product: Product,
@@ -56,6 +65,7 @@ export const LeadInput = z.object({
   profession: Profession.optional(),
   message: z.string().trim().max(2000).optional(),
   calc: OcCalcInput.optional(),                  // wymagane tylko dla oc-beauty
+  taxCalc: TaxCalcInput.optional(),              // tylko tax-protect; opcjonalne (formularz bez kalkulatora)
   // Obowiązek informacyjny – BEZ checkboxa (klauzula pod przyciskiem wysyłki); zapisujemy
   // wersje wyświetlonych treści. Serwer odrzuca wersje inne niż aktualne w repo (422).
   legalVersions: LegalVersions,
@@ -79,6 +89,9 @@ export const LeadInput = z.object({
   if (v.product === "oc-beauty" && !v.calc) {
     ctx.addIssue({ code: "custom", path: ["calc"], message: "Brak danych kalkulatora" });
   }
+  if (v.taxCalc && v.product !== "tax-protect") {
+    ctx.addIssue({ code: "custom", path: ["taxCalc"], message: "Dane kalkulatora Tax Protect tylko dla tax-protect" });
+  }
   if (v.consents.marketingEmail && !v.consents.textVersions.marketingEmail) {
     ctx.addIssue({ code: "custom", path: ["consents", "textVersions", "marketingEmail"], message: "Brak wersji treści zgody" });
   }
@@ -89,8 +102,12 @@ export const LeadInput = z.object({
 export type LeadInput = z.infer<typeof LeadInput>;
 
 export const QuoteResult = z.discriminatedUnion("individual", [
-  z.object({ individual: z.literal(false), annualPremium: z.number(), legalProtection: z.number(), pricingVersionId: z.string().uuid() }),
-  z.object({ individual: z.literal(true), reasons: z.array(z.enum(["risk_group_4", "team_over_8"])) }),
+  z.object({ individual: z.literal(false), annualPremium: z.number(), legalProtection: z.number().optional(), // tylko OC
+    pricingVersionId: z.string().uuid() }),
+  z.object({ individual: z.literal(true), reasons: z.array(z.enum([
+    "risk_group_4", "team_over_8",               // OC
+    "revenue_over_3m", "disputes_2_4",           // Tax Protect
+  ])) }),
 ]);
 
 export const ClaimInput = z.object({

@@ -271,6 +271,19 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
 .tag::before{content:"";flex:none;width:4px;height:4px;background:var(--color-gold-light);transform:rotate(45deg)}
 .product p{color:var(--color-parchment);font-size:var(--text-body);line-height:1.7}
 .product-actions{display:flex;flex-wrap:wrap;align-items:center;gap:0 26px}
+/* jasne kafelki na ciemnym jedwabiu (decyzja zleceniodawcy 12.11.2026): kość słoniowa, tekst granat/atrament,
+   złoto tylko jako ozdoba; nadpisuje reguły .dark sceny jedwabiu */
+.ledger--light{color:var(--color-ink)}
+.ledger--light .product{box-shadow:1px 0 0 var(--bp-line-gold-soft),0 1px 0 var(--bp-line-gold-soft)}
+.ledger--light .product:target{box-shadow:inset 0 0 0 1px var(--color-gold)}
+.ledger--light .product h3{color:var(--color-navy)}
+.ledger--light .product p{color:var(--color-ink)}
+.ledger--light .lux-icon{color:var(--color-navy)}
+.ledger--light .tag{color:var(--color-taupe)}
+.ledger--light .tag::before{background:var(--color-gold)}
+.ledger--light .link-lux{color:var(--color-navy)}
+.ledger--light .link-quiet{color:var(--color-navy);text-decoration-color:var(--color-gold)}
+.ledger--light :focus-visible{outline-color:var(--color-navy)}
 
 /* ---------- III · kalkulator ---------- */
 .calc{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(22px,3vw,40px);padding:clamp(22px,3.5vw,48px)}
@@ -628,6 +641,7 @@ html:has(.klauzula[open]){overflow:hidden}
   .btn-navy{background-image:linear-gradient(var(--color-gold-light),var(--color-gold-light));background-repeat:no-repeat;background-position:50% calc(100% - 10px);background-size:0 1px;transition:background-size .5s var(--ease-lux),background-color .25s,color .25s,border-color .25s}
   .btn-navy:hover,.btn-navy:focus-visible{background-size:calc(100% - 56px) 1px}
   .product:hover{background-color:rgba(217,192,137,.06)}
+  .ledger--light .product:hover{background-color:rgba(255,255,255,.55)}
   .pro:hover{background:rgba(255,255,255,.35)}
   .pro:hover strong{text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:1px;text-underline-offset:6px}
   .clue summary:hover .clue-open::after{transform:scaleX(1)}
@@ -907,7 +921,7 @@ html:has(.klauzula[open]){overflow:hidden}
         <h2 id="prod-title" class="rv-curtain">Sześć rozwiązań. <em>Jeden doradca.</em></h2>
         <p class="lead rv-rise">Każde rozwiązanie ma własnego partnera i&nbsp;własne warunki, a&nbsp;Ty – jednego doradcę w&nbsp;Aura Expert.</p>
       </div>
-      <div class="ledger glass glass--dark">
+      <div class="ledger ledger--light glass glass--strong">
         <article class="product rv-rise" id="oc-beauty"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="tag">ERGO Hestia</span></div><h3>OC dla branży beauty</h3><p>Odpowiedzialność cywilna za szkody wyrządzone klientom podczas zabiegów – w&nbsp;programie z&nbsp;ERGO Hestią. Składka zależy od grupy ryzyka i&nbsp;sumy gwarancyjnej, a&nbsp;zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p><div class="product-actions"><a class="link-lux" href="#kalkulator" data-calc="oc">Oblicz składkę<span class="sr-only"> OC</span></a><a class="link-quiet" href="/ubezpieczenia/oc-beauty">Poznaj ubezpieczenie<span class="sr-only">: OC dla branży beauty</span></a></div></article>
         <article class="product rv-rise" id="tax-protect"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="tag">Colonnade</span></div><h3>Tax Protect</h3><p>Ochrona karnoskarbowa dla właściciela i&nbsp;ochrona podatkowa dla salonu – jeden pełny spór podatkowy w&nbsp;roku, zgodnie z&nbsp;OWU. Stała taryfa: od 1&nbsp;532&nbsp;zł rocznie, zależnie od przychodów i&nbsp;sumy gwarancyjnej.</p><div class="product-actions"><a class="link-lux" href="#kalkulator-tax">Oblicz składkę<span class="sr-only"> Tax Protect</span></a><a class="link-quiet" href="/ubezpieczenia/tax-protect">Poznaj ubezpieczenie<span class="sr-only">: Tax Protect</span></a></div></article>
         <article class="product rv-rise" id="utrata-dochodu"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="tag">Oferta indywidualna</span></div><h3>Utrata dochodu</h3><p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią pracę. Ofertę i&nbsp;warunki przedstawi doradca.</p><div class="product-actions"><a class="link-lux" href="/ubezpieczenia/utrata-dochodu">Poznaj ubezpieczenie<span class="sr-only">: utrata dochodu</span></a><a class="link-quiet" href="#kontakt" data-produkt="utrata-dochodu">Zapytaj doradcę<span class="sr-only"> o&nbsp;ubezpieczenie utraty dochodu</span></a></div></article>

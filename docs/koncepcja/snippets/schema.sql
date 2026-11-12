@@ -53,11 +53,11 @@ create table pricing_oc_tiers (
 create table pricing_tax_variants (
   id             bigint generated always as identity primary key,
   version_id     uuid not null references pricing_versions(id) on delete cascade,
-  section        smallint not null check (section in (1, 2)), -- 1: karnoskarbowa, 2: podatkowa
-  sum_insured    integer not null,
+  -- 8 wierszy = 4 progi przychodu × 2 sumy; składka obejmuje obie sekcje (karnoskarbową i podatkową), 1 spór w roku
+  revenue_limit  integer not null check (revenue_limit in (250000, 500000, 1000000, 3000000)), -- powyżej 3 mln → wycena indywidualna
+  sum_insured    integer not null check (sum_insured in (50000, 100000)),
   annual_premium numeric(10,2) not null check (annual_premium > 0), -- składka roczna wg taryfy programu (źródło: tax_warianty)
-  revenue_limit  integer,               -- np. 3 000 000; powyżej → wycena indywidualna
-  unique (version_id, section, sum_insured)
+  unique (version_id, revenue_limit, sum_insured)
 );
 
 create sequence leads_reference_seq;

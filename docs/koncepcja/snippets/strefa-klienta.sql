@@ -88,7 +88,10 @@ create table client_accounts (
   employer_trusted_by   uuid references auth.users(id) on delete set null,
   display_name_approved_at timestamptz,      -- nazwa wyświetlana sprawdzona przez personel przed użyciem w e-mailu
   inactivity_warned_at  timestamptz,         -- retencja: ostrzeżenie przed zamknięciem nieużywanego konta pracodawcy
-  crm_ref          text check (char_length(crm_ref) <= 64),      -- id firmy w CRM Aura Expert (projekt „BEAUTY”); tylko personel
+  -- Odwołanie do CRM Aura Expert (baza „aurabroker”, 12 §5.2): para (crm_tenant, crm_ref) = (crm_renewals.tenant_id,
+  -- crm_renewals.klient_id) – klient_id może być unikalny tylko w obrębie tenant_id. Tylko personel.
+  crm_tenant       text check (char_length(crm_tenant) <= 64),
+  crm_ref          text check (char_length(crm_ref) <= 64),      -- klient_id w CRM Aura Expert („aurabroker”)
   source_lead_id    uuid references leads(id) on delete set null,  -- lead, z którego powstała polisa (jeśli był); tylko personel
   team_confirmed_at timestamptz,             -- coroczne potwierdzenie składu zespołu przez właściciela [Założenie, D-B]
   activated_at      timestamptz,
@@ -102,6 +105,7 @@ create table client_accounts (
   check (kind <> 'employer' or nip is not null),
   check (kind <> 'employer' or status in ('pending','closed','suspended') or employer_verified_at is not null),
   check (employer_trusted_at is null or employer_trust_method is not null),
+  check ((crm_tenant is null) = (crm_ref is null)),   -- odwołanie do CRM tylko jako para
   -- nazwy zastrzeżone nie mogą być nazwą wyświetlaną pracodawcy z rejestracji (podszywanie się – SEC-02)
   check (kind <> 'employer' or display_name !~* '(\m(aura|beautypolisa|ergo|hestia|colonnade)\M|beauty[ -]?polisa|lux[ -]?med|enel[ -]?med)')
 );
@@ -110,6 +114,11 @@ create table client_accounts (
 -- rozstrzyga app_employer_activate() (konto z potwierdzoną reprezentacją wygrywa).
 create unique index client_accounts_nip_uq on client_accounts (nip)
   where nip is not null and status in ('active','suspended');
+-- Jedno aktywne (albo zawieszone) konto na klienta CRM (12 §5.2): pomyłka albo duplikat przy zakładaniu
+-- konta kończy się błędem, a nie pokazaniem spraw i linku „Dokończ” firmy X na koncie Y. Przekaz z CRM
+-- dodatkowo porównuje HMAC NIP-u z client_accounts.nip; niezgodność → kolejka konfliktów, nie zapis.
+create unique index client_accounts_crm_uq on client_accounts (crm_tenant, crm_ref)
+  where crm_ref is not null and status in ('active','suspended');
 
 create table client_members (
   account_id        uuid not null references client_accounts(id) on delete cascade,
@@ -325,7 +334,7 @@ create table client_policies (
   oc_individual_quote boolean not null default false, -- gr. 4 albo zespół 9+: składka z wyceny indywidualnej, nie z taryfy
   pricing_version_id  uuid references pricing_versions(id),
   published_at        timestamptz,            -- klient widzi polisę dopiero po publikacji przez personel
-  crm_ref             text check (char_length(crm_ref) <= 64), -- id polisy w CRM (crm_policies.id); tylko personel
+  crm_ref             text check (char_length(crm_ref) <= 64), -- id polisy w CRM Aura Expert (crm_renewals.polisa_id, w obrębie crm_tenant konta – 12 §5.2, Q7); tylko personel
   created_by          uuid references auth.users(id) on delete set null,
   created_at          timestamptz not null default now(),
   updated_at          timestamptz not null default now(),
@@ -1496,15 +1505,15 @@ revoke all on client_accounts, client_members, client_invitations, client_polici
 -- w osobnym, niewystawionym schemacie) [do weryfikacji w PoC].
 
 -- Uwaga: uprawnienia kolumnowe dotyczą CAŁEJ roli authenticated (salony, organizatorzy, personel).
--- Kolumny wewnętrzne (crm_ref, source_lead_id, *_by, moderation_note, account_id organizatora) personel
+-- Kolumny wewnętrzne (crm_tenant, crm_ref, source_lead_id, *_by, moderation_note, account_id organizatora) personel
 -- czyta w /panel serwerowo (service_role po sprawdzeniu app_is_staff w sesji aal2), nie przez grant.
 
 -- 8.1 Konta salonów -------------------------------------------------------------------------------
 grant select (id, kind, display_name, legal_name, nip, city, status, employer_verified_at, employer_trusted_at,
               display_name_approved_at, team_confirmed_at, activated_at, suspended_at, closed_at, created_at, updated_at)
   on client_accounts to authenticated;
-grant insert (display_name, legal_name, nip, city, crm_ref, source_lead_id, created_by),
-      update (display_name, legal_name, nip, city, crm_ref, status, suspended_at, closed_at, updated_at)
+grant insert (display_name, legal_name, nip, city, crm_tenant, crm_ref, source_lead_id, created_by),
+      update (display_name, legal_name, nip, city, crm_tenant, crm_ref, status, suspended_at, closed_at, updated_at)
   on client_accounts to authenticated;          -- aktywację (status active) wykonuje app_activate_client_account()
 
 create policy client_accounts_member_read on client_accounts

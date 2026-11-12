@@ -4,6 +4,11 @@
 # w przeciwnym razie Cloudflare dopisze własne, zarządzane dyrektywy przed tą treścią.
 # robots.txt jest deklaracją preferencji; egzekwowanie dostępu odbywa się w Cloudflare AI Crawl Control / WAF.
 
+# Od etapu Z1 Strefy Klienta (02 §4.13, 11 §5.1) w każdym bloku dochodzi "Disallow: /strefa-klienta/"
+# (strony strefy i tak mają noindex). Publiczne /dam-prace i /szkolenia pozostają dozwolone.
+# Host portal.beautypolisa.eu (osobisty link /w/ – CRM Aura Expert) ma własny robots.txt BEZ "Disallow: /w/";
+# ochronę daje nagłówek X-Robots-Tag: noindex (12, R-W11).
+
 # --- Reguła domyślna: całość publiczna, poza API i panelem wewnętrznym ---
 User-agent: *
 Allow: /

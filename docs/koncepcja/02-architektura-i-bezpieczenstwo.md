@@ -21,7 +21,7 @@
 | ID | Wymaganie | Uwagi architektoniczne |
 |----|-----------|------------------------|
 | F1 | Strony produktowe dla 6 produktów (`/ubezpieczenia/*`) z nazwami: „OC dla branży beauty (ERGO Hestia)”, „Tax Protect (Colonnade)”, „Utrata dochodu”, „NNW dzieci”, „Grupowe ERGO dla beauty”, „Opieka medyczna (ENEL-MED / LUX MED)” | Treść z repo (MDX), renderowana po stronie serwera. Dla „NNW dzieci” audyt nie zawiera danych produktowych – strona startuje jako „zapytaj o ofertę” bez cennika; „Utrata dochodu” ma od 12.11.2026 treść z utratadochodu.pl i wniosek na utratadochodu.pl, bez kwot składek (00, D33, D34). Frontmatter `productKind: 'insurance' \| 'medical_subscription'`: abonamenty ENEL-MED/LUX MED (wg audytu: abonamenty, administrator danych Aura Expert) dostają inną stopkę (inny administrator, brak odniesień do OWU/IDD) i w treści nie są nazywane ubezpieczeniem – ryzyko wprowadzenia w błąd co do charakteru usługi. Adres `/ubezpieczenia/opieka-medyczna` przyjęty w sekcji SEO – do rewizji na `/opieka-medyczna` po odpowiedzi na pytanie otwarte 13. |
-| F2 | Kalkulator OC (`/kalkulator/oc`) z logiką grup ryzyka wg taryfy programu: gr. 1–3 ze składką roczną wg cennika programu (sumy 100/200/300 tys. zł; składki gr.1: 400/500/650, gr.2: 650/790/950, gr.3: 850/980/1250 zł; klauzula ochrony prawnej +92 zł; zespół 6–8 osób – składka ×1,25), gr. 4 i zespół > 8 osób → wycena indywidualna (ankieta ERGO Hestii) | Jedyna większa „wyspa” interaktywna. Logika jako czysta funkcja w pakiecie współdzielonym, testowana jednostkowo; cennik z bazy, wersjonowany z datą obowiązywania (taryfa może się zmienić w czasie), **aktywny dopiero po zatwierdzeniu wersji** (ślad: kto, kiedy, od kiedy obowiązuje). Składki są sztywne – taryfa programu (rozstrzygnięte 11.11.2026, pytanie otwarte 12). |
+| F2 | Kalkulator OC (`/kalkulator/oc`) z logiką grup ryzyka wg taryfy programu: gr. 1–3 ze składką roczną wg cennika programu (sumy 100/200/300 tys. zł; składki gr.1: 400/500/650, gr.2: 650/790/950, gr.3: 850/980/1250 zł; klauzula ochrony prawnej +92 zł; zespół 6–8 osób – składka ×1,25), gr. 4 i zespół > 8 osób → wycena indywidualna (ankieta ERGO Hestii). Na stronie głównej ten sam kalkulator ma zakładkę **Tax Protect** (`/#kalkulator-tax`; taryfa D26, 2.3) | Jedyna większa „wyspa” interaktywna (dwie zakładki: OC i Tax Protect). Logika jako czysta funkcja w pakiecie współdzielonym, testowana jednostkowo; cennik z bazy, wersjonowany z datą obowiązywania (taryfa może się zmienić w czasie), **aktywny dopiero po zatwierdzeniu wersji** (ślad: kto, kiedy, od kiedy obowiązuje). Składki są sztywne – taryfa programu (rozstrzygnięte 11.11.2026, pytanie otwarte 12). |
 | F3 | Formularze leadowe per produkt (wspólny endpoint, pole `product`), strony `/dla-kogo/<zawod>` z prewypełnionym kontekstem | Minimalny zakres PII na etapie leada (imię i nazwisko, e-mail, telefon, opcjonalnie nazwa firmy/NIP). Pod przyciskiem wysyłki klauzula informacyjna RODO i informacje o dystrybutorze (IDD) – bez checkboxa; zgody marketingowe jako osobne, niezaznaczone pola per kanał. Pełna ankieta ERGO Hestii (szkodowość 3 lata, kwalifikacje personelu itd.) **nie** jest zbierana przez portal w v1. |
 | F4 | Baza wiedzy (`/baza-wiedzy/<slug>`) | MDX w repo, statyczne dane, schema.org w sekcji SEO/GEO koncepcji. |
 | F5 | Dokumenty OWU (`/dokumenty`) | PDF jako assety statyczne z wersjonowanymi nazwami plików; lista z MDX/JSON. Publikacja OWU/warunków programu i logotypów partnerów wymaga potwierdzonej zgody (frontmatter `publicationApproved`, `brandUsageApproval` – pkt 2.5, pytanie otwarte 14). |
@@ -144,7 +144,7 @@ Każdy z mechanizmów opisanych dalej jest sensowny, ale razem tworzą obciąże
 8. **Zdarzenie analityczne** `lead_submitted {product, profession, individualQuote}` przez Service Binding do kolektora (bez PII).
 9. Odpowiedź `201 {status:"created", reference, leadId, quote}` – **identyczna dla nowego leada i dla duplikatu** (duplikat zwraca `reference` istniejącego zgłoszenia; informacja o ponowieniu jest widoczna wyłącznie w panelu). Osobna odpowiedź `duplicate` pozwalałaby osobie trzeciej sprawdzić, czy dany adres pytał o konkretny produkt – byłaby sprzeczna z zasadą „brak enumeracji adresów” przyjętą dla newslettera. Klient pokazuje podsumowanie i numer zgłoszenia `reference`.
 10. **Ponowienie po stronie klienta**: po błędzie sieci lub `503` klient wywołuje `turnstile.reset()`, pobiera nowy token i wysyła ponownie z **tym samym** `idempotencyKey` (krok 4c zwróci to samo zgłoszenie); po `429` czeka `Retry-After`.
-11. Potwierdzenie dla klienta jest wysyłane **maks. raz na adres e-mail na 24 h** (ochrona przed użyciem portalu do zasypywania cudzej skrzynki). **Reguła redakcyjna szablonu `lead_client`**: wyłącznie potwierdzenie przyjęcia, numer zgłoszenia, dane dystrybutora (IDD), klauzula informacyjna i kontakt – zero treści promocyjnych i linków do innych produktów (komunikat transakcyjny, nie informacja handlowa w rozumieniu PKE). Treści marketingowe wyłącznie w szablonach wysyłanych do adresatów z aktywną zgodą `marketing_email`; test jednostkowy szablonów sprawdza obecność zakazanych fraz/linków.
+11. Potwierdzenie dla klienta jest wysyłane **maks. raz na adres e-mail na 24 h** (ochrona przed użyciem portalu do zasypywania cudzej skrzynki). **Reguła redakcyjna szablonu `lead_client`**: wyłącznie potwierdzenie przyjęcia, numer zgłoszenia, dane dystrybutora (IDD), klauzula informacyjna i kontakt – zero treści promocyjnych i linków do innych produktów (komunikat transakcyjny, nie informacja handlowa w rozumieniu PKE). **Jedyny wyjątek – lead OC (00, D32; 12 §3.2 pkt 3):** dozwolony akapit „Co dalej” z krokami ścieżki OC (12 §2.3) i zdaniem, że osobisty link do analizy potrzeb i wniosku przyjdzie od Aura Expert i zawsze prowadzi do `portal.beautypolisa.eu` – domena jako zwykły tekst, **bez linku `/w/`, bez kodu i bez przycisku do wniosku**. Zdania „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” **nie** umieszczamy w `lead_client` (zostaje na stronach OC i w kalkulatorze; klient po zgłoszeniu ma już doradcę, a e-mail transakcyjny nie zawiera linków zewnętrznych) [założenie – do potwierdzenia przez zleceniodawcę, 12 §3.2 pkt 3]. Treści marketingowe wyłącznie w szablonach wysyłanych do adresatów z aktywną zgodą `marketing_email`; test jednostkowy szablonów sprawdza obecność zakazanych fraz/linków: w każdym szablonie `lead_client` brak `/w/`, brak adresów spoza listy dozwolonej (domena portalu, `auraexpert.pl` w danych IDD) i brak `beautyrazem.pl`; akapit „Co dalej” tylko przy `product = oc-beauty`.
 12. Zespół pracuje w `/panel` (statusy `new → contacted → quoted → won/lost/spam`); każda zmiana, przekazanie do CRM/ubezpieczyciela i anonimizacja trafiają do `lead_events`.
 13. **Dalsza ścieżka po leadzie (00, D32; szczegóły w `12-integracja-apk-wniosek-polisa.md`).** Lead kończy rolę portalu w sprzedaży. **OC (etap 1):** doradca Aura Expert kontaktuje się z klientem i w CRM Aura Expert zakłada sprawę (`crm_renewals`, odnowienie albo nowa sprzedaż); CRM wysyła e-mail z osobistym linkiem do APK i wniosku `https://portal.beautypolisa.eu/w/XXXXXXXXXX` na adres zapisany w CRM; klient podpisuje APK i wniosek, CRM zapisuje numer i okres polisy. **Tax Protect:** doradca kontaktuje się i prowadzi wniosek (link `/w/` dopiero w etapie 2). **Utrata dochodu:** strona kieruje na utratadochodu.pl (wniosek albo zakup online u Leadenhall) – portal nie zbiera leada UD poza formularzem kontaktowym. **Grupowe ERGO, opieka medyczna, NNW dzieci:** formularz → doradca. Odpowiedź `/api/leads` (krok 9) **nigdy** nie zawiera linku ani kodu sprawy i nie przekierowuje na `/w/<kod>` – inaczej wpisanie cudzego NIP lub e-maila mogłoby otworzyć sprawę istniejącej firmy; portal nie odpytuje CRM przy przyjęciu leada.
 
@@ -161,6 +161,7 @@ Decyzja: **obliczenia w przeglądarce na podstawie migawki cennika osadzonej w H
 - **Bramka zatwierdzenia wersji cennika**: wersję można aktywować tylko po zatwierdzeniu (ograniczenie w bazie: `is_active` wymaga `approved_by_label` i `approved_at`; `source_note` obowiązkowe). Bramka nie weryfikuje kwot – składki są sztywne (taryfa programu; rozstrzygnięte 11.11.2026, pytanie otwarte 12) – tylko zostawia ślad, kto i kiedy wprowadził daną wersję taryfy i od kiedy obowiązuje (`valid_from`/`valid_to`), bo taryfa może się zmienić w czasie. Seed v1 dla OC zawiera taryfę programu (audyt §3.1) z `source_note = 'taryfa programu OC ERGO Hestia (audyt §3.1); składki sztywne – stan z 11.11.2026'` i jest aktywowany przed startem. Gdy dla produktu nie ma aktywnej wersji (np. świeży staging), kalkulator pokazuje zakres grup ryzyka i sum bez kwot oraz CTA „poproś o wycenę”.
 - Wyświetlana kwota jest opisana jako „składka roczna wg taryfy programu” z zastrzeżeniem „informacja nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU” – treść zastrzeżenia do uzgodnienia z zespołem produktowym i prawnikiem.
 - Tax Protect: składki są sztywne (taryfa programu; rozstrzygnięte 11.11.2026, pytanie otwarte 7), a taryfę zleceniodawca potwierdził 12.11.2026 (audyt §3.2): składka roczna za 1 spór – suma 50 000 zł: 1 532 / 1 612 / 1 732 / 1 932 zł, suma 100 000 zł: 2 501 / 2 581 / 2 701 / 2 901 zł przy przychodzie do 250 tys. / 500 tys. / 1 mln / 3 mln zł. Seed v1 `pricing_tax_variants` zawiera te 8 wierszy (zgodnych z `tax_warianty` w projekcie „BEAUTY”) z `source_note = 'taryfa Tax Protect (Colonnade) – potwierdzona przez zleceniodawcę 12.11.2026'`, a strona pokazuje tabelę wariantów ze składką roczną (bez dopisków „orientacyjne”) i formularz zapytania; schema `AggregateOffer` generowana z tej samej wersji (`snippets/schema-produkt-tax-protect.json`). Ochrona 2–4 sporów → wycena indywidualna. Komentarz „Wartości składek DO POTWIERDZENIA z Colonnade” w `tax_warianty` (audyt) jest nieaktualny. Przychody powyżej 3 mln zł (`revenue_limit`) → wycena indywidualna.
+- **Kalkulator Tax Protect** (00, D26, D34; makieta `design/v3/makieta-v3.html#kalkulator-tax`): zakładka „Tax Protect” w kalkulatorze na stronie głównej (`/#kalkulator-tax`; strona `/ubezpieczenia/tax-protect` linkuje do niej przyciskiem „Policz w kalkulatorze” i pokazuje statyczną tabelę `#taryfa`, która jest też wersją bez JavaScriptu). Ten sam wzorzec co OC: strona (RSC) osadza migawkę aktywnej wersji `pricing_tax_variants` z `pricingVersionId`, wyspa liczy czystą funkcją `quoteTax(input, variants)` z `packages/pricing` (ta sama na kliencie i serwerze) – wejście `TaxCalcInput` (próg przychodu, suma gwarancyjna 50 000 albo 100 000 zł, liczba sporów; 2.4), wynik `QuoteResult`. Przychód powyżej 3 mln zł albo 2–4 spory → `individual: true` (`revenue_over_3m`, `disputes_2_4`) i CTA „Poproś o wycenę indywidualną”. Wybór trafia do leada `product = tax-protect` jako pole `taxCalc` (opcjonalne – formularz kontaktowy bez kalkulatora też jest poprawny); serwer przelicza składkę w `app_create_lead` z aktywnej wersji jak dla OC. Po wysłaniu: doradca Aura Expert kontaktuje się i prowadzi wniosek – bez linku `/w/` (00, D32; link dopiero w etapie 2, opisany tylko w dokumentacji).
 
 ### 2.4 Kontrakty API
 
@@ -241,6 +242,15 @@ export const OcCalcInput = z.object({
     .default([]),
 });
 
+// Kalkulator Tax Protect (02 §2.3; taryfa stała – 00, D26): 4 progi przychodu × 2 sumy gwarancyjne,
+// składka za 1 spór w roku. Przychód powyżej 3 mln zł albo 2–4 spory → wycena indywidualna (bez kwoty).
+// Wartości jak w makiecie design/v3/makieta-v3.html#kalkulator-tax; serwer przelicza składkę sam.
+export const TaxCalcInput = z.object({
+  revenueBand: z.enum(["250000", "500000", "1000000", "3000000", "powyzej-3000000"]),
+  sumInsured: z.union([z.literal(50_000), z.literal(100_000)]),
+  disputes: z.enum(["1", "2-4"]),
+});
+
 export const LeadInput = z.object({
   idempotencyKey: z.string().uuid(),
   product: Product,
@@ -252,6 +262,7 @@ export const LeadInput = z.object({
   profession: Profession.optional(),
   message: z.string().trim().max(2000).optional(),
   calc: OcCalcInput.optional(),                  // wymagane tylko dla oc-beauty
+  taxCalc: TaxCalcInput.optional(),              // tylko tax-protect; opcjonalne (formularz bez kalkulatora)
   // Obowiązek informacyjny – BEZ checkboxa (klauzula pod przyciskiem wysyłki); zapisujemy
   // wersje wyświetlonych treści. Serwer odrzuca wersje inne niż aktualne w repo (422).
   legalVersions: LegalVersions,
@@ -275,6 +286,9 @@ export const LeadInput = z.object({
   if (v.product === "oc-beauty" && !v.calc) {
     ctx.addIssue({ code: "custom", path: ["calc"], message: "Brak danych kalkulatora" });
   }
+  if (v.taxCalc && v.product !== "tax-protect") {
+    ctx.addIssue({ code: "custom", path: ["taxCalc"], message: "Dane kalkulatora Tax Protect tylko dla tax-protect" });
+  }
   if (v.consents.marketingEmail && !v.consents.textVersions.marketingEmail) {
     ctx.addIssue({ code: "custom", path: ["consents", "textVersions", "marketingEmail"], message: "Brak wersji treści zgody" });
   }
@@ -285,8 +299,12 @@ export const LeadInput = z.object({
 export type LeadInput = z.infer<typeof LeadInput>;
 
 export const QuoteResult = z.discriminatedUnion("individual", [
-  z.object({ individual: z.literal(false), annualPremium: z.number(), legalProtection: z.number(), pricingVersionId: z.string().uuid() }),
-  z.object({ individual: z.literal(true), reasons: z.array(z.enum(["risk_group_4", "team_over_8"])) }),
+  z.object({ individual: z.literal(false), annualPremium: z.number(), legalProtection: z.number().optional(), // tylko OC
+    pricingVersionId: z.string().uuid() }),
+  z.object({ individual: z.literal(true), reasons: z.array(z.enum([
+    "risk_group_4", "team_over_8",               // OC
+    "revenue_over_3m", "disputes_2_4",           // Tax Protect
+  ])) }),
 ]);
 
 export const ClaimInput = z.object({
@@ -406,11 +424,11 @@ create table pricing_oc_tiers (
 create table pricing_tax_variants (
   id             bigint generated always as identity primary key,
   version_id     uuid not null references pricing_versions(id) on delete cascade,
-  section        smallint not null check (section in (1, 2)), -- 1: karnoskarbowa, 2: podatkowa
-  sum_insured    integer not null,
+  -- 8 wierszy = 4 progi przychodu × 2 sumy; składka obejmuje obie sekcje (karnoskarbową i podatkową), 1 spór w roku
+  revenue_limit  integer not null check (revenue_limit in (250000, 500000, 1000000, 3000000)), -- powyżej 3 mln → wycena indywidualna
+  sum_insured    integer not null check (sum_insured in (50000, 100000)),
   annual_premium numeric(10,2) not null check (annual_premium > 0), -- składka roczna wg taryfy programu (źródło: tax_warianty)
-  revenue_limit  integer,               -- np. 3 000 000; powyżej → wycena indywidualna
-  unique (version_id, section, sum_insured)
+  unique (version_id, revenue_limit, sum_insured)
 );
 
 create sequence leads_reference_seq;
@@ -890,7 +908,7 @@ Analizę potrzeb, wniosek, ankietę, zgody i podpisy obsługuje **CRM Aura Exper
 
 - **Strony publiczne i API:** żadnego linku z kodem w HTML, JSON-LD, `llms.txt`, e-mailach portalu ani odpowiedziach `/api/*`; formularze nie przekierowują na `/w/<kod>` (2.2 krok 13). Treści mówią tylko, że link przychodzi e-mailem, zawsze w domenie `portal.beautypolisa.eu`, ma datę ważności i nie należy go przekazywać innym (ochrona przed podszywaniem się).
 - **Strefa Klienta („Sprawy w toku”, 11 §4.4a):** lista spraw OC konta pochodzi z CRM – jednokierunkowy, podpisany przekaz zapisuje w portalu projekcję **bez kodów** (`client_cases`, 12 §5.2), czytaną tylko dla zalogowanego właściciela z sesją `aal2`. HTML strefy **nie zawiera kodu** – przycisk „Dokończ APK i wniosek” to `POST` na trasę strefy, która sprawdza przynależność sprawy do konta i ważność (`wazny_do`), w chwili kliknięcia pobiera link z punktu „Dokończ” w CRM (12 §5.3) i odpowiada `303` na `portal.beautypolisa.eu/w/XXXXXXXXXX` z nagłówkami `Referrer-Policy: no-referrer` i `Cache-Control: no-store`. Kod nie trafia do bazy portalu, ciasteczek, `localStorage`, logów Workera, Sentry ani kolektora analityki (4.8) – w dzienniku audytu tylko `case_link_opened` z identyfikatorem sprawy w CRM.
-- **Analityka (7.1):** portal mierzy kliknięcie „Dokończ APK i wniosek” jako zdarzenie bez adresu docelowego (`case_link_opened {product}`); kolektor `aura-analytics-collector` nie może przyjmować pełnych adresów z `/w/` – jeśli aplikacja `portal.beautypolisa.eu` wysyła do niego odsłony, ścieżka jest normalizowana do `/w/:kod` przed wysłaniem (wymaganie wobec CRM w 12). Konwersję „wniosek złożony” liczymy z danych CRM (`zlozono_at`), nie z pikseli na `/w/`.
+- **Analityka (7.1):** portal mierzy kliknięcie „Dokończ APK i wniosek” jako zdarzenie bez adresu docelowego (`case_link_opened {product}`); w etapie 1 `/w/*` na hoście `portal.beautypolisa.eu` jest **całkowicie wyłączone** z kolektora `aura-analytics-collector` i z Zaraz – także po zgodzie (wymaganie wobec CRM, 12 R-W13). Wysyłanie odsłon ze ścieżką znormalizowaną do `/w/:kod` jest dopuszczalne tylko po odmiennej decyzji zleceniodawcy – i wtedy normalizuje aplikacja przed wysłaniem, nigdy kolektor. Konwersję „wniosek złożony” liczymy z danych CRM (`zlozono_at`), nie z pikseli na `/w/`.
 - **Wymagania wobec strony `/w/` w CRM** (do potwierdzenia przez zespół CRM, 12): `X-Robots-Tag: noindex, nofollow` na każdej odpowiedzi `/w/` (bez `Disallow: /w/` w `robots.txt` hosta `portal.` – blokada pobierania ukryłaby przed robotem nagłówek `noindex`, gdyby link gdzieś wyciekł), `Referrer-Policy: no-referrer`, `Cache-Control: no-store`, brak skryptów firm trzecich, HTTPS z HSTS, wygaśnięcie po `wazny_do` i po złożeniu wniosku, limit prób kodu, neutralna odpowiedź dla kodu nieistniejącego i wygasłego. Starszy formularz APK z tokenem i oferty utraty dochodu z linkiem w „aurabroker” (01 §5.1 – funkcje SECURITY DEFINER dostępne dla `anon`) to **ryzyko zależności**: portal do nich nie linkuje, a ich utwardzenie jest osobnym zadaniem po stronie CRM.
 - **`konsultacja.beautypolisa.eu`** (`/k`, `/w`; baza „BEAUTY”, tabele `konsultacja_*`) nie jest APK ani wnioskiem – portal nie kieruje tam w ścieżce zakupu.
 

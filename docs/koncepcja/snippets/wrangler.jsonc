@@ -16,6 +16,10 @@
   },
   // Sekrety WYŁĄCZNIE przez `wrangler secret put --env <env>`:
   // SUPABASE_SECRET_KEY, TURNSTILE_SECRET_KEY, RESEND_API_KEY, SENTRY_DSN, CONSENT_HMAC_KEY, UNSUBSCRIBE_HMAC_KEY
+  // Integracja z CRM Aura Expert (12 §3.2, §5.2–5.3; 11 §8) – osobne wartości dla każdego środowiska,
+  // staging nigdy nie woła produkcyjnego CRM; rotacja z okresem dwóch ważnych kluczy:
+  // CRM_SYNC_HMAC_KEY (weryfikacja przekazu spraw i polis), CRM_NIP_HMAC_KEY (kontrola krzyżowa NIP),
+  // CRM_FINISH_HMAC_KEY (punkt „Dokończ”), CRM_LEAD_INTAKE_KEY (tylko wariant B – przekaz leadów)
   "routes": [{ "pattern": "beautypolisa.eu", "custom_domain": true }],
   "kv_namespaces": [{ "binding": "NEXT_INC_CACHE_KV", "id": "<kv-prod>" }],
   "services": [{ "binding": "ANALYTICS", "service": "aura-analytics-collector" }],

@@ -25,13 +25,14 @@ Model **hub-and-spoke**: produkt jest szprychą huba `/ubezpieczenia`, zawód �
 |---|---|---|---|---|---|
 | `/` | home | brandowa + informacyjna | „ubezpieczenia dla branży beauty” | Organization, InsuranceAgency, WebSite, WebPage | „Policz składkę OC”, „Zamów kontakt” |
 | `/ubezpieczenia` | hub produktów | porównawcza | „ubezpieczenie salonu kosmetycznego” | CollectionPage, ItemList, BreadcrumbList | karty 6 produktów |
-| `/ubezpieczenia/oc-beauty` | produkt | komercyjna | „OC kosmetyczki”, „OC salonu kosmetycznego” | WebPage, Service (+AggregateOffer), FAQPage, BreadcrumbList | „Policz składkę” → kalkulator |
+| `/ubezpieczenia/oc-beauty` | produkt | komercyjna | „OC kosmetyczki”, „OC salonu kosmetycznego” | WebPage, Service (+AggregateOffer), FAQPage, BreadcrumbList | „Policz składkę” → kalkulator; link wychodzący „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” (`https://beautyrazem.pl/polisa`; 00, D32) |
 | `/ubezpieczenia/tax-protect` | produkt (00, D34; makieta `design/v3/tax-protect.html`) | komercyjna | „ubezpieczenie karno-skarbowe” | WebPage, Service (+AggregateOffer z taryfy, D26), FAQPage, BreadcrumbList | „Policz w kalkulatorze” / „Zapytaj doradcę” (formularz) – doradca prowadzi wniosek; bez linku do APK (00, D32) |
 | `/ubezpieczenia/utrata-dochodu` | produkt (00, D33, D34; makieta `design/v3/utrata-dochodu.html`) | informacyjno-komercyjna | „ubezpieczenie utraty dochodu” | WebPage, Service (+Offer **bez ceny**), FAQPage, BreadcrumbList | „Złóż wniosek na utratadochodu.pl” (link wychodzący), zakup online okresowej niezdolności u Leadenhall, formularz → doradca |
 | `/ubezpieczenia/nnw-dzieci` | produkt | informacyjno-komercyjna | „NNW dzieci” | Service, FAQPage, BreadcrumbList | „Zamów ofertę” |
 | `/ubezpieczenia/grupowe-ergo` | produkt B2B | komercyjna | „ubezpieczenie grupowe dla małej firmy” | Service, FAQPage, BreadcrumbList | „Wycena dla zespołu” |
 | `/ubezpieczenia/opieka-medyczna` | produkt B2B | komercyjna | „pakiet medyczny dla pracowników” | Service, FAQPage, BreadcrumbList | „Zamów ofertę” |
-| `/kalkulator/oc` | narzędzie leadowe | transakcyjna | „kalkulator OC salon kosmetyczny” | WebPage, BreadcrumbList | formularz (Turnstile) |
+| `/kalkulator/oc` | narzędzie leadowe | transakcyjna | „kalkulator OC salon kosmetyczny” | WebPage, BreadcrumbList | formularz (Turnstile); link wychodzący „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” (00, D32) |
+| `/#kalkulator-tax` (zakładka Tax Protect w kalkulatorze na stronie głównej; makieta `design/v3/makieta-v3.html#kalkulator-tax`; 02 §2.3) | narzędzie leadowe (kotwica, nie osobny adres – poza sitemapą) | transakcyjna | – | – (strona `/`) | formularz (Turnstile) → doradca prowadzi wniosek; bez linku do APK (00, D32) |
 | `/dla-kogo` | hub segmentów | informacyjna | „ubezpieczenie dla kosmetyczki” | CollectionPage, BreadcrumbList | linki do zawodów |
 | `/dla-kogo/<zawod>` (6) | landing segmentowy | informacyjno-komercyjna | „ubezpieczenie dla podologa” itd. | WebPage (`about`→Service), FAQPage, BreadcrumbList | „Policz składkę” |
 | `/baza-wiedzy` (+`/strona/<n>`) | hub + paginacja | informacyjna | „ubezpieczenia beauty poradnik” | CollectionPage, BreadcrumbList | lead magnet (05) |
@@ -41,6 +42,9 @@ Model **hub-and-spoke**: produkt jest szprychą huba `/ubezpieczenia`, zawód �
 | `/szkoda` | procedura | informacyjna (po sprzedaży) | „jak zgłosić szkodę z OC salonu” | HowTo, BreadcrumbList | formularz zgłoszenia |
 | `/dokumenty` (+`/<slug>`) | repozytorium OWU | informacyjna | „OWU OC ERGO Hestia beauty” | CollectionPage, DigitalDocument | pobierz PDF |
 | `/rodo` | prawna | – | – | WebPage | – |
+| `/dam-prace`, `/dam-prace/<slug>` (11 §5.1) | tablica ogłoszeń pracodawców (tylko tablica – bez polecania i dopasowywania) | nawigacyjna | „praca kosmetyczka” [hipoteza] | lista: `ItemList`, `BreadcrumbList`; ogłoszenie: `JobPosting` (11 §11.5; wygasłe → 410) | „Dodaj ogłoszenie” (konto w Strefie Klienta) |
+| `/szkolenia`, `/szkolenia/<slug>` (11 §5.1; index – założenie w 11) | katalog szkoleń | informacyjna | „szkolenia kosmetyczne” [hipoteza] | WebPage, BreadcrumbList | „Zapisz się” (konto w Strefie Klienta) |
+| `/strefa-klienta/*` (11 §5.1 – pełna lista tras, w tym `/strefa-klienta/sprawy` i `POST /strefa-klienta/sprawy/[id]/dokoncz`) | prywatna część portalu | – | – | brak schema; `noindex` na każdej odpowiedzi; `Disallow: /strefa-klienta/` w `robots.txt` od etapu Z1 (02 §4.13) | – |
 | `/dziekujemy`, `/panel/*`, `/api/*` | techniczne | – | – | noindex / Disallow | – |
 | `https://portal.beautypolisa.eu/w/<kod>` (poza aplikacją portalu – CRM Aura Expert, 00, D32) | osobisty link do APK i wniosku (OC) | – | – | brak schema; `X-Robots-Tag: noindex, nofollow` – wymaganie wobec CRM (02 §4.14) | – |
 
