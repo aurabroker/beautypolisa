@@ -1,0 +1,66 @@
+{
+ "$comment": "Treść klauzuli ochrony prawnej (rozszerzenie OC w programie ERGO Hestia dla branży beauty, dopłata 92 zł rocznie) przeniesiona dosłownie z indeksowt.html (modal-klauzula-prawna). Do porównania z oryginałem dokumentu programu przed publikacją: tytuł zawiera „za pisemną zgoda” – prawdopodobnie literówka („zgodą”) w źródle; § 6 ust. 3 odsyła do Warunków Ubezpieczenia programu.",
+ "nazwa": "Klauzula ochrony prawnej",
+ "skladka_dodatkowa_zl_rocznie": 92,
+ "tytul": "Rozszerzenie zakresu ubezpieczenia o koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgoda Ubezpieczyciela ochroną zgodnie z § 6 ust. 3",
+ "punkty": [
+  {
+   "tekst": "Z zachowaniem pozostałych, niezmienionych niniejszą klauzulą postanowień umowy ubezpieczenia określonych w Warunkach Ubezpieczenia, strony postanowiły rozszerzyć zakres ubezpieczenia o koszty ochrony prawnej, poniesione przez Ubezpieczonego w celu obrony jego praw w postępowaniach przed sądami polskimi prowadzonych z jego udziałem w charakterze pozwanego, podejrzanego lub oskarżonego, w tym w postępowaniu dyscyplinarnym."
+  },
+  {
+   "tekst": "Ochroną ubezpieczeniową na podstawie niniejszej klauzuli objęte są koszty ochrony prawnej, poniesione przez Ubezpieczonego w postępowaniu wszczętym na terenie RP w okresie ubezpieczenia, o ile dotyczy ono czynności zawodowych Ubezpieczonego przyjętych do ubezpieczenia na podstawie niniejszej umowy. W razie wątpliwości za datę wszczęcia postępowania uważa się chwilę, w której właściwy organ, urząd lub funkcjonariusz podjął pierwszą czynność wobec Ubezpieczonego, nawet jeśli nie była ona potwierdzona na piśmie i nie stanowiła formalnego wszczęcia postępowania w świetle obowiązujących przepisów."
+  },
+  {
+   "tekst": "Przez koszty ochrony prawnej rozumie się w szczególności:",
+   "wyliczenie": [
+    "koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej,",
+    "koszty związane z uzyskaniem opinii biegłych lub rzeczoznawców albo innych dokumentów stanowiących środki dowodowe,",
+    "koszty zasądzone od Ubezpieczonego na rzecz strony przeciwnej,",
+    "pozostałe koszty i opłaty sądowe lub administracyjne, o ile służą one ochronie praw Ubezpieczonego w związku z prowadzonym postępowaniem."
+   ]
+  },
+  {
+   "tekst": "Przez koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej rozumie się koszty jednego adwokata lub radcy prawnego z tytułu zastępstwa procesowego lub obrony, pokrywane do wysokości ustalonej zgodnie z odpowiednimi przepisami regulującymi wysokość minimalnego wynagrodzenia za czynności adwokata lub radcy prawnego, jeśli takie obowiązują."
+  },
+  {
+   "tekst": "Z zakresu ubezpieczenia wyłączone są koszty:",
+   "wyliczenie": [
+    "poniesione w postępowaniu wszczętym w okresie ubezpieczenia, w wyniku apelacji lub wniesienia innego środka zaskarżenia albo wznowienia postępowania, o ile dotyczą postępowania prowadzonego przed rozpoczęciem okresu odpowiedzialności Ubezpieczyciela,",
+    "powstałe w następstwie korzystania z usług osób nieuprawnionych do świadczenia pomocy prawnej,",
+    "związane ze świadomym udzieleniem przez Ubezpieczonego nieprawdziwych lub wprowadzających w błąd informacji, albo dostarczeniem sfałszowanych dokumentów,",
+    "poniesione w postępowaniu wszczętym na wniosek osób bliskich Ubezpieczonego, osób i podmiotów pozostających z nim w stosunku zależności wynikającej z zatrudnienia ich przez Ubezpieczonego lub z innej podstawy,",
+    "poniesione na pokrycie kar sądowych lub administracyjnych nałożonych na Ubezpieczonego."
+   ]
+  },
+  {
+   "tekst": "Z zakresu ubezpieczenia wyłączone są ponadto koszty poniesione:",
+   "wyliczenie": [
+    "w postępowaniach z zakresu prawa funduszy inwestycyjnych, prawa obligacji, papierów wartościowych oraz z zakresu prawa pracy,",
+    "w postępowaniach z zakresu prawa patentowego, autorskiego, znaków towarowych, pozostałego prawa własności intelektualnej i przemysłowej, prawa ochrony konkurencji (antymonopolowego) oraz prawa dotyczącego zasad konkurencji,",
+    "w postępowaniach z umów poręczenia i przejęcia długów,",
+    "w postępowaniach z zakresu prawa podatkowego, celnego oraz dotyczącego innych opłat publicznoprawnych, a także prawa karno-skarbowego,",
+    "w postępowaniu układowym, naprawczym albo upadłościowym,",
+    "w postępowaniach w związku z posiadaniem pojazdów mechanicznych,",
+    "w postępowaniach pomiędzy stronami umowy ubezpieczenia."
+   ]
+  },
+  {
+   "tekst": "W odniesieniu do postępowań karnych ochrona ubezpieczeniowa dotyczy wyłącznie czynów, w których karane jest nieumyślne popełnienie danego czynu; w przypadku stwierdzenia winy umyślnej w prawomocnym orzeczeniu sądu, Ubezpieczycielowi przysługuje roszczenie regresowe do Ubezpieczonego o zwrot uprzednio wypłaconych świadczeń."
+  },
+  {
+   "tekst": "Jeżeli przeciwko Ubezpieczonemu wszczęte zostało postępowanie, o którym mowa w niniejszej klauzuli, albo jeżeli istnieje bezpośrednie zagrożenie wszczęciem takiego postępowania, Ubezpieczony obowiązany jest niezwłocznie zawiadomić o tym Ubezpieczyciela, przekazując mu wszelkie informacje i dokumenty w sprawie."
+  },
+  {
+   "tekst": "W ramach udzielonej ochrony Ubezpieczyciel dokonuje oceny sytuacji faktycznej i prawnej oraz podejmuje decyzję o uznaniu lub nieuznaniu roszczenia Ubezpieczonego i wypłacie lub odmowie wypłaty świadczenia w postaci refundacji kosztów ochrony prawnej."
+  },
+  {
+   "tekst": "Ubezpieczonemu przysługuje prawo swobodnego wyboru adwokata lub radcy prawnego w zakresie obrony, reprezentowania lub wspierania jego interesów w postępowaniu sądowym. Koszty ochrony prawnej pokrywane są przez Ubezpieczyciela na podstawie rachunków wystawionych na Ubezpieczonego, o ile dotyczą kosztów objętych ubezpieczeniem, zgodnie z niniejszą klauzulą."
+  },
+  {
+   "tekst": "Suma ubezpieczenia dla kosztów ochrony prawnej pokrywanych przez Ubezpieczyciela na podstawie niniejszej klauzuli zostaje wskazana w umowie ubezpieczenia i stanowi górną granicę odpowiedzialności Ubezpieczyciela."
+  },
+  {
+   "tekst": "Za rozszerzenie zakresu ubezpieczenia w sposób określony w niniejszej klauzuli Ubezpieczony opłaci dodatkową składkę w wysokości ustalonej w umowie ubezpieczenia."
+  }
+ ]
+}

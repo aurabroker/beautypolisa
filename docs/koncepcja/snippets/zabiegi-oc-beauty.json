@@ -1,0 +1,744 @@
+{
+ "$comment": "Kanoniczna lista zabiegów programu OC dla branży beauty (ERGO Hestia, program nr WA50/003353/24/A). Jedno źródło prawdy dla kalkulatora, strony produktu, schema.org, llms.txt i tabeli procedures (02). Grupy 1–3: lista z bp-app.js (PROCS, 117 pozycji łącznie z grupą 4 – pełniejsza z dwóch list w repozytorium, 03 pyt. 3). Grupa 4: nazwy z bp-app.js, brzmienie z ankiety ERGO Hestii (AnkietaBPEH.pdf, pkt 2). Kolejność jak w źródle. Pola synonimy/zawody uzupełnia przegląd treści.",
+ "program": {
+  "nazwa": "Program Ubezpieczenia Odpowiedzialności Cywilnej dla branży beauty",
+  "ubezpieczyciel": "Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.",
+  "numer_programu": "WA50/003353/24/A",
+  "partner": "Fundacja Beauty Razem"
+ },
+ "grupy": [
+  {
+   "grupa": 1,
+   "nazwa": "Grupa 1 – kosmetyka, fryzjerstwo, stylizacja",
+   "liczba_zabiegow": 40
+  },
+  {
+   "grupa": 2,
+   "nazwa": "Grupa 2 – kosmetologia, makijaż permanentny, tatuaż",
+   "liczba_zabiegow": 38
+  },
+  {
+   "grupa": 3,
+   "nazwa": "Grupa 3 – podologia",
+   "liczba_zabiegow": 31
+  },
+  {
+   "grupa": 4,
+   "nazwa": "Grupa 4 – zabiegi wysokiego ryzyka (wycena indywidualna, ankieta ERGO Hestii)",
+   "liczba_zabiegow": 8
+  }
+ ],
+ "reguly_taryfy": "Grupy 1 i 2 razem oraz grupa 3 z grupą 1 lub 2 – stawki grupy 3. Grupa 4 lub zespół od 9 osób – wycena indywidualna (ankieta ERGO Hestii).",
+ "zabiegi": [
+  {
+   "id": "g1-01",
+   "slug": "barbering",
+   "nazwa": "Barbering",
+   "grupa": 1
+  },
+  {
+   "id": "g1-02",
+   "slug": "depilacja-pasta-cukrowa",
+   "nazwa": "Depilacja pastą cukrową",
+   "grupa": 1
+  },
+  {
+   "id": "g1-03",
+   "slug": "depilacja-woskiem",
+   "nazwa": "Depilacja woskiem",
+   "grupa": 1
+  },
+  {
+   "id": "g1-04",
+   "slug": "dermabrazja-i-peeling-skory-glowy",
+   "nazwa": "Dermabrazja i peeling skóry głowy",
+   "grupa": 1
+  },
+  {
+   "id": "g1-05",
+   "slug": "diagnoza-skory-glowy-i-usg-wlosa",
+   "nazwa": "Diagnoza skóry głowy i USG włosa",
+   "grupa": 1
+  },
+  {
+   "id": "g1-06",
+   "slug": "elektrostymulacja",
+   "nazwa": "Elektrostymulacja",
+   "grupa": 1
+  },
+  {
+   "id": "g1-07",
+   "slug": "endermologia-masaz-podcisnieniowy",
+   "nazwa": "Endermologia – masaż podciśnieniowy",
+   "grupa": 1
+  },
+  {
+   "id": "g1-08",
+   "slug": "golenie-glowy",
+   "nazwa": "Golenie głowy",
+   "grupa": 1
+  },
+  {
+   "id": "g1-09",
+   "slug": "henna",
+   "nazwa": "Henna",
+   "grupa": 1
+  },
+  {
+   "id": "g1-10",
+   "slug": "koloryzacja-i-dekoloryzacja-wlosow",
+   "nazwa": "Koloryzacja i dekoloryzacja włosów",
+   "grupa": 1
+  },
+  {
+   "id": "g1-11",
+   "slug": "kosmetyczna-diagnostyka-trychologiczna",
+   "nazwa": "Kosmetyczna diagnostyka trychologiczna",
+   "grupa": 1
+  },
+  {
+   "id": "g1-12",
+   "slug": "kosmetyczny-zabieg-trychologiczny",
+   "nazwa": "Kosmetyczny zabieg trychologiczny",
+   "grupa": 1
+  },
+  {
+   "id": "g1-13",
+   "slug": "kuracje-nawilzajace-i-odbudowujace-wlosy",
+   "nazwa": "Kuracje nawilżające i odbudowujące włosy",
+   "grupa": 1
+  },
+  {
+   "id": "g1-14",
+   "slug": "laminowanie-brwi-i-rzes",
+   "nazwa": "Laminowanie brwi i rzęs",
+   "grupa": 1
+  },
+  {
+   "id": "g1-15",
+   "slug": "laminowanie-wlosow",
+   "nazwa": "Laminowanie włosów",
+   "grupa": 1
+  },
+  {
+   "id": "g1-16",
+   "slug": "makijaz",
+   "nazwa": "Makijaż",
+   "grupa": 1
+  },
+  {
+   "id": "g1-17",
+   "slug": "manicure",
+   "nazwa": "Manicure",
+   "grupa": 1
+  },
+  {
+   "id": "g1-18",
+   "slug": "manualne-oczyszczanie-twarzy",
+   "nazwa": "Manualne oczyszczanie twarzy",
+   "grupa": 1
+  },
+  {
+   "id": "g1-19",
+   "slug": "masaz-banka-chinska",
+   "nazwa": "Masaż bańką chińską",
+   "grupa": 1
+  },
+  {
+   "id": "g1-20",
+   "slug": "masaz-endodermiczny-i-drenaz-limfatyczny",
+   "nazwa": "Masaż endodermiczny i drenaż limfatyczny",
+   "grupa": 1
+  },
+  {
+   "id": "g1-21",
+   "slug": "masaz-manualny-ciala-i-twarzy",
+   "nazwa": "Masaż manualny ciała i twarzy",
+   "grupa": 1
+  },
+  {
+   "id": "g1-22",
+   "slug": "mycie-i-suszenie-wlosow",
+   "nazwa": "Mycie i suszenie włosów",
+   "grupa": 1
+  },
+  {
+   "id": "g1-23",
+   "slug": "oczyszczanie-wlosow",
+   "nazwa": "Oczyszczanie włosów",
+   "grupa": 1
+  },
+  {
+   "id": "g1-24",
+   "slug": "pasemka-i-baleyage",
+   "nazwa": "Pasemka i baleyage",
+   "grupa": 1
+  },
+  {
+   "id": "g1-25",
+   "slug": "pedicure-kosmetyczny",
+   "nazwa": "Pedicure kosmetyczny",
+   "grupa": 1
+  },
+  {
+   "id": "g1-26",
+   "slug": "piercing-przekluwanie",
+   "nazwa": "Piercing – przekłuwanie",
+   "grupa": 1
+  },
+  {
+   "id": "g1-27",
+   "slug": "presoterapia",
+   "nazwa": "Presoterapia",
+   "grupa": 1
+  },
+  {
+   "id": "g1-28",
+   "slug": "przekluwanie-uszu",
+   "nazwa": "Przekłuwanie uszu",
+   "grupa": 1
+  },
+  {
+   "id": "g1-29",
+   "slug": "przedluzanie-i-zageszczanie-rzes",
+   "nazwa": "Przedłużanie i zagęszczanie rzęs",
+   "grupa": 1
+  },
+  {
+   "id": "g1-30",
+   "slug": "przedluzanie-wlosow",
+   "nazwa": "Przedłużanie włosów",
+   "grupa": 1
+  },
+  {
+   "id": "g1-31",
+   "slug": "prostowanie-wlosow-na-stale",
+   "nazwa": "Prostowanie włosów na stałe",
+   "grupa": 1
+  },
+  {
+   "id": "g1-32",
+   "slug": "retusz-siwizny",
+   "nazwa": "Retusz siwizny",
+   "grupa": 1
+  },
+  {
+   "id": "g1-33",
+   "slug": "sauna-na-wlosy",
+   "nazwa": "Sauna na włosy",
+   "grupa": 1
+  },
+  {
+   "id": "g1-34",
+   "slug": "strzyzenie-nozyczki-maszynka-brzytwa-split-ender",
+   "nazwa": "Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)",
+   "grupa": 1
+  },
+  {
+   "id": "g1-35",
+   "slug": "trwala-ondulacja",
+   "nazwa": "Trwała ondulacja",
+   "grupa": 1
+  },
+  {
+   "id": "g1-36",
+   "slug": "zabiegi-z-zastosowaniem-skladnikow-aktywnych",
+   "nazwa": "Zabiegi z zastosowaniem składników aktywnych",
+   "grupa": 1
+  },
+  {
+   "id": "g1-37",
+   "slug": "zabiegi-keratynowe",
+   "nazwa": "Zabiegi keratynowe",
+   "grupa": 1
+  },
+  {
+   "id": "g1-38",
+   "slug": "zabiegi-przeciwlupiezowe",
+   "nazwa": "Zabiegi przeciwłupieżowe",
+   "grupa": 1
+  },
+  {
+   "id": "g1-39",
+   "slug": "zabiegi-led-terapeutyczne",
+   "nazwa": "Zabiegi LED – terapeutyczne",
+   "grupa": 1
+  },
+  {
+   "id": "g1-40",
+   "slug": "zageszczanie-wlosow",
+   "nazwa": "Zagęszczanie włosów",
+   "grupa": 1
+  },
+  {
+   "id": "g2-01",
+   "slug": "chemiczne-usuwanie-makijazu-permanentnego",
+   "nazwa": "Chemiczne usuwanie makijażu permanentnego",
+   "grupa": 2
+  },
+  {
+   "id": "g2-02",
+   "slug": "cool-lifting",
+   "nazwa": "Cool Lifting",
+   "grupa": 2
+  },
+  {
+   "id": "g2-03",
+   "slug": "elektroliza",
+   "nazwa": "Elektroliza",
+   "grupa": 2
+  },
+  {
+   "id": "g2-04",
+   "slug": "elektrokoagulacja",
+   "nazwa": "Elektrokoagulacja",
+   "grupa": 2
+  },
+  {
+   "id": "g2-05",
+   "slug": "elektroporacja",
+   "nazwa": "Elektroporacja",
+   "grupa": 2
+  },
+  {
+   "id": "g2-06",
+   "slug": "fala-akustyczna-i-energia-wysokiej-czestotliwosci",
+   "nazwa": "Fala akustyczna i energia wysokiej częstotliwości",
+   "grupa": 2
+  },
+  {
+   "id": "g2-07",
+   "slug": "infuzja-tlenowa",
+   "nazwa": "Infuzja tlenowa",
+   "grupa": 2
+  },
+  {
+   "id": "g2-08",
+   "slug": "jonoforeza",
+   "nazwa": "Jonoforeza",
+   "grupa": 2
+  },
+  {
+   "id": "g2-09",
+   "slug": "karboksyterapia",
+   "nazwa": "Karboksyterapia",
+   "grupa": 2
+  },
+  {
+   "id": "g2-10",
+   "slug": "kawitacja-ultradzwiekowa",
+   "nazwa": "Kawitacja ultradźwiękowa",
+   "grupa": 2
+  },
+  {
+   "id": "g2-11",
+   "slug": "kriolipoliza",
+   "nazwa": "Kriolipoliza",
+   "grupa": 2
+  },
+  {
+   "id": "g2-12",
+   "slug": "makijaz-okolicznosciowy",
+   "nazwa": "Makijaż okolicznościowy",
+   "grupa": 2
+  },
+  {
+   "id": "g2-13",
+   "slug": "makijaz-permanentny",
+   "nazwa": "Makijaż permanentny",
+   "grupa": 2
+  },
+  {
+   "id": "g2-14",
+   "slug": "masaz-kobido",
+   "nazwa": "Masaż Kobido",
+   "grupa": 2
+  },
+  {
+   "id": "g2-15",
+   "slug": "mezoterapia-beziglowa",
+   "nazwa": "Mezoterapia bezigłowa",
+   "grupa": 2
+  },
+  {
+   "id": "g2-16",
+   "slug": "mezoterapia-iglowa",
+   "nazwa": "Mezoterapia igłowa",
+   "grupa": 2
+  },
+  {
+   "id": "g2-17",
+   "slug": "mezoterapia-mikroiglowa",
+   "nazwa": "Mezoterapia mikroigłowa",
+   "grupa": 2
+  },
+  {
+   "id": "g2-18",
+   "slug": "microblading",
+   "nazwa": "Microblading",
+   "grupa": 2
+  },
+  {
+   "id": "g2-19",
+   "slug": "mikronakluwanie",
+   "nazwa": "Mikronakłuwanie",
+   "grupa": 2
+  },
+  {
+   "id": "g2-20",
+   "slug": "mikropigmentacja-rekonstrukcyjna",
+   "nazwa": "Mikropigmentacja rekonstrukcyjna",
+   "grupa": 2
+  },
+  {
+   "id": "g2-21",
+   "slug": "mikrodermabrazja-korundowa-i-diamentowa",
+   "nazwa": "Mikrodermabrazja korundowa i diamentowa",
+   "grupa": 2
+  },
+  {
+   "id": "g2-22",
+   "slug": "oczyszczanie-wodorowo-tlenowe",
+   "nazwa": "Oczyszczanie wodorowo-tlenowe",
+   "grupa": 2
+  },
+  {
+   "id": "g2-23",
+   "slug": "opalanie-natryskowe",
+   "nazwa": "Opalanie natryskowe",
+   "grupa": 2
+  },
+  {
+   "id": "g2-24",
+   "slug": "oxybrazja",
+   "nazwa": "Oxybrazja",
+   "grupa": 2
+  },
+  {
+   "id": "g2-25",
+   "slug": "pedicure-kosmetyczny-niezastrzezony-dla-podologow",
+   "nazwa": "Pedicure kosmetyczny (niezastrzeżony dla podologów)",
+   "grupa": 2
+  },
+  {
+   "id": "g2-26",
+   "slug": "peeling-weglowy",
+   "nazwa": "Peeling węglowy",
+   "grupa": 2
+  },
+  {
+   "id": "g2-27",
+   "slug": "radiofrekwencja-mikroiglowa",
+   "nazwa": "Radiofrekwencja mikroigłowa",
+   "grupa": 2
+  },
+  {
+   "id": "g2-28",
+   "slug": "radiotermoliza-zmian-skornych",
+   "nazwa": "Radiotermoliza zmian skórnych",
+   "grupa": 2
+  },
+  {
+   "id": "g2-29",
+   "slug": "roznorodne-peelingi-chemiczne",
+   "nazwa": "Różnorodne peelingi chemiczne",
+   "grupa": 2
+  },
+  {
+   "id": "g2-30",
+   "slug": "sauny-infrared",
+   "nazwa": "Sauny infrared",
+   "grupa": 2
+  },
+  {
+   "id": "g2-31",
+   "slug": "sonoforeza",
+   "nazwa": "Sonoforeza",
+   "grupa": 2
+  },
+  {
+   "id": "g2-32",
+   "slug": "tatuaz",
+   "nazwa": "Tatuaż",
+   "grupa": 2
+  },
+  {
+   "id": "g2-33",
+   "slug": "zabiegi-fala-radiowa",
+   "nazwa": "Zabiegi falą radiową",
+   "grupa": 2
+  },
+  {
+   "id": "g2-34",
+   "slug": "zabiegi-ipl-fotoodmladzanie-przebarwienia-teleangiektazje-depilacja",
+   "nazwa": "Zabiegi IPL (fotoodmładzanie, przebarwienia, teleangiektazje, depilacja)",
+   "grupa": 2
+  },
+  {
+   "id": "g2-35",
+   "slug": "zabiegi-laserem-frakcyjnym-nieablacyjnym",
+   "nazwa": "Zabiegi laserem frakcyjnym nieablacyjnym",
+   "grupa": 2
+  },
+  {
+   "id": "g2-36",
+   "slug": "zabiegi-laserem-nieablacyjnym-naczynia-tatuaz-depilacja",
+   "nazwa": "Zabiegi laserem nieablacyjnym (naczynia, tatuaż, depilacja)",
+   "grupa": 2
+  },
+  {
+   "id": "g2-37",
+   "slug": "zabiegi-z-zastosowaniem-podczerwieni",
+   "nazwa": "Zabiegi z zastosowaniem podczerwieni",
+   "grupa": 2
+  },
+  {
+   "id": "g2-38",
+   "slug": "zastosowanie-pradow-malej-i-duzej-czestotliwosci",
+   "nazwa": "Zastosowanie prądów małej i dużej częstotliwości",
+   "grupa": 2
+  },
+  {
+   "id": "g3-01",
+   "slug": "analiza-chodu-ocena-dynamiczna-wideoanaliza",
+   "nazwa": "Analiza chodu (ocena dynamiczna, wideoanaliza)",
+   "grupa": 3
+  },
+  {
+   "id": "g3-02",
+   "slug": "badanie-grzybicze-paznokcia",
+   "nazwa": "Badanie grzybicze paznokcia",
+   "grupa": 3
+  },
+  {
+   "id": "g3-03",
+   "slug": "badanie-podoskopowe-podoskanerem",
+   "nazwa": "Badanie podoskopowe / podoskanerem",
+   "grupa": 3
+  },
+  {
+   "id": "g3-04",
+   "slug": "delikatna-koloryzacja-rekonstrukcyjna-paznokci",
+   "nazwa": "Delikatna koloryzacja rekonstrukcyjna paznokci",
+   "grupa": 3
+  },
+  {
+   "id": "g3-05",
+   "slug": "diagnostyka-i-leczenie-brodawek",
+   "nazwa": "Diagnostyka i leczenie brodawek",
+   "grupa": 3
+  },
+  {
+   "id": "g3-06",
+   "slug": "diagnostyka-roznicowa-brodawka-vs-odcisk",
+   "nazwa": "Diagnostyka różnicowa brodawka vs odcisk",
+   "grupa": 3
+  },
+  {
+   "id": "g3-07",
+   "slug": "dobor-indywidualnych-wkladek-korygujacych",
+   "nazwa": "Dobór indywidualnych wkładek korygujących",
+   "grupa": 3
+  },
+  {
+   "id": "g3-08",
+   "slug": "dobor-ortez-i-separatorow-zelowych",
+   "nazwa": "Dobór ortez i separatorów żelowych",
+   "grupa": 3
+  },
+  {
+   "id": "g3-09",
+   "slug": "instruktaz-ochrony-mechanicznej-i-modyfikacji-obuwia",
+   "nazwa": "Instruktaż ochrony mechanicznej i modyfikacji obuwia",
+   "grupa": 3
+  },
+  {
+   "id": "g3-10",
+   "slug": "intensywne-kuracje-nawilzajaco-regenerujace",
+   "nazwa": "Intensywne kuracje nawilżająco-regenerujące",
+   "grupa": 3
+  },
+  {
+   "id": "g3-11",
+   "slug": "klamry-ortonyksyjne-aplikacja-i-aktywacje",
+   "nazwa": "Klamry ortonyksyjne – aplikacja i aktywacje",
+   "grupa": 3
+  },
+  {
+   "id": "g3-12",
+   "slug": "konsultacja-podologiczna",
+   "nazwa": "Konsultacja podologiczna",
+   "grupa": 3
+  },
+  {
+   "id": "g3-13",
+   "slug": "kontrola-po-klamrze-rekonstrukcji-opatrunku",
+   "nazwa": "Kontrola po klamrze / rekonstrukcji / opatrunku",
+   "grupa": 3
+  },
+  {
+   "id": "g3-14",
+   "slug": "korekty-ustawienia-palucha-taping-fiksatory",
+   "nazwa": "Korekty ustawienia palucha: taping / fiksatory",
+   "grupa": 3
+  },
+  {
+   "id": "g3-15",
+   "slug": "krioterapia-zmian-skornych-co2-punktowa",
+   "nazwa": "Krioterapia zmian skórnych (CO2, punktowa)",
+   "grupa": 3
+  },
+  {
+   "id": "g3-16",
+   "slug": "odciazanie-miejsc-bolesnych-taping",
+   "nazwa": "Odciążanie miejsc bolesnych (taping)",
+   "grupa": 3
+  },
+  {
+   "id": "g3-17",
+   "slug": "opatrunki-specjalistyczne",
+   "nazwa": "Opatrunki specjalistyczne",
+   "grupa": 3
+  },
+  {
+   "id": "g3-18",
+   "slug": "opracowanie-lozyska-przy-onycholizie",
+   "nazwa": "Opracowanie łożyska przy onycholizie",
+   "grupa": 3
+  },
+  {
+   "id": "g3-19",
+   "slug": "opracowanie-modzeli-odciskow-nagniotkow",
+   "nazwa": "Opracowanie modzeli, odcisków, nagniotków",
+   "grupa": 3
+  },
+  {
+   "id": "g3-20",
+   "slug": "opracowanie-pekniec-i-rozpadlin-piet",
+   "nazwa": "Opracowanie pęknięć i rozpadlin pięt",
+   "grupa": 3
+  },
+  {
+   "id": "g3-21",
+   "slug": "opracowanie-walow-z-ziarnina",
+   "nazwa": "Opracowanie wałów z ziarniną",
+   "grupa": 3
+  },
+  {
+   "id": "g3-22",
+   "slug": "ozonoterapia",
+   "nazwa": "Ozonoterapia",
+   "grupa": 3
+  },
+  {
+   "id": "g3-23",
+   "slug": "pedicure-podologiczny-medyczny-calosciowy",
+   "nazwa": "Pedicure podologiczny (medyczny) całościowy",
+   "grupa": 3
+  },
+  {
+   "id": "g3-24",
+   "slug": "pobieranie-probek-do-badan",
+   "nazwa": "Pobieranie próbek do badań",
+   "grupa": 3
+  },
+  {
+   "id": "g3-25",
+   "slug": "profilaktyka-i-zabiegi-u-osob-z-grup-ryzyka",
+   "nazwa": "Profilaktyka i zabiegi u osób z grup ryzyka",
+   "grupa": 3
+  },
+  {
+   "id": "g3-26",
+   "slug": "protetyka-rekonstrukcja-paznokcia",
+   "nazwa": "Protetyka / rekonstrukcja paznokcia",
+   "grupa": 3
+  },
+  {
+   "id": "g3-27",
+   "slug": "rozpoznanie-i-usuwanie-modzeli-odciskow-rozpadlin",
+   "nazwa": "Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin",
+   "grupa": 3
+  },
+  {
+   "id": "g3-28",
+   "slug": "skrocenie-i-wyrownanie-paznokci-zmienionych-chorobowo",
+   "nazwa": "Skrócenie i wyrównanie paznokci (zmienionych chorobowo)",
+   "grupa": 3
+  },
+  {
+   "id": "g3-29",
+   "slug": "terapia-nadpotliwosci-stop-jonoforeza",
+   "nazwa": "Terapia nadpotliwości stóp (jonoforeza)",
+   "grupa": 3
+  },
+  {
+   "id": "g3-30",
+   "slug": "usuwanie-zrogowacialego-naskorka",
+   "nazwa": "Usuwanie zrogowaciałego naskórka",
+   "grupa": 3
+  },
+  {
+   "id": "g3-31",
+   "slug": "zabiegi-skalpelem-dlutem-i-frezami",
+   "nazwa": "Zabiegi skalpelem, dłutem i frezami",
+   "grupa": 3
+  },
+  {
+   "id": "g4-01",
+   "slug": "zabiegi-technologia-hifu",
+   "nazwa": "Zabiegi technologią HIFU",
+   "grupa": 4,
+   "nazwa_w_ankiecie_ergo": "zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)"
+  },
+  {
+   "id": "g4-02",
+   "slug": "zabiegi-z-uzyciem-toksyny-botulinowej",
+   "nazwa": "Zabiegi z użyciem toksyny botulinowej",
+   "grupa": 4,
+   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem toksyny botulinowej"
+  },
+  {
+   "id": "g4-03",
+   "slug": "zabiegi-osoczem-bogatoplytkowym-prp",
+   "nazwa": "Zabiegi osoczem bogatopłytkowym (PRP)",
+   "grupa": 4,
+   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem osocza bogatopłytkowego"
+  },
+  {
+   "id": "g4-04",
+   "slug": "zabiegi-technologia-plasma",
+   "nazwa": "Zabiegi technologią PLASMA",
+   "grupa": 4,
+   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem urządzeń wykorzystujących technologię PLASMA"
+  },
+  {
+   "id": "g4-05",
+   "slug": "wypelniacze-kwas-hialuronowy",
+   "nazwa": "Wypełniacze – kwas hialuronowy",
+   "grupa": 4,
+   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego"
+  },
+  {
+   "id": "g4-06",
+   "slug": "zabiegi-z-uzyciem-nici-pdo",
+   "nazwa": "Zabiegi z użyciem nici PDO",
+   "grupa": 4,
+   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem nici PDO"
+  },
+  {
+   "id": "g4-07",
+   "slug": "lipoliza-iniekcyjna",
+   "nazwa": "Lipoliza iniekcyjna",
+   "grupa": 4,
+   "nazwa_w_ankiecie_ergo": "zabiegi lipolizy iniekcyjnej"
+  },
+  {
+   "id": "g4-08",
+   "slug": "zabiegi-laserem-ablacyjnym",
+   "nazwa": "Zabiegi laserem ablacyjnym",
+   "grupa": 4,
+   "nazwa_w_ankiecie_ergo": "zabiegi laserem ablacyjnym"
+  }
+ ]
+}
