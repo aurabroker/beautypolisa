@@ -126,7 +126,10 @@ Narzędzie: Playwright i Chromium, zrzuty całej strony przy 1280 i 390 px.
 ## 11. Pliki
 
 - `design/v3/makieta-v3.html`: makieta strony głównej (sprite ikon wbudowany).
-- `design/v3/oc-beauty.html`: makieta strony `/ubezpieczenia/oc-beauty` – lista 117 zabiegów (`#zabiegi`), treść klauzuli ochrony prawnej (`#ochrona-prawna`), taryfa i FAQ (rozdział 15).
+- `design/v3/oc-beauty.html`: makieta strony `/ubezpieczenia/oc-beauty` – lista 117 zabiegów (`#zabiegi`), treść klauzuli ochrony prawnej (`#ochrona-prawna`), taryfa i FAQ (rozdział 15). „Jak kupić”: ścieżka OC z osobistym linkiem do APK i wniosku w serwisie portal.beautypolisa.eu opisana słowami, bez adresu z kodem (00, D32).
+- `design/v3/tax-protect.html`: makieta strony `/ubezpieczenia/tax-protect` – stała taryfa (00, D26), „Jak kupić”: kalkulator albo formularz → doradca Aura Expert prowadzi wniosek, bez osobistego linku (00, D32 etap 1, D34).
+- `design/v3/utrata-dochodu.html`: makieta strony `/ubezpieczenia/utrata-dochodu` – treść z utratadochodu.pl, bez kwot składek, wniosek i zakup online na utratadochodu.pl (00, D33, D34).
+- `design/v3/nnw-dzieci.html`, `design/v3/grupowe-ergo.html`: makiety stron NNW dzieci i grupowego ERGO – formularz → doradca Aura Expert (bez osobistego linku – 00, D32).
 - `design/v3/tokens-v3.css`: tokeny, szkło, ikony, przyciski i mapowanie do `@theme` Tailwind 4.
 - `design/v3/img/`: cztery zdjęcia w dwóch rozmiarach.
 - `design/v3/ikony/`, `ikony-v3-sprite.svg`, `ikony-arkusz-v3.svg`, `ikony-v3-manifest.json`: ikony.
