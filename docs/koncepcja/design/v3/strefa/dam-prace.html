@@ -16,7 +16,11 @@
      „Szukam pracy” (decyzja P1a) – przełącznik szukam_pracy WŁĄCZONY od startu:
        /strefa-klienta/dam-prace/szukam-pracy* – tylko pracodawca z poziomem 2 (potwierdzona reprezentacja firmy, TOTP); dane wyłącznie z app_candidate_ads_page() – 20 kart, kwota dzienna; noindex, no-store, poza sitemap, JSON-LD i llms.txt.
        /strefa-klienta/szukam-pracy – osoba szukająca pracy (moje ogłoszenie, usunięcie konta).
-     Promocja (P1c): ogłoszenia bezpłatne, ważne 21 dni (CHECK w bazie, app_promotions.ad_days). -->
+     Promocja (P1c): ogłoszenia bezpłatne, ważne 21 dni (CHECK w bazie, app_promotions.ad_days).
+     Konteksty makiety: publiczny, salon z polisą (strefa), pracodawca z rejestracji (?konto=pracodawca – Studio Przykładowe, poziom 1)
+     i osoba szukająca pracy. W produkcji kontekst wynika z sesji i konta, nie z adresu.
+     Bez tagu Google (GA4, Zaraz) w Strefie Klienta; na publicznych /dam-prace tag tylko po zgodzie (Zaraz + Consent Mode v2).
+     W produkcji fonty lokalnie (next/font/local), bez fonts.googleapis.com i fonts.gstatic.com; Google Fonts tylko w makiecie. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
@@ -25,16 +29,21 @@
 /* =====================================================================
    dam-prace.html – style tylko tej makiety (wspólne klasy P1 są w strefa.css:
    .promo-tag, .statement, .safety, .subnav, .registry).
-   Jedna makieta, trzy konteksty: strona publiczna (/dam-prace), strefa
-   pracodawcy (/strefa-klienta/dam-prace) i strefa osoby szukającej pracy
+   Jedna makieta, cztery konteksty: strona publiczna (/dam-prace), strefa
+   salonu z polisą (/strefa-klienta/dam-prace), konto pracodawcy z rejestracji
+   (te same ekrany + pulpit pracodawcy) i strefa osoby szukającej pracy
    (/strefa-klienta/szukam-pracy). JS ustawia html[data-ctx];
    bez JS widać wszystkie nagłówki i ekrany pod sobą.
    ===================================================================== */
-html[data-ctx="public"] :is(.ctx-zone,.ctx-seeker,.ctx-app),
-html[data-ctx="zone"] :is(.ctx-public,.ctx-seeker),
-html[data-ctx="seeker"] :is(.ctx-public,.ctx-zone){display:none!important}
+html[data-ctx="public"] :is(.ctx-zone,.ctx-employer,.ctx-seeker,.ctx-app),
+html[data-ctx="zone"] :is(.ctx-public,.ctx-employer,.ctx-seeker),
+html[data-ctx="employer"] :is(.ctx-public,.ctx-zone,.ctx-seeker),
+html[data-ctx="seeker"] :is(.ctx-public,.ctx-zone,.ctx-employer){display:none!important}
 html[data-ctx="public"] .app{grid-template-columns:minmax(0,1fr)}
+.crumbs li > a + a{margin-left:10px}
 html:not(.js) .pub-header{position:relative}
+/* bez JS widać menu wszystkich trzech kont w pasku strefy – zawijają się zamiast poszerzać stronę */
+html:not(.js) .topbar-inner{flex-wrap:wrap;justify-content:flex-end}
 html:not(.js) .pub-bar.glass{background:rgba(247,243,236,.95);-webkit-backdrop-filter:none;backdrop-filter:none}
 span.nowrap.nowrap{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.8125rem;overflow-wrap:anywhere;color:var(--color-ink)}
@@ -216,7 +225,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
 @media (forced-colors:active){.chip span{border:1px solid CanvasText}.chip input:checked + span{outline:2px solid Highlight}.mailprev{border:1px solid CanvasText}}
 @media print{.pub-header{display:none!important}}
 </style>
-<script>(function(d){d.classList.add('js');var h=location.hash.slice(1);d.setAttribute('data-ctx',/^(szukam-(dodaj|moje|konto)|sa-)/.test(h)?'seeker':(/^(moje-ogloszenia|ogloszenie-wyslane|nowe-ogloszenie|podglad|konto-pracodawcy|szukam-pracy|sp-)/.test(h)?'zone':'public'))})(document.documentElement)</script>
+<script>(function(d){d.classList.add('js');var h=location.hash.slice(1),e=/[?&]konto=pracodawca(&|$)/.test(location.search);d.setAttribute('data-ctx',/^(szukam-(dodaj|moje|konto)|sa-)/.test(h)?'seeker':(/^(pulpit-pracodawcy|konto-studio)$/.test(h)?'employer':(/^(moje-ogloszenia|ogloszenie-wyslane|nowe-ogloszenie|podglad|konto-pracodawcy|szukam-pracy|sp-|wlacz-)/.test(h)?(e?'employer':'zone'):'public')))})(document.documentElement)</script>
 </head>
 <body>
 <a class="skip" href="#tresc">Przejdź do treści</a>
@@ -226,16 +235,22 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
 <div class="mock-bar" role="note">
   <strong>Makieta</strong>
   <span>„Dam pracę” i&nbsp;„Szukam pracy” – tablica ogłoszeń (D-C, P1). Promocja na otwarcie: bez opłat, 21&nbsp;dni. Dane są fikcyjne, stan na 12&nbsp;listopada 2026&nbsp;r.</span>
-  <nav aria-label="Ekrany makiety">
-    <a href="#oferty">Lista ofert</a>
-    <a href="#oferta">Oferta i&nbsp;kontakt</a>
-    <a href="#oferta-wyslane">Wiadomość przekazana</a>
-    <a href="#moje-ogloszenia">Pracodawca: moje ogłoszenia</a>
-    <a href="#nowe-ogloszenie">Nowe ogłoszenie</a>
-    <a href="#szukam-pracy">Pracodawca: Szukam pracy</a>
-    <a href="#sp-wiadomosc">Wiadomość do autora</a>
-    <a href="#szukam-dodaj">Osoba szukająca pracy: dodaj ogłoszenie</a>
-    <a href="#szukam-moje">Moje ogłoszenie</a>
+  <nav aria-label="Ekrany makiety – tablica i salon z polisą">
+    <a href="dam-prace.html#oferty">Lista ofert</a>
+    <a href="dam-prace.html#oferta">Oferta i&nbsp;kontakt</a>
+    <a href="dam-prace.html#oferta-wyslane">Wiadomość przekazana</a>
+    <a href="dam-prace.html#wlacz-dam-prace">Salon: włącz „Dam pracę”</a>
+    <a href="dam-prace.html#moje-ogloszenia">Salon: moje ogłoszenia</a>
+    <a href="dam-prace.html#nowe-ogloszenie">Nowe ogłoszenie</a>
+    <a href="dam-prace.html#szukam-pracy">Salon: Szukam pracy</a>
+    <a href="dam-prace.html#sp-wiadomosc">Wiadomość do autora</a>
+  </nav>
+  <nav aria-label="Ekrany makiety – pracodawca z rejestracji i osoba szukająca pracy">
+    <a href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy">Pracodawca z&nbsp;rejestracji: pulpit</a>
+    <a href="dam-prace.html?konto=pracodawca#moje-ogloszenia">Jego ogłoszenia</a>
+    <a href="dam-prace.html?konto=pracodawca#szukam-pracy">Szukam pracy&nbsp;– czeka</a>
+    <a href="dam-prace.html#szukam-dodaj">Osoba szukająca pracy: dodaj ogłoszenie</a>
+    <a href="dam-prace.html#szukam-moje">Moje ogłoszenie</a>
     <a href="logowanie.html#s-rej">Rejestracja</a>
   </nav>
 </div>
@@ -300,6 +315,22 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
         <a href="logowanie.html"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></svg>Wyloguj</a>
       </div>
     </details>
+    <!-- konto pracodawcy z rejestracji (bez polisy): Studio Przykładowe, poziom 1 -->
+    <details class="account ctx-employer" id="account-p">
+      <summary>
+        <span class="monogram" aria-hidden="true">SP</span>
+        <span class="account-name"><strong>Studio Przykładowe</strong><span>konto pracodawcy</span></span>
+        <span class="sr-only">– menu konta</span>
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg>
+      </summary>
+      <div class="account-panel">
+        <p class="acc-who"><strong>Studio Przykładowe</strong><span>biuro@studio-przyklad.example</span></p>
+        <a href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy" aria-current="true"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Studio Przykładowe&nbsp;– pulpit pracodawcy</a>
+        <hr>
+        <a href="dam-prace.html?konto=pracodawca#konto-studio"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Ustawienia</a>
+        <a href="logowanie.html"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></svg>Wyloguj</a>
+      </div>
+    </details>
     <!-- konto osoby szukającej pracy -->
     <details class="account ctx-seeker" id="account-s">
       <summary>
@@ -335,6 +366,18 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
       <hr>
       <ul>
         <li><a href="panel.html#ustawienia"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Ustawienia</a></li>
+      </ul>
+    </div>
+    <div class="ctx-employer">
+      <p class="sidenav-title label-caps">Studio Przykładowe</p>
+      <ul>
+        <li><a href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy" data-nav="pulpit-pracodawcy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Pulpit pracodawcy</a></li>
+        <li><a href="dam-prace.html?konto=pracodawca#moje-ogloszenia" data-nav="moje-ogloszenia nowe-ogloszenie"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Moje ogłoszenia</a></li>
+        <li><a href="dam-prace.html?konto=pracodawca#szukam-pracy" data-nav="szukam-pracy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Szukam pracy</a></li>
+      </ul>
+      <hr>
+      <ul>
+        <li><a href="dam-prace.html?konto=pracodawca#konto-studio" data-nav="konto-studio"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Ustawienia</a></li>
       </ul>
     </div>
     <div class="ctx-seeker">
@@ -486,7 +529,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
             <li class="offer" data-zawod="tatuazysta" data-woj="pomorskie" data-umowa="inna">
               <svg class="lux-icon" aria-hidden="true"><use href="#lux-tatuazysta"/></svg>
               <h3><a href="#oferta">Tatuażysta / tatuażystka (przykład)</a></h3>
-              <p class="offer-salon">Studio Przykładowe · Gdynia, pomorskie</p>
+              <p class="offer-salon">Pracownia Przykładowa · Gdynia, pomorskie</p>
               <ul class="offer-meta"><li>inna forma umowy</li><li>elastyczny wymiar</li><li>dodano <time datetime="2026-10-28">28.10.2026</time></li></ul>
               <p class="offer-pay"><strong>4&nbsp;000–6&nbsp;000&nbsp;zł</strong><span>netto miesięcznie</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-18">18&nbsp;listopada 2026&nbsp;r.</time></p>
@@ -593,7 +636,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
             <div class="registry-head"><span class="label-caps">Firma&nbsp;– dane z&nbsp;rejestru REGON (GUS)</span></div>
             <dl class="kv kv--rows">
               <div><dt>Nazwa z&nbsp;rejestru</dt><dd>Studio Przykładowe Ewa Przykładowa (przykład)</dd></div>
-              <div><dt>NIP</dt><dd><span class="nowrap">000-000-00-00</span> (przykład)</dd></div>
+              <div><dt>NIP</dt><dd><span class="nowrap">000-000-11-00</span> (przykład)</dd></div>
               <div><dt>Sprawdzono w&nbsp;rejestrze</dt><dd><time datetime="2026-11-03">3&nbsp;listopada 2026&nbsp;r.</time></dd></div>
             </dl>
             <p class="xsmall">BeautyPolisa sprawdziła, że firma istnieje i&nbsp;prowadzi działalność&nbsp;– nie tożsamość osoby, która dodała ogłoszenie. Zanim podasz dane, skontaktuj się z&nbsp;firmą przez numer lub adres z&nbsp;jej strony albo z&nbsp;rejestru.</p>
@@ -729,12 +772,82 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
     </section>
 
     <!-- ================================================================
-         3 · STREFA PRACODAWCY: MOJE OGŁOSZENIA – /strefa-klienta/dam-prace
-         Konto: salon z polisą (poziom 2 z urzędu). Ten sam widok ma pracodawca z rejestracji.
+         2a · SALON Z POLISĄ: PIERWSZE WEJŚCIE DO „DAM PRACĘ” (11 §4.8) – /strefa-klienta/dam-prace
+         Jedna reguła dla wszystkich pracodawców: NIP z konta → GUS (serwer) → telefon SMS (/strefa-klienta/telefon).
+         TOTP właściciel już ma; poziom 2 (potwierdzona firma) – z urzędu, bo salon zna Aura Expert.
          ================================================================ -->
-    <section class="view" id="moje-ogloszenia" data-ctx="zone" aria-labelledby="t-moje">
+    <section class="view" id="wlacz-dam-prace" data-ctx="zone" aria-labelledby="t-wlacz">
       <header class="page-head glass glass--strong frame">
         <ol class="crumbs" aria-label="Ścieżka"><li><a href="panel.html#pulpit">Pulpit</a></li><li aria-current="page">Dam pracę</li></ol>
+        <p class="eyebrow">Dam pracę · pierwsze wejście</p>
+        <h1 id="t-wlacz">Włącz „Dam pracę”</h1>
+        <p class="lead">Oferty pracy publikuje każdy pracodawca po tych samych krokach. NIP salonu mamy w&nbsp;koncie&nbsp;– sprawdzimy go w&nbsp;rejestrze REGON (GUS), a&nbsp;Ty potwierdzisz numer telefonu kodem SMS. Drugi składnik masz już włączony.</p>
+        <p class="promo-tag"><strong>Promocja na otwarcie</strong><span>ogłoszenie bez opłat, widoczne 21&nbsp;dni</span></p>
+      </header>
+
+      <div class="grid grid-main">
+        <div class="grid">
+          <div class="grid" id="wlacz-kroki">
+            <form class="card surface form" id="f-wlacz" action="#wlacz-dam-prace" method="post" novalidate aria-labelledby="t-wlacz-nip">
+              <h2 class="card-title" id="t-wlacz-nip">Krok 1 z&nbsp;2: NIP salonu</h2>
+              <dl class="kv kv--rows">
+                <div><dt>NIP z&nbsp;konta</dt><dd><span class="nowrap">000-000-00-00</span> (przykład)<br><span class="xsmall muted">NIP wpisał doradca Aura Expert przy zawarciu polisy. Zmianę zgłoś doradcy.</span></dd></div>
+              </dl>
+              <div class="turnstile-slot" role="img" aria-label="Miejsce na weryfikację Cloudflare Turnstile">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+                <span>Weryfikacja Cloudflare Turnstile <span class="mock-note">miejsce na widget</span></span>
+              </div>
+              <div class="form-foot">
+                <button class="btn btn-navy" type="submit" id="wlacz-btn">Sprawdź w&nbsp;rejestrze</button>
+                <span class="small" id="wlacz-status" role="status"></span>
+              </div>
+              <!-- wynik: z JS po sprawdzeniu; bez JS widoczny jako wzór -->
+              <div class="registry is-pending" id="wlacz-wynik" tabindex="-1">
+                <div class="registry-head"><span class="label-caps">Dane z&nbsp;rejestru REGON (GUS)</span><span class="badge badge--ok">Aktywna działalność</span></div>
+                <dl class="kv kv--rows">
+                  <div><dt>Nazwa z&nbsp;rejestru</dt><dd>Salon Przykładowy sp.&nbsp;z&nbsp;o.o. (przykład)</dd></div>
+                  <div><dt>Miejscowość</dt><dd>Kraków</dd></div>
+                  <div><dt>NIP</dt><dd><span class="nowrap">000-000-00-00</span> (przykład)</dd></div>
+                </dl>
+                <p class="xsmall">Sprawdzono <time datetime="2026-11-12">12.11.2026</time>. Kolejne sprawdzenie co 90&nbsp;dni. <span class="mock-note">Założenie</span></p>
+              </div>
+            </form>
+            <section class="card surface" aria-labelledby="t-wlacz-tel">
+              <h2 class="card-title" id="t-wlacz-tel">Krok 2 z&nbsp;2: telefon</h2>
+              <p class="small">Potwierdź numer telefonu kodem SMS. Numer służy tylko do potwierdzenia konta&nbsp;– nie pokazujemy go nikomu i&nbsp;nie logujesz się nim. W&nbsp;bazie zapisujemy wyłącznie skrót numeru i&nbsp;3&nbsp;ostatnie cyfry.</p>
+              <div class="actions"><a class="btn btn-navy" href="logowanie.html?dla=salon#s-sms">Potwierdź numer kodem SMS</a></div>
+            </section>
+          </div>
+
+          <!-- stan po potwierdzeniu telefonu (powrót z logowanie.html?dla=salon#s-sms); bez JS widoczny jako wzór -->
+          <div class="alert alert--success is-pending js-state" id="wlacz-gotowe" data-hide="wlacz-kroki" role="status" tabindex="-1">
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+            <strong class="alert-title">„Dam pracę” jest włączone</strong>
+            <p class="small">NIP salonu jest aktywny w&nbsp;rejestrze, a&nbsp;numer telefonu&nbsp;– potwierdzony. Możesz dodawać oferty pracy i&nbsp;czytać ogłoszenia „Szukam pracy”: firmę salonu z&nbsp;polisą Aura Expert zna, więc nie trzeba jej dodatkowo potwierdzać.</p>
+            <div class="actions"><a class="btn btn-navy btn-sm" href="#nowe-ogloszenie">Nowe ogłoszenie</a><a class="link-lux" href="#szukam-pracy">Szukam pracy</a><a class="link-quiet" href="#moje-ogloszenia">Moje ogłoszenia</a></div>
+          </div>
+        </div>
+
+        <aside class="card surface" aria-labelledby="t-wlacz-why">
+          <h2 class="card-title" id="t-wlacz-why">Dlaczego te kroki</h2>
+          <ul class="checklist">
+            <li><span>Jedna reguła dla wszystkich pracodawców: aktywny NIP w&nbsp;rejestrze REGON, telefon potwierdzony SMS i&nbsp;logowanie z&nbsp;drugim składnikiem.</span></li>
+            <li><span>Rejestr potwierdza, że firma istnieje i&nbsp;prowadzi działalność. SMS potwierdza numer telefonu.</span></li>
+            <li><span>Zapytanie do GUS i&nbsp;SMS wysyła nasz serwer&nbsp;– przeglądarka nie łączy się z&nbsp;nowymi hostami.</span></li>
+            <li><span>Konto salonu zostaje bez zmian; polisy, zespół i&nbsp;szkolenia działają jak dotąd.</span></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         3 · STREFA PRACODAWCY: MOJE OGŁOSZENIA – /strefa-klienta/dam-prace
+         Konto: salon z polisą (poziom 2 z urzędu) albo – w kontekście ?konto=pracodawca – pracodawca z rejestracji
+         (Studio Przykładowe, poziom 1). Elementy .ctx-zone / .ctx-employer różnią się między kontami.
+         ================================================================ -->
+    <section class="view" id="moje-ogloszenia" data-ctx="zone" data-employer aria-labelledby="t-moje">
+      <header class="page-head glass glass--strong frame">
+        <ol class="crumbs" aria-label="Ścieżka"><li><a class="ctx-zone" href="panel.html#pulpit">Pulpit</a><a class="ctx-employer" href="#pulpit-pracodawcy">Pulpit pracodawcy</a></li><li aria-current="page">Dam pracę</li></ol>
         <div class="page-head-row">
           <div>
             <p class="eyebrow">Dam pracę</p>
@@ -757,13 +870,13 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
         <p class="small">„<span id="nowe-tytul-ok">Tatuażysta / tatuażystka (przykład)</span>” trafiło do moderacji. Do decyzji nie można zmieniać treści ani kontaktu. Po akceptacji ogłoszenie będzie widoczne bezpłatnie przez 21&nbsp;dni&nbsp;– wyślemy <span class="nowrap">e-mail</span>.</p>
       </div>
 
-      <div class="alert alert--warn">
+      <div class="alert alert--warn ctx-zone">
         <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
         <strong class="alert-title">Ogłoszenie wygasa 15&nbsp;listopada 2026&nbsp;r.</strong>
         <p class="small">„Kosmetolog / kosmetolożka (przykład)” zniknie z&nbsp;tablicy za 3&nbsp;dni. Ważności nie przedłużamy&nbsp;– po wygaśnięciu przycisk „Opublikuj ponownie” utworzy kopię jako nowe ogłoszenie: po akceptacji treści będzie widoczne przez kolejne 21&nbsp;dni.</p>
       </div>
 
-      <section class="card surface" aria-labelledby="t-lista-moje">
+      <section class="card surface ctx-zone" aria-labelledby="t-lista-moje">
         <div class="card-head">
           <div><h2 class="card-title" id="t-lista-moje">Ogłoszenia firmy</h2><p class="card-sub">1&nbsp;opublikowane · 1&nbsp;w&nbsp;moderacji · 1&nbsp;szkic · 1&nbsp;odrzucone · 2&nbsp;zakończone</p></div>
         </div>
@@ -817,7 +930,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
               <tr>
                 <th scope="row" data-label="Ogłoszenie"><div class="cell">Stylistka / stylista paznokci (przykład)<span class="muted small">Kraków · umowa o&nbsp;pracę · 5&nbsp;500–7&nbsp;000&nbsp;zł brutto</span></div></th>
                 <td data-label="Status"><div class="cell"><span class="badge badge--off">Zamknięte 20.10.2026</span></div></td>
-                <td data-label="Kontakt"><div class="cell"><span class="muted small">usunięty 19.11.2026</span></div></td>
+                <td data-label="Kontakt"><div class="cell"><span class="muted small">usuniemy 19.11.2026</span></div></td>
                 <td class="cell-actions"><div class="actions">
                   <a class="btn btn-quiet btn-sm" href="#nowe-ogloszenie">Skopiuj do szkicu<span class="sr-only">: Stylistka / stylista paznokci</span></a>
                 </div></td>
@@ -828,8 +941,42 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
         <p class="xsmall muted">W&nbsp;szkicu lub moderacji możesz mieć najwyżej 5&nbsp;ogłoszeń (masz 2). Każda zmiana treści lub kontaktu w&nbsp;opublikowanym ogłoszeniu wysyła je ponownie do akceptacji, ale nie przedłuża ważności. Dane kontaktowe usuwamy 30&nbsp;dni po zakończeniu ogłoszenia. <span class="mock-note">Założenie</span></p>
       </section>
 
+      <!-- pracodawca z rejestracji: Studio Przykładowe (ogłoszenie z tablicy publicznej + nowe po wysłaniu do akceptacji) -->
+      <section class="card surface ctx-employer" aria-labelledby="t-lista-studio">
+        <div class="card-head">
+          <div><h2 class="card-title" id="t-lista-studio">Ogłoszenia firmy</h2><p class="card-sub" id="studio-sub">1&nbsp;opublikowane</p></div>
+          <a class="btn btn-ghost btn-sm" href="#nowe-ogloszenie">Nowe ogłoszenie</a>
+        </div>
+        <p class="small" data-status role="status"></p>
+        <div class="table-wrap">
+          <table class="data stack table-owner">
+            <thead><tr><th scope="col">Ogłoszenie</th><th scope="col">Status</th><th scope="col">Kontakt</th><th scope="col"><span class="sr-only">Akcje</span></th></tr></thead>
+            <tbody>
+              <tr class="is-pending" id="studio-nowe">
+                <th scope="row" data-label="Ogłoszenie"><div class="cell"><span id="studio-nowe-tytul">Tatuażysta / tatuażystka (przykład)</span><span class="muted small">wysłane do akceptacji <time datetime="2026-11-12">12.11.2026</time></span></div></th>
+                <td data-label="Status"><div class="cell"><span class="badge badge--info">W&nbsp;moderacji od 12.11.2026</span><p class="xsmall muted">Treść i&nbsp;kontakt są zablokowane do decyzji.</p></div></td>
+                <td data-label="Kontakt"><div class="cell">Formularz</div></td>
+                <td class="cell-actions"><div class="actions">
+                  <button class="btn btn-ghost btn-sm js-row-action" type="button" data-msg="Ogłoszenie wróciło do szkicu&nbsp;– możesz je edytować i&nbsp;wysłać ponownie.">Wycofaj do szkicu</button>
+                </div></td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Ogłoszenie"><div class="cell"><a href="#oferta">Stylistka / stylista paznokci (przykład)</a><span class="muted small">Kraków · umowa o&nbsp;pracę · 5&nbsp;500–7&nbsp;000&nbsp;zł brutto</span></div></th>
+                <td data-label="Status"><div class="cell"><span class="badge badge--ok">Opublikowane do 30.11.2026</span><span class="xsmall muted">bezpłatnie, 21&nbsp;dni od 9.11.2026</span></div></td>
+                <td data-label="Kontakt"><div class="cell">Formularz<span class="muted small">przekazano 2&nbsp;wiadomości</span></div></td>
+                <td class="cell-actions"><div class="actions">
+                  <a class="btn btn-ghost btn-sm" href="#nowe-ogloszenie">Edytuj<span class="sr-only">: Stylistka / stylista paznokci</span></a>
+                  <button class="btn btn-danger btn-sm js-row-action" type="button" data-msg="Ogłoszenie „Stylistka / stylista paznokci (przykład)” zostało zamknięte i&nbsp;zniknęło z&nbsp;tablicy.">Zamknij<span class="sr-only">: Stylistka / stylista paznokci</span></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="xsmall muted">Każda zmiana treści lub kontaktu w&nbsp;opublikowanym ogłoszeniu wysyła je ponownie do akceptacji, ale nie przedłuża ważności. <span class="mock-note">Stan konta na 12.11.2026, 9&nbsp;dni po rejestracji</span></p>
+      </section>
+
       <div class="grid grid-2">
-        <section class="card surface account-status" id="konto-pracodawcy" aria-labelledby="t-konto-prac">
+        <section class="card surface account-status ctx-zone" id="konto-pracodawcy" aria-labelledby="t-konto-prac">
           <h2 class="card-title" id="t-konto-prac">Konto pracodawcy</h2>
           <dl class="kv kv--rows">
             <div><dt>Firma</dt><dd><span>Salon Przykładowy · NIP <span class="nowrap">000-000-00-00</span> (przykład)</span><span class="xsmall muted">Aktywna działalność w&nbsp;rejestrze REGON (GUS), sprawdzono <time datetime="2026-11-03">3.11.2026</time>. Kolejne sprawdzenie co 90&nbsp;dni. <span class="mock-note">Założenie</span></span></dd></div>
@@ -846,7 +993,15 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
             </dd></div>
           </dl>
           <p class="small" data-status role="status"></p>
-          <p class="xsmall muted"><span class="mock-note">Wariant: pracodawca z&nbsp;rejestracji</span> Do potwierdzenia firmy przez Aura Expert wiersz „Szukam pracy” brzmi: „Czeka na potwierdzenie firmy przez Aura Expert”, a&nbsp;oferty można dodawać od razu (po moderacji).</p>
+          <p class="xsmall muted"><span class="mock-note">Wariant: pracodawca z&nbsp;rejestracji</span> Do potwierdzenia firmy przez Aura Expert wiersz „Szukam pracy” brzmi: „Czeka na potwierdzenie firmy przez Aura Expert”, a&nbsp;oferty można dodawać od razu (po moderacji)&nbsp;– zobacz <a href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy">konto Studio Przykładowe</a>.</p>
+        </section>
+        <section class="card surface account-status ctx-employer" aria-labelledby="t-konto-studio-mini">
+          <h2 class="card-title" id="t-konto-studio-mini">Konto pracodawcy</h2>
+          <dl class="kv kv--rows">
+            <div><dt>Oferty</dt><dd><span class="badge badge--ok">Dostępne</span></dd></div>
+            <div><dt>Szukam pracy</dt><dd><span class="badge badge--warn">Czeka na potwierdzenie firmy przez Aura Expert</span></dd></div>
+          </dl>
+          <div class="actions"><a class="link-lux" href="#konto-studio">Dane firmy, telefon i&nbsp;adresy</a></div>
         </section>
         <section class="card surface" aria-labelledby="t-wiad">
           <h2 class="card-title" id="t-wiad">Wiadomości od kandydatów</h2>
@@ -865,9 +1020,9 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
     <!-- ================================================================
          4 · STREFA PRACODAWCY: NOWE OGŁOSZENIE – /strefa-klienta/dam-prace/nowe
          ================================================================ -->
-    <section class="view" id="nowe-ogloszenie" data-ctx="zone" aria-labelledby="t-nowe">
+    <section class="view" id="nowe-ogloszenie" data-ctx="zone" data-employer aria-labelledby="t-nowe">
       <header class="page-head glass glass--strong frame">
-        <ol class="crumbs" aria-label="Ścieżka"><li><a href="panel.html#pulpit">Pulpit</a></li><li><a href="#moje-ogloszenia">Dam pracę</a></li><li aria-current="page">Nowe ogłoszenie</li></ol>
+        <ol class="crumbs" aria-label="Ścieżka"><li><a class="ctx-zone" href="panel.html#pulpit">Pulpit</a><a class="ctx-employer" href="#pulpit-pracodawcy">Pulpit pracodawcy</a></li><li class="ctx-zone"><a href="#moje-ogloszenia">Dam pracę</a></li><li class="ctx-employer"><a href="#moje-ogloszenia">Moje ogłoszenia</a></li><li aria-current="page">Nowe ogłoszenie</li></ol>
         <p class="eyebrow">Dam pracę</p>
         <h1 id="t-nowe">Nowe ogłoszenie</h1>
         <p class="lead">Wypełnij ogłoszenie, sprawdź podgląd i&nbsp;wyślij do akceptacji. Po akceptacji ogłoszenie jest widoczne na tablicy przez 21&nbsp;dni.</p>
@@ -1070,7 +1225,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
             <li><strong>Publikacja na 21&nbsp;dni</strong><p>Bezpłatnie w&nbsp;promocji na otwarcie. Wyślemy <span class="nowrap">e-mail</span>.</p></li>
             <li><strong>Przypomnienie</strong><p>Na 3&nbsp;dni przed końcem. Po wygaśnięciu możesz opublikować ogłoszenie ponownie&nbsp;– po akceptacji treści.</p></li>
           </ol>
-          <p class="xsmall muted">W&nbsp;szkicu lub moderacji możesz mieć najwyżej 5&nbsp;ogłoszeń&nbsp;– masz 2. <span class="mock-note">Założenie</span></p>
+          <p class="xsmall muted">W&nbsp;szkicu lub moderacji możesz mieć najwyżej 5&nbsp;ogłoszeń. <span class="mock-note">Założenie</span></p>
         </aside>
       </div>
     </section>
@@ -1080,9 +1235,9 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
          Tylko pracodawca z poziomem 2 w sesji z TOTP; dane z app_candidate_ads_page() – 20 kart, kursor,
          kwota dzienna (Założenie: 200, alert przy 150). noindex, no-store. Przy wyłączonym przełączniku – 404.
          ================================================================ -->
-    <section class="view" id="szukam-pracy" data-ctx="zone" aria-labelledby="t-sp">
+    <section class="view" id="szukam-pracy" data-ctx="zone" data-employer aria-labelledby="t-sp">
       <header class="page-head glass glass--strong frame">
-        <ol class="crumbs" aria-label="Ścieżka"><li><a href="panel.html#pulpit">Pulpit</a></li><li><a href="#moje-ogloszenia">Dam pracę</a></li><li aria-current="page">Szukam pracy</li></ol>
+        <ol class="crumbs" aria-label="Ścieżka"><li><a class="ctx-zone" href="panel.html#pulpit">Pulpit</a><a class="ctx-employer" href="#pulpit-pracodawcy">Pulpit pracodawcy</a></li><li class="ctx-zone"><a href="#moje-ogloszenia">Dam pracę</a></li><li aria-current="page">Szukam pracy</li></ol>
         <p class="eyebrow">Dam pracę</p>
         <h1 id="t-sp">Ogłoszenia „Szukam pracy”</h1>
         <p class="lead">Ogłoszenia osób szukających pracy w&nbsp;branży beauty. Widzą je tylko zalogowani pracodawcy, których firmę potwierdziła Aura Expert. Kolejność: od najnowszej publikacji.</p>
@@ -1092,13 +1247,31 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
         </nav>
       </header>
 
+      <!-- pracodawca z rejestracji (poziom 1): zamiast kart – stan oczekiwania na potwierdzenie firmy (11 §4.12 pkt 6) -->
+      <section class="card surface ctx-employer" id="sp-czeka" aria-labelledby="t-sp-czeka">
+        <div class="alert alert--info">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <strong class="alert-title" id="t-sp-czeka">Czeka na potwierdzenie firmy przez Aura Expert</strong>
+          <p class="small">Ogłoszenia „Szukam pracy” zobaczysz, gdy Aura Expert potwierdzi, że reprezentujesz Studio Przykładowe. Rejestr REGON potwierdził, że firma istnieje, a&nbsp;SMS&nbsp;– numer telefonu; żadne z&nbsp;nich nie pokazuje, kto działa w&nbsp;imieniu firmy.</p>
+        </div>
+        <h3 class="card-title">Jak potwierdzamy firmę</h3>
+        <ul class="checklist">
+          <li><span>adres <span class="nowrap">e-mail</span> konta w&nbsp;domenie firmy, zgodnej z&nbsp;jej stroną albo z&nbsp;rejestrem,</span></li>
+          <li><span>telefon od Aura Expert na numer z&nbsp;rejestru albo ze strony firmy,</span></li>
+          <li><span>kod wysłany listem na adres siedziby z&nbsp;rejestru.</span></li>
+        </ul>
+        <p class="xsmall muted">Wystarczy jedna z&nbsp;tych dróg; Aura Expert odezwie się <span class="nowrap">e-mailem</span>. <span class="mock-note">Założenie</span></p>
+        <p class="small">Oferty pracy możesz dodawać już teraz&nbsp;– każda trafia do moderacji przed publikacją.</p>
+        <div class="actions"><a class="btn btn-navy btn-sm" href="#nowe-ogloszenie">Nowe ogłoszenie</a><a class="link-quiet" href="#pulpit-pracodawcy">Pulpit pracodawcy</a></div>
+      </section>
+
       <div class="statement">
         <svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg>
         <strong>To tylko tablica ogłoszeń</strong>
         <p>Pracodawca sam czyta ogłoszenia i&nbsp;sam decyduje, czy napisać; autor sam decyduje, czy odpowiedzieć. Aura Expert i&nbsp;BeautyPolisa nie rekomendują, nie wyszukują, nie dobierają, nie oceniają, nie sortują według dopasowania ani nie dopasowują kandydatów i&nbsp;nie kontaktują się z&nbsp;nimi w&nbsp;Twoim imieniu.</p>
       </div>
 
-      <div class="grid grid-2">
+      <div class="grid grid-2 ctx-zone">
         <section class="card surface" aria-labelledby="t-sp-dostep">
           <h2 class="card-title" id="t-sp-dostep">Dostęp i&nbsp;limit</h2>
           <p class="small">Widzisz ogłoszenia, bo konto ma NIP aktywny w&nbsp;rejestrze, potwierdzony telefon, drugi składnik i&nbsp;potwierdzoną firmę (salon z&nbsp;polisą).</p>
@@ -1121,7 +1294,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
         </section>
       </div>
 
-      <form class="card surface" id="f-sp-filtry" action="#szukam-pracy" method="get" aria-labelledby="t-sp-filtry">
+      <form class="card surface ctx-zone" id="f-sp-filtry" action="#szukam-pracy" method="get" aria-labelledby="t-sp-filtry">
         <h2 class="card-title" id="t-sp-filtry">Filtry</h2>
         <fieldset class="fields-3">
           <legend class="sr-only">Filtry ogłoszeń „Szukam pracy”</legend>
@@ -1135,7 +1308,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
         <div class="form-foot"><button class="btn btn-navy btn-sm" type="submit">Pokaż ogłoszenia</button><button class="link-quiet" type="reset">Wyczyść filtry</button></div>
       </form>
 
-      <section class="cand-wrap surface" aria-labelledby="t-sp-lista">
+      <section class="cand-wrap surface ctx-zone" aria-labelledby="t-sp-lista">
         <div class="offers-head">
           <div>
             <h2 class="card-title" id="t-sp-lista">Ogłoszenia</h2>
@@ -1346,6 +1519,78 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
     </section>
 
     <!-- ================================================================
+         6a · PRACODAWCA Z REJESTRACJI: PULPIT PRACODAWCY (11 §5.2, §5.3) – /strefa-klienta/pulpit dla konta kind = 'employer'
+         Studio Przykładowe: NIP sprawdzony w GUS, telefon SMS, TOTP – poziom 1 (oferty); „Szukam pracy” czeka na potwierdzenie firmy.
+         Bez polis, zespołu (Z-27) i zapisów na szkolenia (Z-32, Q17).
+         ================================================================ -->
+    <section class="view" id="pulpit-pracodawcy" data-ctx="employer" aria-labelledby="t-pp">
+      <header class="page-head glass glass--strong frame">
+        <div class="page-head-row">
+          <div>
+            <p class="eyebrow">Pulpit pracodawcy</p>
+            <h1 id="t-pp">Dzień dobry, <em>Studio Przykładowe</em></h1>
+            <p class="lead">Oferty pracy Twojej firmy i&nbsp;ogłoszenia „Szukam pracy”&nbsp;– w&nbsp;jednym miejscu. Kandydaci kontaktują się bezpośrednio z&nbsp;Twoją firmą.</p>
+          </div>
+          <p class="asof">Stan na <time datetime="2026-11-12">12&nbsp;listopada 2026&nbsp;r.</time></p>
+        </div>
+        <p class="promo-tag"><strong>Promocja na otwarcie</strong><span>ogłoszenia bezpłatne, widoczne 21&nbsp;dni</span></p>
+      </header>
+
+      <div class="grid grid-3">
+        <a class="shortcut surface" href="#nowe-ogloszenie">
+          <svg class="lux-icon" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>
+          <strong>Nowe ogłoszenie</strong>
+          <span>Oferta z&nbsp;widełkami wynagrodzenia. Po akceptacji treści&nbsp;– 21&nbsp;dni na tablicy, bezpłatnie.</span>
+          <span class="link-lux" aria-hidden="true">Dodaj ogłoszenie</span>
+        </a>
+        <a class="shortcut surface" href="#moje-ogloszenia">
+          <svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg>
+          <strong>Moje ogłoszenia</strong>
+          <span>1&nbsp;opublikowane, ważne do 30.11.2026.</span>
+          <span class="link-lux" aria-hidden="true">Ogłoszenia</span>
+        </a>
+        <a class="shortcut surface" href="#szukam-pracy">
+          <svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>
+          <strong>Szukam pracy</strong>
+          <span>Czeka na potwierdzenie firmy przez Aura Expert.</span>
+          <span class="link-lux" aria-hidden="true">Sprawdź stan</span>
+        </a>
+      </div>
+
+      <div class="grid grid-2">
+        <section class="card surface account-status" id="konto-studio" aria-labelledby="t-konto-studio" tabindex="-1">
+          <h2 class="card-title" id="t-konto-studio">Konto pracodawcy i&nbsp;ustawienia</h2>
+          <dl class="kv kv--rows">
+            <div><dt>Firma</dt><dd><span>Studio Przykładowe · NIP <span class="nowrap">000-000-11-00</span> (przykład)</span><span class="xsmall muted">Nazwa z&nbsp;rejestru: Studio Przykładowe Ewa Przykładowa (przykład), Kraków. Aktywna działalność w&nbsp;rejestrze REGON (GUS), sprawdzono <time datetime="2026-11-03">3.11.2026</time>. Kolejne sprawdzenie co 90&nbsp;dni. <span class="mock-note">Założenie</span></span></dd></div>
+            <div><dt>Nazwa przy ofertach</dt><dd><span>Studio Przykładowe</span><span class="xsmall muted">Nazwę handlową sprawdza Aura Expert przed pierwszym użyciem.</span></dd></div>
+            <div><dt>Telefon</dt><dd><span class="badge badge--ok">Potwierdzony SMS · •••&nbsp;•••&nbsp;123</span><button class="link-quiet js-row-action" type="button" data-msg="Nowy numer potwierdzisz kodem SMS, który wyślemy na ten numer.">Zmień numer</button></dd></div>
+            <div><dt>Drugi składnik</dt><dd><span class="badge badge--ok">Włączony</span><span class="xsmall muted">Obowiązkowy dla właściciela konta pracodawcy.</span></dd></div>
+            <div><dt>Oferty</dt><dd><span class="badge badge--ok">Dostępne</span></dd></div>
+            <div><dt>Szukam pracy</dt><dd><span class="badge badge--warn">Czeka na potwierdzenie firmy przez Aura Expert</span><a class="link-quiet" href="#szukam-pracy">Jak potwierdzamy firmę</a></dd></div>
+            <div><dt>Adresy rekrutacyjne</dt><dd>
+              <ul class="addr-list">
+                <li><span>biuro@studio-przyklad.example</span><span class="badge badge--role">adres logowania</span></li>
+                <li><span>rekrutacja@studio-przyklad.example</span><span class="badge badge--role">potwierdzony 3.11.2026</span></li>
+              </ul>
+              <button class="link-quiet js-row-action" type="button" data-msg="Wysłaliśmy link potwierdzający na podany adres. Link jest ważny 24&nbsp;godziny.">Dodaj adres&nbsp;– potwierdzenie linkiem</button>
+            </dd></div>
+          </dl>
+          <p class="small" data-status role="status"></p>
+          <div class="actions"><button class="btn btn-ghost btn-sm js-row-action" type="button" data-msg="Wylogowaliśmy Cię ze wszystkich urządzeń.">Wyloguj na wszystkich urządzeniach</button></div>
+        </section>
+        <section class="card surface" aria-labelledby="t-pp-dalej">
+          <h2 class="card-title" id="t-pp-dalej">Jak działa konto pracodawcy</h2>
+          <ol class="steps">
+            <li><strong>Oferty pracy</strong><p>Dodajesz ofertę, Aura Expert sprawdza wyłącznie treść, a&nbsp;po akceptacji oferta jest na tablicy przez 21&nbsp;dni.</p></li>
+            <li><strong>Potwierdzenie firmy</strong><p>Gdy Aura Expert potwierdzi, że reprezentujesz firmę, zobaczysz ogłoszenia „Szukam pracy” i&nbsp;napiszesz do ich autorów.</p></li>
+            <li><strong>Kontakt bez pośredników</strong><p>Kandydaci piszą na Twój potwierdzony adres. Nie przechowujemy wiadomości i&nbsp;nie prowadzimy rekrutacji.</p></li>
+          </ol>
+          <p class="xsmall muted">Konto pracodawcy nie obejmuje polis, zespołu ani zapisów na szkolenia. <span class="mock-note">Stan konta 9&nbsp;dni po rejestracji (3.11.2026)</span></p>
+        </section>
+      </div>
+    </section>
+
+    <!-- ================================================================
          7 · OSOBA SZUKAJĄCA PRACY: DODAJ OGŁOSZENIE – /strefa-klienta/szukam-pracy (nowe ogłoszenie)
          app_candidate_ad_save(): jedno ogłoszenie na konto, walidacja bez wartości w błędach (BP422), moderacja.
          ================================================================ -->
@@ -1434,8 +1679,8 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
               </div>
               <div class="field">
                 <label for="sa-nip">Ukryj moje ogłoszenie przed firmami o&nbsp;NIP <span>(opcjonalnie)</span></label>
-                <textarea id="sa-nip" name="ukryte_nip" rows="3" spellcheck="false" inputmode="numeric" aria-describedby="sa-nip-hint">000-000-00-00</textarea>
-                <p class="hint" id="sa-nip-hint">Każdy NIP w&nbsp;osobnym wierszu, najwyżej 10 (np. obecny i&nbsp;poprzedni pracodawca). Lista nie jest widoczna dla nikogo&nbsp;– karta po prostu się nie pokaże. W&nbsp;makiecie: <span class="nowrap">000-000-00-00</span> (przykład).</p>
+                <textarea id="sa-nip" name="ukryte_nip" rows="3" spellcheck="false" inputmode="numeric" placeholder="NIP obecnego pracodawcy" aria-describedby="sa-nip-hint">000-000-22-00</textarea>
+                <p class="hint" id="sa-nip-hint">Każdy NIP w&nbsp;osobnym wierszu, najwyżej 10 (np. obecny i&nbsp;poprzedni pracodawca). Lista nie jest widoczna dla nikogo&nbsp;– karta po prostu się nie pokaże. W&nbsp;makiecie: <span class="nowrap">000-000-22-00</span> (przykład)&nbsp;– inna firma niż Salon Przykładowy i&nbsp;Studio Przykładowe.</p>
                 <p class="field-error" id="sa-nip-err" hidden></p>
               </div>
             </fieldset>
@@ -1571,7 +1816,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
               <div><dt>E-mail</dt><dd>kandydatka@poczta.example</dd></div>
               <div><dt>Telefon</dt><dd>Potwierdzony SMS · •••&nbsp;•••&nbsp;456 <button class="link-quiet js-row-action" type="button" data-msg="Aby zmienić numer, potwierdź nowy numer kodem SMS.">Zmień numer</button></dd></div>
               <div><dt>Oświadczenie</dt><dd>Mam ukończone 18&nbsp;lat&nbsp;– złożone <time datetime="2026-11-10">10.11.2026</time></dd></div>
-              <div><dt>Ukryte przed firmami</dt><dd><span class="nowrap">000-000-00-00</span> (przykład) <a class="link-quiet" href="#szukam-dodaj">Zmień listę</a></dd></div>
+              <div><dt>Ukryte przed</dt><dd>1&nbsp;firmą (przykład) <a class="link-quiet" href="#szukam-dodaj">Zmień listę</a></dd></div>
               <div><dt>Drugi składnik</dt><dd>Wyłączony (opcjonalny) <button class="link-quiet js-row-action" type="button" data-msg="Zeskanuj kod QR aplikacją uwierzytelniającą, aby włączyć drugi składnik.">Włącz</button></dd></div>
             </dl>
             <p class="small" data-status role="status"></p>
@@ -1606,7 +1851,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
       <ul>
         <li><strong>„Dam pracę” i&nbsp;„Szukam pracy” to wyłącznie tablica (D-C, P1).</strong> Zasada tablicy jest widoczna w&nbsp;nagłówku listy ofert, w&nbsp;„Szukam pracy” i&nbsp;w&nbsp;formularzu ogłoszenia osoby szukającej pracy. Bez aplikacji, CV, statusów rekrutacji, list kandydatów, „polecanych”, rankingów i&nbsp;wyróżnień.</li>
         <li><strong>Promocja na otwarcie (P1c):</strong> ogłoszenia bezpłatne, widoczne 21&nbsp;dni (CHECK w&nbsp;bazie); bez przedłużeń&nbsp;– po wygaśnięciu „Opublikuj ponownie” i&nbsp;nowa moderacja.</li>
-        <li><strong>Pracodawca (P1b):</strong> dowolna firma; rejestracja w&nbsp;<a href="logowanie.html#s-rej">logowanie.html</a> (NIP → GUS → telefon SMS → TOTP). Konto w&nbsp;makiecie to salon z&nbsp;polisą (firma potwierdzona z&nbsp;urzędu); wariant pracodawcy z&nbsp;rejestracji pokazują wzory stanów.</li>
+        <li><strong>Pracodawca (P1b):</strong> dowolna firma; rejestracja w&nbsp;<a href="logowanie.html#s-rej">logowanie.html</a> (NIP → GUS → telefon SMS → TOTP). Dwa konta w&nbsp;makiecie: salon z&nbsp;polisą (firma potwierdzona z&nbsp;urzędu; pierwsze wejście&nbsp;– <a href="dam-prace.html#wlacz-dam-prace">„Włącz Dam pracę”</a>: NIP z&nbsp;konta → GUS → SMS) i&nbsp;pracodawca z&nbsp;rejestracji „Studio Przykładowe” (<a href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy">?konto=pracodawca</a>: pulpit pracodawcy, moje ogłoszenia, „Szukam pracy” w&nbsp;stanie „czeka na potwierdzenie firmy”; menu z&nbsp;11 §5.2, bez polis, zespołu i&nbsp;szkoleń).</li>
         <li><strong>„Szukam pracy” (P1a, aktywne):</strong> karty widzi tylko pracodawca z&nbsp;potwierdzoną firmą; wiadomość przez formularz przekazujący, bez ujawniania kontaktu. Widoczność wyłącznie dla zalogowanych pracodawców i&nbsp;noindex&nbsp;– <span class="mock-note">Założenie</span>.</li>
         <li><strong>Założenia:</strong> najwyżej 5&nbsp;ogłoszeń w&nbsp;szkicu lub moderacji, usunięcie kontaktu 30&nbsp;dni po zakończeniu, limity formularzy i&nbsp;wiadomości, kwota 200&nbsp;kart dziennie, retencja. Widełki i&nbsp;treści ogłoszeń są przykładowe.</li>
         <li>Szkło: najwyżej 3&nbsp;tafle w&nbsp;widoku (nagłówek strony publicznej i&nbsp;nagłówek treści albo pasek, menu boczne i&nbsp;nagłówek treści w&nbsp;strefie). Bez JavaScriptu wszystkie ekrany są widoczne pod sobą, a&nbsp;stany „po wysłaniu”&nbsp;– jako wzory.</li>
@@ -1617,10 +1862,10 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
 
 <footer class="app-footer">
   <div class="app-footer-inner">
-    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="#oferty">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a></nav>
+    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
     <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
     <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest agentem ubezpieczeniowym i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń: Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A., Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. oraz Colonnade Insurance S.A. Oddział w&nbsp;Polsce <span class="mock-note">lista do potwierdzenia</span>. Wpis sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych prowadzonym przez KNF: <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>. Procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta&nbsp;– [do uzupełnienia].</p>
-    <p>Inspektor ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. „Dam pracę” to wyłącznie tablica ogłoszeń: nie rekomendujemy, nie wyszukujemy i&nbsp;nie dobieramy kandydatów ani pracodawców.</p>
+    <p>Inspektor ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Informacje w&nbsp;serwisie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego. „Dam pracę” to wyłącznie tablica ogłoszeń: nie rekomendujemy, nie wyszukujemy i&nbsp;nie dobieramy kandydatów ani pracodawców.</p>
   </div>
 </footer>
 
@@ -1640,9 +1885,9 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
 </svg>
 
 <script>
-/* Makieta „Dam pracę” / „Szukam pracy”: widoki (hash) i kontekst strony (publiczna, pracodawca, osoba szukająca pracy),
-   filtry, „Pokaż kontakt”, formularze demonstracyjne, menu boczne na telefonach, menu konta.
-   Bez JS: wszystkie ekrany pod sobą, stany „po wysłaniu” jako wzory. */
+/* Makieta „Dam pracę” / „Szukam pracy”: widoki (hash) i kontekst strony (publiczna, salon z polisą, pracodawca
+   z rejestracji – ?konto=pracodawca, osoba szukająca pracy), filtry, „Pokaż kontakt”, formularze demonstracyjne,
+   menu boczne na telefonach, menu konta. Bez JS: wszystkie ekrany pod sobą, stany „po wysłaniu” jako wzory. */
 (function () {
   'use strict';
   var root = document.documentElement;
@@ -1654,6 +1899,11 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
   function byId(id) { return document.getElementById(id); }
   function each(sel, fn, ctx) { Array.prototype.forEach.call((ctx || document).querySelectorAll(sel), fn); }
   var NBSP = ' ';
+  /* konto pracodawcy z rejestracji (Studio Przykładowe) – w produkcji wynika z sesji */
+  var EMP = /[?&]konto=pracodawca(&|$)/.test(location.search);
+  var ACCOUNT = EMP ? 'Studio Przykładowe' : 'Salon Przykładowy';
+  var brand = document.querySelector('.topbar .brand');
+  var empNav = Array.prototype.slice.call(document.querySelectorAll('.sidenav [data-nav]'));
 
   /* ---------- warstwy modalne: wszystko poza otwartą warstwą dostaje inert; pętla Tab jako zapas ---------- */
   var inerted = [];
@@ -1683,9 +1933,26 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
     var el = id ? byId(id) : null;
     var view = el && el.closest ? el.closest('.view') : null;
     if (!view) { view = views[0]; el = null; }
+    var ctx = view.getAttribute('data-ctx');
+    /* pracodawca z rejestracji: wspólne ekrany strefy w jego kontekście; pozostałe ekrany salonu – na jego pulpit */
+    if (EMP && ctx === 'zone') {
+      if (!view.hasAttribute('data-employer')) { view = byId('pulpit-pracodawcy'); el = null; id = view.id; }
+      ctx = 'employer';
+    }
     views.forEach(function (v) { v.classList.toggle('is-active', v === view); });
-    root.setAttribute('data-ctx', view.getAttribute('data-ctx'));
-    mockLinks.forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('href') === '#' + (id || view.id) ? 'true' : 'false'); });
+    root.setAttribute('data-ctx', ctx);
+    brand.setAttribute('href', ctx === 'employer' ? 'dam-prace.html?konto=pracodawca#pulpit-pracodawcy' : (ctx === 'seeker' ? 'dam-prace.html#szukam-moje' : 'panel.html#pulpit'));
+    var navKey = (el && el.id === 'konto-studio') ? 'konto-studio' : view.id;
+    empNav.forEach(function (a) { if (a.getAttribute('data-nav').split(' ').indexOf(navKey) > -1) { a.setAttribute('aria-current', 'page'); } else { a.removeAttribute('aria-current'); } });
+    mockLinks.forEach(function (a) {
+      var href = a.getAttribute('href'), hash = href.slice(href.indexOf('#'));
+      var on = href.indexOf('dam-prace.html') === 0 && (href.indexOf('konto=pracodawca') > -1) === EMP && hash === '#' + (id || view.id);
+      a.setAttribute('aria-current', on ? 'true' : 'false');
+    });
+    /* lista pracodawcy z rejestracji: nowe ogłoszenie pojawia się po wysłaniu do akceptacji */
+    var sentNew = id === 'ogloszenie-wyslane';
+    byId('studio-nowe').classList.toggle('is-pending', !sentNew);
+    byId('studio-sub').textContent = sentNew ? '1' + NBSP + 'opublikowane · 1' + NBSP + 'w' + NBSP + 'moderacji' : '1' + NBSP + 'opublikowane';
     states.forEach(function (s) { var f = s.getAttribute('data-hide'); if (f) { byId(f).hidden = false; } });
     states.forEach(function (s) {
       var on = s.id === id;
@@ -1833,6 +2100,17 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
   });
   byId('n-szkic').addEventListener('click', function () { this.textContent = 'Szkic zapisany'; this.disabled = true; });
 
+  /* ---------- salon z polisą: pierwsze wejście – NIP z konta sprawdzony w GUS (zapytanie wysyła serwer) ---------- */
+  byId('f-wlacz').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = byId('wlacz-btn'), st = byId('wlacz-status');
+    btn.disabled = true; st.textContent = 'Sprawdzamy w rejestrze…';
+    setTimeout(function () {
+      st.textContent = 'Sprawdzono: aktywna działalność.';
+      var r = byId('wlacz-wynik'); r.classList.remove('is-pending'); r.focus();
+    }, 600);
+  });
+
   /* ---------- nowe ogłoszenie pracodawcy: kontakt, walidacja, podgląd ---------- */
   var fn = byId('f-nowe');
   function syncContact() {
@@ -1842,6 +2120,15 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
   }
   each('input[name="kontakt"]', function (r) { r.addEventListener('change', syncContact); }, fn);
   syncContact();
+  /* adresy rekrutacyjne konta pracodawcy z rejestracji (tylko potwierdzone) */
+  if (EMP) {
+    var sel = byId('n-email');
+    while (sel.firstChild) { sel.removeChild(sel.firstChild); }
+    [['rekrutacja@studio-przyklad.example', 'rekrutacja@studio-przyklad.example (potwierdzony)'], ['biuro@studio-przyklad.example', 'biuro@studio-przyklad.example (adres logowania)']].forEach(function (o) {
+      var op = document.createElement('option'); op.value = o[0]; op.textContent = o[1]; sel.appendChild(op);
+    });
+    byId('pv-miejsce').textContent = ACCOUNT + ' · Kraków, małopolskie';
+  }
   function num(v) { return parseFloat(String(v).replace(/\s/g, '').replace(',', '.')); }
   function money(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, NBSP); }
   function validateOffer() {
@@ -1863,7 +2150,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
     var z = f.zawod.value, icons = ['kosmetolog', 'fryzjer', 'podolog', 'linergistka', 'stylistka-paznokci', 'tatuazysta'];
     byId('pv-ikona').setAttribute('href', '#lux-' + (icons.indexOf(z) > -1 ? z : 'serce'));
     byId('pv-tytul').textContent = f.tytul.value.trim();
-    byId('pv-miejsce').textContent = 'Salon Przykładowy · ' + f.miasto.value.trim() + ', ' + opt(f.wojewodztwo);
+    byId('pv-miejsce').textContent = ACCOUNT + ' · ' + f.miasto.value.trim() + ', ' + opt(f.wojewodztwo);
     byId('pv-umowa').textContent = opt(f.umowa).replace(/^Umowa/, 'umowa').replace(/^Inna$/, 'inna forma umowy');
     byId('pv-wymiar').textContent = f.wymiar.value === 'elastyczny' ? 'elastyczny wymiar' : opt(f.wymiar).toLowerCase();
     var od = num(f.placa_od.value), dd = num(f.placa_do.value);
@@ -1884,6 +2171,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
     var bad = validateOffer();
     if (bad.length) { bad[0].focus(); return; }
     byId('nowe-tytul-ok').textContent = fn.elements.tytul.value.trim();
+    byId('studio-nowe-tytul').textContent = fn.elements.tytul.value.trim();
     location.hash = 'ogloszenie-wyslane';
   });
 
@@ -1942,7 +2230,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
   if (desktop.addEventListener) { desktop.addEventListener('change', function (e) { if (e.matches) { closeNav(); } }); }
 
   /* ---------- menu kont i menu strony publicznej: zamknij po kliknięciu obok i klawiszem Esc ---------- */
-  var accs = [byId('account'), byId('account-s')], pub = byId('pub-menu');
+  var accs = [byId('account'), byId('account-p'), byId('account-s')], pub = byId('pub-menu');
   function closePubMenu() { if (pub.open) { pub.open = false; } }
   document.addEventListener('click', function (e) {
     accs.forEach(function (a) { if (a.open && !a.contains(e.target)) { a.open = false; } });

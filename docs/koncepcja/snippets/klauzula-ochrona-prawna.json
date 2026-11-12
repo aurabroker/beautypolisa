@@ -1,8 +1,8 @@
 {
- "$comment": "Treść klauzuli ochrony prawnej (rozszerzenie OC w programie ERGO Hestia dla branży beauty, dopłata 92 zł rocznie) przeniesiona dosłownie z indeksowt.html (modal-klauzula-prawna). Do porównania z oryginałem dokumentu programu przed publikacją: tytuł zawiera „za pisemną zgoda” – prawdopodobnie literówka („zgodą”) w źródle; § 6 ust. 3 odsyła do Warunków Ubezpieczenia programu.",
+ "$comment": "Treść klauzuli ochrony prawnej (rozszerzenie OC w programie ERGO Hestia dla branży beauty, dopłata 92 zł rocznie) przeniesiona dosłownie z indeksowt.html (modal-klauzula-prawna). Jedyna zmiana względem źródła: w tytule „za pisemną zgoda” poprawione na „za pisemną zgodą” (literówka; decyzja zleceniodawcy 12.11.2026). § 6 ust. 3 odsyła do Warunków Ubezpieczenia programu.",
  "nazwa": "Klauzula ochrony prawnej",
  "skladka_dodatkowa_zl_rocznie": 92,
- "tytul": "Rozszerzenie zakresu ubezpieczenia o koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgoda Ubezpieczyciela ochroną zgodnie z § 6 ust. 3",
+ "tytul": "Rozszerzenie zakresu ubezpieczenia o koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgodą Ubezpieczyciela ochroną zgodnie z § 6 ust. 3",
  "punkty": [
   {
    "tekst": "Z zachowaniem pozostałych, niezmienionych niniejszą klauzulą postanowień umowy ubezpieczenia określonych w Warunkach Ubezpieczenia, strony postanowiły rozszerzyć zakres ubezpieczenia o koszty ochrony prawnej, poniesione przez Ubezpieczonego w celu obrony jego praw w postępowaniach przed sądami polskimi prowadzonych z jego udziałem w charakterze pozwanego, podejrzanego lub oskarżonego, w tym w postępowaniu dyscyplinarnym."

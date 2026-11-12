@@ -216,6 +216,8 @@ ul,ol{margin:0}
 .sidenav .sub a[aria-current="page"]::before{top:12px;bottom:12px}
 .main{min-width:0;display:grid;gap:24px;padding-bottom:40px}
 .view{display:grid;gap:24px;align-content:start;min-width:0}
+/* elementy widoku i panele zakładek mogą się zwężać – szerokie tabele przewijają się w .table-wrap, a nie poszerzają strony */
+.view > *,.tabpanel{min-width:0}
 .js .view:not(.is-active){display:none}
 /* bez JS widoki stoją pod sobą: rozmyty jest tylko nagłówek pierwszego widoku (najwyżej 3 tafle w widoku: pasek, menu, nagłówek) */
 html:not(.js) .view ~ .view .page-head{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--color-ivory)}
@@ -286,7 +288,7 @@ html:not(.js) .no-js-only{display:block}
 .doc-row .lux-icon{width:32px;height:32px;stroke-width:3}
 
 /* tabela danych; na wąskich ekranach wiersze jako karty (data-label) */
-.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.table-wrap{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch}
 table.data{width:100%;border-collapse:collapse;font-size:var(--text-sm)}
 table.data caption{text-align:left;padding:0 0 10px;font:600 var(--text-serif-sm)/1.25 var(--font-serif);color:var(--color-navy)}
 table.data th,table.data td{padding:12px 14px;border-bottom:1px solid var(--bp-line-gold-soft);text-align:left;vertical-align:middle}

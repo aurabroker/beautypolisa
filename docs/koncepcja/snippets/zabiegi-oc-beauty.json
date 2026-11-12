@@ -1,5 +1,23 @@
 {
- "$comment": "Kanoniczna lista zabiegów programu OC dla branży beauty (ERGO Hestia, program nr WA50/003353/24/A). Jedno źródło prawdy dla kalkulatora, strony produktu, schema.org, llms.txt i tabeli procedures (02). Grupy 1–3: lista z bp-app.js (PROCS, 117 pozycji łącznie z grupą 4 – pełniejsza z dwóch list w repozytorium, 03 pyt. 3). Grupa 4: nazwy z bp-app.js, brzmienie z ankiety ERGO Hestii (AnkietaBPEH.pdf, pkt 2). Kolejność jak w źródle. Pola synonimy/zawody uzupełnia przegląd treści.",
+ "$comment": "Kanoniczna lista zabiegów programu OC dla branży beauty (ERGO Hestia, program nr WA50/003353/24/A). Jedno źródło prawdy dla kalkulatora, strony produktu, schema.org, llms.txt i tabeli procedures (02). Grupy 1–3: lista z bp-app.js (PROCS, 117 pozycji łącznie z grupą 4 – pełniejsza z dwóch list w repozytorium, 03 pyt. 3). Grupa 4: nazwy z bp-app.js, brzmienie z ankiety ERGO Hestii (AnkietaBPEH.pdf, pkt 2). Kolejność jak w źródle. Pola synonimy, zawody i uwagi uzupełnione 12.11.2026 – do potwierdzenia przez zleceniodawcę (lista do_potwierdzenia). Synonimy służą wyłącznie wyszukiwarce (ta sama usługa, inna nazwa; bez dublowania diakrytyków) i nie rozszerzają zakresu – zakres i wyłączenia określają warunki ubezpieczenia programu. Zawody: slugi enum Profession z 02 (bez „inny”), dla stron /dla-kogo/<zawod>.",
+ "do_potwierdzenia": [
+  "Pedicure w trzech grupach: „Pedicure kosmetyczny” (gr. 1), „Pedicure kosmetyczny (niezastrzeżony dla podologów)” (gr. 2) i „Pedicure podologiczny (medyczny) całościowy” (gr. 3) – czym różnią się pozycje z gr. 1 i gr. 2 i co oznacza dopisek „niezastrzeżony dla podologów”?",
+  "Czy stylistka paznokci, która przy pedicure kosmetycznym usuwa zrogowacenia lub odciski, mieści się w gr. 1, czy wchodzi w pozycje podologiczne z gr. 3 („Usuwanie zrogowaciałego naskórka”, „Opracowanie modzeli, odcisków, nagniotków”)?",
+  "„Makijaż” (gr. 1) i „Makijaż okolicznościowy” (gr. 2) – czy przypisanie makijażu okolicznościowego do wyższej grupy jest zamierzone i jak odróżnić te pozycje?",
+  "„Jonoforeza” (gr. 2) i „Terapia nadpotliwości stóp (jonoforeza)” (gr. 3) – potwierdzenie, że gr. 2 dotyczy jonoforezy kosmetycznej, a gr. 3 wyłącznie stóp.",
+  "„Elektrostymulacja” (gr. 1) i „Zastosowanie prądów małej i dużej częstotliwości” (gr. 2) – gdzie przebiega granica? Do której pozycji należą mikroprądy (lifting mikroprądowy)?",
+  "„Zabiegi z zastosowaniem składników aktywnych” (gr. 1) – czy obejmują kwasy, skoro „Różnorodne peelingi chemiczne” są w gr. 2?",
+  "Urządzenia ultradźwiękowe: „Fala akustyczna i energia wysokiej częstotliwości” (gr. 2) i „Kawitacja ultradźwiękowa” (gr. 2) a „Zabiegi technologią HIFU” (gr. 4) – czy ultradźwięki mikroogniskowane i urządzenia sprzedawane jako „HIFU do ciała” to zawsze gr. 4?",
+  "„Zabiegi technologią PLASMA” (gr. 4) – czy obejmują głowice „zimnej plazmy” w urządzeniach wielofunkcyjnych do oczyszczania twarzy, czy tylko urządzenia typu plasma pen?",
+  "„Krioterapia zmian skórnych (CO2, punktowa)” (gr. 3) – czy pozycja dotyczy tylko stóp, czy też krioterapii zmian skórnych na twarzy i ciele wykonywanej przez kosmetologa?",
+  "Zabiegi pokrewne pozycjom z gr. 4, których nie ma na liście: nici liftingujące z innych materiałów niż PDO (np. PLLA, PCL), wypełniacze na innej bazie niż kwas hialuronowy (np. hydroksyapatyt wapnia, kwas polimlekowy), fibryna bogatopłytkowa (PRF) – czy zgłaszać je w ankiecie ERGO Hestii jako „Inny”?",
+  "Biorewitalizacja i skin boostery na bazie kwasu hialuronowego – „Mezoterapia igłowa” (gr. 2) czy „Wypełniacze – kwas hialuronowy” (gr. 4)?",
+  "Lasery frakcyjne – potwierdzenie, że każdy laser frakcyjny ablacyjny (CO2, erbowy ablacyjny) to „Zabiegi laserem ablacyjnym” (gr. 4), a gr. 2 obejmuje tylko lasery nieablacyjne.",
+  "Usługi bez własnej pozycji na liście: manicure hybrydowy i żelowy, przedłużanie paznokci (żel, akryl), upięcia i czesanie okolicznościowe, trychopigmentacja (mikropigmentacja skóry głowy), peeling kawitacyjny twarzy, tzw. botoks na włosy (kuracja bez toksyny botulinowej – „Kuracje nawilżające i odbudowujące włosy” czy „Zabiegi keratynowe”?) – czy mieszczą się w istniejących pozycjach (np. „Manicure”, „Mikropigmentacja rekonstrukcyjna”, „Kawitacja ultradźwiękowa”), czy wymagają ankiety? Do czasu odpowiedzi wyszukiwarka nie przypisuje ich do żadnej grupy.",
+  "Pozycje, które mogą się dublować w tej samej grupie (bez wpływu na składkę, ważne dla treści stron): „Masaż endodermiczny i drenaż limfatyczny” vs „Endermologia – masaż podciśnieniowy” (czy „endodermiczny” to literówka?); „Diagnoza skóry głowy i USG włosa” vs „Kosmetyczna diagnostyka trychologiczna”; „Mezoterapia mikroigłowa” vs „Mikronakłuwanie”; „Opracowanie modzeli, odcisków, nagniotków” vs „Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin”; „Sauny infrared” vs „Zabiegi z zastosowaniem podczerwieni”.",
+  "Nazwy do porównania z załącznikiem programu ERGO Hestii (lista pochodzi z bp-app.js): pisownia „Pasemka i baleyage” (poprawnie „balayage”), „Henna” (tylko brwi i rzęsy czy też włosy i skóra?), „Zagęszczanie włosów” (jaka metoda?), „Kawitacja ultradźwiękowa” (ciało czy też twarz?), „Intensywne kuracje nawilżająco-regenerujące” (czy dotyczą stóp?), „Ozonoterapia” (czy tylko stopy?).",
+  "Zawody (enum Profession w 02) nie mają stylistki rzęs i brwi ani makijażystki – zabiegi rzęs, brwi i makijażu przypisano do „kosmetolog” (henna i laminowanie także do „linergistka”). Czy dodać osobny zawód i stronę /dla-kogo/?"
+ ],
  "program": {
   "nazwa": "Program Ubezpieczenia Odpowiedzialności Cywilnej dla branży beauty",
   "ubezpieczyciel": "Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.",
@@ -10,22 +28,30 @@
   {
    "grupa": 1,
    "nazwa": "Grupa 1 – kosmetyka, fryzjerstwo, stylizacja",
-   "liczba_zabiegow": 40
+   "liczba_zabiegow": 40,
+   "opis": "Grupa 1 obejmuje 40 zabiegów fryzjerskich, kosmetycznych i stylizacyjnych, m.in. strzyżenie, koloryzację, manicure, pedicure kosmetyczny, depilację woskiem i przedłużanie rzęs.",
+   "kotwica": "grupa-1"
   },
   {
    "grupa": 2,
    "nazwa": "Grupa 2 – kosmetologia, makijaż permanentny, tatuaż",
-   "liczba_zabiegow": 38
+   "liczba_zabiegow": 38,
+   "opis": "Grupa 2 obejmuje 38 zabiegów kosmetologicznych, m.in. zabiegi aparaturowe (IPL, laser nieablacyjny, radiofrekwencja), mezoterapię, peelingi chemiczne, makijaż permanentny i tatuaż.",
+   "kotwica": "grupa-2"
   },
   {
    "grupa": 3,
    "nazwa": "Grupa 3 – podologia",
-   "liczba_zabiegow": 31
+   "liczba_zabiegow": 31,
+   "opis": "Grupa 3 obejmuje 31 zabiegów podologicznych – od konsultacji i diagnostyki stóp po opracowanie odcisków, klamry ortonyksyjne i zabiegi skalpelem, dłutem i frezami.",
+   "kotwica": "grupa-3"
   },
   {
    "grupa": 4,
    "nazwa": "Grupa 4 – zabiegi wysokiego ryzyka (wycena indywidualna, ankieta ERGO Hestii)",
-   "liczba_zabiegow": 8
+   "liczba_zabiegow": 8,
+   "opis": "Grupa 4 obejmuje 8 zabiegów wysokiego ryzyka (m.in. toksyna botulinowa, wypełniacze z kwasem hialuronowym, nici PDO, laser ablacyjny) – składkę i możliwość objęcia ochroną ustala ERGO Hestia po ankiecie i ocenie ryzyka.",
+   "kotwica": "grupa-4"
   }
  ],
  "reguly_taryfy": "Grupy 1 i 2 razem oraz grupa 3 z grupą 1 lub 2 – stawki grupy 3. Grupa 4 lub zespół od 9 osób – wycena indywidualna (ankieta ERGO Hestii).",
@@ -34,711 +60,1004 @@
    "id": "g1-01",
    "slug": "barbering",
    "nazwa": "Barbering",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["barberstwo", "strzyżenie brody", "trymowanie brody"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-02",
    "slug": "depilacja-pasta-cukrowa",
    "nazwa": "Depilacja pastą cukrową",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["depilacja cukrowa", "sugaring"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g1-03",
    "slug": "depilacja-woskiem",
    "nazwa": "Depilacja woskiem",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["woskowanie"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g1-04",
    "slug": "dermabrazja-i-peeling-skory-glowy",
    "nazwa": "Dermabrazja i peeling skóry głowy",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["peeling trychologiczny"],
+   "zawody": ["fryzjer", "kosmetolog"]
   },
   {
    "id": "g1-05",
    "slug": "diagnoza-skory-glowy-i-usg-wlosa",
    "nazwa": "Diagnoza skóry głowy i USG włosa",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["badanie skóry głowy", "analiza włosa"],
+   "zawody": ["fryzjer", "kosmetolog"],
+   "uwagi": "Pokrywa się z „Kosmetyczna diagnostyka trychologiczna” (g1-11) – obie w grupie 1; do potwierdzenia, czy to dwie odrębne pozycje w załączniku programu."
   },
   {
    "id": "g1-06",
    "slug": "elektrostymulacja",
    "nazwa": "Elektrostymulacja",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["elektrostymulacja mięśni"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Elektrostymulacja korzysta z prądów małej częstotliwości, a „Zastosowanie prądów małej i dużej częstotliwości” (g2-38) jest w grupie 2 – do potwierdzenia granica między pozycjami (dotyczy też mikroprądów, które nie mają synonimu w żadnej z tych pozycji)."
   },
   {
    "id": "g1-07",
    "slug": "endermologia-masaz-podcisnieniowy",
    "nazwa": "Endermologia – masaż podciśnieniowy",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["LPG", "endermolift"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Możliwe pokrycie z „Masaż endodermiczny i drenaż limfatyczny” (g1-20) – obie w grupie 1."
   },
   {
    "id": "g1-08",
    "slug": "golenie-glowy",
    "nazwa": "Golenie głowy",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["golenie na łyso"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-09",
    "slug": "henna",
    "nazwa": "Henna",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["henna brwi", "henna rzęs", "henna pudrowa"],
+   "zawody": ["kosmetolog", "linergistka"],
+   "uwagi": "Nazwa nie mówi, czy chodzi tylko o hennę brwi i rzęs, czy też o hennę włosów lub zdobienie skóry – synonimy ograniczone do brwi i rzęs do czasu potwierdzenia."
   },
   {
    "id": "g1-10",
    "slug": "koloryzacja-i-dekoloryzacja-wlosow",
    "nazwa": "Koloryzacja i dekoloryzacja włosów",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["farbowanie włosów", "zmywanie koloru", "ombre"],
+   "zawody": ["fryzjer"],
+   "uwagi": "Bez samego „farbowanie” – tak nazywa się też farbowanie brwi i rzęs („Henna”, g1-09)."
   },
   {
    "id": "g1-11",
    "slug": "kosmetyczna-diagnostyka-trychologiczna",
    "nazwa": "Kosmetyczna diagnostyka trychologiczna",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["konsultacja trychologiczna", "trychoskopia"],
+   "zawody": ["fryzjer", "kosmetolog"],
+   "uwagi": "Pokrywa się z „Diagnoza skóry głowy i USG włosa” (g1-05) – obie w grupie 1."
   },
   {
    "id": "g1-12",
    "slug": "kosmetyczny-zabieg-trychologiczny",
    "nazwa": "Kosmetyczny zabieg trychologiczny",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": [],
+   "zawody": ["fryzjer", "kosmetolog"]
   },
   {
    "id": "g1-13",
    "slug": "kuracje-nawilzajace-i-odbudowujace-wlosy",
    "nazwa": "Kuracje nawilżające i odbudowujące włosy",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["regeneracja włosów", "odbudowa włosów"],
+   "zawody": ["fryzjer"],
+   "uwagi": "Celowo bez synonimu „botoks na włosy”: to potoczna, marketingowa nazwa kuracji włosów (bez toksyny botulinowej), która myli się z „Zabiegi z użyciem toksyny botulinowej” (g4-02, grupa 4); nie wiadomo też, czy to ta pozycja, czy „Zabiegi keratynowe” (g1-37) – do potwierdzenia."
   },
   {
    "id": "g1-14",
    "slug": "laminowanie-brwi-i-rzes",
    "nazwa": "Laminowanie brwi i rzęs",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["laminacja brwi", "laminacja rzęs", "lifting rzęs"],
+   "zawody": ["kosmetolog", "linergistka"]
   },
   {
    "id": "g1-15",
    "slug": "laminowanie-wlosow",
    "nazwa": "Laminowanie włosów",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["laminacja włosów"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-16",
    "slug": "makijaz",
    "nazwa": "Makijaż",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["make-up", "makijaż dzienny"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "„Makijaż okolicznościowy” jest w grupie 2 (g2-12) – do potwierdzenia, czym różnią się obie pozycje i czy przypisanie do grup jest zamierzone."
   },
   {
    "id": "g1-17",
    "slug": "manicure",
    "nazwa": "Manicure",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["manicure klasyczny", "pielęgnacja paznokci dłoni"],
+   "zawody": ["stylistka-paznokci", "kosmetolog"],
+   "uwagi": "Na liście nie ma osobnych pozycji: manicure hybrydowy, żelowy, przedłużanie paznokci – nie dodajemy ich jako synonimów do czasu potwierdzenia przez ERGO Hestię, czy mieszczą się w „Manicure”."
   },
   {
    "id": "g1-18",
    "slug": "manualne-oczyszczanie-twarzy",
    "nazwa": "Manualne oczyszczanie twarzy",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["oczyszczanie manualne", "usuwanie zaskórników"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g1-19",
    "slug": "masaz-banka-chinska",
    "nazwa": "Masaż bańką chińską",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["chińska bańka"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g1-20",
    "slug": "masaz-endodermiczny-i-drenaz-limfatyczny",
    "nazwa": "Masaż endodermiczny i drenaż limfatyczny",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["limfodrenaż", "masaż limfatyczny"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "„Masaż endodermiczny” – możliwa literówka lub inna nazwa endermologii (g1-07); do porównania z załącznikiem programu. Drenaż mechaniczny to „Presoterapia” (g1-27) – też grupa 1."
   },
   {
    "id": "g1-21",
    "slug": "masaz-manualny-ciala-i-twarzy",
    "nazwa": "Masaż manualny ciała i twarzy",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["masaż twarzy", "masaż ciała", "masaż relaksacyjny"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "„Masaż Kobido” (japoński masaż twarzy) jest w grupie 2 (g2-14)."
   },
   {
    "id": "g1-22",
    "slug": "mycie-i-suszenie-wlosow",
    "nazwa": "Mycie i suszenie włosów",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["mycie głowy", "modelowanie suszarką"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-23",
    "slug": "oczyszczanie-wlosow",
    "nazwa": "Oczyszczanie włosów",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["głębokie oczyszczanie włosów"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-24",
    "slug": "pasemka-i-baleyage",
    "nazwa": "Pasemka i baleyage",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["balayage", "refleksy"],
+   "zawody": ["fryzjer"],
+   "uwagi": "Pisownia w nazwie „baleyage” (poprawnie „balayage”) – nazwy nie zmieniamy, do porównania z załącznikiem programu."
   },
   {
    "id": "g1-25",
    "slug": "pedicure-kosmetyczny",
    "nazwa": "Pedicure kosmetyczny",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["pedicure klasyczny"],
+   "zawody": ["stylistka-paznokci", "kosmetolog"],
+   "uwagi": "Ten sam rodzaj zabiegu występuje w grupie 2 jako „Pedicure kosmetyczny (niezastrzeżony dla podologów)” (g2-25), a pedicure podologiczny w grupie 3 (g3-23); usuwanie zrogowaceń i odcisków to pozycje grupy 3 (g3-19, g3-27, g3-30) – do potwierdzenia granice."
   },
   {
    "id": "g1-26",
    "slug": "piercing-przekluwanie",
    "nazwa": "Piercing – przekłuwanie",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["kolczykowanie", "przekłuwanie ciała"],
+   "zawody": ["tatuazysta"],
+   "uwagi": "Przekłuwanie uszu ma osobną pozycję (g1-28) – też grupa 1."
   },
   {
    "id": "g1-27",
    "slug": "presoterapia",
    "nazwa": "Presoterapia",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["pressoterapia", "drenaż pneumatyczny", "drenaż limfatyczny mechaniczny"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g1-28",
    "slug": "przekluwanie-uszu",
    "nazwa": "Przekłuwanie uszu",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["kolczykowanie uszu", "przekłuwanie ucha"],
+   "zawody": ["kosmetolog", "tatuazysta"]
   },
   {
    "id": "g1-29",
    "slug": "przedluzanie-i-zageszczanie-rzes",
    "nazwa": "Przedłużanie i zagęszczanie rzęs",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["rzęsy 1:1", "rzęsy objętościowe", "doczepianie rzęs"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g1-30",
    "slug": "przedluzanie-wlosow",
    "nazwa": "Przedłużanie włosów",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["doczepianie włosów", "doczepy"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-31",
    "slug": "prostowanie-wlosow-na-stale",
    "nazwa": "Prostowanie włosów na stałe",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["trwałe prostowanie", "prostowanie chemiczne"],
+   "zawody": ["fryzjer"],
+   "uwagi": "Prostowanie keratynowe to osobna pozycja „Zabiegi keratynowe” (g1-37) – też grupa 1."
   },
   {
    "id": "g1-32",
    "slug": "retusz-siwizny",
    "nazwa": "Retusz siwizny",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["tuszowanie siwizny", "odsiwianie"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-33",
    "slug": "sauna-na-wlosy",
    "nazwa": "Sauna na włosy",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["sauna fryzjerska"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-34",
    "slug": "strzyzenie-nozyczki-maszynka-brzytwa-split-ender",
    "nazwa": "Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["cięcie włosów", "podcinanie włosów", "fade"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-35",
    "slug": "trwala-ondulacja",
    "nazwa": "Trwała ondulacja",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["loki na stałe", "trwała na włosy"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-36",
    "slug": "zabiegi-z-zastosowaniem-skladnikow-aktywnych",
    "nazwa": "Zabiegi z zastosowaniem składników aktywnych",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": [],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Nazwa ogólna – do potwierdzenia, gdzie przebiega granica z „Różnorodne peelingi chemiczne” (g2-29) i mezoterapią bezigłową (g2-15) w grupie 2; dlatego bez synonimów. Słowa „kwasy” nie ma w synonimach żadnej pozycji, dopóki granica nie zostanie potwierdzona."
   },
   {
    "id": "g1-37",
    "slug": "zabiegi-keratynowe",
    "nazwa": "Zabiegi keratynowe",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["prostowanie keratynowe", "keratyna"],
+   "zawody": ["fryzjer"]
   },
   {
    "id": "g1-38",
    "slug": "zabiegi-przeciwlupiezowe",
    "nazwa": "Zabiegi przeciwłupieżowe",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["zabieg na łupież"],
+   "zawody": ["fryzjer", "kosmetolog"]
   },
   {
    "id": "g1-39",
    "slug": "zabiegi-led-terapeutyczne",
    "nazwa": "Zabiegi LED – terapeutyczne",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": ["maska LED", "fototerapia LED"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Bez synonimu „lampa LED” – tak nazywa się też lampa do utwardzania lakieru hybrydowego i żelu (manicure), która nie jest tym zabiegiem."
   },
   {
    "id": "g1-40",
    "slug": "zageszczanie-wlosow",
    "nazwa": "Zagęszczanie włosów",
-   "grupa": 1
+   "grupa": 1,
+   "synonimy": [],
+   "zawody": ["fryzjer"],
+   "uwagi": "Nazwa nie określa metody (np. pasemka zagęszczające, włókna); mikropigmentacja skóry głowy (trychopigmentacja) nie jest tą pozycją – do potwierdzenia."
   },
   {
    "id": "g2-01",
    "slug": "chemiczne-usuwanie-makijazu-permanentnego",
    "nazwa": "Chemiczne usuwanie makijażu permanentnego",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["usuwanie PMU removerem"],
+   "zawody": ["linergistka"],
+   "uwagi": "Laserowe usuwanie makijażu permanentnego mieści się w „Zabiegi laserem nieablacyjnym (naczynia, tatuaż, depilacja)” (g2-36) – też grupa 2. Bez samego „remover” – tak nazywa się też zmywacz do lakieru hybrydowego."
   },
   {
    "id": "g2-02",
    "slug": "cool-lifting",
    "nazwa": "Cool Lifting",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["coollifting"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-03",
    "slug": "elektroliza",
    "nazwa": "Elektroliza",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["depilacja elektrolizą", "elektroepilacja"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-04",
    "slug": "elektrokoagulacja",
    "nazwa": "Elektrokoagulacja",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": [],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Możliwe pokrycie z „Radiotermoliza zmian skórnych” (g2-28) – obie w grupie 2. Bez synonimu „koagulacja naczynek” – naczynka zamyka się też laserem (g2-36) i IPL (g2-34)."
   },
   {
    "id": "g2-05",
    "slug": "elektroporacja",
    "nazwa": "Elektroporacja",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": [],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Elektroporacja bywa oferowana jako „mezoterapia bezigłowa” (g2-15) – obie w grupie 2."
   },
   {
    "id": "g2-06",
    "slug": "fala-akustyczna-i-energia-wysokiej-czestotliwosci",
    "nazwa": "Fala akustyczna i energia wysokiej częstotliwości",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["fala uderzeniowa", "terapia falą akustyczną"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "„Energia wysokiej częstotliwości” pokrywa się z „Zabiegi falą radiową” (g2-33) i prądami dużej częstotliwości (g2-38) – wszystkie w grupie 2."
   },
   {
    "id": "g2-07",
    "slug": "infuzja-tlenowa",
    "nazwa": "Infuzja tlenowa",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["infuzja tlenu", "oxy infusion"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-08",
    "slug": "jonoforeza",
    "nazwa": "Jonoforeza",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["jontoforeza"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "„Terapia nadpotliwości stóp (jonoforeza)” jest w grupie 3 (g3-29) – ta pozycja dotyczy jonoforezy kosmetycznej; do potwierdzenia."
   },
   {
    "id": "g2-09",
    "slug": "karboksyterapia",
    "nazwa": "Karboksyterapia",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": [],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Celowo bez synonimu „CO2”: CO2 występuje też w Cool Lifting (g2-02), krioterapii (g3-15) i laserze CO2 (ablacyjny, grupa 4)."
   },
   {
    "id": "g2-10",
    "slug": "kawitacja-ultradzwiekowa",
    "nazwa": "Kawitacja ultradźwiękowa",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["lipokawitacja"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Do potwierdzenia, czy pozycja obejmuje tylko kawitację ciała (lipokawitację), czy też peeling kawitacyjny twarzy – peelingu kawitacyjnego nie dodajemy jako synonimu."
   },
   {
    "id": "g2-11",
    "slug": "kriolipoliza",
    "nazwa": "Kriolipoliza",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["zamrażanie tłuszczu"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-12",
    "slug": "makijaz-okolicznosciowy",
    "nazwa": "Makijaż okolicznościowy",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["makijaż ślubny", "makijaż wieczorowy", "makijaż na wesele"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "„Makijaż” jest w grupie 1 (g1-16) – do potwierdzenia, czy przypisanie makijażu okolicznościowego do grupy 2 jest zamierzone."
   },
   {
    "id": "g2-13",
    "slug": "makijaz-permanentny",
    "nazwa": "Makijaż permanentny",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["PMU", "brwi pudrowe", "pigmentacja ust", "kreska permanentna"],
+   "zawody": ["linergistka"]
   },
   {
    "id": "g2-14",
    "slug": "masaz-kobido",
    "nazwa": "Masaż Kobido",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["japoński masaż twarzy"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-15",
    "slug": "mezoterapia-beziglowa",
    "nazwa": "Mezoterapia bezigłowa",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["mezoterapia bez igły"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-16",
    "slug": "mezoterapia-iglowa",
    "nazwa": "Mezoterapia igłowa",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["mezoterapia iniekcyjna"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Zabiegi z wypełniaczami na bazie kwasu hialuronowego i lipoliza iniekcyjna są w grupie 4 – do potwierdzenia, gdzie mieści się mezoterapia preparatami z kwasem hialuronowym (biorewitalizacja); dlatego bez synonimu „biorewitalizacja”."
   },
   {
    "id": "g2-17",
    "slug": "mezoterapia-mikroiglowa",
    "nazwa": "Mezoterapia mikroigłowa",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["dermapen", "dermaroller"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Pokrywa się z „Mikronakłuwanie” (g2-19) – obie w grupie 2."
   },
   {
    "id": "g2-18",
    "slug": "microblading",
    "nazwa": "Microblading",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["mikroblading", "metoda włoskowa brwi"],
+   "zawody": ["linergistka"]
   },
   {
    "id": "g2-19",
    "slug": "mikronakluwanie",
    "nazwa": "Mikronakłuwanie",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["microneedling", "mikroigłowanie"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Pokrywa się z „Mezoterapia mikroigłowa” (g2-17) – obie w grupie 2."
   },
   {
    "id": "g2-20",
    "slug": "mikropigmentacja-rekonstrukcyjna",
    "nazwa": "Mikropigmentacja rekonstrukcyjna",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["pigmentacja otoczki", "pigmentacja blizn"],
+   "zawody": ["linergistka"],
+   "uwagi": "Synonimy opisują pigmentację, nie chirurgiczną rekonstrukcję otoczki ani makijaż kamuflujący (korektywny). Trychopigmentacja (mikropigmentacja skóry głowy) – do potwierdzenia, czy to ta pozycja."
   },
   {
    "id": "g2-21",
    "slug": "mikrodermabrazja-korundowa-i-diamentowa",
    "nazwa": "Mikrodermabrazja korundowa i diamentowa",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["peeling diamentowy", "peeling korundowy"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-22",
    "slug": "oczyszczanie-wodorowo-tlenowe",
    "nazwa": "Oczyszczanie wodorowo-tlenowe",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["oczyszczanie wodorowe", "hydrabrazja", "aquafacial"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-23",
    "slug": "opalanie-natryskowe",
    "nazwa": "Opalanie natryskowe",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["spray tan", "natrysk brązujący"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-24",
    "slug": "oxybrazja",
    "nazwa": "Oxybrazja",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["oksybrazja"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-25",
    "slug": "pedicure-kosmetyczny-niezastrzezony-dla-podologow",
    "nazwa": "Pedicure kosmetyczny (niezastrzeżony dla podologów)",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": [],
+   "zawody": ["stylistka-paznokci", "kosmetolog"],
+   "uwagi": "Ten sam rodzaj zabiegu co „Pedicure kosmetyczny” w grupie 1 (g1-25) – do potwierdzenia znaczenie dopisku „niezastrzeżony dla podologów” i różnica między pozycjami; bez synonimów, żeby wyszukiwarka nie kierowała pedicure do grupy 2."
   },
   {
    "id": "g2-26",
    "slug": "peeling-weglowy",
    "nazwa": "Peeling węglowy",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["carbon peel"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-27",
    "slug": "radiofrekwencja-mikroiglowa",
    "nazwa": "Radiofrekwencja mikroigłowa",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["RF mikroigłowa"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-28",
    "slug": "radiotermoliza-zmian-skornych",
    "nazwa": "Radiotermoliza zmian skórnych",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": [],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Możliwe pokrycie z „Elektrokoagulacja” (g2-04) – obie w grupie 2."
   },
   {
    "id": "g2-29",
    "slug": "roznorodne-peelingi-chemiczne",
    "nazwa": "Różnorodne peelingi chemiczne",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["peeling chemiczny", "peeling kwasowy"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Bez samego „kwasy”: to słowo obejmuje też kwas hialuronowy (g4-05) i może dotyczyć „Zabiegi z zastosowaniem składników aktywnych” (g1-36) – granica z grupą 1 do potwierdzenia."
   },
   {
    "id": "g2-30",
    "slug": "sauny-infrared",
    "nazwa": "Sauny infrared",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["sauna na podczerwień", "sauna IR", "infrasauna"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Pokrywa się z „Zabiegi z zastosowaniem podczerwieni” (g2-37) – obie w grupie 2."
   },
   {
    "id": "g2-31",
    "slug": "sonoforeza",
    "nazwa": "Sonoforeza",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["fonoforeza"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-32",
    "slug": "tatuaz",
    "nazwa": "Tatuaż",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["tatuowanie", "tattoo", "dziara"],
+   "zawody": ["tatuazysta"]
   },
   {
    "id": "g2-33",
    "slug": "zabiegi-fala-radiowa",
    "nazwa": "Zabiegi falą radiową",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["radiofrekwencja", "RF"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Bez synonimu „termolifting” – nazwa marketingowa, używana też dla innych technologii (np. podczerwień, ultradźwięki skupione HIFU z grupy 4)."
   },
   {
    "id": "g2-34",
    "slug": "zabiegi-ipl-fotoodmladzanie-przebarwienia-teleangiektazje-depilacja",
    "nazwa": "Zabiegi IPL (fotoodmładzanie, przebarwienia, teleangiektazje, depilacja)",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["depilacja IPL", "fotodepilacja"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-35",
    "slug": "zabiegi-laserem-frakcyjnym-nieablacyjnym",
    "nazwa": "Zabiegi laserem frakcyjnym nieablacyjnym",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": [],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Celowo bez synonimu „laser frakcyjny”: lasery frakcyjne ablacyjne (np. frakcyjny CO2) to „Zabiegi laserem ablacyjnym” w grupie 4 (g4-08)."
   },
   {
    "id": "g2-36",
    "slug": "zabiegi-laserem-nieablacyjnym-naczynia-tatuaz-depilacja",
    "nazwa": "Zabiegi laserem nieablacyjnym (naczynia, tatuaż, depilacja)",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["depilacja laserowa", "laserowe usuwanie tatuażu", "laserowe zamykanie naczynek", "laser diodowy"],
+   "zawody": ["kosmetolog", "linergistka"]
   },
   {
    "id": "g2-37",
    "slug": "zabiegi-z-zastosowaniem-podczerwieni",
    "nazwa": "Zabiegi z zastosowaniem podczerwieni",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["lampa IR", "sollux"],
+   "zawody": ["kosmetolog"]
   },
   {
    "id": "g2-38",
    "slug": "zastosowanie-pradow-malej-i-duzej-czestotliwosci",
    "nazwa": "Zastosowanie prądów małej i dużej częstotliwości",
-   "grupa": 2
+   "grupa": 2,
+   "synonimy": ["darsonwalizacja", "darsonval"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Elektrostymulacja (g1-06) jest w grupie 1 – do potwierdzenia granica między pozycjami. Celowo bez synonimu „mikroprądy”: mikroprądy to prąd małej częstotliwości, więc mogą należeć do „Elektrostymulacja” (grupa 1) albo do tej pozycji – do potwierdzenia."
   },
   {
    "id": "g3-01",
    "slug": "analiza-chodu-ocena-dynamiczna-wideoanaliza",
    "nazwa": "Analiza chodu (ocena dynamiczna, wideoanaliza)",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["badanie chodu", "analiza biomechaniczna stopy"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-02",
    "slug": "badanie-grzybicze-paznokcia",
    "nazwa": "Badanie grzybicze paznokcia",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["badanie mykologiczne", "test na grzybicę paznokcia"],
+   "zawody": ["podolog"],
+   "uwagi": "Pokrywa się z „Pobieranie próbek do badań” (g3-24) – obie w grupie 3."
   },
   {
    "id": "g3-03",
    "slug": "badanie-podoskopowe-podoskanerem",
    "nazwa": "Badanie podoskopowe / podoskanerem",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["podoskopia"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-04",
    "slug": "delikatna-koloryzacja-rekonstrukcyjna-paznokci",
    "nazwa": "Delikatna koloryzacja rekonstrukcyjna paznokci",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": [],
+   "zawody": ["podolog"],
+   "uwagi": "Zabieg podologiczny (rekonstrukcja wyglądu paznokcia zmienionego chorobowo) – nie jest to manicure ani pedicure kosmetyczny z lakierem."
   },
   {
    "id": "g3-05",
    "slug": "diagnostyka-i-leczenie-brodawek",
    "nazwa": "Diagnostyka i leczenie brodawek",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["kurzajki", "usuwanie kurzajek", "brodawki wirusowe"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-06",
    "slug": "diagnostyka-roznicowa-brodawka-vs-odcisk",
    "nazwa": "Diagnostyka różnicowa brodawka vs odcisk",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": [],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-07",
    "slug": "dobor-indywidualnych-wkladek-korygujacych",
    "nazwa": "Dobór indywidualnych wkładek korygujących",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["dobór wkładek ortopedycznych", "wkładki indywidualne"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-08",
    "slug": "dobor-ortez-i-separatorow-zelowych",
    "nazwa": "Dobór ortez i separatorów żelowych",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["separatory palców", "ortezy silikonowe"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-09",
    "slug": "instruktaz-ochrony-mechanicznej-i-modyfikacji-obuwia",
    "nazwa": "Instruktaż ochrony mechanicznej i modyfikacji obuwia",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["porada obuwnicza", "dobór obuwia"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-10",
    "slug": "intensywne-kuracje-nawilzajaco-regenerujace",
    "nazwa": "Intensywne kuracje nawilżająco-regenerujące",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": [],
+   "zawody": ["podolog"],
+   "uwagi": "Nazwa nie wskazuje okolicy – przyjęto, że dotyczy stóp (grupa podologiczna); kuracje włosów to g1-13. Do potwierdzenia. Bez synonimów typu „nawilżanie stóp” – nawilżanie i maski na stopy są też częścią pedicure kosmetycznego (g1-25, grupa 1), więc wyszukiwarka kierowałaby stylistki paznokci do grupy 3."
   },
   {
    "id": "g3-11",
    "slug": "klamry-ortonyksyjne-aplikacja-i-aktywacje",
    "nazwa": "Klamry ortonyksyjne – aplikacja i aktywacje",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["klamra na wrastający paznokieć", "ortonyksja", "klamra podologiczna"],
+   "zawody": ["podolog"],
+   "uwagi": "Bez synonimu „wrastające paznokcie” – to dolegliwość, nie zabieg; wrastający paznokieć opracowuje się też bez klamry (np. g3-21, g3-31)."
   },
   {
    "id": "g3-12",
    "slug": "konsultacja-podologiczna",
    "nazwa": "Konsultacja podologiczna",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["wizyta u podologa"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-13",
    "slug": "kontrola-po-klamrze-rekonstrukcji-opatrunku",
    "nazwa": "Kontrola po klamrze / rekonstrukcji / opatrunku",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": [],
+   "zawody": ["podolog"],
+   "uwagi": "Bez synonimu „wizyta kontrolna” – wizyty kontrolne są też po makijażu permanentnym (grupa 2) i po zabiegach z grupy 4."
   },
   {
    "id": "g3-14",
    "slug": "korekty-ustawienia-palucha-taping-fiksatory",
    "nazwa": "Korekty ustawienia palucha: taping / fiksatory",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["taping haluksa", "korektor haluksa"],
+   "zawody": ["podolog"],
+   "uwagi": "Synonimy ograniczone do tapingu i fiksatorów – sama nazwa dolegliwości („haluksy”) sugerowałaby leczenie, w tym operacyjne, którego ta pozycja nie obejmuje."
   },
   {
    "id": "g3-15",
    "slug": "krioterapia-zmian-skornych-co2-punktowa",
    "nazwa": "Krioterapia zmian skórnych (CO2, punktowa)",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["wymrażanie kurzajek", "wymrażanie brodawek"],
+   "zawody": ["podolog"],
+   "uwagi": "Pozycja w grupie podologicznej – do potwierdzenia, czy obejmuje też krioterapię zmian skórnych poza stopami wykonywaną przez kosmetologa. Nie mylić z „Cool Lifting” (g2-02, grupa 2), w którym też używa się CO2."
   },
   {
    "id": "g3-16",
    "slug": "odciazanie-miejsc-bolesnych-taping",
    "nazwa": "Odciążanie miejsc bolesnych (taping)",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["taping stopy", "kinesiotaping stopy"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-17",
    "slug": "opatrunki-specjalistyczne",
    "nazwa": "Opatrunki specjalistyczne",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["opatrunek podologiczny"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-18",
    "slug": "opracowanie-lozyska-przy-onycholizie",
    "nazwa": "Opracowanie łożyska przy onycholizie",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["onycholiza", "odwarstwienie paznokcia"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-19",
    "slug": "opracowanie-modzeli-odciskow-nagniotkow",
    "nazwa": "Opracowanie modzeli, odcisków, nagniotków",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["usuwanie odcisków", "usuwanie nagniotków", "modzele"],
+   "zawody": ["podolog"],
+   "uwagi": "Pokrywa się z „Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin” (g3-27) i „Usuwanie zrogowaciałego naskórka” (g3-30) – wszystkie w grupie 3."
   },
   {
    "id": "g3-20",
    "slug": "opracowanie-pekniec-i-rozpadlin-piet",
    "nazwa": "Opracowanie pęknięć i rozpadlin pięt",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["pękające pięty", "rozpadliny pięt"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-21",
    "slug": "opracowanie-walow-z-ziarnina",
    "nazwa": "Opracowanie wałów z ziarniną",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["przerost wału paznokciowego"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-22",
    "slug": "ozonoterapia",
    "nazwa": "Ozonoterapia",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["terapia ozonem"],
+   "zawody": ["podolog"],
+   "uwagi": "Pozycja w grupie podologicznej – do potwierdzenia, czy obejmuje wyłącznie ozonoterapię stóp."
   },
   {
    "id": "g3-23",
    "slug": "pedicure-podologiczny-medyczny-calosciowy",
    "nazwa": "Pedicure podologiczny (medyczny) całościowy",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["pedicure medyczny"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-24",
    "slug": "pobieranie-probek-do-badan",
    "nazwa": "Pobieranie próbek do badań",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["pobranie materiału do badania"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-25",
    "slug": "profilaktyka-i-zabiegi-u-osob-z-grup-ryzyka",
    "nazwa": "Profilaktyka i zabiegi u osób z grup ryzyka",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["profilaktyka stopy cukrzycowej", "pielęgnacja stóp diabetyka"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-26",
    "slug": "protetyka-rekonstrukcja-paznokcia",
    "nazwa": "Protetyka / rekonstrukcja paznokcia",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["rekonstrukcja płytki paznokcia", "proteza paznokcia"],
+   "zawody": ["podolog"],
+   "uwagi": "Rekonstrukcja paznokcia zmienionego chorobowo – nie jest to przedłużanie ani stylizacja paznokci."
   },
   {
    "id": "g3-27",
    "slug": "rozpoznanie-i-usuwanie-modzeli-odciskow-rozpadlin",
    "nazwa": "Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": [],
+   "zawody": ["podolog"],
+   "uwagi": "Pokrywa się z „Opracowanie modzeli, odcisków, nagniotków” (g3-19) – obie w grupie 3."
   },
   {
    "id": "g3-28",
    "slug": "skrocenie-i-wyrownanie-paznokci-zmienionych-chorobowo",
    "nazwa": "Skrócenie i wyrównanie paznokci (zmienionych chorobowo)",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["pogrubione paznokcie", "opracowanie paznokci grzybiczych"],
+   "zawody": ["podolog"]
   },
   {
    "id": "g3-29",
    "slug": "terapia-nadpotliwosci-stop-jonoforeza",
    "nazwa": "Terapia nadpotliwości stóp (jonoforeza)",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["jonoforeza stóp"],
+   "zawody": ["podolog"],
+   "uwagi": "„Jonoforeza” (kosmetyczna) jest w grupie 2 (g2-08) – do potwierdzenia. Pozycja dotyczy jonoforezy; bez synonimów typu „nadpotliwość stóp”, bo nadpotliwość leczy się też toksyną botulinową (g4-02, grupa 4)."
   },
   {
    "id": "g3-30",
    "slug": "usuwanie-zrogowacialego-naskorka",
    "nazwa": "Usuwanie zrogowaciałego naskórka",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["zrogowacenia stóp", "hiperkeratoza"],
+   "zawody": ["podolog"],
+   "uwagi": "Usuwanie zrogowaceń bywa częścią pedicure kosmetycznego (g1-25, grupa 1) – do potwierdzenia, czy stylistka paznokci wykonująca pedicure z usuwaniem zrogowaceń mieści się w grupie 1."
   },
   {
    "id": "g3-31",
    "slug": "zabiegi-skalpelem-dlutem-i-frezami",
    "nazwa": "Zabiegi skalpelem, dłutem i frezami",
-   "grupa": 3
+   "grupa": 3,
+   "synonimy": ["skalpel podologiczny", "dłuto podologiczne"],
+   "zawody": ["podolog"],
+   "uwagi": "Celowo bez synonimu „frezowanie”: frezarki używa się też w manicure i pedicure kosmetycznym (grupa 1)."
   },
   {
    "id": "g4-01",
    "slug": "zabiegi-technologia-hifu",
    "nazwa": "Zabiegi technologią HIFU",
    "grupa": 4,
-   "nazwa_w_ankiecie_ergo": "zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)"
+   "nazwa_w_ankiecie_ergo": "zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)",
+   "synonimy": ["ultradźwięki skupione"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Bez synonimu „lifting SMAS” – to nazwa marketingowa, a „lifting SMAS” oznacza też operację chirurgiczną. Granica z „Fala akustyczna i energia wysokiej częstotliwości” (g2-06) i „Kawitacja ultradźwiękowa” (g2-10) – do potwierdzenia, które urządzenia ultradźwiękowe (np. ultradźwięki mikroogniskowane) należą do grupy 4."
   },
   {
    "id": "g4-02",
    "slug": "zabiegi-z-uzyciem-toksyny-botulinowej",
    "nazwa": "Zabiegi z użyciem toksyny botulinowej",
    "grupa": 4,
-   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem toksyny botulinowej"
+   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem toksyny botulinowej",
+   "synonimy": ["botoks", "botox"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "„Botoks na włosy” (potoczna nazwa kuracji włosów bez toksyny botulinowej) nie jest tą pozycją – to usługa fryzjerska, nie ma jej w synonimach (zob. g1-13). Leczenie nadpotliwości toksyną botulinową należy do tej pozycji, nie do „Terapia nadpotliwości stóp (jonoforeza)” (g3-29)."
   },
   {
    "id": "g4-03",
    "slug": "zabiegi-osoczem-bogatoplytkowym-prp",
    "nazwa": "Zabiegi osoczem bogatopłytkowym (PRP)",
    "grupa": 4,
-   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem osocza bogatopłytkowego"
+   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem osocza bogatopłytkowego",
+   "synonimy": [],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Nie mylić z „Zabiegi technologią PLASMA” (g4-04) – angielskie „plasma” to też osocze. Bez synonimu „wampirzy lifting” (nazwa marketingowa). Fibryna bogatopłytkowa (PRF) nie ma własnej pozycji – do potwierdzenia, czy należy do tej pozycji."
   },
   {
    "id": "g4-04",
    "slug": "zabiegi-technologia-plasma",
    "nazwa": "Zabiegi technologią PLASMA",
    "grupa": 4,
-   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem urządzeń wykorzystujących technologię PLASMA"
+   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem urządzeń wykorzystujących technologię PLASMA",
+   "synonimy": ["plazma", "plasma pen"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Nie mylić z osoczem bogatopłytkowym (g4-03). Do potwierdzenia, czy pozycja obejmuje też głowice „zimnej plazmy” w urządzeniach wielofunkcyjnych (np. przy oczyszczaniu twarzy), czy tylko urządzenia typu plasma pen."
   },
   {
    "id": "g4-05",
    "slug": "wypelniacze-kwas-hialuronowy",
    "nazwa": "Wypełniacze – kwas hialuronowy",
    "grupa": 4,
-   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego"
+   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego",
+   "synonimy": ["filler hialuronowy", "powiększanie ust kwasem hialuronowym"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Do potwierdzenia: czy biorewitalizacja i tzw. skin boostery na bazie kwasu hialuronowego należą do tej pozycji, czy do „Mezoterapia igłowa” (g2-16). Bez samego „kwas hialuronowy” (występuje też w mezoterapii i kosmetykach) ani samego „filler” – wypełniacze na innej bazie (np. hydroksyapatyt wapnia, kwas polimlekowy) nie mają pozycji na liście. Bez „modelowanie ust” – myli się z pigmentacją ust (g2-13)."
   },
   {
    "id": "g4-06",
    "slug": "zabiegi-z-uzyciem-nici-pdo",
    "nazwa": "Zabiegi z użyciem nici PDO",
    "grupa": 4,
-   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem nici PDO"
+   "nazwa_w_ankiecie_ergo": "zabiegi z użyciem nici PDO",
+   "synonimy": ["nici liftingujące PDO", "lifting nićmi PDO"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Synonimy ograniczone do nici PDO – nici z innych materiałów (np. PLLA, PCL) nie mają pozycji na liście; do potwierdzenia z ERGO Hestią (ankieta, pkt „Inny”)."
   },
   {
    "id": "g4-07",
    "slug": "lipoliza-iniekcyjna",
    "nazwa": "Lipoliza iniekcyjna",
    "grupa": 4,
-   "nazwa_w_ankiecie_ergo": "zabiegi lipolizy iniekcyjnej"
+   "nazwa_w_ankiecie_ergo": "zabiegi lipolizy iniekcyjnej",
+   "synonimy": ["lipoliza chemiczna", "rozpuszczanie tłuszczu zastrzykami"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Nie mylić z „Kriolipoliza” (g2-11, grupa 2) – wyszukiwanie „lipoliza” zwróci obie pozycje."
   },
   {
    "id": "g4-08",
    "slug": "zabiegi-laserem-ablacyjnym",
    "nazwa": "Zabiegi laserem ablacyjnym",
    "grupa": 4,
-   "nazwa_w_ankiecie_ergo": "zabiegi laserem ablacyjnym"
+   "nazwa_w_ankiecie_ergo": "zabiegi laserem ablacyjnym",
+   "synonimy": ["laser CO2", "laser frakcyjny CO2"],
+   "zawody": ["kosmetolog"],
+   "uwagi": "Granica z „Zabiegi laserem frakcyjnym nieablacyjnym” (g2-35, grupa 2) – do potwierdzenia, że każdy laser frakcyjny ablacyjny (CO2, erbowy ablacyjny) należy do grupy 4."
   }
  ]
 }
