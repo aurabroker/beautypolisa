@@ -967,7 +967,7 @@ html:has(.klauzula[open]){overflow:hidden}
               <div class="opt opt--check"><input type="checkbox" id="g1" name="grupa" value="1" checked><label for="g1"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-fryzjer"/></svg><span>Grupa 1<small>fryzjerstwo, manicure, rzęsy, koloryzacja</small></span></label></div>
               <div class="opt opt--check"><input type="checkbox" id="g2" name="grupa" value="2"><label for="g2"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-kosmetolog"/></svg><span>Grupa 2<small>makijaż permanentny, tatuaż, mezoterapia, IPL</small></span></label></div>
               <div class="opt opt--check"><input type="checkbox" id="g3" name="grupa" value="3"><label for="g3"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-podolog"/></svg><span>Grupa 3<small>podologia, pedicure medyczny</small></span></label></div>
-              <div class="opt opt--check"><input type="checkbox" id="g4" name="grupa" value="4"><label for="g4"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupy-ryzyka"/></svg><span>Grupa 4 – zabiegi specjalistyczne<small>HIFU, toksyna botulinowa, wypełniacze</small></span></label></div>
+              <div class="opt opt--check"><input type="checkbox" id="g4" name="grupa" value="4"><label for="g4"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupy-ryzyka"/></svg><span>Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)<small>HIFU, toksyna botulinowa, wypełniacze</small></span></label></div>
             </div>
             <!-- strona produktu OC (oc-beauty.html, produkcyjnie /ubezpieczenia/oc-beauty#zabiegi) – tabela 117 zabiegów z grupami; liczba z snippets/zabiegi-oc-beauty.json -->
             <p class="zab-full"><a class="link-quiet" href="oc-beauty.html#zabiegi">Pełna lista zabiegów (117)<span aria-hidden="true">&nbsp;→</span></a></p>
@@ -1457,7 +1457,7 @@ html:has(.klauzula[open]){overflow:hidden}
     }else{
       cta.removeAttribute('aria-disabled');
       if(h4||zespol==='ind'){
-        w.dataset.state='individual';el('taryfa').textContent=h4?'Grupa 4 – zabiegi specjalistyczne':'Zespół od 9 osób';el('cena').textContent='Wycena indywidualna';el('cena-dop').textContent='';
+        w.dataset.state='individual';el('taryfa').textContent=h4?'Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)':'Zespół od 9 osób';el('cena').textContent='Wycena indywidualna';el('cena-dop').textContent='';
         cta.textContent=h4?'Wypełnij ankietę ERGO Hestii':'Poproś o wycenę indywidualną';
       }else{
         w.dataset.state='price';

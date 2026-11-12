@@ -82,9 +82,9 @@ Poza kontrastem: cele dotykowe (checkbox 13,6 px w `bp-app.js`, przyciski „Wsz
 ### Co działa dobrze
 
 - Model mentalny kalkulatora: zabiegi → parametry → wynik, z automatycznym doborem taryfy i jasnym wyjątkiem dla grupy 4 i zespołów powyżej 8 osób.
-- Rzeczowe listy zabiegów w czterech grupach – gotowy materiał na ściągę i strony `/dla-kogo/<zawod>`.
+- Rzeczowe listy zabiegów w czterech grupach – gotowy materiał na ściągę i listę zabiegów na stronie OC (00, D29; strony `/dla-kogo/<zawod>` w v1 tylko linkują do grupy).
 - Uczciwa karta „Czego polisa nie obejmuje” obok zakresu i rozszerzeń.
-- Wyróżnienie wariantu środkowego (200 000 zł) jako rekomendacji, duża cena, jednostka „zł/rok”.
+- Duża cena i jednostka „zł/rok”. (Wyróżnienie wariantu 200 000 zł jako rekomendacji – nie przenosimy: bez rekomendacji wariantu przed analizą potrzeb, IDD, 03 K24.)
 - Noty prawne (art. 66 KC, kod OWU) obecne, choć w 9 px.
 - `lang="pl"`, `theme-color`, `aria-live`, `for`/`id` na większości pól w `indeksowt.html`, istniejący tryb ciemny i `backdrop-filter` w headerze – kierunek „glass” jest już w DNA projektu.
 
@@ -378,7 +378,7 @@ Zasady: po polsku, bezpośrednio, w drugiej osobie („wybierasz”, „policz�
 | CTA indywidualne | „Odbierz Ankietę na e-mail” | „Umów rozmowę z doradcą” |
 | Nagłówek hero | „Ekskluzywny Program Ochrony dla Branży Beauty” | „Ochrona gabinetu i zespołu, bez niespodzianek w OWU” |
 | Etykieta pola | „NIP Firmy (Weryfikacja API)” | „NIP firmy” + pomoc „10 cyfr, bez myślników” |
-| Odznaka | „Rekomendacja Ekspertów” | „Najczęściej wybierana” |
+| Odznaka | „Rekomendacja Ekspertów” | bez odznaki – warianty równorzędne; sumę gwarancyjną wybiera klient po analizie potrzeb (IDD, 03 K24) |
 | Grupa 4 | „Wymagana Indywidualna Ocena Ryzyka” (wersaliki) | „Zabiegi z grupy 4 wymagają indywidualnej oceny ryzyka przez ERGO Hestię. Przygotujemy ankietę i ofertę szytą na miarę.” |
 
 Komunikaty błędów (pod polem, 14 px, `--color-error`): „Podaj adres e-mail w formacie nazwa@domena.pl”; „Numer telefonu powinien mieć 9 cyfr”; „NIP ma 10 cyfr – sprawdź, czy nie brakuje jednej”; „Zaznacz zgodę na kontakt, żebyśmy mogli odpowiedzieć”; błąd serwera: „Nie udało się wysłać formularza. Spróbuj ponownie za chwilę lub napisz na adres z sekcji Kontakt.”; limit: „Zbyt wiele prób. Odczekaj minutę i spróbuj ponownie.” Sukces: „Dziękujemy. Doradca odezwie się w następnym dniu roboczym.” [założenie: SLA do potwierdzenia].

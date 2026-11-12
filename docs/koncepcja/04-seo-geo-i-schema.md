@@ -43,7 +43,7 @@ Model **hub-and-spoke**: produkt jest szprychą huba `/ubezpieczenia`, zawód �
 | `/rodo` | prawna | – | – | WebPage | – |
 | `/dziekujemy`, `/panel/*`, `/api/*` | techniczne | – | – | noindex / Disallow | – |
 
-Strony `/dla-kogo/*` muszą mieć **własną** substancję (zabiegi z przypisaniem do grup ryzyka, typowe roszczenia, rekomendowane produkty), nie szablon z podmienionym zawodem – inaczej są cienką treścią (pkt 8).
+Strony `/dla-kogo/*` muszą mieć **własną** substancję (grupa ryzyka właściwa dla zawodu z odnośnikiem do `#grupa-N` na liście zabiegów, typowe roszczenia, powiązane produkty; przypisanie pojedynczych zabiegów do zawodów – dopiero po ułożeniu listy, 00, D29), nie szablon z podmienionym zawodem – inaczej są cienką treścią (pkt 8).
 
 **Strona OC: lista zabiegów i klauzula ochrony prawnej (00, D29, D30; makieta `design/v3/oc-beauty.html`).** `/ubezpieczenia/oc-beauty` ma dwie sekcje renderowane z plików danych w repozytorium:
 
