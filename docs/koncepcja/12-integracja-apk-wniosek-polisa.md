@@ -195,11 +195,11 @@ Gdyby formularz portalu po wpisaniu NIP albo e-maila sam odszukał firmę w CRM 
 
 | Kategoria | Zagrożenie | Kontrola |
 |---|---|---|
-| **S** – podszycie | Fałszywe e-maile z linkiem do obcej domeny (phishing „BeautyPolisa”); osoba trzecia wpisuje cudzy NIP lub e-mail do formularza | Link zawsze w `portal.beautypolisa.eu` i strony publiczne to mówią (2.3); DKIM/SPF/DMARC dla domeny nadawcy (R-CRM-9); formularz bez przekierowań i bez dopasowania do CRM (3.3) |
+| **S** – podszycie | Fałszywe e-maile z linkiem do obcej domeny (phishing „BeautyPolisa”); osoba trzecia wpisuje cudzy NIP lub e-mail do formularza | Link zawsze w `portal.beautypolisa.eu` i strony publiczne to mówią (2.3); DKIM/SPF/DMARC dla domeny nadawcy (R-CRM-9); formularz bez przekierowań i bez dopasowania do CRM (3.3); potwierdzenie umocowania i adresu przed wysłaniem linku, zmiana adresu tylko po telefonie zwrotnym (R-CRM-13) |
 | **T** – manipulacja | Zmiana danych wniosku po podpisie; podmiana `wazny_do` | Blokada po złożeniu (R-W5); `wazny_do` tylko po stronie serwera (R-W4) |
 | **R** – wyparcie | Spór o to, kto podpisał APK i wniosek | Znaczniki `podpis_apk_at`, `podpis_wniosku_at`, kod z e-maila przed podpisem (R-W6), dziennik zdarzeń sprawy w CRM bez kodu (R-W12) |
 | **I** – ujawnienie | Zgadnięcie kodu; wyciek kodu przez nagłówek `Referer`, analitykę, logi, historię przeglądarki, przekazany e-mail, skanery linków; odczyt danych po złożeniu | 4.2–4.4: długość i losowość kodu, limity, `no-referrer`, wykluczenia z analityki i logów, kod z e-maila przed pokazaniem danych, blokada po złożeniu |
-| **D** – odmowa usługi | Masowe zgadywanie kodów; wysyłka kodów z e-maila w pętli | Limity na IP i kod, Turnstile przed wysłaniem kodu, globalny alert (R-W2, R-W3) |
+| **D** – odmowa usługi | Masowe zgadywanie kodów; wysyłka kodów z e-maila w pętli | Limity liczone w aplikacji: per IP lub prefiks `/64`, per kod, per sprawa i globalne z automatycznym wyzwaniem; Turnstile przed wysłaniem kodu (R-W2, R-W3) |
 | **E** – podniesienie uprawnień | Funkcje `SECURITY DEFINER` wywoływalne przez `anon` w „aurabroker”; dostęp portalu do CRM | Strona `/w/` obsługiwana na serwerze aplikacji, bez funkcji bazy dla `anon` (R-W10); portal bez kluczy CRM (3.2 pkt 4, rozdz. 5) |
 
 ### 4.2 Kod w linku – ile znaków wystarczy
@@ -390,7 +390,7 @@ Zasada: **żadnych danych osobowych, kodów, numerów spraw ani numerów polis w
 **Stan naniesienia w innych dokumentach (sprawdzone w repozytorium 12.11.2026):**
 
 - **Naniesione:** 00 D28 (poprawka D28a); 02 §4.13, decyzja 19 i pytanie 20 (kody zapasowe → D28a); 02 §4.14 (granice portalu; reguła analityki ujednolicona z R-W13); 11 §4.4a (Sprawy w toku), §8 (D28a; sekrety CRM z R-CRM-6/7 i 3.2 wariant B), §22–§23; `design/v3/tax-protect.html` („Jak kupić” bez osobistego linku – kalkulator lub formularz → doradca); makiety `design/v3/strefa/logowanie.html` i `panel.html` – bez obietnic kodów zapasowych („Dodaj zapasowe urządzenie”, reset przez doradcę), w `panel.html` sekcja „Sprawy w toku”; `snippets/strefa-klienta.sql` (para `crm_tenant` + `crm_ref`, 5.2); `snippets/wrangler.jsonc` (nazwy sekretów CRM).
-- **Otwarte:** P8 i M5 w 11 §6.2/§7.4 („CRM w BEAUTY” → CRM Aura Expert w „aurabroker” – po odpowiedzi na Q7); nieaktualne listy „do poprawienia w makietach” w 00 (rozdz. 13, pkt „Integracja APK…”, lit. e) i 11 §5.3 – makiety są już poprawione; w makiecie `panel.html` przycisk „Dokończ APK i wniosek” jest zwykłym linkiem `<a href>` z kodem `XXXXXXXXXX` (w produkcji – formularz `POST` z 5.3; komentarz w makiecie to opisuje). Poprawki makiet – osobny krok.
+- **Otwarte:** P8 i M5 w 11 §6.2/§7.4 („CRM w BEAUTY” → CRM Aura Expert w „aurabroker” – po odpowiedzi na Q7); nieaktualne listy „do poprawienia w makietach” w 00 (rozdz. 13, pkt „Integracja APK…”, lit. e) i 11 §5.3 (akapit „Do uzupełnienia w makietach…”) – makiety są już poprawione; w makiecie `panel.html` przycisk „Dokończ APK i wniosek” jest zwykłym linkiem `<a href>` z kodem `XXXXXXXXXX` (w produkcji – formularz `POST` z 5.3; komentarz w makiecie to opisuje). Poprawki makiet – osobny krok.
 
 ---
 
@@ -406,7 +406,7 @@ Zasada: **żadnych danych osobowych, kodów, numerów spraw ani numerów polis w
 | Q6 | GA4: jedna usługa wspólna dla beautypolisa.eu i `portal.beautypolisa.eu` czy osobne? Czy na `portal.` działa dziś jakikolwiek tag (GA4, Zaraz, piksel)? Jak Zaraz w strefie jest ograniczony do hostów (R-W13)? | zleceniodawca | R-W13; 02 Q18 |
 | Q7 | Który CRM jest źródłem polis dla Strefy Klienta: CRM Aura Expert w „aurabroker” (`crm_renewals.nr_polisy`/`polisa_id` – ustalenia 12.11.2026) czy CRM w „BEAUTY” (`crm_policies` – założenie 11 §7.4 M5)? Czy `crm_ref` kont ma wskazywać `klient_id` z „aurabroker”? | zleceniodawca + zespół CRM | 5.2; korekta 11 |
 | Q8 | Rola `konsultacja.beautypolisa.eu` (`/k`, `/w`, baza „BEAUTY”, `konsultacja_*`): czy portal ma do niej w ogóle linkować (np. jako „porozmawiaj z asystentem”), skoro nie jest APK ani wnioskiem? Jeśli tak – gdzie i z jakim opisem, żeby nie mylić jej `/w` ze ścieżką zakupu | zleceniodawca | treści |
-| Q9 | Forma podpisu APK i wniosku w `portal.beautypolisa.eu` (np. kod z e-maila/SMS, podpis kwalifikowany, akceptacja z identyfikacją) i jej akceptacja przez ERGO Hestię | zleceniodawca + prawnik | opis kroku 4 na stronie OC |
+| Q9 | Forma podpisu APK i wniosku w `portal.beautypolisa.eu` (np. kod z e-maila/SMS, podpis kwalifikowany, akceptacja z identyfikacją) i jej akceptacja przez ERGO Hestię; jak forma podpisu łączy się z potwierdzeniem umocowania przez doradcę (R-CRM-13) | zleceniodawca + prawnik | opis kroku 4 na stronie OC; R-CRM-13 |
 | Q10 | Słownik wartości w `crm_renewals` (`rodzaj`, `status`, `decyzja`, `program`, `tu_nazwa`): które oznaczają OC (etap 1) i Tax Protect (etap 2) – do listy dozwolonej po obu stronach przekazu | zespół CRM | 5.2, R-CRM-1 |
 | Q11 | Tax Protect dziś: jak doradca prowadzi wniosek bez linku `/w/` (dokumenty Colonnade, podpis) – do opisu na stronie Tax Protect w jednym zdaniu, bez obietnic | zleceniodawca | D-TP/UD |
 | Q12 | Okresy retencji APK, wniosków i spraw niezłożonych w CRM (4.7) oraz decyzja IOD o DPIA | IOD | 4.7 |
