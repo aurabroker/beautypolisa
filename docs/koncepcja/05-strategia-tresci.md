@@ -7,7 +7,8 @@
 - Hubami są **strony produktowe i kalkulator**, nie osobne „artykuły filarowe”: 6 produktów + 2 filary tematyczne („Prawo, kontrole i bezpieczeństwo w salonie”, „Pracownicy i benefity”), 45 artykułów long-tail w 20 klastrach, 5 treści narzędziowych.
 - Największa przewaga: BeautyPolisa będzie **pierwotnym źródłem** dla programu OC ERGO Hestia realizowanego z Fundacją Beauty Razem, czterech grup ryzyka zabiegów i listy zabiegów wysokiego ryzyka (01, pkt 7) – te treści idą pierwsze.
 - Kolejność: quick wins w OC i prawie salonowym (tygodnie 1–5), potem Tax Protect i utrata dochodu (sezon styczeń–luty), grupowe i opieka medyczna, NNW dzieci jako evergreen przed wrześniem. Rytm: **2 publikacje + 1 aktualizacja strony produktowej tygodniowo**.
-- „Utrata dochodu” i „NNW dzieci” nie mają danych produktowych w audycie – do ich dostarczenia treści są edukacyjne, a strony produktowe działają w trybie „zapytaj o ofertę”.
+- „NNW dzieci” nie ma danych produktowych w audycie – do ich dostarczenia treści są edukacyjne, a strona produktowa działa w trybie „zapytaj o ofertę”. „Utrata dochodu” ma od 12.11.2026 treść opartą na naszym serwisie utratadochodu.pl i wniosek na utratadochodu.pl, bez kwot składek (00, D33, D34).
+- **Każda treść kończy się prawdziwą ścieżką zakupu (00, D32; rozdział „Ścieżka zakupu w treściach”):** OC – kalkulator albo formularz → doradca → e-mail z osobistym linkiem do APK i wniosku w serwisie portal.beautypolisa.eu → podpis → polisa; Tax Protect – kalkulator albo formularz → doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; grupowe, opieka medyczna, NNW dzieci – formularz → doradca.
 - YMYL: imienny autor, recenzent z uprawnieniami do dystrybucji ubezpieczeń, data przeglądu, wersja OWU, zastrzeżenie prawne; AI wspiera, nie jest autorem. Metryki jako przedziały [hipoteza], baseline = 0 (apex nie serwuje dziś strony – 01, pkt 6).
 
 ---
@@ -205,6 +206,28 @@ benefity dla pracownikow mala firma,H,sredni,1
 
 ---
 
+## Ścieżka zakupu w treściach (ustalenia z 12.11.2026, 00, D32)
+
+Treść prowadzi do następnego kroku, który naprawdę istnieje. Portal nie sprzedaje polis online; zakup domyka doradca Aura Expert. Osobisty link do analizy potrzeb (APK) i wniosku dotyczy **na razie tylko OC** – przy innych produktach go nie opisujemy.
+
+| Produkt | CTA w treści | Co dzieje się dalej (tekst „Jak kupić” na stronie i w artykułach) |
+|---|---|---|
+| OC dla branży beauty | „Policz składkę” (kalkulator) albo formularz kontaktowy | Doradca Aura Expert kontaktuje się → e-mail z osobistym linkiem do analizy potrzeb (APK) i wniosku w serwisie portal.beautypolisa.eu → podpis APK i wniosku → polisa; dokumenty i polisa także w Strefie Klienta. Zawsze obok: „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” |
+| Tax Protect | kalkulator albo formularz kontaktowy („Zapytaj doradcę”) | Doradca Aura Expert kontaktuje się i prowadzi wniosek. Bez wzmianki o osobistym linku |
+| Utrata dochodu | „Złóż wniosek na utratadochodu.pl” (`https://utratadochodu.pl/wniosek/?zawod=<slug>`, gdy treść dotyczy zawodu); zakup online okresowej niezdolności u Leadenhall (`https://utratadochodu.pl/kup-online?z=beautypolisa`) | Wniosek i oferta na utratadochodu.pl; bez kwot składek (00, D33) |
+| Grupowe ERGO, opieka medyczna, NNW dzieci | formularz kontaktowy | Doradca Aura Expert kontaktuje się |
+
+Zasady redakcyjne:
+
+1. Przy OC opisujemy link słowami, nigdy adresem z kodem. Stałe zdanie: „Link do analizy potrzeb i wniosku przyjdzie e-mailem i zawsze prowadzi do serwisu portal.beautypolisa.eu. Ma datę ważności – nie przekazuj go innym.” To zdanie chroni też przed podszywaniem się.
+2. Nie piszemy, że wypełnienie formularza na stronie „otwiera wniosek” – formularz trafia do doradcy, a link wysyła CRM na adres zapisany w CRM.
+3. `konsultacja.beautypolisa.eu` nie jest APK ani wnioskiem – nie linkujemy tam z treści o zakupie.
+4. Tax Protect w tej samej ścieżce co OC to etap 2 – opisany tylko w dokumentacji (00, D32), nie w treściach publicznych.
+5. W tabelach tego dokumentu CTA „zapytaj o ofertę” przy treściach filaru C (Utrata dochodu) oznacza od 12.11.2026 link do `/ubezpieczenia/utrata-dochodu` i wniosku na utratadochodu.pl; strona produktu nie jest już wersją edukacyjną (00, D33, D34).
+6. Artykuł A3.1 „Co przygotować do wniosku” opisuje dane, o które zapyta wniosek OC pod osobistym linkiem; nie publikuje formularza wniosku.
+
+---
+
 ## Kolejka priorytetów
 
 Kryteria: (1) wartość biznesowa – jak blisko leada jest czytelnik, (2) przewaga pierwotnego źródła, (3) sezon, (4) dopiero potem hipotetyczny wolumen. Quick win = niska konkurencja, wysoka wartość; big bet = wysoki wolumen, konkurencja z dużymi portalami; fill-in = uzupełnienie klastra partiami.
@@ -251,7 +274,7 @@ Start w pierwszym pełnym tygodniu po uruchomieniu; przyjęto **styczeń** [zał
 | 3 | A4.1 Zgłoszenie szkody | B2.1 Kontrola skarbowa | `/szkoda`: instrukcja, lista dokumentów → A4.1 | |
 | 4 | A1.2 Ubezpieczenie salonu | A2.3 Quiz grup ryzyka | `/kalkulator/oc`: wejście z quizu (parametr grupy), opis grup | narzędzie 2 |
 | 5 | A2.2 Zabiegi wysokiego ryzyka | G2.1 Checklista kontroli | `/dla-kogo/kosmetolog` → A2.2, quiz, kalkulator | lead magnet 2 |
-| 6 | C1.1 Prywatne L4 dla JDG | B2.2 Ryzyka podatkowe | `/ubezpieczenia/utrata-dochodu`: wersja edukacyjna „zapytaj o ofertę” | C bez parametrów produktu |
+| 6 | C1.1 Prywatne L4 dla JDG | B2.2 Ryzyka podatkowe | `/ubezpieczenia/utrata-dochodu`: treść z utratadochodu.pl i wniosek na utratadochodu.pl, bez kwot składek (00, D33, D34) | C – parametry z utratadochodu.pl |
 | 7 | A3.1 Co przygotować do wniosku | G1.3 RODO w salonie | `/dla-kogo/fryzjer`, `/dla-kogo/stylistka-paznokci`: gr. 1 → A1.1, A3.1 | |
 | 8 | C1.3 Choroby zawodowe | C1.4 Kalkulator przestoju | `/dokumenty`: OWU z wersjami (Tax Protect 25.01.2023; EZwB 01/25; MediOpieka MA 01/25) | narzędzie 5 |
 | 9 | E1.1 Grupowe w małym salonie | G4.1 Reklamacja klientki | `/ubezpieczenia/grupowe-ergo`: pakiety i moduły wg OWU, bez liczb bez źródła | |
@@ -281,7 +304,7 @@ Każdy artykuł linkuje „w górę” do huba produktowego i (jeśli dotyczy OC
 | `/ubezpieczenia/oc-beauty` | A1.1–A1.4, A2.1, A2.2, A3.1–A3.3, A4.1, A4.2, G1.1, G3.1, G3.2, G4.1 | A1.1, A2.1, A4.1, A3.1, G1.1 | „OC dla branży beauty (ERGO Hestia) – zakres i składki” |
 | `/kalkulator/oc` | A1.1, A1.4, A2.1, A2.2, A2.3 (quiz → grupa), A3.1, A3.2, wszystkie `/dla-kogo/*` | A2.1, A1.4 | „sprawdź, w której grupie ryzyka są Twoje zabiegi” |
 | `/ubezpieczenia/tax-protect` | B1.1, B2.1–B2.4, G2.1 | B1.1, B2.1, B2.3 | „Tax Protect (Colonnade) – ochrona karnoskarbowa i podatkowa” |
-| `/ubezpieczenia/utrata-dochodu` | C1.1–C1.4, C2.1, C2.2, F2.1 | C1.1, C2.1, C1.4 | „ubezpieczenie utraty dochodu dla JDG – zapytaj o ofertę” |
+| `/ubezpieczenia/utrata-dochodu` | C1.1–C1.4, C2.1, C2.2, F2.1 | C1.1, C2.1, C1.4 | „ubezpieczenie utraty dochodu dla JDG – wniosek na utratadochodu.pl” |
 | `/ubezpieczenia/nnw-dzieci` | D1.1–D1.3, D2.1, H2.2 | D1.1, D2.1 | „NNW dzieci – o co zapytać przed wrześniem” |
 | `/ubezpieczenia/grupowe-ergo` | E1.1, E1.2, E2.1, E2.2, H2.1, H2.2, D2.1 | E1.1, E2.1, E2.2 | „Grupowe ERGO dla beauty – pakiety dla zespołu” |
 | `/ubezpieczenia/opieka-medyczna` | F1.1, F1.2, F2.1, E1.2, H2.2 | F1.1, F2.1 | „Opieka medyczna (ENEL-MED / LUX MED) dla zespołu” |
@@ -415,15 +438,16 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 6. **Imienny autor i recenzent z uprawnieniami.** YMYL i obowiązki dystrybutora; E-E-A-T to weryfikowalne osoby. Odrzucone: podpis „Zespół BeautyPolisa”, recenzja wyłącznie redakcyjna.
 7. **AI jako asystent z notatką w PR; zero generowania faktów o OWU.** Największe ryzyko to zmyślone wyłączenie lub limit. Odrzucone: AI jako autor pierwszej wersji z „ludzkim przeglądem”, publiczne oznaczanie „wspomagane AI”.
 8. **MDX w repozytorium, publikacja przez PR z walidacją Zod i testem linków** – spójnie z 02 (decyzja 6). Odrzucone: CMS, dokumenty Google jako źródło prawdy.
-9. **„Utrata dochodu” i „NNW dzieci” – edukacja i „zapytaj o ofertę” do czasu dostarczenia produktu.** Publikowanie parametrów rynkowych jako własnych naruszałoby E-E-A-T. Odrzucone: wstrzymanie filarów (strata sezonów), orientacyjne ceny jako oferta.
+9. **„Utrata dochodu” i „NNW dzieci” – edukacja i „zapytaj o ofertę” do czasu dostarczenia produktu.** Publikowanie parametrów rynkowych jako własnych naruszałoby E-E-A-T. Odrzucone: wstrzymanie filarów (strata sezonów), orientacyjne ceny jako oferta. **W zakresie Utraty dochodu zastąpione 12.11.2026 (00, D33, D34):** parametry pochodzą z naszego serwisu utratadochodu.pl, tekst piszemy od nowa pod branżę beauty, bez kwot składek, z wnioskiem na utratadochodu.pl; NNW dzieci – bez zmian.
 10. **Nakładka sezonowa zamiast dat dziennych; sześć stron `/dla-kogo/*` na start, trycholog i właścicielka salonu po weryfikacji.** Data startu nieznana, sezony stałe; dla trychologa brak grupy ryzyka w cenniku z audytu. Odrzucone: kalendarz z datami, strona persony z „wyceną indywidualną” jako zastępnikiem.
+11. **Ścieżka zakupu w treściach zgodna z ustaleniami z 12.11.2026 (00, D32):** osobisty link do APK i wniosku opisujemy tylko przy OC i tylko słowami (domena portal.beautypolisa.eu, data ważności, nie przekazuj innym); Tax Protect – doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; pozostałe produkty – formularz → doradca. Odrzucone: „kup online” w treściach (portal nie sprzedaje polis), opis linku przy Tax Protect przed etapem 2, odsyłanie do `konsultacja.beautypolisa.eu` jako APK.
 
 ## Pytania otwarte do zleceniodawcy
 
 1. Kto będzie imiennym autorem, a kto recenzentem z uprawnieniami do dystrybucji ubezpieczeń? Status dystrybutora – rozstrzygnięty 12.11.2026: agent ubezpieczeniowy (RPU 11229690/A; 01, pkt 2) – zastrzeżenia i stopki używają formuły agenta.
 2. Czy ERGO Hestia i Fundacja Beauty Razem wymagają akceptacji materiałów o programie OC (numer, logo, zasady grup ryzyka) przed publikacją? Tryb i czas akceptacji wpływają na SLA kroku 3.
 3. ~~Czy lista zabiegów w grupach 1–4 z kalkulatora (01, pkt 3.1) jest kompletna i może być opublikowana jako „pełna lista”?~~ – **rozstrzygnięte 12.11.2026 (00, D29):** kanoniczna lista to 117 zabiegów w `snippets/zabiegi-oc-beauty.json`; zabiegi trychologiczne mają na niej pozycje w grupie 1 (np. „Kosmetyczna diagnostyka trychologiczna”, „Kosmetyczny zabieg trychologiczny”), co przybliża stronę `/dla-kogo/trycholog` (decyzja 10). Otwarte: zgoda ERGO Hestii na publikację listy 1:1 (pytanie 2); 16 pytań o ułożenie listy – `snippets/zabiegi-oc-beauty-propozycje.json` (nie blokują listy 1:1).
-4. Kiedy zespół produktowy dostarczy parametry „Utrata dochodu” i „NNW dzieci” (ubezpieczyciel, definicje, karencje, sumy)? Czy tryb „zapytaj o ofertę” do tego czasu jest akceptowalny?
+4. Kiedy zespół produktowy dostarczy parametry „NNW dzieci” (ubezpieczyciel, definicje, karencje, sumy)? Czy tryb „zapytaj o ofertę” do tego czasu jest akceptowalny? „Utrata dochodu” – rozstrzygnięte 12.11.2026 (00, D33, D34): parametry z utratadochodu.pl; otwarte: kto recenzuje teksty filaru C pod kątem zgodności z OWU wariantów Leadenhall i CEU.
 5. Rozstrzygnięte 11.11.2026 (pytanie 7 sekcji 02): składki Tax Protect są sztywne (taryfa programu) – B2.3, B2.4 i `/ubezpieczenia/tax-protect` podają składkę roczną wg taryfy potwierdzonej 12.11.2026 (01, pkt 3.2: suma 50 000 zł – 1 532–1 932 zł, suma 100 000 zł – 2 501–2 901 zł za 1 spór, zależnie od przychodu); przychody powyżej 3 mln zł lub 2–4 spory → wycena indywidualna. Bez słów „orientacyjnie” i „szacunkowo”.
 6. Czy liczby z obecnej argumentacji grupowego (koszt rotacji, pakiet zamiast podwyżki – 01, pkt 3.3) mają cytowalne źródło? Bez niego znikają z treści.
 7. Czy zleceniodawca udostępni jednorazowy eksport z Senuto lub Semrush dla 52 fraz oraz dostęp do GSC po uruchomieniu?
@@ -431,3 +455,4 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 9. Kto zatwierdza prawnie wzór zgody na zabieg i checklistę kontroli (dokumenty stosowane przez klientów w praktyce) i czy Aura Expert akceptuje wydawanie ich pod swoją marką? Czy w A4.2 możemy użyć zanonimizowanych realnych szkód z praktyki Aura?
 10. Czy newsletter (nurture po pobraniu lead magnetu) jest w zakresie v1 i kto odpowiada za treść zgód marketingowych (02 – zgody wersjonowane; 06-… – lejek)?
 11. Jakie zasoby redakcyjne są dostępne (autor wewnętrzny czy zewnętrzny, godziny recenzenta tygodniowo)? Od tego zależy, czy rytm 2 + 1 jest realny, czy startujemy od 1 + 1.
+12. Ścieżka zakupu (00, D32): czy stałe zdanie o osobistym linku („przyjdzie e-mailem, zawsze z serwisu portal.beautypolisa.eu, ma datę ważności – nie przekazuj go innym”) akceptuje zespół CRM i czy takie samo zdanie trafi do e-maila z linkiem wysyłanego przez CRM?

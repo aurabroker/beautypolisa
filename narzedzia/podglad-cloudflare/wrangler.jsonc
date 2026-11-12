@@ -1,0 +1,14 @@
+{
+  // Podgląd roboczy makiet BeautyPolisa – nie produkcja. Dostęp tylko z hasłem (sekret PODGLAD_HASLO).
+  // Pliki strony są w skrypcie (src/assets.js), nie w Workers Assets.
+  "name": "beautypolisa-podglad",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "rules": [
+    { "type": "Text", "globs": ["**/*.html", "**/*.css", "**/*.txt", "**/*.svg"], "fallthrough": false },
+    { "type": "Data", "globs": ["**/*.webp", "**/*.png"], "fallthrough": false }
+  ],
+  "observability": { "enabled": false }
+}

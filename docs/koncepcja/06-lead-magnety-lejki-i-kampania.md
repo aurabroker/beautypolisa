@@ -5,11 +5,12 @@
 ## TL;DR
 
 - Cztery magnesy wg ramy MAGNET, każdy zakotwiczony w produkcie, który dziś ma parametry w briefie: **quiz grup ryzyka** (OC dla branży beauty (ERGO Hestia), góra lejka, bez bramki, e-mail opcjonalny), **wzór zgody na zabieg + checklista dokumentacji** (OC, środek, bramka e-mail), **checklista kontroli sanepid / ZUS / US** (Tax Protect (Colonnade), środek, bramka e-mail), **kalkulator kosztu rotacji vs pakiet** (Grupowe ERGO dla beauty, dół lejka, na liczbach użytkownika).
-- Kalkulator „ile tracisz na L4 jako JDG” odrzucony jako magnes nr 3: produkt „Utrata dochodu” nie ma w briefie żadnych parametrów (01, pkt 3.5), więc magnes nie miałby kotwicy; zostaje narzędziem edukacyjnym bez bramki (05, C1.4) i wraca jako magnes, gdy zespół produktowy dostarczy ofertę.
+- Kalkulator „ile tracisz na L4 jako JDG” odrzucony jako magnes nr 3: produkt „Utrata dochodu” nie miał w briefie żadnych parametrów (01, pkt 3.5), więc magnes nie miałby kotwicy; zostaje narzędziem edukacyjnym bez bramki (05, C1.4). Od 12.11.2026 strona produktu ma treść z naszego serwisu utratadochodu.pl i wniosek na utratadochodu.pl, bez kwot składek (00, D33, D34) – narzędzie kieruje więc do `/ubezpieczenia/utrata-dochodu` i wniosku na utratadochodu.pl; powrót kalkulatora jako magnesu z bramką – do decyzji (pytanie 13).
 - Wynik zawsze natychmiast na ekranie. E-mail służy dostarczeniu kopii, a seria pielęgnująca (4 wiadomości z gałęziami na zachowanie) startuje dopiero po osobnej zgodzie i jej potwierdzeniu (double opt-in). Orkiestracja serii w Supabase + Cron Worker z sekcji 02, wysyłka i zdarzenia przez Resend (tagi, webhooki).
 - Zgody jako trzy osobne elementy (informacja RODO, zgoda e-mail, zgoda na telefon – ta ostatnia tylko tam, gdzie zbieramy numer), bez domyślnych zaznaczeń, bez pilności i ciemnych wzorców. Obowiązki informacyjne dystrybutora (IDD) warstwowo: stopka, `/o-nas`, `/dokumenty`, strona sukcesu formularza leada i pierwszy kontakt doradcy. Treści klauzul – do weryfikacji prawnej.
 - Kampania startowa 30 dni: brief, kalendarz (17 pozycji Canva, 3 e-maile, 4 posty LinkedIn, 3 Reels), inwentarz slotów dwóch szablonów, tabela luk (w repo nie ma zdjęć poza logo i `AEX.png`) i budżet generowania do zatwierdzenia. **Generowanie projektów w Canva wymaga osobnej zgody właściciela i dostępu do kont – ten dokument dostarcza wyłącznie brief, kalendarz i copy.**
 - KPI lejka jako przedziały [hipoteza], 3 testy A/B, macierz odpowiedzialności dev / marketing / doradca / prawnik, lista narzędzi i jawna lista tego, czego dokument nie robi.
+- **Koniec każdego lejka to prawdziwa ścieżka zakupu (ustalenia z 12.11.2026, 00, D32; pkt 0.1):** OC – kalkulator albo formularz → doradca Aura Expert → e-mail z osobistym linkiem do analizy potrzeb (APK) i wniosku w serwisie portal.beautypolisa.eu → podpis → polisa (dokumenty i polisa także w Strefie Klienta), plus „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa”; Tax Protect – kalkulator albo formularz → doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; grupowe, opieka medyczna, NNW dzieci – formularz → doradca. Link z kodem nigdy nie pojawia się w treściach, e-mailach serii ani na stronach sukcesu.
 
 ---
 
@@ -34,6 +35,19 @@ Przegląd czterech magnesów (adresy URL spójne z tabelą „Treści narzędzio
 | 2 | „Komplet przed zabiegiem: wzór zgody + checklista dokumentacji” | linergistka, kosmetolog, tatuażysta | „Mam zgodę na kolanie, nie wiem, co powinna zawierać i czego zażąda ubezpieczyciel” | OC dla branży beauty (ERGO Hestia) – ankieta wymaga formularzy zgody (01, pkt 3.1) | środek | e-mail + imię; dostęp natychmiast na stronie sukcesu + kopia e-mailem | `/baza-wiedzy/zgoda-na-zabieg-wzor` |
 | 3 | „Gotowość na kontrolę: sanepid, ZUS, US – checklista” | właścicielka salonu 1–8 osób | „Boję się kontroli, nie wiem, co powinnam mieć przygotowane” | Tax Protect (Colonnade): sekcja 1 ochrona karno-skarbowa właściciela, sekcja 2 jeden pełny spór podatkowy w roku (01, pkt 3.2) | środek | e-mail + imię; lista online bez bramki, PDF i zapis postępu po e-mailu | `/baza-wiedzy/checklista-kontroli` |
 | 4 | „Rotacja vs pakiet: policz różnicę na własnych liczbach” | manager sieci / właścicielka zatrudniająca | „Ludzie odchodzą, a ja nie wiem, czy benefit się opłaca” | Grupowe ERGO dla beauty – pakiety 58 / 68 / 76 zł za osobę miesięcznie (wg cennika programu) | dół | brak; e-mail opcjonalny („wyślij podsumowanie”) | `/baza-wiedzy/kalkulator-rotacji` [propozycja] |
+
+### 0.1 Prawdziwa ścieżka zakupu na końcu lejka (ustalenia z 12.11.2026, 00, D32)
+
+Magnes oddaje kontakt doradcy; to, co dzieje się potem, opisujemy zgodnie z rzeczywistym procesem Aura Expert. Osobisty link do analizy potrzeb (APK) i wniosku dotyczy **na razie tylko OC**.
+
+| Magnes | Produkt | Krok po magnesie | Co dzieje się dalej |
+|---|---|---|---|
+| 1, 2 | OC dla branży beauty | kalkulator (prewypełniony) albo formularz kontaktowy | Doradca Aura Expert kontaktuje się → CRM wysyła e-mail z osobistym linkiem do APK i wniosku w serwisie portal.beautypolisa.eu (zawsze ta domena, z datą ważności, nie przekazuj go innym) → podpis APK i wniosku → polisa; dokumenty i polisa także w Strefie Klienta. Obok zawsze: „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” |
+| 3 | Tax Protect | kalkulator albo formularz kontaktowy | Doradca Aura Expert kontaktuje się i prowadzi wniosek – bez wzmianki o osobistym linku (Tax Protect dołączy do ścieżki z linkiem w etapie 2, opisanym tylko w dokumentacji) |
+| narzędzie C1.4 (05) | Utrata dochodu | `/ubezpieczenia/utrata-dochodu` | Wniosek na utratadochodu.pl (`https://utratadochodu.pl/wniosek/?zawod=<slug>`) albo zakup online okresowej niezdolności u Leadenhall (`https://utratadochodu.pl/kup-online?z=beautypolisa`); bez kwot składek |
+| 4 | Grupowe ERGO | formularz kontaktowy („Wycena dla zespołu”) | Doradca Aura Expert kontaktuje się |
+
+Zasady: (1) strona sukcesu, e-maile E0–E4 i posty nigdy nie zawierają linku z kodem ani adresu `portal.beautypolisa.eu/w/…` – co najwyżej zdanie, że link przyjdzie e-mailem z tej domeny; (2) formularz nie „otwiera wniosku” i nie przekierowuje na osobisty link – kod wysyła wyłącznie CRM na adres zapisany w CRM (wpisanie cudzego NIP lub e-maila nie może otworzyć sprawy istniejącej firmy); (3) `konsultacja.beautypolisa.eu` nie jest APK ani wnioskiem i nie występuje w lejkach.
 
 ---
 
@@ -325,7 +339,7 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 >
 > to ostatnia wiadomość z serii o OC. Masz trzy możliwości i każda jest w porządku:
 >
-> **Rozmowa z doradcą.** Jeśli chcesz przejść od składki z kalkulatora do oferty i wniosku, zostaw kontakt – zadzwonię lub odpiszę w ciągu jednego dnia roboczego, w porze, którą wskażesz.
+> **Rozmowa z doradcą.** Jeśli chcesz przejść od składki z kalkulatora do oferty i wniosku, zostaw kontakt – zadzwonię lub odpiszę w ciągu jednego dnia roboczego, w porze, którą wskażesz. Po rozmowie dostaniesz e-mail z osobistym linkiem do analizy potrzeb i wniosku. Link zawsze prowadzi do serwisu portal.beautypolisa.eu i ma datę ważności – nie przekazuj go innym. Wniosek podpisujesz online, a polisę i dokumenty znajdziesz też w Strefie Klienta. Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa.
 >
 > **Zostajesz na liście.** Zgoda, którą potwierdziłaś/eś, obejmuje też okazjonalne aktualizacje (zmiany w programie, nowe wzory dokumentów, terminy kontroli sezonowych). Jeśli to wystarczy – nie musisz nic robić.
 >
@@ -337,7 +351,7 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 >
 > {podpis, stopka dystrybutora, link rezygnacji}
 
-(ok. 120 słów)
+(ok. 170 słów; opis kroków po rozmowie zgodny z 00, D32 – bez linku z kodem)
 
 ### 2.5 Mechanika w Resend
 
@@ -419,7 +433,7 @@ Podstawa wskazana w zadaniu: art. 172 Prawa telekomunikacyjnego – ta sama uwag
 | Charakter wynagrodzenia (do uzupełnienia); zakłady ubezpieczeń, w imieniu i na rzecz których działa agent (lista do potwierdzenia) | przed propozycją umowy | `/o-nas#dystrybutor`; strona sukcesu formularza leada; pierwsza wiadomość doradcy do leada |
 | Procedura reklamacji i pozasądowe rozwiązywanie sporów (Rzecznik Finansowy) | j.w. | `/o-nas#dystrybutor`, `/kontakt`, stopka e-maili serii (link) |
 | OWU i dokument informacyjny o produkcie (IPID) przed zawarciem umowy | strona produktowa / kontakt z doradcą | `/dokumenty` z wersjami OWU (05), link ze stron produktowych i z E1/E3 |
-| Analiza potrzeb klienta przed zaproponowaniem umowy | rozmowa doradcy | poza portalem (proces Aura); formularz leada zbiera tylko dane kontekstowe, nie zastępuje analizy (02, decyzja 10) |
+| Analiza potrzeb klienta przed zaproponowaniem umowy | po kontakcie doradcy, przed wnioskiem | poza portalem beautypolisa.eu (00, D32): **OC** – analiza potrzeb (APK) pod osobistym linkiem w serwisie portal.beautypolisa.eu (CRM Aura Expert), podpisywana przez klienta razem z wnioskiem; **Tax Protect** – prowadzi doradca (ten sam link dopiero w etapie 2); **utrata dochodu** – w procesie wniosku na utratadochodu.pl [gdzie dokładnie – do potwierdzenia]; **pozostałe produkty** – doradca. Formularz leada zbiera tylko dane kontekstowe i nie zastępuje analizy (02, decyzja 10); `konsultacja.beautypolisa.eu` nie jest analizą potrzeb |
 | Zastrzeżenie: treści portalu i kalkulator to informacja, nie oferta w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU | kalkulator, quiz, e-maile | adnotacja pod każdym wynikiem i w stopce E0–E4 |
 
 Landing magnesu sam w sobie nie jest czynnością dystrybucyjną, ale pochodzi od dystrybutora – stąd skrócona informacja w stopce każdej strony. Pełne obowiązki „przed zawarciem umowy” realizuje Aura Expert jako agent – przez doradcę w pierwszym kontakcie; portal ma zapewnić, że klient wcześniej widział, kim jest dystrybutor i gdzie są OWU.
@@ -659,7 +673,8 @@ Dwie ścieżki: bezpośrednia (quiz → kalkulator → lead) i e-mailowa (quiz �
 | E-mail → potwierdzenie zgody | % `magnet_confirmed` wśród zaznaczonych zgód | 50–70 % | Supabase |
 | Potwierdzony → MQL (klik kalkulatora lub prośba o kontakt w 14 dni) | % zapisów z gałęzią `clicked_calc` lub `asked_contact` | 20–35 % | Supabase + webhooki Resend |
 | MQL → kontakt (formularz leada / odpowiedź) | % `converted` + `paused_replied` | 25–45 % | Supabase |
-| Kontakt → polisa | % leadów ze statusem `won` w 60 dni | 20–40 % | panel `/panel` (statusy z 02) |
+| Kontakt → link wysłany → APK → wniosek złożony (OC, 00, D32) | % spraw z `wyslano_at`, `apk_at`, `zlozono_at` w 30 dni | [do ustalenia po pierwszym kwartale] | CRM Aura Expert (`crm_renewals`) – zestawienie zbiorcze bez danych osobowych; bez pikseli na stronie `/w/` |
+| Kontakt → polisa | % leadów ze statusem `won` w 60 dni | 20–40 % | panel `/panel` (statusy z 02); numer polisy w CRM (`crm_renewals.nr_polisy`) |
 | Higiena | odsetek rezygnacji na wiadomość; skargi | ≤ 0,5 %; ≤ 0,1 % | Resend |
 
 Przykład skali [hipoteza]: 1000 odwiedzin landingu → ok. 500 startów → ok. 350 ukończeń → ok. 100 wejść do kalkulatora → ok. 8 leadów ścieżką bezpośrednią; równolegle ok. 60 e-maili → ok. 35 potwierdzonych → ok. 10 MQL → ok. 3–4 kontakty. Wniosek projektowy: ścieżka bezpośrednia jest głównym źródłem leadów, e-mail – źródłem powracających kontaktów i danych o zachowaniu; nie warto osłabiać pierwszej, żeby wzmocnić drugą.
@@ -730,6 +745,7 @@ R – wykonuje, A – zatwierdza, C – konsultuje, I – informowany.
 10. **Kampania organiczna przez 30 dni, partnerzy tylko jako nazwy, e-maile wyłącznie do bazy ze zgodą.** Uzasadnienie: brak danych do optymalizacji płatnych kampanii, brak zgód na piksele przed wdrożeniem Zaraz, nieznane zasady użycia logotypów i status zgód w CRM Aura. Odrzucone: Meta Ads od dnia 1, wysyłka do `crm_companies` bez audytu zgód.
 11. **Analytics Engine jako podstawa pomiaru lejka, GA4 tylko po zgodzie przez Zaraz, Resend dla metryk e-mail** – zgodnie z 02, decyzja 11. Odrzucone: GA4 jako jedyne źródło (zależność od zgody dziurawi lejek).
 12. **Generowanie w Canva dopiero po zatwierdzeniu budżetu z pkt 3.4 i nadaniu dostępu.** Uzasadnienie: koszty, dostęp do kont i akceptacja merytoryczna doradcy. Odrzucone: generowanie kandydatów „na próbę” bez zgody.
+13. **Lejki kończą się prawdziwą ścieżką zakupu (pkt 0.1; 00, D32): osobisty link do APK i wniosku w serwisie portal.beautypolisa.eu opisujemy tylko przy OC i tylko słowami; Tax Protect – doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; pozostałe – formularz → doradca.** Uzasadnienie: klient wie, czego się spodziewać i po czym rozpozna prawdziwy link (ochrona przed podszywaniem się); obietnice w lejku nie mogą wyprzedzać procesu CRM. Odrzucone: „kup online” w treściach magnesów, przekierowanie ze strony sukcesu na osobisty link, opis linku przy Tax Protect przed etapem 2, `konsultacja.beautypolisa.eu` jako analiza potrzeb.
 
 ## Pytania otwarte do zleceniodawcy
 
@@ -745,3 +761,5 @@ R – wykonuje, A – zatwierdza, C – konsultuje, I – informowany.
 10. Jaka jest data startu portalu? Określa nakładkę sezonową kalendarza (I–II podatki, IX NNW dzieci, XI–XII grupowe).
 11. Czy Aura lub Fundacja Beauty Razem dysponują zdjęciami z prawami do użycia (salony, zespół), czy planujemy sesję albo zakup stocku?
 12. Czy uzupełnienie modelu danych z 02 o `magnet_deliveries`, `nurture_enrollments`, cel zgody `magnet_delivery` i tabelę `pricing_group_packages` jest akceptowane przez autora sekcji 02?
+13. Utrata dochodu (00, D33, D34): czy kalkulator przestoju (05, C1.4) ma wrócić jako magnes z bramką, skoro strona produktu i wniosek na utratadochodu.pl już istnieją, czy zostaje narzędziem bez bramki z odesłaniem do wniosku? Gdzie w procesie utratadochodu.pl jest analiza potrzeb (pkt 2.6)?
+14. Ścieżka zakupu OC (00, D32): czy CRM może udostępnić zbiorcze liczby spraw (link wysłany, APK wypełniona, wniosek złożony, polisa) do raportu lejka bez danych osobowych (pkt 4.1)?

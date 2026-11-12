@@ -523,6 +523,7 @@ html:has(.klauzula[open]){overflow:hidden}
 .consent input{margin-top:2px}
 .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 .lead-form .btn{justify-self:start}
+.lead-next{font-size:var(--text-sm);line-height:1.6;color:var(--color-ink)}
 .lead-notice{font-size:var(--text-xs);line-height:1.6;color:var(--color-ink)}
 .lead-notice a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:3px}
 .lead-status:empty{margin-top:-20px}
@@ -1005,7 +1006,7 @@ html:has(.klauzula[open]){overflow:hidden}
           <a class="btn btn-ivory" href="#kontakt" id="cta-oferta" data-produkt="oc-beauty">Poproś o&nbsp;polisę</a>
           <div class="next">
             <p class="label">Co dalej?</p>
-            <p>Doradca Aura Expert sprawdzi z&nbsp;Tobą zakres i&nbsp;poprosi o&nbsp;dane do wniosku, m.in. NIP, REGON, szkodowość z&nbsp;ostatnich 3&nbsp;lat i&nbsp;kwalifikacje zespołu.</p>
+            <p>Doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu. We wniosku podasz m.in. NIP, REGON, szkodowość z&nbsp;ostatnich 3&nbsp;lat i&nbsp;kwalifikacje zespołu.</p>
           </div>
           <p class="note" id="calc-note">Stała taryfa programu OC z&nbsp;ERGO Hestią dla branży beauty. Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu. Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – wycena indywidualna.</p>
         </div>
@@ -1070,7 +1071,7 @@ html:has(.klauzula[open]){overflow:hidden}
           <a class="btn btn-ivory" href="#kontakt" id="tax-cta" data-produkt="tax-protect">Poproś o&nbsp;polisę Tax Protect</a>
           <div class="next">
             <p class="label">Co dalej?</p>
-            <p>Doradca Aura Expert potwierdzi z&nbsp;Tobą wariant i&nbsp;zakres, a&nbsp;potem przygotuje dokumenty do podpisu.</p>
+            <p>Doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek: potwierdzi wariant i&nbsp;zakres, a&nbsp;potem przygotuje dokumenty do podpisu.</p>
           </div>
           <p class="note" id="tax-note">Stała taryfa Tax Protect (Colonnade) – składka roczna za jeden spór w&nbsp;roku, zakres – zgodnie z&nbsp;OWU. Przychody powyżej 3&nbsp;mln&nbsp;zł albo 2–4 spory w&nbsp;roku – wycena indywidualna.</p>
         </div>
@@ -1175,7 +1176,17 @@ html:has(.klauzula[open]){overflow:hidden}
   </section>
   </div>
 
-  <!-- V · JAK TO DZIAŁA -->
+  <!-- V · JAK TO DZIAŁA
+       WZORZEC ŚCIEŻKI ZAKUPU (ustalenia 12.11.2026, pkt 0 i 5) – te same zdania na makieta-v3, oc-beauty, tax-protect i utrata-dochodu:
+       OC (jedyny produkt ze ścieżką linku – na razie):
+         · „Policz składkę w kalkulatorze albo zostaw kontakt w formularzu.”
+         · „Doradca Aura Expert prześle Ci e-mail z osobistym linkiem do analizy potrzeb (APK) i wniosku w serwisie portal.beautypolisa.eu.”
+         · „Pod linkiem wypełniasz analizę potrzeb i wniosek, a potem je podpisujesz.”
+         · „Link zawsze prowadzi do portal.beautypolisa.eu, jest osobisty i ma datę ważności – nie przekazuj go innym.”
+         · „Polisę i dokumenty masz też w Strefie Klienta.”  ·  „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa”
+       Tax Protect, grupowe ERGO, opieka medyczna, NNW dzieci: „Doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek.”
+       Utrata dochodu: wniosek na utratadochodu.pl, zakup online u Leadenhall albo kontakt z doradcą („Doradca Aura Expert skontaktuje się z Tobą”).
+       Nigdy nie publikujemy linku z kodem; formularz nie przekierowuje na /w/<kod> – kod idzie wyłącznie e-mailem na adres z CRM. -->
   <section class="scene scene--silk scene--pos-lt section dark" id="jak-to-dziala" aria-labelledby="how-title">
     <div class="container">
       <div class="section-head">
@@ -1187,8 +1198,8 @@ html:has(.klauzula[open]){overflow:hidden}
         <span class="how-line" aria-hidden="true"></span>
         <ol class="steps">
           <li class="step rv-rise"><span class="numeral" aria-hidden="true">1</span><h3>Policz składkę</h3><p>Wybierz ubezpieczenie: OC – grupy ryzyka, zespół i&nbsp;sumę gwarancyjną, Tax Protect – przychody i&nbsp;sumę. Składkę z&nbsp;taryfy widzisz od razu, bez logowania.</p></li>
-          <li class="step rv-rise"><span class="numeral" aria-hidden="true">2</span><h3>Zostaw kontakt</h3><p>Wynik kalkulatora dołączymy do zgłoszenia. Doradca Aura Expert sprawdzi z&nbsp;Tobą zakres i&nbsp;poprosi o&nbsp;dane do wniosku.</p></li>
-          <li class="step rv-rise"><span class="numeral" aria-hidden="true">3</span><h3>Podpisz polisę</h3><p>Dokumenty dostajesz do podpisu. Z&nbsp;polisą masz konto w&nbsp;Strefie Klienta&nbsp;– polisy i&nbsp;dokumenty, „Dam&nbsp;pracę” i&nbsp;Szkolenia w&nbsp;jednym miejscu.</p></li>
+          <li class="step rv-rise"><span class="numeral" aria-hidden="true">2</span><h3>Zostaw kontakt</h3><p>Wynik kalkulatora dołączymy do zgłoszenia. Przy OC doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu. Przy pozostałych ubezpieczeniach doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p></li>
+          <li class="step rv-rise"><span class="numeral" aria-hidden="true">3</span><h3>Podpisz i&nbsp;odbierz polisę</h3><p>Przy OC pod linkiem wypełniasz analizę potrzeb i&nbsp;wniosek, a&nbsp;potem je podpisujesz. Link zawsze prowadzi do portal.beautypolisa.eu, jest osobisty i&nbsp;ma datę ważności – nie przekazuj go innym. Z&nbsp;polisą masz konto w&nbsp;Strefie Klienta&nbsp;– polisy i&nbsp;dokumenty, „Dam&nbsp;pracę” i&nbsp;Szkolenia w&nbsp;jednym miejscu.</p></li>
         </ol>
         <div class="feats">
           <div class="feat rv-rise"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-w-zakresie"/></svg><div><strong>Cztery grupy ryzyka</strong><p>Składka zależy od zabiegów, nie od nazwy zawodu.</p></div></div>
@@ -1354,6 +1365,9 @@ html:has(.klauzula[open]){overflow:hidden}
           <div class="hp" aria-hidden="true"><label for="l-extra">Nie wypełniaj tego pola</label><input id="l-extra" name="extraInfo" tabindex="-1" autocomplete="off"></div>
           <!-- produkcja: widżet Turnstile (tryb zarządzany) przed przyciskiem -->
           <button class="btn btn-navy" type="submit"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Wyślij zgłoszenie</button>
+          <!-- notka „co dalej” zależna od tematu (skrypt podmienia tekst wg wzorca z sekcji Jak to działa); bez JS – obie wersje.
+               Po wysłaniu NIGDY nie przekierowujemy na /w/<kod> – osobisty link wysyła wyłącznie CRM e-mailem na adres ze sprawy. -->
+          <p class="lead-next" id="lead-next">Przy OC doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu. Przy pozostałych ubezpieczeniach doradca Aura Expert skontaktuje się z&nbsp;Tobą.</p>
           <p class="lead-notice">Administratorem danych jest Aura Expert sp.&nbsp;z&nbsp;o.o. Dane z&nbsp;formularza przetwarzamy, aby odpowiedzieć na Twoje zapytanie (art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;b RODO). Kontakt z&nbsp;inspektorem ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Pełna informacja: <a href="/rodo">polityka prywatności</a>; informacje o&nbsp;agencie ubezpieczeniowym: <a href="/dokumenty">dokumenty</a>.</p>
         </form>
         <p class="lead-status" id="lead-status" role="status" tabindex="-1"></p>
@@ -1880,16 +1894,23 @@ html:has(.klauzula[open]){overflow:hidden}
   form.noValidate=true;
   var sel=form.elements.product, wynik=document.getElementById('kontakt-wynik');
   var calcFields={'oc-beauty':['grupy','suma','zespol','prawna','zabiegi'],'tax-protect':['przychody','sumaTax','spory']};
+  /* „co dalej” wg wzorca ścieżki zakupu: link APK + wniosek tylko dla OC (pkt 0 ustaleń 12.11.2026), pozostałe – kontakt doradcy */
+  var next=document.getElementById('lead-next'), nextAll=next?next.textContent:'';
+  var NEXT_OC='Doradca Aura Expert prześle Ci e-mail z osobistym linkiem do analizy potrzeb (APK) i wniosku w serwisie portal.beautypolisa.eu.';
+  var NEXT_INNE='Doradca Aura Expert skontaktuje się z Tobą.';
   /* pola kalkulatora wysyłane tylko z produktem, którego dotyczą; zdanie z wynikiem widoczne tylko przy tym produkcie */
   function syncCalc(){
     Object.keys(calcFields).forEach(function(prod){calcFields[prod].forEach(function(n){form.elements[n].disabled=sel.value!==prod})});
     if(wynik&&wynik.textContent)wynik.hidden=wynik.dataset.produkt!==sel.value;
+    if(next)next.textContent=!sel.value?nextAll:(sel.value==='oc-beauty'?NEXT_OC:NEXT_INNE);
   }
   document.addEventListener('click',function(e){
     var a=e.target.closest('a[data-produkt]');if(!a||a.getAttribute('aria-disabled')==='true')return;
     sel.value=a.getAttribute('data-produkt');syncCalc();
   });
   sel.addEventListener('change',syncCalc);
+  /* temat z adresu ?produkt=… (linki ze stron produktów); tylko wartości z listy, inne ignorowane */
+  try{var qp=new URLSearchParams(location.search).get('produkt');if(qp&&[].some.call(sel.options,function(o){return o.value&&o.value===qp}))sel.value=qp}catch(err){}
   function setError(input,msg){
     var id=input.id+'-blad', p=document.getElementById(id);
     if(!msg){if(p)p.remove();input.removeAttribute('aria-invalid');input.removeAttribute('aria-describedby');return}
@@ -1910,10 +1931,11 @@ html:has(.klauzula[open]){overflow:hidden}
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var bad=check();if(bad.length){bad[0].focus();return}
-    /* makieta: bez wysyłki; produkcja – fetch POST /api/leads z tokenem Turnstile i idempotencyKey */
+    /* makieta: bez wysyłki; produkcja – fetch POST /api/leads z tokenem Turnstile i idempotencyKey.
+       Bez przekierowania na /w/<kod>: wpisanie cudzego NIP/e-maila nie może otworzyć sprawy istniejącej firmy – kod idzie tylko e-mailem z CRM. */
     var imie=form.elements.fullName.value.trim().split(/\s+/)[0];
     form.hidden=true;
-    out.textContent='Dziękujemy'+(imie?', '+imie:'')+'. Zgłoszenie trafiło do Aura Expert – doradca odpowie na podany adres e-mail.';
+    out.textContent='Dziękujemy'+(imie?', '+imie:'')+'. Zgłoszenie trafiło do Aura Expert. '+(sel.value==='oc-beauty'?NEXT_OC:NEXT_INNE);
     out.focus();
   });
   form.addEventListener('input',function(e){if(e.target.getAttribute('aria-invalid')==='true')check()});

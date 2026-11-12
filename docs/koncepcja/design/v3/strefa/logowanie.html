@@ -136,24 +136,20 @@
         </ol>
         <h1 id="t-totp">Drugi składnik logowania</h1>
         <p class="lead">Otwórz aplikację uwierzytelniającą w&nbsp;telefonie i&nbsp;wpisz kod dla konta „BeautyPolisa&nbsp;– Strefa Klienta”.</p>
+        <!-- 00, D28a: Supabase Auth nie wydaje kodów zapasowych – zapasem jest drugi zarejestrowany czynnik TOTP (inne urządzenie lub menedżer haseł).
+             Kod z dowolnego zarejestrowanego urządzenia działa w tym samym polu. Po utracie wszystkich urządzeń – reset przez doradcę po weryfikacji tożsamości (Q25). -->
         <form class="form" id="f-totp" action="panel.html" method="post" novalidate>
           <div class="field" id="totp-field">
             <label for="totp">Kod z&nbsp;aplikacji</label>
             <input class="code-input" type="text" id="totp" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="totp-hint">
-            <p class="hint" id="totp-hint">Kod zmienia się co 30&nbsp;sekund.</p>
+            <p class="hint" id="totp-hint">Kod zmienia się co 30&nbsp;sekund. Nie masz przy sobie telefonu? Wpisz kod z&nbsp;zapasowego urządzenia, jeśli je dodano&nbsp;– np. z&nbsp;innego telefonu albo z&nbsp;menedżera haseł.</p>
             <p class="field-error" id="totp-err" hidden></p>
-          </div>
-          <div class="field" id="backup-field" hidden>
-            <label for="backup">Kod zapasowy</label>
-            <input type="text" id="backup" name="backup" autocomplete="one-time-code" spellcheck="false" aria-describedby="backup-hint">
-            <p class="hint" id="backup-hint">Każdy kod zapasowy działa jeden raz. Po użyciu ostatniego poproś doradcę o&nbsp;reset drugiego składnika.</p>
-            <p class="field-error" id="backup-err" hidden></p>
           </div>
           <div class="form-foot">
             <button class="btn btn-navy" type="submit">Potwierdź</button>
-            <button class="link-quiet" type="button" id="use-backup" aria-controls="backup-field totp-field" aria-expanded="false">Użyj kodu zapasowego</button>
           </div>
         </form>
+        <p class="notice">Nie masz dostępu do żadnego urządzenia z&nbsp;aplikacją? Dostęp przywróci doradca Aura Expert po weryfikacji tożsamości&nbsp;– <a href="../makieta-v3.html#kontakt">napisz do doradcy</a>.</p>
         <p class="xsmall muted">Drugi składnik jest obowiązkowy dla właścicieli kont salonów i&nbsp;pracodawców oraz organizatorów szkoleń, a&nbsp;dla pracowników i&nbsp;osób szukających pracy&nbsp;– opcjonalny.</p>
       </div>
     </section>
@@ -219,7 +215,11 @@
                 <p class="field-error" id="totp-new-err" hidden></p>
               </div>
             </div>
-            <p class="hint">Kody zapasowe pokażemy jeden raz po włączeniu drugiego składnika&nbsp;– zapisz je w&nbsp;bezpiecznym miejscu <span class="mock-note">[do weryfikacji – wsparcie w&nbsp;Supabase]</span>.</p>
+            <div class="alert alert--info">
+              <svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>
+              <strong class="alert-title">Dodaj zapasowe urządzenie</strong>
+              <p class="small">Po zapisaniu dodaj w&nbsp;„Ustawieniach” drugą aplikację uwierzytelniającą&nbsp;– na innym telefonie albo w&nbsp;menedżerze haseł. Gdy zgubisz telefon, zalogujesz się kodem z&nbsp;zapasowego urządzenia. Kodów zapasowych nie ma; po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości.</p>
+            </div>
           </fieldset>
           <div class="form-foot">
             <button class="btn btn-navy" type="submit">Zapisz i&nbsp;przejdź do pulpitu</button>
@@ -547,6 +547,7 @@
               <p class="field-error" id="rp-totp-err" hidden></p>
             </div>
           </div>
+          <p class="hint">Po aktywacji dodaj w&nbsp;„Ustawieniach” zapasowe urządzenie&nbsp;– drugą aplikację uwierzytelniającą na innym telefonie albo w&nbsp;menedżerze haseł. Kodów zapasowych nie ma; po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości.</p>
           <button class="btn btn-navy" type="submit">Włącz i&nbsp;aktywuj konto</button>
         </form>
       </div>
@@ -738,7 +739,7 @@
 </svg>
 
 <script>
-/* Makieta: przełączanie ekranów (hash), przejścia formularzy, odliczanie, kod zapasowy, ścieżki rejestracji
+/* Makieta: przełączanie ekranów (hash), przejścia formularzy, odliczanie, ścieżki rejestracji
    (pracodawca / szukam pracy / salon z polisą włączający „Dam pracę” – logowanie.html?dla=salon#s-sms),
    walidacja kodów, NIP (suma kontrolna) i numeru, stany SMS. Bez JS wszystkie ekrany są widoczne pod sobą. */
 (function () {
@@ -819,12 +820,11 @@
     if (!setErr(c, 'kod-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz sześć cyfr z e-maila.')) { c.focus(); return; }
     go('s-totp');
   });
-  /* drugi składnik: kod z aplikacji (6 cyfr) albo kod zapasowy; w produkcji POST, kod nigdy w adresie */
+  /* drugi składnik: kod z aplikacji (6 cyfr) – z głównego albo zapasowego urządzenia (00, D28a; kodów zapasowych nie ma); w produkcji POST, kod nigdy w adresie */
   byId('f-totp').addEventListener('submit', function (e) {
     e.preventDefault();
-    var useBackup = !byId('backup-field').hidden, c = byId(useBackup ? 'backup' : 'totp');
-    var ok = useBackup ? c.value.trim() !== '' : /^\d{6}$/.test(c.value.trim());
-    if (!setErr(c, useBackup ? 'backup-err' : 'totp-err', ok ? '' : (useBackup ? 'Wpisz kod zapasowy.' : 'Wpisz sześciocyfrowy kod z aplikacji.'))) { c.focus(); return; }
+    var c = byId('totp');
+    if (!setErr(c, 'totp-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz sześciocyfrowy kod z aplikacji.')) { c.focus(); return; }
     location.href = 'panel.html';
   });
   byId('f-zapr').addEventListener('submit', function (e) { e.preventDefault(); go('s-pierwsze'); });
@@ -835,13 +835,6 @@
     if (!setErr(code, 'totp-new-err', /^\d{6}$/.test(code.value.trim()) ? '' : 'Wpisz sześciocyfrowy kod z aplikacji – bez niego nie włączymy drugiego składnika.')) { bad.push(code); }
     if (bad.length) { bad[0].focus(); return; }
     location.href = 'panel.html';
-  });
-  byId('use-backup').addEventListener('click', function () {
-    var b = byId('backup-field'), t = byId('totp-field');
-    var useBackup = b.hidden; b.hidden = !useBackup; t.hidden = useBackup;
-    this.setAttribute('aria-expanded', String(useBackup));
-    this.textContent = useBackup ? 'Użyj kodu z aplikacji' : 'Użyj kodu zapasowego';
-    (useBackup ? byId('backup') : byId('totp')).focus();
   });
 
   /* ---------- rejestracja: e-mail i kod ---------- */

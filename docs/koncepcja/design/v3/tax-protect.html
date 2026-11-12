@@ -594,7 +594,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
      "name": "Jak kupić Tax Protect?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Policz składkę w kalkulatorze albo zostaw kontakt w formularzu. Doradca Aura Expert wyśle Ci e-mail z osobistymi linkami do analizy potrzeb i do wniosku. Najpierw wypełniasz analizę potrzeb, potem wniosek. Na koniec doradca przekazuje Ci polisę Colonnade razem z OWU Tax Protect."
+      "text": "Policz składkę w kalkulatorze albo zostaw kontakt w formularzu. Doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek: najpierw analiza potrzeb, potem wniosek. Na koniec doradca przekazuje Ci polisę Colonnade razem z OWU Tax Protect."
      }
     }
    ]
@@ -607,7 +607,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 <a class="skip" href="#tresc">Przejdź do treści</a>
 
 <!-- Nagłówek 1:1 z oc-beauty.html; w makiecie odnośniki do strony głównej prowadzą do makieta-v3.html, produkcyjnie do / i /#…
-     „Zapytaj doradcę”: ?produkt=tax-protect ma ustawić temat formularza na stronie głównej (dziś makieta-v3.html czyta tylko data-produkt – punkt otwarty). -->
+     „Zapytaj doradcę”: ?produkt=tax-protect ma ustawić temat formularza na stronie głównej (makieta-v3.html czyta data-produkt i ?produkt= – 12.11.2026). -->
 <header class="site-header" data-tone="light">
   <div class="container">
     <div class="header-bar glass glass--strong">
@@ -764,9 +764,10 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
     </div>
   </section>
 
-  <!-- III · JAK KUPIĆ: prawdziwa kolejność (ustalenia 12.11.2026): kontakt / kalkulator → e-mail z osobistym linkiem do APK → wniosek (osobisty link) → polisa.
-       Linki /k/<token> i /w/<token> tworzy wyłącznie serwer CRM i wysyła e-mailem – na stronie publicznej NIE ma żadnego linku z tokenem.
-       Wniosek Tax Protect trafia do CRM z weryfikacją e-mail; stary formularz z tax-protect.html (atrapa) nie wraca. -->
+  <!-- III · JAK KUPIĆ (ustalenia 12.11.2026, pkt 0; zdania = wzorzec ścieżki zakupu z makieta-v3.html, sekcja „Jak to działa”):
+       kalkulator lub formularz → doradca Aura Expert kontaktuje się i prowadzi wniosek → polisa. Bez osobistego linku do APK i wniosku:
+       ścieżka z linkiem na portal.beautypolisa.eu dotyczy na razie tylko OC (Tax Protect – etap 2, opis tylko w dokumentacji 12, nie na stronie).
+       Stary formularz z tax-protect.html (atrapa) nie wraca. -->
   <section class="scene scene--silk scene--pos-lt section dark" id="jak-kupic" aria-labelledby="kupic-title">
     <div class="container">
       <div class="section-head">
@@ -785,15 +786,15 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
           </li>
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">2</span>
-            <h3>Analiza potrzeb</h3>
-            <span class="step-where">E-mail z&nbsp;osobistym linkiem</span>
-            <p>Doradca wyśle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK). Na podstawie odpowiedzi sprawdzi, czy Tax Protect odpowiada Twoim potrzebom.</p>
+            <h3>Kontakt doradcy</h3>
+            <span class="step-where">Analiza potrzeb</span>
+            <p>Doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;przeprowadzi analizę Twoich potrzeb (APK). Na tej podstawie sprawdzi, czy Tax Protect im odpowiada.</p>
           </li>
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">3</span>
             <h3>Wniosek</h3>
-            <span class="step-where">Link w&nbsp;tym samym e-mailu</span>
-            <p>Po analizie potrzeb wypełniasz wniosek online – link do niego jest w&nbsp;tym samym e-mailu. Przy wniosku potwierdzasz swój adres e-mail.</p>
+            <span class="step-where">Z&nbsp;doradcą Aura Expert</span>
+            <p>Doradca Aura Expert poprowadzi wniosek: potwierdzi z&nbsp;Tobą wariant i&nbsp;zakres, a&nbsp;potem przygotuje dokumenty do podpisu.</p>
           </li>
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">4</span>
@@ -804,8 +805,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
           </li>
         </ol>
         <div class="how-note">
-          <p><strong>Linki do analizy potrzeb i&nbsp;wniosku są osobiste.</strong> Są przypisane do Twojej firmy i&nbsp;mają ograniczoną ważność, dlatego nie publikujemy ich na stronie – nie przekazuj ich innym osobom.</p>
-          <p>Link wygasł albo nie dotarł? <a href="makieta-v3.html?produkt=tax-protect#kontakt">Napisz przez formularz</a> – doradca odpowie.</p>
+          <p>Masz pytanie przed rozmową? <a href="makieta-v3.html?produkt=tax-protect#kontakt">Napisz przez formularz</a> – doradca Aura Expert skontaktuje się z&nbsp;Tobą.</p>
         </div>
       </div>
     </div>
@@ -825,7 +825,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
         <details id="pytanie-2"><summary>Ile kosztuje Tax Protect?</summary><p>Składka wynika ze stałej taryfy i zależy od przychodu firmy za ostatni zamknięty rok obrotowy oraz od sumy ubezpieczenia. Za jeden spór w roku wynosi od 1 532 zł rocznie (przychód do 250 000 zł, suma 50 000 zł) do 2 901 zł rocznie (przychód do 3 000 000 zł, suma 100 000 zł). Przy przychodzie powyżej 3 mln zł albo ochronie 2–4 sporów w roku składkę ustala <a href="#taryfa">wycena indywidualna</a>.</p></details>
         <details id="pytanie-3"><summary>Ile sporów podatkowych obejmuje polisa?</summary><p>Taryfa obejmuje jeden pełny spór podatkowy w roku – na przykład z urzędem skarbowym lub KAS, z ZUS, z Państwową Inspekcją Pracy albo z PFRON. Jeśli chcesz ubezpieczyć 2–4 spory w roku, poproś o wycenę indywidualną przez <a href="makieta-v3.html?produkt=tax-protect#kontakt">formularz kontaktowy</a>.</p></details>
         <details id="pytanie-4"><summary>Czy zewnętrzna księgowa zdejmuje ze mnie odpowiedzialność karnoskarbową?</summary><p>Nie. Odpowiedzialność karnoskarbowa dotyczy osób zarządzających salonem – właściciela lub zarządu. Zgodnie z prawem nie można jej przenieść na podmiot zewnętrzny.</p></details>
-        <details id="pytanie-5"><summary>Jak kupić Tax Protect?</summary><p>Policz składkę w <a href="makieta-v3.html#kalkulator-tax">kalkulatorze</a> albo zostaw kontakt w formularzu. Doradca Aura Expert wyśle Ci e-mail z osobistymi linkami do analizy potrzeb i do wniosku. Najpierw wypełniasz analizę potrzeb, potem wniosek. Na koniec doradca przekazuje Ci polisę Colonnade razem z OWU Tax Protect.</p></details>
+        <details id="pytanie-5"><summary>Jak kupić Tax Protect?</summary><p>Policz składkę w <a href="makieta-v3.html#kalkulator-tax">kalkulatorze</a> albo zostaw kontakt w formularzu. Doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek: najpierw analiza potrzeb, potem wniosek. Na koniec doradca przekazuje Ci polisę Colonnade razem z OWU Tax Protect.</p></details>
       </div>
     </div>
   </section>

@@ -28,6 +28,7 @@
   <span>Strefa Klienta – konto salonu, dostępne dla każdego klienta z&nbsp;polisą (D-A, D-B). Dane są fikcyjne, stan na 12&nbsp;listopada 2026&nbsp;r.</span>
   <nav aria-label="Ekrany makiety">
     <a href="#pulpit">Pulpit właściciela</a>
+    <a href="#sprawy">Sprawy w&nbsp;toku</a>
     <a href="#polisy">Polisy i&nbsp;archiwum</a>
     <a href="#polisa-oc">Szczegóły polisy</a>
     <a href="#szkoda">Zgłoszenie szkody</a>
@@ -80,6 +81,8 @@
     <ul>
       <li><a href="#pulpit" data-view="pulpit"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Pulpit</a></li>
       <li class="owner-only"><a href="#polisy" data-view="polisy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Polisy<span class="count" aria-label="2 aktualne">2</span></a></li>
+      <!-- „Sprawy w toku” (11 §4.4a; 00, D32): tylko właściciel z sesją aal2 i tylko gdy CRM ma otwarte sprawy OC konta; pracownik nie widzi -->
+      <li class="owner-only"><a href="#sprawy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Sprawy w&nbsp;toku<span class="count" aria-label="2 otwarte">2</span></a></li>
       <li>
         <a href="dam-prace.html#moje-ogloszenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Dam&nbsp;pracę</a>
         <ul class="sub owner-only">
@@ -130,6 +133,52 @@
         <form action="#odnowienie" method="post" class="js-renew"><button class="btn btn-ivory" type="submit">Odnów z&nbsp;doradcą</button></form>
       </div>
 
+      <!-- Sprawy w toku (11 §4.4a; 00, D32; 12): sprawy OC tego konta prowadzone w CRM Aura Expert („aurabroker”, crm_renewals) – tylko właściciel z sesją aal2,
+           pracownik nie widzi (widok owner + owner-only). Etap 1: wyłącznie OC dla branży beauty. Lista z projekcji client_cases – bez kodu, adresu linku,
+           e-maila, treści APK i wniosku ani składek. Produkcja: „Dokończ APK i wniosek” to formularz POST /strefa-klienta/sprawy/[id]/dokoncz (bez JS też działa);
+           serwer sprawdza konto, ważność i stan, pobiera link z CRM i odpowiada 303 na https://portal.beautypolisa.eu/w/<kod> (no-referrer, no-store) –
+           kod nie trafia do HTML, ciasteczek, localStorage ani logów. W makiecie odnośnik z zastępnikiem XXXXXXXXXX. -->
+      <section class="card surface owner-only" id="sprawy" aria-labelledby="t-sprawy">
+        <div class="card-head">
+          <div><h2 class="card-title" id="t-sprawy">Sprawy w&nbsp;toku</h2><p class="card-sub">Analiza potrzeb (APK) i&nbsp;wniosek o&nbsp;polisę OC przygotowane przez doradcę Aura Expert</p></div>
+        </div>
+        <ul class="list cases">
+          <li>
+            <div class="grow">
+              <span class="label-caps">Odnowienie</span>
+              <strong>OC dla branży beauty&nbsp;– program ERGO Hestia</strong>
+              <span class="meta">Link ważny do <time datetime="2026-12-31">31&nbsp;grudnia 2026&nbsp;r.</time> · stan: APK wypełniona, wniosek do podpisu</span>
+            </div>
+            <div class="row-actions">
+              <a class="btn btn-navy btn-sm" href="https://portal.beautypolisa.eu/w/XXXXXXXXXX" rel="noreferrer" aria-describedby="sprawy-domena">Dokończ APK i&nbsp;wniosek<span class="sr-only"> – odnowienie OC, otwiera serwis portal.beautypolisa.eu</span></a>
+            </div>
+            <ol class="track" aria-label="Stan sprawy: odnowienie OC">
+              <li class="done">Wysłano<span class="sr-only"> – zrobione</span></li>
+              <li class="done">Otwarto<span class="sr-only"> – zrobione</span></li>
+              <li aria-current="step">APK wypełniona</li>
+              <li>Wniosek złożony</li>
+            </ol>
+          </li>
+          <li>
+            <div class="grow">
+              <span class="label-caps">Nowa polisa</span>
+              <strong>OC dla branży beauty&nbsp;– program ERGO Hestia</strong>
+              <span class="meta">Link ważny do <time datetime="2026-11-26">26&nbsp;listopada 2026&nbsp;r.</time> · stan: wysłano, oczekuje na APK</span>
+            </div>
+            <div class="row-actions">
+              <a class="btn btn-ghost btn-sm" href="https://portal.beautypolisa.eu/w/XXXXXXXXXX" rel="noreferrer" aria-describedby="sprawy-domena">Dokończ APK i&nbsp;wniosek<span class="sr-only"> – nowa polisa OC, otwiera serwis portal.beautypolisa.eu</span></a>
+            </div>
+            <ol class="track" aria-label="Stan sprawy: nowa polisa OC">
+              <li aria-current="step">Wysłano</li>
+              <li>Otwarto</li>
+              <li>APK wypełniona</li>
+              <li>Wniosek złożony</li>
+            </ol>
+          </li>
+        </ul>
+        <p class="case-note small" id="sprawy-domena"><svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg><span>Przycisk otwiera serwis <strong>portal.beautypolisa.eu</strong>&nbsp;– tam wypełnisz APK i&nbsp;wniosek i&nbsp;je podpiszesz. Link do sprawy jest osobisty i&nbsp;zawsze prowadzi do tej domeny; nie przekazuj go innym osobom. Ten sam link doradca wysłał Ci e-mailem. Polisa pojawi się w&nbsp;Strefie Klienta po wystawieniu.</span></p>
+      </section>
+
       <div class="section-title">
         <h2>Aktualne polisy</h2>
         <a class="link-lux" href="#polisy">Wszystkie polisy i&nbsp;archiwum</a>
@@ -141,22 +190,23 @@
             <svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg>
             <div>
               <h3 id="t-oc">OC dla branży beauty</h3>
-              <p>ERGO Hestia · program BeautyPolisa</p>
+              <p>Program ERGO Hestii nr WA50/003353/24/A (z&nbsp;Fundacją Beauty Razem)</p>
             </div>
             <div class="badges"><span class="badge badge--ok">Aktywna</span><span class="badge badge--warn">Kończy się za 49&nbsp;dni</span></div>
           </div>
           <dl class="kv">
             <div><dt>Numer polisy</dt><dd>BP/2026/000123 (przykład)</dd></div>
             <div><dt>Okres ochrony</dt><dd><time datetime="2026-01-01">1&nbsp;stycznia</time> – <time datetime="2026-12-31">31&nbsp;grudnia 2026&nbsp;r.</time></dd></div>
-            <div><dt>Grupa taryfowa</dt><dd>2 – makijaż permanentny, tatuaż, mezoterapia, IPL</dd></div>
+            <div><dt>Grupa ryzyka</dt><dd>Grupa 2&nbsp;– Kosmetologia i&nbsp;tatuaż</dd></div>
             <div><dt>Suma gwarancyjna</dt><dd class="money">200&nbsp;000&nbsp;zł</dd></div>
-            <div><dt>Ochrona prawna</dt><dd>tak</dd></div>
+            <div><dt>Klauzula ochrony prawnej</dt><dd>tak<br><a class="link-quiet js-klauzula" href="../oc-beauty.html#ochrona-prawna">Treść klauzuli<span class="sr-only"> ochrony prawnej</span></a></dd></div>
             <div><dt>Zespół</dt><dd>1–5&nbsp;osób</dd></div>
           </dl>
           <div class="premium">
             <strong>882&nbsp;zł</strong>
-            <span>składka roczna: 790&nbsp;zł z&nbsp;taryfy programu + 92&nbsp;zł ochrona prawna</span>
+            <span>składka roczna: 790&nbsp;zł z&nbsp;taryfy programu + 92&nbsp;zł klauzula ochrony prawnej</span>
           </div>
+          <p class="xsmall muted">Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu. Dane polisy pochodzą z&nbsp;CRM Aura Expert.</p>
           <div class="actions">
             <a class="btn btn-navy js-drawer-open" href="#polisa-oc">Szczegóły i&nbsp;dokumenty</a>
             <a class="btn btn-ghost" href="#szkoda">Zgłoś szkodę</a>
@@ -665,16 +715,16 @@
     </div>
     <div class="drawer-body">
       <dl class="kv kv--rows">
-        <div><dt>Ubezpieczyciel</dt><dd>ERGO Hestia – program BeautyPolisa</dd></div>
+        <div><dt>Ubezpieczyciel</dt><dd>ERGO Hestia&nbsp;– program ERGO Hestii nr WA50/003353/24/A (z&nbsp;Fundacją Beauty Razem)</dd></div>
         <div><dt>Numer polisy</dt><dd>BP/2026/000123 (przykład)</dd></div>
         <div><dt>Okres ochrony</dt><dd>1&nbsp;stycznia – 31&nbsp;grudnia 2026&nbsp;r.</dd></div>
-        <div><dt>Grupa taryfowa</dt><dd>2 – makijaż permanentny, tatuaż, mezoterapia, IPL</dd></div>
+        <div><dt>Grupa ryzyka</dt><dd>Grupa 2&nbsp;– Kosmetologia i&nbsp;tatuaż</dd></div>
         <div><dt>Suma gwarancyjna</dt><dd>200&nbsp;000&nbsp;zł</dd></div>
-        <div><dt>Ochrona prawna</dt><dd>tak, +92&nbsp;zł</dd></div>
+        <div><dt>Klauzula ochrony prawnej</dt><dd>tak, +92&nbsp;zł<br><a class="link-quiet js-klauzula" href="../oc-beauty.html#ochrona-prawna">Treść klauzuli<span class="sr-only"> ochrony prawnej</span></a></dd></div>
         <div><dt>Wielkość zespołu</dt><dd>1–5&nbsp;osób</dd></div>
         <div><dt>Składka roczna</dt><dd><strong>882&nbsp;zł</strong> (790&nbsp;zł z&nbsp;taryfy + 92&nbsp;zł)</dd></div>
       </dl>
-      <p class="xsmall muted">Zakres ochrony – zgodnie z&nbsp;OWU. Dane polisy wprowadził doradca Aura Expert; zmianę zgłoś doradcy.</p>
+      <p class="xsmall muted">Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu. Dane polisy pochodzą z&nbsp;CRM Aura Expert; zmianę zgłoś doradcy.</p>
 
       <div>
         <h3>Dokumenty</h3>
@@ -692,6 +742,67 @@
     </div>
   </section>
 </div>
+
+<!-- Klauzula ochrony prawnej – natywny <dialog> (showModal), jak na stronie głównej: Esc, „Zamknij” i kliknięcie w tło zamykają, fokus wraca do przycisku.
+     Poza szufladą, żeby otwierał się z karty polisy i z szuflady; szuflada nie nadaje mu inert. Kryjące ivory bez backdrop-filter – nie jest taflą szkła.
+     Bez JS (albo bez showModal) „Treść klauzuli” prowadzi do klauzuli na stronie OC (../oc-beauty.html#ochrona-prawna).
+     W produkcji pokazywana tylko, gdy polisa z CRM ma klauzulę (00, D30, D32).
+     Treść między znacznikami gen:klauzula generuje skrypt z snippets/klauzula-ochrona-prawna.json – dosłownie, bez ręcznych poprawek
+     (jedyna zmiana względem dokumentu źródłowego jest opisana w $comment tego pliku). -->
+<dialog class="klauzula" id="klauzula-dialog" aria-labelledby="klauzula-naglowek">
+  <div class="klauzula-head">
+    <div><p class="eyebrow">OC dla branży beauty · rozszerzenie</p><h2 id="klauzula-naglowek">Klauzula ochrony prawnej</h2></div>
+    <button type="button" class="klauzula-close" data-close>Zamknij</button>
+  </div>
+  <div class="klauzula-body" role="region" tabindex="0" aria-label="Treść klauzuli ochrony prawnej">
+<!-- gen:klauzula -->
+    <p class="klauzula-tytul">Rozszerzenie zakresu ubezpieczenia o koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgodą Ubezpieczyciela ochroną zgodnie z § 6 ust. 3</p>
+    <ol>
+      <li>Z zachowaniem pozostałych, niezmienionych niniejszą klauzulą postanowień umowy ubezpieczenia określonych w Warunkach Ubezpieczenia, strony postanowiły rozszerzyć zakres ubezpieczenia o koszty ochrony prawnej, poniesione przez Ubezpieczonego w celu obrony jego praw w postępowaniach przed sądami polskimi prowadzonych z jego udziałem w charakterze pozwanego, podejrzanego lub oskarżonego, w tym w postępowaniu dyscyplinarnym.</li>
+      <li>Ochroną ubezpieczeniową na podstawie niniejszej klauzuli objęte są koszty ochrony prawnej, poniesione przez Ubezpieczonego w postępowaniu wszczętym na terenie RP w okresie ubezpieczenia, o ile dotyczy ono czynności zawodowych Ubezpieczonego przyjętych do ubezpieczenia na podstawie niniejszej umowy. W razie wątpliwości za datę wszczęcia postępowania uważa się chwilę, w której właściwy organ, urząd lub funkcjonariusz podjął pierwszą czynność wobec Ubezpieczonego, nawet jeśli nie była ona potwierdzona na piśmie i nie stanowiła formalnego wszczęcia postępowania w świetle obowiązujących przepisów.</li>
+      <li>Przez koszty ochrony prawnej rozumie się w szczególności:
+        <ul>
+          <li>koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej,</li>
+          <li>koszty związane z uzyskaniem opinii biegłych lub rzeczoznawców albo innych dokumentów stanowiących środki dowodowe,</li>
+          <li>koszty zasądzone od Ubezpieczonego na rzecz strony przeciwnej,</li>
+          <li>pozostałe koszty i opłaty sądowe lub administracyjne, o ile służą one ochronie praw Ubezpieczonego w związku z prowadzonym postępowaniem.</li>
+        </ul>
+      </li>
+      <li>Przez koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej rozumie się koszty jednego adwokata lub radcy prawnego z tytułu zastępstwa procesowego lub obrony, pokrywane do wysokości ustalonej zgodnie z odpowiednimi przepisami regulującymi wysokość minimalnego wynagrodzenia za czynności adwokata lub radcy prawnego, jeśli takie obowiązują.</li>
+      <li>Z zakresu ubezpieczenia wyłączone są koszty:
+        <ul>
+          <li>poniesione w postępowaniu wszczętym w okresie ubezpieczenia, w wyniku apelacji lub wniesienia innego środka zaskarżenia albo wznowienia postępowania, o ile dotyczą postępowania prowadzonego przed rozpoczęciem okresu odpowiedzialności Ubezpieczyciela,</li>
+          <li>powstałe w następstwie korzystania z usług osób nieuprawnionych do świadczenia pomocy prawnej,</li>
+          <li>związane ze świadomym udzieleniem przez Ubezpieczonego nieprawdziwych lub wprowadzających w błąd informacji, albo dostarczeniem sfałszowanych dokumentów,</li>
+          <li>poniesione w postępowaniu wszczętym na wniosek osób bliskich Ubezpieczonego, osób i podmiotów pozostających z nim w stosunku zależności wynikającej z zatrudnienia ich przez Ubezpieczonego lub z innej podstawy,</li>
+          <li>poniesione na pokrycie kar sądowych lub administracyjnych nałożonych na Ubezpieczonego.</li>
+        </ul>
+      </li>
+      <li>Z zakresu ubezpieczenia wyłączone są ponadto koszty poniesione:
+        <ul>
+          <li>w postępowaniach z zakresu prawa funduszy inwestycyjnych, prawa obligacji, papierów wartościowych oraz z zakresu prawa pracy,</li>
+          <li>w postępowaniach z zakresu prawa patentowego, autorskiego, znaków towarowych, pozostałego prawa własności intelektualnej i przemysłowej, prawa ochrony konkurencji (antymonopolowego) oraz prawa dotyczącego zasad konkurencji,</li>
+          <li>w postępowaniach z umów poręczenia i przejęcia długów,</li>
+          <li>w postępowaniach z zakresu prawa podatkowego, celnego oraz dotyczącego innych opłat publicznoprawnych, a także prawa karno-skarbowego,</li>
+          <li>w postępowaniu układowym, naprawczym albo upadłościowym,</li>
+          <li>w postępowaniach w związku z posiadaniem pojazdów mechanicznych,</li>
+          <li>w postępowaniach pomiędzy stronami umowy ubezpieczenia.</li>
+        </ul>
+      </li>
+      <li>W odniesieniu do postępowań karnych ochrona ubezpieczeniowa dotyczy wyłącznie czynów, w których karane jest nieumyślne popełnienie danego czynu; w przypadku stwierdzenia winy umyślnej w prawomocnym orzeczeniu sądu, Ubezpieczycielowi przysługuje roszczenie regresowe do Ubezpieczonego o zwrot uprzednio wypłaconych świadczeń.</li>
+      <li>Jeżeli przeciwko Ubezpieczonemu wszczęte zostało postępowanie, o którym mowa w niniejszej klauzuli, albo jeżeli istnieje bezpośrednie zagrożenie wszczęciem takiego postępowania, Ubezpieczony obowiązany jest niezwłocznie zawiadomić o tym Ubezpieczyciela, przekazując mu wszelkie informacje i dokumenty w sprawie.</li>
+      <li>W ramach udzielonej ochrony Ubezpieczyciel dokonuje oceny sytuacji faktycznej i prawnej oraz podejmuje decyzję o uznaniu lub nieuznaniu roszczenia Ubezpieczonego i wypłacie lub odmowie wypłaty świadczenia w postaci refundacji kosztów ochrony prawnej.</li>
+      <li>Ubezpieczonemu przysługuje prawo swobodnego wyboru adwokata lub radcy prawnego w zakresie obrony, reprezentowania lub wspierania jego interesów w postępowaniu sądowym. Koszty ochrony prawnej pokrywane są przez Ubezpieczyciela na podstawie rachunków wystawionych na Ubezpieczonego, o ile dotyczą kosztów objętych ubezpieczeniem, zgodnie z niniejszą klauzulą.</li>
+      <li>Suma ubezpieczenia dla kosztów ochrony prawnej pokrywanych przez Ubezpieczyciela na podstawie niniejszej klauzuli zostaje wskazana w umowie ubezpieczenia i stanowi górną granicę odpowiedzialności Ubezpieczyciela.</li>
+      <li>Za rozszerzenie zakresu ubezpieczenia w sposób określony w niniejszej klauzuli Ubezpieczony opłaci dodatkową składkę w wysokości ustalonej w umowie ubezpieczenia.</li>
+    </ol>
+<!-- /gen:klauzula -->
+  </div>
+  <div class="klauzula-foot">
+    <p>Klauzula do programu ERGO Hestii nr WA50/003353/24/A (z&nbsp;Fundacją Beauty Razem). Dopłata: 92&nbsp;zł rocznie. Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p>
+    <a class="link-lux" href="../oc-beauty.html#ochrona-prawna">Klauzula na stronie OC</a>
+  </div>
+</dialog>
 
 <footer class="app-footer">
   <div class="app-footer-inner">
@@ -718,7 +829,7 @@
 </svg>
 
 <script>
-/* Makieta: widoki (hash), rola pracownika, zakładki, szuflada, menu, formularze demonstracyjne.
+/* Makieta: widoki (hash), rola pracownika, zakładki, szuflada, okno klauzuli, menu, formularze demonstracyjne.
    Bez JS: wszystkie widoki pod sobą, zakładki jako sekcje, szuflada przez :target. */
 (function () {
   var root = document.documentElement;
@@ -737,7 +848,7 @@
     release();
     for (var n = layer; n && n.parentNode && n !== document.body; n = n.parentNode) {
       Array.prototype.forEach.call(n.parentNode.children, function (s) {
-        if (s === n || s.tagName === 'SCRIPT' || s.inert || s.classList.contains('nav-scrim')) { return; }
+        if (s === n || s.tagName === 'SCRIPT' || s.tagName === 'DIALOG' || s.inert || s.classList.contains('nav-scrim')) { return; }
         s.inert = true; inerted.push(s);
       });
     }
@@ -848,6 +959,7 @@
   });
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') { return; }
+    if (document.querySelector('dialog[open]')) { return; } /* Esc zamyka najpierw okno klauzuli (natywnie), szuflada zostaje */
     if (drawer.classList.contains('is-open')) { closeDrawer(true); return; }
     if (sidenav.classList.contains('is-open')) { closeNav(true); return; }
     var acc = document.getElementById('account');
@@ -939,6 +1051,22 @@
     document.getElementById('inv-ok').hidden = false;
     this.reset();
   });
+
+  /* ---------- klauzula ochrony prawnej: natywny <dialog> (showModal), jak w makieta-v3.html ----------
+     Bez JS (albo bez showModal) odnośniki „Treść klauzuli” prowadzą do klauzuli na stronie OC. */
+  var dlg = document.getElementById('klauzula-dialog');
+  if (dlg && typeof dlg.showModal === 'function') {
+    var dlgBody = dlg.querySelector('.klauzula-body'), dlgBack = null;
+    document.querySelectorAll('a.js-klauzula').forEach(function (a) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = a.className; b.setAttribute('aria-haspopup', 'dialog'); b.setAttribute('aria-controls', dlg.id);
+      while (a.firstChild) { b.appendChild(a.firstChild); }
+      a.parentNode.replaceChild(b, a);
+      b.addEventListener('click', function () { if (dlg.open) { return; } dlgBack = b; dlg.showModal(); if (dlgBody) { dlgBody.scrollTop = 0; } });
+    });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg || e.target.closest('[data-close]')) { dlg.close(); } });
+    dlg.addEventListener('close', function () { var t = dlgBack; dlgBack = null; if (t && document.contains(t)) { t.focus(); } });
+  }
 
   render(false);
 })();

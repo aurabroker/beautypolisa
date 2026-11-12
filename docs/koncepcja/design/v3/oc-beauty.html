@@ -331,7 +331,25 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .tariff-note{padding-bottom:24px;font-size:var(--text-sm);color:var(--color-ink)}
 .tariff-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;margin-top:clamp(24px,3vw,36px)}
 
-/* ---------- IV · pytania: siatka 4/7, jedna tafla (jak na stronie głównej) ---------- */
+/* ---------- IV · jak kupić: jedwab, jedna ciemna tafla z czterema krokami (jak na stronie Tax Protect) ---------- */
+.dark .chapter-no{color:rgba(217,192,137,.14)}
+.how{overflow:hidden;overflow:clip}
+.steps{display:grid;grid-template-columns:minmax(0,1fr);list-style:none;margin:0;padding:0}
+.step{display:grid;gap:12px;align-content:start;padding:32px 28px 30px;box-shadow:1px 0 0 var(--bp-line-gold-on-dark-soft),0 1px 0 var(--bp-line-gold-on-dark-soft)}
+.numeral{font:italic 500 var(--text-display-numeral)/1 var(--font-serif);color:var(--color-gold-light)}
+.step h3{font-size:clamp(1.45rem,1.3rem + .5vw,1.7rem)}
+.step p{color:var(--color-parchment);font-size:var(--text-body)}
+.step-where{display:block;font:500 var(--text-xs)/1.5 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-gold-light);overflow-wrap:anywhere}
+.step .links{display:flex;flex-wrap:wrap;gap:0 22px}
+.how-note{display:grid;gap:10px;padding:26px 28px;border-top:1px solid var(--bp-line-gold-on-dark)}
+.how-note p{font-size:var(--text-sm);color:var(--color-parchment);max-width:62rem}
+.how-note strong{font-weight:500;color:var(--color-ivory)}
+.how-note a{color:var(--color-gold-light);text-decoration-color:rgba(217,192,137,.6);text-underline-offset:4px}
+@media (min-width:768px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1200px){.steps{grid-template-columns:repeat(4,minmax(0,1fr))}.step{padding:40px 30px 34px}}
+@media (max-width:479px){.step{padding:28px 22px 26px}.how-note{padding:22px}}
+
+/* ---------- V · pytania: siatka 4/7, jedna tafla (jak na stronie głównej) ---------- */
 .faq-grid{display:grid}
 .faq-head h2{font-size:clamp(2.25rem,1.5rem + 2.2vw,3.25rem)}
 .faq{overflow:hidden;overflow:clip}
@@ -391,6 +409,9 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   .scene--silk.bg-on{background-image:none;overflow:clip}
   .scene--silk.bg-on::before{content:"";position:sticky;top:0;display:block;height:100lvh;margin-top:calc(-1 * var(--scene-pt,0px));margin-bottom:-100lvh;z-index:-1;pointer-events:none;background:var(--scene-pos,center)/cover no-repeat var(--scene-img)}
   .scene--marble.bg-on{background-image:url(img/tlo-marmur-len-1024.webp)}
+  /* sekcja „Jak kupić” na jedwabiu (jak na stronie Tax Protect): margin-bottom oddaje odjęty padding sceny, treść nie podjeżdża pod górną krawędź */
+  .scene--silk.section{--scene-pt:72px}
+  .scene--silk.section.bg-on::before{margin-bottom:calc(var(--scene-pt,0px) - 100lvh)}
   .zgroup{padding-inline:18px}
   .clause{padding:28px 20px}
   .clause-text{padding-left:1.7em}
@@ -729,7 +750,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           <li><a href="makieta-v3.html#ubezpieczenia">Ubezpieczenia</a></li>
           <li><a href="#zabiegi">Zabiegi</a></li>
           <li><a href="#ochrona-prawna">Ochrona prawna</a></li>
-          <li><a href="#faq">Pytania</a></li>
+          <li><a href="#jak-kupic">Jak kupić</a></li>
         </ul>
       </nav>
       <!-- Strefa Klienta: w makiecie strefa/logowanie.html, produkcyjnie /strefa-klienta/logowanie -->
@@ -742,6 +763,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           <a href="makieta-v3.html#kalkulator"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kalkulator"/></svg>Kalkulator</a>
           <a href="#zabiegi"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupy-ryzyka"/></svg>Lista zabiegów</a>
           <a href="#ochrona-prawna"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Ochrona prawna</a>
+          <a href="#jak-kupic"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Jak kupić</a>
           <a href="#faq"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Pytania</a>
           <hr class="rule">
           <a href="strefa/logowanie.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Strefa Klienta</a>
@@ -1151,7 +1173,56 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     </div>
   </section>
 
-  <!-- IV · PYTANIA: widoczne pytania = FAQPage w JSON-LD (oba bloki generuje ten sam skrypt z jednej listy).
+  <!-- IV · JAK KUPIĆ (ustalenia 12.11.2026, pkt 0 i 5; zdania = wzorzec ścieżki zakupu z makieta-v3.html, sekcja „Jak to działa”):
+       kalkulator lub formularz → doradca Aura Expert → e-mail z osobistym linkiem do APK i wniosku w portal.beautypolisa.eu → podpis → polisa.
+       Ścieżka z linkiem dotyczy na razie tylko OC. Link z kodem tworzy CRM Aura Expert i wysyła wyłącznie e-mailem na adres ze sprawy –
+       na stronie publicznej nie ma żadnego linku z kodem, a formularz nie przekierowuje na /w/<kod>. -->
+  <section class="scene scene--silk scene--pos-lt section dark" id="jak-kupic" aria-labelledby="kupic-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="chapter-no" aria-hidden="true">IV</span>
+        <p class="eyebrow">Jak kupić</p>
+        <h2 id="kupic-title" class="rv-curtain">Od kalkulatora <em>do polisy w&nbsp;czterech krokach</em></h2>
+        <p class="lead">Najpierw analiza potrzeb, potem wniosek – tak wymagają przepisy o&nbsp;dystrybucji ubezpieczeń (IDD). Doradca Aura Expert prowadzi Cię przez każdy krok.</p>
+      </div>
+      <div class="how glass glass--dark">
+        <ol class="steps">
+          <li class="step rv-rise">
+            <span class="numeral" aria-hidden="true">1</span>
+            <h3>Kalkulator albo formularz</h3>
+            <p>Policz składkę w&nbsp;kalkulatorze albo zostaw kontakt w&nbsp;formularzu i&nbsp;wybierz temat „OC dla branży beauty”.</p>
+            <p class="links"><a class="link-lux" href="makieta-v3.html#kalkulator">Kalkulator</a><a class="link-lux" href="makieta-v3.html?produkt=oc-beauty#kontakt">Formularz</a></p>
+          </li>
+          <li class="step rv-rise">
+            <span class="numeral" aria-hidden="true">2</span>
+            <h3>E-mail od doradcy</h3>
+            <span class="step-where">portal.beautypolisa.eu</span>
+            <p>Doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu.</p>
+          </li>
+          <li class="step rv-rise">
+            <span class="numeral" aria-hidden="true">3</span>
+            <h3>Analiza potrzeb, wniosek i&nbsp;podpis</h3>
+            <span class="step-where">Pod osobistym linkiem</span>
+            <p>Pod linkiem wypełniasz analizę potrzeb i&nbsp;wniosek, a&nbsp;potem je podpisujesz.</p>
+          </li>
+          <li class="step rv-rise">
+            <span class="numeral" aria-hidden="true">4</span>
+            <h3>Polisa</h3>
+            <span class="step-where">ERGO Hestia · Strefa Klienta</span>
+            <p>Po wystawieniu polisy dostajesz ją razem z&nbsp;dokumentami. Polisę i&nbsp;dokumenty masz też w&nbsp;Strefie Klienta.</p>
+            <p class="links"><a class="link-lux" href="strefa/logowanie.html">Strefa Klienta</a></p>
+          </li>
+        </ol>
+        <div class="how-note">
+          <p><strong>Link do analizy potrzeb i&nbsp;wniosku jest osobisty.</strong> Zawsze prowadzi do portal.beautypolisa.eu i&nbsp;ma datę ważności – nie przekazuj go innym. Dostałeś link do innej strony? Nie otwieraj go i&nbsp;<a href="makieta-v3.html?produkt=oc-beauty#kontakt">napisz do nas</a>.</p>
+          <p>Link wygasł albo nie dotarł? <a href="makieta-v3.html?produkt=oc-beauty#kontakt">Napisz przez formularz</a> – doradca odpowie. Masz konto w&nbsp;Strefie Klienta? Sprawę dokończysz też w&nbsp;sekcji „Sprawy w&nbsp;toku”.</p>
+          <p>Nie masz polisy? <a href="https://beautyrazem.pl/polisa">Zarejestruj się na beautyrazem.pl/polisa</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V · PYTANIA: widoczne pytania = FAQPage w JSON-LD (oba bloki generuje ten sam skrypt z jednej listy).
        Pytania 1–5 = schema-faq-oc-beauty.json (oba bloki generuje ten sam skrypt). -->
   <section class="section section--flush-top" id="faq" aria-labelledby="faq-title">
     <div class="container faq-grid">
