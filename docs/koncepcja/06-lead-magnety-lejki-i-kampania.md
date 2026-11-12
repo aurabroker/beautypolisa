@@ -7,15 +7,15 @@
 - Cztery magnesy wg ramy MAGNET, każdy zakotwiczony w produkcie, który dziś ma parametry w briefie: **quiz grup ryzyka** (OC dla branży beauty (ERGO Hestia), góra lejka, bez bramki, e-mail opcjonalny), **wzór zgody na zabieg + checklista dokumentacji** (OC, środek, bramka e-mail), **checklista kontroli sanepid / ZUS / US** (Tax Protect (Colonnade), środek, bramka e-mail), **kalkulator kosztu rotacji vs pakiet** (Grupowe ERGO dla beauty, dół lejka, na liczbach użytkownika).
 - Kalkulator „ile tracisz na L4 jako JDG” odrzucony jako magnes nr 3: produkt „Utrata dochodu” nie ma w briefie żadnych parametrów (01, pkt 3.5), więc magnes nie miałby kotwicy; zostaje narzędziem edukacyjnym bez bramki (05, C1.4) i wraca jako magnes, gdy zespół produktowy dostarczy ofertę.
 - Wynik zawsze natychmiast na ekranie. E-mail służy dostarczeniu kopii, a seria pielęgnująca (4 wiadomości z gałęziami na zachowanie) startuje dopiero po osobnej zgodzie i jej potwierdzeniu (double opt-in). Orkiestracja serii w Supabase + Cron Worker z sekcji 02, wysyłka i zdarzenia przez Resend (tagi, webhooki).
-- Zgody jako trzy osobne elementy (informacja RODO, zgoda e-mail, zgoda na telefon – ta ostatnia tylko tam, gdzie zbieramy numer), bez domyślnych zaznaczeń, bez pilności i ciemnych wzorców. Obowiązki informacyjne dystrybutora (IDD) warstwowo: stopka, `/o-nas`, `/dokumenty`, strona sukcesu formularza leada i pierwszy kontakt brokera. Treści klauzul – do weryfikacji prawnej.
+- Zgody jako trzy osobne elementy (informacja RODO, zgoda e-mail, zgoda na telefon – ta ostatnia tylko tam, gdzie zbieramy numer), bez domyślnych zaznaczeń, bez pilności i ciemnych wzorców. Obowiązki informacyjne dystrybutora (IDD) warstwowo: stopka, `/o-nas`, `/dokumenty`, strona sukcesu formularza leada i pierwszy kontakt doradcy. Treści klauzul – do weryfikacji prawnej.
 - Kampania startowa 30 dni: brief, kalendarz (17 pozycji Canva, 3 e-maile, 4 posty LinkedIn, 3 Reels), inwentarz slotów dwóch szablonów, tabela luk (w repo nie ma zdjęć poza logo i `AEX.png`) i budżet generowania do zatwierdzenia. **Generowanie projektów w Canva wymaga osobnej zgody właściciela i dostępu do kont – ten dokument dostarcza wyłącznie brief, kalendarz i copy.**
-- KPI lejka jako przedziały [hipoteza], 3 testy A/B, macierz odpowiedzialności dev / marketing / broker / prawnik, lista narzędzi i jawna lista tego, czego dokument nie robi.
+- KPI lejka jako przedziały [hipoteza], 3 testy A/B, macierz odpowiedzialności dev / marketing / doradca / prawnik, lista narzędzi i jawna lista tego, czego dokument nie robi.
 
 ---
 
 ## 0. Zakres i rama MAGNET
 
-Portal nie sprzedaje polis (01, pkt 8.1). Magnesy mają trzy zadania: **zakwalifikować** (grupa ryzyka, wielkość zespołu, zawód), **zbudować zaufanie** dokumentami, których klient faktycznie użyje w salonie, i **oddać kontakt brokerowi** w momencie, gdy osoba sama o to prosi. Każdy magnes przechodzi przez ramę MAGNET:
+Portal nie sprzedaje polis (01, pkt 8.1). Magnesy mają trzy zadania: **zakwalifikować** (grupa ryzyka, wielkość zespołu, zawód), **zbudować zaufanie** dokumentami, których klient faktycznie użyje w salonie, i **oddać kontakt doradcy Aura Expert** (agenta ubezpieczeniowego) w momencie, gdy osoba sama o to prosi. Każdy magnes przechodzi przez ramę MAGNET:
 
 | Litera | Zasada | Jak egzekwujemy w BeautyPolisa |
 |---|---|---|
@@ -24,7 +24,7 @@ Portal nie sprzedaje polis (01, pkt 8.1). Magnesy mają trzy zadania: **zakwalif
 | **G** – natychmiastowy, interaktywny wynik | Zamiast PDF-a „sprawdź skrzynkę” | Wynik renderowany na stronie; PDF i e-mail to kopia, nie warunek |
 | **N** – nazwa od efektu | Nie „e-book o OC”, lecz „sprawdź, w której grupie…” | Nazwy w tabeli poniżej; H1 testowane A/B (pkt 4.2) |
 | **E** – cały lejek | Landing (korzyść-first) → krótki formularz (e-mail + imię) → strona sukcesu → dostarczenie → 3–5 e-maili rozgałęzionych na zachowanie | Pełny przykład dla magnesu 1 w pkt 2; mechanika wspólna w pkt 1.5 |
-| **T** – pielęgnacja bez wczesnego pitchu | Dostarczenie → szybka wygrana → dowód → miękki następny krok | Seria 4 e-maili: pierwszy pitch (kalkulator) dopiero w 3. wiadomości; rozmowa z brokerem – w 4. |
+| **T** – pielęgnacja bez wczesnego pitchu | Dostarczenie → szybka wygrana → dowód → miękki następny krok | Seria 4 e-maili: pierwszy pitch (kalkulator) dopiero w 3. wiadomości; rozmowa z doradcą – w 4. |
 
 Przegląd czterech magnesów (adresy URL spójne z tabelą „Treści narzędziowe” w 05; adres magnesu 4 jest propozycją):
 
@@ -93,7 +93,7 @@ Uwaga do nazwy: tytuł z zadania („…są objęte OC”) obiecuje potwierdzeni
 
 | Kryterium | „Kalkulator: ile tracisz na L4 jako JDG” (Utrata dochodu) | „Checklista kontroli: sanepid, ZUS, US” (Tax Protect) |
 |---|---|---|
-| Produkt z parametrami w briefie (A) | Nie – brak danych produktowych; oferta ma dostarczyć zespół produktowy (01, pkt 3.5) | Tak – sekcja 1 (karno-skarbowa właściciela, sumy 50 000 / 100 000 zł) i sekcja 2 (spór podatkowy, 250 000–3 000 000 zł); składki sztywne wg taryfy programu (tabela `tax_warianty`; rozstrzygnięte 11.11.2026), przy przychodach powyżej 3 mln zł – wycena indywidualna (01, pkt 3.2) |
+| Produkt z parametrami w briefie (A) | Nie – brak danych produktowych; oferta ma dostarczyć zespół produktowy (01, pkt 3.5) | Tak – sekcja 1 (karno-skarbowa właściciela, sumy 50 000 / 100 000 zł) i sekcja 2 (jeden spór podatkowy w roku; progi przychodu firmy do 250 000 / 500 000 / 1 000 000 / 3 000 000 zł); składki sztywne wg taryfy programu potwierdzonej 12.11.2026 (1 532–2 901 zł rocznie za 1 spór), przy przychodach powyżej 3 mln zł lub 2–4 sporach – wycena indywidualna (01, pkt 3.2) |
 | Natychmiastowy wynik (G) | Tak – kwota dziennego przestoju | Tak – „gotowość” per moduł, lista braków |
 | Ryzyko merytoryczne | Wynik prowadzi do pytania „co dalej?”, na które bez OWU (definicja niezdolności, karencja, wyłączenia) nie ma odpowiedzi | Lista dotyczy obowiązków salonu, nie OWU; wymaga weryfikacji eksperta i prawnika, ale nie zależy od ubezpieczyciela |
 | Sezonowość | I–II (zimowe L4) | I–II (podatki) oraz III–V (kontrole) – dwa okna (05, nakładka sezonowa) |
@@ -178,7 +178,7 @@ Układ od góry: nagłówek i podtytuł → widżet quizu (karta „glass” z f
 | Korzyść 1 | Wynik od razu na ekranie – bez PDF-a i czekania na skrzynkę. |
 | Korzyść 2 | Lista zabiegów z programu, nie ogólniki: od manicure i rzęs po HIFU, nici PDO i laser ablacyjny. |
 | Korzyść 3 | Składka roczna wg taryfy programu (od 400 zł/rok w grupie 1) i jasna informacja, kiedy potrzebna jest ocena indywidualna. |
-| Dowód (fakty, bez opinii) | Program OC dla branży beauty realizowany z Sopockim TU ERGO Hestia S.A. (nr WA50/003353/24/A) we współpracy z Fundacją Beauty Razem; dystrybutor: Aura Expert sp. z o.o. [status – agent czy broker – do potwierdzenia]; 4 grupy ryzyka i 3 sumy gwarancyjne (100 000 / 200 000 / 300 000 zł). Opinie klientów pojawią się dopiero, gdy będą prawdziwe i za zgodą autorów – do tego czasu sekcja „dowód” zawiera wyłącznie fakty o programie. |
+| Dowód (fakty, bez opinii) | Program OC dla branży beauty realizowany z Sopockim TU ERGO Hestia S.A. (nr WA50/003353/24/A) we współpracy z Fundacją Beauty Razem; dystrybutor: Aura Expert sp. z o.o., agent ubezpieczeniowy (RPU 11229690/A); 4 grupy ryzyka i 3 sumy gwarancyjne (100 000 / 200 000 / 300 000 zł). Opinie klientów pojawią się dopiero, gdy będą prawdziwe i za zgodą autorów – do tego czasu sekcja „dowód” zawiera wyłącznie fakty o programie. |
 | CTA główne | Zacznij quiz |
 | FAQ 1 | **Czy wynik quizu oznacza, że mam ochronę?** Nie. Quiz pokazuje, do której grupy ryzyka programu należą Twoje zabiegi i jaka jest składka roczna wg taryfy programu. Informacja nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU, a zawarcie umowy poprzedza ocena wniosku (ankieta pyta m.in. o NIP, REGON, datę rozpoczęcia działalności, liczbę zatrudnionych, szkodowość z 3 lat, zabiegi wysokiego ryzyka, formularze zgody i kwalifikacje personelu). |
 | FAQ 2 | **Co z zabiegami z grupy 4?** HIFU, toksyna botulinowa, PRP, PLASMA, kwas hialuronowy, nici PDO, lipoliza iniekcyjna i laser ablacyjny wymagają indywidualnej oceny. Quiz nie poda składki – przekieruje Cię do formularza „poproś o indywidualną ocenę”. |
@@ -194,7 +194,7 @@ Wiadomość transakcyjna: dostarcza zamówiony wynik, nie zawiera oferty. Warian
 
 | Pole | Treść |
 |---|---|
-| Nadawca | Imię i nazwisko brokera, BeautyPolisa (05, decyzja 6 – imienny nadawca) |
+| Nadawca | Imię i nazwisko doradcy, BeautyPolisa (05, decyzja 6 – imienny nadawca) |
 | Temat (≤ 50) | Twój wynik quizu: grupa ryzyka i następny krok |
 | Preheader (≤ 90) | Grupa {N}, składka roczna od {X} zł wg taryfy programu. Pełna lista zabiegów w środku. |
 
@@ -204,7 +204,7 @@ Treść:
 >
 > dziękuję za wypełnienie quizu. Oto wynik dla zabiegów, które zaznaczyłaś/eś:
 >
-> **Grupa ryzyka {N} programu OC dla branży beauty (ERGO Hestia).** Składka roczna wg taryfy programu: od **{X} zł/rok** przy sumie gwarancyjnej 100 000 zł; klauzula ochrony prawnej +92 zł. Wyższe sumy: 200 000 i 300 000 zł. {Jeśli grupa 4 lub zespół 9+: Twoje zabiegi lub wielkość zespołu wymagają indywidualnej oceny – kalkulator nie poda składki, ale broker może to policzyć po krótkiej rozmowie.}
+> **Grupa ryzyka {N} programu OC dla branży beauty (ERGO Hestia).** Składka roczna wg taryfy programu: od **{X} zł/rok** przy sumie gwarancyjnej 100 000 zł; klauzula ochrony prawnej +92 zł. Wyższe sumy: 200 000 i 300 000 zł. {Jeśli grupa 4 lub zespół 9+: Twoje zabiegi lub wielkość zespołu wymagają indywidualnej oceny – kalkulator nie poda składki, ale doradca może to policzyć po krótkiej rozmowie.}
 >
 > Wynik nie jest potwierdzeniem ochrony – zakres wynika z OWU i oceny wniosku. Pełną listę zabiegów w Twojej grupie i wynik masz pod tym linkiem: {link do strony wyniku}.
 >
@@ -214,8 +214,8 @@ Treść:
 >
 > Bez kliknięcia nie wyślę nic więcej. {Wariant bez zgody: Na tym kończę – nie wyślę kolejnych wiadomości, chyba że sama/sam o to poprosisz.}
 >
-> {podpis brokera}
-> Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa · {status dystrybutora – do potwierdzenia} · Informacje o dystrybutorze: beautypolisa.eu/o-nas · Polityka prywatności: beautypolisa.eu/rodo
+> {podpis doradcy}
+> Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa · agent ubezpieczeniowy, RPU nr 11229690/A (rpu.knf.gov.pl) · Informacje o dystrybutorze: beautypolisa.eu/o-nas · Polityka prywatności: beautypolisa.eu/rodo
 
 (ok. 190 słów; jeden przycisk CTA zależny od wariantu).
 
@@ -227,7 +227,7 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 |---|---|---|
 | Kliknął kalkulator | zdarzenie `nurture_clicked` z linku do `/kalkulator/oc` lub wejście na kalkulator z `?src=nurture` | E3 zastąpiony przez E3b („masz wycenę – co dalej?”), E4 bez zmian |
 | Nie otworzył | brak `email.opened` i `email.clicked` dla E1 przez 72 h (otwarcia są niewiarygodne przy ochronie prywatności w klientach pocztowych – traktujemy jako wskazówkę, decydują kliknięcia) | E1b – ten sam tekst, nowy temat „Grupa ryzyka: 3 rzeczy, które warto wiedzieć” (+3 dni); brak reakcji na E1b i E2 → seria przechodzi od razu do E4 i kończy się |
-| Odpowiedział | wiadomość przychodząca na adres nadawcy (skrzynka brokera, M365) | `status='paused_replied'`; broker odpowiada w ≤ 1 dzień roboczy; automat milczy |
+| Odpowiedział | wiadomość przychodząca na adres nadawcy (skrzynka doradcy, M365) | `status='paused_replied'`; doradca odpowiada w ≤ 1 dzień roboczy; automat milczy |
 | Poprosił o kontakt | formularz leada (`/api/leads`) z tym samym adresem lub kliknięcie „Umów rozmowę” | `status='converted'`; dalej przepływ leada z 02, pkt 2.2 (zgoda telefoniczna zbierana w formularzu) |
 
 **E1 (+2 dni) – szybka wygrana**
@@ -264,7 +264,7 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 >
 > nie będę opowiadać historii o zrujnowanych salonach – nie mamy takich, które moglibyśmy uczciwie zacytować. Zamiast tego proces, krok po kroku, tak jak wygląda po stronie ubezpieczonego.
 >
-> 1. **Zgłoszenie.** Klientka zgłasza powikłanie lub niezadowolenie z efektu. Ty zgłaszasz zdarzenie do ubezpieczyciela – przez brokera, formularz na beautypolisa.eu/szkoda lub bezpośrednio.
+> 1. **Zgłoszenie.** Klientka zgłasza powikłanie lub niezadowolenie z efektu. Ty zgłaszasz zdarzenie do ubezpieczyciela – przez doradcę, formularz na beautypolisa.eu/szkoda lub bezpośrednio.
 > 2. **Dokumentacja.** Ubezpieczyciel prosi o kartę zabiegu, zgodę klientki na zabieg, zdjęcia, opis produktów. To moment, w którym zgoda „na kolanie” zaczyna kosztować.
 > 3. **Ocena.** Likwidator ustala, czy zdarzenie mieści się w zakresie OWU i czy zachowano obowiązki (kwalifikacje, procedury).
 > 4. **Decyzja i wypłata** albo odmowa z uzasadnieniem, od której można się odwołać.
@@ -275,7 +275,7 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 >
 > {podpis, stopka dystrybutora, link rezygnacji}
 
-(ok. 170 słów; opis procesu do weryfikacji przez brokera z OWU)
+(ok. 170 słów; opis procesu do weryfikacji przez doradcę z OWU)
 
 **E3 (+9 dni) – miękki następny krok**
 
@@ -309,11 +309,11 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 >
 > Jeśli któreś z nich jest Twoje – odpisz albo zostaw numer, oddzwonię w dogodnej porze.
 >
-> **[Zadaj pytanie brokerowi]**
+> **[Zadaj pytanie doradcy]**
 >
 > {podpis, stopka dystrybutora, link rezygnacji}
 
-(ok. 110 słów; odpowiedzi na pytania do weryfikacji z OWU przez brokera)
+(ok. 110 słów; odpowiedzi na pytania do weryfikacji z OWU przez doradcę)
 
 **E4 (+14 dni) – zamknięcie serii**
 
@@ -325,7 +325,7 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 >
 > to ostatnia wiadomość z serii o OC. Masz trzy możliwości i każda jest w porządku:
 >
-> **Rozmowa z brokerem.** Jeśli chcesz przejść od składki z kalkulatora do oferty i wniosku, zostaw kontakt – zadzwonię lub odpiszę w ciągu jednego dnia roboczego, w porze, którą wskażesz.
+> **Rozmowa z doradcą.** Jeśli chcesz przejść od składki z kalkulatora do oferty i wniosku, zostaw kontakt – zadzwonię lub odpiszę w ciągu jednego dnia roboczego, w porze, którą wskażesz.
 >
 > **Zostajesz na liście.** Zgoda, którą potwierdziłaś/eś, obejmuje też okazjonalne aktualizacje (zmiany w programie, nowe wzory dokumentów, terminy kontroli sezonowych). Jeśli to wystarczy – nie musisz nic robić.
 >
@@ -333,7 +333,7 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 >
 > Dziękuję za czas poświęcony quizowi i tym wiadomościom.
 >
-> **[Umów rozmowę z brokerem]**
+> **[Umów rozmowę z doradcą]**
 >
 > {podpis, stopka dystrybutora, link rezygnacji}
 
@@ -391,7 +391,7 @@ Odrzucone: prowadzenie serii w Broadcasts / Automations Resend jako silniku (roz
 
 ### 2.6 Zgody i prawo
 
-**Trzy osobne elementy przy formularzu** (kolejność: informacja → zgoda e-mail → zgoda telefon). Treści przykładowe – **do weryfikacji przez prawnika**; administratorem danych jest Aura Expert sp. z o.o. (decyzja zleceniodawcy z 12.11.2026), kontakt do IOD – do potwierdzenia (02, pytanie 1). Identyfikator wersji tekstu (np. `rodo-v1-2026-11`) trafia do `consents.text_version` (02). Jeżeli zgody marketingowe zebrane dotąd (stara strona, CRM Aura) wskazują spółkę pod nazwą wycofaną decyzją z 12.11.2026 (pełna nazwa – w historii repozytorium, wersja sprzed 12.11.2026; 01, pkt 2), prawnik musi potwierdzić, czy pozostają ważne dla Aura Expert sp. z o.o., czy trzeba je zebrać ponownie.
+**Trzy osobne elementy przy formularzu** (kolejność: informacja → zgoda e-mail → zgoda telefon). Treści przykładowe – **do weryfikacji przez prawnika**; administratorem danych jest Aura Expert sp. z o.o. (decyzja zleceniodawcy z 12.11.2026), kontakt do IOD: iod@auraexpert.pl (decyzja zleceniodawcy z 12.11.2026). Identyfikator wersji tekstu (np. `rodo-v1-2026-11`) trafia do `consents.text_version` (02). Jeżeli zgody marketingowe zebrane dotąd (stara strona, CRM Aura) wskazują spółkę pod nazwą wycofaną decyzją z 12.11.2026 (pełna nazwa – w historii repozytorium, wersja sprzed 12.11.2026; 01, pkt 2), prawnik musi potwierdzić, czy pozostają ważne dla Aura Expert sp. z o.o., czy trzeba je zebrać ponownie.
 
 1. **Informacja RODO** (tekst stale widoczny pod formularzem; checkbox „zapoznałam/em się” tylko jeśli prawnik tego wymaga – nie jest zgodą):
 
@@ -411,18 +411,18 @@ Podstawa wskazana w zadaniu: art. 172 Prawa telekomunikacyjnego – ta sama uwag
 
 **Reguły projektowe (anty-ciemne wzorce):** żadne pole zgody nie jest zaznaczone domyślnie; zgody nie są łączone w jeden checkbox ani z regulaminem; wynik i dokumenty są dostępne bez zgody marketingowej; przyciski „Zacznij quiz” i „Pomiń e-mail” mają tę samą wagę wizualną; brak liczników, komunikatów „tylko dziś”, „zostało 3 miejsc”, „inni już sprawdzili”; brak fałszywych powiadomień o aktywności; rezygnacja jednym kliknięciem i strona `/rezygnacja` bez logowania; potwierdzenie rezygnacji bez próby zatrzymania; strona preferencji zamiast „wszystko albo nic”; w e-mailach stopka z pełną nazwą administratora i adresem.
 
-**Obowiązki informacyjne dystrybutora (ustawa o dystrybucji ubezpieczeń) – gdzie w lejku** [zakres do weryfikacji przez prawnika; treść zależy od statusu broker vs agent – 01, pkt 2]:
+**Obowiązki informacyjne dystrybutora (ustawa o dystrybucji ubezpieczeń) – gdzie w lejku** [zakres do weryfikacji przez prawnika; Aura Expert jest agentem ubezpieczeniowym – 01, pkt 2, decyzja z 12.11.2026]:
 
 | Obowiązek | Etap lejka | Miejsce |
 |---|---|---|
-| Firma, adres, status dystrybutora (broker / agent), wpis do rejestru KNF i sposób jego weryfikacji | każdy kontakt z treścią | stopka wszystkich stron i e-maili (skrót) + `/o-nas#dystrybutor` (pełna treść) |
-| Charakter wynagrodzenia (prowizja / honorarium); dla brokera – czy udziela porady na podstawie rzetelnej analizy; dla agenta – zakłady, na rzecz których działa | przed propozycją umowy | `/o-nas#dystrybutor`; strona sukcesu formularza leada; pierwsza wiadomość brokera do leada |
+| Firma, adres, status dystrybutora (agent ubezpieczeniowy), numer wpisu w Rejestrze Pośredników Ubezpieczeniowych (11229690/A) i sposób jego weryfikacji (https://rpu.knf.gov.pl/) | każdy kontakt z treścią | stopka wszystkich stron i e-maili (skrót) + `/o-nas#dystrybutor` (pełna treść) |
+| Charakter wynagrodzenia (do uzupełnienia); zakłady ubezpieczeń, w imieniu i na rzecz których działa agent (lista do potwierdzenia) | przed propozycją umowy | `/o-nas#dystrybutor`; strona sukcesu formularza leada; pierwsza wiadomość doradcy do leada |
 | Procedura reklamacji i pozasądowe rozwiązywanie sporów (Rzecznik Finansowy) | j.w. | `/o-nas#dystrybutor`, `/kontakt`, stopka e-maili serii (link) |
-| OWU i dokument informacyjny o produkcie (IPID) przed zawarciem umowy | strona produktowa / kontakt z brokerem | `/dokumenty` z wersjami OWU (05), link ze stron produktowych i z E1/E3 |
-| Analiza potrzeb klienta przed zaproponowaniem umowy | rozmowa brokera | poza portalem (proces Aura); formularz leada zbiera tylko dane kontekstowe, nie zastępuje analizy (02, decyzja 10) |
+| OWU i dokument informacyjny o produkcie (IPID) przed zawarciem umowy | strona produktowa / kontakt z doradcą | `/dokumenty` z wersjami OWU (05), link ze stron produktowych i z E1/E3 |
+| Analiza potrzeb klienta przed zaproponowaniem umowy | rozmowa doradcy | poza portalem (proces Aura); formularz leada zbiera tylko dane kontekstowe, nie zastępuje analizy (02, decyzja 10) |
 | Zastrzeżenie: treści portalu i kalkulator to informacja, nie oferta w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU | kalkulator, quiz, e-maile | adnotacja pod każdym wynikiem i w stopce E0–E4 |
 
-Landing magnesu sam w sobie nie jest czynnością dystrybucyjną, ale pochodzi od dystrybutora – stąd skrócona informacja w stopce każdej strony. Pełne obowiązki „przed zawarciem umowy” realizuje broker w pierwszym kontakcie; portal ma zapewnić, że klient wcześniej widział, kim jest dystrybutor i gdzie są OWU.
+Landing magnesu sam w sobie nie jest czynnością dystrybucyjną, ale pochodzi od dystrybutora – stąd skrócona informacja w stopce każdej strony. Pełne obowiązki „przed zawarciem umowy” realizuje Aura Expert jako agent – przez doradcę w pierwszym kontakcie; portal ma zapewnić, że klient wcześniej widział, kim jest dystrybutor i gdzie są OWU.
 
 ---
 
@@ -437,11 +437,11 @@ Rama „Canva creator” ma sześć etapów: brief → kalendarz → inwentarz z
 | Cel | (1) Uruchomić portal jako pierwotne źródło informacji o programie OC dla branży beauty (01, pkt 7 – brak publicznych źródeł); (2) zbudować bazę e-mail z potwierdzoną zgodą; (3) pierwsze leady OC przez kalkulator. Mierniki w pkt 4.1 |
 | Grupa | Persony z 05: właścicielka salonu 1–8 osób, kosmetolog JDG, fryzjer, linergistka, stylistka paznokci, tatuażysta; wtórnie manager sieci (LinkedIn) |
 | Przekaz główny | „Wiesz, w której grupie ryzyka są Twoje zabiegi? Sprawdź w 60 sekund.” |
-| Przekazy wspierające | Program OC z ERGO Hestią we współpracy z Fundacją Beauty Razem; dokumenty, których używa się w salonie (zgoda, checklisty); bez sprzedaży online – rozmowa z brokerem wtedy, gdy klient chce |
+| Przekazy wspierające | Program OC z ERGO Hestią we współpracy z Fundacją Beauty Razem; dokumenty, których używa się w salonie (zgoda, checklisty); bez sprzedaży online – rozmowa z doradcą wtedy, gdy klient chce |
 | Ton | Ekspercki, ciepły, konkretny. Mówimy „Ty”, unikamy form rodzajowych tam, gdzie się da („Twoje zabiegi”, „wykonujesz”). Zakaz straszenia („jedno roszczenie zrujnuje Twój salon”), pilności, wykrzykników, emoji w nadmiarze |
 | Elementy marki (01, pkt 2) | Granat `#2a3b69` – tła i typografia; róż `#e11d48` – akcent CTA, maks. ok. 10 % powierzchni; tło `#fafafa`; tekst `#1e293b`; tryb ciemny `#0f172a` (Stories); Montserrat Bold (nagłówki) / Regular i Medium (treść); logo poziome PNG z repo (`BeautyPolisa_logo_podstawowe_poziome.png`) – brak wersji białej i monochromatycznej [luka] |
 | Ubezpieczyciele i partnerzy jako dowód | ERGO Hestia (program nr WA50/003353/24/A), Colonnade, ENEL-MED, LUX MED, Fundacja Beauty Razem – **wyłącznie jako nazwy tekstowe** do czasu potwierdzenia umownego zasad użycia logotypów i treści (05, pytanie 2) |
-| Kanały | Instagram (feed, Reels, Stories), Facebook (strona), LinkedIn (strona Aura Expert + profil brokera [założenie]), e-mail (tylko adresy z udokumentowaną zgodą) |
+| Kanały | Instagram (feed, Reels, Stories), Facebook (strona), LinkedIn (strona Aura Expert + profil doradcy [założenie]), e-mail (tylko adresy z udokumentowaną zgodą) |
 | Zakazy | Ceny inne niż z cennika programu (kwoty zawsze jako „składka wg taryfy programu”, z zastrzeżeniem art. 66 KC i odwołaniem do OWU w nocie dystrybutora lub stopce); składki Tax Protect spoza taryfy wariantów (`tax_warianty`) i kwoty przy przychodach powyżej 3 mln zł (tam wyłącznie „wycena indywidualna”); obietnice ochrony; wymyślone opinie i „historie klientek”; liczby bez źródła (koszt rotacji 15 000 zł); logotypy partnerów; grafiki z generowanymi osobami przedstawianymi jako klientki lub zespół |
 | Zgody | Posty organiczne – bez dodatkowych; e-maile kampanii C1–C3 – wyłącznie do subskrybentów portalu z potwierdzoną zgodą oraz do kontaktów z CRM Aura **tylko po audycie zgód** (01, pkt 5.2: `crm_companies`, `email_messages` – status zgód nieznany) |
 | Budżet mediowy | Brak płatnych kampanii w pierwszych 30 dniach [założenie]; decyzja o Meta Ads po danych z lejka i wdrożeniu zgód na piksele przez Zaraz (02) |
@@ -454,7 +454,7 @@ Dzień 1 = dzień uruchomienia portalu (data nieznana – 05 zakłada styczeń).
 |---|---|---|---|---|---|---|
 | 1 | Instagram feed | Canva (social) | Startujemy: portal BeautyPolisa | post 1080×1080 (szablon A) | dlaczego powstał – pierwotne źródło o programie OC | caption 1 |
 | 1 | Facebook | Canva (social) | j.w. (ten sam projekt) | post 1080×1080 | j.w. | reuse projektu |
-| 1 | LinkedIn | Tylko tekst | Start portalu z perspektywy brokera | post tekstowy | branża bez publicznego źródła o programie | post LI 1 |
+| 1 | LinkedIn | Tylko tekst | Start portalu z perspektywy doradcy | post tekstowy | branża bez publicznego źródła o programie | post LI 1 |
 | 2 | Instagram Stories | Canva (social) | Quiz: 4 grupy ryzyka | 3 klatki 1080×1920 + link | „zaznacz zabiegi, zobacz grupę” | tryb ciemny `#0f172a` |
 | 3 | E-mail | Tylko tekst | C1 „Startujemy…” | e-mail | quiz + co znajdziesz na portalu | **K:** tylko adresy ze zgodą; CRM po audycie |
 | 4 | Instagram feed | Canva (social) | Cztery grupy ryzyka zabiegów | karuzela 5 slajdów (szablon B) | edukacja, lista zabiegów per grupa | caption 2; **S:** ever-green |
@@ -470,7 +470,7 @@ Dzień 1 = dzień uruchomienia portalu (data nieznana – 05 zakłada styczeń).
 | 15 | – | – | Przegląd KPI połowy kampanii | – | korekta dni 16–30 wg danych | wewnętrzne |
 | 16 | Instagram feed | Canva (social) | Jak zgłosić szkodę – 4 kroki | post 1080×1080 | proces, nie strach | caption 4; treść do weryfikacji z OWU |
 | 17 | Facebook | Canva (social) | j.w. (reuse) | post 1080×1080 | j.w. | reuse |
-| 18 | Instagram Stories | Canva (social) | Kto odpowiada na Wasze pytania | 3 klatki | broker imiennie (E-E-A-T, 05) | **K:** wymaga zdjęcia zespołu – luka |
+| 18 | Instagram Stories | Canva (social) | Kto odpowiada na Wasze pytania | 3 klatki | doradca imiennie (E-E-A-T, 05) | **K:** wymaga zdjęcia zespołu – luka |
 | 19 | LinkedIn | Tylko tekst | Czego nauczyliśmy się po 2 tygodniach portalu | post tekstowy | tylko realne dane z lejka; bez liczb – bez posta | zależny od dnia 15 |
 | 20 | Instagram feed | Canva (social) | Kontrola w salonie: sanepid, ZUS, US | karuzela 5 slajdów | magnes 3; Tax Protect jako „co, jeśli spór” | caption 5; **K:** po weryfikacji prawnej listy; **S:** I–II, III–V |
 | 22 | Instagram Reels | Tylko tekst (scenariusz) | Hook 3: zespół do 8 osób – jedna polisa | Reels 15 s | próg 8 osób, wycena indywidualna | – |
@@ -480,7 +480,7 @@ Dzień 1 = dzień uruchomienia portalu (data nieznana – 05 zakłada styczeń).
 | 26 | Instagram Stories | Canva (social) | Q&A: Wasze pytania o OC | 3 klatki z odpowiedziami | odpowiedzi z dnia 10 | ogólne, bez oceny przypadków |
 | 27 | LinkedIn | Tylko tekst | Benefity a rotacja – jak policzyć na własnych liczbach | post tekstowy | kalkulator rotacji (magnes 4) | bez liczby 15 000 zł |
 | 28 | Instagram feed | Canva (social) | Najczęstsze pytanie miesiąca | post 1080×1080 | odpowiedź z FAQ portalu | – |
-| 29 | Facebook | Tylko tekst | Zaproszenie do rozmowy z brokerem | post | bez pilności, z informacją o dystrybutorze | – |
+| 29 | Facebook | Tylko tekst | Zaproszenie do rozmowy z doradcą | post | bez pilności, z informacją o dystrybutorze | – |
 | 30 | Instagram feed | Canva (social) | 30 dni BeautyPolisa – co dalej | post 1080×1080 | podziękowanie, zapowiedź kalendarza treści z 05 | – |
 
 Razem: 17 pozycji Canva, 3 e-maile, 4 posty LinkedIn, 3 Reels, 3 posty tekstowe FB. Reguły konfliktów: maks. jeden e-mail tygodniowo do całej bazy (seria nurture liczy się osobno, bo trafia do osób, które o nią poprosiły); Reels i post w feedzie nie tego samego dnia; żadna publikacja o magnesach 2 i 3 przed zatwierdzeniem prawnym dokumentów; przy innym terminie startu przesuwamy pozycje oznaczone S zgodnie z nakładką sezonową z 05.
@@ -509,7 +509,7 @@ Razem: 17 pozycji Canva, 3 e-maile, 4 posty LinkedIn, 3 Reels, 3 posty tekstowe 
 | Potrzebny zasób | Ilość | Użycie | Źródło do decyzji |
 |---|---|---|---|
 | Zdjęcia stanowisk pracy wg zawodu (kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta) | 6–8 | `Hero_Image`, okładki karuzel, OG strony `/dla-kogo/*` | sesja własna lub stock z licencją komercyjną; bez generowania osób |
-| Portret brokera / zespołu | 2 | Stories dzień 18, nadawca e-maili, `/o-nas` | sesja własna |
+| Portret doradcy / zespołu | 2 | Stories dzień 18, nadawca e-maili, `/o-nas` | sesja własna |
 | Zestaw ikon liniowych (4 grupy ryzyka, dokument, tarcza, kontrola, zespół, kalkulator) | 10–12 | `Slide_Icon`, strony produktowe | biblioteka Canva lub własny zestaw SVG w repo |
 | Logo w wersji białej i monochromatycznej, plik wektorowy | 1 komplet | wszystkie szablony | od właściciela marki |
 | Logotypy partnerów (ERGO Hestia, Colonnade, ENEL-MED, LUX MED, Fundacja Beauty Razem) | 5 | dopiero po zgodzie umownej | partnerzy |
@@ -524,7 +524,7 @@ Razem: 17 pozycji Canva, 3 e-maile, 4 posty LinkedIn, 3 Reels, 3 posty tekstowe 
 | Wywołania API (orientacyjnie) | ok. 70–90 | tworzenie / autofill 25, eksport 20, przesłanie zasobów 15, zmiana formatu IG → FB → Stories 10, odczyt i komentarze 10–20 |
 | Generowanie obrazów AI | 0 w wariancie bazowym | wyłącznie tła abstrakcyjne i ikony, jeśli brak zdjęć; żadnych osób |
 | Czas pracy marketingu | 10–14 h | copy, akceptacja kandydatów, kolejkowanie |
-| Czas brokera | 3–4 h | akceptacja merytoryczna 17 projektów i 3 e-maili |
+| Czas doradcy | 3–4 h | akceptacja merytoryczna 17 projektów i 3 e-maili |
 
 Budżet jest szacunkiem [hipoteza]; limity i koszty zależą od planu Canva i zakresu udzielonego dostępu. Uruchomienie generowania wymaga pisemnej akceptacji tej tabeli przez właściciela.
 
@@ -537,13 +537,13 @@ Wszystkie ceny wyłącznie z cennika programu, opisane jako „składka wg taryf
 1. (dzień 1) Manicure, mezoterapia i HIFU to nie ta sama grupa ryzyka. → W programie OC dla branży beauty (ERGO Hestia) zabiegi dzielą się na 4 grupy. Od grupy zależy składka i to, czy potrzebna jest indywidualna ocena. Quiz na portalu pokaże Ci wynik w 60 sekund – bez podawania e-maila. → Link w bio: quiz grup ryzyka. → #beautypolisa #ockosmetyczki #salonkosmetyczny #kosmetolog #beautybiznes
 2. (dzień 4) Grupa 1, 2, 3 czy 4? Przesuń, żeby sprawdzić, gdzie są Twoje zabiegi. → Gr. 1: fryzjerstwo, kosmetyka pielęgnacyjna, manicure, rzęsy. Gr. 2: makijaż permanentny, mezoterapia, lasery nieablacyjne, IPL, tatuaż, peelingi chemiczne. Gr. 3: podologia. Gr. 4: HIFU, toksyna botulinowa, PRP, kwas hialuronowy, nici PDO, lipoliza iniekcyjna, laser ablacyjny – indywidualna ocena. Składki od 400 zł/rok w gr. 1 – wg taryfy programu. → Zapisz post i policz składkę: beautypolisa.eu/kalkulator/oc → #ockosmetologa #makijazpermanentny #podolog #fryzjer #beautypolisa
 3. (dzień 13) Zgoda na zabieg to nie podpis na kolanie pięć minut przed laserem. → Przygotowaliśmy wzór zgody i checklistę dokumentacji – to dokumenty, o które pyta też ankieta do ubezpieczenia OC. Otwierasz od razu online, kopię dostajesz na e-mail. → Pobierz: beautypolisa.eu/baza-wiedzy/zgoda-na-zabieg-wzor → #zgodanazabieg #dokumentacjasalonu #linergistka #kosmetolog #beautypolisa
-4. (dzień 16) Klientka zgłasza powikłanie. Co robisz w pierwszych 24 godzinach? → Kolejność zamiast paniki: zabezpieczasz dokumentację (zgoda, karta zabiegu, zdjęcia), nie podejmujesz zobowiązań wobec klientki bez konsultacji z brokerem, zgłaszasz zdarzenie ubezpieczycielowi. Na portalu opisaliśmy cztery kroki zgłoszenia szkody z OC. → Zapisz na później: beautypolisa.eu/szkoda → #reklamacjazabiegu #ocbeauty #salonkosmetyczny #beautypolisa
+4. (dzień 16) Klientka zgłasza powikłanie. Co robisz w pierwszych 24 godzinach? → Kolejność zamiast paniki: zabezpieczasz dokumentację (zgoda, karta zabiegu, zdjęcia), nie podejmujesz zobowiązań wobec klientki bez konsultacji z doradcą, zgłaszasz zdarzenie ubezpieczycielowi. Na portalu opisaliśmy cztery kroki zgłoszenia szkody z OC. → Zapisz na później: beautypolisa.eu/szkoda → #reklamacjazabiegu #ocbeauty #salonkosmetyczny #beautypolisa
 5. (dzień 20) Sanepid, ZUS, urząd skarbowy – trzy kontrole, jedna checklista. → Zaznaczasz, co masz, widzisz, czego brakuje. Online bez logowania, PDF na e-mail. A jeśli kontrola skończy się sporem podatkowym – Tax Protect (Colonnade) to ochrona karno-skarbowa właściciela i jeden pełny spór podatkowy w roku dla firmy. Zakres i składki wg taryfy programu – na stronie produktu. → Link w bio: checklista kontroli → #kontrolasanepidu #taxprotect #wlascicielkasalonu #beautybiznes #beautypolisa
 6. (dzień 25) Benefity nie są tylko dla korporacji. → Grupowe ERGO dla beauty: pakiety od 58 zł za osobę miesięcznie (wg cennika programu) z modułami MediOpieki – m.in. diagnostyka, rehabilitacja, zdrowie psychiczne, tele-EKG, assistance domowy. Dla salonów, które chcą zatrzymać ludzi, a nie tylko ich rekrutować. → Policz na własnych liczbach: beautypolisa.eu/baza-wiedzy/kalkulator-rotacji → #benefitypracownicze #grupoweergo #salonfryzjerski #managerkasalonu #beautypolisa
 
 **Dwa posty LinkedIn**
 
-Post 1 (dzień 1, profil brokera / strona Aura Expert):
+Post 1 (dzień 1, profil doradcy / strona Aura Expert):
 
 > Od dziś działa beautypolisa.eu – portal o ubezpieczeniach dla branży beauty, który prowadzimy w Aura Expert.
 >
@@ -551,7 +551,7 @@ Post 1 (dzień 1, profil brokera / strona Aura Expert):
 >
 > Na portalu znajdziesz: quiz, który przypisuje zabiegi do grupy ryzyka (bez podawania e-maila), kalkulator składki wg cennika programu, opis zgłoszenia szkody krok po kroku oraz dokumenty do użycia w salonie – wzór zgody na zabieg i checklistę kontroli (po weryfikacji prawnej).
 >
-> Nie sprzedajemy polis online. Portal informuje, a rozmowa z brokerem jest wtedy, gdy ktoś o nią poprosi.
+> Nie sprzedajemy polis online. Portal informuje, a rozmowa z doradcą jest wtedy, gdy ktoś o nią poprosi.
 >
 > Jeśli prowadzisz salon albo szkolisz branżę – chętnie usłyszę, czego brakuje. Link w komentarzu.
 
@@ -678,7 +678,7 @@ Przydział wariantu po stronie serwera (hash losowego identyfikatora w ciasteczk
 
 R – wykonuje, A – zatwierdza, C – konsultuje, I – informowany.
 
-| Zadanie | Dev | Marketing | Broker | Prawnik |
+| Zadanie | Dev | Marketing | Doradca | Prawnik |
 |---|---|---|---|---|
 | Logika quizu i kalkulatorów (`packages/pricing`, JSON zabiegów i checklist) | R/A | I | C (zgodność z programem) | – |
 | Landing, formularze, `/api/magnets`, webhook Resend, tabele | R/A | C | I | I |
@@ -726,21 +726,21 @@ R – wykonuje, A – zatwierdza, C – konsultuje, I – informowany.
 6. **Jeden endpoint `/api/magnets` z pięcioma warstwami ochrony z 02; wyniki jako strony bez PII z parametrami w adresie.** Uzasadnienie: jedna powierzchnia do zabezpieczenia, linki z e-maili działają bezterminowo i są udostępnialne. Odrzucone: osobne endpointy per magnes, strony wyniku z tokenami powiązanymi z osobą.
 7. **PDF-y magnesów 2 i 3 budowane w CI z MDX jako assety statyczne; wynik quizu wyłącznie jako HTML.** Uzasadnienie: brak renderowania PDF w runtime Workers, wersjonowanie w repozytorium (02, pkt 2.5). Odrzucone: generowanie PDF na serwerze, zewnętrzne API do PDF.
 8. **Trzy osobne elementy zgód, zgoda telefoniczna tylko tam, gdzie zbieramy numer; teksty wersjonowane w `consents.text_version`; zero ciemnych wzorców.** Uzasadnienie: dowód i czytelność, zgodność z 02, pkt 4.7. Odrzucone: jeden zbiorczy checkbox, domyślne zaznaczenia, zgoda jako warunek pobrania.
-9. **Informacja dystrybutora warstwowo (stopka → `/o-nas` → `/dokumenty` → sukces leada → pierwszy kontakt).** Uzasadnienie: landing magnesu nie jest czynnością dystrybucyjną, ale klient ma zawsze wiedzieć, kto stoi za treścią; pełne obowiązki realizuje broker przed zawarciem umowy. Odrzucone: pełny tekst IDD na każdym landingu (szum), brak informacji do czasu kontaktu (ryzyko).
+9. **Informacja dystrybutora warstwowo (stopka → `/o-nas` → `/dokumenty` → sukces leada → pierwszy kontakt).** Uzasadnienie: landing magnesu nie jest czynnością dystrybucyjną, ale klient ma zawsze wiedzieć, kto stoi za treścią; pełne obowiązki realizuje Aura Expert jako agent (przez doradcę) przed zawarciem umowy. Odrzucone: pełny tekst IDD na każdym landingu (szum), brak informacji do czasu kontaktu (ryzyko).
 10. **Kampania organiczna przez 30 dni, partnerzy tylko jako nazwy, e-maile wyłącznie do bazy ze zgodą.** Uzasadnienie: brak danych do optymalizacji płatnych kampanii, brak zgód na piksele przed wdrożeniem Zaraz, nieznane zasady użycia logotypów i status zgód w CRM Aura. Odrzucone: Meta Ads od dnia 1, wysyłka do `crm_companies` bez audytu zgód.
 11. **Analytics Engine jako podstawa pomiaru lejka, GA4 tylko po zgodzie przez Zaraz, Resend dla metryk e-mail** – zgodnie z 02, decyzja 11. Odrzucone: GA4 jako jedyne źródło (zależność od zgody dziurawi lejek).
-12. **Generowanie w Canva dopiero po zatwierdzeniu budżetu z pkt 3.4 i nadaniu dostępu.** Uzasadnienie: koszty, dostęp do kont i akceptacja merytoryczna brokera. Odrzucone: generowanie kandydatów „na próbę” bez zgody.
+12. **Generowanie w Canva dopiero po zatwierdzeniu budżetu z pkt 3.4 i nadaniu dostępu.** Uzasadnienie: koszty, dostęp do kont i akceptacja merytoryczna doradcy. Odrzucone: generowanie kandydatów „na próbę” bez zgody.
 
 ## Pytania otwarte do zleceniodawcy
 
-1. Jaki jest potwierdzony status dystrybutora (broker vs agent)? Decyduje o treści stopki, klauzul i informacji IDD (01, pkt 2; 02, pytanie 9).
-2. Kto pełni funkcję IOD i jaki adres kontaktowy IOD podajemy w klauzulach z pkt 2.6 (02, pytanie 1)? Administrator danych portalu jest rozstrzygnięty: Aura Expert sp. z o.o. (decyzja zleceniodawcy z 12.11.2026).
+1. ~~Status dystrybutora~~ – rozstrzygnięte 12.11.2026: Aura Expert sp. z o.o. jest agentem ubezpieczeniowym (RPU 11229690/A; 01, pkt 2; 02, pytanie 9). Otwarte: dokładna lista zakładów ubezpieczeń, na rzecz których działa agent, charakter wynagrodzenia i procedura reklamacyjna – do noty IDD w stopce i na `/o-nas#dystrybutor`.
+2. ~~Kontakt do IOD~~ – rozstrzygnięte 12.11.2026: w klauzulach z pkt 2.6 podajemy iod@auraexpert.pl; administrator danych portalu: Aura Expert sp. z o.o.
 3. Kto zatwierdza prawnie wzór zgody na zabieg i checklistę kontroli oraz czy mogą być wydawane pod marką BeautyPolisa / Aura Expert (05, pytanie 9)?
 4. Czy prawnik potwierdzi aktualną podstawę prawną zgód (art. 398 PKE vs art. 10 u.ś.u.d.e. i art. 172 Pt) oraz oceni, czy e-mail E0 z linkiem do strony wyniku jest informacją handlową?
 5. Czy można używać nazwy „ERGO Hestia” i numeru programu w postach i e-mailach, i na jakich zasadach umownych wolno użyć logotypów ERGO Hestia, Colonnade, ENEL-MED, LUX MED i Fundacji Beauty Razem?
 6. Czy istnieje baza kontaktów z udokumentowaną zgodą marketingową (CRM Aura, `email_messages`) do e-maili C1–C3 i kto przeprowadzi audyt zgód przed wysyłką – w tym ocenę, czy zgody zebrane dotąd pod poprzednią nazwą spółki są ważne dla Aura Expert sp. z o.o. (pkt 2.6)?
 7. Czy liczby „koszt rotacji ok. 15 000 zł” i „pakiet zamiast podwyżki 50 zł” mają cytowalne źródło (05, pytanie 6)? Bez niego kalkulator rotacji pracuje tylko na liczbach użytkownika.
-8. Czy seria pielęgnująca wchodzi do v1 (02 i 05, pytanie 11) i kto jest imiennym nadawcą e-maili (05, decyzja 6)? Czy broker może odpowiadać w SLA 1 dnia roboczego?
+8. Czy seria pielęgnująca wchodzi do v1 (02 i 05, pytanie 11) i kto jest imiennym nadawcą e-maili (05, decyzja 6)? Czy doradca może odpowiadać w SLA 1 dnia roboczego?
 9. Kto nadaje dostęp do Canva (Brand Kit, szablony), Meta Business Suite, LinkedIn i Resend, i czy właściciel akceptuje budżet generowania z pkt 3.4?
 10. Jaka jest data startu portalu? Określa nakładkę sezonową kalendarza (I–II podatki, IX NNW dzieci, XI–XII grupowe).
 11. Czy Aura lub Fundacja Beauty Razem dysponują zdjęciami z prawami do użycia (salony, zespół), czy planujemy sesję albo zakup stocku?

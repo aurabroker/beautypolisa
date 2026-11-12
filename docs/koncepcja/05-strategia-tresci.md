@@ -120,7 +120,7 @@ Backlog: arkusz „koszt rotacji vs koszt benefitu” (E2.2) – gdy zespół do
 | Wniosek (szkodowość, zgody, kwalifikacje) | ankieta PDF (`AnkietaBPEH.pdf`) | brak | checklista przygotowania – unikalna, skraca sprzedaż |
 | Szkody, nieudany zabieg | brak | Prawo.pl (perspektywa klientki) | perspektywa salonu: jak zgłosić, dokumentować; powiązanie ze `/szkoda` |
 | Zgoda na zabieg | brak | blog Booksy | wzór powiązany z wymaganiami wniosku OC – mocniejszy niż ogólny poradnik |
-| Tax Protect | `tax-protect.html`, sekcje 1 i 2, warianty sum; komentarz „DO POTWIERDZENIA” przy składkach w `tax_warianty` jest nieaktualny – składki sztywne wg taryfy programu (rozstrzygnięte 11.11.2026; 01, pkt 3.2) | nisza bez treści dla beauty | kontrola skarbowa, kasa, gotówka w salonie; warianty sum ze składką roczną wg taryfy programu, przychody powyżej 3 mln zł → wycena indywidualna |
+| Tax Protect | `tax-protect.html`, sekcje 1 i 2, warianty sum; komentarz „DO POTWIERDZENIA” przy składkach w `tax_warianty` jest nieaktualny – składki sztywne wg taryfy programu (rozstrzygnięte 11.11.2026; taryfa 1 532–2 901 zł rocznie za 1 spór potwierdzona 12.11.2026; 01, pkt 3.2) | nisza bez treści dla beauty | kontrola skarbowa, kasa, gotówka w salonie; warianty sum ze składką roczną wg taryfy programu, przychody powyżej 3 mln zł → wycena indywidualna |
 | Utrata dochodu | brak danych; wzmianka o Squarelife w `life.html` | Poradnik Przedsiębiorcy, CUK, Firmove, podatki.biz | konkurencja pisze dla „przedsiębiorcy”, my dla JDG w beauty; do czasu oferty – edukacja |
 | NNW dzieci | brak danych | Rankomat, Mubi, Portal Oświatowy, PZU Edukacja, InterRisk | nie wygramy ogólnego „nnw dzieci”; wygrywamy kontekst benefitu dla pracownic i rozmowy z klientką we wrześniu |
 | Grupowe ERGO | `life.html` / `life1.html`: pakiety, moduły, argument anty-rotacyjny | brak treści dla beauty | rotacja w salonach, pakiet zamiast podwyżki – liczby tylko ze źródłem |
@@ -315,7 +315,7 @@ Schemat Zod z 02 (`title`, `description`, `product`, `updatedAt`, `reviewedBy`, 
 
 ## Standardy redakcyjne E-E-A-T dla YMYL
 
-Treści o ubezpieczeniach, podatkach i odpowiedzialności cywilnej są YMYL: błąd kosztuje czytelnika pieniądze, a wydawcę zaufanie i potencjalnie odpowiedzialność z tytułu obowiązków informacyjnych dystrybutora (IDD; status broker vs agent do potwierdzenia – 01, pkt 2). Standardy są warunkiem publikacji.
+Treści o ubezpieczeniach, podatkach i odpowiedzialności cywilnej są YMYL: błąd kosztuje czytelnika pieniądze, a wydawcę zaufanie i potencjalnie odpowiedzialność z tytułu obowiązków informacyjnych dystrybutora (IDD; Aura Expert sp. z o.o. jest agentem ubezpieczeniowym, RPU 11229690/A – decyzja zleceniodawcy z 12.11.2026, 01, pkt 2; w treściach nie nazywamy Aura Expert ani doradców „brokerem”). Standardy są warunkiem publikacji.
 
 1. **Imienny autor z opisaną rolą** (bio na `/o-nas`); nie publikujemy pod „Zespół BeautyPolisa”. Treści prawne i podatkowe mają autora lub współautora z kompetencjami w tej dziedzinie.
 2. **Recenzent z uprawnieniami do dystrybucji ubezpieczeń** przegląda każdy tekst o zakresie ochrony, wyłączeniach, składkach i szkodach, porównując z OWU; nazwisko i data widoczne pod tytułem (`reviewedBy`, `reviewedAt`).
@@ -418,11 +418,11 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 
 ## Pytania otwarte do zleceniodawcy
 
-1. Kto będzie imiennym autorem, a kto recenzentem z uprawnieniami do dystrybucji ubezpieczeń? Jaki jest potwierdzony status dystrybutora (broker vs agent) – wpływa na zastrzeżenia i stopki (01, pkt 2)?
+1. Kto będzie imiennym autorem, a kto recenzentem z uprawnieniami do dystrybucji ubezpieczeń? Status dystrybutora – rozstrzygnięty 12.11.2026: agent ubezpieczeniowy (RPU 11229690/A; 01, pkt 2) – zastrzeżenia i stopki używają formuły agenta.
 2. Czy ERGO Hestia i Fundacja Beauty Razem wymagają akceptacji materiałów o programie OC (numer, logo, zasady grup ryzyka) przed publikacją? Tryb i czas akceptacji wpływają na SLA kroku 3.
 3. Czy lista zabiegów w grupach 1–4 z kalkulatora (01, pkt 3.1) jest kompletna i może być opublikowana jako „pełna lista”? Do której grupy należą zabiegi trychologiczne i inne nieobecne na liście?
 4. Kiedy zespół produktowy dostarczy parametry „Utrata dochodu” i „NNW dzieci” (ubezpieczyciel, definicje, karencje, sumy)? Czy tryb „zapytaj o ofertę” do tego czasu jest akceptowalny?
-5. Rozstrzygnięte 11.11.2026 (pytanie 7 sekcji 02): składki Tax Protect są sztywne (taryfa programu) – B2.3, B2.4 i `/ubezpieczenia/tax-protect` podają składkę roczną wg taryfy (wartości z `tax_warianty` lub od zleceniodawcy); przychody powyżej 3 mln zł → wycena indywidualna.
+5. Rozstrzygnięte 11.11.2026 (pytanie 7 sekcji 02): składki Tax Protect są sztywne (taryfa programu) – B2.3, B2.4 i `/ubezpieczenia/tax-protect` podają składkę roczną wg taryfy potwierdzonej 12.11.2026 (01, pkt 3.2: suma 50 000 zł – 1 532–1 932 zł, suma 100 000 zł – 2 501–2 901 zł za 1 spór, zależnie od przychodu); przychody powyżej 3 mln zł lub 2–4 spory → wycena indywidualna. Bez słów „orientacyjnie” i „szacunkowo”.
 6. Czy liczby z obecnej argumentacji grupowego (koszt rotacji, pakiet zamiast podwyżki – 01, pkt 3.3) mają cytowalne źródło? Bez niego znikają z treści.
 7. Czy zleceniodawca udostępni jednorazowy eksport z Senuto lub Semrush dla 52 fraz oraz dostęp do GSC po uruchomieniu?
 8. Czy można dopuścić crawlery AI kategorii *search* i *user* przy utrzymaniu blokady *training* (01, pkt 6; 04, pkt 5.1)? Bez tego metryka cytowań nie ma sensu.

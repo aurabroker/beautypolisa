@@ -1,0 +1,44 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://beautypolisa.eu/ubezpieczenia/tax-protect#service",
+  "name": "Tax Protect (Colonnade)",
+  "alternateName": "Ubezpieczenie karno-skarbowe i ochrona podatkowa dla branży beauty",
+  "serviceType": "Ubezpieczenie karno-skarbowe i ochrony podatkowej",
+  "category": "Ubezpieczenia dla firm – ochrona karno-skarbowa i podatkowa",
+  "description": "Tax Protect to ubezpieczenie Colonnade Insurance S.A. Oddział w Polsce dla właścicieli i firm z branży beauty. Sekcja 1 obejmuje ochronę karno-skarbową właściciela i zarządu, sekcja 2 – ochronę podatkową firmy obejmującą jeden pełny spór podatkowy w roku. Suma ubezpieczenia do wyboru: 50 000 lub 100 000 zł. Składka roczna zależy od sumy ubezpieczenia i rocznego przychodu firmy (progi do 250 000 zł, do 500 000 zł, do 1 000 000 zł i do 3 000 000 zł); firmy z przychodem powyżej 3 mln zł oraz ochrona 2–4 sporów są wyceniane indywidualnie.",
+  "url": "https://beautypolisa.eu/ubezpieczenia/tax-protect",
+  "provider": {
+    "@type": "Organization",
+    "@id": "https://beautypolisa.eu/#colonnade",
+    "name": "Colonnade Insurance S.A. Oddział w Polsce"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Polska"
+  },
+  "audience": {
+    "@type": "BusinessAudience",
+    "audienceType": "właściciele i zarządy salonów kosmetycznych, fryzjerskich, podologicznych i studiów tatuażu; osoby prowadzące działalność gospodarczą w branży beauty"
+  },
+  "termsOfService": "https://beautypolisa.eu/dokumenty/owu-tax-protect-colonnade",
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "name": "Tabela składek i formularz zapytania",
+    "serviceUrl": "https://beautypolisa.eu/ubezpieczenia/tax-protect#taryfa",
+    "availableLanguage": "pl"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "PLN",
+    "lowPrice": 1532,
+    "highPrice": 2901,
+    "offerCount": 8,
+    "url": "https://beautypolisa.eu/ubezpieczenia/tax-protect#taryfa",
+    "eligibleRegion": "PL",
+    "description": "Składka roczna według stałej taryfy programu dla jednego sporu: suma 50 000 zł – 1 532 zł (przychód do 250 000 zł), 1 612 zł (do 500 000 zł), 1 732 zł (do 1 000 000 zł), 1 932 zł (do 3 000 000 zł); suma 100 000 zł – odpowiednio 2 501, 2 581, 2 701 i 2 901 zł. Przychód powyżej 3 mln zł lub ochrona 2–4 sporów – wycena indywidualna.",
+    "offeredBy": {
+      "@id": "https://beautypolisa.eu/#agency"
+    }
+  }
+}

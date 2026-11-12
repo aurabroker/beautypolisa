@@ -17,7 +17,7 @@
 5. **Treść jest przewagą konkurencyjną:** BeautyPolisa jest pierwotnym źródłem dla programu OC ERGO Hestia (Beauty Razem), czterech grup ryzyka zabiegów i listy zabiegów wysokiego ryzyka. Pierwsze 5 tygodni kalendarza to klaster OC i prawo salonowe (sekcja 05).
 6. **Lejki:** cztery magnesy wg ramy MAGNET, z quizem grup ryzyka jako głównym wejściem (bez bramki e-mail), pełną serią pielęgnującą w Resend, osobnymi zgodami RODO/e-mail/telefon i warstwowym spełnieniem obowiązków IDD (sekcja 06).
 7. **Design v3 – old money w szkle:** po odrzuceniu v2 („jak ilustracja komiksu”) marka w Bloom dostała kierunek old money: nocny granat `#141C33`, granat `#2A3B68`, kość słoniowa `#F7F3EC`, złoto `#B8975A` tylko jako ozdoba, Cormorant Garamond i Poppins. Cała strona stoi na mrożonym szkle nad czterema zdjęciami z Bloom (salon, jedwab, marmur, martwa natura). W Bloom powstało 21 nowych ikon cienką linią. Makieta `design/v3/makieta-v3.html` działa bez builda i przeszła test w Chrome przy 1280 i 390 px (sekcja 10; sekcje 07 i 09 są w części wizualnej zastąpione).
-8. **Dwa produkty nie mają jeszcze oferty** (Utrata dochodu, NNW dzieci) – w v1 startują jako strony edukacyjne w trybie „zapytaj o ofertę”. Składki pozostałych produktów są sztywne (taryfa programu) i portal pokazuje je bez zastrzeżeń „orientacyjne” – potwierdzenie zleceniodawcy z 11.11.2026.
+8. **Dwa produkty nie mają jeszcze oferty** (Utrata dochodu, NNW dzieci) – w v1 startują jako strony edukacyjne w trybie „zapytaj o ofertę”. Składki pozostałych produktów są sztywne (taryfa programu) i portal pokazuje je bez zastrzeżeń „orientacyjne” – potwierdzenie zleceniodawcy z 11.11.2026; stała taryfa Tax Protect (1 532–2 901 zł rocznie za 1 spór, zależnie od sumy i przychodu) potwierdzona 12.11.2026 (D26).
 9. **Strefa Klienta (etap po fazie 1):** każdy klient, który kupi przez BeautyPolisa dowolną polisę, dostaje konto z polisami (wygasłe zostają w archiwum, konto nie jest odcinane), dostęp do tablicy ogłoszeń „Dam pracę” (tylko tablica – Aura nie poleca, nie wyszukuje i nie dobiera kandydatów, kandydat kontaktuje się z salonem bezpośrednio) oraz do „Szkoleń” dodawanych przez zweryfikowanych organizatorów – firmy szkoleniowe i salony – z moderacją przed publikacją (decyzje zleceniodawcy z 11.11.2026; sekcja 11).
 10. **Plan:** tydzień 0 to szybkie wygrane na obecnej infrastrukturze (TLS 1.2, SSL strict, HSTS, odblokowanie botów AI, REVOKE zbędnych grantów, usunięcie anti-inspect), potem 4 fazy: MVP → baza wiedzy i GEO → lejki → skalowanie (sekcja 08).
 
@@ -42,7 +42,7 @@ Przyjęta interpretacja (szczegóły i założenia w `01-audyt-stanu-obecnego.md
 | `02-architektura-i-bezpieczenstwo.md` | Wymagania, diagram, przepływy, kontrakty API, model danych i RLS w SQL, CSP, Cloudflare, CI/CD, monitoring, wydajność, trade-offy | Developer, DevOps, osoba odpowiedzialna za bezpieczeństwo |
 | `03-code-review-obecnego-kodu.md` | Przegląd `bp-app.js`, `bp-nav.js` i stron HTML z numerami linii, ocena konfiguracji, co przenieść, czego nie, poprawki „na już” | Developer |
 | `04-seo-geo-i-schema.md` | Architektura informacji, title/meta, SEO techniczne w Next.js, JSON-LD, polityka crawlerów AI, llms.txt, audyt promptów, pomiar | SEO, content, developer |
-| `05-strategia-tresci.md` | Persony, filary i klastry, luki, kolejka priorytetów, kalendarz 12 tygodni, linkowanie, standardy E-E-A-T, proces | Content, broker-recenzent |
+| `05-strategia-tresci.md` | Persony, filary i klastry, luki, kolejka priorytetów, kalendarz 12 tygodni, linkowanie, standardy E-E-A-T, proces | Content, recenzent merytoryczny z uprawnieniami |
 | `06-lead-magnety-lejki-i-kampania.md` | Cztery magnesy (MAGNET), pełny lejek quizu, e-maile, zgody i IDD, brief kampanii 30 dni, kalendarz, copy, KPI | Marketing, prawnik, developer |
 | `07-design-ux-i-glass-widget.md` | Krytyka obecnego designu, komponenty, responsywność, WCAG 2.2, mikrocopy, szablony (warstwa wizualna zastąpiona przez 10) | Projektant, front-end |
 | `08-plan-wdrozenia.md` *(w przygotowaniu – plik jeszcze nie powstał)* | Szybkie wygrane, fazy, WBS, ryzyka, KPI/SLO, Definition of Done, rejestr decyzji, skonsolidowane pytania otwarte | Kierownik projektu, zleceniodawca |
@@ -50,7 +50,7 @@ Przyjęta interpretacja (szczegóły i założenia w `01-audyt-stanu-obecnego.md
 | `10-design-v3-old-money.md` | Design v3: kierunek old money, paleta z kontrastami, typografia, ikony, zasady szkła, zdjęcia, sekcje strony, kalkulator, testy, decyzje | Projektant, front-end, zleceniodawca |
 | `11-strefa-klienta.md` | Strefa Klienta: konto salonu z polisami, tablica „Dam pracę”, „Szkolenia” z kontami organizatorów; role, ścieżki, model danych i RLS (`snippets/strefa-klienta.sql`), uwierzytelnianie, RODO, zagrożenia, plan etapów Z0–Z3 | Właściciel produktu, developer, osoba odpowiedzialna za bezpieczeństwo, prawnik/IOD |
 | `design/` | `v3/` (aktualna: `makieta-v3.html`, `tokens-v3.css`, `img/`, `ikony/`, sprite i arkusz ikon); `makieta-v2.html`, `tokens-v2.css`, `bloom/` jako historia v2 | Projektant, developer |
-| `snippets/` | `robots.txt`, `llms.txt`, 6 plików JSON-LD, pliki SQL, CI i nagłówków bezpieczeństwa | Developer – gotowe do użycia |
+| `snippets/` | `robots.txt`, `llms.txt`, 7 plików JSON-LD (w tym `schema-produkt-tax-protect.json`), `legal-distributor.json` i `legal-consents.json`, pliki SQL, CI i nagłówków bezpieczeństwa | Developer – gotowe do użycia |
 
 ## 3. Cele i kryteria sukcesu
 
@@ -116,7 +116,7 @@ Kluczowe decyzje (pełne uzasadnienia i odrzucone alternatywy w sekcjach; rejest
 | D7 | E-mail przez Resend z tabelą outbox i retry; bez kolejek | 02 |
 | D8 | Panel w tej samej aplikacji, za Cloudflare Access + Supabase Auth (MFA) + RLS | 02 |
 | D9 | Cloudflare: SSL Full (strict), min TLS 1.2, HSTS etapami, AI Search i Agent dopuszczone, robots.txt z repozytorium | 02, 04 |
-| D10 | Strony produktowe jako schema `Service`, nie `Product`; `AggregateOffer` dla OC z taryfy programu (składki sztywne) | 04 |
+| D10 | Strony produktowe jako schema `Service`, nie `Product`; `AggregateOffer` dla OC i Tax Protect z taryf programów (składki sztywne) | 04 |
 | D11 | Huby = strony produktowe i kalkulator; start od klastra OC i prawa salonowego; rytm 2 publikacje + 1 aktualizacja tygodniowo | 05 |
 | D12 | Quiz grup ryzyka bez bramki e-mail; double opt-in dla serii pielęgnującej; trzy osobne zgody | 06 |
 | D13 | Paleta old money: midnight `#141C33`, navy `#2A3B68`, ivory `#F7F3EC`, parchment `#EDE5D8`, gold `#B8975A` tylko jako dekor, gold light `#D9C089` do tekstu na ciemnym; Cormorant Garamond i Poppins; róż tylko w logo | 10 |
@@ -130,7 +130,10 @@ Kluczowe decyzje (pełne uzasadnienia i odrzucone alternatywy w sekcjach; rejest
 | D21 | **Decyzja zleceniodawcy 11.11.2026:** szkolenia dodają zweryfikowani organizatorzy (firmy szkoleniowe i salony) z publikacją po moderacji; organizator widzi minimalne dane uczestników tylko swoich szkoleń; bez płatności online w MVP | 11 |
 | D22 | **Decyzje zleceniodawcy 11.11.2026:** konto przy każdej polisie kupionej przez BeautyPolisa; po wygaśnięciu polis konto i dostęp do „Dam pracę” i „Szkoleń” zostają | 11 |
 | D23 | **Decyzja zleceniodawcy 11.11.2026:** „Szukam pracy” (ogłoszenia osób szukających pracy) na tablicy „Dam pracę” – przygotowane, ale **nieaktywne**: wyłączone przełącznikiem do decyzji zleceniodawcy po sprawdzeniu prawnym (KRAZ, RODO, DSA); bez kont kandydatów, widoczne tylko dla zalogowanych salonów, kontakt formularzem bez przechowywania treści; nadal tylko tablica – bez polecania i dopasowywania kandydatów | 11 |
-| D24 | **Decyzja zleceniodawcy 12.11.2026:** jeden podmiot – Aura Expert sp. z o.o. (KRS 0000599840): operator portalu, administrator danych portalu i Strefy Klienta, podmiot wskazywany w zgodach marketingowych i dystrybutor ubezpieczeń w informacjach IDD; linia marki „BeautyPolisa created by Aura Expert”. Otwarte: status agent czy broker i numer wpisu w rejestrze KNF (rozdział 13) | 01, 02 |
+| D24 | **Decyzja zleceniodawcy 12.11.2026:** jeden podmiot – Aura Expert sp. z o.o. (KRS 0000599840): operator portalu, administrator danych portalu i Strefy Klienta, podmiot wskazywany w zgodach marketingowych i dystrybutor ubezpieczeń w informacjach IDD; linia marki „BeautyPolisa created by Aura Expert”. Status dystrybutora i numer wpisu – rozstrzygnięte 12.11.2026 (D25) | 01, 02 |
+| D25 | **Decyzja zleceniodawcy 12.11.2026:** Aura Expert sp. z o.o. jest **agentem ubezpieczeniowym, nie brokerem** – wpis do Rejestru Pośredników Ubezpieczeniowych (prowadzi KNF) nr 11229690/A, weryfikacja w https://rpu.knf.gov.pl/; strona spółki www.auraexpert.pl; kontakt do IOD całego portalu: iod@auraexpert.pl. Tam, gdzie potrzebna jest pełna formuła, używamy jej dosłownie: „Aura Expert spółka z ograniczoną odpowiedzialnością z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5 000 zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.” Z treści portalu znikają określenia „broker”, „obsługa brokerska”, „brokerski” i obietnice w rodzaju „nasz broker wynegocjuje”; nota IDD jest notą agenta (zakłady, na rzecz których działa – lista do potwierdzenia; procedura reklamacyjna i charakter wynagrodzenia – do uzupełnienia); `snippets/legal-distributor.json` | 01, 02, 04, 06 |
+| D26 | **Decyzja zleceniodawcy 12.11.2026:** Tax Protect ma stałą taryfę – składka roczna za 1 spór: suma 50 000 zł – 1 532 / 1 612 / 1 732 / 1 932 zł, suma 100 000 zł – 2 501 / 2 581 / 2 701 / 2 901 zł przy przychodzie do 250 tys. / 500 tys. / 1 mln / 3 mln zł; przychód powyżej 3 mln zł lub 2–4 spory → wycena indywidualna. Kwoty bez dopisków „orientacyjne” czy „szacunkowe”; schema `AggregateOffer` w `snippets/schema-produkt-tax-protect.json` | 01, 02, 04 |
+| D27 | **Odpowiedź na pytanie zleceniodawcy o tag Google (12.11.2026):** przed zgodą żaden tag Google się nie ładuje; GA4 (i w razie potrzeby konwersje Google Ads) wyłącznie po zgodzie, przez Cloudflare Zaraz z Google Consent Mode v2, bez GTM w przeglądarce. Stare strony `life.html`, `life1.html`, `medical.html` ładują GA4 bez zgody – do poprawy (03, K11). Zleceniodawca podaje identyfikator pomiaru GA4 (i identyfikator kontenera GTM, jeśli go używa) | 02, 03, 04 |
 
 ## 7. Bezpieczeństwo i stabilność – zasady nienegocjowalne
 
@@ -186,14 +189,15 @@ Pełny plan z WBS, rejestrem ryzyk, KPI/SLO i checklistami Definition of Done tr
 
 ## 13. Decyzje zleceniodawcy blokujące start fazy 1
 
-1. **Status dystrybutora Aura Expert sp. z o.o.** (broker czy agent) i numer wpisu w rejestrze KNF – wpływa na stopkę, klauzule, dane strukturalne i treść.
-2. **IOD oraz akceptacja podstaw prawnych i retencji.** Administrator danych – rozstrzygnięte 12.11.2026: Aura Expert sp. z o.o. (operator portalu, administrator danych portalu i Strefy Klienta). Kontakt do IOD portalu – do potwierdzenia.
+1. **Uzupełnienie noty IDD agenta.** Status (agent), numer wpisu w RPU (11229690/A) i kontakt do IOD (iod@auraexpert.pl) – rozstrzygnięte 12.11.2026 (D25). Do potwierdzenia: dokładna lista zakładów ubezpieczeń, na rzecz których działa Aura Expert (w koncepcji: Sopockie TU ERGO Hestia S.A., STU na Życie ERGO Hestia S.A., Colonnade Insurance S.A. Oddział w Polsce); do uzupełnienia: procedura reklamacyjna i charakter wynagrodzenia.
+2. **Akceptacja podstaw prawnych i retencji** przez IOD. Administrator danych – rozstrzygnięte 12.11.2026: Aura Expert sp. z o.o. (operator portalu, administrator danych portalu i Strefy Klienta).
 3. **Zgoda na nowy projekt Supabase** i koszt stały ok. 30 USD miesięcznie [hipoteza] (Supabase Pro + Workers Paid).
-4. ~~Potwierdzenie cenników~~ – **rozstrzygnięte 11.11.2026:** składki są sztywne (taryfa programu). Do dostarczenia zostają tylko aktualne tabele składek Tax Protect, Grupowego ERGO i abonamentów, jeśli różnią się od wartości w obecnym kodzie.
+4. ~~Potwierdzenie cenników~~ – **rozstrzygnięte 11.11.2026:** składki są sztywne (taryfa programu). Taryfa Tax Protect potwierdzona 12.11.2026 (D26). Do dostarczenia zostają tylko aktualne tabele składek Grupowego ERGO i abonamentów, jeśli różnią się od wartości w obecnym kodzie.
 5. **Decyzja o crawlerach AI** (Search/Agent – rekomendujemy dopuścić; Training – do decyzji).
 6. **Dokumenty OWU do publikacji** i zasady użycia nazw oraz logotypów ubezpieczycieli i Fundacji Beauty Razem.
 7. **Imienny autor i recenzent** treści z uprawnieniami.
-8. **Dane kontaktowe i profile** (telefon i e-mail biura, LinkedIn/Facebook/Instagram, Google Business Profile) do stopki, `ContactPoint` i `sameAs`. Dane rejestrowe Aura Expert sp. z o.o. (KRS, NIP, REGON) – podane 12.11.2026.
+8. **Dane kontaktowe i profile** (telefon i e-mail biura, LinkedIn/Facebook/Instagram, Google Business Profile) do stopki, `ContactPoint` i `sameAs`. Dane rejestrowe Aura Expert sp. z o.o. (KRS, NIP, REGON, kapitał zakładowy, wpis w RPU) i strona spółki www.auraexpert.pl – podane 12.11.2026.
+9. **Identyfikatory Google** (D27): identyfikator pomiaru GA4 – na starych stronach są dwa różne (`life.html`/`life1.html` i `medical.html`), więc zleceniodawca wskazuje docelowy – oraz identyfikator kontenera GTM, jeśli jest używany; w razie konwersji Google Ads – ich identyfikatory.
 
 **Strefa Klienta** (nie blokuje fazy 1): rozstrzygnięte 11.11.2026 – konto przy każdej polisie, brak odcięcia konta po wygaśnięciu polis, „Dam pracę” jako sama tablica bez wpisu do KRAZ, organizatorzy szkoleń. Otwarte (pełna lista w 11 §21): role RODO przy danych uczestników szkoleń – organizator jako odrębny administrator czy Aura jako podmiot przetwarzający (prawnik i IOD, blokuje Z2); właściciel konta, gdy ubezpieczającym jest spółka; akceptacja obowiązkowego TOTP dla właścicieli salonów; okres przechowywania dokumentów polis przy koncie bez daty wygaśnięcia; zasady weryfikacji i ewentualne opłaty dla organizatorów; formularz kontaktowy w ogłoszeniach czy wyłącznie bezpośredni e-mail lub telefon salonu; opinia prawna przed włączeniem nieaktywnego „Szukam pracy” (KRAZ, RODO, DSA – nie blokuje etapów).
 
@@ -208,6 +212,6 @@ Pełna, skonsolidowana lista pytań otwartych trafi do `08-plan-wdrozenia.md` (w
 
 ## 15. Następne kroki
 
-1. Przegląd i akceptacja koncepcji przez zleceniodawcę, w szczególności decyzji D1–D24 i odpowiedzi na pytania z rozdziału 13.
+1. Przegląd i akceptacja koncepcji przez zleceniodawcę, w szczególności decyzji D1–D27 i odpowiedzi na pytania z rozdziału 13.
 2. Wykonanie szybkich wygranych tygodnia 0 (sekcja 08, rozdział 1) – są niezależne od budowy portalu i usuwają realne ryzyka już dziś.
 3. Po akceptacji: szczegółowy plan implementacji fazy 1 (zadania, kolejność, testy) i start od szkieletu aplikacji z bramkami CI, zanim powstanie jakakolwiek strona.

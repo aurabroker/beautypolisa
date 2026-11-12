@@ -457,7 +457,7 @@
                     <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl" aria-hidden="true"></div>
                     <h3 class="font-heading text-2xl font-bold mb-3 relative z-10">Wymagana Indywidualna Ocena Ryzyka</h3>
                     <p class="text-slate-300 mb-6 max-w-2xl mx-auto text-xs leading-relaxed relative z-10" id="ind-pricing-reason">
-                        Ze względu na wybrane parametry przygotujemy dla Ciebie taryfę szytą na miarę. Wypełnij ankietę, a nasz broker wynegocjuje dla Ciebie optymalną stawkę.
+                        Ze względu na wybrane parametry przygotujemy dla Ciebie taryfę szytą na miarę. Wypełnij ankietę, a&nbsp;jako agent ubezpieczeniowy przekażemy ją ubezpieczycielowi i&nbsp;przedstawimy Ci wycenę indywidualną.
                     </p>
                     <button id="btn-ind" class="bg-white text-beauty-navy hover:bg-slate-100 font-bold py-3 px-8 rounded-full transition-colors text-xs shadow-md relative z-10 focus:ring-2 focus:ring-white outline-none">
                         Odbierz Ankietę na e-mail
@@ -607,8 +607,8 @@
                     <li>Agent wykonuje działalność agencyjną pod firmą: Aura Expert sp. z o.o.</li>
                     <li>Adres siedziby Agenta: ul. Bolkowska 2A/28, 01-466 Warszawa</li>
                     <li>Kontakt: E-mail: zarzad@auraexpert.pl, tel: +48 504 400 901</li>
-                    <li>Agent jest wpisany do KRS pod nr 0000599840, NIP 5242793544, REGON 363673048.</li>
-                    <li>Agent jest wpisany do rejestru agentów KNF pod nr 11229690/A.</li>
+                    <li>Dane rejestrowe Agenta: Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł.</li>
+                    <li>Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A. Rejestr prowadzi Komisja Nadzoru Finansowego – wpis można sprawdzić na stronie <a href="https://rpu.knf.gov.pl/" target="_blank" rel="noopener noreferrer" class="underline text-beauty-navy">rpu.knf.gov.pl</a>.</li>
                     <li>Agent nie posiada akcji ani udziałów zakładu ubezpieczeń uprawniających do 10% głosów na walnym zgromadzeniu.</li>
                     <li>Agent działa na rzecz m.in.: Generali, UNIQA, Lloyd's, SALTUS, ERGO Hestia, WARTA, Colonnade.</li>
                     <li>Agent otrzymuje od zakładu ubezpieczeń prowizję uwzględnioną w kwocie składki.</li>
@@ -814,10 +814,10 @@
                 indMsg.classList.remove('hidden');
                 
                 if (hasHighRisk) {
-                    indMsgReason.innerText = "Wybrałaś zabiegi specjalistyczne (Z Grupy 4), które bezwzględnie wymagają indywidualnej oceny ryzyka przez ubezpieczyciela. Wypełnij ankietę, abyśmy mogli wynegocjować dla Ciebie najlepszą stawkę.";
+                    indMsgReason.innerText = "Wybrałaś zabiegi specjalistyczne (Z Grupy 4), które bezwzględnie wymagają indywidualnej oceny ryzyka przez ubezpieczyciela. Wypełnij ankietę, abyśmy mogli przygotować dla Ciebie wycenę indywidualną.";
                     taryfaName = "Wycena Indywidualna (Zabiegi Specjalistyczne)";
                 } else {
-                    indMsgReason.innerText = "Ze względu na dużą skalę działalności (powyżej 8 osób), przygotujemy dla Ciebie taryfę szytą na miarę. Wypełnij ankietę, a nasz broker wynegocjuje optymalną stawkę w ERGO Hestia.";
+                    indMsgReason.innerText = "Ze względu na dużą skalę działalności (powyżej 8 osób), przygotujemy dla Ciebie taryfę szytą na miarę. Wypełnij ankietę, a jako agent ubezpieczeniowy przekażemy ją do ERGO Hestii i przedstawimy Ci wycenę indywidualną.";
                     taryfaName = "Wycena Indywidualna (Powyżej 8 osób)";
                 }
 

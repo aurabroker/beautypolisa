@@ -13,9 +13,6 @@
     "@id": "https://beautypolisa.eu/#ergo-hestia",
     "name": "Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A."
   },
-  "broker": {
-    "@id": "https://beautypolisa.eu/#agency"
-  },
   "areaServed": {
     "@type": "Country",
     "name": "Polska"
@@ -39,6 +36,9 @@
     "offerCount": 9,
     "url": "https://beautypolisa.eu/kalkulator/oc",
     "eligibleRegion": "PL",
-    "description": "Składka roczna według stałej taryfy programu dla grup ryzyka 1–3, sum gwarancyjnych 100 000–300 000 zł i zespołu do 5 osób; zespół 6–8 osób +25%; klauzula ochrony prawnej dodatkowo 92 zł rocznie. Zabiegi wysokiego ryzyka (grupa 4) i zespoły od 9 osób – wycena indywidualna."
+    "description": "Składka roczna według stałej taryfy programu dla grup ryzyka 1–3, sum gwarancyjnych 100 000–300 000 zł i zespołu do 5 osób; zespół 6–8 osób +25%; klauzula ochrony prawnej dodatkowo 92 zł rocznie. Zabiegi wysokiego ryzyka (grupa 4) i zespoły od 9 osób – wycena indywidualna.",
+    "offeredBy": {
+      "@id": "https://beautypolisa.eu/#agency"
+    }
   }
 }

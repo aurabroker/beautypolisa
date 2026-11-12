@@ -5,8 +5,10 @@
       "@type": "Organization",
       "@id": "https://beautypolisa.eu/#organization",
       "name": "Aura Expert",
-      "legalName": "Aura Expert sp. z o.o.",
-      "url": "https://beautypolisa.eu/o-nas",
+      "legalName": "Aura Expert spółka z ograniczoną odpowiedzialnością",
+      "alternateName": "Aura Expert sp. z o.o.",
+      "description": "Agent ubezpieczeniowy wpisany do Rejestru Pośredników Ubezpieczeniowych prowadzonego przez KNF pod numerem 11229690/A; operator portalu BeautyPolisa.",
+      "url": "https://www.auraexpert.pl/",
       "taxID": "5242793544",
       "identifier": [
         {
@@ -23,6 +25,13 @@
           "@type": "PropertyValue",
           "propertyID": "REGON",
           "value": "363673048"
+        },
+        {
+          "@type": "PropertyValue",
+          "propertyID": "RPU (KNF)",
+          "name": "Rejestr Pośredników Ubezpieczeniowych",
+          "value": "11229690/A",
+          "url": "https://rpu.knf.gov.pl/"
         }
       ],
       "address": {
@@ -36,6 +45,14 @@
         "@type": "Country",
         "name": "Polska"
       },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "inspektor ochrony danych",
+          "email": "iod@auraexpert.pl",
+          "availableLanguage": "pl"
+        }
+      ],
       "brand": {
         "@id": "https://beautypolisa.eu/#agency"
       }
@@ -45,7 +62,7 @@
       "@id": "https://beautypolisa.eu/#agency",
       "name": "BeautyPolisa",
       "alternateName": "BeautyPolisa created by Aura Expert",
-      "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o. o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.",
+      "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.",
       "url": "https://beautypolisa.eu/",
       "logo": {
         "@type": "ImageObject",

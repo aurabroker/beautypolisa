@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Szkolenia&nbsp;– Strefa Klienta | BeautyPolisa</title>
-<meta name="description" content="Makieta: katalog szkoleń BeautyPolisa z filtrami, strona szkolenia z zapisem i listą rezerwową, „Moje szkolenia” salonu oraz widok organizatora szkoleń.">
+<meta name="description" content="Makieta: katalog szkoleń BeautyPolisa z filtrami, strona szkolenia z zapisem i listą rezerwową, „Moje szkolenia” salonu, widok organizatora szkoleń oraz plany organizatorów (promocja na otwarcie portalu).">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#141C33">
@@ -133,6 +133,31 @@
 .field input:disabled{background:var(--color-parchment);border-style:dashed;color:var(--color-taupe);cursor:not-allowed}
 .counter{justify-self:end;font-size:var(--text-xs);color:var(--color-taupe)}
 
+/* plany organizatorów (P1d): kafle cen na kryjącej powierzchni, bez szkła; złoto tylko jako ozdoba */
+.plans{gap:18px}
+.plans .card-title em{font-style:italic;font-weight:500}
+.plan-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13.5rem),1fr));gap:14px}
+.plan{display:grid;gap:8px;align-content:start;padding:18px 20px;border:1px solid var(--bp-line-gold);border-top:2px solid var(--color-gold);border-radius:var(--radius-btn);background:#fff}
+.plan h3{font-size:var(--text-serif-md)}
+.plan h3,#plan-stan .card-title{font-variant-numeric:lining-nums}
+/* wąska kolumna „Profil i plan”: wiersze klucz–wartość jeden pod drugim (bez łamania dat w środku słowa) */
+#profil .kv--rows > div{grid-template-columns:minmax(0,1fr);gap:2px}
+.plan-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px}
+.plan-price strong{font:600 2.3rem/1 var(--font-serif);color:var(--color-navy);white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
+.plan-price span{font-size:var(--text-sm);color:var(--color-ink)}
+.plan-term{font-size:var(--text-sm);line-height:1.5;color:var(--color-taupe)}
+.plan-facts{list-style:none;margin:0;padding:0;display:grid}
+.plan-facts li{position:relative;padding:10px 0 10px 22px;border-top:1px solid var(--bp-line-gold-soft);font-size:var(--text-sm);line-height:1.6}
+.plan-facts li:first-child{border-top:0;padding-top:2px}
+.plan-facts li::before{content:"";position:absolute;left:3px;top:18px;width:7px;height:7px;background:var(--color-gold);transform:rotate(45deg)}
+.plan-facts li:first-child::before{top:10px}
+.variant{display:grid;gap:8px}
+.variant > .mock-note{justify-self:start}
+
+/* stopka strefy: linki w zdaniach formuły prawnej zostają w tekście (wyjątek WCAG 2.5.8 dla linków w zdaniu) */
+.app-footer p a{display:inline;min-height:0}
+.app-footer-inner p{max-width:72rem}
+
 /* responsywność */
 @media (max-width:1180px){
   .filters{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
@@ -165,9 +190,10 @@
 <!-- Adnotacja makiety: w produkcji usuwana -->
 <div class="mock-bar" role="note">
   <strong>Makieta</strong>
-  <span>„Szkolenia” – katalog, zapisy i&nbsp;widok organizatora (D-D). Szkolenia, organizatorzy i&nbsp;osoby są fikcyjne, stan na 11&nbsp;listopada 2026&nbsp;r.</span>
+  <span>„Szkolenia” – katalog, zapisy, widok organizatora (D-D) i&nbsp;plany organizatorów (P1d). Szkolenia, organizatorzy, osoby, daty planów i&nbsp;numery faktur są fikcyjne, stan na 11&nbsp;listopada 2026&nbsp;r.</span>
   <nav aria-label="Ekrany makiety">
     <a href="#katalog">Katalog</a>
+    <a href="#dla-organizatorow">Plany organizatorów</a>
     <a href="#szkolenie">Strona szkolenia</a>
     <a href="#zapis">Krok informacyjny</a>
     <a href="#zapisano">Zapisano</a>
@@ -177,6 +203,7 @@
     <a href="#organizator">Organizator: moje szkolenia</a>
     <a href="#dodaj">Dodaj szkolenie</a>
     <a href="#uczestnicy">Uczestnicy</a>
+    <a href="#plan">Profil i&nbsp;plan</a>
   </nav>
 </div>
 
@@ -233,7 +260,7 @@
     <ul class="org-only">
       <li><a href="#organizator" data-view="organizator uczestnicy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Moje szkolenia</a></li>
       <li><a href="#dodaj" data-view="dodaj"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Dodaj szkolenie</a></li>
-      <li><a href="#profil" data-view="profil"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Profil organizatora</a></li>
+      <li><a href="#plan" data-view="plan"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Profil i&nbsp;plan</a></li>
       <li><a href="#katalog"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Katalog szkoleń</a></li>
     </ul>
     <hr>
@@ -259,7 +286,7 @@
           <div>
             <p class="eyebrow">Szkolenia</p>
             <h1 id="t-katalog">Szkolenia <em>dla branży beauty</em></h1>
-            <p class="lead">Katalog szkoleń zweryfikowanych organizatorów&nbsp;– firm szkoleniowych i&nbsp;salonów. Każde szkolenie przed publikacją przechodzi moderację Aura Expert. Zapisujesz się z&nbsp;konta salonu.</p>
+            <p class="lead">Katalog szkoleń zweryfikowanych organizatorów&nbsp;– firm szkoleniowych i&nbsp;salonów. Każde szkolenie przed publikacją przechodzi moderację Aura Expert, a&nbsp;w&nbsp;katalogu są wyłącznie szkolenia organizatorów z&nbsp;aktywnym planem. Zapisujesz się z&nbsp;konta salonu.</p>
           </div>
           <a class="link-lux" href="#moje-szkolenia">Moje szkolenia</a>
         </div>
@@ -393,16 +420,40 @@
         </div>
 
         <div class="results-foot">
-          <p class="xsmall muted">Kolejność wyłącznie według terminu&nbsp;– bez wyróżnień i&nbsp;płatnych pozycji. Znaczek „Organizator zweryfikowany przez Aura Expert (dane firmy)” potwierdza dane firmy organizatora, a&nbsp;nie ocenia jakości szkolenia.</p>
+          <p class="xsmall muted">Kolejność wyłącznie według terminu&nbsp;– bez wyróżnień i&nbsp;płatnych pozycji. Plan organizatora decyduje tylko o&nbsp;tym, czy jego szkolenia są w&nbsp;katalogu: po końcu planu znikają z&nbsp;katalogu i&nbsp;nie przyjmują zapisów, a&nbsp;osoby zapisane zachowują miejsca. Znaczek „Organizator zweryfikowany przez Aura Expert (dane firmy)” potwierdza dane firmy organizatora, a&nbsp;nie ocenia jakości szkolenia.</p>
         </div>
       </section>
 
-      <div class="alert alert--info">
-        <svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>
-        <strong class="alert-title">Prowadzisz szkolenia?</strong>
-        <p class="small">Firma szkoleniowa albo salon może zostać organizatorem. Konto organizatora zakłada Aura Expert po weryfikacji firmy&nbsp;– polisa nie jest potrzebna. <span class="mock-note">Założenie</span></p>
-        <div class="actions"><a class="link-lux" href="../makieta-v3.html#kontakt">Napisz do doradcy</a></div>
-      </div>
+      <!-- P1d (12.11.2026): plany organizatorów – ceny wyłącznie z decyzji zleceniodawcy; reszta cennika „do ustalenia” (Q16) -->
+      <section class="card surface frame plans" id="dla-organizatorow" aria-labelledby="t-plany" tabindex="-1">
+        <div class="card-head">
+          <div>
+            <p class="eyebrow">Dla organizatorów szkoleń</p>
+            <h2 class="card-title" id="t-plany">Prowadzisz szkolenia? <em>Plan organizatora</em></h2>
+          </div>
+          <span class="badge badge--role">Promocja na otwarcie portalu</span>
+        </div>
+        <p class="small">Firma szkoleniowa albo salon może zostać organizatorem. Konto organizatora zakłada Aura Expert po weryfikacji firmy&nbsp;– polisa nie jest potrzebna. <span class="mock-note">Założenie Z-16</span> Szkolenia trafiają do katalogu po moderacji i&nbsp;tylko przy aktywnym planie.</p>
+        <ul class="plan-grid" aria-label="Plany organizatora – ceny na otwarcie portalu">
+          <li class="plan">
+            <h3>12&nbsp;miesięcy</h3>
+            <p class="plan-price"><strong>10&nbsp;000&nbsp;zł</strong><span>netto</span></p>
+            <p class="plan-term">Plan ważny 12&nbsp;miesięcy od daty początku.</p>
+          </li>
+          <li class="plan">
+            <h3>1&nbsp;miesiąc</h3>
+            <p class="plan-price"><strong>1&nbsp;000&nbsp;zł</strong><span>netto</span></p>
+            <p class="plan-term">Plan ważny miesiąc od daty początku.</p>
+          </li>
+        </ul>
+        <ul class="plan-facts">
+          <li>Plan obejmuje szkolenia, które zaczynają się w&nbsp;jego okresie. <span class="mock-note">Założenie Z-41</span></li>
+          <li>Plan ustawia doradca Aura Expert, a&nbsp;fakturę wystawia Aura Expert poza portalem&nbsp;– w&nbsp;portalu nie ma płatności online. <span class="mock-note">Założenie Z-22</span></li>
+          <li>Plan nie daje wyróżnienia ani wyższej pozycji&nbsp;– kolejność w&nbsp;katalogu zawsze według terminu.</li>
+          <li>Pozostałe warunki&nbsp;– do ustalenia z&nbsp;Aura Expert. <span class="mock-note">Do ustalenia&nbsp;– Q16</span></li>
+        </ul>
+        <div class="actions"><a class="btn btn-navy btn-sm" href="../makieta-v3.html#kontakt">Napisz do doradcy</a></div>
+      </section>
     </section>
 
     <!-- ================================================================
@@ -722,7 +773,8 @@
           <div>
             <p class="eyebrow">Organizator szkoleń</p>
             <h1 id="t-orgv">Moje szkolenia <em>jako organizator</em></h1>
-            <p class="lead">Salon Przykładowy&nbsp;– organizator szkoleń. Szkolenie trafia do katalogu po akceptacji Aura Expert; każda zmiana w&nbsp;opublikowanym szkoleniu wraca do moderacji.</p>
+            <p class="lead">Salon Przykładowy&nbsp;– organizator szkoleń. Szkolenie trafia do katalogu po akceptacji Aura Expert i&nbsp;tylko przy aktywnym planie; każda zmiana w&nbsp;opublikowanym szkoleniu wraca do moderacji.</p>
+            <div class="badges"><span class="badge badge--ok"><span>Plan aktywny do <time datetime="2027-10-20">20.10.2027</time> (przykład)</span></span><a class="link-quiet" href="#plan">Profil i&nbsp;plan</a></div>
           </div>
           <a class="btn btn-navy" href="#dodaj">Dodaj szkolenie</a>
         </div>
@@ -817,29 +869,122 @@
       </section>
 
       <div class="grid grid-2">
-        <section class="card surface" id="profil" data-nav="profil" aria-labelledby="t-profil" tabindex="-1">
+        <!-- P1d: stan planu w widoku organizatora (organizer_plans: rodzaj, ważność, cena netto – migawka, numer faktury) -->
+        <section class="card surface" aria-labelledby="t-plan-skrot">
           <div class="card-head">
-            <div><h2 class="card-title" id="t-profil">Profil organizatora</h2><p class="card-sub">Widoczny przy szkoleniach w&nbsp;katalogu</p></div>
+            <div><h2 class="card-title" id="t-plan-skrot">Plan organizatora</h2><p class="card-sub">Od planu zależy, czy Twoje szkolenia są w&nbsp;katalogu</p></div>
+            <span class="badge badge--ok">Aktywny</span>
           </div>
-          <p><span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
           <dl class="kv kv--rows">
-            <div><dt>Nazwa przy szkoleniach</dt><dd>Salon Przykładowy</dd></div>
-            <div><dt>Rodzaj</dt><dd>salon z&nbsp;kontem w&nbsp;Strefie Klienta</dd></div>
-            <div><dt>Miasto</dt><dd>Kraków</dd></div>
-            <div><dt>Weryfikacja</dt><dd><time datetime="2026-10-20">20&nbsp;października 2026&nbsp;r.</time> (przykład)</dd></div>
-            <div><dt>Umowa organizatora</dt><dd>wersja 1.0 (przykład)</dd></div>
+            <div><dt>Plan</dt><dd>12&nbsp;miesięcy&nbsp;– 10&nbsp;000&nbsp;zł netto<br><span class="xsmall muted">promocja na otwarcie portalu</span></dd></div>
+            <div><dt>Aktywny do</dt><dd><time datetime="2027-10-20">20&nbsp;października 2027&nbsp;r.</time> (przykład)</dd></div>
+            <div><dt>Faktura</dt><dd>od Aura Expert, poza portalem<br>nr FV/2026/10/042 (przykład) <span class="mock-note">Założenie Z-22</span></dd></div>
           </dl>
-          <p class="xsmall muted">Nazwę i&nbsp;dane firmy zmienia doradca Aura Expert&nbsp;– organizator nie wpisuje ich sam.</p>
+          <a class="link-lux" href="#plan">Profil i&nbsp;plan</a>
         </section>
 
         <section class="card surface" aria-labelledby="t-zasady">
           <h2 class="card-title" id="t-zasady">Zasady dla organizatorów</h2>
           <ol class="steps">
             <li><strong>Moderacja przed publikacją</strong><p>Aura Expert sprawdza treść: temat związany z&nbsp;branżą beauty, brak obietnic uprawnień zawodowych, brak linków i&nbsp;numerów telefonów w&nbsp;opisie.</p></li>
+            <li><strong>Katalog tylko przy aktywnym planie</strong><p>Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy do końca planu. Potem znikają z&nbsp;katalogu, a&nbsp;zapisani zachowują miejsca.</p></li>
             <li><strong>Minimum danych uczestników</strong><p>Widzisz imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status&nbsp;– tylko na swoich szkoleniach. Dane służą do przeprowadzenia szkolenia i&nbsp;wystawienia faktury.</p></li>
             <li><strong>Płatności poza platformą</strong><p>Przy szkoleniu płatnym podajesz cenę brutto, a&nbsp;fakturę wystawiasz sam. Płatności online nie ma w&nbsp;pierwszej wersji. <span class="mock-note">Założenie</span></p></li>
           </ol>
         </section>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         4a · ORGANIZATOR: profil i plan (P1d) – stan planu, warianty „kończy się” i „brak planu”,
+              ceny promocyjne, profil organizatora. Plan ustawia wyłącznie personel (app_set_organizer_plan).
+         ================================================================ -->
+    <section class="view" id="plan" aria-labelledby="t-plan" data-role-view="organizer">
+      <header class="page-head glass glass--strong frame">
+        <ol class="crumbs" aria-label="Ścieżka"><li><a href="#organizator">Moje szkolenia</a></li><li aria-current="page">Profil i&nbsp;plan</li></ol>
+        <p class="eyebrow">Organizator szkoleń</p>
+        <h1 id="t-plan">Profil <em>i&nbsp;plan</em></h1>
+        <p class="lead">Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy tylko przy aktywnym planie. Plan ustawia Aura Expert, a&nbsp;fakturę za plan wystawia poza portalem. <span class="mock-note">Założenie Z-22</span></p>
+      </header>
+
+      <div class="grid grid-main">
+        <div class="grid">
+          <section class="card surface frame" id="plan-stan" aria-labelledby="t-plan-stan">
+            <div class="card-head">
+              <div><p class="label-caps">Aktualny plan</p><h2 class="card-title" id="t-plan-stan">12&nbsp;miesięcy</h2></div>
+              <span class="badge badge--ok">Aktywny</span>
+            </div>
+            <p class="premium"><strong>10&nbsp;000&nbsp;zł</strong><span>netto&nbsp;· promocja na otwarcie portalu</span></p>
+            <dl class="kv kv--rows">
+              <div><dt>Aktywny do</dt><dd><time datetime="2027-10-20">20&nbsp;października 2027&nbsp;r.</time> (przykład)</dd></div>
+              <div><dt>Okres planu</dt><dd><time datetime="2026-10-20">20.10.2026</time>&nbsp;– <time datetime="2027-10-20">20.10.2027</time> (przykład)</dd></div>
+              <div><dt>Faktura</dt><dd>nr FV/2026/10/042 (przykład)<br><span class="xsmall muted">Wystawia Aura Expert poza portalem. W&nbsp;portalu nie ma płatności online ani danych płatniczych.</span> <span class="mock-note">Założenie Z-22</span></dd></div>
+              <div><dt>W&nbsp;katalogu</dt><dd>opublikowane szkolenia, które zaczynają się w&nbsp;okresie planu <span class="mock-note">Założenie Z-41</span></dd></div>
+              <div><dt>Przypomnienie</dt><dd><span class="nowrap">e-mail</span> 14&nbsp;dni przed końcem planu <span class="mock-note">Założenie</span></dd></div>
+            </dl>
+            <p class="xsmall muted">Cenę zapisujemy w&nbsp;planie w&nbsp;dniu jego ustawienia. Plan ustawia, przedłuża i&nbsp;anuluje wyłącznie personel Aura Expert&nbsp;– organizator nie zmienia go sam.</p>
+          </section>
+
+          <div class="variant" id="plan-konczy">
+            <span class="mock-note">Wariant: 14&nbsp;dni przed końcem planu</span>
+            <div class="alert alert--info">
+              <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              <strong class="alert-title">Plan kończy się 20&nbsp;października 2027&nbsp;r.</strong>
+              <p class="small">Po tej dacie Twoje szkolenia znikną z&nbsp;katalogu i&nbsp;nie przyjmą nowych zapisów. Osoby zapisane zachowają miejsca, a&nbsp;Ty&nbsp;– dostęp do list uczestników. O&nbsp;kolejny plan poproś doradcę Aura Expert.</p>
+              <div class="actions"><a class="link-lux" href="../makieta-v3.html#kontakt">Napisz do doradcy</a></div>
+            </div>
+          </div>
+
+          <div class="variant" id="plan-brak">
+            <span class="mock-note">Wariant: brak aktywnego planu</span>
+            <div class="alert alert--warn">
+              <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>
+              <strong class="alert-title">Brak aktywnego planu&nbsp;– szkolenia nie są widoczne w&nbsp;katalogu</strong>
+              <p class="small">Skontaktuj się z&nbsp;Aura Expert. Do czasu ustawienia planu możesz przygotowywać szkice, ale szkolenia nie trafią do katalogu ani nie przyjmą zapisów. Osoby już zapisane zachowują miejsca i&nbsp;szczegóły szkolenia.</p>
+              <div class="actions"><a class="btn btn-navy btn-sm" href="../makieta-v3.html#kontakt">Skontaktuj się z&nbsp;Aura Expert</a></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <section class="card surface plans" aria-labelledby="t-plany-org">
+            <div class="card-head">
+              <div><p class="label-caps">Promocja na otwarcie portalu</p><h2 class="card-title" id="t-plany-org">Plany organizatora</h2></div>
+            </div>
+            <ul class="plan-grid" aria-label="Plany organizatora – ceny na otwarcie portalu">
+              <li class="plan">
+                <h3>12&nbsp;miesięcy</h3>
+                <p class="plan-price"><strong>10&nbsp;000&nbsp;zł</strong><span>netto</span></p>
+                <p class="plan-term">Plan ważny 12&nbsp;miesięcy od daty początku.</p>
+              </li>
+              <li class="plan">
+                <h3>1&nbsp;miesiąc</h3>
+                <p class="plan-price"><strong>1&nbsp;000&nbsp;zł</strong><span>netto</span></p>
+                <p class="plan-term">Plan ważny miesiąc od daty początku.</p>
+              </li>
+            </ul>
+            <ul class="plan-facts">
+              <li>Plan nie limituje liczby szkoleń; w&nbsp;szkicu lub moderacji możesz mieć najwyżej 10&nbsp;naraz. <span class="mock-note">Założenia Z-22, Z-11</span></li>
+              <li>Pozostałe warunki&nbsp;– do ustalenia z&nbsp;Aura Expert. <span class="mock-note">Do ustalenia&nbsp;– Q16</span></li>
+            </ul>
+            <a class="link-lux" href="../makieta-v3.html#kontakt">Zapytaj o&nbsp;plan</a>
+          </section>
+
+          <section class="card surface" id="profil" aria-labelledby="t-profil" tabindex="-1">
+            <div class="card-head">
+              <div><h2 class="card-title" id="t-profil">Profil organizatora</h2><p class="card-sub">Widoczny przy szkoleniach w&nbsp;katalogu</p></div>
+            </div>
+            <p><span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
+            <dl class="kv kv--rows">
+              <div><dt>Nazwa przy szkoleniach</dt><dd>Salon Przykładowy</dd></div>
+              <div><dt>Rodzaj</dt><dd>salon z&nbsp;kontem w&nbsp;Strefie Klienta</dd></div>
+              <div><dt>Miasto</dt><dd>Kraków</dd></div>
+              <div><dt>Weryfikacja</dt><dd><time datetime="2026-10-20">20&nbsp;października 2026&nbsp;r.</time> (przykład)</dd></div>
+              <div><dt>Umowa organizatora</dt><dd>wersja 1.0 (przykład)</dd></div>
+            </dl>
+            <p class="xsmall muted">Nazwę i&nbsp;dane firmy zmienia doradca Aura Expert&nbsp;– organizator nie wpisuje ich sam.</p>
+          </section>
+        </div>
       </div>
     </section>
 
@@ -923,7 +1068,9 @@
               </div>
               <div class="field">
                 <label for="d-start">Rozpoczęcie</label>
-                <input type="datetime-local" id="d-start" name="start" min="2026-11-12T00:00" required>
+                <input type="datetime-local" id="d-start" name="start" min="2026-11-12T00:00" max="2027-10-20T00:00" required aria-describedby="d-start-hint">
+                <p class="hint" id="d-start-hint">W&nbsp;okresie planu&nbsp;– Twój plan jest aktywny do 20&nbsp;października 2027&nbsp;r. <span class="mock-note">Założenie Z-41</span></p>
+                <p class="field-error" id="d-start-err" hidden>Termin wypada po końcu planu (20&nbsp;października 2027&nbsp;r.). Takiego szkolenia nie opublikujemy&nbsp;– zmień termin albo poproś doradcę o&nbsp;kolejny plan.</p>
               </div>
               <div class="field">
                 <label for="d-koniec">Zakończenie</label>
@@ -1000,7 +1147,7 @@
           </ol>
           <ol class="steps">
             <li><strong>Wysyłasz do moderacji</strong><p>Do decyzji Aura Expert nie zmienisz treści&nbsp;– możesz wycofać szkolenie do szkicu.</p></li>
-            <li><strong>Akceptacja albo odrzucenie</strong><p>Po akceptacji szkolenie pojawi się w&nbsp;katalogu. Odrzucenie zawsze ma powód, który zobaczysz na liście.</p></li>
+            <li><strong>Akceptacja albo odrzucenie</strong><p>Po akceptacji szkolenie pojawi się w&nbsp;katalogu, jeśli masz aktywny plan, a&nbsp;szkolenie zaczyna się w&nbsp;jego okresie. Odrzucenie zawsze ma powód, który zobaczysz na liście.</p></li>
             <li><strong>Zmiana po publikacji</strong><p>Zmiana treści, terminu, miejsca, ceny albo linku wraca do moderacji. Zapisani zachowują miejsca i&nbsp;dostaną <span class="nowrap">e-mail</span> o&nbsp;zmianie.</p></li>
           </ol>
           <p class="xsmall muted">Przy szkoleniu i&nbsp;w&nbsp;<span class="nowrap">e-mailach</span> jest link „Zgłoś nadużycie”. Aura Expert może zawiesić organizatora.</p>
@@ -1099,7 +1246,10 @@
     <aside class="mock-annot" aria-labelledby="t-annot">
       <h2 id="t-annot">Uwagi do makiety</h2>
       <ul>
-        <li>Na stronie głównej linki „Szkolenia” i&nbsp;„Dla organizatorów szkoleń” prowadzą do tej makiety (katalog i&nbsp;<code>#organizator</code>).</li>
+        <li>Na stronie głównej linki „Szkolenia” i&nbsp;„Dla organizatorów szkoleń” prowadzą do tej makiety (katalog i&nbsp;<code>#organizator</code>). Oferta planów dla firm, które nie są jeszcze organizatorami, jest w&nbsp;katalogu pod <code>#dla-organizatorow</code>.</li>
+        <li><strong>Decyzja <span class="nowrap">P1d</span> (12.11.2026):</strong> organizator płaci za plan&nbsp;– promocja na otwarcie portalu: 10&nbsp;000&nbsp;zł netto za 12&nbsp;miesięcy albo 1&nbsp;000&nbsp;zł netto za miesiąc; pozostałe warunki&nbsp;– do ustalenia (Q16). Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy tylko przy aktywnym planie (11 §12.4, S12, O5); po końcu planu zapisani zachowują miejsca i&nbsp;szczegóły, a&nbsp;organizator&nbsp;– listę uczestników. Ekrany: blok „Dla organizatorów szkoleń” w&nbsp;katalogu, stan planu w&nbsp;„Moich szkoleniach” organizatora, widok „Profil i&nbsp;plan” z&nbsp;wariantami „kończy się” i&nbsp;„brak aktywnego planu” oraz kontrola terminu w&nbsp;„Dodaj szkolenie”.</li>
+        <li><strong>Założenia <span class="nowrap">Z-22</span> i&nbsp;<span class="nowrap">Z-41</span>:</strong> plan ustawia, przedłuża i&nbsp;anuluje wyłącznie personel w&nbsp;<code>/panel</code>; fakturę wystawia Aura Expert poza portalem (bez płatności online); plan nie limituje liczby szkoleń; plan obejmuje szkolenia zaczynające się w&nbsp;jego okresie; plan bez numeru faktury wygasa po 14&nbsp;dniach (Q22). Daty planu i&nbsp;numer faktury w&nbsp;makiecie są fikcyjne.</li>
+        <li><strong>Decyzja <span class="nowrap">L1</span>:</strong> stopka ma pełną formułę Aura Expert sp.&nbsp;z&nbsp;o.o. (agent ubezpieczeniowy, wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych nr 11229690/A, link do <code>rpu.knf.gov.pl</code>) i&nbsp;kontakt do IOD. Lista zakładów ubezpieczeń&nbsp;– do potwierdzenia; procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta&nbsp;– do uzupełnienia.</li>
         <li><strong>Założenie <span class="nowrap">Z-6</span>:</strong> katalog jest publiczny, zapis tylko z&nbsp;konta salonu (gość widzi „Zaloguj się, aby się zapisać”). Czy katalog ma być publiczny&nbsp;– pytanie Q10.</li>
         <li><strong>Decyzja <span class="nowrap">D-D</span>:</strong> szkolenia dodają salony i&nbsp;firmy szkoleniowe. Organizator nie potrzebuje polisy; konto dostaje z&nbsp;zaproszenia po weryfikacji przez Aura Expert (<strong>Założenie Z-16</strong>). Salon-organizator ma osobny profil i&nbsp;przełącza się w&nbsp;menu konta&nbsp;– ten sam widok ma firma szkoleniowa, np. „Organizator przykładowy”.</li>
         <li>RODO: organizator jest administratorem danych uczestników swoich szkoleń; rola Aura Expert (odrębny administrator albo podmiot przetwarzający)&nbsp;– do decyzji prawnika i&nbsp;IOD (Q1). Organizator widzi tylko imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status, nazwę salonu tylko przy szkoleniu płatnym; dane usuwane 30&nbsp;dni po szkoleniu (<strong>Założenie Z-17</strong>).</li>
@@ -1116,8 +1266,12 @@
 
 <footer class="app-footer">
   <div class="app-footer-inner">
-    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a></nav>
-    <p>BeautyPolisa created by Aura Expert. Operator serwisu: Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466&nbsp;Warszawa, KRS&nbsp;0000599840, NIP&nbsp;5242793544, REGON&nbsp;363673048. Informacje w&nbsp;serwisie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego. Zakres ochrony określają ogólne warunki ubezpieczenia.</p>
+    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="#katalog">Szkolenia</a><a href="#dla-organizatorow">Dla organizatorów szkoleń</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a></nav>
+    <!-- L1 (12.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy; informacje agenta ubezpieczeniowego (IDD).
+         Lista zakładów – do potwierdzenia; procedura reklamacyjna i charakter wynagrodzenia – do uzupełnienia (bez zgadywania). -->
+    <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st.&nbsp;Warszawy, XII&nbsp;Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
+    <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń: Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A., Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. oraz Colonnade Insurance S.A. Oddział w&nbsp;Polsce <span class="mock-note">Lista&nbsp;– do potwierdzenia</span>. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A). Procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta&nbsp;– [do uzupełnienia przed publikacją].</p>
+    <p>Inspektor ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Informacje w&nbsp;serwisie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego. Zakres ochrony określają ogólne warunki ubezpieczenia.</p>
   </div>
 </footer>
 
@@ -1315,14 +1469,17 @@
   }
   fd.addEventListener('submit', function (e) {
     e.preventDefault();
-    var title = document.getElementById('d-tytul'), link = document.getElementById('d-link');
+    var title = document.getElementById('d-tytul'), link = document.getElementById('d-link'), start = document.getElementById('d-start');
     var badTitle = title.value.trim().length < 5;
     var url = link.value.trim();
     var badLink = url !== '' && !/^https:\/\/([a-z0-9-]+\.)*(zoom\.us|teams\.microsoft\.com|meet\.google\.com)(\/\S*)?$/i.test(url);
+    /* P1d / Z-41: termin musi przypadać w okresie planu (w produkcji sprawdza to baza – app_moderate_training) */
+    var badStart = start.value !== '' && start.value > start.max;
     setErr(title, 'd-tytul-err', badTitle);
+    setErr(start, 'd-start-err', badStart);
     setErr(link, 'd-link-err', badLink);
     var box = document.getElementById('dodaj-err');
-    if (badTitle || badLink) { box.hidden = false; (badTitle ? title : link).focus(); return; }
+    if (badTitle || badStart || badLink) { box.hidden = false; (badTitle ? title : (badStart ? start : link)).focus(); return; }
     box.hidden = true;
     document.getElementById('org-wyslane-tytul').textContent = '„' + title.value.trim() + '”';
     /* nowy wiersz „W moderacji” na liście organizatora (treść jako tekst, bez innerHTML) */

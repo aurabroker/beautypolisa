@@ -98,7 +98,7 @@ Kolejność sekcji i ich cel:
 7. **Zgłoszenie szkody** – baner z linkiem do instrukcji.
 8. **FAQ** – cztery pytania oparte na faktach z obecnego kalkulatora i ankiety ERGO Hestii.
 9. **CTA** – granatowy blok „Porozmawiajmy o ochronie Twojego salonu”, zdanie zaproponowane w wytycznych głosu w Bloom.
-10. **Stopka** – dane Aura Expert sp. z o.o. i miejsce na jej dane jako dystrybutora: status (agent albo broker) i numer w rejestrze KNF.
+10. **Stopka** – dane Aura Expert sp. z o.o. i jej dane jako dystrybutora: agent ubezpieczeniowy, numer w Rejestrze Pośredników Ubezpieczeniowych 11229690/A (dane od zleceniodawcy z 12.11.2026; v2 jest nieaktualny – obowiązuje 10).
 
 **Kalkulator.** Reguły są przeniesione 1:1 z obecnego `bp-app.js`:
 

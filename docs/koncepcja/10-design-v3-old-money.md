@@ -177,5 +177,5 @@ Narzędzie: Playwright i Chromium, zrzuty całej strony przy 1280 i 390 px.
 ### 14.5 Do dostarczenia
 - Logo w SVG oraz jasna wersja na ciemne tła. Do tego czasu: zmniejszona wersja PNG (obecny plik ma 3000 px i 41 KB).
 - Wersje AVIF czterech zdjęć, które dadzą około 60% mniej danych, oraz kadr hero 4:3 na telefon. Wszystko można zrobić z istniejących plików.
-- Dane do stopki i schema.org: telefon i e-mail biura, status dystrybutora (agent albo broker) i numer w rejestrze KNF. W makiecie są oznaczone jako miejsca do uzupełnienia. KRS, NIP i REGON Aura Expert sp. z o.o. są już wpisane w stopce makiety (dane od zleceniodawcy z 12.11.2026).
+- Dane do stopki i schema.org: telefon i e-mail biura – w makiecie oznaczone jako miejsce do uzupełnienia. KRS, NIP i REGON Aura Expert sp. z o.o. są już wpisane w stopce makiety. Status i numer wpisu są znane od 12.11.2026: Aura Expert jest agentem ubezpieczeniowym (nie brokerem), wpis w Rejestrze Pośredników Ubezpieczeniowych nr 11229690/A, IOD: iod@auraexpert.pl – nawias „do uzupełnienia” w stopce makiety trzeba zastąpić tym zapisem (skrót w stopce, pełna formuła na `/informacje-prawne`; `snippets/legal-distributor.json`).
 

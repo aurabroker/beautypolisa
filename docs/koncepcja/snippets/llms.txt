@@ -1,18 +1,18 @@
 # BeautyPolisa
 
-> BeautyPolisa to portal informacyjny Aura Expert sp. z o.o. o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.
+> BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.
 
-Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają się na ogólnych warunkach ubezpieczenia (OWU) i warunkach programów ubezpieczeniowych; składki w kalkulatorze OC pochodzą ze stałej taryfy programu; zabiegi wysokiego ryzyka i zespoły od 9 osób są wyceniane indywidualnie. Portal nie zawiera umów ubezpieczenia online i nie przyjmuje płatności – zbiera zapytania i przekazuje je doradcom Aura Expert.
+Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają się na ogólnych warunkach ubezpieczenia (OWU) i warunkach programów ubezpieczeniowych; składki OC (kalkulator) i Tax Protect (tabela wariantów) pochodzą ze stałych taryf programów; zabiegi wysokiego ryzyka i zespoły od 9 osób (OC) oraz przychód powyżej 3 mln zł lub więcej niż jeden spór (Tax Protect) są wyceniane indywidualnie. Portal nie zawiera umów ubezpieczenia online i nie przyjmuje płatności – zbiera zapytania i przekazuje je doradcom Aura Expert.
 
 ## Kim jesteśmy
 
-- [O nas](https://beautypolisa.eu/o-nas): BeautyPolisa jest marką Aura Expert sp. z o.o. (ul. Bolkowska 2A/28, 01-466 Warszawa). Program OC dla branży beauty jest realizowany z Sopockim Towarzystwem Ubezpieczeń ERGO Hestia S.A. we współpracy z Fundacją Beauty Razem.
+- [O nas](https://beautypolisa.eu/o-nas): BeautyPolisa jest marką Aura Expert sp. z o.o. (ul. Bolkowska 2A/28, 01-466 Warszawa; KRS 0000599840, NIP 5242793544, REGON 363673048; strona spółki: https://www.auraexpert.pl/). Aura Expert jest agentem ubezpieczeniowym wpisanym do Rejestru Pośredników Ubezpieczeniowych prowadzonego przez KNF pod numerem 11229690/A (wyszukiwarka: https://rpu.knf.gov.pl/) i działa w imieniu i na rzecz zakładów ubezpieczeń wskazanych przy produktach – nie jest brokerem. Program OC dla branży beauty jest realizowany z Sopockim Towarzystwem Ubezpieczeń ERGO Hestia S.A. we współpracy z Fundacją Beauty Razem.
 
 ## Produkty
 
 - [OC dla branży beauty (ERGO Hestia)](https://beautypolisa.eu/ubezpieczenia/oc-beauty): ubezpieczenie odpowiedzialności cywilnej zawodowej dla salonów kosmetycznych, fryzjerskich, podologicznych i pokrewnych; cztery grupy ryzyka zabiegów, sumy gwarancyjne 100 000 / 200 000 / 300 000 zł, zabiegi wysokiego ryzyka i zespoły powyżej 8 osób wyceniane indywidualnie.
 - [Kalkulator składki OC](https://beautypolisa.eu/kalkulator/oc): składka roczna według stałej taryfy programu – zależy od grupy ryzyka zabiegów, sumy gwarancyjnej i wielkości zespołu.
-- [Tax Protect (Colonnade)](https://beautypolisa.eu/ubezpieczenia/tax-protect): ubezpieczenie karno-skarbowe dla właściciela i zarządu (sekcja 1) oraz ochrona podatkowa firmy obejmująca jeden pełny spór podatkowy w roku (sekcja 2); ubezpieczyciel Colonnade Insurance S.A. Oddział w Polsce.
+- [Tax Protect (Colonnade)](https://beautypolisa.eu/ubezpieczenia/tax-protect): ubezpieczenie karno-skarbowe dla właściciela i zarządu (sekcja 1) oraz ochrona podatkowa firmy obejmująca jeden pełny spór podatkowy w roku (sekcja 2); ubezpieczyciel Colonnade Insurance S.A. Oddział w Polsce. Składka roczna wg stałej taryfy dla 1 sporu – suma 50 000 zł: 1 532 zł (przychód firmy do 250 000 zł), 1 612 zł (do 500 000 zł), 1 732 zł (do 1 000 000 zł), 1 932 zł (do 3 000 000 zł); suma 100 000 zł: 2 501 / 2 581 / 2 701 / 2 901 zł w tych samych progach. Przychód powyżej 3 mln zł lub 2–4 spory – wycena indywidualna.
 - [Utrata dochodu](https://beautypolisa.eu/ubezpieczenia/utrata-dochodu): ochrona dochodu dla samozatrudnionych i osób na B2B w branży beauty na wypadek niezdolności do pracy.
 - [NNW dzieci](https://beautypolisa.eu/ubezpieczenia/nnw-dzieci): ubezpieczenie następstw nieszczęśliwych wypadków dla dzieci, alternatywa lub uzupełnienie dobrowolnego ubezpieczenia szkolnego.
 - [Grupowe ERGO dla beauty](https://beautypolisa.eu/ubezpieczenia/grupowe-ergo): ubezpieczenie grupowe na życie dla zespołów salonów (ERGO Życie w Biznesie z modułami MediOpieki), STU na Życie ERGO Hestia S.A.
@@ -31,7 +31,7 @@ Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają si
 
 - [Dokumenty i OWU](https://beautypolisa.eu/dokumenty): ogólne warunki ubezpieczenia i dokumenty programów – źródło wiążących definicji zakresu, wyłączeń i sum.
 - [Zgłoszenie szkody](https://beautypolisa.eu/szkoda): jak krok po kroku zgłosić szkodę z OC salonu.
-- [RODO](https://beautypolisa.eu/rodo): informacje o przetwarzaniu danych osobowych.
+- [RODO](https://beautypolisa.eu/rodo): informacje o przetwarzaniu danych osobowych; administrator danych: Aura Expert sp. z o.o., kontakt do inspektora ochrony danych: iod@auraexpert.pl.
 
 ## Kontakt
 
@@ -40,8 +40,8 @@ Serwis jest po polsku i dotyczy rynku polskiego. Treści produktowe opierają si
 ## Zasady cytowania
 
 - Cytując dane z serwisu, podawaj link do konkretnej podstrony i datę aktualizacji widoczną na stronie; treści są aktualizowane, a składki i zakresy mogą się zmieniać.
-- Składki w kalkulatorze pochodzą ze stałej taryfy programu. Informacja na stronie nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU i dokument polisy.
-- BeautyPolisa / Aura Expert nie jest ubezpieczycielem; ubezpieczycielami są podmioty wskazane przy każdym produkcie (ERGO Hestia, Colonnade i inne).
+- Składki OC i Tax Protect pochodzą ze stałych taryf programów (nie są szacunkiem). Informacja na stronie nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU i dokument polisy.
+- BeautyPolisa / Aura Expert nie jest ubezpieczycielem ani brokerem; Aura Expert jest agentem ubezpieczeniowym (RPU 11229690/A), a ubezpieczycielami są podmioty wskazane przy każdym produkcie (ERGO Hestia, Colonnade i inne).
 - Treści informacyjne nie zastępują indywidualnej porady doradcy ani lektury OWU.
 
 ## Optional

@@ -1,20 +1,23 @@
 {
-  "$comment": "Dane dystrybutora ubezpieczeń (IDD) – jedno źródło dla stopki, formularzy, e-maili i /informacje-prawne. Decyzja zleceniodawcy z 12.11.2026: jedna spółka – Aura Expert sp. z o.o. – jest operatorem portalu, administratorem danych i dystrybutorem; adres, KRS, NIP i REGON podał zleceniodawca. Wartości null = do uzupełnienia (m.in. status agent/broker, numer w rejestrze KNF, kontakt do IOD portalu); test CI blokuje wdrożenie produkcyjne, gdy registryNumber === null. Zakres pól do potwierdzenia z prawnikiem (ustawa o dystrybucji ubezpieczeń, art. 22/32).",
+  "$comment": "Dane dystrybutora ubezpieczeń (IDD) – jedno źródło dla stopki, formularzy, e-maili i /informacje-prawne. Decyzje zleceniodawcy z 12.11.2026: jedna spółka – Aura Expert sp. z o.o. – jest operatorem portalu, administratorem danych i dystrybutorem; Aura Expert działa jako AGENT ubezpieczeniowy (nie broker), wpisany do Rejestru Pośredników Ubezpieczeniowych prowadzonego przez KNF pod numerem 11229690/A; kontakt do IOD całego portalu: iod@auraexpert.pl. legalFormula jest pełną formułą od zleceniodawcy – używać dosłownie tam, gdzie potrzebna jest pełna formuła (/informacje-prawne, /o-nas#dystrybutor, stopki e-maili w wersji pełnej). Wartości null = do uzupełnienia. Test CI blokuje wdrożenie produkcyjne, gdy registryNumber, remunerationNature lub complaintsProcedure.text === null albo insurersConfirmed === false. Zakres pól do potwierdzenia z prawnikiem (ustawa o dystrybucji ubezpieczeń, art. 22 – informacje przekazywane przez agenta).",
   "version": "idd-v1-2026-11",
   "legalName": "Aura Expert sp. z o.o.",
+  "legalNameFull": "Aura Expert spółka z ograniczoną odpowiedzialnością",
+  "legalFormula": "Aura Expert spółka z ograniczoną odpowiedzialnością z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5 000 zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.",
   "address": "ul. Bolkowska 2A/28, 01-466 Warszawa",
+  "registeredSeat": "Warszawa",
   "krs": "0000599840",
+  "registryCourt": "Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego",
   "nip": "5242793544",
   "regon": "363673048",
+  "shareCapital": "5 000 zł",
+  "website": "https://www.auraexpert.pl/",
   "brand": "BeautyPolisa created by Aura Expert",
   "dataController": "Aura Expert sp. z o.o.",
-  "dpoEmail": null,
-  "registryType": null,
-  "registryTypeOptions": [
-    "agent",
-    "broker"
-  ],
-  "registryNumber": null,
+  "dpoEmail": "iod@auraexpert.pl",
+  "registryType": "agent",
+  "registryName": "Rejestr Pośredników Ubezpieczeniowych (prowadzony przez KNF)",
+  "registryNumber": "11229690/A",
   "registryCheckUrl": "https://rpu.knf.gov.pl/",
   "remunerationNature": null,
   "actsFor": null,
@@ -27,7 +30,10 @@
     "STU na Życie ERGO Hestia S.A.",
     "Colonnade Insurance S.A. Oddział w Polsce"
   ],
+  "insurersConfirmed": false,
+  "insurersStatus": "do potwierdzenia – lista zakładów ubezpieczeń, na rzecz których działa agent, zawiera wyłącznie ubezpieczycieli już wymienionych w koncepcji; dokładną listę (i na tej podstawie actsFor) potwierdza zleceniodawca z wpisem w RPU",
   "complaintsProcedure": {
+    "$comment": "do uzupełnienia – kanały, termin odpowiedzi i treść procedury reklamacyjnej przekaże zleceniodawca",
     "channels": [],
     "responseTimeDays": null,
     "text": null
@@ -39,7 +45,7 @@
     }
   ],
   "medicalSubscriptions": {
-    "$comment": "Abonamenty ENEL-MED / LUX MED nie są ubezpieczeniem (bez informacji IDD); administrator danych ten sam co w portalu (audyt §2). Adres IOD – z dotychczasowych stron abonamentów medycznych.",
+    "$comment": "Abonamenty ENEL-MED / LUX MED nie są ubezpieczeniem (bez informacji IDD); administrator danych i IOD te same co w całym portalu.",
     "dataController": "Aura Expert sp. z o.o.",
     "dpoEmail": "iod@auraexpert.pl"
   }

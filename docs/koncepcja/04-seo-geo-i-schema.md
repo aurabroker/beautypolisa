@@ -6,10 +6,10 @@
 
 - Apex `beautypolisa.eu` nie ma dziś rekordu DNS, a strefa Cloudflare **blokuje wszystkie crawlery AI** (`ai_search`/`ai_user` wyłączone, `ai_training: disallow`, zarządzany robots.txt). Najtańsza i najważniejsza zmiana „GEO” to polityki Search i Agent na *Allow* oraz wyłączenie Bot Preference Sync – bez tego reszta tej sekcji nie działa.
 - Architektura: huby `/ubezpieczenia`, `/dla-kogo`, `/baza-wiedzy`, 6 stron produktowych, kalkulator, `/szkoda`, `/dokumenty`. Jeden H1, self-canonical, JSON-LD komponowany na serwerze w `@graph` z trwałymi `@id`.
-- Strony produktowe to `Service`, nie `Product` – składka OC wg taryfy programu zależy od grupy ryzyka i sumy, więc jedna cena dla produktu byłaby nieprawdziwa. `AggregateOffer` tylko dla OC i tylko z aktywnej wersji cennika, z której liczy kalkulator.
+- Strony produktowe to `Service`, nie `Product` – składka OC wg taryfy programu zależy od grupy ryzyka i sumy, więc jedna cena dla produktu byłaby nieprawdziwa. `AggregateOffer` tylko dla produktów ze stałą, jawną taryfą – OC i Tax Protect (taryfa potwierdzona 12.11.2026) – i tylko z aktywnej wersji cennika, z której liczy kalkulator i tabela wariantów.
 - `FAQPage` i `HowTo` nie dają już rich results w Google (ograniczenia z 2023 r.) – wdrażamy je dla czytelności maszynowej i cytowalności w asystentach AI.
 - GEO w praktyce: treść w HTML z serwera, blok „W skrócie”, nagłówki-pytania, liczby z odesłaniem do OWU, imienny autor i data aktualizacji, spójna encja (NAP, jedno zdanie o marce), `llms.txt`, comiesięczny **ręczny** audyt 20 promptów. Nie raportujemy wymyślonych „wyników widoczności” i nie obiecujemy pozycji.
-- Pomiar: GSC, Bing Webmaster, referrery AI we własnej analityce; wnioski po 30 dniach, ocena po 90.
+- Pomiar: GSC, Bing Webmaster, referrery AI we własnej analityce; wnioski po 30 dniach, ocena po 90. Tag Google (GA4) – tylko po zgodzie, przez Cloudflare Zaraz z Consent Mode v2 (pkt 6).
 
 ## 0. Zakres i założenia
 
@@ -26,7 +26,7 @@ Model **hub-and-spoke**: produkt jest szprychą huba `/ubezpieczenia`, zawód �
 | `/` | home | brandowa + informacyjna | „ubezpieczenia dla branży beauty” | Organization, InsuranceAgency, WebSite, WebPage | „Policz składkę OC”, „Zamów kontakt” |
 | `/ubezpieczenia` | hub produktów | porównawcza | „ubezpieczenie salonu kosmetycznego” | CollectionPage, ItemList, BreadcrumbList | karty 6 produktów |
 | `/ubezpieczenia/oc-beauty` | produkt | komercyjna | „OC kosmetyczki”, „OC salonu kosmetycznego” | WebPage, Service (+AggregateOffer), FAQPage, BreadcrumbList | „Policz składkę” → kalkulator |
-| `/ubezpieczenia/tax-protect` | produkt | komercyjna | „ubezpieczenie karno-skarbowe” | Service, FAQPage, BreadcrumbList | „Zapytaj o wariant” |
+| `/ubezpieczenia/tax-protect` | produkt | komercyjna | „ubezpieczenie karno-skarbowe” | Service (+AggregateOffer), FAQPage, BreadcrumbList | „Zapytaj o wariant” |
 | `/ubezpieczenia/utrata-dochodu` | produkt | informacyjno-komercyjna | „ubezpieczenie utraty dochodu” | Service, FAQPage, BreadcrumbList | „Zamów rozmowę” |
 | `/ubezpieczenia/nnw-dzieci` | produkt | informacyjno-komercyjna | „NNW dzieci” | Service, FAQPage, BreadcrumbList | „Zamów ofertę” |
 | `/ubezpieczenia/grupowe-ergo` | produkt B2B | komercyjna | „ubezpieczenie grupowe dla małej firmy” | Service, FAQPage, BreadcrumbList | „Wycena dla zespołu” |
@@ -219,7 +219,7 @@ Jeden `<h1>` = główne zapytanie (na artykułach pytanie); `<h2>` to pytania lu
 | Typ | Gdzie | Efekt w Google | Efekt GEO |
 |---|---|---|---|
 | Organization + InsuranceAgency + WebSite (`@graph`) | home, `@id` wszędzie | panel wiedzy (możliwy), logo | jednoznaczna encja marki i podmiotu |
-| Service (+AggregateOffer tylko OC) | 6 produktów | brak rich result | fakty o produkcie i ubezpieczycielu do cytowania |
+| Service (+AggregateOffer dla OC i Tax Protect) | 6 produktów | brak rich result | fakty o produkcie i ubezpieczycielu do cytowania |
 | FAQPage | produkty, zawody, artykuły z FAQ | rich result tylko witryny rządowe/medyczne (od 08.2023) | najłatwiej cytowany format |
 | BreadcrumbList | wszystko poza home | okruszki zamiast URL | struktura serwisu |
 | Article | `/baza-wiedzy/*` | karuzele zależne od jakości | świeżość i autorstwo |
@@ -230,15 +230,15 @@ Jeden `<h1>` = główne zapytanie (na artykułach pytanie); `<h2>` to pytania lu
 
 ### 4.2 Home
 
-`schema-home.json`: `Organization` to podmiot prawny (Aura Expert sp. z o.o., adres z audytu; KRS, NIP i REGON podane przez zleceniodawcę 12.11.2026 – w `identifier` i `taxID`), `InsuranceAgency` to marka BeautyPolisa (`parentOrganization` w jedną stronę, `brand` w drugą). `contactPoint` wskazuje `/kontakt` i język `pl`; telefon i e-mail po otrzymaniu. `makesOffer` wylicza 6 usług przez `@id` – asystent czytający home dostaje pełną listę produktów z linkami. `sameAs` pominięto (adresy profili nieznane). `WebSite` bez `SearchAction`, bo na starcie nie ma wyszukiwarki w serwisie.
+`schema-home.json`: `Organization` to podmiot prawny (`legalName` „Aura Expert spółka z ograniczoną odpowiedzialnością”, `alternateName` „Aura Expert sp. z o.o.”, adres z audytu; KRS, NIP, REGON i numer w Rejestrze Pośredników Ubezpieczeniowych 11229690/A podane przez zleceniodawcę 12.11.2026 – w `identifier` i `taxID`; `description` mówi wprost, że to agent ubezpieczeniowy; `url` = własna strona spółki https://www.auraexpert.pl/ – ta sama encja, więc `url`, a nie `sameAs`; `contactPoint` inspektora ochrony danych z adresem iod@auraexpert.pl), `InsuranceAgency` to marka BeautyPolisa (`parentOrganization` w jedną stronę, `brand` w drugą). `contactPoint` wskazuje `/kontakt` i język `pl`; telefon i e-mail po otrzymaniu. `makesOffer` wylicza 6 usług przez `@id` – asystent czytający home dostaje pełną listę produktów z linkami. `sameAs` pominięto (adresy profili nieznane). `WebSite` bez `SearchAction`, bo na starcie nie ma wyszukiwarki w serwisie.
 
 ### 4.3 Produkty: `Service`, nie `Product`
 
-`Product` z `Offer.price` wymaga jednej ceny i jest czytany przez Google jako oferta handlowa (merchant listing: `priceValidUntil`, `availability`). Składka OC wg taryfy programu zależy od grupy ryzyka, sumy gwarancyjnej, klauzuli ochrony prawnej i liczebności zespołu (6–8 osób ×1,25; grupa 4 i zespoły od 9 osób – wycena indywidualna na podstawie ankiety ERGO Hestii); Tax Protect ma własną taryfę wariantów (`tax_warianty`), a przy przychodach powyżej 3 mln zł – wycenę indywidualną; utrata dochodu i NNW dzieci nie mają oferty. Jedna cena byłaby fałszywa – w YMYL to ryzyko reputacyjne i regulacyjne.
+`Product` z `Offer.price` wymaga jednej ceny i jest czytany przez Google jako oferta handlowa (merchant listing: `priceValidUntil`, `availability`). Składka OC wg taryfy programu zależy od grupy ryzyka, sumy gwarancyjnej, klauzuli ochrony prawnej i liczebności zespołu (6–8 osób ×1,25; grupa 4 i zespoły od 9 osób – wycena indywidualna na podstawie ankiety ERGO Hestii); Tax Protect ma własną stałą taryfę 8 wariantów (suma 50 000 lub 100 000 zł × 4 progi przychodu; 1 532–2 901 zł rocznie za 1 spór – potwierdzona przez zleceniodawcę 12.11.2026, 01 pkt 3.2), a przy przychodach powyżej 3 mln zł lub 2–4 sporach – wycenę indywidualną; utrata dochodu i NNW dzieci nie mają oferty. Jedna cena byłaby fałszywa – w YMYL to ryzyko reputacyjne i regulacyjne.
 
-`Service` (`schema-produkt-oc-beauty.json`) opisuje to, co jest prawdą niezależnie od wyceny: `provider` = ERGO Hestia, `broker` = BeautyPolisa (w schema.org `broker` to dowolny pośrednik; nie przesądza statusu z ustawy o dystrybucji – pytanie 1), `areaServed`, `audience`, `termsOfService` → strona OWU, `availableChannel` → kalkulator.
+`Service` (`schema-produkt-oc-beauty.json`) opisuje to, co jest prawdą niezależnie od wyceny: `provider` = ERGO Hestia, `offers.offeredBy` = BeautyPolisa (`InsuranceAgency`; odwrotność `makesOffer` z home – Aura Expert jest agentem ubezpieczeniowym, decyzja zleceniodawcy z 12.11.2026, więc nie używamy właściwości `broker`, żeby schemat nie sugerował statusu brokera), `areaServed`, `audience`, `termsOfService` → strona OWU, `availableChannel` → kalkulator.
 
-`AggregateOffer` (`lowPrice`/`highPrice`) **tylko dla OC**, bo tylko tam istnieje publiczny kalkulator z jawną tabelą składek (400–1250 zł rocznie dla grup 1–3, +92 zł klauzula ochrony prawnej – 01, pkt 3.1), a `description` mówi wprost, że to składka roczna wg taryfy programu dla grup 1–3 (grupa 4 i zespoły od 9 osób – wycena indywidualna). Warunki: wartości generowane z aktywnej wersji cennika (`pricing_versions`/`pricing_oc_tiers`, 02 pkt 2.3) – nigdy ręcznie; wersjonowanie zostaje, bo taryfa może się zmienić w czasie – nowa wersja z datą obowiązywania (`valid_from`) zmienia jednocześnie kalkulator, tabelę na stronie i `offers`. `priceRange` na `InsuranceAgency` opisywałby całą agencję, nie produkt – nie używamy.
+`AggregateOffer` (`lowPrice`/`highPrice`) **dla OC i Tax Protect**, bo tylko te produkty mają jawną, stałą taryfę na stronie: OC – kalkulator (400–1250 zł rocznie dla grup 1–3, +92 zł klauzula ochrony prawnej – 01, pkt 3.1; `description`: grupa 4 i zespoły od 9 osób – wycena indywidualna); Tax Protect – tabela wariantów `#taryfa` na `/ubezpieczenia/tax-protect` (`schema-produkt-tax-protect.json`: `lowPrice` 1532, `highPrice` 2901, `offerCount` 8, `description` z pełną taryfą za 1 spór oraz informacją, że przychód powyżej 3 mln zł lub 2–4 spory to wycena indywidualna; `provider` = Colonnade Insurance S.A. Oddział w Polsce, `offeredBy` jak w OC). Zbudowany tak samo jak schemat OC. Warunki: wartości generowane z aktywnej wersji cennika (`pricing_versions`/`pricing_oc_tiers`, 02 pkt 2.3) – nigdy ręcznie; wersjonowanie zostaje, bo taryfa może się zmienić w czasie – nowa wersja z datą obowiązywania (`valid_from`) zmienia jednocześnie kalkulator, tabelę na stronie i `offers`. `priceRange` na `InsuranceAgency` opisywałby całą agencję, nie produkt – nie używamy.
 
 ### 4.4 `FAQPage` – uczciwie
 
@@ -279,14 +279,15 @@ Przed wdrożeniem: Schema Markup Validator (poprawność słownika) i Rich Resul
 |---|---|---|
 | `robots.txt` | wzorzec dla `robots.ts`/Route Handlera, bloki search/user/training | gotowy; blok training wg Decyzji 6 |
 | `llms.txt` | marka, produkty, zawody, dokumenty, kontakt, zasady cytowania (PL) | gotowy; linkowane strony muszą istnieć na starcie |
-| `schema-home.json` | Organization, InsuranceAgency, WebSite, WebPage | gotowy; brak sameAs/telefonu |
+| `schema-home.json` | Organization (pełne dane rejestrowe, RPU, IOD), InsuranceAgency, WebSite, WebPage | gotowy; brak sameAs/telefonu |
 | `schema-produkt-oc-beauty.json` | Service + AggregateOffer | gotowy; `offers` wg taryfy programu, generowane z aktywnej wersji cennika |
+| `schema-produkt-tax-protect.json` | Service + AggregateOffer (taryfa Tax Protect, 8 wariantów) | gotowy; `offers` generowane z aktywnej wersji `pricing_tax_variants`; adres OWU Colonnade do uzupełnienia |
 | `schema-faq-oc-beauty.json` | FAQPage, 7 pytań | odpowiedzi do weryfikacji merytorycznej |
 | `schema-artykul.json` | Article (autor-organizacja) | autor do podmiany na Person |
 | `schema-breadcrumb.json` | BreadcrumbList, 3 poziomy | gotowy |
 | `schema-howto-szkoda.json` | HowTo, 6 kroków | terminy z OWU do uzupełnienia |
 
-Pola celowo pominięte (fakt nieznany – bez wartości zastępczych): `telephone`/`email`; `sameAs` (LinkedIn, Facebook, Instagram, YouTube, wizytówka Google, rejestr KNF); `foundingDate`, `founder`, `openingHoursSpecification`, `geo`; `author` jako `Person` i `reviewedBy`; `url`/`sameAs` ubezpieczycieli w `provider`; adresy plików OWU dla `termsOfService`/`DigitalDocument` (program WA50/003353/24/A, OWU Colonnade 25.01.2023) i zgoda na publikację; plik logo pod `/images/logo-beautypolisa.png` (w repo `BeautyPolisa_logo_podstawowe_poziome.png`); terminy zgłoszenia szkody w HowTo; prawdziwe daty i obrazy artykułów.
+Pola celowo pominięte (fakt nieznany – bez wartości zastępczych): `telephone`/`email`; `sameAs` (LinkedIn, Facebook, Instagram, YouTube, wizytówka Google; wpis w RPU jest w `identifier` z linkiem do wyszukiwarki https://rpu.knf.gov.pl/); `foundingDate`, `founder`, `openingHoursSpecification`, `geo`; `author` jako `Person` i `reviewedBy`; `url`/`sameAs` ubezpieczycieli w `provider`; adresy plików OWU dla `termsOfService`/`DigitalDocument` (program WA50/003353/24/A, OWU Colonnade 25.01.2023) i zgoda na publikację; plik logo pod `/images/logo-beautypolisa.png` (w repo `BeautyPolisa_logo_podstawowe_poziome.png`); terminy zgłoszenia szkody w HowTo; prawdziwe daty i obrazy artykułów.
 
 ## 5. GEO – widoczność w asystentach AI
 
@@ -358,10 +359,10 @@ Standard każdej strony produktowej i artykułu (szczegóły redakcyjne w 05):
 ### 5.6 Spójność encji
 
 - **NAP**: „Aura Expert sp. z o.o.” + marka „BeautyPolisa”, „ul. Bolkowska 2A/28, 01-466 Warszawa”, jeden telefon i e-mail – identyczne w stopce, `/kontakt`, `/o-nas`, JSON-LD, wizytówce Google, LinkedIn, stopkach e-maili z Resend, rejestrze KNF.
-- **Jedno zdanie o marce** wszędzie (stopka, `/o-nas`, `description` w schemie, llms.txt, profile): *„BeautyPolisa to portal informacyjny Aura Expert sp. z o.o. o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.”* Słowo „broker/agent” po rozstrzygnięciu statusu.
+- **Jedno zdanie o marce** wszędzie (stopka, `/o-nas`, `description` w schemie, llms.txt, profile): *„BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.”* Status („agent ubezpieczeniowy”) rozstrzygnięty 12.11.2026; słowa „broker” w odniesieniu do Aura Expert nie używamy nigdzie.
 - **`sameAs`** w obie strony: profile linkują do domeny, schema do profili.
 - **Google Business Profile** dla Aura Expert (kategoria „agencja ubezpieczeniowa”, adres jak wyżej) – jedno z niewielu źródeł o lokalnych firmach, które asystenci traktują jako pewne.
-- **KRS/NIP/REGON w stopce** (KRS 0000599840, NIP 5242793544, REGON 363673048 – dane od zleceniodawcy z 12.11.2026) razem z informacją o dystrybutorze (sekcja prawna koncepcji); status (agent albo broker) i numer w rejestrze KNF – po rozstrzygnięciu.
+- **KRS/NIP/REGON w stopce** (KRS 0000599840, NIP 5242793544, REGON 363673048 – dane od zleceniodawcy z 12.11.2026) razem z informacją o dystrybutorze (sekcja prawna koncepcji): agent ubezpieczeniowy, numer w Rejestrze Pośredników Ubezpieczeniowych 11229690/A z linkiem do https://rpu.knf.gov.pl/; pełna formuła z kapitałem zakładowym i sądem rejestrowym – na `/informacje-prawne` (`snippets/legal-distributor.json`).
 - **Wikidata**: nie na starcie – marka nie ma niezależnych źródeł, wpis zostałby usunięty; wracamy po pierwszych publikacjach branżowych.
 
 ### 5.7 Źródła poza witryną, które cytuje AI
@@ -411,6 +412,7 @@ Kolumna „zgodność” jest ważniejsza niż „wzmianka”: błędna odpowied
 
 - **Google Search Console**: właściwość domenowa `beautypolisa.eu` (TXT w Cloudflare; obejmie subdomeny), sitemap, raporty indeksowania, skuteczności (weryfikacja hipotez słów kluczowych), Core Web Vitals, ulepszeń.
 - **Bing Webmaster Tools**: import z GSC, IndexNow (ping po publikacji z Route Handlera lub CI) – Bing zasila Copilot, koszt zerowy.
+- **Tag Google (GA4)** – odpowiedź na pytanie zleceniodawcy z 12.11.2026, czy jest tag Google: przed zgodą żaden tag Google się nie ładuje; GA4 (i, jeśli potrzebne, konwersje Google Ads) wyłącznie po zgodzie, przez Cloudflare Zaraz z Google Consent Mode v2 (02, pkt 4.12; 00, D27). GA4 jest uzupełnieniem dla marketingu – dane z niego obejmują tylko osoby, które się zgodziły, więc lejki i referrery AI liczymy w analityce własnej. Stare strony `life.html`, `life1.html`, `medical.html` ładują dziś GA4 bez zgody – do poprawy (03, K11). Zleceniodawca podaje identyfikator pomiaru GA4 (i kontenera GTM, jeśli go używa).
 - **Własna analityka** (Analytics Engine, 02): osobny kanał dla referrerów `chatgpt.com`, `chat.openai.com`, `perplexity.ai`, `copilot.microsoft.com`, `gemini.google.com`, `claude.ai`, `you.com` oraz `utm_source=chatgpt.com`, które ChatGPT dokleja do linków. Ruch z AI Overviews jest nierozróżnialny od organicznego Google – mówimy to wprost.
 - **Cloudflare AI Crawl Control**: żądania per crawler i strona – czy w ogóle jesteśmy pobierani.
 - **Leady**: `landing_url`, `referrer`, `utm_*` w tabeli leadów (02) → zapytania z kanału AI bez cookies firm trzecich.
@@ -455,7 +457,7 @@ Kolumna „zgodność” jest ważniejsza niż „wzmianka”: błędna odpowied
 
 1. **Domena kanoniczna `https://beautypolisa.eu` bez `www`; `tax.` i (jeśli możliwe) `.com` → 301.** Jedna domena = jedna encja i skumulowane sygnały; audyt wskazuje niespójność `.com`. Odrzucone: `tax.` jako osobny serwis (duplikacja), `www` jako kanoniczne (niezgodne z konwencją).
 2. **Brak hreflang.** Jeden język i rynek; błędny hreflang szkodzi, poprawny nic nie daje. Odrzucone: `hreflang="pl-PL"` + `x-default` „na zapas”.
-3. **`Service` zamiast `Product`; `AggregateOffer` tylko dla OC i tylko z aktywnej wersji cennika.** Składka wg taryfy programu zależy od grupy ryzyka i sumy – jedna cena dla produktu byłaby fałszywa (YMYL). Odrzucone: `Product` + `Offer.price` (jedna cena zamiast tabeli taryfy, wymogi merchant listing); brak informacji o cenie (składki są sztywne i jawne w cenniku programu – rozstrzygnięte 11.11.2026).
+3. **`Service` zamiast `Product`; `AggregateOffer` tylko dla produktów ze stałą, jawną taryfą (OC i Tax Protect – taryfa Tax Protect potwierdzona 12.11.2026) i tylko z aktywnej wersji cennika; pośrednik wskazany przez `offers.offeredBy`, nie przez `broker`.** Składka wg taryfy programu zależy od grupy ryzyka i sumy – jedna cena dla produktu byłaby fałszywa (YMYL). Odrzucone: `Product` + `Offer.price` (jedna cena zamiast tabeli taryfy, wymogi merchant listing); brak informacji o cenie (składki są sztywne i jawne w cenniku programu – rozstrzygnięte 11.11.2026).
 4. **JSON-LD komponowany per strona w komponencie serwerowym, `@graph` z trwałymi `@id`, `schema-dts`, walidacja w CI.** Odrzucone: jeden globalny blok w layoucie (nie opisuje strony), Microdata (trudne w komponentach), schemat dopisywany w kliencie (niewidoczny dla fetcherów).
 5. **`FAQPage` i `HowTo` mimo braku rich results.** Koszt bliski zeru przy generowaniu z frontmatter, realna wartość dla cytowań. Odrzucone: pominięcie; FAQ ukryte w schemie bez treści na stronie (naruszenie wytycznych).
 6. **Crawlery: Search i Agent = Allow; Training = Allow (rekomendacja), decyzja zleceniodawcy; Bot Preference Sync off; `robots.ts` w repo jako źródło prawdy.** Cel portalu to bycie znanym i cytowanym; treść nie ma wartości ekskluzywnej; blokada treningu nie zwiększa cytowań. Odrzucone: zarządzany robots.txt Cloudflare (poza kontrolą wersji), blokada treningu jako domyślna (udokumentowany wariant w snippecie), `Disallow` dla botów ignorujących robots (egzekwowanie należy do AI Crawl Control/WAF).
@@ -464,19 +466,20 @@ Kolumna „zgodność” jest ważniejsza niż „wzmianka”: błędna odpowied
 9. **Pomiar bez „wskaźnika widoczności AI”: ręczny audyt 20 promptów z logiem, referrery AI, GSC/Bing.** Odpowiedzi AI są niedeterministyczne; metryka z jednej próbki byłaby fikcją. Odrzucone: płatne narzędzia AI-visibility na starcie (do rozważenia po 90 dniach), „pozycje w AI”.
 10. **Obrazy OG z `opengraph-image.tsx` po weryfikacji w PoC na Workers; fallback PNG z CI.** Odrzucone: jeden statyczny obraz (niższy CTR z social), zewnętrzny generator (zależność).
 11. **Paginacja `/baza-wiedzy/strona/<n>` indeksowalna z self-canonical; kategorie od ≥5 artykułów.** Odrzucone: canonical do strony 1, `noindex` paginacji, `?strona=`.
-12. **Budżet wydajności jako warunek merge (LCP ≤2,5 s, INP ≤200 ms, CLS ≤0,1 mobile); zero skryptów firm trzecich poza Turnstile; glass widget tylko na karcie CTA.** Odrzucone: pomiar „po fakcie”, przeniesienie Chart.js/confetti.
+12. **Budżet wydajności jako warunek merge (LCP ≤2,5 s, INP ≤200 ms, CLS ≤0,1 mobile); zero skryptów firm trzecich poza Turnstile – tag Google (GA4) tylko po zgodzie przez Zaraz z Consent Mode v2; glass widget tylko na karcie CTA.** Odrzucone: pomiar „po fakcie”, przeniesienie Chart.js/confetti.
 
 ## Pytania otwarte do zleceniodawcy
 
-1. Status dystrybutora Aura Expert sp. z o.o. – broker czy agent – i numer wpisu w rejestrze KNF? Wpływa na `broker` w `Service`, stopkę, bio autorów i słownictwo. (Podmiot i numery KRS/NIP/REGON – rozstrzygnięte decyzją zleceniodawcy z 12.11.2026.)
-2. Telefon i e-mail do `ContactPoint`; adresy profili (LinkedIn, Facebook, Instagram, YouTube), stan wizytówki Google, link do wpisu w rejestrze KNF – do `sameAs`.
+1. Rozstrzygnięte 12.11.2026: Aura Expert sp. z o.o. jest agentem ubezpieczeniowym (RPU 11229690/A), strona spółki www.auraexpert.pl, IOD iod@auraexpert.pl – uwzględnione w `schema-home.json` (`Organization`), w `offers.offeredBy` zamiast `broker`, w stopce i w zdaniu o marce. Otwarte tylko: dokładna lista zakładów, na rzecz których działa agent (do potwierdzenia).
+2. Telefon i e-mail do `ContactPoint`; adresy profili (LinkedIn, Facebook, Instagram, YouTube), stan wizytówki Google – do `sameAs` (wpis w RPU – podany 12.11.2026, w `identifier`).
 3. Kto jest imiennym autorem i recenzentem treści (imię, stanowisko, uprawnienia, zgoda na bio i zdjęcie)?
 4. Czy zleceniodawca kontroluje DNS `beautypolisa.com`? Czy domena serwowała strony (indeksacja, linki)? Zgoda na 301 na `.eu`.
 5. `tax.beautypolisa.eu`: czy jest w GSC, ma ruch/linki, kiedy przełączyć na przekierowanie?
 6. Decyzja o crawlerach treningowych (GPTBot, ClaudeBot, Google-Extended, Meta-ExternalAgent, CCBot, Applebot-Extended): Allow czy Disallow?
 7. Które OWU/warunki programów można opublikować na `/dokumenty` (program WA50/003353/24/A, OWU Colonnade 25.01.2023, EZwB 01/25, MA 01/25) i czy ubezpieczyciele wymagają zgody?
-8. Cennik OC (400–1250 zł, klauzula 92 zł) i składki Tax Protect – rozstrzygnięte 11.11.2026: składki są sztywne (taryfa programu; Tax Protect – tabela `tax_warianty`). `AggregateOffer` i FAQ o cenie opierają się na aktywnej wersji cennika bez zastrzeżenia „do potwierdzenia” (zostaje standardowa nota: informacja nie stanowi oferty w rozumieniu art. 66 KC, zakres ochrony określają OWU).
+8. Cennik OC (400–1250 zł, klauzula 92 zł) i składki Tax Protect – rozstrzygnięte 11.11.2026: składki są sztywne (taryfa programu); taryfa Tax Protect (1 532–2 901 zł rocznie za 1 spór, 8 wariantów) potwierdzona 12.11.2026. `AggregateOffer` i FAQ o cenie opierają się na aktywnej wersji cennika bez zastrzeżenia „do potwierdzenia” (zostaje standardowa nota: informacja nie stanowi oferty w rozumieniu art. 66 KC, zakres ochrony określają OWU).
 9. Utrata dochodu i NNW dzieci: kiedy będzie oferta; strony „wkrótce” z `noindex` czy czekają?
 10. Czy planowane jest wideo z doradcami (YouTube) – `VideoObject`, earned mentions?
 11. Zgoda Fundacji Beauty Razem na wzajemne linkowanie i wspólny komunikat.
 12. Budżet na Cloudflare Pro (Markdown for Agents, lepsza analityka botów) – opcjonalne.
+13. Identyfikator pomiaru GA4 (która z dwóch usług ze starych stron jest docelowa) i – jeśli jest używany – identyfikator kontenera GTM; przy kampaniach identyfikator i etykiety konwersji Google Ads (pkt 6; 02, pkt 4.12).

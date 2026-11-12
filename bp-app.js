@@ -732,7 +732,7 @@ function updateCalculator() {
     const ir = document.getElementById("ind-pricing-reason");
     if (ir) ir.textContent = hRisk
       ? "Wybrałaś zabiegi specjalistyczne (Grupa 4), które wymagają indywidualnej oceny ryzyka przez ERGO Hestia. Wypełnij ankietę."
-      : "Dla 9+ osób przygotujemy taryfę indywidualną. Nasz broker wynegocjuje optymalną stawkę.";
+      : "Dla 9+ osób przygotujemy taryfę indywidualną. Jako agent ubezpieczeniowy przekażemy ankietę ubezpieczycielowi i przedstawimy Ci wycenę.";
     const btnI = document.getElementById("btn-ind");
     if (btnI) btnI.onclick = () => openOfferModal("Wycena Indywidualna","—", hRisk ? "Wycena Indywidualna (Zabiegi Specjalistyczne)" : "Wycena Indywidualna (9+ osób)");
   } else {
@@ -1157,7 +1157,7 @@ function buildModals() {
     <div class="mbox-hd"><h3>Informacja o dystrybutorze</h3><button class="mclose" onclick="closeModal('modal-dystrybutor')">&#10005;</button></div>
     <div class="mbox-body" style="font-size:9px;color:#475569;line-height:1.7">
       <p><strong>Aura Expert sp. z o.o.</strong> · ul. Bolkowska 2A/28, 01-466 Warszawa<br>E-mail: zarzad@auraexpert.pl · Tel. +48 504 400 901</p>
-      <p>KRS: 0000599840 · NIP: 5242793544 · REGON: 363673048<br>Rejestr agentów KNF: 11229690/A</p>
+      <p>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.<br>Agent ubezpieczeniowy – wpis w&nbsp;rejestrze prowadzonym przez KNF: <a href="https://rpu.knf.gov.pl/" target="_blank" rel="noopener noreferrer">rpu.knf.gov.pl</a></p>
       <p>Agent działa na rzecz: ERGO Hestia, UNIQA, Generali, Colonnade, Saltus. Prowizja uwzględniona w kwocie składki.</p>
     </div>`);
 

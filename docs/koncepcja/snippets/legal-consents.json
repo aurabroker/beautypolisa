@@ -1,5 +1,5 @@
 {
-  "$comment": "Treści zgód per kanał. Każda zmiana treści = nowa wersja (nowy identyfikator), nigdy edycja w miejscu. Identyfikator zapisywany w consents.text_version. Minimalne formuły do potwierdzenia z prawnikiem (art. 6 ust. 1 lit. a RODO; art. 398 PKE – zgoda na kanał). Pola text = wartości robocze.",
+  "$comment": "Treści zgód per kanał. Każda zmiana treści = nowa wersja (nowy identyfikator), nigdy edycja w miejscu. Identyfikator zapisywany w consents.text_version. Minimalne formuły do potwierdzenia z prawnikiem (art. 6 ust. 1 lit. a RODO; art. 398 PKE – zgoda na kanał). Pola text = wartości robocze. Administrator danych: Aura Expert sp. z o.o.; kontakt do IOD całego portalu: iod@auraexpert.pl (decyzje zleceniodawcy z 12.11.2026) – adres IOD podają privacy-notice.mdx i nota dystrybutora (distributor.json → dpoEmail), nie treść zgód.",
   "consents": [
     {
       "purpose": "marketing_email",
@@ -40,6 +40,7 @@
       "kind": "distributorNotice",
       "version": "idd-v1-2026-11",
       "file": "distributor.json",
+      "$comment": "Informacja agenta ubezpieczeniowego (art. 22 ustawy o dystrybucji ubezpieczeń): Aura Expert sp. z o.o., RPU nr 11229690/A, weryfikacja: https://rpu.knf.gov.pl/; lista zakładów – do potwierdzenia; reklamacje i charakter wynagrodzenia – do uzupełnienia",
       "requiresCheckbox": false
     },
     {

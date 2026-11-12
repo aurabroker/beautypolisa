@@ -25,8 +25,12 @@ Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeń
 - Partner branżowy: **Beauty Razem** (od 2024 Fundacja Beauty Razem, założyciel Michał Łenczyński) – logo na ankiecie ERGO Hestii (`AnkietaBPEH.pdf`).
 - Administrator danych dla abonamentów medycznych: Aura Expert sp. z o.o. (iod@auraexpert.pl).
 - **Decyzja zleceniodawcy 12.11.2026 – jeden podmiot:** Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa, KRS 0000599840, NIP 5242793544, REGON 363673048 (dane podane przez zleceniodawcę). Aura Expert jest operatorem portalu, administratorem danych portalu i Strefy Klienta, podmiotem wskazywanym w zgodach marketingowych i dystrybutorem ubezpieczeń w informacjach IDD.
-- Ślad zmiany: stara strona podawała jako „obsługę brokerską” spółkę o innej nazwie; decyzją zleceniodawcy z 12.11.2026 ta nazwa została usunięta i zastąpiona przez Aura Expert sp. z o.o.
-- W kodzie występowały równolegle oznaczenia „Obsługa Brokerska” (12.11.2026 zmienione na „Obsługa Programu”) i „Informacje o agencie ubezpieczeniowym” – status dystrybutora (broker vs agent) i numer wpisu w rejestrze KNF **do potwierdzenia**; ma to znaczenie dla obowiązków informacyjnych z ustawy o dystrybucji ubezpieczeń (IDD).
+- **Fakty potwierdzone przez zleceniodawcę 12.11.2026 – status i pełne dane:**
+  - Aura Expert sp. z o.o. jest **agentem ubezpieczeniowym**, nie brokerem; numer wpisu w Rejestrze Pośredników Ubezpieczeniowych (rejestr prowadzi KNF): **11229690/A**, weryfikacja: https://rpu.knf.gov.pl/. Według zleceniodawcy poza tym wpisem spółka nie ma innego wpisu w KNF.
+  - Pełna formuła (do użycia dosłownie tam, gdzie potrzebna jest pełna formuła): „Aura Expert spółka z ograniczoną odpowiedzialnością z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5 000 zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.”
+  - Strona spółki: www.auraexpert.pl. Kontakt do inspektora ochrony danych dla całego portalu (nie tylko abonamentów medycznych): iod@auraexpert.pl.
+  - Zakłady ubezpieczeń, na rzecz których działa agent: w koncepcji wymienieni są wyłącznie Sopockie TU ERGO Hestia S.A., STU na Życie ERGO Hestia S.A. i Colonnade Insurance S.A. Oddział w Polsce – dokładna lista **do potwierdzenia**; procedura reklamacyjna i charakter wynagrodzenia – **do uzupełnienia**.
+- Ślad zmiany: stare strony opisywały obsługę słownictwem brokerskim („Obsługa Brokerska”, „Broker Ubezpieczeniowy” ze spółką o innej nazwie, „nasz broker wynegocjuje…”) obok noty „Informacje o agencie ubezpieczeniowym”; decyzjami z 12.11.2026 nazwę innej spółki zastąpiła Aura Expert sp. z o.o., a słownictwo brokerskie jest do usunięcia (Aura Expert jest agentem).
 - Paleta obecna: granat `#2a3b69` (beauty-navy), róż `#e11d48` (beauty-pink), tło `#fafafa`, tekst `#1e293b`; font Montserrat (Playfair Display w najstarszej wersji, później usunięto szeryfy); tryb ciemny `#0f172a`.
 - Domeny: w JSON-LD obecnie `https://www.beautypolisa.com/#agency`, docelowa domena wg zlecenia: **beautypolisa.eu**. Niespójność do usunięcia.
 
@@ -40,8 +44,19 @@ Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeń
 
 ### 3.2 Tax Protect (Colonnade)
 - Sekcja 1: ochrona karnoskarbowa dla właściciela/zarządu; sekcja 2: ochrona podatkowa dla firmy (jeden pełny spór podatkowy w roku).
-- Warianty sum: 50 000 / 100 000 zł (sekcja 1), 250 000 / 500 000 / 1 000 000 / 3 000 000 zł; przychody powyżej 3 mln zł → wycena indywidualna.
-- Tabela `tax_warianty` w projekcie Supabase „BEAUTY” ma komentarz: „Wartości składek DO POTWIERDZENIA z Colonnade”. Komentarz jest nieaktualny – rozstrzygnięte 11.11.2026: zleceniodawca potwierdził, że składki Tax Protect są sztywne (taryfa programu); strona może pokazywać kwoty z taryfy (wartości z `tax_warianty` lub przekazane przez zleceniodawcę).
+- Warianty sum: 50 000 / 100 000 zł (sekcja 1); progi rocznego przychodu firmy: do 250 000 / 500 000 / 1 000 000 / 3 000 000 zł; przychody powyżej 3 mln zł → wycena indywidualna.
+- **Taryfa – fakt potwierdzony przez zleceniodawcę 12.11.2026** (zgodna z `tax-protect.html` 355–360 i z 8 aktywnymi wierszami tabeli `tax_warianty` w projekcie „BEAUTY”, odczyt kolumn wariantów i składek 12.11.2026). Składka roczna za 1 spór:
+
+  | Przychód firmy | Suma 50 000 zł | Suma 100 000 zł |
+  |---|---|---|
+  | do 250 000 zł | 1 532 zł | 2 501 zł |
+  | do 500 000 zł | 1 612 zł | 2 581 zł |
+  | do 1 000 000 zł | 1 732 zł | 2 701 zł |
+  | do 3 000 000 zł | 1 932 zł | 2 901 zł |
+  | powyżej 3 000 000 zł | wycena indywidualna | wycena indywidualna |
+
+  Ochrona 2–4 sporów → wycena indywidualna. Składki są stałe (taryfa programu) – bez dopisków „orientacyjne” czy „szacunkowe”.
+- Tabela `tax_warianty` ma komentarz: „Wartości składek DO POTWIERDZENIA z Colonnade”. Komentarz jest nieaktualny – składki Tax Protect są sztywne (rozstrzygnięte 11.11.2026, taryfa potwierdzona 12.11.2026).
 
 ### 3.3 Grupowe życie ERGO (life.html)
 - Pakiety (warianty I / II / III): 58 / 68 / 76 zł za osobę miesięcznie wg cennika programu; sumy (przykłady z kodu): 100 000 / 210 000 zł, 80 000 / 170 000, 75 000 / 160 000; moduły MediOpieki: assistance domowy (limit 10 000 zł/rok), diagnostyka (20 konsultacji, rezonans, tomografia), onkologia, zdrowie psychiczne, tele-EKG, rehabilitacja; Global Doctors.
@@ -63,7 +78,7 @@ Ustalenia z przeglądu kodu (szczegóły w `03-code-review-obecnego-kodu.md`):
 3. Panel administracyjny (lista leadów `bp_quotes`, zmiana statusów, analityka) jest renderowany w tym samym publicznym bundle, a autoryzacja opiera się na `bp_profiles.is_admin` odczytywanym po stronie klienta.
 4. Analityka własna (`bp_analytics`) – każdy wizytator wykonuje `INSERT` z klienta (session id, referrer, UTM, device). Brak limitów i walidacji po stronie serwera.
 5. Formularze: brak CAPTCHA/Turnstile, brak rate limitingu, walidacja tylko w kliencie; notatki wniosku sklejane jako tekst.
-6. Strony HTML zawierają skrypt Chart.js/confetti z CDN, Google Fonts bez `font-display` kontrolowanego lokalnie, `maximum-scale=1, user-scalable=no` (blokada zoomu – problem WCAG).
+6. Strony HTML zawierają skrypt Chart.js/confetti z CDN, Google Fonts bez `font-display` kontrolowanego lokalnie, `maximum-scale=1, user-scalable=no` (blokada zoomu – problem WCAG). `life.html`, `life1.html` i `medical.html` ładują tag Google (GA4, `gtag.js`) bez zgody i bez banera; identyfikatory pomiaru są dwa różne (`life.html`/`life1.html` vs `medical.html`).
 7. SEO: JSON-LD tylko `InsuranceAgency` (z domeną .com), brak `FAQPage` mimo sekcji FAQ, brak `BreadcrumbList`, brak `sitemap.xml`/`robots.txt`/`llms.txt` w repo, meta `keywords` (bez znaczenia), tytuły OK, brak `canonical`, brak hreflang (jednojęzyczny – OK).
 8. Treść produktowa jest zaszyta w HTML/JS (brak CMS), duplikaty (`life.html` vs `life1.html`, `index` vs `indeksowt` vs `new`).
 
