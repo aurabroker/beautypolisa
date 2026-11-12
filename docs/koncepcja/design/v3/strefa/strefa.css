@@ -164,6 +164,7 @@ ul,ol{margin:0}
 .mock-annot{padding:16px 20px;border:1px dashed rgba(42,59,104,.55);border-radius:var(--radius-btn);background:rgba(247,243,236,.92);font-size:var(--text-sm);line-height:1.6}
 .mock-annot h2{font-size:var(--text-serif-md);margin-bottom:8px}
 .mock-annot ul{padding-left:1.2em;display:grid;gap:4px}
+.mock-annot code{overflow-wrap:anywhere}
 @media (pointer:coarse){.mock-bar nav a{min-height:44px}}
 
 /* ---------- pasek górny: ciemne szkło na midnight ---------- */
