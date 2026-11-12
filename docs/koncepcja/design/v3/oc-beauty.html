@@ -1181,7 +1181,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   var root=document.getElementById('zabiegi'), form=document.getElementById('z-szukaj-form'); if(!root||!form) return;
   var input=document.getElementById('z-szukaj'), clear=document.getElementById('z-wyczysc'), count=document.getElementById('z-licznik'), empty=document.getElementById('z-brak');
   var groups=[].slice.call(root.querySelectorAll('.zgroup')), TOTAL=0, saved=null, timer=null, lastQ='';
-  function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/ł/g,'l').replace(/[^a-z0-9]+/g,' ').trim()}
+  function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ł/g,'l').replace(/[^a-z0-9]+/g,' ').trim()}
   function plural(n){var d=n%10,h=n%100;return n===1?'zabieg':(d>=2&&d<=4&&(h<12||h>14))?'zabiegi':'zabiegów'}
   var data=groups.map(function(g){
     return {g:g,det:g.querySelector('details'),sumN:g.querySelector('[data-z-ile]'),jump:document.querySelector('.zjump a[href="#'+g.id+'"]'),
