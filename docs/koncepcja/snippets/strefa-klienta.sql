@@ -11,7 +11,10 @@
 --       wyszukiwania, polecania i dopasowywania kandydatów; kandydat czyta ogłoszenie i kontaktuje się
 --       z salonem bezpośrednio,
 --   D-D szkolenia dodają salony i firmy szkoleniowe (rola „organizator szkoleń”, bez polisy,
---       po weryfikacji przez Aura); publikacja po moderacji.
+--       po weryfikacji przez Aura); publikacja po moderacji,
+--   D-E „Szukam pracy” (ogłoszenia osób szukających pracy) przygotowane, ale NIEAKTYWNE – przełącznik
+--       app_feature_flags('szukam_pracy') domyślnie wyłączony do decyzji zleceniodawcy po sprawdzeniu
+--       prawnym (KRAZ, RODO, DSA); nadal tylko tablica – bez polecania i dopasowywania kandydatów.
 --
 -- Konwencje (jak w schema.sql / rls-policies.sql):
 --  * domyślne granty odebrane w schema.sql (ALTER DEFAULT PRIVILEGES … FROM public, anon, authenticated);
@@ -277,6 +280,104 @@ create index job_offer_relay_log_offer_idx on job_offer_relay_log (offer_id, cre
 
 
 -- -----------------------------------------------------------------------------------------------------
+-- 3a. „SZUKAM PRACY” – FUNKCJA NIEAKTYWNA (decyzja D-E z 11.11.2026)
+--     Ogłoszenia osób szukających pracy na tablicy „Dam pracę”. Zaprojektowane i przygotowane, ale
+--     WYŁĄCZONE przełącznikiem app_feature_flags('szukam_pracy') = false do czasu decyzji zleceniodawcy
+--     po sprawdzeniu prawnym (KRAZ – nowa okoliczność względem tablicy samych ofert, RODO, DSA).
+--     Nadal wyłącznie tablica (D-C): platforma i Aura nie rekomendują, nie wyszukują, nie dobierają,
+--     nie oceniają, nie sortują i nie dopasowują kandydatów. NIE MA tu (i nie wolno dodawać): kont
+--     i profili kandydatów, zdjęć, nazwisk, telefonów, CV, wyszukiwarki pełnotekstowej po osobach,
+--     rekomendacji ani dopasowywania. Przy wyłączonym przełączniku: funkcje zapisu odmawiają,
+--     polityki RLS nie zwracają wierszy; wyjątek – usunięcie ogłoszenia przez autora i retencja
+--     (tylko zmniejszają ilość danych).
+-- -----------------------------------------------------------------------------------------------------
+
+-- Przełączniki funkcji. Domyślnie WYŁĄCZONE. Zmienia wyłącznie app_set_feature_flag() (admin Aura,
+-- sesja aal2 sprawdzona przez serwer) z odwołaniem do decyzji zleceniodawcy; każda zmiana w dzienniku.
+create table app_feature_flags (
+  key           text primary key check (key in ('szukam_pracy')),
+  enabled       boolean not null default false,
+  decision_ref  text check (char_length(decision_ref) between 5 and 200), -- np. „decyzja zleceniodawcy z … po opinii prawnej …”
+  changed_by    uuid references auth.users(id) on delete set null,
+  changed_at    timestamptz not null default now(),
+  check (not enabled or decision_ref is not null)
+);
+insert into app_feature_flags (key, enabled) values ('szukam_pracy', false);
+
+-- Ogłoszenie osoby szukającej pracy. Bez konta: osoba podaje e-mail, potwierdza go linkiem i zarządza
+-- ogłoszeniem (edycja, przedłużenie, usunięcie) linkiem z e-maila. W bazie tylko skróty SHA-256 tokenów.
+-- Minimalny zakres danych: imię (jedno słowo – bez nazwiska), zawód, miasto i województwo, formy
+-- współpracy, doświadczenie, dostępność od, krótki opis ≤ 500 znaków. Bez zdjęcia, nazwiska, telefonu;
+-- e-mail nigdy nie jest pokazywany (brak grantu kolumnowego). Tylko osoby pełnoletnie (oświadczenie).
+-- Widoczne wyłącznie dla zalogowanych członków aktywnych kont salonów i tylko przy włączonym przełączniku;
+-- anon nie ma żadnego grantu (strony noindex, nigdy publiczne). Ważność 30 dni. Administrator danych: Aura.
+create table candidate_ads (
+  id                 uuid primary key default gen_random_uuid(),
+  status             text not null default 'unconfirmed'
+                       check (status in ('unconfirmed','pending_review','published','rejected','expired','removed')),
+  content_version    integer not null default 1,     -- rośnie przy każdej edycji; moderator zatwierdza konkretną wersję
+  email              text not null check (char_length(email) <= 254
+                       and email ~ '^[^@[:space:]<>]+@[^@[:space:]<>]+\.[a-z]{2,}$'),   -- PII, nigdy nie wyświetlany
+  email_normalized   text not null,
+  confirm_token_hash text unique check (confirm_token_hash ~ '^[0-9a-f]{64}$'),
+  confirm_expires_at timestamptz,
+  manage_token_hash  text unique check (manage_token_hash ~ '^[0-9a-f]{64}$'),  -- rotowany przy każdej wysyłce linku
+  first_name         text not null check (first_name ~ '^[^[:space:][:digit:][:punct:]]{2,30}(-[^[:space:][:digit:][:punct:]]{2,30})?$'),
+  profession         text not null check (profession in ('kosmetolog','fryzjer','podolog','linergistka',
+                       'stylistka-paznokci','tatuazysta','recepcja','inny')),
+  city               text not null check (char_length(city) between 2 and 80 and city !~ '[[:digit:]<>@]'),
+  voivodeship        text not null check (voivodeship in ('dolnoslaskie','kujawsko-pomorskie','lubelskie','lubuskie',
+                       'lodzkie','malopolskie','mazowieckie','opolskie','podkarpackie','podlaskie','pomorskie',
+                       'slaskie','swietokrzyskie','warminsko-mazurskie','wielkopolskie','zachodniopomorskie')),
+  cooperation_forms  text[] not null check (cardinality(cooperation_forms) between 1 and 5
+                       and cooperation_forms <@ array['umowa-o-prace','umowa-zlecenie','b2b','najem-stanowiska','inna']),
+  experience         text not null check (experience in ('do-1-roku','1-3-lata','3-5-lat','powyzej-5-lat')),
+  available_from     date not null,
+  description        text check (char_length(description) <= 500),
+  adult_confirmed    boolean not null check (adult_confirmed),           -- oświadczenie 18+
+  notice_version     text not null check (char_length(notice_version) <= 40), -- wersja regulaminu i klauzuli informacyjnej
+  confirmed_at       timestamptz,
+  submitted_at       timestamptz,
+  published_at       timestamptz,
+  extended_at        timestamptz,
+  expires_at         timestamptz,
+  moderated_by       uuid references auth.users(id) on delete set null,
+  moderation_note    text check (char_length(moderation_note) <= 1000),  -- wewnętrzna; bez grantu
+  rejection_reason   text check (char_length(rejection_reason) <= 1000), -- uzasadnienie decyzji dla autora (DSA)
+  removed_at         timestamptz,
+  created_at         timestamptz not null default now(),
+  updated_at         timestamptz not null default now(),
+  check (status <> 'unconfirmed' or (confirm_token_hash is not null and confirm_expires_at is not null)),
+  check (status in ('unconfirmed') or confirmed_at is not null),          -- publikacja tylko po potwierdzeniu e-maila
+  check (status <> 'published' or (published_at is not null and expires_at is not null)),
+  check (expires_at is null or published_at is null
+         or expires_at <= coalesce(extended_at, published_at) + interval '30 days'),
+  check (status not in ('rejected','removed') or rejection_reason is not null),
+  -- tekst zwykły: bez znaczników, adresów URL, adresów e-mail i numerów telefonów (kontakt tylko przez formularz)
+  check (coalesce(description, '') !~ '[<>@]'),
+  check (coalesce(description, '') !~* '(https?://|www\.)'),
+  check (coalesce(description, '') !~ '[0-9][0-9 ()./-]{6,}[0-9]')
+);
+create index candidate_ads_public_idx on candidate_ads (status, expires_at desc);
+create index candidate_ads_filter_idx on candidate_ads (profession, voivodeship) where status = 'published';
+create index candidate_ads_email_idx  on candidate_ads (email_normalized);
+
+-- Ślad wysyłki wiadomości salonu do autora ogłoszenia – BEZ treści wiadomości i bez adresu odbiorcy
+-- (treść i adres istnieją tylko w outbox_emails do wysyłki, potem app_purge_relay_messages je czyści).
+-- Służy do limitów i obsługi nadużyć. Retencja 30 dni [Założenie]. Tylko service_role.
+create table candidate_ad_contact_log (
+  id          uuid primary key default gen_random_uuid(),
+  ad_id       uuid references candidate_ads(id) on delete set null,
+  account_id  uuid not null references client_accounts(id) on delete cascade,
+  sent_by     uuid references auth.users(id) on delete set null,
+  outbox_id   uuid references outbox_emails(id) on delete set null,
+  created_at  timestamptz not null default now()
+);
+create index candidate_ad_contact_log_ad_idx      on candidate_ad_contact_log (ad_id, created_at desc);
+create index candidate_ad_contact_log_account_idx on candidate_ad_contact_log (account_id, created_at desc);
+
+
+-- -----------------------------------------------------------------------------------------------------
 -- 4. „SZKOLENIA” – ORGANIZATORZY (D-D), KATALOG, SZCZEGÓŁY DLA ZAPISANYCH, ZAPISY, KONTAKTY UCZESTNIKÓW
 -- -----------------------------------------------------------------------------------------------------
 
@@ -435,22 +536,29 @@ create index training_participant_contacts_idx on training_participant_contacts 
 
 
 -- -----------------------------------------------------------------------------------------------------
--- 5. ZGŁOSZENIA NADUŻYĆ („Zgłoś nadużycie” przy ogłoszeniu, w e-mailu z formularza, przy szkoleniu)
---    Bez danych zgłaszającego; zapis przez serwer (Turnstile, limit), kolejka w /panel.
+-- 5. ZGŁOSZENIA NADUŻYĆ („Zgłoś nadużycie” przy ogłoszeniu, w e-mailu z formularza, przy szkoleniu,
+--    przy ogłoszeniu „Szukam pracy” – D-E, nieaktywne). Bez danych zgłaszającego; zapis przez serwer
+--    (Turnstile, limit), kolejka w /panel. details – uzasadnienie zgłoszenia treści nielegalnej (DSA).
 -- -----------------------------------------------------------------------------------------------------
 
 create table abuse_reports (
-  id            bigint generated always as identity primary key,
-  target        text not null check (target in ('job_offer','job_relay_message','training','organizer')),
-  job_offer_id  uuid references job_offers(id) on delete cascade,
-  relay_id      uuid references job_offer_relay_log(id) on delete set null,
-  training_id   uuid references trainings(id) on delete cascade,
-  organizer_id  uuid references training_organizers(id) on delete cascade,
-  reason        text not null check (reason in ('nieaktualne','dyskryminacja','oszustwo','phishing','spam','inne')),
-  handled_at    timestamptz,
-  handled_by    uuid references auth.users(id) on delete set null,
-  created_at    timestamptz not null default now(),
-  check (num_nonnulls(job_offer_id, training_id, organizer_id) >= 1)
+  id              bigint generated always as identity primary key,
+  target          text not null check (target in ('job_offer','job_relay_message','training','organizer',
+                    'candidate_ad','candidate_contact')),
+  job_offer_id    uuid references job_offers(id) on delete cascade,
+  relay_id        uuid references job_offer_relay_log(id) on delete set null,
+  training_id     uuid references trainings(id) on delete cascade,
+  organizer_id    uuid references training_organizers(id) on delete cascade,
+  candidate_ad_id uuid references candidate_ads(id) on delete cascade,
+  candidate_contact_id uuid references candidate_ad_contact_log(id) on delete set null, -- wiadomość salonu zgłoszona przez autora
+  reported_account_id  uuid references client_accounts(id) on delete cascade,          -- salon, którego dotyczy zgłoszenie
+  reason          text not null check (reason in ('nieaktualne','dyskryminacja','oszustwo','phishing','spam',
+                    'nielegalne','niepelnoletnia','inne')),
+  details         text check (char_length(details) <= 1000 and details !~ '[<>]'),
+  handled_at      timestamptz,
+  handled_by      uuid references auth.users(id) on delete set null,
+  created_at      timestamptz not null default now(),
+  check (num_nonnulls(job_offer_id, training_id, organizer_id, candidate_ad_id, reported_account_id) >= 1)
 );
 
 
@@ -478,9 +586,12 @@ create table client_audit_log (
                   'training_published','training_rejected','training_removed','training_event_cancelled',
                   'training_capacity_changed',
                   'training_registered','training_waitlisted','training_promoted','training_cancelled',
-                  'training_attendance','training_contacts_purged')),
+                  'training_attendance','training_contacts_purged',
+                  'feature_flag_changed','candidate_ad_published','candidate_ad_rejected','candidate_ad_removed',
+                  'candidate_contact_sent')),
   entity        text not null check (entity in ('account','member','invitation','policy','document','claim',
-                  'job_offer','training','training_registration','organizer','organizer_member')),
+                  'job_offer','training','training_registration','organizer','organizer_member',
+                  'feature_flag','candidate_ad')),
   entity_id     uuid,
   payload       jsonb not null default '{}'::jsonb check (pg_column_size(payload) <= 2048), -- np. {"from":"draft","to":"pending_review"}
   request_id    text check (char_length(request_id) <= 64),
@@ -572,6 +683,15 @@ create trigger job_offer_relay_log_guard
   for each row execute function public.backend_only_guard();
 create trigger training_participant_contacts_guard
   before insert or update or delete on training_participant_contacts
+  for each row execute function public.backend_only_guard();
+create trigger app_feature_flags_guard
+  before insert or update or delete on app_feature_flags
+  for each row execute function public.backend_only_guard();
+create trigger candidate_ads_guard
+  before insert or update or delete on candidate_ads
+  for each row execute function public.backend_only_guard();
+create trigger candidate_ad_contact_log_guard
+  before insert or update or delete on candidate_ad_contact_log
   for each row execute function public.backend_only_guard();
 
 -- Rozdział personelu i klientów działa w obie strony: konto z aktywnym członkostwem w salonie albo
@@ -914,6 +1034,9 @@ alter table client_policy_reminders       enable row level security;  -- bez pol
 alter table job_offers                    enable row level security;
 alter table job_offer_contacts            enable row level security;
 alter table job_offer_relay_log           enable row level security;  -- bez polityk: service_role_only
+alter table app_feature_flags             enable row level security;
+alter table candidate_ads                 enable row level security;
+alter table candidate_ad_contact_log      enable row level security;  -- bez polityk: service_role_only
 alter table training_organizers           enable row level security;
 alter table organizer_members             enable row level security;
 alter table organizer_invitations         enable row level security;
@@ -929,6 +1052,8 @@ alter table client_invitations            force row level security;
 alter table client_policies               force row level security;
 alter table client_policy_documents       force row level security;
 alter table job_offer_contacts            force row level security;
+alter table candidate_ads                 force row level security;
+alter table candidate_ad_contact_log      force row level security;
 alter table organizer_members             force row level security;
 alter table organizer_invitations         force row level security;
 alter table training_registrations        force row level security;
@@ -938,7 +1063,7 @@ revoke all on client_accounts, client_members, client_invitations, client_polici
               client_policy_documents, client_policy_reminders, job_offers, job_offer_contacts,
               job_offer_relay_log, training_organizers, organizer_members, organizer_invitations, trainings,
               training_private_details, training_registrations, training_participant_contacts, abuse_reports,
-              client_audit_log
+              client_audit_log, app_feature_flags, candidate_ads, candidate_ad_contact_log
   from public, anon, authenticated;
 
 -- Uwaga: uprawnienia kolumnowe dotyczą CAŁEJ roli authenticated (salony, organizatorzy, personel).
@@ -1092,6 +1217,35 @@ create policy job_offer_contacts_owner_update on job_offer_contacts
   with check (account_id in (select public.client_account_ids('owner')));
 create policy job_offer_contacts_staff_read on job_offer_contacts
   for select to authenticated using (app_is_staff());
+
+-- 8.4a „Szukam pracy” (D-E) – NIEAKTYWNE ------------------------------------------------------------------
+-- Przełącznik: authenticated czyta tylko (key, enabled) – potrzebne w politykach niżej (podzapytanie
+-- bez korelacji = initPlan, liczony raz na zapytanie). Brak funkcji pomocniczej dla authenticated
+-- (lista funkcji wykonywalnych przez authenticated w teście CI 9.6 pkt 1 się nie zmienia). anon – nic.
+grant select (key, enabled) on app_feature_flags to authenticated;
+create policy app_feature_flags_read on app_feature_flags
+  for select to authenticated using (true);
+
+-- Ogłoszenia „Szukam pracy”: anon – BRAK grantu (nigdy publiczne, także przy włączonym przełączniku).
+-- authenticated – tylko kolumny ogłoszenia; bez email, tokenów, moderated_by, moderation_note.
+-- Odczyt: członek aktywnego konta salonu (client_account_ids(): właściciel w aal2, pracownik), tylko
+-- opublikowane i nieprzeterminowane, tylko przy włączonym przełączniku. Organizator szkoleń bez konta
+-- salonu nie widzi nic (organizer_ids() nie daje dostępu). Kolejność wyników ustala zapytanie
+-- serwera (data publikacji) – bez rankingu i dopasowywania (D-C, D-E).
+grant select (id, status, content_version, first_name, profession, city, voivodeship, cooperation_forms,
+              experience, available_from, description, submitted_at, published_at, expires_at)
+  on candidate_ads to authenticated;
+create policy candidate_ads_salon_read on candidate_ads
+  for select to authenticated
+  using (status = 'published' and expires_at > now()
+         and exists (select 1 from public.app_feature_flags f where f.key = 'szukam_pracy' and f.enabled)
+         and exists (select 1 from public.client_account_ids()));
+create policy candidate_ads_staff_read on candidate_ads     -- kolejka moderacji, tylko przy włączonym przełączniku
+  for select to authenticated
+  using (exists (select 1 from public.app_feature_flags f where f.key = 'szukam_pracy' and f.enabled)
+         and app_is_staff());
+-- brak INSERT/UPDATE/DELETE dla authenticated: zapis wyłącznie funkcjami app_candidate_* (service_role)
+-- candidate_ad_contact_log: bez grantów i polityk (service_role_only)
 
 -- 8.5 Organizatorzy szkoleń ---------------------------------------------------------------------------
 -- Profil publiczny (znaczek „zweryfikowany”: nazwa, dane firmy z weryfikacji, miasto, strona, opis).
@@ -1645,7 +1799,8 @@ begin
 end $$;
 
 -- Czyszczenie wiadomości: natychmiast po wysyłce (p_outbox) oraz cron – wiadomości niewysłane w 24 h
--- (oznaczane jako failed) i ślad przekazania starszy niż 30 dni.
+-- (oznaczane jako failed) i ślad przekazania starszy niż 30 dni. Obejmuje też e-maile „Szukam pracy”
+-- (szablony candidate_*: wiadomość salonu do autora ogłoszenia i e-maile do autora – D-E, nieaktywne).
 create or replace function public.app_purge_relay_messages(p_outbox uuid default null)
 returns integer
 language plpgsql set search_path = '' as $$
@@ -1655,7 +1810,7 @@ begin
   update public.outbox_emails
      set payload = '{}'::jsonb, recipient = 'anonymized',
          status = case when status = 'pending' then 'failed' else status end
-   where template = 'job_relay' and recipient <> 'anonymized'
+   where (template = 'job_relay' or template like 'candidate\_%') and recipient <> 'anonymized'
      and ((p_outbox is not null and id = p_outbox and status = 'sent')
           or (p_outbox is null and (status = 'sent' or created_at < now() - interval '24 hours')));
   get diagnostics v_count = row_count;
@@ -2174,6 +2329,386 @@ begin
   return v_count;
 end $$;
 
+-- 10.20 „Szukam pracy” (D-E) – NIEAKTYWNE. Każda funkcja zapisu zaczyna od app_require_feature():
+--       przy wyłączonym przełączniku kończy się wyjątkiem SQLSTATE BP404 (serwer odpowiada 404, a trasy
+--       i zakładka i tak nie istnieją dla użytkowników). Wyjątki od blokady: app_candidate_ad_delete()
+--       (prawo do usunięcia danych) i app_purge_candidate_ads() (retencja) – tylko zmniejszają ilość danych.
+--       Tokeny (potwierdzenie e-maila, link do zarządzania) generuje serwer; do bazy trafia skrót SHA-256,
+--       a e-mail z linkiem wysyła serwer – token nigdy w outbox_emails.payload ani w logach (jak w 4.2).
+create or replace function public.app_require_feature(p_key text)
+returns void
+language plpgsql stable set search_path = '' as $$
+begin
+  if not exists (select 1 from public.app_feature_flags f where f.key = p_key and f.enabled) then
+    raise exception 'funkcja % jest wyłączona', p_key using errcode = 'BP404';
+  end if;
+end $$;
+
+-- Włączenie/wyłączenie: tylko admin Aura, włączenie wymaga odwołania do decyzji zleceniodawcy
+-- (po opinii prawnej – 11 §11.9). Wyłączenie nie usuwa wierszy: RLS natychmiast je ukrywa, a retencja
+-- usuwa dane w zwykłym trybie.
+create or replace function public.app_set_feature_flag(
+  p_key text, p_enabled boolean, p_actor uuid, p_decision_ref text default null)
+returns void
+language plpgsql set search_path = '' as $$
+declare
+  v_old boolean;
+begin
+  if not exists (select 1 from public.admin_users u
+                 where u.user_id = p_actor and u.is_active and u.role = 'admin') then
+    raise exception 'feature flag: brak uprawnień';
+  end if;
+  select f.enabled into v_old from public.app_feature_flags f where f.key = p_key for update;
+  if not found then
+    raise exception 'feature flag: nieznany przełącznik %', p_key;
+  end if;
+  if p_enabled and coalesce(char_length(trim(p_decision_ref)), 0) < 5 then
+    raise exception 'feature flag: włączenie wymaga odwołania do decyzji zleceniodawcy po sprawdzeniu prawnym';
+  end if;
+  update public.app_feature_flags
+     set enabled = p_enabled, decision_ref = coalesce(nullif(trim(p_decision_ref), ''), decision_ref),
+         changed_by = p_actor, changed_at = now()
+   where key = p_key;
+  insert into public.client_audit_log (actor, action, entity, payload)
+  values ('staff:' || p_actor::text, 'feature_flag_changed', 'feature_flag',
+          jsonb_build_object('key', p_key, 'from', v_old, 'to', p_enabled));
+end $$;
+
+-- Wspólna walidacja treści (poza CHECK w tabeli): dostępność najwyżej rok naprzód, formy współpracy z listy.
+create or replace function public.candidate_ad_check_payload(p_payload jsonb)
+returns void
+language plpgsql stable set search_path = '' as $$
+begin
+  if jsonb_typeof(p_payload -> 'cooperation_forms') is distinct from 'array' then
+    raise exception 'szukam-pracy: brak form współpracy';
+  end if;
+  if (p_payload ->> 'available_from')::date > current_date + 365 then
+    raise exception 'szukam-pracy: dostępność najwyżej rok naprzód';
+  end if;
+  if char_length(coalesce(p_payload ->> 'description', '')) > 500 then
+    raise exception 'szukam-pracy: opis najwyżej 500 znaków';
+  end if;
+end $$;
+
+-- Dodanie ogłoszenia (bez konta): status unconfirmed; link potwierdzający ważny 24 h [Założenie].
+-- [Założenie] jedno ogłoszenie na adres e-mail: jeśli adres ma już ogłoszenie, funkcja zwraca NULL,
+-- a serwer odpowiada TAK SAMO jak przy sukcesie („Sprawdź skrzynkę”) i wysyła na ten adres link
+-- do zarządzania (app_candidate_ad_send_manage_link) – brak wycieku informacji, czy adres ma ogłoszenie.
+-- Turnstile, honeypot i limit Workers na IP sprawdza serwer przed wywołaniem.
+create or replace function public.app_candidate_ad_submit(
+  p_email text, p_payload jsonb, p_confirm_token_hash text, p_notice_version text)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_email text := lower(trim(p_email));
+  v_id    uuid;
+begin
+  perform public.app_require_feature('szukam_pracy');
+  if coalesce((p_payload ->> 'adult_confirmed')::boolean, false) is not true then
+    raise exception 'szukam-pracy: ogłoszenie może dodać wyłącznie osoba pełnoletnia';
+  end if;
+  perform public.candidate_ad_check_payload(p_payload);
+  if exists (select 1 from public.candidate_ads a
+              where a.email_normalized = v_email
+                and a.status in ('unconfirmed','pending_review','published')) then
+    return null;
+  end if;
+  insert into public.candidate_ads
+    (email, email_normalized, confirm_token_hash, confirm_expires_at, first_name, profession, city,
+     voivodeship, cooperation_forms, experience, available_from, description, adult_confirmed, notice_version)
+  values (trim(p_email), v_email, p_confirm_token_hash, now() + interval '24 hours',
+          trim(p_payload ->> 'first_name'), p_payload ->> 'profession', trim(p_payload ->> 'city'),
+          p_payload ->> 'voivodeship',
+          array(select jsonb_array_elements_text(p_payload -> 'cooperation_forms')),
+          p_payload ->> 'experience', (p_payload ->> 'available_from')::date,
+          nullif(trim(p_payload ->> 'description'), ''), true, p_notice_version)
+  returning id into v_id;
+  return v_id;
+end $$;
+
+-- Potwierdzenie adresu (POST ze strony potwierdzenia – GET niczego nie zmienia, skanery poczty
+-- otwierają linki): ogłoszenie trafia do moderacji; od teraz działa link do zarządzania.
+create or replace function public.app_candidate_ad_confirm(p_confirm_token_hash text, p_manage_token_hash text)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_id uuid;
+begin
+  perform public.app_require_feature('szukam_pracy');
+  update public.candidate_ads
+     set status = 'pending_review', confirmed_at = now(), submitted_at = now(),
+         confirm_token_hash = null, confirm_expires_at = null,
+         manage_token_hash = p_manage_token_hash, updated_at = now()
+   where confirm_token_hash = p_confirm_token_hash and status = 'unconfirmed' and confirm_expires_at > now()
+  returning id into v_id;
+  if v_id is null then
+    raise exception 'szukam-pracy: link potwierdzający wygasł albo został użyty';
+  end if;
+  return v_id;
+end $$;
+
+-- „Wyślij mi link do zarządzania”: nowy token, poprzedni przestaje działać. Zwraca NULL, gdy adres nie
+-- ma ogłoszenia – serwer odpowiada neutralnie w obu przypadkach.
+create or replace function public.app_candidate_ad_send_manage_link(p_email text, p_new_manage_token_hash text)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_id uuid;
+begin
+  perform public.app_require_feature('szukam_pracy');
+  update public.candidate_ads
+     set manage_token_hash = p_new_manage_token_hash, updated_at = now()
+   where email_normalized = lower(trim(p_email))
+     and status in ('pending_review','published','rejected','expired')
+  returning id into v_id;
+  return v_id;
+end $$;
+
+-- Edycja przez link: każda zmiana wraca do moderacji (ogłoszenie znika z tablicy do akceptacji),
+-- content_version rośnie – decyzja moderatora dla starszej wersji kończy się wyjątkiem.
+create or replace function public.app_candidate_ad_update(p_manage_token_hash text, p_payload jsonb)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_id uuid;
+begin
+  perform public.app_require_feature('szukam_pracy');
+  perform public.candidate_ad_check_payload(p_payload);
+  update public.candidate_ads
+     set first_name = trim(p_payload ->> 'first_name'), profession = p_payload ->> 'profession',
+         city = trim(p_payload ->> 'city'), voivodeship = p_payload ->> 'voivodeship',
+         cooperation_forms = array(select jsonb_array_elements_text(p_payload -> 'cooperation_forms')),
+         experience = p_payload ->> 'experience', available_from = (p_payload ->> 'available_from')::date,
+         description = nullif(trim(p_payload ->> 'description'), ''),
+         content_version = content_version + 1, status = 'pending_review', submitted_at = now(),
+         published_at = null, extended_at = null, expires_at = null, rejection_reason = null,
+         updated_at = now()
+   where manage_token_hash = p_manage_token_hash and p_manage_token_hash is not null
+     and status in ('pending_review','published','rejected','expired')
+  returning id into v_id;
+  if v_id is null then
+    raise exception 'szukam-pracy: link do zarządzania jest nieważny';
+  end if;
+  return v_id;
+end $$;
+
+-- Przedłużenie o 30 dni [Założenie]: tylko opublikowane ogłoszenie w ostatnich 7 dniach ważności,
+-- bez zmiany treści (zatwierdzona wersja zostaje). Wygasłe ogłoszenie – ponownie przez edycję (moderacja).
+create or replace function public.app_candidate_ad_extend(p_manage_token_hash text)
+returns timestamptz
+language plpgsql set search_path = '' as $$
+declare
+  v_expires timestamptz;
+begin
+  perform public.app_require_feature('szukam_pracy');
+  update public.candidate_ads
+     set extended_at = now(), expires_at = now() + interval '30 days', updated_at = now()
+   where manage_token_hash = p_manage_token_hash and p_manage_token_hash is not null
+     and status = 'published' and expires_at > now() and expires_at <= now() + interval '7 days'
+  returning expires_at into v_expires;
+  if v_expires is null then
+    raise exception 'szukam-pracy: przedłużenie możliwe w ostatnich 7 dniach ważności opublikowanego ogłoszenia';
+  end if;
+  return v_expires;
+end $$;
+
+-- Usunięcie przez autora – działa ZAWSZE, także przy wyłączonym przełączniku (prawo do usunięcia danych).
+-- Usuwa wiersz od razu (bez kopii), czyści niewysłane wiadomości salonów do tego adresu; ślad wysyłek
+-- traci odwołanie do ogłoszenia (ad_id → NULL), zgłoszenia nadużyć dotyczące ogłoszenia znikają (cascade).
+create or replace function public.app_candidate_ad_delete(p_manage_token_hash text)
+returns boolean
+language plpgsql set search_path = '' as $$
+declare
+  v_id uuid;
+begin
+  select id into v_id from public.candidate_ads
+   where manage_token_hash = p_manage_token_hash and p_manage_token_hash is not null
+   for update;
+  if v_id is null then
+    return false;
+  end if;
+  update public.outbox_emails o
+     set payload = '{}'::jsonb, recipient = 'anonymized',
+         status = case when o.status = 'pending' then 'failed' else o.status end
+   where o.template like 'candidate\_%' and o.recipient <> 'anonymized'
+     and o.id in (select l.outbox_id from public.candidate_ad_contact_log l where l.ad_id = v_id);
+  delete from public.candidate_ads where id = v_id;
+  return true;
+end $$;
+
+-- Moderacja (personel admin/agent; serwer sprawdza też app_is_staff w sesji aal2). Odrzucenie
+-- i usunięcie wymagają uzasadnienia dla autora (statement of reasons – art. 17 DSA [do weryfikacji
+-- przez prawnika]); serwer wysyła je e-mailem candidate_ad_rejected / candidate_ad_removed.
+create or replace function public.app_moderate_candidate_ad(
+  p_ad uuid, p_actor uuid, p_decision text, p_expected_version integer,
+  p_note text default null, p_reason text default null)
+returns void
+language plpgsql set search_path = '' as $$
+declare
+  v_ad public.candidate_ads%rowtype;
+begin
+  perform public.app_require_feature('szukam_pracy');
+  if not exists (select 1 from public.admin_users u
+                 where u.user_id = p_actor and u.is_active and u.role in ('admin','agent')) then
+    raise exception 'moderate: brak uprawnień';
+  end if;
+  select * into v_ad from public.candidate_ads where id = p_ad for update;
+  if not found then
+    raise exception 'moderate: brak ogłoszenia';
+  end if;
+  if p_decision in ('publish','reject') and p_expected_version is distinct from v_ad.content_version then
+    raise exception 'moderate: ogłoszenie zmieniono w trakcie moderacji (wersja %, oczekiwano %)',
+      v_ad.content_version, p_expected_version;
+  end if;
+  if p_decision in ('reject','remove') and coalesce(char_length(trim(p_reason)), 0) < 10 then
+    raise exception 'moderate: decyzja wymaga uzasadnienia dla autora ogłoszenia';
+  end if;
+
+  if p_decision = 'publish' and v_ad.status = 'pending_review' then
+    update public.candidate_ads
+       set status = 'published', published_at = now(), extended_at = null,
+           expires_at = now() + interval '30 days',                              -- [Założenie] 30 dni
+           moderated_by = p_actor, moderation_note = p_note, rejection_reason = null, updated_at = now()
+     where id = p_ad;
+  elsif p_decision = 'reject' and v_ad.status = 'pending_review' then
+    update public.candidate_ads
+       set status = 'rejected', moderated_by = p_actor, moderation_note = p_note,
+           rejection_reason = p_reason, updated_at = now()
+     where id = p_ad;
+  elsif p_decision = 'remove' and v_ad.status in ('published','pending_review') then
+    update public.candidate_ads
+       set status = 'removed', moderated_by = p_actor, moderation_note = p_note,
+           rejection_reason = p_reason, removed_at = now(), updated_at = now()
+     where id = p_ad;
+  else
+    raise exception 'moderate: niedozwolona decyzja % dla statusu %', p_decision, v_ad.status;
+  end if;
+
+  insert into public.client_audit_log (actor, action, entity, entity_id, payload)
+  values ('staff:' || p_actor::text,
+          case p_decision when 'publish' then 'candidate_ad_published'
+                          when 'reject'  then 'candidate_ad_rejected'
+                          else 'candidate_ad_removed' end,
+          'candidate_ad', p_ad, jsonb_build_object('from', v_ad.status, 'version', v_ad.content_version));
+end $$;
+
+-- Wiadomość salonu do autora ogłoszenia (formularz przekazujący). Tylko właściciel aktywnego konta
+-- salonu [Założenie] (serwer sprawdza sesję aal2, Turnstile i limit Workers). Wiadomość trafia e-mailem
+-- na adres autora, którego salon nie widzi; Reply-To = adres kontaktowy salonu. W bazie treść i adres
+-- odbiorcy istnieją tylko w outbox_emails do wysyłki (potem app_purge_relay_messages); zostaje ślad bez
+-- treści (candidate_ad_contact_log). Limity [Założenie]: 1 wiadomość od salonu do ogłoszenia (w okresie
+-- retencji śladu), 20 wiadomości salonu na dobę, 10 wiadomości do ogłoszenia na dobę.
+create or replace function public.app_candidate_contact(p_ad uuid, p_account uuid, p_actor uuid, p_payload jsonb)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_ad     public.candidate_ads%rowtype;
+  v_salon  public.client_accounts%rowtype;
+  v_outbox uuid;
+  v_log    uuid;
+begin
+  perform public.app_require_feature('szukam_pracy');
+  select a.* into v_salon from public.client_accounts a
+    join public.client_members m on m.account_id = a.id
+   where a.id = p_account and a.status = 'active'
+     and m.user_id = p_actor and m.role = 'owner' and m.status = 'active';
+  if not found then
+    raise exception 'candidate contact: brak uprawnień';
+  end if;
+  select * into v_ad from public.candidate_ads
+   where id = p_ad and status = 'published' and expires_at > now()
+   for update;                                   -- serializuje limity dla jednego ogłoszenia
+  if not found then
+    raise exception 'candidate contact: ogłoszenie niedostępne';
+  end if;
+  if char_length(coalesce(p_payload ->> 'message', '')) not between 20 and 1000
+     or (p_payload ->> 'message') ~ '[<>]' or (p_payload ->> 'message') ~* '(https?://|www\.)'
+     or coalesce(p_payload ->> 'reply_to', '') !~ '^[^@[:space:]<>]+@[^@[:space:]<>]+\.[a-z]{2,}$'
+     or char_length(p_payload ->> 'reply_to') > 254 then
+    raise exception 'candidate contact: nieprawidłowa wiadomość';
+  end if;
+  if exists (select 1 from public.candidate_ad_contact_log l where l.ad_id = p_ad and l.account_id = p_account) then
+    raise exception 'candidate contact: salon już wysłał wiadomość do tego ogłoszenia';
+  end if;
+  if (select count(*) from public.candidate_ad_contact_log l
+       where l.account_id = p_account and l.created_at > now() - interval '1 day') >= 20
+     or (select count(*) from public.candidate_ad_contact_log l
+          where l.ad_id = p_ad and l.created_at > now() - interval '1 day') >= 10 then
+    raise exception 'candidate contact: dzienny limit wiadomości';
+  end if;
+
+  v_log := gen_random_uuid();                   -- contact_id trafia do linku „Zgłoś wiadomość” w e-mailu
+  insert into public.outbox_emails (template, recipient, payload, account_id)
+  values ('candidate_contact', v_ad.email,
+          jsonb_build_object('salon_name', v_salon.display_name, 'salon_city', v_salon.city,
+                             'reply_to', p_payload ->> 'reply_to', 'message', p_payload ->> 'message',
+                             'contact_id', v_log),
+          p_account)
+  returning id into v_outbox;
+  insert into public.candidate_ad_contact_log (id, ad_id, account_id, sent_by, outbox_id)
+  values (v_log, p_ad, p_account, p_actor, v_outbox);
+  -- dziennik konta: tylko fakt wysyłki (bez odwołania do ogłoszenia i bez treści)
+  insert into public.client_audit_log (account_id, actor, action, entity)
+  values (p_account, 'user:' || p_actor::text, 'candidate_contact_sent', 'candidate_ad');
+  return v_log;
+end $$;
+
+-- „Zgłoś” przy ogłoszeniu (zgłoszenie DSA: powód + opcjonalne uzasadnienie, bez danych zgłaszającego).
+create or replace function public.app_report_candidate_ad(p_ad uuid, p_reason text, p_details text default null)
+returns bigint
+language plpgsql set search_path = '' as $$
+declare
+  v_id bigint;
+begin
+  perform public.app_require_feature('szukam_pracy');
+  if not exists (select 1 from public.candidate_ads a where a.id = p_ad and a.status = 'published') then
+    raise exception 'report: ogłoszenie niedostępne';
+  end if;
+  insert into public.abuse_reports (target, candidate_ad_id, reason, details)
+  values ('candidate_ad', p_ad, p_reason, nullif(trim(p_details), ''))
+  returning id into v_id;
+  return v_id;
+end $$;
+
+-- „Zgłoś wiadomość” z e-maila do autora ogłoszenia (link z contact_id; bez danych zgłaszającego).
+-- Zgłoszenie wskazuje salon (reported_account_id) i przetrwa usunięcie śladu wysyłki po 30 dniach.
+create or replace function public.app_report_candidate_contact(p_contact uuid, p_reason text, p_details text default null)
+returns bigint
+language plpgsql set search_path = '' as $$
+declare
+  v_account uuid;
+  v_id      bigint;
+begin
+  perform public.app_require_feature('szukam_pracy');
+  select l.account_id into v_account from public.candidate_ad_contact_log l where l.id = p_contact;
+  if v_account is null then
+    raise exception 'report: wiadomość nie istnieje albo minął okres przechowywania śladu';
+  end if;
+  insert into public.abuse_reports (target, candidate_contact_id, reported_account_id, reason, details)
+  values ('candidate_contact', p_contact, v_account, p_reason, nullif(trim(p_details), ''))
+  returning id into v_id;
+  return v_id;
+end $$;
+
+-- Retencja (cron, codziennie) – działa także przy wyłączonym przełączniku. [Założenie] niepotwierdzone
+-- po 24 h – usunięte; wygasłe, odrzucone, usunięte moderacyjnie i niezmoderowane od 30 dni – usunięte
+-- 30 dni po ostatniej zmianie (czas na odwołanie od decyzji); ślad wysyłek – 30 dni.
+create or replace function public.app_purge_candidate_ads()
+returns integer
+language plpgsql set search_path = '' as $$
+declare
+  v_count integer;
+begin
+  update public.candidate_ads set status = 'expired', updated_at = now()
+   where status = 'published' and expires_at <= now();
+  delete from public.candidate_ads
+   where (status = 'unconfirmed' and confirm_expires_at <= now())
+      or (status in ('expired','rejected','removed','pending_review') and updated_at < now() - interval '30 days');
+  get diagnostics v_count = row_count;
+  delete from public.candidate_ad_contact_log where created_at < now() - interval '30 days';
+  return v_count;
+end $$;
+
 -- Uprawnienia funkcji zapisu: wyłącznie service_role
 revoke execute on function
   public.app_activate_client_account(uuid, uuid, text, text),
@@ -2200,7 +2735,21 @@ revoke execute on function
   public.app_training_mark_attendance(uuid, uuid, text),
   public.app_log_organizer_access(uuid, uuid, text),
   public.app_purge_training_contacts(),
-  public.app_purge_audit_log()
+  public.app_purge_audit_log(),
+  public.app_require_feature(text),
+  public.app_set_feature_flag(text, boolean, uuid, text),
+  public.candidate_ad_check_payload(jsonb),
+  public.app_candidate_ad_submit(text, jsonb, text, text),
+  public.app_candidate_ad_confirm(text, text),
+  public.app_candidate_ad_send_manage_link(text, text),
+  public.app_candidate_ad_update(text, jsonb),
+  public.app_candidate_ad_extend(text),
+  public.app_candidate_ad_delete(text),
+  public.app_moderate_candidate_ad(uuid, uuid, text, integer, text, text),
+  public.app_candidate_contact(uuid, uuid, uuid, jsonb),
+  public.app_report_candidate_ad(uuid, text, text),
+  public.app_report_candidate_contact(uuid, text, text),
+  public.app_purge_candidate_ads()
   from public, anon, authenticated;
 grant execute on function
   public.app_activate_client_account(uuid, uuid, text, text),
@@ -2227,7 +2776,22 @@ grant execute on function
   public.app_log_organizer_access(uuid, uuid, text),
   public.app_purge_training_contacts(),
   public.app_purge_audit_log(),
-  public.training_actor_kind(uuid, uuid)          -- wołana wewnątrz funkcji app_* (security invoker)
+  public.training_actor_kind(uuid, uuid),         -- wołana wewnątrz funkcji app_* (security invoker)
+  -- „Szukam pracy” (D-E): funkcje istnieją, ale przy wyłączonym przełączniku odmawiają (BP404)
+  public.app_require_feature(text),
+  public.app_set_feature_flag(text, boolean, uuid, text),
+  public.candidate_ad_check_payload(jsonb),
+  public.app_candidate_ad_submit(text, jsonb, text, text),
+  public.app_candidate_ad_confirm(text, text),
+  public.app_candidate_ad_send_manage_link(text, text),
+  public.app_candidate_ad_update(text, jsonb),
+  public.app_candidate_ad_extend(text),
+  public.app_candidate_ad_delete(text),
+  public.app_moderate_candidate_ad(uuid, uuid, text, integer, text, text),
+  public.app_candidate_contact(uuid, uuid, uuid, jsonb),
+  public.app_report_candidate_ad(uuid, text, text),
+  public.app_report_candidate_contact(uuid, text, text),
+  public.app_purge_candidate_ads()
   to service_role;
 
 -- Test w CI (rozszerzenie packages/db/tests/privileges.test.sql) – pełna lista w pkt 9.6 dokumentu 11:
@@ -2245,4 +2809,8 @@ grant execute on function
 --      moderacja z nieaktualną wersją → wyjątek; organizator: INSERT status 'published' → wyjątek,
 --      UPDATE capacity → permission denied, zmiana organizer_id → wyjątek;
 --  (8) organizator: training_registrations → 0 wierszy; training_participant_contacts tylko własnych szkoleń;
---  (9) client_audit_log: UPDATE → wyjątek; TRUNCATE i DELETE jako service_role → permission denied.
+--  (9) client_audit_log: UPDATE → wyjątek; TRUNCATE i DELETE jako service_role → permission denied;
+--  (10) „Szukam pracy” (D-E): przy wyłączonym przełączniku każda funkcja app_candidate_* (poza delete)
+--       i app_moderate_candidate_ad → BP404, candidate_ads → 0 wierszy dla salonu i personelu;
+--       anon: select z candidate_ads → permission denied także przy włączonym; salon nie czyta email;
+--       organizator bez konta salonu → 0 wierszy; po wysyłce outbox candidate_contact = '{}'.

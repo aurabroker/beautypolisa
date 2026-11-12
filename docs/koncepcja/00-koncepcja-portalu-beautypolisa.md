@@ -129,6 +129,7 @@ Kluczowe decyzje (pełne uzasadnienia i odrzucone alternatywy w sekcjach; rejest
 | D20 | **Decyzja zleceniodawcy 11.11.2026:** „Dam pracę” wyłącznie jako tablica ogłoszeń – bez danych, kont i CV kandydatów, bez polecania i dobierania kandydatów; kontakt z salonem bezpośrednio albo formularzem bez przechowywania wiadomości; bez wpisu do KRAZ | 11 |
 | D21 | **Decyzja zleceniodawcy 11.11.2026:** szkolenia dodają zweryfikowani organizatorzy (firmy szkoleniowe i salony) z publikacją po moderacji; organizator widzi minimalne dane uczestników tylko swoich szkoleń; bez płatności online w MVP | 11 |
 | D22 | **Decyzje zleceniodawcy 11.11.2026:** konto przy każdej polisie kupionej przez BeautyPolisa; po wygaśnięciu polis konto i dostęp do „Dam pracę” i „Szkoleń” zostają | 11 |
+| D23 | **Decyzja zleceniodawcy 11.11.2026:** „Szukam pracy” (ogłoszenia osób szukających pracy) na tablicy „Dam pracę” – przygotowane, ale **nieaktywne**: wyłączone przełącznikiem do decyzji zleceniodawcy po sprawdzeniu prawnym (KRAZ, RODO, DSA); bez kont kandydatów, widoczne tylko dla zalogowanych salonów, kontakt formularzem bez przechowywania treści; nadal tylko tablica – bez polecania i dopasowywania kandydatów | 11 |
 
 ## 7. Bezpieczeństwo i stabilność – zasady nienegocjowalne
 
@@ -193,7 +194,7 @@ Pełny plan z WBS, rejestrem ryzyk, KPI/SLO i checklistami Definition of Done tr
 7. **Imienny autor i recenzent** treści z uprawnieniami.
 8. **Dane kontaktowe i profile** (telefon, e-mail, LinkedIn/Facebook/Instagram, Google Business Profile, KRS/NIP) do stopki, `ContactPoint` i `sameAs`.
 
-**Strefa Klienta** (nie blokuje fazy 1): rozstrzygnięte 11.11.2026 – konto przy każdej polisie, brak odcięcia konta po wygaśnięciu polis, „Dam pracę” jako sama tablica bez wpisu do KRAZ, organizatorzy szkoleń. Otwarte (pełna lista w 11 §21): role RODO przy danych uczestników szkoleń – organizator jako odrębny administrator czy Aura jako podmiot przetwarzający (prawnik i IOD, blokuje Z2); właściciel konta, gdy ubezpieczającym jest spółka; akceptacja obowiązkowego TOTP dla właścicieli salonów; okres przechowywania dokumentów polis przy koncie bez daty wygaśnięcia; zasady weryfikacji i ewentualne opłaty dla organizatorów; formularz kontaktowy w ogłoszeniach czy wyłącznie bezpośredni e-mail lub telefon salonu.
+**Strefa Klienta** (nie blokuje fazy 1): rozstrzygnięte 11.11.2026 – konto przy każdej polisie, brak odcięcia konta po wygaśnięciu polis, „Dam pracę” jako sama tablica bez wpisu do KRAZ, organizatorzy szkoleń. Otwarte (pełna lista w 11 §21): role RODO przy danych uczestników szkoleń – organizator jako odrębny administrator czy Aura jako podmiot przetwarzający (prawnik i IOD, blokuje Z2); właściciel konta, gdy ubezpieczającym jest spółka; akceptacja obowiązkowego TOTP dla właścicieli salonów; okres przechowywania dokumentów polis przy koncie bez daty wygaśnięcia; zasady weryfikacji i ewentualne opłaty dla organizatorów; formularz kontaktowy w ogłoszeniach czy wyłącznie bezpośredni e-mail lub telefon salonu; opinia prawna przed włączeniem nieaktywnego „Szukam pracy” (KRAZ, RODO, DSA – nie blokuje etapów).
 
 Pełna, skonsolidowana lista pytań otwartych trafi do `08-plan-wdrozenia.md` (w przygotowaniu).
 
@@ -206,6 +207,6 @@ Pełna, skonsolidowana lista pytań otwartych trafi do `08-plan-wdrozenia.md` (w
 
 ## 15. Następne kroki
 
-1. Przegląd i akceptacja koncepcji przez zleceniodawcę, w szczególności decyzji D1–D22 i odpowiedzi na pytania z rozdziału 13.
+1. Przegląd i akceptacja koncepcji przez zleceniodawcę, w szczególności decyzji D1–D23 i odpowiedzi na pytania z rozdziału 13.
 2. Wykonanie szybkich wygranych tygodnia 0 (sekcja 08, rozdział 1) – są niezależne od budowy portalu i usuwają realne ryzyka już dziś.
 3. Po akceptacji: szczegółowy plan implementacji fazy 1 (zadania, kolejność, testy) i start od szkieletu aplikacji z bramkami CI, zanim powstanie jakakolwiek strona.

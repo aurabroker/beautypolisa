@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Logowanie – Strefa Klienta | BeautyPolisa</title>
+<meta name="description" content="Makieta: logowanie do Strefy Klienta BeautyPolisa kodem z e-maila, drugi składnik, przyjęcie zaproszenia.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#141C33">
+<meta name="color-scheme" content="only light">
+<!-- Produkcja: /strefa-klienta/logowanie i /strefa-klienta/zaproszenie – dynamiczne, no-store, CSP z nonce, Turnstile (host już w CSP). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="strefa.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<a class="skip" href="#tresc">Przejdź do treści</a>
+<div class="app-bg" aria-hidden="true"></div>
+
+<!-- Adnotacja makiety: w produkcji usuwana -->
+<div class="mock-bar" role="note">
+  <strong>Makieta</strong>
+  <span>Strefa Klienta – wersja nieaktywna (na stronie głównej link „Strefa Klienta” ma dopisek „wkrótce”). Dane są fikcyjne.</span>
+  <nav aria-label="Ekrany makiety">
+    <a href="#s-email">1. E-mail</a>
+    <a href="#s-kod">2. Kod z e-maila</a>
+    <a href="#s-totp">3. Kod z aplikacji</a>
+    <a href="#s-zaproszenie">Zaproszenie</a>
+    <a href="#s-pierwsze">Pierwsze logowanie</a>
+    <a href="#s-stany">Stany błędów</a>
+  </nav>
+</div>
+
+<header class="auth-top">
+  <a class="brand" href="../makieta-v3.html" aria-label="BeautyPolisa – strona główna">
+    <span class="logo-chip"><img src="../../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="133" height="20"></span>
+    <span class="zone-name">Strefa Klienta<small>created by Aura Consulting</small></span>
+  </a>
+  <a class="link-quiet" href="../makieta-v3.html">Wróć na stronę główną</a>
+</header>
+
+<main id="tresc" class="auth">
+  <div class="auth-screens">
+
+    <!-- ============ 1 · adres e-mail ============ -->
+    <section class="screen" id="s-email" aria-labelledby="t-email">
+      <div class="auth-card glass glass--strong frame">
+        <p class="eyebrow">Strefa Klienta</p>
+        <h1 id="t-email">Zaloguj się</h1>
+        <p class="lead">Wpisz adres e-mail przypisany do konta salonu. Wyślemy na niego sześciocyfrowy kod – bez hasła.</p>
+        <form class="form" id="f-email" action="#s-kod" method="post" novalidate>
+          <div class="field">
+            <label for="email">Adres e-mail</label>
+            <input type="email" id="email" name="email" autocomplete="email" inputmode="email" spellcheck="false" required aria-describedby="email-hint" placeholder="np. anna@salon-przykladowy.example">
+            <p class="hint" id="email-hint">Ten sam formularz służy właścicielom salonów, pracownikom i&nbsp;organizatorom szkoleń.</p>
+            <p class="field-error" id="email-err" hidden>Wpisz adres e-mail w&nbsp;formacie nazwa@domena.pl.</p>
+          </div>
+          <div class="turnstile-slot" role="img" aria-label="Miejsce na weryfikację Cloudflare Turnstile">
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+            <span>Weryfikacja Cloudflare Turnstile <span class="mock-note">miejsce na widget</span></span>
+          </div>
+          <button class="btn btn-navy" type="submit">Wyślij kod</button>
+        </form>
+        <hr class="rule">
+        <p class="small">Konto zakłada Aura Consulting po zawarciu polisy. Rejestracja nie jest potrzebna.</p>
+        <p class="xsmall muted">Nie masz zaproszenia, a&nbsp;Twój salon ma polisę kupioną przez BeautyPolisa? <a href="../makieta-v3.html#kontakt">Napisz do doradcy</a>.</p>
+      </div>
+    </section>
+
+    <!-- ============ 2 · kod z e-maila ============ -->
+    <section class="screen" id="s-kod" aria-labelledby="t-kod">
+      <div class="auth-card glass glass--strong frame">
+        <ol class="stepper" aria-label="Etapy logowania">
+          <li class="done">Adres e-mail</li>
+          <li aria-current="step">Kod z&nbsp;e-maila</li>
+          <li>Kod z&nbsp;aplikacji</li>
+        </ol>
+        <h1 id="t-kod">Wpisz kod z&nbsp;e-maila</h1>
+        <div class="alert alert--info" role="status">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3.5 6l8.5 7 8.5-7"/></svg>
+          <p>Jeśli adres <strong class="js-email">anna@salon-przykladowy.example</strong> jest przypisany do konta, wysłaliśmy na niego sześciocyfrowy kod. Kod jest ważny 10&nbsp;minut <span class="mock-note">Założenie</span>.</p>
+        </div>
+        <form class="form" id="f-kod" action="#s-totp" method="post" novalidate>
+          <div class="field">
+            <label for="kod">Kod z&nbsp;e-maila</label>
+            <input class="code-input" type="text" id="kod" name="kod" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="kod-hint">
+            <p class="hint" id="kod-hint">Sześć cyfr. Nie widzisz wiadomości? Sprawdź folder „Oferty” lub „Spam”.</p>
+          </div>
+          <div class="turnstile-slot" role="img" aria-label="Miejsce na weryfikację Cloudflare Turnstile">
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+            <span>Weryfikacja Cloudflare Turnstile <span class="mock-note">miejsce na widget</span></span>
+          </div>
+          <div class="form-foot">
+            <button class="btn btn-navy" type="submit">Zaloguj się</button>
+            <button class="link-quiet" type="button" id="resend" disabled aria-describedby="resend-info">Wyślij kod ponownie</button>
+            <span class="xsmall" id="resend-info" aria-live="polite">Możliwe za <span class="num" id="resend-left">0:59</span></span>
+          </div>
+        </form>
+        <hr class="rule">
+        <p class="small">W&nbsp;e-mailu jest też przycisk „Zaloguj się jednym kliknięciem”. Działa tylko w&nbsp;tej przeglądarce – w&nbsp;innej wpisz kod.</p>
+        <a class="link-lux" href="#s-email">Zmień adres</a>
+      </div>
+    </section>
+
+    <!-- ============ 3 · kod TOTP ============ -->
+    <section class="screen" id="s-totp" aria-labelledby="t-totp">
+      <div class="auth-card glass glass--strong frame">
+        <ol class="stepper" aria-label="Etapy logowania">
+          <li class="done">Adres e-mail</li>
+          <li class="done">Kod z&nbsp;e-maila</li>
+          <li aria-current="step">Kod z&nbsp;aplikacji</li>
+        </ol>
+        <h1 id="t-totp">Drugi składnik logowania</h1>
+        <p class="lead">Otwórz aplikację uwierzytelniającą w&nbsp;telefonie i&nbsp;wpisz kod dla konta „BeautyPolisa – Strefa Klienta”.</p>
+        <form class="form" id="f-totp" action="panel.html" method="get" novalidate>
+          <div class="field" id="totp-field">
+            <label for="totp">Kod z&nbsp;aplikacji</label>
+            <input class="code-input" type="text" id="totp" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="totp-hint">
+            <p class="hint" id="totp-hint">Kod zmienia się co 30&nbsp;sekund.</p>
+          </div>
+          <div class="field" id="backup-field" hidden>
+            <label for="backup">Kod zapasowy</label>
+            <input type="text" id="backup" name="backup" autocomplete="one-time-code" spellcheck="false" aria-describedby="backup-hint">
+            <p class="hint" id="backup-hint">Każdy kod zapasowy działa jeden raz. Po użyciu ostatniego poproś doradcę o&nbsp;reset drugiego składnika.</p>
+          </div>
+          <div class="form-foot">
+            <button class="btn btn-navy" type="submit">Potwierdź</button>
+            <button class="link-quiet" type="button" id="use-backup" aria-controls="backup-field totp-field" aria-expanded="false">Użyj kodu zapasowego</button>
+          </div>
+        </form>
+        <p class="xsmall muted">Drugi składnik jest obowiązkowy dla właścicieli salonów i&nbsp;organizatorów szkoleń, a&nbsp;dla pracowników – opcjonalny.</p>
+      </div>
+    </section>
+
+    <!-- ============ 4 · przyjęcie zaproszenia ============ -->
+    <section class="screen" id="s-zaproszenie" aria-labelledby="t-zapr">
+      <div class="auth-card glass glass--strong frame">
+        <p class="eyebrow">Zaproszenie</p>
+        <h1 id="t-zapr">Dołącz do Strefy Klienta</h1>
+        <div class="invite">
+          <span class="label-caps">Salon</span>
+          <strong>Salon Przykładowy</strong>
+          <dl>
+            <dt>Rola</dt><dd>Pracownik</dd>
+            <dt>Adres e-mail</dt><dd>ewa@salon-przykladowy.example</dd>
+            <dt>Zaprasza</dt><dd>Anna Przykładowa, właścicielka konta</dd>
+            <dt>Ważne do</dt><dd><time datetime="2026-11-18">18 listopada 2026&nbsp;r.</time> (7&nbsp;dni)</dd>
+          </dl>
+        </div>
+        <p class="small">Jako pracownik zobaczysz „Szkolenia” i&nbsp;ogłoszenia salonu w&nbsp;„Dam pracę”. Polisy salonu widzi właściciel konta.</p>
+        <form class="form" id="f-zapr" action="#s-kod" method="post">
+          <!-- token z części # adresu przenosi skrypt (nonce) do treści POST; bez JS – pole poniżej -->
+          <noscript>
+            <div class="field">
+              <label for="kod-zapr-ns">Kod zaproszenia <span>(z tego samego e-maila)</span></label>
+              <input type="text" id="kod-zapr-ns" name="kod_zaproszenia" autocomplete="off" spellcheck="false" required>
+            </div>
+          </noscript>
+          <button class="btn btn-navy" type="submit">Przyjmij zaproszenie</button>
+        </form>
+        <p class="notice">Samo otwarcie linku niczego nie zmienia. Po przyjęciu zaproszenia poprosimy o&nbsp;kod wysłany na adres ewa@salon-przykladowy.example – to potwierdza, że skrzynka należy do Ciebie.</p>
+        <p class="xsmall"><span class="mock-note">Wariant organizatora</span> Zaproszenie organizatora szkoleń wygląda tak samo – z&nbsp;nazwą „Organizator przykładowy” i&nbsp;rolą „Organizator szkoleń”. Token salonu nie działa jako zaproszenie organizatora i&nbsp;odwrotnie.</p>
+      </div>
+    </section>
+
+    <!-- ============ 5 · pierwsze logowanie ============ -->
+    <section class="screen" id="s-pierwsze" aria-labelledby="t-pierwsze">
+      <div class="auth-card auth-card--wide glass glass--strong frame">
+        <ol class="stepper" aria-label="Pierwsze logowanie">
+          <li aria-current="step">Regulamin</li>
+          <li>Drugi składnik</li>
+        </ol>
+        <h1 id="t-pierwsze">Witamy w&nbsp;Strefie Klienta</h1>
+        <p class="auth-who"><span>Zalogowano jako</span> <strong>anna@salon-przykladowy.example</strong> <span class="badge badge--role">Właścicielka · Salon Przykładowy</span></p>
+        <form class="form" id="f-pierwsze" action="panel.html" method="get" novalidate>
+          <fieldset class="field">
+            <legend>Regulamin</legend>
+            <label class="check-row"><input type="checkbox" id="regulamin" name="regulamin" required aria-describedby="reg-err"> <span>Akceptuję <a href="#regulamin-tresc">Regulamin Strefy Klienta</a> (wersja 1.0, przykład).</span></label>
+            <p class="field-error" id="reg-err" hidden>Zaakceptuj regulamin, aby przejść dalej.</p>
+            <p class="hint">Jak przetwarzamy Twoje dane: <a href="#klauzula">klauzula informacyjna</a>.</p>
+          </fieldset>
+          <hr class="rule">
+          <fieldset class="field">
+            <legend>Drugi składnik logowania</legend>
+            <p class="small">Dla właściciela konta drugi składnik jest obowiązkowy. Zeskanuj kod aplikacją uwierzytelniającą (np. tą, której już używasz w&nbsp;banku) i&nbsp;wpisz sześciocyfrowy kod.</p>
+            <div class="qr-row">
+              <div class="qr" role="img" aria-label="Kod QR do aplikacji uwierzytelniającej – zastępnik makiety"><span>kod QR<br>(przykład)</span></div>
+              <div class="field">
+                <span class="label">Klucz do wpisania ręcznie</span>
+                <span class="secret">ABCD EFGH IJKL MNOP <span class="mock-note">przykład</span></span>
+                <label for="totp-new" class="label">Kod z&nbsp;aplikacji</label>
+                <input class="code-input" type="text" id="totp-new" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6">
+              </div>
+            </div>
+            <p class="hint">Kody zapasowe pokażemy jeden raz po włączeniu drugiego składnika – zapisz je w&nbsp;bezpiecznym miejscu <span class="mock-note">[do weryfikacji – wsparcie w&nbsp;Supabase]</span>.</p>
+          </fieldset>
+          <div class="form-foot">
+            <button class="btn btn-navy" type="submit">Zapisz i&nbsp;przejdź do pulpitu</button>
+            <button class="btn btn-quiet" type="button" disabled aria-describedby="later-note">Później</button>
+          </div>
+          <p class="xsmall" id="later-note"><span class="mock-note">Wariant pracownika</span> Pracownik może pominąć drugi składnik przyciskiem „Później” i&nbsp;włączyć go w&nbsp;„Ustawieniach”. Właściciel i&nbsp;organizator – nie.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ 6 · stany błędów i widok bez JS ============ -->
+    <section class="screen" id="s-stany" aria-labelledby="t-stany">
+      <div class="auth-card auth-card--wide glass glass--strong frame">
+        <p class="eyebrow">Stany ekranów</p>
+        <h1 id="t-stany">Gdy coś pójdzie nie tak</h1>
+
+        <form class="form" action="#s-stany" method="post" novalidate>
+          <div class="field">
+            <label for="kod-zly">Kod z&nbsp;e-maila</label>
+            <input class="code-input" type="text" id="kod-zly" name="kod" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="482913" aria-invalid="true" aria-describedby="kod-zly-err">
+            <p class="field-error" id="kod-zly-err">Kod jest nieprawidłowy albo wygasł. Wpisz go ponownie lub poproś o&nbsp;nowy kod.</p>
+          </div>
+        </form>
+
+        <div class="alert alert--warn" role="status">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <strong class="alert-title">Zbyt wiele prób</strong>
+          <p class="small">Ten kod został unieważniony. Poproś o&nbsp;nowy kod. Ze względów bezpieczeństwa liczba kodów na godzinę jest ograniczona.</p>
+          <div class="actions"><a class="btn btn-ghost btn-sm" href="#s-email">Poproś o&nbsp;nowy kod</a></div>
+        </div>
+
+        <div class="alert alert--error" role="alert">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3.5 6l8.5 7 8.5-7"/><path d="M15 15l4 4M19 15l-4 4"/></svg>
+          <strong class="alert-title">Zaproszenie wygasło albo zostało już użyte</strong>
+          <p class="small">Poproś osobę, która Cię zaprosiła, o&nbsp;nowe zaproszenie. Jeśli zaproszenie wysłała Aura Consulting, skontaktuj się z&nbsp;doradcą.</p>
+          <div class="actions"><a class="btn btn-ghost btn-sm" href="../makieta-v3.html#kontakt">Napisz do doradcy</a><a class="link-quiet" href="#s-email">Mam już konto – zaloguj się</a></div>
+        </div>
+
+        <hr class="rule">
+        <div class="form">
+          <p class="label-caps">Przyjęcie zaproszenia bez JavaScriptu</p>
+          <p class="small">Link z&nbsp;e-maila przekazuje zaproszenie skryptem. Gdy przeglądarka blokuje JavaScript, strona prosi o&nbsp;kod z&nbsp;tego samego e-maila.</p>
+          <div class="field">
+            <label for="kod-zapr">Kod zaproszenia <span>(z tego samego e-maila)</span></label>
+            <input type="text" id="kod-zapr" name="kod_zaproszenia" autocomplete="off" spellcheck="false">
+          </div>
+          <button class="btn btn-navy" type="button">Przyjmij zaproszenie</button>
+        </div>
+        <p class="xsmall muted">Komunikaty są neutralne: nie zdradzają, czy adres ma konto w&nbsp;Strefie Klienta.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- treści do linków z formularza pierwszego logowania (w produkcji osobne strony) -->
+  <section class="surface card auth-card auth-card--wide" id="regulamin-tresc" aria-labelledby="t-reg">
+    <h2 id="t-reg">Regulamin Strefy Klienta</h2>
+    <p class="small">Treść regulaminu przygotuje zleceniodawca z&nbsp;prawnikiem (etap Z0). <span class="mock-note">miejsce na treść</span></p>
+  </section>
+  <section class="surface card auth-card auth-card--wide" id="klauzula" aria-labelledby="t-klauz">
+    <h2 id="t-klauz">Klauzula informacyjna</h2>
+    <p class="small">Administratorem danych w&nbsp;Strefie Klienta jest Aura Consulting sp.&nbsp;z&nbsp;o.o. [do potwierdzenia]. Pełną treść przygotuje zleceniodawca z&nbsp;prawnikiem. <span class="mock-note">miejsce na treść</span></p>
+  </section>
+</main>
+
+<footer class="app-footer">
+  <div class="app-footer-inner">
+    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="#klauzula">Klauzula informacyjna</a></nav>
+    <p>BeautyPolisa created by Aura Consulting. Informacje w&nbsp;serwisie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego. Zakres ochrony określają ogólne warunki ubezpieczenia.</p>
+  </div>
+</footer>
+
+<script>
+/* Makieta: przełączanie ekranów (hash), przejścia formularzy, odliczanie, kod zapasowy.
+   Bez JS wszystkie ekrany są widoczne pod sobą. */
+(function () {
+  var screens = Array.prototype.slice.call(document.querySelectorAll('.screen'));
+  var mockLinks = document.querySelectorAll('.mock-bar nav a');
+  var timer = null;
+
+  function show(id, focus) {
+    var target = document.getElementById(id);
+    if (!target || !target.classList.contains('screen')) { target = screens[0]; }
+    screens.forEach(function (s) { s.classList.toggle('is-active', s === target); });
+    mockLinks.forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('href') === '#' + target.id ? 'true' : 'false'); });
+    ['regulamin-tresc', 'klauzula'].forEach(function (x) { document.getElementById(x).hidden = location.hash !== '#' + x; });
+    if (target.id === 's-kod') { startCountdown(); }
+    if (focus) { var h = target.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus(); } }
+  }
+  function go(id) { history.pushState(null, '', '#' + id); show(id, true); }
+
+  function startCountdown() {
+    var btn = document.getElementById('resend'), left = document.getElementById('resend-left'), info = document.getElementById('resend-info');
+    var t = 59; clearInterval(timer); btn.disabled = true; info.hidden = false;
+    timer = setInterval(function () {
+      t -= 1; left.textContent = '0:' + (t < 10 ? '0' : '') + t;
+      if (t <= 0) { clearInterval(timer); btn.disabled = false; info.hidden = true; }
+    }, 1000);
+  }
+  document.getElementById('resend').addEventListener('click', startCountdown);
+
+  document.getElementById('f-email').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var input = document.getElementById('email'), err = document.getElementById('email-err');
+    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+    input.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    input.setAttribute('aria-describedby', ok ? 'email-hint' : 'email-hint email-err');
+    err.hidden = ok;
+    if (!ok) { input.focus(); return; }
+    document.querySelector('.js-email').textContent = input.value.trim();
+    go('s-kod');
+  });
+  document.getElementById('f-kod').addEventListener('submit', function (e) { e.preventDefault(); go('s-totp'); });
+  document.getElementById('f-zapr').addEventListener('submit', function (e) { e.preventDefault(); go('s-pierwsze'); });
+  document.getElementById('f-pierwsze').addEventListener('submit', function (e) {
+    var box = document.getElementById('regulamin'), err = document.getElementById('reg-err');
+    if (!box.checked) { e.preventDefault(); err.hidden = false; box.setAttribute('aria-invalid', 'true'); box.focus(); }
+  });
+  document.getElementById('use-backup').addEventListener('click', function () {
+    var b = document.getElementById('backup-field'), t = document.getElementById('totp-field');
+    var useBackup = b.hidden; b.hidden = !useBackup; t.hidden = useBackup;
+    this.setAttribute('aria-expanded', String(useBackup));
+    this.textContent = useBackup ? 'Użyj kodu z aplikacji' : 'Użyj kodu zapasowego';
+    (useBackup ? document.getElementById('backup') : document.getElementById('totp')).focus();
+  });
+
+  window.addEventListener('hashchange', function () { show(location.hash.slice(1), true); });
+  show(location.hash.slice(1), false);
+})();
+</script>
+</body>
+</html>

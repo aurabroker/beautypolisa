@@ -2,11 +2,11 @@
 
 | | |
 |---|---|
-| Wersja | 1.1 (po decyzjach zleceniodawcy z 11.11.2026 i przeglądzie bezpieczeństwa; do akceptacji zleceniodawcy) |
+| Wersja | 1.2 (po decyzjach zleceniodawcy z 11.11.2026, w tym D-E, i przeglądzie bezpieczeństwa; do akceptacji zleceniodawcy) |
 | Data | 11 listopada 2026 |
 | Zakres | Konto klienta dla salonu, który kupił polisę przez BeautyPolisa: polisy i dokumenty, tablica ogłoszeń „Dam pracę”, „Szkolenia” z kontami organizatorów szkoleń |
 | Wymaganie źródłowe | „Salon, który kupi u nas polisę, będzie miał swoje konto z polisami, dostęp do działu DAM PRACĘ, Szkolenia” (zleceniodawca, 11.11.2026) |
-| Decyzje zleceniodawcy | D-A–D-D z 11.11.2026 (tabela niżej) – mają pierwszeństwo przed założeniami i pytaniami z wersji 1.0 |
+| Decyzje zleceniodawcy | D-A–D-E z 11.11.2026 (tabela niżej) – mają pierwszeństwo przed założeniami i pytaniami z wersji 1.0 |
 | Pliki towarzyszące | `snippets/strefa-klienta.sql` (DDL, RLS, funkcje); makiety `design/v3/logowanie.html`, `panel.html`, `dam-prace.html`, `szkolenia.html` (w przygotowaniu) |
 | Status | Koncepcja – nic z tego dokumentu nie jest wdrożone |
 
@@ -20,6 +20,7 @@
 | D-B | Po wygaśnięciu ostatniej polisy salon **zachowuje konto** oraz dostęp do „Dam pracę” i „Szkoleń”; wygasłe polisy są widoczne jako archiwalne; bez automatycznego odcięcia konta | Dawne założenie Z-13 i pytanie Q3 usunięte; zamiast odcięcia – kontrole cyklu życia konta (4.7, 11.2) |
 | D-C | „Dam pracę” to **wyłącznie tablica ogłoszeń**. Słowa zleceniodawcy: „AURA, ani nikt inny nie rekomenduje, nie szuka pracowników. To ma być tylko tablica!” Salon publikuje ogłoszenie, kandydat je czyta i kontaktuje się z salonem bezpośrednio. Prowadzenie tablicy nie wymaga wpisu do KRAZ – decyzja zleceniodawcy | Usunięte: aplikacje przechowywane w platformie, dane i konta kandydatów, CV, statusy rekrutacji, wyszukiwanie, polecanie i dopasowywanie kandydatów (rozdział 11); pytanie o KRAZ nie blokuje etapów |
 | D-D | Szkolenia dodają salony z kontem **albo firmy szkoleniowe**. Nowa rola: **organizator szkoleń** – nie potrzebuje polisy, dostaje konto z zaproszenia po weryfikacji przez Aura | Nowe tabele organizatorów, moderacja szkoleń, minimalne dane uczestników dla organizatora, role RODO do potwierdzenia przez prawnika (rozdział 12) |
+| D-E | Tablica „Dam pracę” dostaje „Szukam pracy” – ogłoszenia osób szukających pracy – **w wersji nieaktywnej**: zaprojektowane i przygotowane, wyłączone przełącznikiem do czasu, aż zleceniodawca włączy je po sprawdzeniu prawnym (KRAZ – nowa okoliczność względem tablicy samych ofert, RODO, DSA). Nadal wyłącznie tablica: nikt – ani Aura, ani platforma – nie rekomenduje, nie wyszukuje, nie dobiera, nie ocenia, nie sortuje ani nie dopasowuje kandydatów | Nowa sekcja 11.9; tabele `app_feature_flags`, `candidate_ads`, `candidate_ad_contact_log`; funkcje odmawiające przy wyłączonym przełączniku; RLS bez odczytu przy wyłączonym przełączniku; trasy 404; w makietach tylko podgląd z etykietą „funkcja nieaktywna” |
 
 ## TL;DR
 
@@ -28,7 +29,7 @@
 3. **Logowanie bez hasła:** sześciocyfrowy kod jednorazowy z e-maila (Supabase Auth) z limitami po stronie aplikacji, sesja serwerowa w ciasteczkach `__Host-…; HttpOnly`. **Drugi składnik TOTP jest obowiązkowy dla właścicieli i organizatorów** (rekomendacja; egzekwuje go baza przez wymóg sesji `aal2`), dla pracowników – opcjonalny.
 4. **Role:** właściciel salonu (polisy, zespół, ogłoszenia, szkolenia), pracownik (szkolenia, podgląd ogłoszeń salonu – bez polis), **organizator szkoleń** (firma szkoleniowa albo salon: własne szkolenia, terminy, liczba miejsc, lista uczestników tylko własnych szkoleń), personel Aura (`admin`/`agent`/`viewer` z `/panel`), gość i kandydat bez konta (czytają ogłoszenia i katalog szkoleń).
 5. **Izolację egzekwuje Postgres (RLS), nie interfejs:** dwie rozłączne funkcje pomocnicze `client_account_ids()` (salony) i `organizer_ids()` (organizatorzy), uprawnienia kolumnowe, zapisy z niezmiennikami wyłącznie przez funkcje `service_role`. Model sprawdzono na lokalnym Postgresie 16 (9.6).
-6. **„Dam pracę” to tylko tablica (D-C):** ogłoszenia publiczne i indeksowane (schema.org `JobPosting`), moderowane przed publikacją wyłącznie pod kątem treści, ważne 30 dni (Założenie), z obowiązkowymi widełkami wynagrodzenia. Kandydat kontaktuje się z salonem bezpośrednio – przez e-mail lub telefon rekrutacyjny wskazany przez salon albo przez prosty formularz, który przekazuje wiadomość e-mailem do salonu i nie zostaje w platformie. **Aura Consulting i platforma nie rekomendują, nie wyszukują, nie dobierają ani nie kontaktują się z kandydatami.**
+6. **„Dam pracę” to tylko tablica (D-C):** ogłoszenia publiczne i indeksowane (schema.org `JobPosting`), moderowane przed publikacją wyłącznie pod kątem treści, ważne 30 dni (Założenie), z obowiązkowymi widełkami wynagrodzenia. Kandydat kontaktuje się z salonem bezpośrednio – przez e-mail lub telefon rekrutacyjny wskazany przez salon albo przez prosty formularz, który przekazuje wiadomość e-mailem do salonu i nie zostaje w platformie. **Aura Consulting i platforma nie rekomendują, nie wyszukują, nie dobierają ani nie kontaktują się z kandydatami.** „Szukam pracy” (ogłoszenia osób szukających pracy, bez kont, widoczne tylko dla zalogowanych salonów) jest przygotowane, ale **wyłączone przełącznikiem** do decyzji zleceniodawcy po sprawdzeniu prawnym (D-E, 11.9).
 7. **„Szkolenia” (D-D):** publiczny katalog szkoleń dodawanych przez zweryfikowanych organizatorów (firmy i salony), moderacja przed publikacją i po każdej zmianie, zapis z konta salonu, limit miejsc z listą rezerwową. Organizator dostaje tylko imię i nazwisko oraz e-mail uczestników swoich szkoleń, po wyraźnej informacji przy zapisie. Płatności online poza MVP: przy szkoleniu płatnym strona pokazuje cenę, a fakturę wystawia organizator (Założenie).
 8. **Prywatność i wydajność:** strony strefy są dynamiczne, `no-store`, `noindex`, bez klienta Supabase w przeglądarce i bez nowych hostów zewnętrznych. Publiczne „Dam pracę” i „Szkolenia” mają dane w cache z rewalidacją po publikacji – tylko z zapytań bez sesji użytkownika.
 9. **Plan:** Z0 (decyzje i dokumenty prawne) → Z1 konto i polisy (po fazie 1 portalu) → Z2 „Dam pracę”, „Szkolenia” i organizatorzy → Z3 przekaz z CRM, zaświadczenia, rozszerzenia.
@@ -67,7 +68,8 @@
 | Nie robimy | Dlaczego |
 |---|---|
 | Polecanie, wyszukiwanie, dobór, ranking i dopasowywanie kandydatów (także „polecani kandydaci” i podpowiedzi AI); kontakt Aura z kandydatami; usługi rekrutacyjne | Decyzja zleceniodawcy D-C: „Dam pracę” to tylko tablica |
-| Konta i profile kandydatów, baza CV, przechowywanie aplikacji i statusów rekrutacji w platformie | D-C; minimalizacja danych osobowych (11.1) |
+| Konta i profile kandydatów, baza CV, przechowywanie aplikacji i statusów rekrutacji w platformie | D-C; minimalizacja danych osobowych (11.1); „Szukam pracy” (D-E) też działa bez kont i profili |
+| Włączone „Szukam pracy” | D-E: funkcja przygotowana i wyłączona do decyzji zleceniodawcy po sprawdzeniu prawnym (11.9.7) |
 | Sprzedaż i płatności online (polisy, szkolenia, ogłoszenia) | Portal jest informacyjno-leadowy (00 §1); płatności wymagają regulaminu, operatora i nowego hosta w CSP; przy szkoleniach płatnych fakturę wystawia organizator (Założenie) |
 | Integracja na żywo z ubezpieczycielem | Brak API w audycie; polisy wprowadza broker (Założenie) |
 | Komunikator salon–kandydat i salon–organizator | Kontakt odbywa się poza portalem (e-mail, telefon) |
@@ -82,10 +84,10 @@
 | **Pracownik** (`employee`) | osoba z zespołu salonu | zaproszenie od właściciela | szkolenia (zapis własny), podgląd ogłoszeń swojego salonu; **nie widzi** polis, dokumentów ani danych kontaktowych w ogłoszeniach |
 | **Organizator szkoleń** (`owner`/`member` w `organizer_members`) | firma szkoleniowa albo salon prowadzący szkolenia; **bez polisy** | zaproszenie od Aura po weryfikacji organizatora (12.1); właściciel profilu organizatora może zaprosić członków zespołu | dodaje szkolenia (publikacja po moderacji), zmienia terminy i treść (ponowna moderacja), zmienia liczbę miejsc, odwołuje szkolenie, widzi listę uczestników **tylko swoich** szkoleń (imię i nazwisko, e-mail, status; nazwa salonu tylko przy szkoleniu płatnym), oznacza obecność; nie widzi polis, salonów, zespołów ani ogłoszeń w szkicu |
 | **Doradca / admin Aura** (`admin_users`: `admin`, `agent`, `viewer`) | personel Aura Consulting | istniejący `/panel` (Cloudflare Access + Supabase Auth z MFA, 02 F6) | zakłada konta salonów, dodaje i publikuje polisy i dokumenty, aktywuje konta, weryfikuje organizatorów, moderuje ogłoszenia i szkolenia, obsługuje zgłoszenia nadużyć; **nie widzi** wiadomości kandydatów (nie są przechowywane) ani list uczestników organizatorów |
-| **Kandydat** | osoba szukająca pracy | bez konta | czyta ogłoszenia, kontaktuje się z salonem bezpośrednio (e-mail, telefon albo formularz przekazujący wiadomość do salonu), może zgłosić nadużycie |
+| **Kandydat** | osoba szukająca pracy | bez konta | czyta ogłoszenia, kontaktuje się z salonem bezpośrednio (e-mail, telefon albo formularz przekazujący wiadomość do salonu), może zgłosić nadużycie. Po włączeniu „Szukam pracy” (D-E, **nieaktywne**): może dodać własne ogłoszenie bez konta – potwierdza e-mail i zarządza ogłoszeniem linkiem z e-maila (11.9) |
 | **Gość** | każdy | – | publiczne `/dam-prace` i katalog `/szkolenia` (Założenie: katalog publiczny, zapis tylko z konta salonu) |
 
-**Zasada tablicy (D-C):** Aura Consulting i platforma nie rekomendują, nie wyszukują, nie dobierają ani nie kontaktują się z kandydatami; moderacja dotyczy wyłącznie treści ogłoszenia.
+**Zasada tablicy (D-C, D-E):** Aura Consulting i platforma nie rekomendują, nie wyszukują, nie dobierają, nie oceniają, nie sortują, nie dopasowują ani nie kontaktują się z kandydatami – także w nieaktywnym „Szukam pracy”; moderacja dotyczy wyłącznie treści ogłoszeń.
 
 Macierz uprawnień (✓ – tak, ○ – tylko własne, – – nie):
 
@@ -97,6 +99,8 @@ Macierz uprawnień (✓ – tak, ○ – tylko własne, – – nie):
 | Zespół salonu, zaproszenia | ✓ (zaprasza tylko pracowników) | ○ (własne członkostwo) | – | ✓ | odczyt | – |
 | Ogłoszenia salonu | ✓ tworzy, edytuje, zamyka | odczyt | – | moderacja | odczyt | odczyt opublikowanych |
 | Kontakt w ogłoszeniu | ✓ | – | – | odczyt (moderacja) | odczyt | po „Pokaż kontakt” (e-mail lub telefon) albo formularz; adres dla formularza nigdy nie jest pokazywany |
+| Ogłoszenia „Szukam pracy” (D-E, **nieaktywne** – przy wyłączonym przełączniku nikt) | odczyt opublikowanych, kontakt formularzem | odczyt opublikowanych (Założenie) | – | moderacja; przełącznik – tylko admin | odczyt kolejki | – (autor bez konta: własne ogłoszenie przez link z e-maila) |
+| E-mail autora ogłoszenia „Szukam pracy” | – | – | – | – (tylko serwer do wysyłki) | – | – |
 | Profil organizatora | – | – | ○ odczyt | ✓ zakłada, weryfikuje, zawiesza | odczyt | odczyt publiczny (zweryfikowani) |
 | Szkolenia – katalog | ✓ | ✓ | ✓ | ✓ | odczyt | odczyt |
 | Szkolenia – dodawanie, zmiany, liczba miejsc, odwołanie | – | – | ○ (moderacja przed publikacją) | moderacja, usunięcie | odczyt | – |
@@ -208,11 +212,14 @@ Platforma nie prowadzi skrzynki odbiorczej, listy kandydatów ani statusów rekr
 | `/dam-prace`, `/dam-prace/<slug>` | publiczny | **index** (ogłoszenie wygasłe → 410) | dane z cache bez sesji, rewalidacja po publikacji; kontakt i formularz – osobne wywołania dynamiczne |
 | `/szkolenia`, `/szkolenia/<slug>` | publiczny | index (Założenie) | dane z cache bez sesji; stan zapisu użytkownika – osobny fragment dynamiczny |
 | `POST /api/strefa/kontakt`, `/api/strefa/wiadomosc`, `/api/strefa/zgloszenie` | publiczny | – | route handlery („Pokaż kontakt”, formularz przekazujący, „Zgłoś nadużycie”) objęte regułą WAF i rate limit (02 §4.13) |
+| `/dam-prace/szukam-pracy/dodaj`, `/dam-prace/szukam-pracy/potwierdz`, `/dam-prace/szukam-pracy/zarzadzaj` (D-E, **nieaktywne**) | publiczny (autor bez konta) | **noindex**, poza sitemap | dynamiczny, `no-store`, `Referrer-Policy: no-referrer`, token w części `#`; **404 przy wyłączonym przełączniku** (11.9.6) |
+| `/strefa-klienta/dam-prace/szukam-pracy`, `/strefa-klienta/dam-prace/szukam-pracy/[id]` (D-E, **nieaktywne**) | członek salonu | noindex | dynamiczny, `no-store`; **404 przy wyłączonym przełączniku** |
+| `POST /api/strefa/szukam-pracy/*` (D-E, **nieaktywne**) | jw. | – | route handlery (dodanie, potwierdzenie, zarządzanie, wiadomość salonu, „Zgłoś”) objęte regułą WAF i rate limit; **404 przy wyłączonym przełączniku** |
 | `/panel/klienci`, `/panel/ogloszenia`, `/panel/organizatorzy`, `/panel/szkolenia`, `/panel/zgloszenia` | personel | Disallow | jak `/panel` (02 F6) |
 
 ### 5.2 Nawigacja strefy
 
-Górny pasek (desktop) / szuflada (mobile): **Pulpit · Polisy · Dam pracę · Szkolenia · Zespół** + menu konta (nazwa salonu, przełącznik salonu lub profilu organizatora, Ustawienia, Wyloguj). Pracownik widzi: Pulpit · Dam pracę · Szkolenia. Organizator: **Pulpit organizatora · Moje szkolenia · Dodaj szkolenie · Profil**. W nagłówku strony publicznej: link „Strefa Klienta” (ikona `lux-bezpieczenstwo` – antyczny klucz) obok „Umów rozmowę”.
+Górny pasek (desktop) / szuflada (mobile): **Pulpit · Polisy · Dam pracę · Szkolenia · Zespół** + menu konta (nazwa salonu, przełącznik salonu lub profilu organizatora, Ustawienia, Wyloguj). Pracownik widzi: Pulpit · Dam pracę · Szkolenia. W „Dam pracę” zakładka „Szukam pracy” pojawia się dopiero po włączeniu przełącznika (D-E, 11.9.6) – do tego czasu nie ma jej w nawigacji. Organizator: **Pulpit organizatora · Moje szkolenia · Dodaj szkolenie · Profil**. W nagłówku strony publicznej: link „Strefa Klienta” (ikona `lux-bezpieczenstwo` – antyczny klucz) obok „Umów rozmowę”.
 
 ### 5.3 Ekrany do pokazania w makietach
 
@@ -220,7 +227,7 @@ Górny pasek (desktop) / szuflada (mobile): **Pulpit · Polisy · Dam pracę · 
 |---|---|
 | `logowanie.html` | (1) logowanie – krok 1: e-mail + Turnstile (miejsce na widget) + informacja „Konto zakłada Aura Consulting po zawarciu polisy. Rejestracja nie jest potrzebna”; (2) krok 2: kod 6 cyfr (jedno pole `inputmode="numeric"`, `autocomplete="one-time-code"`), „Wyślij kod ponownie” z odliczaniem; (3) krok 3: kod TOTP; (4) przyjęcie zaproszenia: nazwa salonu (albo organizatora), adres e-mail, przycisk „Przyjmij zaproszenie”, pole „Kod zaproszenia” dla przeglądarek bez JavaScriptu; (5) pierwsze logowanie: regulamin + obowiązkowa konfiguracja TOTP dla właściciela i organizatora (kod QR, pole kodu); (6) stany: neutralny komunikat po wysłaniu kodu, błędny/wygasły kod, limit prób, wygasłe zaproszenie z kontaktem do doradcy |
 | `panel.html` | (1) pulpit właściciela „Salon Przykładowy”: karta polisy OC (numer „BP/2026/000123 (przykład)”, ERGO Hestia, okres 1.01–31.12.2026, grupa taryfowa 2, suma 200 000 zł, ochrona prawna, składka roczna 882 zł = 790 zł + 92 zł), baner odnowienia („Ochrona kończy się 31 grudnia 2026 r.” + „Odnów z doradcą”), skróty do „Dam pracę” i „Szkolenia”; (2) „Archiwum”: przykładowa polisa wygasła (np. Tax Protect, „BP/2025/000045 (przykład)”, bez kwoty); (3) szczegóły polisy z listą dokumentów (Polisa, OWU, „Pobierz PDF”) i „Zgłoś szkodę”; (4) formularz zgłoszenia szkody bez pola opisu; (5) „Zespół”: lista osób z rolami, zaproszenie oczekujące, „Zaproś osobę”, coroczne „Potwierdź skład zespołu”; (6) widok pracownika: pulpit bez polis, z informacją „Polisy salonu widzi właściciel konta”; (7) „Ustawienia”: TOTP, ostatnie logowania, wyloguj wszędzie |
-| `dam-prace.html` | (1) publiczna lista ogłoszeń z filtrami (zawód, województwo, rodzaj umowy), karta ogłoszenia z widełkami, krótka informacja „Dam pracę to tablica ogłoszeń salonów. Kontaktujesz się bezpośrednio z salonem”; (2) strona ogłoszenia z blokiem „Jak się skontaktować”: wariant „Pokaż kontakt” (e-mail lub telefon) i wariant formularza przekazującego wiadomość (imię i nazwisko, e-mail, telefon opcjonalnie, wiadomość, informacja o przekazaniu i braku przechowywania), „Zgłoś nadużycie”; (3) potwierdzenie na ekranie „Wiadomość została przekazana do salonu” (bez numeru, bez e-maila do kandydata); (4) w strefie: „Moje ogłoszenia” ze statusami (szkic, w moderacji, opublikowane do…, odrzucone z powodem, wygasłe, zamknięte); (5) formularz „Nowe ogłoszenie” z blokiem „Jak kandydat ma się skontaktować” (formularz – domyślnie, e-mail, telefon) i podpowiedzią o kontakcie rekrutacyjnym. **Bez** list kandydatów, aplikacji, statusów rekrutacji i „polecanych kandydatów” |
+| `dam-prace.html` | (1) publiczna lista ogłoszeń z filtrami (zawód, województwo, rodzaj umowy), karta ogłoszenia z widełkami, krótka informacja „Dam pracę to tablica ogłoszeń salonów. Kontaktujesz się bezpośrednio z salonem”; (2) strona ogłoszenia z blokiem „Jak się skontaktować”: wariant „Pokaż kontakt” (e-mail lub telefon) i wariant formularza przekazującego wiadomość (imię i nazwisko, e-mail, telefon opcjonalnie, wiadomość, informacja o przekazaniu i braku przechowywania), „Zgłoś nadużycie”; (3) potwierdzenie na ekranie „Wiadomość została przekazana do salonu” (bez numeru, bez e-maila do kandydata); (4) w strefie: „Moje ogłoszenia” ze statusami (szkic, w moderacji, opublikowane do…, odrzucone z powodem, wygasłe, zamknięte); (5) formularz „Nowe ogłoszenie” z blokiem „Jak kandydat ma się skontaktować” (formularz – domyślnie, e-mail, telefon) i podpowiedzią o kontakcie rekrutacyjnym. **Bez** list kandydatów, aplikacji, statusów rekrutacji i „polecanych kandydatów”; (6) „Szukam pracy” (D-E) **wyłącznie jako wyraźnie oznaczony podgląd nieaktywnej funkcji** (etykieta „Podgląd – funkcja nieaktywna”, bez działających linków i formularzy): karta ogłoszenia z polami z 11.9.2 (imię w formie „Kandydatka (przykład)” – jedno imię, bez nazwiska, zdjęcia i kontaktu) i formularz wiadomości salonu; bez wyszukiwarki, rankingu i „polecanych” |
 | `szkolenia.html` | (1) katalog z filtrami (forma, miesiąc), karta szkolenia (termin, forma, miasto, „Organizator przykładowy” ze znaczkiem weryfikacji, „Wolne miejsca: 6 z 20”, cena przy szkoleniu płatnym z dopiskiem „(przykład)”); (2) strona szkolenia z programem i przyciskiem „Zapisz się” / „Zaloguj się, aby się zapisać”; (3) krok informacyjny o przekazaniu danych organizatorowi; stan po zapisie i stan listy rezerwowej; (4) „Moje szkolenia” w strefie salonu: nadchodzące, lista rezerwowa, rezygnacja; (5) widok właściciela: zapisy zespołu; **(6) widok organizatora:** formularz „Dodaj szkolenie” (pola z 4.11 pkt 3, w tym cena i szczegóły dla zapisanych); (7) „Moje szkolenia jako organizator” ze statusami moderacji (szkic, w moderacji, opublikowane, odrzucone z powodem, odwołane) i akcjami; (8) lista uczestników szkolenia (imię i nazwisko, e-mail, status, oznaczanie obecności, „Pobierz CSV”, informacja o usunięciu danych 30 dni po szkoleniu) |
 
 Dane demonstracyjne muszą być jawnie fikcyjne: „Salon Przykładowy”, „BP/2026/000123 (przykład)”, organizator „Organizator przykładowy”, tematy szkoleń i ceny z dopiskiem „(przykład)”, kandydatka „Kandydatka Przykładowa” tylko w polach formularza. Kwoty polis wyłącznie z taryfy (01 §3.1); Tax Protect bez kwoty (taryfa nie jest w audycie). Bez nazw realnych partnerów jako organizatorów szkoleń.
@@ -274,6 +281,7 @@ Priorytety: **P0** – MVP danego etapu, **P1** – szybko po starcie, **P2** �
 | J7 | „Zgłoś nadużycie” | P0 | Przy ogłoszeniu i w każdym e-mailu z formularza; bez danych zgłaszającego; kolejka w `/panel` |
 | J8 | Brak funkcji rekrutacyjnych (D-C) | P0 | W bazie nie ma tabel aplikacji, kandydatów ani CV; test CI sprawdza ich brak (9.6) |
 | J9 | Google Indexing API dla ogłoszeń | P2 | Po weryfikacji, że ruch z Google for Jobs to uzasadnia |
+| J10 | „Szukam pracy” przygotowane i **wyłączone** (D-E) | P0 (Z2, za przełącznikiem) | Przełącznik `szukam_pracy` domyślnie wyłączony; przy wyłączonym: trasy → 404, funkcje zapisu → wyjątek `BP404`, RLS → 0 wierszy, brak zakładki; testy 9.6 pkt 12 zielone; włączenie dopiero po warunkach z 11.9.7 |
 
 ### 6.4 „Szkolenia” (etap Z2)
 
@@ -302,7 +310,7 @@ Priorytety: **P0** – MVP danego etapu, **P1** – szybko po starcie, **P2** �
 
 ### 6.6 Panel personelu (`/panel`) – dodatki
 
-„Klienci” (konta, polisy, dokumenty, aktywacja, zaproszenia, zawieszenie, zmiana adresu e-mail), „Ogłoszenia” (kolejka moderacji z wersją treści, sprawdzenie NIP dla kont bez aktywnej polisy), „Organizatorzy” (weryfikacja, profile, zaproszenia, zawieszenie), „Szkolenia” (kolejka moderacji, odwołania), „Zgłoszenia” (nadużycia ogłoszeń, wiadomości z formularza, szkoleń i organizatorów). Te same zasady co w 02 F6: Cloudflare Access, MFA egzekwowane w RLS (`aal2`), akcje zapisu przez server actions.
+„Klienci” (konta, polisy, dokumenty, aktywacja, zaproszenia, zawieszenie, zmiana adresu e-mail), „Ogłoszenia” (kolejka moderacji z wersją treści, sprawdzenie NIP dla kont bez aktywnej polisy), „Organizatorzy” (weryfikacja, profile, zaproszenia, zawieszenie), „Szkolenia” (kolejka moderacji, odwołania), „Zgłoszenia” (nadużycia ogłoszeń, wiadomości z formularza, szkoleń i organizatorów), „Szukam pracy” (D-E: kolejka moderacji widoczna dopiero po włączeniu przełącznika) i „Przełączniki funkcji” (tylko admin: stan `szukam_pracy`, włączenie z odwołaniem do decyzji zleceniodawcy, historia zmian z dziennika). Te same zasady co w 02 F6: Cloudflare Access, MFA egzekwowane w RLS (`aal2`), akcje zapisu przez server actions.
 
 ## 7. Model danych
 
@@ -329,7 +337,10 @@ Pełny DDL z RLS: `snippets/strefa-klienta.sql`.
 | `training_private_details` | `online_join_url` (hosty z listy dozwolonych), `venue_address`, `instructions` | → `trainings` | nie |
 | `training_registrations` | `status` (registered/waitlisted/cancelled/attended/no_show) | → `trainings`, `client_accounts`, `auth.users` | pośrednio |
 | `training_participant_contacts` | PK `registration_id`, `organizer_id`, `status`, `participant_name`, `participant_email`, `salon_name` (tylko płatne), `notice_version` | → `training_registrations`, `trainings`, `training_organizers` | **tak** (FORCE RLS; 30 dni po szkoleniu) |
-| `abuse_reports` | `target`, `reason`, odwołanie do ogłoszenia/wiadomości/szkolenia/organizatora, `handled_at` | → jw. | nie |
+| `app_feature_flags` | PK `key` (`szukam_pracy`), `enabled` (domyślnie **false**), `decision_ref`, `changed_by/at` | → `auth.users` | nie |
+| `candidate_ads` (D-E, nieaktywne) | `id`, `status` (unconfirmed/pending_review/published/rejected/expired/removed), `content_version`, `email` (bez grantu kolumnowego), skróty tokenów potwierdzenia i zarządzania, `first_name`, `profession`, `city`, `voivodeship`, `cooperation_forms`, `experience`, `available_from`, `description` (≤ 500), `adult_confirmed`, `notice_version`, `published_at`, `expires_at` (≤ 30 dni), `rejection_reason` | – (bez konta) | **tak** (FORCE RLS; anon bez grantu; usuwane 30 dni po zakończeniu – Założenie) |
+| `candidate_ad_contact_log` (D-E) | `id`, `ad_id`, `account_id`, `sent_by`, `outbox_id`, `created_at` | → `candidate_ads`, `client_accounts`, `outbox_emails` | **bez treści wiadomości** i adresu odbiorcy; 30 dni; tylko `service_role` |
+| `abuse_reports` | `target`, `reason`, `details` (uzasadnienie zgłoszenia, DSA), odwołanie do ogłoszenia/wiadomości/szkolenia/organizatora/ogłoszenia „Szukam pracy”/wiadomości salonu (`reported_account_id`), `handled_at` | → jw. | nie |
 | `client_audit_log` | `account_id`, `organizer_id`, `actor`, `action`, `entity`, `payload` (bez PII, ≤ 2 KB) | → `client_accounts`, `training_organizers` | nie |
 | zmiany istniejących | `claims_reports` + `account_id`, `policy_id`, `reported_by`; `outbox_emails` + `account_id`; wyzwalacz rozłączności na `admin_users` | | |
 
@@ -344,7 +355,8 @@ auth.users ─┬─< client_members >── client_accounts ──< client_poli
             ├─< organizer_members >── training_organizers ──< trainings ───────────────────┘
             │                          └──< organizer_invitations
             └─< admin_users (personel; rozłączne z client_members i organizer_members)
-abuse_reports → job_offers | job_offer_relay_log | trainings | training_organizers
+abuse_reports → job_offers | job_offer_relay_log | trainings | training_organizers | candidate_ads | candidate_ad_contact_log
+candidate_ads ──< candidate_ad_contact_log >── client_accounts   (D-E, nieaktywne; app_feature_flags bramkuje RLS i funkcje)
 client_audit_log → client_accounts | training_organizers      client_policies >── pricing_versions (taryfa OC)
 ```
 
@@ -416,6 +428,7 @@ client_audit_log → client_accounts | training_organizers      client_policies 
 | Formularz przekazujący wiadomość do salonu | `app_relay_job_message()` (`service_role`) | Kandydat nie ma sesji; limit na ogłoszenie w tej samej transakcji co wpis do outboxu |
 | Zapis i rezygnacja ze szkolenia, liczba miejsc, odwołanie, obecność | `app_training_register()` / `app_training_cancel()` / `app_training_set_capacity()` / `app_training_cancel_event()` / `app_training_mark_attendance()` (`service_role`) | Limit miejsc liczony ponad granicą salonów (RLS ukrywa cudze zapisy) – blokada wiersza szkolenia `FOR UPDATE`; migawka danych dla organizatora |
 | Moderacja ogłoszeń i szkoleń | `app_moderate_job_offer()` / `app_moderate_training()` (`service_role`) z oczekiwaną wersją treści; serwer sprawdza też `app_is_staff` w sesji `aal2` | Kolumny moderacji bez grantu dla `authenticated`; brak podmiany treści w trakcie przeglądu |
+| „Szukam pracy” (D-E, nieaktywne): dodanie, potwierdzenie, link do zarządzania, edycja, przedłużenie, usunięcie, moderacja, wiadomość salonu, zgłoszenia, przełącznik | `app_candidate_ad_*`, `app_moderate_candidate_ad()`, `app_candidate_contact()`, `app_report_candidate_*`, `app_set_feature_flag()` (`service_role`); tabele z `backend_only_guard`; każda funkcja zapisu zaczyna od `app_require_feature('szukam_pracy')` | Autor nie ma sesji; limity i przełącznik egzekwowane w bazie; usunięcie przez autora i retencja działają także przy wyłączonym przełączniku |
 
 Funkcje `app_*` przyjmują `p_actor` – identyfikator z **zweryfikowanego** tokenu – i same sprawdzają uprawnienia aktora (obrona w głąb, choć wywołuje je tylko serwer); dotyczy to także rotacji tokenu zaproszenia. Wymóg `aal2` dla personelu, właścicieli i organizatorów sprawdza serwer przed wywołaniem, bo funkcja wywołana kluczem serwisowym nie widzi JWT użytkownika.
 
@@ -443,7 +456,7 @@ W obecnym `rls-policies.sql` polityki leadów używają `app_is_staff()` przed j
 Rozszerzenie `packages/db/tests/privileges.test.sql` (fixture: dwa salony, właściciel A, pracownik A, właściciel B z wygasłą polisą, dwóch organizatorów, salon A jako organizator, personel, anon):
 
 1. Żadna funkcja w `public` nie ma `EXECUTE` dla `anon` ani `PUBLIC`; dla `authenticated` – tylko `app_is_staff`, `client_account_ids` i `organizer_ids`.
-2. Każda tabela z RLS ma politykę albo jest na liście `service_role_only` (`client_policy_reminders`, `job_offer_relay_log`).
+2. Każda tabela z RLS ma politykę albo jest na liście `service_role_only` (`client_policy_reminders`, `job_offer_relay_log`, `candidate_ad_contact_log`).
 3. Właściciel B nie widzi żadnego wiersza salonu A ani kontaktu w jego ogłoszeniach i nie zapisze kontaktu do cudzego ogłoszenia; organizator A nie widzi żadnego wiersza organizatora B, 0 wierszy `client_*`, 0 szkiców `job_offers`, 0 wierszy `training_registrations`.
 4. Pracownik widzi 0 polis, 0 dokumentów, 0 kontaktów, 0 obiektów Storage; widzi ogłoszenia swojego salonu.
 5. `anon`: tylko opublikowane, nieprzeterminowane ogłoszenia i tylko kolumny publiczne (`select account_id` → `permission denied`); `job_offer_contacts` → `permission denied`; tylko aktywni, zweryfikowani organizatorzy i ich kolumny publiczne.
@@ -453,8 +466,9 @@ Rozszerzenie `packages/db/tests/privileges.test.sql` (fixture: dwa salony, wła�
 9. `client_audit_log`: UPDATE → wyjątek; TRUNCATE → wyjątek; DELETE i TRUNCATE jako `service_role` → `permission denied`.
 10. Formularz „Dam pracę”: po wysyłce `outbox_emails.payload = '{}'`; `job_offer_relay_log` nie ma kolumn z danymi osobowymi; tabel `job_applications` i podobnych nie ma (D-C).
 11. Cache (test HTTP, nie SQL): strona publiczna pobrana jako zalogowany użytkownik A, a potem anonimowo – druga odpowiedź bez znaczników per użytkownik i bez `Set-Cookie` (16).
+12. „Szukam pracy” (D-E): przełącznik domyślnie wyłączony; przy wyłączonym każda funkcja `app_candidate_*` (poza usunięciem), `app_moderate_candidate_ad` i `app_report_candidate_*` → `BP404`, `candidate_ads` → 0 wierszy dla właściciela i personelu, usunięcie przez autora i retencja działają; `app_set_feature_flag` – agent i włączenie bez `decision_ref` → wyjątek, `authenticated` → `permission denied`; po włączeniu: `anon` → `permission denied`, właściciel `aal2` i pracownik widzą tylko opublikowane, właściciel `aal1` i organizator bez salonu – 0, `select email`/tokenów/`moderation_note` → `permission denied`, bezpośredni INSERT/UPDATE → `permission denied`; osoba niepełnoletnia, URL, e-mail lub telefon w opisie, nazwisko w polu imienia, opis > 500 znaków → wyjątek; drugie ogłoszenie z tego samego adresu → neutralny NULL; publikacja niepotwierdzonego, nieaktualna wersja, odrzucenie bez uzasadnienia → wyjątek; edycja wraca do moderacji; przedłużenie tylko w ostatnich 7 dniach; stary link po rotacji nie działa; wiadomość: pracownik i obcy salon → wyjątek, druga wiadomość salonu do tego samego ogłoszenia → wyjątek, po wysyłce `outbox_emails.payload = '{}'`, ślad bez treści; usunięcie ogłoszenia zostawia ślad wysyłek bez `ad_id`, a zgłoszenie wiadomości salonu przetrwa retencję śladu; brak tabel profili kandydatów i CV.
 
-Scenariusze 2–10 przeszły 11.11.2026 na lokalnym Postgresie 16 z zaślepkami schematów `auth` i `storage` (`schema.sql` → `rls-policies.sql` → `strefa-klienta.sql` w wersji 1.1). Scenariusz 1 przeszedł dla wszystkich funkcji z `strefa-klienta.sql`; poza nim zostaje znany wyjątek `admin_users_guard` z `rls-policies.sql` (9.4).
+Scenariusze 2–10 przeszły 11.11.2026 na lokalnym Postgresie 16 z zaślepkami schematów `auth` i `storage` (`schema.sql` → `rls-policies.sql` → `strefa-klienta.sql` w wersji 1.1). Scenariusz 1 przeszedł dla wszystkich funkcji z `strefa-klienta.sql`; poza nim zostaje znany wyjątek `admin_users_guard` z `rls-policies.sql` (9.4). Po dodaniu „Szukam pracy” (wersja 1.2) scenariusze 2–10 dały te same wyniki, a scenariusz 12 przeszedł w całości – także przed włączeniem przełącznika i po jego ponownym wyłączeniu; lista funkcji wykonywalnych przez `anon` i `authenticated` się nie zmieniła.
 
 ## 10. Pliki (Supabase Storage)
 
@@ -469,7 +483,7 @@ Scenariusze 2–10 przeszły 11.11.2026 na lokalnym Postgresie 16 z zaślepkami 
 
 ### 10.2 Pliki od osób z zewnątrz
 
-„Dam pracę” **nie przyjmuje plików** – ani CV, ani załączników do wiadomości (D-C). Organizatorzy w MVP nie wgrywają plików; później tylko obrazy rastrowe przekodowane na serwerze (bez SVG), a materiały PDF wyłącznie po skanowaniu antywirusowym – do tego czasu link do strony organizatora. Dokumenty polis pochodzą od personelu (zaufane źródło: ubezpieczyciel, broker) – w MVP wystarcza walidacja typu i sygnatury oraz hash.
+„Dam pracę” **nie przyjmuje plików** – ani CV, ani załączników do wiadomości (D-C); „Szukam pracy” (D-E) – także bez zdjęć i załączników. Organizatorzy w MVP nie wgrywają plików; później tylko obrazy rastrowe przekodowane na serwerze (bez SVG), a materiały PDF wyłącznie po skanowaniu antywirusowym – do tego czasu link do strony organizatora. Dokumenty polis pochodzą od personelu (zaufane źródło: ubezpieczyciel, broker) – w MVP wystarcza walidacja typu i sygnatury oraz hash.
 
 ## 11. „Dam pracę” – tablica ogłoszeń (D-C)
 
@@ -539,7 +553,99 @@ Ważność 30 dni od publikacji (Założenie; twardy limit w bazie: 60 dni). Cro
 
 **Decyzja zleceniodawcy z 11.11.2026:** prowadzenie tablicy „Dam pracę” nie wymaga wpisu do rejestru podmiotów prowadzących agencje zatrudnienia (KRAZ). Projekt utrzymuje cechy tablicy opisane w 11.1 – każde rozszerzenie o funkcje z prawej kolumny tej tabeli wymaga nowej decyzji zleceniodawcy.
 
+Decyzja D-C dotyczy tablicy **samych ofert salonów**. Ogłoszenia osób szukających pracy („Szukam pracy”, D-E) to nowa okoliczność – dlatego są wyłączone, a przed włączeniem prawnik oceni je także pod kątem KRAZ (11.9.7, Q14).
+
 Niezależnie od tego regulamin „Dam pracę” sprawdzi prawnik pod kątem obowiązków z nowelizacji Kodeksu pracy o jawności wynagrodzeń (informacja o wynagrodzeniu lub jego przedziale dla kandydata, neutralne nazwy stanowisk, zakaz pytania o dotychczasowe wynagrodzenie) [do weryfikacji daty wejścia w życie i zakresu] – projekt już teraz wymaga widełek i neutralnych nazw stanowisk. To nie blokuje etapów.
+
+### 11.9 „Szukam pracy” – funkcja nieaktywna (D-E)
+
+**Decyzja zleceniodawcy z 11.11.2026 (D-E):** na tablicy „Dam pracę” obok ofert salonów pojawia się „Szukam pracy” – ogłoszenia osób szukających pracy. Funkcja jest zaprojektowana i przygotowana (tabele, funkcje, polityki, ekrany), ale **wyłączona przełącznikiem** `app_feature_flags('szukam_pracy') = false` do czasu, aż zleceniodawca włączy ją po sprawdzeniu prawnym (KRAZ, RODO, DSA – 11.9.7). Zasada tablicy z D-C obowiązuje bez zmian: nikt – ani Aura Consulting, ani platforma – nie rekomenduje, nie wyszukuje, nie dobiera, nie ocenia, nie sortuje ani nie dopasowuje kandydatów. Salon czyta ogłoszenia sam i sam decyduje, czy napisać; autor sam decyduje, czy odpowiedzieć.
+
+#### 11.9.1 Zasady
+
+| Zasada | Rozwiązanie |
+|---|---|
+| Bez kont i profili | Osoba podaje e-mail i potwierdza go linkiem; ogłoszeniem zarządza (edycja, przedłużenie, usunięcie) linkiem z e-maila. „Wyślij mi link ponownie” wysyła nowy link, a poprzedni przestaje działać |
+| Ważność | 30 dni od publikacji; przedłużenie o 30 dni w ostatnich 7 dniach ważności, bez zmiany treści (Założenie); wygasłe ogłoszenie wraca na tablicę tylko przez edycję i moderację |
+| Jedno ogłoszenie na osobę | Jedno aktywne ogłoszenie na adres e-mail (Założenie); próba dodania drugiego kończy się tą samą odpowiedzią co sukces i wysłaniem linku do zarządzania istniejącym (bez ujawniania, czy adres ma ogłoszenie) |
+| Tylko osoby pełnoletnie | Obowiązkowe oświadczenie „Mam ukończone 18 lat”; powód zgłoszenia „osoba niepełnoletnia” → usunięcie ogłoszenia |
+| Widoczność | Wyłącznie zalogowani członkowie aktywnych kont salonów (właściciel w sesji z TOTP; pracownik – Założenie, Q15). **Nigdy publicznie:** `anon` nie ma żadnego uprawnienia, strony `noindex`, poza sitemap, JSON-LD i `llms.txt`, bez cache współdzielonego |
+| Lista bez rankingu | Kolejność: od najnowszej publikacji. Filtry tylko po polach, które wybiera salon (zawód, województwo, forma współpracy). Bez wyszukiwania pełnotekstowego, „polecanych”, podpowiedzi i powiadomień „pasujący kandydaci” |
+| Kontakt | Tylko formularz przekazujący, tylko dla właściciela konta salonu (Założenie). Wiadomość trafia na e-mail autora, którego salon nie widzi; `Reply-To` – adres podany przez salon. Platforma nie przechowuje treści wiadomości – tylko metadane wysyłki (`candidate_ad_contact_log`: ogłoszenie, salon, osoba wysyłająca, czas) |
+| Aura | Hostuje tablicę i moderuje treść. Pisze do autorów wyłącznie e-maile techniczne: potwierdzenie adresu, link do zarządzania, decyzja moderacji z uzasadnieniem, przypomnienie przed wygaśnięciem |
+
+#### 11.9.2 Dane
+
+| Pole | Zakres | Widzi salon |
+|---|---|---|
+| Imię | jedno słowo (dopuszczalne imię z łącznikiem), bez nazwiska; CHECK w bazie odrzuca spacje i cyfry | tak |
+| Zawód | lista jak w ofertach (kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta, recepcja, inny) | tak |
+| Miasto i województwo | miasto tekstem, województwo z listy | tak |
+| Forma współpracy | umowa o pracę, umowa zlecenie, B2B, **najem stanowiska/fotela**, inna (1–5) | tak |
+| Doświadczenie | do 1 roku, 1–3 lata, 3–5 lat, powyżej 5 lat | tak |
+| Dostępność od | data, najwyżej rok naprzód | tak |
+| Krótki opis | ≤ 500 znaków, tekst zwykły; CHECK odrzuca znaczniki, adresy URL, znak `@` i ciągi cyfr wyglądające na numer telefonu | tak |
+| E-mail | do potwierdzenia, linku i przekazania wiadomości; brak uprawnienia kolumnowego dla `authenticated` | **nie** |
+| Oświadczenie 18+, wersja regulaminu i klauzuli | do rozliczalności | nie |
+
+Nie zbieramy: nazwiska, zdjęcia, telefonu, CV, daty urodzenia ani adresu.
+
+#### 11.9.3 Role i RODO [do weryfikacji przez prawnika i IOD]
+
+| Kwestia | Rozstrzygnięcie |
+|---|---|
+| Administrator | **Aura** jest administratorem danych z ogłoszeń „Szukam pracy” (ustalone w D-E; który podmiot Aura – Q4). Podstawę prawną wskaże prawnik |
+| Salony | Odbiorcy danych z ogłoszeń (odczyt w strefie). Salon staje się administratorem danych, które autor sam mu przekaże, odpowiadając na wiadomość |
+| Informacja przy formularzu | administrator, cel (ogłoszenie widoczne dla salonów z kontem w Strefie Klienta), odbiorcy (salony z kontem; podprzetwarzający: Supabase, Cloudflare, Resend), okres przechowywania, prawa, informacja, że Aura nie poleca i nie dobiera kandydatów; wersja zapisywana w `notice_version` |
+| Retencja (Założenie) | niepotwierdzone – 24 h; po wygaśnięciu, odrzuceniu albo usunięciu – 30 dni (czas na odwołanie), potem usunięcie wiersza; ślad wysyłek – 30 dni; treść wiadomości salonu – tylko do wysyłki, jak w 11.3 |
+| Prawa osoby | usunięcie jednym przyciskiem z linku do zarządzania (działa zawsze, także przy wyłączonym przełączniku); sprostowanie przez edycję; dostęp i pozostałe prawa – przez kontakt z Aura lub IOD |
+| Dane szczególnych kategorii | podpowiedź w formularzu („Nie podawaj informacji o zdrowiu, wyznaniu, pochodzeniu…”); moderator odrzuca opis z takimi danymi |
+| Rozliczalność | wpis w rejestrze czynności przetwarzania; ocena, czy potrzebna ocena skutków (DPIA) [do weryfikacji] |
+
+#### 11.9.4 Moderacja i DSA
+
+- **Publikacja tylko po potwierdzeniu e-maila i moderacji** konkretnej `content_version`; każda edycja zdejmuje ogłoszenie z tablicy do ponownej akceptacji.
+- **Lista kontrolna moderatora:** opis dotyczy pracy w branży beauty; brak danych kontaktowych, linków, danych osób trzecich i danych szczególnych kategorii; imię bez nazwiska; zawód zgodny z opisem; nic nie wskazuje na osobę niepełnoletnią; brak reklamy usług zamiast ogłoszenia o pracy.
+- **Zgłoszenia (mechanizm zgłoszeń i działań – art. 16 DSA [do weryfikacji zakresu]):** „Zgłoś” przy każdym ogłoszeniu (salon) i „Zgłoś wiadomość” w każdym e-mailu z wiadomością salonu (autor); powód z listy i uzasadnienie (`abuse_reports.details`), bez danych zgłaszającego; kolejka w `/panel/zgloszenia`; zgłoszenie wiadomości wskazuje salon (`reported_account_id`) i przetrwa usunięcie śladu wysyłki.
+- **Uzasadnienie decyzji (art. 17 DSA [do weryfikacji]):** odrzucenie i usunięcie wymagają uzasadnienia dla autora (`rejection_reason`, CHECK w bazie). E-mail `candidate_ad_rejected` / `candidate_ad_removed` podaje: co zrobiono, na jakiej podstawie (punkt regulaminu albo przepis), czy zgłoszenie wpłynęło z zewnątrz, i jak się odwołać (odpowiedź do Aura w ciągu 30 dni – w tym czasie dane zostają).
+- **Regulamin „Szukam pracy”** opisuje zasady moderacji i ograniczeń (art. 14 DSA [do weryfikacji]). Czy Aura podlega także obowiązkom platform internetowych (m.in. wewnętrzny system rozpatrywania skarg, przekazywanie uzasadnień do bazy Komisji) – oceni prawnik (11.9.7).
+
+#### 11.9.5 Kontrole bezpieczeństwa
+
+| Wektor | Kontrola |
+|---|---|
+| Boty i zalew ogłoszeń | Turnstile, honeypot, limit Workers na IP (3 ogłoszenia na IP na dobę – Założenie), potwierdzenie e-maila przed moderacją, jedno ogłoszenie na adres, niepotwierdzone usuwane po 24 h |
+| Przejęcie zarządzania ogłoszeniem | token losowy tylko w e-mailu, w części `#` adresu (jak 4.2), w bazie skrót SHA-256; GET niczego nie zmienia (zmiany tylko POST); rotacja linku; neutralne odpowiedzi; `Referrer-Policy: no-referrer`; strony wyłączone z analityki i przechwytywania adresów w Sentry |
+| Zbieranie danych kandydatów (scraping) | odczyt tylko w sesji konta salonu (RLS + `client_account_ids()`, właściciel z TOTP), `anon` bez uprawnień, e-mail bez uprawnienia kolumnowego, paginacja z limitem, `no-store`; alert przy nietypowej liczbie odczytów z jednego konta (P1) |
+| Nadużycie kontaktu (nękanie, pozorne oferty, phishing) | tylko właściciel konta salonu; limity w bazie (Założenie): 1 wiadomość od salonu do ogłoszenia, 20 wiadomości salonu na dobę, 10 wiadomości do ogłoszenia na dobę; wiadomość 20–1000 znaków bez linków; stały szablon z nazwą salonu z konta (nie z formularza), nagłówek „Wiadomość od salonu z kontem w Strefie Klienta – BeautyPolisa nie przechowuje wiadomości”, „Zgłoś wiadomość”; zawieszenie konta salonu |
+| Ujawnienie adresu autora | adres zna tylko serwer i Resend; salon poznaje adres dopiero, gdy autor sam odpisze |
+| Wstrzykiwanie treści | tekst zwykły, CHECK jak w ofertach oraz dodatkowo `@` i numery telefonów; escape przy renderowaniu |
+| Ominięcie przełącznika | przełącznik w bazie, nie w zmiennej środowiskowej aplikacji; RLS i funkcje sprawdzają go niezależnie od kodu tras; zmiana tylko funkcją dla admina z wpisem w dzienniku |
+| Osoby niepełnoletnie | oświadczenie 18+, moderacja, powód zgłoszenia `niepelnoletnia` |
+
+#### 11.9.6 Przełącznik – zachowanie
+
+| Warstwa | Wyłączony (stan domyślny) | Włączony (po decyzji zleceniodawcy) |
+|---|---|---|
+| Baza – zapis | funkcje `app_candidate_*`, `app_moderate_candidate_ad()`, `app_report_candidate_*` kończą się wyjątkiem `BP404`. Wyjątki: `app_candidate_ad_delete()` (prawo do usunięcia danych) i `app_purge_candidate_ads()` (retencja) – tylko zmniejszają ilość danych | działają z limitami z 11.9.5 |
+| Baza – odczyt | polityki `candidate_ads` zwracają 0 wierszy salonom i personelowi; `anon` – brak uprawnień | salony: opublikowane, nieprzeterminowane; personel: kolejka moderacji; `anon` – nadal brak |
+| Trasy | `/dam-prace/szukam-pracy/*`, `/strefa-klienta/dam-prace/szukam-pracy*`, `/api/strefa/szukam-pracy/*` → **404** (nie 403 – bez sygnału, że funkcja istnieje). Jedyny wyjątek: gdy po wcześniejszym okresie działania w bazie zostały ogłoszenia, strona zarządzania z ważnym linkiem obsługuje wyłącznie usunięcie | dostępne, `noindex` |
+| Interfejs | brak zakładki, linków i wzmianek (także w `llms.txt`, sitemap, stopce); w makietach tylko podgląd z etykietą „Podgląd – funkcja nieaktywna” | zakładka „Szukam pracy” w „Dam pracę” w strefie; na `/dam-prace` link „Dodaj ogłoszenie «Szukam pracy»” |
+| E-maile i Cron | szablony `candidate_*` nie są wysyłane; `app_purge_candidate_ads()` działa codziennie | jak w 13 |
+| Zmiana stanu | `app_set_feature_flag()` – tylko admin Aura w `/panel` (sesja `aal2`); włączenie wymaga `decision_ref` (odwołanie do decyzji zleceniodawcy po sprawdzeniu prawnym); wpis `feature_flag_changed` w dzienniku. Serwer odczytuje stan przy żądaniach tych tras (cache najwyżej 60 s – Założenie) | wyłączenie działa w bazie natychmiast i nie usuwa danych – usuwa je retencja |
+
+#### 11.9.7 Warunki prawne przed włączeniem (Q14)
+
+1. **KRAZ:** opinia prawna, czy publikowanie ogłoszeń osób szukających pracy, widocznych dla salonów z kontem, i przekazywanie wiadomości salonów do autorów pozostaje prowadzeniem tablicy, czy staje się usługą wymagającą wpisu do KRAZ – to nowa okoliczność względem decyzji D-C, która dotyczyła tablicy samych ofert [do weryfikacji].
+2. **RODO:** podstawa prawna, klauzula informacyjna, regulamin „Szukam pracy”, okresy przechowywania (Z-19), wpis w rejestrze czynności, ocena potrzeby DPIA, umowy z podprzetwarzającymi (w tym Resend – Q13).
+3. **DSA:** regulamin z zasadami moderacji, mechanizm zgłoszeń, szablony uzasadnień decyzji, ocena, które obowiązki platform internetowych dotyczą Aura.
+4. **Decyzja zleceniodawcy** na piśmie, z odwołaniem do opinii – jej oznaczenie trafia do `decision_ref`; dopiero wtedy admin włącza przełącznik.
+
+#### 11.9.8 Wdrożenie
+
+- **Z2:** tabele, funkcje, polityki i testy (9.6 pkt 12), trasy, ekrany i kolejka moderacji w `/panel` – wszystko za wyłączonym przełącznikiem; w makiecie `dam-prace.html` tylko oznaczony podgląd (5.3).
+- **Z0 (równolegle):** zamówienie opinii prawnej (11.9.7) – nie blokuje Z1 ani Z2.
+- **Włączenie (po decyzji):** szkolenie moderatorów z listy kontrolnej i szablonów uzasadnień, próba na środowisku testowym z włączonym przełącznikiem, włączenie w produkcji, przegląd zgłoszeń i limitów po 30 dniach; wyłączenie w razie problemu tym samym przełącznikiem.
 
 ## 12. „Szkolenia” – specyfika (D-D)
 
@@ -592,12 +698,14 @@ Wszystkie e-maile przez istniejący wzorzec `outbox_emails` (02 §3.4): wiersz w
 | `training_published`, `training_rejected` | organizator | moderacja |
 | `training_registered`, `training_waitlisted`, `training_promoted`, `training_changed`, `training_reminder_24h`, `training_cancelled` | uczestnik | zapis, lista rezerwowa, zmiana po ponownej akceptacji, Cron, odwołanie |
 | `member_dormant_revoked`, `new_device_login` | właściciel / właściciel i organizator | Cron, logowanie z nowego urządzenia |
+| `candidate_ad_confirm`, `candidate_ad_manage_link`, `candidate_ad_published`, `candidate_ad_rejected`, `candidate_ad_removed` (z uzasadnieniem), `candidate_ad_expiring` – **D-E, nieaktywne** | autor ogłoszenia „Szukam pracy” | dodanie, „Wyślij mi link ponownie”, moderacja, Cron; link z tokenem dokleja serwer przy wysyłce, nigdy w `payload` |
+| `candidate_contact` – **D-E, nieaktywne** | autor ogłoszenia „Szukam pracy” | wiadomość salonu (11.9.1); `Reply-To` salonu, „Zgłoś wiadomość”; treść i adres czyszczone po wysyłce |
 
-E-maile Supabase Auth (kod logowania) idą przez SMTP Resend, poza outboxem.
+E-maile Supabase Auth (kod logowania) idą przez SMTP Resend, poza outboxem. Przy wyłączonym przełączniku „Szukam pracy” szablony `candidate_*` nie są wysyłane, a `app_purge_relay_messages()` czyści je tak samo jak `job_relay` (adres i treść po wysyłce, niewysłane po 24 h).
 
 ## 14. Dziennik audytu
 
-`client_audit_log`: append-only – wyzwalacz blokuje UPDATE, DELETE tylko wpisów starszych niż 24 miesiące (Założenie) i tylko przez `app_purge_audit_log()` (SECURITY DEFINER, właściciel `postgres`), wyzwalacz instrukcji blokuje TRUNCATE; `service_role` (sekret Workera) ma tylko SELECT i INSERT. `actor` w formacie `system[:kontekst]` (np. `system:import:<partia>`, `system:crm-sync`, `system:cron`) / `user:<uuid>` / `staff:<uuid>` – funkcje rozróżniają działania personelu i klientów (także przy rezygnacji ze szkolenia i rotacji zaproszeń). `payload` bez PII (≤ 2 KB), `request_id` do korelacji z logami Workera. Zapisują: funkcje `app_*`, wyzwalacz audytu zmian personelu (konta, polisy, profile organizatorów), trasa pobierania dokumentów (`document_downloaded`), wgląd organizatora w listę uczestników. Odczyt: właściciel – zdarzenia swojego salonu (ekran „Historia konta”, P1), personel – wszystko. Logi Workera bez PII jak w 02 §4.8. Kopia poza bazą: codzienny eksport do R2 z blokadą obiektów (Logpush lub podpisany eksport) – P1; łańcuch skrótów (`prev_hash`) – P2, jeśli dziennik ma służyć jako dowód w sporach.
+`client_audit_log`: append-only – wyzwalacz blokuje UPDATE, DELETE tylko wpisów starszych niż 24 miesiące (Założenie) i tylko przez `app_purge_audit_log()` (SECURITY DEFINER, właściciel `postgres`), wyzwalacz instrukcji blokuje TRUNCATE; `service_role` (sekret Workera) ma tylko SELECT i INSERT. `actor` w formacie `system[:kontekst]` (np. `system:import:<partia>`, `system:crm-sync`, `system:cron`) / `user:<uuid>` / `staff:<uuid>` – funkcje rozróżniają działania personelu i klientów (także przy rezygnacji ze szkolenia i rotacji zaproszeń). `payload` bez PII (≤ 2 KB), `request_id` do korelacji z logami Workera. Zapisują: funkcje `app_*`, wyzwalacz audytu zmian personelu (konta, polisy, profile organizatorów), trasa pobierania dokumentów (`document_downloaded`), wgląd organizatora w listę uczestników, zmiana przełącznika funkcji (`feature_flag_changed`), moderacja „Szukam pracy” i sam fakt wysłania wiadomości przez salon (`candidate_contact_sent` – bez odwołania do ogłoszenia i bez treści). Odczyt: właściciel – zdarzenia swojego salonu (ekran „Historia konta”, P1), personel – wszystko. Logi Workera bez PII jak w 02 §4.8. Kopia poza bazą: codzienny eksport do R2 z blokadą obiektów (Logpush lub podpisany eksport) – P1; łańcuch skrótów (`prev_hash`) – P2, jeśli dziennik ma służyć jako dowód w sporach.
 
 ## 15. Zagrożenia (STRIDE) i kontrole
 
@@ -609,6 +717,7 @@ E-maile Supabase Auth (kod logowania) idą przez SMTP Resend, poza outboxem.
 | **I** – ujawnienie | Wyciek między salonami lub między organizatorami; zbieranie danych uczestników przez fałszywego organizatora; zbieranie kontaktów salonów; buforowanie stanu jednego użytkownika i podawanie go innym; wyciek tokenu zaproszenia w logach; wyciek podpisanego URL; enumeracja kont; dane osobowe w e-mailach i outboxie | RLS na każdej tabeli i na `storage.objects`; minimalna migawka dla organizatora, weryfikacja i umowa, retencja 30 dni; kontakt tylko po „Pokaż kontakt”; reguły cache z 16; token w `#`, wyłączenie strefy z analityki i Sentry; `Cache-Control: private, no-store` + `X-Robots-Tag: noindex, nofollow`; URL 60 s z `download`; neutralne odpowiedzi logowania; czyszczenie `job_relay` po wysyłce |
 | **D** – odmowa usługi | Wyczerpanie godzinowego limitu e-maili Auth przez żądania kodów (blokada logowania wszystkich, także `/panel`); zalew moderacji; zalew formularza; wyczerpanie miejsc na szkoleniu przez jeden salon | limity aplikacji przed Supabase, osobny strumień e-maili, alert przy 50 % limitu; limity szkiców; limity formularza; limit miejsc na salon |
 | **E** – eskalacja | Pracownik → właściciel; obniżenie roli właściciela zaproszeniem; klient lub organizator → personel; funkcje DEFINER dla `anon`; `user_metadata` jako źródło ról; sesja `aal1`; trwały dostęp po jednorazowym przejęciu przez ustawienie hasła lub zmianę adresu e-mail | członkostwa tylko przez funkcje `service_role` + guard; brak obniżania roli; rozdział `admin_users`/`client_members`/`organizer_members` w obie strony; zero DEFINER dla `anon` (test CI); role tylko z tabel; warunek `aal2` w funkcjach pomocniczych; hasła odrzucane, zmiana adresu tylko przez personel |
+| **D-E** – „Szukam pracy” (nieaktywne; po włączeniu) | S: przejęcie linku do zarządzania, phishing do autorów z domeny BeautyPolisa; T: podmiana treści po moderacji; I: zbieranie danych kandydatów przez konto salonu lub bez konta, ujawnienie e-maila autora, enumeracja adresów; D: zalew ogłoszeń i wiadomości; E: włączenie funkcji z pominięciem decyzji, odczyt mimo wyłączonego przełącznika | token w `#`, skrót w bazie, rotacja, POST; stały szablon, nazwa salonu z konta, linki odrzucane; `content_version`, edycja → moderacja; tylko sesja salonu, `anon` bez uprawnień, e-mail bez uprawnienia kolumnowego, neutralne odpowiedzi; Turnstile, potwierdzenie e-maila, limity w bazie; przełącznik w bazie sprawdzany w RLS i funkcjach, zmiana tylko przez admina z `decision_ref` i wpisem w dzienniku (11.9.5–11.9.6) |
 
 ## 16. Wydajność i cache
 
@@ -630,6 +739,7 @@ Skala obciążenia [hipoteza]: dziesiątki kont i pojedyncze tysiące odsłon st
 - `/strefa-klienta/*`: `noindex, nofollow` (meta + nagłówek), `Disallow: /strefa-klienta/` w `robots.ts`, brak w sitemap.
 - `/dam-prace` i ogłoszenia: indeksowane, `JobPosting` (11.5, `directApply: false`, bez kontaktu), `BreadcrumbList`, osobna sitemap z `lastmod`; wygasłe → 410.
 - `/szkolenia` i strony szkoleń: indeksowane (Założenie), schema.org `EducationEvent` z `startDate`, `endDate`, `eventAttendanceMode` (online/offline/mixed), `location` (`Place` albo `VirtualLocation` – bez linku do spotkania), `organizer` (nazwa ze zweryfikowanego profilu), `offers` z `price` (0 dla bezpłatnych, cena brutto dla płatnych), `priceCurrency: PLN` i `availability` (`InStock`/`SoldOut`); odwołane – `eventStatus: EventCancelled`. JSON-LD z escapowaniem jak w 11.5.
+- „Szukam pracy” (D-E, nieaktywne): nigdy indeksowane – strony `noindex, nofollow`, poza sitemap, bez JSON-LD (żadnego `Person` ani `JobPosting`), bez wzmianki w `llms.txt`; także po włączeniu ogłoszenia widzą tylko zalogowane salony.
 - `llms.txt`: dopisać sekcję „Strefa Klienta” (jedno zdanie: konto dla salonów z polisą kupioną przez BeautyPolisa – polisy, tablica ogłoszeń o pracę, szkolenia) i linki do `/dam-prace` i `/szkolenia`.
 - Strona główna: teaser strefy (18.2) – treść statyczna, bez wpływu na LCP.
 
@@ -674,16 +784,17 @@ W makiecie (statycznej) linki wskazują `logowanie.html` i `dam-prace.html`. Zda
 
 | Etap | Zakres | Zależności | Czas [Założenie] |
 |---|---|---|---|
-| **Z0** – decyzje | Odpowiedzi na pytania z 21; regulamin Strefy Klienta, regulamin „Dam pracę” (z umową powierzenia dla formularza i jawnością wynagrodzeń), umowa organizatora szkoleń; opinia o rolach RODO przy danych uczestników (Q1); klauzule; decyzja o administratorze (00 §13 pkt 2) | – | 2–3 tygodnie, równolegle z fazą 1 portalu |
+| **Z0** – decyzje | Odpowiedzi na pytania z 21; regulamin Strefy Klienta, regulamin „Dam pracę” (z umową powierzenia dla formularza i jawnością wynagrodzeń), umowa organizatora szkoleń; opinia o rolach RODO przy danych uczestników (Q1); klauzule; decyzja o administratorze (00 §13 pkt 2); zamówienie opinii prawnej do „Szukam pracy” (Q14 – nie blokuje Z1 ani Z2) | – | 2–3 tygodnie, równolegle z fazą 1 portalu |
 | **Z1** – konto i polisy | Migracja tabel kont, członkostw, zaproszeń, polis, dokumentów, audytu; Auth (SMTP Resend, OTP z limitami, obowiązkowy TOTP właścicieli, PKCE, `__Host-`, hasła odrzucane); reguły WAF i rate limit dla strefy; `/panel/klienci`; pulpit, polisy z archiwum, dokumenty, odnowienia, zgłoszenie szkody, zespół z cyklem życia; testy uprawnień; import startowy (M2) | faza 1 portalu (szkielet, `/panel`, outbox, CI) | 4–6 tygodni |
-| **Z2** – „Dam pracę”, „Szkolenia”, organizatorzy | Tabele i funkcje ogłoszeń, kontaktu, formularza przekazującego, organizatorów, szkoleń i zapisów; moderacja ogłoszeń i szkoleń, weryfikacja organizatorów i zgłoszenia nadużyć w `/panel`; publiczne `/dam-prace` i `/szkolenia` z JSON-LD i sitemap; widok organizatora; przypomnienia; migracja M3; teaser na stronie głównej | Z1; regulamin „Dam pracę”, umowa organizatora, Q1 | 5–7 tygodni |
+| **Z2** – „Dam pracę”, „Szkolenia”, organizatorzy | Tabele i funkcje ogłoszeń, kontaktu, formularza przekazującego, organizatorów, szkoleń i zapisów; moderacja ogłoszeń i szkoleń, weryfikacja organizatorów i zgłoszenia nadużyć w `/panel`; publiczne `/dam-prace` i `/szkolenia` z JSON-LD i sitemap; widok organizatora; przypomnienia; migracja M3; teaser na stronie głównej; **„Szukam pracy” zbudowane i przetestowane za wyłączonym przełącznikiem** (11.9.8) | Z1; regulamin „Dam pracę”, umowa organizatora, Q1 | 5–7 tygodni |
+| **Z2+** – włączenie „Szukam pracy” | Regulamin i klauzula „Szukam pracy”, szkolenie moderatorów, próba z włączonym przełącznikiem, włączenie przez admina z `decision_ref`, przegląd po 30 dniach (11.9.8) | Z2; warunki z 11.9.7 (Q14); pisemna decyzja zleceniodawcy | wg decyzji |
 | **Z3** – rozszerzenia | Przekaz z CRM (M5); zaświadczenia; samodzielna edycja profilu organizatora; klucze dostępu; rola „manager”; Indexing API; kopia dziennika poza bazą | decyzja Q8 | wg decyzji |
 
 Definition of Done każdego etapu: testy uprawnień z 9.6 zielone, Security Advisor bez pozycji ERROR/WARN dla nowych obiektów, audyt WCAG 2.2 AA ekranów etapu, budżety wydajności z 02 spełnione, wpis w rejestrze czynności przetwarzania.
 
 ## 20. Założenia (do decyzji zleceniodawcy)
 
-Rozstrzygnięte decyzjami z 11.11.2026 (tabela na początku dokumentu): konto przy każdej polisie (D-A), brak odcięcia konta po wygaśnięciu polis (D-B), „Dam pracę” jako tablica bez wpisu do KRAZ (D-C), organizatorzy szkoleń (D-D). Pozostałe założenia:
+Rozstrzygnięte decyzjami z 11.11.2026 (tabela na początku dokumentu): konto przy każdej polisie (D-A), brak odcięcia konta po wygaśnięciu polis (D-B), „Dam pracę” jako tablica bez wpisu do KRAZ (D-C), organizatorzy szkoleń (D-D), „Szukam pracy” przygotowane i wyłączone do decyzji po sprawdzeniu prawnym (D-E). Pozostałe założenia:
 
 | ID | Założenie |
 |---|---|
@@ -705,6 +816,7 @@ Rozstrzygnięte decyzjami z 11.11.2026 (tabela na początku dokumentu): konto pr
 | Z-16 | **Założenie:** weryfikacja organizatora: rejestr (NIP, KRS albo CEIDG), adres e-mail w domenie firmy, telefon zwrotny Aura, podpisana umowa organizatora |
 | Z-17 | **Założenie:** dane uczestników dla organizatora usuwane z platformy 30 dni po zakończeniu szkolenia |
 | Z-18 | **Założenie:** linki do spotkań online tylko z hostów Zoom, Microsoft Teams i Google Meet |
+| Z-19 | **Założenie („Szukam pracy”, D-E – obowiązuje dopiero po włączeniu):** link potwierdzający ważny 24 h; ogłoszenie ważne 30 dni, przedłużenie o 30 dni w ostatnich 7 dniach; jedno aktywne ogłoszenie na adres e-mail; ogłoszenia widzą właściciele (z TOTP) i pracownicy salonów, wiadomość wysyła tylko właściciel; limity: 3 ogłoszenia na IP na dobę, 1 wiadomość od salonu do ogłoszenia, 20 wiadomości salonu na dobę, 10 wiadomości do ogłoszenia na dobę; retencja: niepotwierdzone 24 h, zakończone 30 dni, ślad wysyłek 30 dni; stan przełącznika w cache serwera najwyżej 60 s |
 
 ## 21. Pytania otwarte do zleceniodawcy
 
@@ -723,6 +835,8 @@ Rozstrzygnięte decyzjami z 11.11.2026 (tabela na początku dokumentu): konto pr
 | Q11 | Czy organizatorzy szkoleń płacą za publikację albo za weryfikację, czy jest ona bezpłatna? Kto po stronie Aura weryfikuje organizatorów? | zleceniodawca | Z2 |
 | Q12 | Czy domyślnym sposobem kontaktu w ogłoszeniu ma być formularz przekazujący (rekomendacja), czy tylko e-mail lub telefon salonu – bez żadnej wiadomości przechodzącej przez platformę? | zleceniodawca + IOD | Z2 |
 | Q13 | Jaką retencję treści wiadomości stosuje Resend i czy można ją skrócić [do weryfikacji]? | zespół techniczny | Z2 |
+| Q14 | Czy „Szukam pracy” można włączyć: KRAZ (nowa okoliczność względem D-C), podstawa prawna i obowiązki z RODO, obowiązki z DSA (11.9.7)? | prawnik + IOD, potem zleceniodawca | włączenie „Szukam pracy” (nie blokuje Z1 ani Z2) |
+| Q15 | Czy ogłoszenia „Szukam pracy” mają widzieć także pracownicy salonu, czy tylko właściciel (Z-19)? | zleceniodawca | włączenie „Szukam pracy” |
 
 ## 22. Decyzje (do rejestru w 08)
 
@@ -735,6 +849,7 @@ Rozstrzygnięte decyzjami z 11.11.2026 (tabela na początku dokumentu): konto pr
 | D20 | **Decyzja zleceniodawcy 11.11.2026 (D-C):** „Dam pracę” wyłącznie jako tablica ogłoszeń – moderacja treści przed publikacją i po każdej zmianie, widełki obowiązkowe, kontakt z salonem bezpośrednio albo przez formularz bez przechowywania wiadomości; bez wpisu do KRAZ | konta i profile kandydatów, baza CV, aplikacje i statusy rekrutacji w platformie, wyszukiwanie, polecanie i dopasowywanie kandydatów, kontakt Aura z kandydatami |
 | D21 | **Decyzja zleceniodawcy 11.11.2026 (D-D):** szkolenia dodają zweryfikowani organizatorzy (firmy i salony) z publikacją po moderacji; organizator dostaje minimalne dane uczestników tylko swoich szkoleń; zapis z konta salonu, limit miejsc z blokadą wiersza; bez płatności online w MVP | katalog prowadzony wyłącznie przez personel, płatności online, zapisy bez konta, pełny dostęp organizatora do zapisów |
 | D22 | **Decyzje zleceniodawcy 11.11.2026 (D-A, D-B):** konto przy każdej polisie kupionej przez BeautyPolisa; konto i dostęp do „Dam pracę” i „Szkoleń” zostają po wygaśnięciu polis, polisy wygasłe w archiwum; zamiast odcięcia – kontrole cyklu życia (Z-13) | konto tylko dla OC, zawieszenie konta 12 miesięcy po wygaśnięciu ostatniej polisy |
+| D23 | **Decyzja zleceniodawcy 11.11.2026 (D-E):** „Szukam pracy” na tablicy „Dam pracę” – przygotowane i **wyłączone przełącznikiem w bazie** do decyzji zleceniodawcy po sprawdzeniu prawnym (KRAZ, RODO, DSA); bez kont kandydatów (e-mail, potwierdzenie, link do zarządzania), minimalne dane, 18+, ważność 30 dni, widoczne tylko dla zalogowanych salonów, kontakt tylko formularzem bez przechowywania treści, moderacja przed publikacją; nadal tylko tablica | konta i profile kandydatów, publiczne ogłoszenia kandydatów, zdjęcia i dane kontaktowe w ogłoszeniu, wyszukiwarka i dopasowywanie, przełącznik tylko w kodzie aplikacji, włączenie przed opinią prawną |
 
 ## 23. Zmiany w wersji 1.1
 
@@ -752,3 +867,10 @@ Rozstrzygnięte decyzjami z 11.11.2026 (tabela na początku dokumentu): konto pr
 | Uprawnienia kolumnowe zamiast całych tabel dla kont i polis | przegląd bezpieczeństwa (nadmiarowe kolumny) |
 | Zabezpieczenie przekazu z CRM (czas, nonce, Vault, tylko nieopublikowane polisy) | przegląd bezpieczeństwa (M5) |
 | Poprawka twierdzenia o `search_path` w `app_is_staff()` | przegląd spójności |
+
+## 24. Zmiany w wersji 1.2
+
+| Zmiana | Źródło |
+|---|---|
+| „Szukam pracy” w wersji nieaktywnej: sekcja 11.9 (zasady, dane, RODO, moderacja i DSA, kontrole, przełącznik, warunki prawne, wdrożenie), macierz uprawnień, mapa URL, wymaganie J10, model danych, zapisy (9.2), test 9.6 pkt 12, powiadomienia, dziennik, STRIDE, SEO, plan (Z2, Z2+), Z-19, Q14–Q15, D23 | decyzja zleceniodawcy D-E z 11.11.2026 |
+| `snippets/strefa-klienta.sql`: `app_feature_flags` (domyślnie wyłączony), `candidate_ads`, `candidate_ad_contact_log`, rozszerzone `abuse_reports` i dziennik; funkcje `app_candidate_*` odmawiające przy wyłączonym przełączniku; RLS – odczyt tylko dla zalogowanych salonów i tylko przy włączonym przełączniku | D-E; sprawdzone na lokalnym Postgresie 16 (9.6) |
