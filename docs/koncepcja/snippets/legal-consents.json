@@ -38,9 +38,9 @@
     },
     {
       "kind": "distributorNotice",
-      "version": "idd-v1-2026-11",
+      "version": "idd-v2-2026-11",
       "file": "distributor.json",
-      "$comment": "Informacja agenta ubezpieczeniowego (art. 22 ustawy o dystrybucji ubezpieczeń): Aura Expert sp. z o.o., RPU nr 11229690/A, weryfikacja: https://rpu.knf.gov.pl/; lista zakładów – do potwierdzenia; reklamacje i charakter wynagrodzenia – do uzupełnienia",
+      "$comment": "Informacja agenta ubezpieczeniowego (art. 22 ustawy o dystrybucji ubezpieczeń): Aura Expert sp. z o.o., RPU nr 11229690/A, weryfikacja: https://rpu.knf.gov.pl/; lista 10 zakładów, charakter wynagrodzenia, reklamacje i kontakt agenta – wg ujawnienia Aura Expert z 13.11.2026 (00, D37; legal-distributor.json)",
       "requiresCheckbox": false
     },
     {

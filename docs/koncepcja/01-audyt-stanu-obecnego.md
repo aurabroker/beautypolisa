@@ -13,8 +13,8 @@ Opracować koncepcję portalu informacyjnego BeautyPolisa (React/Next.js) dla br
 | 1 | OC zawodowe dla branży beauty (program z ERGO Hestią, nr WA50/003353/24/A, we współpracy z Fundacją Beauty Razem) | Sopockie TU ERGO Hestia S.A. | kalkulator w `indeksowt.html` + `bp-app.js` |
 | 2 | Ubezpieczenie karno-skarbowe Tax Protect | Colonnade Insurance S.A. Oddział w Polsce (OWU z 25.01.2023) | `tax-protect.html` |
 | 3 | Utrata dochodu („prywatne L4”) | brak informacji o produkcie w repo; w `life.html` wzmianka o ofercie indywidualnej „Squarelife” z ochroną dochodu | tylko link `#` w nawigacji |
-| 4 | NNW dzieci | brak informacji w repo | tylko link `#` w nawigacji |
-| 5 | Ubezpieczenie grupowe ERGO dedykowane beauty (ERGO Życie w Biznesie EZwB 01/25 + MediOpieka MA 01/25) | STU na Życie ERGO Hestia S.A. | `life.html` / `life1.html` |
+| 4 | NNW dzieci | brak informacji w repo (stan audytu); od 13.11.2026: Colonnade Insurance S.A. Oddział w Polsce – program NNW dla dzieci (pkt 3.6) | tylko link `#` w nawigacji; od 13.11.2026 makieta `design/v3/nnw-dzieci.html` |
+| 5 | Ubezpieczenie grupowe ERGO dedykowane beauty (ERGO Życie w Biznesie EZwB 01/25 + MediOpieka MA 01/25; od 13.11.2026 także ERGO Razem – Grupa Otwarta, OWU kod ER 01/25 – pkt 3.6) | STU na Życie ERGO Hestia S.A. | `life.html` / `life1.html`; od 13.11.2026 makieta `design/v3/grupowe-ergo.html` |
 | 6 | (istniejące, nie wymienione w zleceniu) Opieka medyczna ENEL-MED / LUX MED | abonamenty, administrator danych: Aura Expert sp. z o.o. | `medical.html` |
 
 Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeństwo i stabilność → szybkość ładowania → responsywność → SEO/GEO**. Stos: React/Next.js, baza Supabase, wszystko przez Cloudflare. Dodatkowo wskazany efekt wizualny „glass widget” (glassmorphism) oraz zestaw skilli do zastosowania: schema markup, content strategy, SEO/AI visibility (GEO), code review, system design, Canva creator, design critique, lead magnets & funnels.
@@ -22,14 +22,14 @@ Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeń
 ## 2. Marka i podmioty
 
 - Marka: **BeautyPolisa** („BeautyPolisa created by Aura Expert”).
-- Partner branżowy: **Beauty Razem** (od 2024 Fundacja Beauty Razem, założyciel Michał Łenczyński) – logo na ankiecie ERGO Hestii (`AnkietaBPEH.pdf`).
+- Partner branżowy: **Beauty Razem** (od 2024 Fundacja Beauty Razem, założyciel Michał Łenczyński) – logo na ankiecie ERGO Hestii (`AnkietaBPEH.pdf`). Członkostwo w Fundacji Beauty Razem nie jest wymagane do OC dla branży beauty (ustalenie zleceniodawcy 12–13.11.2026; 00, D39).
 - Administrator danych dla abonamentów medycznych: Aura Expert sp. z o.o. (iod@auraexpert.pl).
 - **Decyzja zleceniodawcy 12.11.2026 – jeden podmiot:** Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa, KRS 0000599840, NIP 5242793544, REGON 363673048 (dane podane przez zleceniodawcę). Aura Expert jest operatorem portalu, administratorem danych portalu i Strefy Klienta, podmiotem wskazywanym w zgodach marketingowych i dystrybutorem ubezpieczeń w informacjach IDD.
 - **Fakty potwierdzone przez zleceniodawcę 12.11.2026 – status i pełne dane:**
   - Aura Expert sp. z o.o. jest **agentem ubezpieczeniowym**, nie brokerem; numer wpisu w Rejestrze Pośredników Ubezpieczeniowych (rejestr prowadzi KNF): **11229690/A**, weryfikacja: https://rpu.knf.gov.pl/. Według zleceniodawcy poza tym wpisem spółka nie ma innego wpisu w KNF.
   - Pełna formuła (do użycia dosłownie tam, gdzie potrzebna jest pełna formuła): „Aura Expert spółka z ograniczoną odpowiedzialnością z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5 000 zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.”
   - Strona spółki: www.auraexpert.pl. Kontakt do inspektora ochrony danych dla całego portalu (nie tylko abonamentów medycznych): iod@auraexpert.pl.
-  - Zakłady ubezpieczeń, na rzecz których działa agent: w koncepcji wymienieni są wyłącznie Sopockie TU ERGO Hestia S.A., STU na Życie ERGO Hestia S.A. i Colonnade Insurance S.A. Oddział w Polsce – dokładna lista **do potwierdzenia**; procedura reklamacyjna i charakter wynagrodzenia – **do uzupełnienia**.
+  - Zakłady ubezpieczeń, na rzecz których działa agent, procedura reklamacyjna i charakter wynagrodzenia – **ustalone 13.11.2026** na podstawie ujawnienia Aura Expert (pkt 3.6; 00, D37). Formuła z „XII Wydział” jest prawidłowa (potwierdzenie zleceniodawcy 12–13.11.2026; 00, D38).
 - Ślad zmiany: stare strony opisywały obsługę słownictwem brokerskim („Obsługa Brokerska”, „Broker Ubezpieczeniowy” ze spółką o innej nazwie, „nasz broker wynegocjuje…”) obok noty „Informacje o agencie ubezpieczeniowym”; decyzjami z 12.11.2026 nazwę innej spółki zastąpiła Aura Expert sp. z o.o., a słownictwo brokerskie jest do usunięcia (Aura Expert jest agentem).
 - Paleta obecna: granat `#2a3b69` (beauty-navy), róż `#e11d48` (beauty-pink), tło `#fafafa`, tekst `#1e293b`; font Montserrat (Playfair Display w najstarszej wersji, później usunięto szeryfy); tryb ciemny `#0f172a`.
 - Domeny: w JSON-LD obecnie `https://www.beautypolisa.com/#agency`, docelowa domena wg zlecenia: **beautypolisa.eu**. Niespójność do usunięcia.
@@ -66,7 +66,43 @@ Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeń
 - ENEL-MED i LUX MED, abonamenty wg cennika programu zapisanego w kodzie (120–478 zł miesięcznie, zależnie od sieci, zakresu – pracownik / partner / rodzina – i liczby osób: 3–10 / 11–20 / 21–50), wycena korporacyjna 51+ osób.
 
 ### 3.5 Utrata dochodu i NNW dzieci
-- Brak jakichkolwiek danych produktowych w repo. Z researchu rynkowego: produkt „utrata dochodu” kierowany do samozatrudnionych/B2B (min. ok. 80% przychodów z własnej działalności), istotne: definicja niezdolności do pracy, karencja, wyłączenia, kwestia kosztu podatkowego (interpretacje niejednoznaczne). NNW dzieci: rynek 2026/27 – składki indywidualne zwykle 40–150 zł/rok, sumy 5 000–220 000 zł, ubezpieczenie szkolne jest dobrowolne. **Konkretna oferta BeautyPolisa w tych dwóch liniach musi zostać dostarczona przez zespół produktowy.**
+- Stan audytu (11.11.2026; utrata dochodu – od 12.11.2026 treść z utratadochodu.pl, 00, D33; NNW dzieci – od 13.11.2026 program Colonnade, pkt 3.6): brak jakichkolwiek danych produktowych w repo. Z researchu rynkowego: produkt „utrata dochodu” kierowany do samozatrudnionych/B2B (min. ok. 80% przychodów z własnej działalności), istotne: definicja niezdolności do pracy, karencja, wyłączenia, kwestia kosztu podatkowego (interpretacje niejednoznaczne). NNW dzieci: rynek 2026/27 – składki indywidualne zwykle 40–150 zł/rok, sumy 5 000–220 000 zł, ubezpieczenie szkolne jest dobrowolne. **Konkretna oferta BeautyPolisa w tych dwóch liniach musi zostać dostarczona przez zespół produktowy.**
+
+### 3.6 Fakty potwierdzone 12–13.11.2026 (ustalenia zleceniodawcy; 00, D35–D39)
+
+Źródłem są materiały przekazane przez zleceniodawcę i odczytane strony partnerów; liczby poniżej są w makietach `design/v3/nnw-dzieci.html` i `design/v3/grupowe-ergo.html`. Pozycje „do potwierdzenia” są w makietach oznaczone tak samo.
+
+**NNW dla dzieci – ulotka programu Colonnade na 2026 r.**
+
+- Ubezpieczyciel: Colonnade Insurance S.A. Oddział w Polsce. Dla dzieci przed ukończeniem 19. roku życia, a przy kontynuowaniu nauki – przed ukończeniem 27. roku życia.
+- Ochrona 24 h na całym świecie; umowa na 12 miesięcy; ochrona zaczyna się po zarejestrowaniu i opłaceniu składki; jednorazowa składka za cały rok.
+- Składka roczna za osobę (stałe stawki programu): wariant I – 40 zł, II – 94 zł, III – 175 zł. Wybrane sumy w wariantach I / II / III: uszczerbek na zdrowiu 20 000 / 50 000 / 100 000 zł (1% sumy za 1% uszczerbku), koszty leczenia skutków NW 1 000 / 1 500 / 2 000 zł, szpital po NW 50 / 65 / 100 zł za dzień, poważne zachorowanie (19 jednostek chorobowych) 3 000 / 4 500 / 5 000 zł, OC w życiu prywatnym 50 000 zł we wszystkich wariantach. Pełna tabela – makieta.
+- Zakup online w czterech krokach na platformie ubezpieczyciela: link `https://bit.ly/szkolneNNW2026` (zakup NNW dla dzieci na platformie Colonnade, market.colonnade.pl) → „Ubezpieczenie dziecka/studenta” i data ochrony → wariant → dane rodzica lub opiekuna i dziecka → podsumowanie i płatność online; polisa i certyfikat przychodzą automatycznie e-mailem.
+- OWU: Ogólne warunki ubezpieczenia następstw nieszczęśliwych wypadków dzieci, młodzieży oraz pracowników w placówkach oświatowych oraz odpowiedzialności cywilnej w życiu prywatnym, a także w związku z nauką lub odbywaniem praktyk uczniowskich – zatwierdzone 28.02.2025 r., stosowane do umów zawieranych od 3.03.2025 r.
+- Do potwierdzenia: liczba wariantów (tabela – 3, opis zakupu – „jednego z 4 wariantów”), brzmienie zniżki 4% (w ulotce urwane: „na drugie i kolejne”), kod (symbol) OWU.
+
+**Grupowe ERGO – ERGO Życie w Biznesie, cennik branżowy `branze-2607`**
+
+- Ubezpieczyciel: Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.; cennik branżowy ERGO Hestii dla branży beauty, kod ulotki EH-UL-EZB-F-2607.
+- Firma z branży beauty od 2 do 100 zatrudnionych; pracownik 15–70 lat; bliscy: małżonek, partner, pełnoletnie dziecko.
+- Składka stała miesięcznie za osobę: wariant 1 – 58 zł, 2 – 68 zł, 3 – 76 zł; stawki dla nowych klientów od 1.07.2026 do 31.12.2026. Wybrane świadczenia w wariantach 1 / 2 / 3: zgon ubezpieczonego 100 000 / 80 000 / 75 000 zł, zgon w wyniku NW 210 000 / 170 000 / 160 000 zł. Pakiety dodatkowe, MediOpieka (MA 01/25) i Global Doctors (GD-GZ 01/25) mają osobne składki. OWU EZwB 01/25.
+- Wniosek: `https://ergo.auraexpert.pl/wniosek?branza=beauty`.
+
+**Grupowe ERGO – ERGO Razem, Grupa Otwarta (OWU kod ER 01/25, obowiązują od 2.06.2025)**
+
+- Przystąpienie indywidualne – sama albo z bliskimi; wiek 18–65 lat w dniu objęcia ochroną; bez badań lekarskich (ankieta medyczna online).
+- Warianty Dla Mnie / Dla Nas / Dla Rodziny; składka od 57 zł miesięcznie, zależy od wieku; wypłaty do 500 000 zł (maksymalnie za zgon w wyniku nieszczęśliwego wypadku); dodatki: MediPlan, Medical Assistance, Global Doctors (GD 02/24).
+- Kalkulator: `https://ergo.beautypolisa.eu/` (4 kroki: wiek → ankieta medyczna → wybór oferty → agent oddzwania w 1–2 dni).
+- Do potwierdzenia: liczba poważnych zachorowań w zakresie (katalog – 57 pozycji, zakres Komfort – 56).
+
+**Informacje o agencie – ujawnienie Aura Expert (`ergo.beautypolisa.eu/informacja-o-agencie`, art. 22 ustawy o dystrybucji ubezpieczeń)**
+
+- Agent działa na rzecz wielu zakładów ubezpieczeń: UNUM Życie Towarzystwo Ubezpieczeń i Reasekuracji S.A.; Generali Życie Towarzystwo Ubezpieczeń S.A.; UNIQA Towarzystwo Ubezpieczeń na Życie S.A.; Lloyd's Insurance Company SA/NV; SALTUS Towarzystwo Ubezpieczeń na Życie S.A.; SALTUS Towarzystwo Ubezpieczeń Wzajemnych; Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.; Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.; Towarzystwo Ubezpieczeń na Życie WARTA S.A.; Colonnade Insurance Société Anonyme Oddział w Polsce.
+- Wynagrodzenie: prowizja od zakładu ubezpieczeń uwzględniona w kwocie składki; agent może otrzymywać od zakładu także inny rodzaj wynagrodzenia.
+- Agent nie ma akcji ani udziałów żadnego zakładu ubezpieczeń dających co najmniej 10% głosów; żaden zakład nie ma takich udziałów w agencie.
+- Reklamacje na działalność agenta w zakresie niezwiązanym z udzielaną ochroną: pisemnie – osobiście albo pocztą na ul. Bolkowska 2A/28, 01-466 Warszawa; ustnie – telefonicznie pod +48 504 400 901 albo osobiście do protokołu; e-mailem – reklamacje@auraexpert.pl. Poza reklamacjami – skargi. Pozasądowe rozwiązywanie sporów – Rzecznik Finansowy (www.rf.gov.pl); udział agenta jest obowiązkowy.
+- Kontakt agenta: zarzad@auraexpert.pl, +48 504 400 901. IOD bez zmian: iod@auraexpert.pl.
+- Ta strona podaje „XIII Wydział Gospodarczy KRS” – to błąd po jej stronie; prawidłowa jest formuła z „XII Wydział” (pkt 2; 00, D38).
 
 ## 4. Repozytorium `aurabroker/beautypolisa` – stan
 
@@ -119,7 +155,7 @@ Ustalenia z przeglądu kodu (szczegóły w `03-code-review-obecnego-kodu.md`):
 
 ## 8. Założenia przyjęte w koncepcji (do potwierdzenia przez zleceniodawcę)
 
-1. Portal jest **informacyjno-leadowy**, nie sprzedaje polis online (brak płatności, brak zawierania umów na stronie); sprzedaż domyka zespół Aura Expert.
+1. Portal jest **informacyjno-leadowy**, nie sprzedaje polis w koszyku (brak płatności, brak zawierania umów na stronie); sprzedaż domyka zespół Aura Expert, a tam, gdzie istnieje zakup online u ubezpieczyciela (NNW dzieci – Colonnade, utrata dochodu – Leadenhall), portal go wskazuje (00, D35, D40).
 2. Jeden język (PL), jeden rynek (PL); domena kanoniczna `https://beautypolisa.eu` (bez `www`).
 3. Istniejące subdomeny (`tax.`, `app.`, `crm.`, `portal.`, `ergo.`, `konsultacja.`) pozostają; portal na apexie linkuje do nich i docelowo przejmuje treści `tax.`.
 4. Dane portalu trafiają do **oddzielnego projektu Supabase** (lub dedykowanego schematu w projekcie „BEAUTY”), nigdy do współdzielonego „aurabroker”.

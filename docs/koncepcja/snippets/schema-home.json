@@ -51,6 +51,14 @@
           "contactType": "inspektor ochrony danych",
           "email": "iod@auraexpert.pl",
           "availableLanguage": "pl"
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "reklamacje",
+          "email": "reklamacje@auraexpert.pl",
+          "telephone": "+48 504 400 901",
+          "availableLanguage": "pl",
+          "areaServed": "PL"
         }
       ],
       "brand": {
@@ -62,7 +70,7 @@
       "@id": "https://beautypolisa.eu/#agency",
       "name": "BeautyPolisa",
       "alternateName": "BeautyPolisa created by Aura Expert",
-      "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.",
+      "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty, który nie sprzedaje polis w koszyku: przy OC doradca wysyła osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu, NNW dla dzieci kupisz online na platformie Colonnade, utratę dochodu – wnioskiem na utratadochodu.pl lub online u Leadenhall, a pozostałe ubezpieczenia – przez doradcę Aura Expert.",
       "url": "https://beautypolisa.eu/",
       "logo": {
         "@type": "ImageObject",
@@ -101,6 +109,7 @@
         "ubezpieczenie utraty dochodu dla samozatrudnionych",
         "ubezpieczenie NNW dzieci",
         "ubezpieczenia grupowe na życie dla salonów",
+        "grupowe ubezpieczenie na życie ERGO Razem dla osób prywatnych i rodzin",
         "abonamenty medyczne ENEL-MED i LUX MED"
       ],
       "makesOffer": [
@@ -136,7 +145,7 @@
           "itemOffered": {
             "@type": "Service",
             "@id": "https://beautypolisa.eu/ubezpieczenia/nnw-dzieci#service",
-            "name": "NNW dzieci",
+            "name": "NNW dla dzieci (Colonnade)",
             "url": "https://beautypolisa.eu/ubezpieczenia/nnw-dzieci"
           }
         },
@@ -144,9 +153,18 @@
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "@id": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#service",
-            "name": "Grupowe ERGO dla beauty",
-            "url": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo"
+            "@id": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#service-salon",
+            "name": "ERGO Życie w Biznesie – grupowe ubezpieczenie na życie dla branży beauty",
+            "url": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#dla-salonu"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "@id": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#service-ergo-razem",
+            "name": "ERGO Razem – grupowe ubezpieczenie na życie (grupa otwarta)",
+            "url": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#dla-rodziny"
           }
         },
         {

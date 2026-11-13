@@ -1,10 +1,20 @@
 {
-  "$comment": "Dane dystrybutora ubezpieczeń (IDD) – jedno źródło dla stopki, formularzy, e-maili i /informacje-prawne. Decyzje zleceniodawcy z 12.11.2026: jedna spółka – Aura Expert sp. z o.o. – jest operatorem portalu, administratorem danych i dystrybutorem; Aura Expert działa jako AGENT ubezpieczeniowy (nie broker), wpisany do Rejestru Pośredników Ubezpieczeniowych prowadzonego przez KNF pod numerem 11229690/A; kontakt do IOD całego portalu: iod@auraexpert.pl. legalFormula jest pełną formułą od zleceniodawcy – używać dosłownie tam, gdzie potrzebna jest pełna formuła (/informacje-prawne, /o-nas#dystrybutor, stopki e-maili w wersji pełnej). Wartości null = do uzupełnienia. Test CI blokuje wdrożenie produkcyjne, gdy registryNumber, remunerationNature lub complaintsProcedure.text === null albo insurersConfirmed === false. Zakres pól do potwierdzenia z prawnikiem (ustawa o dystrybucji ubezpieczeń, art. 22 – informacje przekazywane przez agenta).",
-  "version": "idd-v1-2026-11",
+  "$comment": "Dane dystrybutora ubezpieczeń (IDD) – jedno źródło dla stopki, formularzy, e-maili i /informacje-prawne. Decyzje zleceniodawcy z 12.11.2026: jedna spółka – Aura Expert sp. z o.o. – jest operatorem portalu, administratorem danych i dystrybutorem; Aura Expert działa jako AGENT ubezpieczeniowy (nie broker), wpisany do Rejestru Pośredników Ubezpieczeniowych prowadzonego przez KNF pod numerem 11229690/A; kontakt do IOD całego portalu: iod@auraexpert.pl. Od 13.11.2026 (00, D37) informacje agenta wg art. 22 ustawy o dystrybucji ubezpieczeń – lista zakładów, wynagrodzenie, udziały, reklamacje, kontakt – pochodzą z ujawnienia Aura Expert na https://ergo.beautypolisa.eu/informacja-o-agencie (pole source). Uwaga: tamta strona podaje „XIII Wydział” – to błąd po jej stronie; prawidłowa jest formuła z „XII Wydział” (00, D38), nie kopiować XIII. legalFormula jest pełną formułą od zleceniodawcy – używać dosłownie tam, gdzie potrzebna jest pełna formuła (/informacje-prawne, /o-nas#dystrybutor, stopki e-maili w wersji pełnej). Wartości null = do uzupełnienia. Test CI blokuje wdrożenie produkcyjne, gdy registryNumber, remunerationNature lub complaintsProcedure.text === null albo insurersConfirmed === false, oraz gdy registryCourt lub legalFormula zawiera „XIII”. Zakres pól do potwierdzenia z prawnikiem (ustawa o dystrybucji ubezpieczeń, art. 22 – informacje przekazywane przez agenta).",
+  "version": "idd-v2-2026-11",
+  "source": {
+    "name": "Informacja o agencie ubezpieczeniowym – Aura Expert sp. z o.o.",
+    "url": "https://ergo.beautypolisa.eu/informacja-o-agencie",
+    "legalBasis": "art. 22 ust. 1 pkt 2–6 oraz ust. 2–4 ustawy z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń",
+    "confirmedByClient": "12–13.11.2026",
+    "knownErrors": [
+      "Strona źródłowa podaje „XIII Wydział Gospodarczy Krajowego Rejestru Sądowego” – błąd po stronie tej strony; obowiązuje „XII Wydział” (00, D38). Uwaga dla zleceniodawcy (00, rozdział 13)."
+    ]
+  },
   "legalName": "Aura Expert sp. z o.o.",
   "legalNameFull": "Aura Expert spółka z ograniczoną odpowiedzialnością",
   "legalFormula": "Aura Expert spółka z ograniczoną odpowiedzialnością z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5 000 zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.",
   "address": "ul. Bolkowska 2A/28, 01-466 Warszawa",
+  "correspondenceAddress": "ul. Bolkowska 2A/28, 01-466 Warszawa",
   "registeredSeat": "Warszawa",
   "krs": "0000599840",
   "registryCourt": "Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego",
@@ -15,33 +25,72 @@
   "brand": "BeautyPolisa created by Aura Expert",
   "dataController": "Aura Expert sp. z o.o.",
   "dpoEmail": "iod@auraexpert.pl",
+  "agentContact": {
+    "$comment": "Kontakt agenta z ujawnienia (00, D37). Czy ten sam telefon i e-mail są kontaktem biura w sekcji kontakt portalu (stopka, /kontakt, ContactPoint) – do potwierdzenia.",
+    "email": "zarzad@auraexpert.pl",
+    "phone": "+48 504 400 901",
+    "usedAsPortalContact": null
+  },
   "registryType": "agent",
   "registryName": "Rejestr Pośredników Ubezpieczeniowych (prowadzony przez KNF)",
   "registryNumber": "11229690/A",
   "registryCheckUrl": "https://rpu.knf.gov.pl/",
-  "remunerationNature": null,
-  "actsFor": null,
+  "registryCheckOther": [
+    "telefonicznie – Departament Licencji Ubezpieczeniowych KNF: 22 262 49 76",
+    "pisemnie – Komisja Nadzoru Finansowego, ul. Piękna 20, skr. poczt. 419, 00-549 Warszawa"
+  ],
+  "remunerationNature": "W związku z proponowanym zawarciem umowy ubezpieczenia agent otrzymuje od zakładu ubezpieczeń prowizję uwzględnioną w kwocie składki ubezpieczeniowej. Agent może otrzymywać od zakładu ubezpieczeń również inny rodzaj wynagrodzenia.",
+  "qualifyingHoldings": "Agent nie posiada akcji ani udziałów żadnego zakładu ubezpieczeń uprawniających co najmniej do 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie posiada udziałów agenta uprawniających co najmniej do 10% głosów na zgromadzeniu wspólników agenta.",
+  "actsFor": "many",
   "actsForOptions": [
     "one",
     "many"
   ],
   "insurers": [
+    "UNUM Życie Towarzystwo Ubezpieczeń i Reasekuracji S.A.",
+    "Generali Życie Towarzystwo Ubezpieczeń S.A.",
+    "UNIQA Towarzystwo Ubezpieczeń na Życie S.A.",
+    "Lloyd's Insurance Company SA/NV",
+    "SALTUS Towarzystwo Ubezpieczeń na Życie S.A.",
+    "SALTUS Towarzystwo Ubezpieczeń Wzajemnych",
     "Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.",
-    "STU na Życie ERGO Hestia S.A.",
-    "Colonnade Insurance S.A. Oddział w Polsce"
+    "Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.",
+    "Towarzystwo Ubezpieczeń na Życie WARTA S.A.",
+    "Colonnade Insurance Société Anonyme Oddział w Polsce"
   ],
-  "insurersConfirmed": false,
-  "insurersStatus": "do potwierdzenia – lista zakładów ubezpieczeń, na rzecz których działa agent, zawiera wyłącznie ubezpieczycieli już wymienionych w koncepcji; dokładną listę (i na tej podstawie actsFor) potwierdza zleceniodawca z wpisem w RPU",
+  "insurersConfirmed": true,
+  "insurersStatus": "potwierdzone 13.11.2026 (00, D37) – lista 10 zakładów ubezpieczeń, na rzecz których działa agent, wg ujawnienia Aura Expert (source.url); agent działa na rzecz wielu zakładów (actsFor: many)",
   "complaintsProcedure": {
-    "$comment": "do uzupełnienia – kanały, termin odpowiedzi i treść procedury reklamacyjnej przekaże zleceniodawca",
-    "channels": [],
+    "$comment": "Wg ujawnienia Aura Expert (00, D37). Dotyczy reklamacji na działalność agenta w zakresie niezwiązanym z udzielaną ochroną ubezpieczeniową. Termin odpowiedzi nie jest podany w ujawnieniu – do potwierdzenia (responseTimeDays). Jak klient składa reklamację dotyczącą samej ochrony ubezpieczeniowej (do zakładu ubezpieczeń) – brzmienie do potwierdzenia z prawnikiem.",
+    "scope": "działalność agenta w zakresie niezwiązanym z udzielaną ochroną ubezpieczeniową",
+    "whoMayFile": "klient agenta będący osobą fizyczną, osobą prawną albo spółką nieposiadającą osobowości prawnej",
+    "channels": [
+      {
+        "type": "pisemnie",
+        "description": "osobiście, w jednostce agenta obsługującej klientów, albo przesyłką pocztową",
+        "address": "Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa"
+      },
+      {
+        "type": "ustnie",
+        "description": "telefonicznie albo osobiście do protokołu podczas wizyty w jednostce agenta obsługującej klientów",
+        "phone": "+48 504 400 901"
+      },
+      {
+        "type": "e-mail",
+        "email": "reklamacje@auraexpert.pl"
+      }
+    ],
     "responseTimeDays": null,
-    "text": null
+    "complaintsOther": "Poza reklamacjami wszyscy klienci agenta mogą złożyć skargę.",
+    "text": "Reklamację na działalność Aura Expert sp. z o.o. jako agenta ubezpieczeniowego w zakresie niezwiązanym z udzielaną ochroną ubezpieczeniową może złożyć klient będący osobą fizyczną, osobą prawną albo spółką nieposiadającą osobowości prawnej: pisemnie – osobiście w jednostce agenta obsługującej klientów albo przesyłką pocztową na adres Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa; ustnie – telefonicznie pod numerem +48 504 400 901 albo osobiście do protokołu podczas wizyty w jednostce agenta; e-mailem na adres reklamacje@auraexpert.pl. Poza reklamacjami wszyscy klienci agenta mogą złożyć skargę. Spór między klientem będącym osobą fizyczną a agentem w zakresie niezwiązanym z udzielaną ochroną ubezpieczeniową może zostać rozwiązany w pozasądowym postępowaniu przed Rzecznikiem Finansowym (www.rf.gov.pl); udział agenta w takim postępowaniu jest obowiązkowy."
   },
   "adrBodies": [
     {
       "name": "Rzecznik Finansowy",
-      "url": "https://rf.gov.pl/"
+      "url": "https://www.rf.gov.pl/",
+      "scope": "pozasądowe rozwiązywanie sporów między klientem będącym osobą fizyczną a agentem w zakresie niezwiązanym z udzielaną ochroną ubezpieczeniową",
+      "agentParticipationMandatory": true,
+      "legalBasis": "art. 37 ustawy z dnia 5 sierpnia 2015 r. o rozpatrywaniu reklamacji przez podmioty rynku finansowego i o Rzeczniku Finansowym; ustawa z dnia 23 września 2016 r. o pozasądowym rozpatrywaniu sporów konsumenckich"
     }
   ],
   "medicalSubscriptions": {

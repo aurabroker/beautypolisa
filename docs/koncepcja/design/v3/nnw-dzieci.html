@@ -216,6 +216,13 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 
 /* ---------- nagłówki sekcji i numery rozdziałów (jak na stronie głównej) ---------- */
 .section-head{position:relative;isolation:isolate;display:grid;gap:18px;margin-bottom:clamp(36px,5vw,72px);max-width:46rem}
+/* (jak w grupowe-ergo.html) nagłówek sekcji na jedwabiu (poza taflą): miękka plama midnight pod tekstem, żeby jasny refleks tkaniny nie obniżał kontrastu (WCAG 1.4.3);
+   wnętrze kryje w 74%, brzegi wygaszone maską; poziomo nie dalej niż margines kontenera (bez przewijania w poziomie) */
+.scene--silk .section-head::after{content:"";position:absolute;z-index:-1;inset:-28px calc(-1 * min(32px,var(--bp-gutter)));background:rgba(20,28,51,.74);border-radius:var(--radius-card);pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 min(32px,var(--bp-gutter)),#000 calc(100% - min(32px,var(--bp-gutter))),transparent),linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 28px),transparent);
+  -webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 min(32px,var(--bp-gutter)),#000 calc(100% - min(32px,var(--bp-gutter))),transparent),linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 28px),transparent);mask-composite:intersect}
+@media (prefers-contrast:more),(prefers-reduced-transparency:reduce){.scene--silk .section-head::after{background:var(--color-midnight)}}
+@media (forced-colors:active){.scene--silk .section-head::after{display:none}}
 .chapter-no{position:absolute;z-index:-1;top:-.5em;right:0;--drift:70px;font:italic 500 clamp(7rem,4.2rem + 9vw,14.5rem)/1 var(--font-serif);letter-spacing:-.02em;color:rgba(184,151,90,.2);pointer-events:none;user-select:none;-webkit-user-select:none;white-space:nowrap}
 .dark .chapter-no{color:rgba(217,192,137,.14)}
 @media (max-width:767px){.chapter-no{--drift:36px;top:-.35em;font-size:clamp(5.5rem,3rem + 14vw,8rem)}}
@@ -331,6 +338,11 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 .legal a:hover{color:var(--color-ivory)}
 .legal strong{font-weight:500;color:var(--color-ivory)}
 .legal .mock-note{margin-left:2px;color:var(--color-gold-light);border-color:rgba(217,192,137,.6)}
+/* stopka: informacje o agencie (IDD) – natywne details */
+.legal-idd > summary{cursor:pointer;min-height:24px;padding-block:2px;font-weight:500;color:var(--color-gold-light)}
+.legal-idd > summary:hover{color:var(--color-ivory)}
+.legal-idd-body{display:grid;gap:8px;margin-top:8px;max-width:72rem}
+.legal-idd-body ul{margin:0;padding-left:1.2em;display:grid;gap:2px;list-style:disc}
 @media (min-width:1024px){.footer-nav{grid-template-columns:repeat(4,minmax(0,1fr))}.footer-brand{grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:32px}}
 
 /* ---------- przycisk w zasięgu kciuka (telefony; pokazuje go skrypt) ---------- */
@@ -673,7 +685,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
    "@id": "https://beautypolisa.eu/#agency",
    "name": "BeautyPolisa",
    "alternateName": "BeautyPolisa created by Aura Expert",
-   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu; nie ma zakupu polisy w koszyku.",
+   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty, który nie sprzedaje polis w koszyku: przy OC doradca wysyła osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu, NNW dla dzieci kupisz online na platformie Colonnade, utratę dochodu – wnioskiem na utratadochodu.pl lub online u Leadenhall, a pozostałe ubezpieczenia – przez doradcę Aura Expert.",
    "url": "https://beautypolisa.eu/",
    "address": {
     "@type": "PostalAddress",
@@ -1095,7 +1107,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
         </article>
         <article class="rel-card rv-rise" aria-labelledby="rel-gr">
           <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><h3 id="rel-gr">Grupowe ERGO dla beauty</h3></div>
-          <p>Grupowe ubezpieczenie na życie dla całego zespołu salonu – w&nbsp;ERGO Hestii.</p>
+          <p>Ubezpieczenie na życie w&nbsp;ERGO Hestii – dwie drogi: ERGO Życie w&nbsp;Biznesie dla salonu z&nbsp;zespołem (od 2 do 100 osób) albo ERGO Razem dla Ciebie i&nbsp;Twojej rodziny.</p>
           <div class="rel-links"><a class="link-lux" href="grupowe-ergo.html">Poznaj ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a></div>
         </article>
       </div>
@@ -1138,10 +1150,23 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
         </nav>
       </div>
       <div class="legal">
-        <!-- L1 (12.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy; informacje IDD agenta. Lista zakładów – do potwierdzenia;
-             procedura reklamacyjna i charakter wynagrodzenia – do uzupełnienia (bez zgadywania). -->
+        <!-- L1 (12–13.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy („XII Wydział” – prawidłowo; strona
+             ergo.beautypolisa.eu/informacja-o-agencie podaje „XIII” – błąd po tamtej stronie, uwaga dla zleceniodawcy).
+             Informacje o agencie (art. 22 ustawy o dystrybucji ubezpieczeń) – źródło: ujawnienie Aura Expert. Blok details.legal-idd
+             jest identyczny na stronach publicznych i w Strefie Klienta. -->
         <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
-        <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń: Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A., Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. oraz Colonnade Insurance S.A. Oddział w&nbsp;Polsce <span class="mock-note">Lista – do potwierdzenia (w&nbsp;tym Lloyd’s)</span>. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A). Procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta – [do uzupełnienia przed publikacją].</p>
+        <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
+        <details class="legal-idd">
+          <summary>Informacje o&nbsp;agencie ubezpieczeniowym (IDD)</summary>
+          <div class="legal-idd-body">
+            <p><strong>Zakłady ubezpieczeń, na rzecz których działa agent:</strong></p>
+            <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie S.A.</li><li>Lloyd’s Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA S.A.</li><li>Colonnade Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
+            <p><strong>Wynagrodzenie.</strong> Agent otrzymuje od zakładu ubezpieczeń prowizję, która jest uwzględniona w&nbsp;składce. Może też otrzymywać od zakładu ubezpieczeń inny rodzaj wynagrodzenia.</p>
+            <p><strong>Powiązania kapitałowe.</strong> Agent nie ma akcji ani udziałów zakładu ubezpieczeń dających co najmniej 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie ma udziałów agenta dających co najmniej 10% głosów na zgromadzeniu wspólników.</p>
+            <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
+            <p><strong>Kontakt z&nbsp;agentem:</strong> <a href="mailto:zarzad@auraexpert.pl">zarzad@auraexpert.pl</a>, <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>. Wpis agenta (numer 11229690/A) sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>.</p>
+          </div>
+        </details>
         <p>Inspektor ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Informacje na stronie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego. Zakres ochrony określają ogólne warunki ubezpieczenia.</p>
       </div>
     </div>

@@ -14,7 +14,216 @@
 <meta property="og:description" content="Ubezpieczenia dla salonów beauty: OC zawodowe ERGO Hestia, Tax Protect, utrata dochodu, NNW dzieci, grupowe, opieka medyczna. Zamów kontakt z doradcą.">
 <meta name="theme-color" content="#141C33">
 <meta name="color-scheme" content="only light">
-<!-- JSON-LD (@graph z 04) wstrzykuje serwer w produkcji; makieta ma jeden skrypt na końcu body (kalkulator i zachowania). -->
+<!-- JSON-LD strony głównej = snippets/schema-home.json (Organization, InsuranceAgency, WebSite, WebPage); w produkcji wstrzykuje go serwer.
+     InsuranceAgency.description – to samo zdanie na wszystkich stronach v3. Skrypt wykonywalny makiety jest jeden, na końcu body (kalkulator i zachowania). -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://beautypolisa.eu/#organization",
+   "name": "Aura Expert",
+   "legalName": "Aura Expert spółka z ograniczoną odpowiedzialnością",
+   "alternateName": "Aura Expert sp. z o.o.",
+   "description": "Agent ubezpieczeniowy wpisany do Rejestru Pośredników Ubezpieczeniowych prowadzonego przez KNF pod numerem 11229690/A; operator portalu BeautyPolisa.",
+   "url": "https://www.auraexpert.pl/",
+   "taxID": "5242793544",
+   "identifier": [
+    {
+     "@type": "PropertyValue",
+     "propertyID": "KRS",
+     "value": "0000599840"
+    },
+    {
+     "@type": "PropertyValue",
+     "propertyID": "NIP",
+     "value": "5242793544"
+    },
+    {
+     "@type": "PropertyValue",
+     "propertyID": "REGON",
+     "value": "363673048"
+    },
+    {
+     "@type": "PropertyValue",
+     "propertyID": "RPU (KNF)",
+     "name": "Rejestr Pośredników Ubezpieczeniowych",
+     "value": "11229690/A",
+     "url": "https://rpu.knf.gov.pl/"
+    }
+   ],
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ul. Bolkowska 2A/28",
+    "postalCode": "01-466",
+    "addressLocality": "Warszawa",
+    "addressCountry": "PL"
+   },
+   "areaServed": {
+    "@type": "Country",
+    "name": "Polska"
+   },
+   "contactPoint": [
+    {
+     "@type": "ContactPoint",
+     "contactType": "inspektor ochrony danych",
+     "email": "iod@auraexpert.pl",
+     "availableLanguage": "pl"
+    },
+    {
+     "@type": "ContactPoint",
+     "contactType": "reklamacje",
+     "email": "reklamacje@auraexpert.pl",
+     "telephone": "+48 504 400 901",
+     "availableLanguage": "pl",
+     "areaServed": "PL"
+    }
+   ],
+   "brand": {
+    "@id": "https://beautypolisa.eu/#agency"
+   }
+  },
+  {
+   "@type": "InsuranceAgency",
+   "@id": "https://beautypolisa.eu/#agency",
+   "name": "BeautyPolisa",
+   "alternateName": "BeautyPolisa created by Aura Expert",
+   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty, który nie sprzedaje polis w koszyku: przy OC doradca wysyła osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu, NNW dla dzieci kupisz online na platformie Colonnade, utratę dochodu – wnioskiem na utratadochodu.pl lub online u Leadenhall, a pozostałe ubezpieczenia – przez doradcę Aura Expert.",
+   "url": "https://beautypolisa.eu/",
+   "logo": {
+    "@type": "ImageObject",
+    "@id": "https://beautypolisa.eu/#logo",
+    "url": "https://beautypolisa.eu/images/logo-beautypolisa.png",
+    "contentUrl": "https://beautypolisa.eu/images/logo-beautypolisa.png",
+    "caption": "BeautyPolisa – logo"
+   },
+   "image": {
+    "@id": "https://beautypolisa.eu/#logo"
+   },
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ul. Bolkowska 2A/28",
+    "postalCode": "01-466",
+    "addressLocality": "Warszawa",
+    "addressCountry": "PL"
+   },
+   "areaServed": {
+    "@type": "Country",
+    "name": "Polska"
+   },
+   "parentOrganization": {
+    "@id": "https://beautypolisa.eu/#organization"
+   },
+   "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "url": "https://beautypolisa.eu/kontakt",
+    "availableLanguage": "pl",
+    "areaServed": "PL"
+   },
+   "knowsAbout": [
+    "ubezpieczenie OC zawodowe dla branży beauty",
+    "ubezpieczenie karno-skarbowe Tax Protect",
+    "ubezpieczenie utraty dochodu dla samozatrudnionych",
+    "ubezpieczenie NNW dzieci",
+    "ubezpieczenia grupowe na życie dla salonów",
+    "grupowe ubezpieczenie na życie ERGO Razem dla osób prywatnych i rodzin",
+    "abonamenty medyczne ENEL-MED i LUX MED"
+   ],
+   "makesOffer": [
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "@id": "https://beautypolisa.eu/ubezpieczenia/oc-beauty#service",
+      "name": "OC dla branży beauty (ERGO Hestia)",
+      "url": "https://beautypolisa.eu/ubezpieczenia/oc-beauty"
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "@id": "https://beautypolisa.eu/ubezpieczenia/tax-protect#service",
+      "name": "Tax Protect (Colonnade)",
+      "url": "https://beautypolisa.eu/ubezpieczenia/tax-protect"
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "@id": "https://beautypolisa.eu/ubezpieczenia/utrata-dochodu#service",
+      "name": "Utrata dochodu",
+      "url": "https://beautypolisa.eu/ubezpieczenia/utrata-dochodu"
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "@id": "https://beautypolisa.eu/ubezpieczenia/nnw-dzieci#service",
+      "name": "NNW dla dzieci (Colonnade)",
+      "url": "https://beautypolisa.eu/ubezpieczenia/nnw-dzieci"
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "@id": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#service-salon",
+      "name": "ERGO Życie w Biznesie – grupowe ubezpieczenie na życie dla branży beauty",
+      "url": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#dla-salonu"
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "@id": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#service-ergo-razem",
+      "name": "ERGO Razem – grupowe ubezpieczenie na życie (grupa otwarta)",
+      "url": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#dla-rodziny"
+     }
+    },
+    {
+     "@type": "Offer",
+     "itemOffered": {
+      "@type": "Service",
+      "@id": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna#service",
+      "name": "Opieka medyczna (ENEL-MED / LUX MED)",
+      "url": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna"
+     }
+    }
+   ]
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://beautypolisa.eu/#website",
+   "url": "https://beautypolisa.eu/",
+   "name": "BeautyPolisa",
+   "description": "Ubezpieczenia dla branży beauty: OC zawodowe, Tax Protect, utrata dochodu, NNW dzieci, grupowe i opieka medyczna.",
+   "inLanguage": "pl-PL",
+   "publisher": {
+    "@id": "https://beautypolisa.eu/#organization"
+   }
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://beautypolisa.eu/#webpage",
+   "url": "https://beautypolisa.eu/",
+   "name": "Ubezpieczenia dla branży beauty | BeautyPolisa",
+   "inLanguage": "pl-PL",
+   "isPartOf": {
+    "@id": "https://beautypolisa.eu/#website"
+   },
+   "about": {
+    "@id": "https://beautypolisa.eu/#agency"
+   }
+  }
+ ]
+}
+</script>
 <!-- Tag Google (decyzja G1, 12.11.2026): żadnego tagu Google przed zgodą. GA4 (i ewentualnie konwersje Google Ads) ładuje dopiero po zgodzie
      Cloudflare Zaraz z Google Consent Mode v2 – tu nie ma ani gtag.js, ani GTM. Identyfikator pomiaru GA4 (i kontenera GTM, jeśli jest używany) poda zleceniodawca. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -563,6 +772,11 @@ html:has(.klauzula[open]){overflow:hidden}
 .legal a:hover{color:var(--color-ivory)}
 .legal strong{font-weight:500;color:var(--color-ivory)}
 .legal .mock-note{margin-left:2px;color:var(--color-gold-light);border-color:rgba(217,192,137,.6)}
+/* stopka: informacje o agencie (IDD) – natywne details */
+.legal-idd > summary{cursor:pointer;min-height:24px;padding-block:2px;font-weight:500;color:var(--color-gold-light)}
+.legal-idd > summary:hover{color:var(--color-ivory)}
+.legal-idd-body{display:grid;gap:8px;margin-top:8px;max-width:72rem}
+.legal-idd-body ul{margin:0;padding-left:1.2em;display:grid;gap:2px;list-style:disc}
 @media (min-width:1024px){.footer-nav{grid-template-columns:repeat(4,minmax(0,1fr))}.footer-brand{grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:32px}}
 
 /* ---------- przycisk w zasięgu kciuka (telefony; pokazuje go skrypt) ---------- */
@@ -902,9 +1116,9 @@ html:has(.klauzula[open]){overflow:hidden}
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="13:30">13:30</time><span class="clue-risk">Właścicielka skręca nadgarstek i&nbsp;przez kilka tygodni nie może przyjmować klientek.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
           <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><div><h3>Utrata dochodu</h3><p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią pracę. Składkę wylicza ubezpieczyciel po ocenie ryzyka – wniosek złożysz na utratadochodu.pl albo z&nbsp;doradcą Aura Expert.</p><a class="link-lux" href="#utrata-dochodu">Zobacz ubezpieczenie<span class="sr-only">: utrata dochodu</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="15:05">15:05</time><span class="clue-risk">Dzwoni szkoła: syn przewrócił się na lekcji wychowania fizycznego.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
-          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><div><h3>NNW dzieci</h3><p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków. Zakres – zgodnie z&nbsp;OWU, warunki przedstawi doradca.</p><a class="link-lux" href="#nnw-dzieci">Zobacz ubezpieczenie<span class="sr-only">: NNW dzieci</span></a></div></div></details></li>
+          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><div><h3>NNW dzieci</h3><p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków w&nbsp;Colonnade – działa 24&nbsp;godziny na dobę, także na treningach i&nbsp;zawodach sportowych. Polisę kupujesz online. Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#nnw-dzieci">Zobacz ubezpieczenie<span class="sr-only">: NNW dzieci</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="17:20">17:20</time><span class="clue-risk">Najlepsza stylistka pyta, jakie benefity salon daje zespołowi.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
-          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><div><h3>Grupowe ERGO dla beauty</h3><p>Ubezpieczenie na życie z&nbsp;modułami MediOpieki dla całego zespołu. Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#grupowe-ergo">Zobacz ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a></div></div></details></li>
+          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><div><h3>Grupowe ERGO dla beauty</h3><p>Grupowe ubezpieczenie na życie w&nbsp;ERGO Hestii dla zespołu salonu – ERGO Życie w&nbsp;Biznesie, dla firm od 2 do 100 osób, ze stałą składką za osobę. Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#grupowe-ergo">Zobacz ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="20:00">20:00</time><span class="clue-risk">Po zamknięciu plecy po całym dniu przy fotelu dają o&nbsp;sobie znać.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
           <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><div><h3>Opieka medyczna</h3><p>Abonamenty ENEL-MED lub LUX MED dla pracowników, partnerów i&nbsp;rodzin. Zakres zależy od pakietu.</p><a class="link-lux" href="#opieka-medyczna">Zobacz ubezpieczenie<span class="sr-only">: opieka medyczna</span></a></div></div></details></li>
       </ol>
@@ -926,8 +1140,8 @@ html:has(.klauzula[open]){overflow:hidden}
         <article class="product rv-rise" id="oc-beauty"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="tag">ERGO Hestia</span></div><h3>OC dla branży beauty</h3><p>Odpowiedzialność cywilna za szkody wyrządzone klientom podczas zabiegów – w&nbsp;programie z&nbsp;ERGO Hestią. Składka zależy od grupy ryzyka i&nbsp;sumy gwarancyjnej, a&nbsp;zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p><div class="product-actions"><a class="link-lux" href="#kalkulator" data-calc="oc">Oblicz składkę<span class="sr-only"> OC</span></a><a class="link-quiet" href="oc-beauty.html">Poznaj ubezpieczenie<span class="sr-only">: OC dla branży beauty</span></a></div></article>
         <article class="product rv-rise" id="tax-protect"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="tag">Colonnade</span></div><h3>Tax Protect</h3><p>Ochrona karnoskarbowa dla właściciela i&nbsp;ochrona podatkowa dla salonu – jeden pełny spór podatkowy w&nbsp;roku, zgodnie z&nbsp;OWU. Stała taryfa: od 1&nbsp;532&nbsp;zł rocznie, zależnie od przychodów i&nbsp;sumy gwarancyjnej.</p><div class="product-actions"><a class="link-lux" href="#kalkulator-tax">Oblicz składkę<span class="sr-only"> Tax Protect</span></a><a class="link-quiet" href="tax-protect.html">Poznaj ubezpieczenie<span class="sr-only">: Tax Protect</span></a></div></article>
         <article class="product rv-rise" id="utrata-dochodu"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="tag">Oferta indywidualna</span></div><h3>Utrata dochodu</h3><p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią pracę. Składkę wylicza ubezpieczyciel po ocenie ryzyka – wniosek złożysz na utratadochodu.pl albo z&nbsp;doradcą Aura Expert.</p><div class="product-actions"><a class="link-lux" href="utrata-dochodu.html">Poznaj ubezpieczenie<span class="sr-only">: utrata dochodu</span></a><a class="link-quiet" href="#kontakt" data-produkt="utrata-dochodu">Zapytaj doradcę<span class="sr-only"> o&nbsp;ubezpieczenie utraty dochodu</span></a></div></article>
-        <article class="product rv-rise" id="nnw-dzieci"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="tag">Oferta indywidualna</span></div><h3>NNW dzieci</h3><p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków. Zakres – zgodnie z&nbsp;OWU oferty, którą przedstawi doradca.</p><div class="product-actions"><a class="link-lux" href="nnw-dzieci.html">Poznaj ubezpieczenie<span class="sr-only">: NNW dzieci</span></a><a class="link-quiet" href="#kontakt" data-produkt="nnw-dzieci">Zapytaj doradcę<span class="sr-only"> o&nbsp;NNW dzieci</span></a></div></article>
-        <article class="product rv-rise" id="grupowe-ergo"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="tag">ERGO Hestia</span></div><h3>Grupowe ERGO dla beauty</h3><p>Ubezpieczenie na życie z&nbsp;modułami MediOpieki dla całego zespołu. Pakiety od 58&nbsp;zł za osobę miesięcznie według cennika programu.</p><div class="product-actions"><a class="link-lux" href="grupowe-ergo.html">Poznaj ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a><a class="link-quiet" href="#kontakt" data-produkt="grupowe-ergo">Zapytaj doradcę<span class="sr-only"> o&nbsp;grupowe ERGO</span></a></div></article>
+        <article class="product rv-rise" id="nnw-dzieci"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="tag">Colonnade</span></div><h3>NNW dzieci</h3><p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków – 24&nbsp;godziny na dobę, na całym świecie. Trzy warianty, od 40&nbsp;zł rocznie za dziecko. Polisę kupujesz online na platformie Colonnade, w&nbsp;kilku krokach.</p><div class="product-actions"><a class="link-lux" href="nnw-dzieci.html">Poznaj ubezpieczenie<span class="sr-only">: NNW dzieci</span></a><a class="link-quiet" href="https://bit.ly/szkolneNNW2026" target="_blank" rel="noopener">Kup online u&nbsp;Colonnade<span class="sr-only"> – NNW dzieci, strona ubezpieczyciela otworzy się w&nbsp;nowej karcie</span></a></div></article>
+        <article class="product rv-rise" id="grupowe-ergo"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="tag">ERGO Hestia</span></div><h3>Grupowe ERGO dla beauty</h3><p>Ubezpieczenie na życie w&nbsp;ERGO Hestii – dwie drogi. Dla salonu z&nbsp;zespołem: ERGO Życie w&nbsp;Biznesie, od 58&nbsp;zł za osobę miesięcznie. Dla Ciebie i&nbsp;rodziny: ERGO Razem, od 57&nbsp;zł miesięcznie.</p><div class="product-actions"><a class="link-lux" href="grupowe-ergo.html">Poznaj ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a><a class="link-quiet" href="#kontakt" data-produkt="grupowe-ergo">Zapytaj doradcę<span class="sr-only"> o&nbsp;grupowe ERGO</span></a></div></article>
         <article class="product rv-rise" id="opieka-medyczna"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="tag">ENEL-MED · LUX&nbsp;MED</span></div><h3>Opieka medyczna</h3><p>Abonamenty ENEL-MED lub LUX MED dla pracowników, partnerów i&nbsp;rodzin – według cennika programu, zależnie od sieci, zakresu i&nbsp;liczby osób.</p><div class="product-actions"><a class="link-lux" href="/ubezpieczenia/opieka-medyczna">Poznaj ubezpieczenie<span class="sr-only">: opieka medyczna</span></a><a class="link-quiet" href="#kontakt" data-produkt="opieka-medyczna">Zapytaj doradcę<span class="sr-only"> o&nbsp;opiekę medyczną</span></a></div></article>
       </div>
     </div>
@@ -1201,6 +1415,7 @@ html:has(.klauzula[open]){overflow:hidden}
          · „Link zawsze prowadzi do portal.beautypolisa.eu, jest osobisty i ma datę ważności – nie przekazuj go innym.”
          · „Polisę i dokumenty masz też w Strefie Klienta.”  ·  „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa”
        Tax Protect, grupowe ERGO, opieka medyczna, NNW dzieci: „Doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek.”
+       NNW dzieci (13.11.2026): także zakup online na platformie Colonnade (https://bit.ly/szkolneNNW2026 → market.colonnade.pl).
        Utrata dochodu: wniosek na utratadochodu.pl, zakup online u Leadenhall albo kontakt z doradcą („Doradca Aura Expert skontaktuje się z Tobą”).
        Nigdy nie publikujemy linku z kodem; formularz nie przekierowuje na /w/<kod> – kod idzie wyłącznie e-mailem na adres z CRM. -->
   <section class="scene scene--silk scene--pos-lt section dark" id="jak-to-dziala" aria-labelledby="how-title">
@@ -1214,7 +1429,7 @@ html:has(.klauzula[open]){overflow:hidden}
         <span class="how-line" aria-hidden="true"></span>
         <ol class="steps">
           <li class="step rv-rise"><span class="numeral" aria-hidden="true">1</span><h3>Policz składkę</h3><p>Wybierz ubezpieczenie: OC – grupy ryzyka, zespół i&nbsp;sumę gwarancyjną, Tax Protect – przychody i&nbsp;sumę. Składkę z&nbsp;taryfy widzisz od razu, bez logowania.</p></li>
-          <li class="step rv-rise"><span class="numeral" aria-hidden="true">2</span><h3>Zostaw kontakt</h3><p>Wynik kalkulatora dołączymy do zgłoszenia. Przy OC doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu. Przy utracie dochodu doradca Aura Expert skontaktuje się z&nbsp;Tobą. Przy pozostałych ubezpieczeniach doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p></li>
+          <li class="step rv-rise"><span class="numeral" aria-hidden="true">2</span><h3>Zostaw kontakt</h3><p>Wynik kalkulatora dołączymy do zgłoszenia. Przy OC doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu. Przy utracie dochodu doradca Aura Expert skontaktuje się z&nbsp;Tobą. NNW dla dzieci kupisz także online na platformie Colonnade. Przy pozostałych ubezpieczeniach doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p></li>
           <li class="step rv-rise"><span class="numeral" aria-hidden="true">3</span><h3>Podpisz i&nbsp;odbierz polisę</h3><p>Przy OC pod linkiem wypełniasz analizę potrzeb i&nbsp;wniosek, a&nbsp;potem je podpisujesz. Link zawsze prowadzi do portal.beautypolisa.eu, jest osobisty i&nbsp;ma datę ważności – nie przekazuj go innym. Z&nbsp;polisą masz konto w&nbsp;Strefie Klienta&nbsp;– polisy i&nbsp;dokumenty, „Dam&nbsp;pracę” i&nbsp;Szkolenia w&nbsp;jednym miejscu.</p></li>
         </ol>
         <div class="feats">
@@ -1413,10 +1628,23 @@ html:has(.klauzula[open]){overflow:hidden}
         </nav>
       </div>
       <div class="legal">
-        <!-- L1 (12.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy; informacje IDD agenta. Lista zakładów – do potwierdzenia;
-             procedura reklamacyjna i charakter wynagrodzenia – do uzupełnienia (bez zgadywania). -->
+        <!-- L1 (12–13.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy („XII Wydział” – prawidłowo; strona
+             ergo.beautypolisa.eu/informacja-o-agencie podaje „XIII” – błąd po tamtej stronie, uwaga dla zleceniodawcy).
+             Informacje o agencie (art. 22 ustawy o dystrybucji ubezpieczeń) – źródło: ujawnienie Aura Expert. Blok details.legal-idd
+             jest identyczny na stronach publicznych i w Strefie Klienta. -->
         <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
-        <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń: Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A., Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. oraz Colonnade Insurance S.A. Oddział w&nbsp;Polsce <span class="mock-note">Lista – do potwierdzenia (w&nbsp;tym Lloyd’s)</span>. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A). Procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta – [do uzupełnienia przed publikacją].</p>
+        <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
+        <details class="legal-idd">
+          <summary>Informacje o&nbsp;agencie ubezpieczeniowym (IDD)</summary>
+          <div class="legal-idd-body">
+            <p><strong>Zakłady ubezpieczeń, na rzecz których działa agent:</strong></p>
+            <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie S.A.</li><li>Lloyd’s Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA S.A.</li><li>Colonnade Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
+            <p><strong>Wynagrodzenie.</strong> Agent otrzymuje od zakładu ubezpieczeń prowizję, która jest uwzględniona w&nbsp;składce. Może też otrzymywać od zakładu ubezpieczeń inny rodzaj wynagrodzenia.</p>
+            <p><strong>Powiązania kapitałowe.</strong> Agent nie ma akcji ani udziałów zakładu ubezpieczeń dających co najmniej 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie ma udziałów agenta dających co najmniej 10% głosów na zgromadzeniu wspólników.</p>
+            <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
+            <p><strong>Kontakt z&nbsp;agentem:</strong> <a href="mailto:zarzad@auraexpert.pl">zarzad@auraexpert.pl</a>, <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>. Wpis agenta (numer 11229690/A) sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>.</p>
+          </div>
+        </details>
         <p>Inspektor ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Informacje na stronie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego. Zakres ochrony określają ogólne warunki ubezpieczenia.</p>
       </div>
     </div>

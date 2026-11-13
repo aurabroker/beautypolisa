@@ -544,6 +544,11 @@ html.drawer-lock,html:has(.drawer:target){overflow:hidden}
 /* stopka z pełną formułą prawną (L1) */
 .app-footer-inner p strong{font-weight:500}
 .app-footer p a{display:inline;min-height:0}
+/* stopka: informacje o agencie (IDD) – natywne details, ten sam HTML co na stronach publicznych */
+.legal-idd > summary{cursor:pointer;min-height:24px;padding-block:2px;font-weight:500;color:var(--color-navy)}
+.legal-idd-body{display:grid;gap:6px;margin-top:6px;max-width:72rem}
+.legal-idd-body ul{margin:0;padding-left:1.2em;display:grid;gap:2px;list-style:disc}
+.legal-idd-body strong{font-weight:500}
 @media (forced-colors:active){
   .promo-tag,.statement,.registry{border:1px solid CanvasText}
   .promo-tag::before{display:none}

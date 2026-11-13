@@ -7,8 +7,8 @@
 - Hubami są **strony produktowe i kalkulator**, nie osobne „artykuły filarowe”: 6 produktów + 2 filary tematyczne („Prawo, kontrole i bezpieczeństwo w salonie”, „Pracownicy i benefity”), 45 artykułów long-tail w 20 klastrach, 5 treści narzędziowych.
 - Największa przewaga: BeautyPolisa będzie **pierwotnym źródłem** dla programu OC ERGO Hestia realizowanego z Fundacją Beauty Razem, czterech grup ryzyka zabiegów i listy zabiegów wysokiego ryzyka (01, pkt 7) – te treści idą pierwsze.
 - Kolejność: quick wins w OC i prawie salonowym (tygodnie 1–5), potem Tax Protect i utrata dochodu (sezon styczeń–luty), grupowe i opieka medyczna, NNW dzieci jako evergreen przed wrześniem. Rytm: **2 publikacje + 1 aktualizacja strony produktowej tygodniowo**.
-- „NNW dzieci” nie ma danych produktowych w audycie – do ich dostarczenia treści są edukacyjne, a strona produktowa działa w trybie „zapytaj o ofertę”. „Utrata dochodu” ma od 12.11.2026 treść opartą na naszym serwisie utratadochodu.pl i wniosek na utratadochodu.pl, bez kwot składek (00, D33, D34).
-- **Każda treść kończy się prawdziwą ścieżką zakupu (00, D32; rozdział „Ścieżka zakupu w treściach”):** OC – kalkulator albo formularz → doradca → e-mail z osobistym linkiem do APK i wniosku w serwisie portal.beautypolisa.eu → podpis → polisa; Tax Protect – kalkulator albo formularz → doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; grupowe, opieka medyczna, NNW dzieci – formularz → doradca.
+- „NNW dzieci” ma od 13.11.2026 stronę programu Colonnade (warianty I / II / III – 40 / 94 / 175 zł rocznie za osobę) z zakupem online na platformie ubezpieczyciela (00, D35); „Grupowe ERGO” – stronę z dwiema drogami: ERGO Życie w Biznesie dla salonu i ERGO Razem dla siebie i rodziny (00, D36). „Utrata dochodu” ma od 12.11.2026 treść opartą na naszym serwisie utratadochodu.pl i wniosek na utratadochodu.pl, bez kwot składek (00, D33, D34).
+- **Każda treść kończy się prawdziwą ścieżką zakupu (00, D32; rozdział „Ścieżka zakupu w treściach”):** OC – kalkulator albo formularz → doradca → e-mail z osobistym linkiem do APK i wniosku w serwisie portal.beautypolisa.eu → podpis → polisa; Tax Protect – kalkulator albo formularz → doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; NNW dzieci – „Kup online u Colonnade” (https://bit.ly/szkolneNNW2026) albo formularz → doradca; grupowe – wniosek dla salonu na ergo.auraexpert.pl albo kalkulator ERGO Razem na ergo.beautypolisa.eu, obok formularz → doradca; opieka medyczna – formularz → doradca.
 - YMYL: imienny autor, recenzent z uprawnieniami do dystrybucji ubezpieczeń, data przeglądu, wersja OWU, zastrzeżenie prawne; AI wspiera, nie jest autorem. Metryki jako przedziały [hipoteza], baseline = 0 (apex nie serwuje dziś strony – 01, pkt 6).
 
 ---
@@ -123,7 +123,7 @@ Backlog: arkusz „koszt rotacji vs koszt benefitu” (E2.2) – gdy zespół do
 | Zgoda na zabieg | brak | blog Booksy | wzór powiązany z wymaganiami wniosku OC – mocniejszy niż ogólny poradnik |
 | Tax Protect | `tax-protect.html`, sekcje 1 i 2, warianty sum; komentarz „DO POTWIERDZENIA” przy składkach w `tax_warianty` jest nieaktualny – składki sztywne wg taryfy programu (rozstrzygnięte 11.11.2026; taryfa 1 532–2 901 zł rocznie za 1 spór potwierdzona 12.11.2026; 01, pkt 3.2) | nisza bez treści dla beauty | kontrola skarbowa, kasa, gotówka w salonie; warianty sum ze składką roczną wg taryfy programu, przychody powyżej 3 mln zł → wycena indywidualna |
 | Utrata dochodu | brak danych; wzmianka o Squarelife w `life.html` | Poradnik Przedsiębiorcy, CUK, Firmove, podatki.biz | konkurencja pisze dla „przedsiębiorcy”, my dla JDG w beauty; do czasu oferty – edukacja |
-| NNW dzieci | brak danych | Rankomat, Mubi, Portal Oświatowy, PZU Edukacja, InterRisk | nie wygramy ogólnego „nnw dzieci”; wygrywamy kontekst benefitu dla pracownic i rozmowy z klientką we wrześniu |
+| NNW dzieci | brak danych w audycie; od 13.11.2026 program Colonnade (01 §3.6; 00, D35) | Rankomat, Mubi, Portal Oświatowy, PZU Edukacja, InterRisk | nie wygramy ogólnego „nnw dzieci”; wygrywamy kontekst benefitu dla pracownic i rozmowy z klientką we wrześniu |
 | Grupowe ERGO | `life.html` / `life1.html`: pakiety, moduły, argument anty-rotacyjny | brak treści dla beauty | rotacja w salonach, pakiet zamiast podwyżki – liczby tylko ze źródłem |
 | Opieka medyczna | `medical.html`: cennik programu (abonamenty 131–478 zł/mies.), próg 51+ | operatorzy, porównywarki | zakresy dla zespołu 2–10 osób, medycyna pracy |
 | Prawo i kontrole | brak | rozproszone (Booksy, portale prawne) | hub łączący kontrolę z ubezpieczeniem – leady na Tax Protect i OC |
@@ -208,14 +208,16 @@ benefity dla pracownikow mala firma,H,sredni,1
 
 ## Ścieżka zakupu w treściach (ustalenia z 12.11.2026, 00, D32)
 
-Treść prowadzi do następnego kroku, który naprawdę istnieje. Portal nie sprzedaje polis online; zakup domyka doradca Aura Expert. Osobisty link do analizy potrzeb (APK) i wniosku dotyczy **na razie tylko OC** – przy innych produktach go nie opisujemy.
+Treść prowadzi do następnego kroku, który naprawdę istnieje. Portal nie sprzedaje polis w koszyku; zakup domyka doradca Aura Expert, a tam, gdzie istnieje zakup online u ubezpieczyciela (NNW dzieci – Colonnade, utrata dochodu – Leadenhall), treść go wskazuje (00, D40). Osobisty link do analizy potrzeb (APK) i wniosku dotyczy **na razie tylko OC** – przy innych produktach go nie opisujemy.
 
 | Produkt | CTA w treści | Co dzieje się dalej (tekst „Jak kupić” na stronie i w artykułach) |
 |---|---|---|
 | OC dla branży beauty | „Policz składkę” (kalkulator) albo formularz kontaktowy | Doradca Aura Expert kontaktuje się → e-mail z osobistym linkiem do analizy potrzeb (APK) i wniosku w serwisie portal.beautypolisa.eu → podpis APK i wniosku → polisa; dokumenty i polisa także w Strefie Klienta. Zawsze obok: „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” |
 | Tax Protect | kalkulator albo formularz kontaktowy („Zapytaj doradcę”) | Doradca Aura Expert kontaktuje się i prowadzi wniosek. Bez wzmianki o osobistym linku |
 | Utrata dochodu | „Złóż wniosek na utratadochodu.pl” (`https://utratadochodu.pl/wniosek/?zawod=<slug>`, gdy treść dotyczy zawodu); zakup online okresowej niezdolności u Leadenhall (`https://utratadochodu.pl/kup-online?z=beautypolisa`) | Wniosek i oferta na utratadochodu.pl; bez kwot składek (00, D33) |
-| Grupowe ERGO, opieka medyczna, NNW dzieci | formularz kontaktowy | Doradca Aura Expert kontaktuje się |
+| NNW dzieci (00, D35) | „Kup online u Colonnade” (`https://bit.ly/szkolneNNW2026`, nowa karta) albo „Zapytaj doradcę” (formularz) | Zakup na platformie ubezpieczyciela Colonnade (market.colonnade.pl) w czterech krokach; polisa i certyfikat przychodzą e-mailem. Przy formularzu – doradca Aura Expert kontaktuje się |
+| Grupowe ERGO (00, D36) | „Złóż wniosek dla salonu” (`https://ergo.auraexpert.pl/wniosek?branza=beauty`) albo „Sprawdź składkę dla swojego wieku” (`https://ergo.beautypolisa.eu/`), obok „Zapytaj doradcę” | Salon: wniosek ERGO Życie w Biznesie na stronie Aura Expert. ERGO Razem: kalkulator (wiek → ankieta medyczna → oferta), potem agent oddzwania |
+| Opieka medyczna | formularz kontaktowy | Doradca Aura Expert kontaktuje się |
 
 Zasady redakcyjne:
 
@@ -224,7 +226,9 @@ Zasady redakcyjne:
 3. `konsultacja.beautypolisa.eu` nie jest APK ani wnioskiem – nie linkujemy tam z treści o zakupie.
 4. Tax Protect w tej samej ścieżce co OC to etap 2 – opisany tylko w dokumentacji (00, D32), nie w treściach publicznych.
 5. W tabelach tego dokumentu CTA „zapytaj o ofertę” przy treściach filaru C (Utrata dochodu) oznacza od 12.11.2026 link do `/ubezpieczenia/utrata-dochodu` i wniosku na utratadochodu.pl; strona produktu nie jest już wersją edukacyjną (00, D33, D34).
-6. Artykuł A3.1 „Co przygotować do wniosku” opisuje dane, o które zapyta wniosek OC pod osobistym linkiem; nie publikuje formularza wniosku.
+6. Artykuł A3.1 „Co przygotować do wniosku” opisuje dane, o które zapyta wniosek OC pod osobistym linkiem; nie publikuje formularza wniosku. Przy zabiegach z grupy 4 ankieta indywidualnej oceny ryzyka ERGO Hestii jest częścią tego samego osobistego linku.
+7. NNW dzieci i grupowe ERGO: składki podajemy jako stałe stawki programu (NNW 40 / 94 / 175 zł rocznie za osobę; ERGO Życie w Biznesie 58 / 68 / 76 zł miesięcznie za osobę, stawki do 31.12.2026; ERGO Razem „od 57 zł”, dokładnie w kalkulatorze) – bez słów „orientacyjne” czy „szacunkowe”. Warianty i obie drogi grupowego opisujemy jako równorzędne, bez wskazywania „najlepszego” (IDD – propozycja wymaga analizy potrzeb). Treści D (NNW) kończą się linkiem do `/ubezpieczenia/nnw-dzieci`, nie bezpośrednio do bit.ly – strona pokazuje warianty i OWU przed wyjściem do ubezpieczyciela.
+8. Nie piszemy, że OC jest „tylko dla członków Beauty Razem” – członkostwo nie jest wymagane (00, D39). Nie powtarzamy sformułowań partnera „Ubezpieczamy wszystkie zabiegi!” ani „opłaci mandat lub karę” (00, rozdział 13 – uwagi dla zleceniodawcy).
 
 ---
 
@@ -250,11 +254,11 @@ Kryteria: (1) wartość biznesowa – jak blisko leada jest czytelnik, (2) przew
 | 14 | G1.3 RODO w salonie | rodo salon kosmetyczny | inf. | big bet | 1800–2200 | OC (pośrednio) | zapis na aktualizacje |
 | 15 | C1.3 Choroby zawodowe | choroby zawodowe fryzjerów | inf. | quick win | 1500 | Utrata dochodu | kalkulator przestoju |
 | 16 | C1.4 Kalkulator przestoju | ile tracę gdy nie pracuję jdg | kom. | quick win | narzędzie + 500 | Utrata dochodu | „zapytaj o ofertę” |
-| 17 | E1.1 Grupowe w małym salonie | ubezpieczenie grupowe mała firma od ilu osób | inf. | quick win | 1500–1800 | Grupowe ERGO | „zapytaj o ofertę” |
+| 17 | E1.1 Grupowe w małym salonie | ubezpieczenie grupowe mała firma od ilu osób | inf. | quick win | 1500–1800 | Grupowe ERGO | `/ubezpieczenia/grupowe-ergo#dla-salonu` (wniosek dla salonu) / „zapytaj doradcę” |
 | 18 | G4.1 Reklamacja klientki | reklamacja zabiegu kosmetycznego | inf. | big bet | 1500–1800 | OC | wzór zgody / `/szkoda` |
 | 19 | F1.1 ENEL-MED czy LUX MED | abonament medyczny dla firm porównanie | kom. | fill-in | 1500 | Opieka medyczna | „zapytaj o ofertę” |
 | 20 | A3.2 Klauzula ochrony prawnej | ochrona prawna dla kosmetyczki | inf. | fill-in | 900–1200 | OC | kalkulator (opcja klauzuli) |
-| 21 | D1.1 NNW szkolne dobrowolne | ubezpieczenie szkolne obowiązkowe czy dobrowolne | inf. | big bet (sezon IX) | 1200–1500 | NNW dzieci | „zapytaj o ofertę” / benefit |
+| 21 | D1.1 NNW szkolne dobrowolne | ubezpieczenie szkolne obowiązkowe czy dobrowolne | inf. | big bet (sezon IX) | 1200–1500 | NNW dzieci | `/ubezpieczenia/nnw-dzieci` (zakup online u Colonnade) / benefit |
 | 22 | C2.2 Koszt podatkowy utraty dochodu | ubezpieczenie utraty dochodu koszt podatkowy | inf. | fill-in | 1000–1200 | Utrata dochodu | „zapytaj o ofertę” |
 | 23 | G3.1 Kompetencje do zabiegów | kto może wykonywać mezoterapię igłową | inf. | big bet | 1800–2200 | OC | quiz grup ryzyka |
 | 24 | A4.2 Scenariusze roszczeń | roszczenie klientki salon kosmetyczny | inf. | fill-in | 1500 | OC | kalkulator |
@@ -279,7 +283,7 @@ Start w pierwszym pełnym tygodniu po uruchomieniu; przyjęto **styczeń** [zał
 | 8 | C1.3 Choroby zawodowe | C1.4 Kalkulator przestoju | `/dokumenty`: OWU z wersjami (Tax Protect 25.01.2023; EZwB 01/25; MediOpieka MA 01/25) | narzędzie 5 |
 | 9 | E1.1 Grupowe w małym salonie | G4.1 Reklamacja klientki | `/ubezpieczenia/grupowe-ergo`: pakiety i moduły wg OWU, bez liczb bez źródła | |
 | 10 | F1.1 ENEL-MED czy LUX MED | A3.2 Klauzula ochrony prawnej | `/ubezpieczenia/opieka-medyczna`: zakresy, próg 51+, FAQ | przeliczenie kolejki po eksporcie fraz |
-| 11 | D1.1 NNW szkolne dobrowolne | C2.2 Koszt podatkowy utraty dochodu | `/ubezpieczenia/nnw-dzieci`: wersja edukacyjna „zapytaj o ofertę” | evergreen przed wrześniem |
+| 11 | D1.1 NNW szkolne dobrowolne | C2.2 Koszt podatkowy utraty dochodu | `/ubezpieczenia/nnw-dzieci`: warianty i stawki programu, zakup online u Colonnade (00, D35) | evergreen przed wrześniem |
 | 12 | G3.1 Kompetencje do zabiegów | A4.2 Scenariusze roszczeń | `/dla-kogo/podolog`, `/dla-kogo/linergistka`, `/dla-kogo/tatuazysta` → A2, G | przegląd kwartalny A2.1, A1.1 |
 
 Nakładka sezonowa (niezależna od tygodnia startu):
@@ -438,7 +442,7 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 6. **Imienny autor i recenzent z uprawnieniami.** YMYL i obowiązki dystrybutora; E-E-A-T to weryfikowalne osoby. Odrzucone: podpis „Zespół BeautyPolisa”, recenzja wyłącznie redakcyjna.
 7. **AI jako asystent z notatką w PR; zero generowania faktów o OWU.** Największe ryzyko to zmyślone wyłączenie lub limit. Odrzucone: AI jako autor pierwszej wersji z „ludzkim przeglądem”, publiczne oznaczanie „wspomagane AI”.
 8. **MDX w repozytorium, publikacja przez PR z walidacją Zod i testem linków** – spójnie z 02 (decyzja 6). Odrzucone: CMS, dokumenty Google jako źródło prawdy.
-9. **„Utrata dochodu” i „NNW dzieci” – edukacja i „zapytaj o ofertę” do czasu dostarczenia produktu.** Publikowanie parametrów rynkowych jako własnych naruszałoby E-E-A-T. Odrzucone: wstrzymanie filarów (strata sezonów), orientacyjne ceny jako oferta. **W zakresie Utraty dochodu zastąpione 12.11.2026 (00, D33, D34):** parametry pochodzą z naszego serwisu utratadochodu.pl, tekst piszemy od nowa pod branżę beauty, bez kwot składek, z wnioskiem na utratadochodu.pl; NNW dzieci – bez zmian.
+9. **„Utrata dochodu” i „NNW dzieci” – edukacja i „zapytaj o ofertę” do czasu dostarczenia produktu.** Publikowanie parametrów rynkowych jako własnych naruszałoby E-E-A-T. Odrzucone: wstrzymanie filarów (strata sezonów), orientacyjne ceny jako oferta. **W zakresie Utraty dochodu zastąpione 12.11.2026 (00, D33, D34):** parametry pochodzą z naszego serwisu utratadochodu.pl, tekst piszemy od nowa pod branżę beauty, bez kwot składek, z wnioskiem na utratadochodu.pl. **W zakresie NNW dzieci zastąpione 13.11.2026 (00, D35):** strona programu Colonnade ze stałymi stawkami 40 / 94 / 175 zł i zakupem online na platformie ubezpieczyciela; treści D1–D2 linkują do tej strony.
 10. **Nakładka sezonowa zamiast dat dziennych; sześć stron `/dla-kogo/*` na start, trycholog i właścicielka salonu po weryfikacji.** Data startu nieznana, sezony stałe; dla trychologa brak grupy ryzyka w cenniku z audytu. Odrzucone: kalendarz z datami, strona persony z „wyceną indywidualną” jako zastępnikiem.
 11. **Ścieżka zakupu w treściach zgodna z ustaleniami z 12.11.2026 (00, D32):** osobisty link do APK i wniosku opisujemy tylko przy OC i tylko słowami (domena portal.beautypolisa.eu, data ważności, nie przekazuj innym); Tax Protect – doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; pozostałe produkty – formularz → doradca. Odrzucone: „kup online” w treściach (portal nie sprzedaje polis), opis linku przy Tax Protect przed etapem 2, odsyłanie do `konsultacja.beautypolisa.eu` jako APK.
 
@@ -447,7 +451,7 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 1. Kto będzie imiennym autorem, a kto recenzentem z uprawnieniami do dystrybucji ubezpieczeń? Status dystrybutora – rozstrzygnięty 12.11.2026: agent ubezpieczeniowy (RPU 11229690/A; 01, pkt 2) – zastrzeżenia i stopki używają formuły agenta.
 2. Czy ERGO Hestia i Fundacja Beauty Razem wymagają akceptacji materiałów o programie OC (numer, logo, zasady grup ryzyka) przed publikacją? Tryb i czas akceptacji wpływają na SLA kroku 3.
 3. ~~Czy lista zabiegów w grupach 1–4 z kalkulatora (01, pkt 3.1) jest kompletna i może być opublikowana jako „pełna lista”?~~ – **rozstrzygnięte 12.11.2026 (00, D29):** kanoniczna lista to 117 zabiegów w `snippets/zabiegi-oc-beauty.json`; zabiegi trychologiczne mają na niej pozycje w grupie 1 (np. „Kosmetyczna diagnostyka trychologiczna”, „Kosmetyczny zabieg trychologiczny”), co przybliża stronę `/dla-kogo/trycholog` (decyzja 10). Otwarte: zgoda ERGO Hestii na publikację listy 1:1 (pytanie 2); 16 pytań o ułożenie listy – `snippets/zabiegi-oc-beauty-propozycje.json` (nie blokują listy 1:1).
-4. Kiedy zespół produktowy dostarczy parametry „NNW dzieci” (ubezpieczyciel, definicje, karencje, sumy)? Czy tryb „zapytaj o ofertę” do tego czasu jest akceptowalny? „Utrata dochodu” – rozstrzygnięte 12.11.2026 (00, D33, D34): parametry z utratadochodu.pl; otwarte: kto recenzuje teksty filaru C pod kątem zgodności z OWU wariantów Leadenhall i CEU.
+4. ~~Parametry „NNW dzieci”~~ – rozstrzygnięte 13.11.2026 (00, D35): program Colonnade wg ulotki 2026; otwarte: liczba wariantów (3 czy 4), brzmienie zniżki 4% na drugie i kolejne dziecko, kod OWU. Grupowe ERGO – rozstrzygnięte 13.11.2026 (00, D36); otwarte: pozycje „do potwierdzenia” z makiety `grupowe-ergo.html`. „Utrata dochodu” – rozstrzygnięte 12.11.2026 (00, D33, D34): parametry z utratadochodu.pl; otwarte: kto recenzuje teksty filaru C pod kątem zgodności z OWU wariantów Leadenhall i CEU.
 5. Rozstrzygnięte 11.11.2026 (pytanie 7 sekcji 02): składki Tax Protect są sztywne (taryfa programu) – B2.3, B2.4 i `/ubezpieczenia/tax-protect` podają składkę roczną wg taryfy potwierdzonej 12.11.2026 (01, pkt 3.2: suma 50 000 zł – 1 532–1 932 zł, suma 100 000 zł – 2 501–2 901 zł za 1 spór, zależnie od przychodu); przychody powyżej 3 mln zł lub 2–4 spory → wycena indywidualna. Bez słów „orientacyjnie” i „szacunkowo”.
 6. Czy liczby z obecnej argumentacji grupowego (koszt rotacji, pakiet zamiast podwyżki – 01, pkt 3.3) mają cytowalne źródło? Bez niego znikają z treści.
 7. Czy zleceniodawca udostępni jednorazowy eksport z Senuto lub Semrush dla 52 fraz oraz dostęp do GSC po uruchomieniu?

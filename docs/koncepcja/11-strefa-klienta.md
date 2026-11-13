@@ -16,7 +16,7 @@
 
 | ID | Decyzja | Skutek w tym dokumencie |
 |---|---|---|
-| D-A | Konto w Strefie Klienta dostaje każdy klient, który kupi przez BeautyPolisa **dowolną** polisę: OC beauty, Tax Protect, grupowe ERGO, opiekę medyczną, utratę dochodu albo NNW dzieci – nie tylko OC | Aktywacja wymaga aktywnej polisy dowolnego produktu (4.1); dawne pytanie Q1 zamknięte |
+| D-A | Konto w Strefie Klienta dostaje każdy klient, który kupi przez BeautyPolisa **dowolną** polisę: OC beauty, Tax Protect, grupowe ERGO, opiekę medyczną, utratę dochodu albo NNW dzieci – nie tylko OC | Aktywacja wymaga aktywnej polisy dowolnego produktu (4.1); dawne pytanie Q1 zamknięte. Polisy NNW dzieci kupione online na platformie Colonnade (00, D35) trafiają do Strefy tylko wtedy, gdy dotrą do CRM Aura Expert – do potwierdzenia (Q28) |
 | D-B | Po wygaśnięciu ostatniej polisy salon **zachowuje konto** oraz dostęp do „Dam pracę” i „Szkoleń”; wygasłe polisy są widoczne jako archiwalne; bez automatycznego odcięcia konta | Dawne założenie Z-13 i pytanie Q3 usunięte; zamiast odcięcia – kontrole cyklu życia konta (4.7, 11.2) |
 | D-C | „Dam pracę” to **wyłącznie tablica ogłoszeń**. Słowa zleceniodawcy: „AURA, ani nikt inny nie rekomenduje, nie szuka pracowników. To ma być tylko tablica!” Salon publikuje ogłoszenie, kandydat je czyta i kontaktuje się z salonem bezpośrednio. Prowadzenie tablicy nie wymaga wpisu do KRAZ – decyzja zleceniodawcy | Usunięte: aplikacje przechowywane w platformie, dane i konta kandydatów, CV, statusy rekrutacji, wyszukiwanie, polecanie i dopasowywanie kandydatów (rozdział 11); pytanie o KRAZ nie blokuje etapów |
 | D-D | Szkolenia dodają salony z kontem **albo firmy szkoleniowe**. Nowa rola: **organizator szkoleń** – nie potrzebuje polisy, dostaje konto z zaproszenia po weryfikacji przez Aura | Nowe tabele organizatorów, moderacja szkoleń, minimalne dane uczestników dla organizatora, role RODO do potwierdzenia przez prawnika (rozdział 12) |
@@ -32,7 +32,7 @@
 
 > Aura Expert spółka z ograniczoną odpowiedzialnością z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5 000 zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.
 
-Rejestr Pośredników Ubezpieczeniowych prowadzi KNF (https://rpu.knf.gov.pl/). Kontakt do inspektora ochrony danych (IOD): iod@auraexpert.pl. Gdzie dokument pisze „Aura”, chodzi o tę spółkę. Informacje wymagane od agenta przy dystrybucji (w imieniu których ubezpieczycieli działa – lista do potwierdzenia, procedura reklamacyjna i charakter wynagrodzenia – do uzupełnienia) są opracowywane dla całego portalu; stopka strefy zawiera pełną formułę i link do tych informacji.
+Rejestr Pośredników Ubezpieczeniowych prowadzi KNF (https://rpu.knf.gov.pl/). Kontakt do inspektora ochrony danych (IOD): iod@auraexpert.pl. Gdzie dokument pisze „Aura”, chodzi o tę spółkę. Informacje wymagane od agenta przy dystrybucji (10 zakładów ubezpieczeń, na rzecz których działa, charakter wynagrodzenia, procedura reklamacyjna, kontakt agenta) – ustalone 13.11.2026 wg ujawnienia Aura Expert (00, D37; `snippets/legal-distributor.json`), wspólne dla całego portalu; formuła z „XII Wydział” jest prawidłowa (00, D38); stopka strefy zawiera pełną formułę i link do tych informacji.
 
 ## TL;DR
 
@@ -142,6 +142,8 @@ Jedna osoba może należeć do kilku salonów (np. sieć), mieć konto pracodawc
 
 > **Ustalenia z 12.11.2026 (00, D32).** Przy OC polisa powstaje po podpisaniu APK i wniosku pod osobistym linkiem w serwisie `portal.beautypolisa.eu`, a numer i okres polisy zapisuje CRM Aura Expert (`crm_renewals.nr_polisy`, `polisa_id`, `okres_od`, `okres_do`). Polisy widoczne w strefie pochodzą z CRM – docelowo przez synchronizację (7.4 M5, Q8). Ręczne kroki 2–3 poniżej zostają jako tryb przejściowy do czasu synchronizacji i dla polis spoza CRM (Założenie); wtedy `crm_ref` wskazuje sprawę lub polisę w CRM, a dane muszą się z nią zgadzać.
 
+> **NNW dzieci kupione online (00, D35; ustalenie 13.11.2026).** Polisę NNW dla dzieci klient kupuje na platformie Colonnade (`https://bit.ly/szkolneNNW2026` → market.colonnade.pl); portal nie widzi zakupu. Taka polisa trafia do Strefy Klienta **tylko jeśli dotrze do CRM Aura Expert** (np. raport lub przekaz od Colonnade) – czy i jak to się dzieje, jest do potwierdzenia (Q28). Do tego czasu sama polisa NNW kupiona online nie daje konta w Strefie. To samo pytanie dotyczy polis grupowych ERGO zawartych po wniosku na ergo.auraexpert.pl lub po kalkulatorze ERGO Razem (00, D36). **Ścieżka `/w/` bez zmian – tylko OC** (etap 2 – Tax Protect; 00, D32).
+
 1. Polisa zostaje zawarta poza portalem (00 §1). Doradca w `/panel` → „Klienci” → „Nowe konto”: nazwa salonu, NIP, miasto, odwołanie do CRM (`crm_ref`), opcjonalnie lead źródłowy.
 2. Doradca dodaje polisę – **dowolny produkt** z oferty (D-A): produkt, ubezpieczyciel, numer, okres, składka. Dla OC beauty wybiera grupy zabiegów, sumę, ochronę prawną i wielkość zespołu – **serwer przelicza składkę z aktywnej wersji taryfy** (ta sama czysta funkcja co kalkulator, 02 F2) i odrzuca zapis, jeśli kwota się nie zgadza. Grupa 4 i zespół od 9 osób nie mają kwoty z taryfy – doradca wpisuje składkę z wyceny indywidualnej i zaznacza `oc_individual_quote`; strefa pokazuje wtedy „Wycena indywidualna” obok kwoty z polisy. Dla pozostałych produktów doradca wpisuje składkę z dokumentu polisy; walidacja z cennikiem tylko tam, gdzie w bazie jest wersjonowany cennik produktu.
 3. Doradca wgrywa PDF-y (polisa, OWU, aneksy) – walidacja typu, rozmiaru i sygnatury pliku, hash SHA-256 – i publikuje polisę.
@@ -176,7 +178,7 @@ Pulpit pokazuje karty aktualnych polis (produkt, numer, okres ochrony, składka,
 
 ### 4.4a Sprawy w toku (00, D32)
 
-**Kto i co widzi.** Zalogowany **właściciel** konta salonu (sesja `aal2`; pracownik – nie) widzi na pulpicie i w zakładce „Sprawy w toku” listę spraw OC swojego konta prowadzonych w CRM Aura Expert (`crm_renewals`); w etapie 2 – także Tax Protect. Inne produkty nie mają spraw z osobistym linkiem. Trasa `/strefa-klienta/sprawy` pokazuje **tę samą listę** co karta na pulpicie (bez dodatkowych danych); pozycja menu „Sprawy w toku” prowadzi do niej (w makiecie `panel.html` – do kotwicy `#sprawy` na pulpicie). Karta sprawy:
+**Kto i co widzi.** Zalogowany **właściciel** konta salonu (sesja `aal2`; pracownik – nie) widzi na pulpicie i w zakładce „Sprawy w toku” listę spraw OC swojego konta prowadzonych w CRM Aura Expert (`crm_renewals`); w etapie 2 – także Tax Protect. Inne produkty nie mają spraw z osobistym linkiem (także NNW dzieci i grupowe ERGO po ustaleniach z 13.11.2026 – 00, D35, D36). Trasa `/strefa-klienta/sprawy` pokazuje **tę samą listę** co karta na pulpicie (bez dodatkowych danych); pozycja menu „Sprawy w toku” prowadzi do niej (w makiecie `panel.html` – do kotwicy `#sprawy` na pulpicie). Karta sprawy:
 
 | Pole | Źródło w CRM | Pokazujemy |
 |---|---|---|
@@ -1133,6 +1135,7 @@ Rozstrzygnięte decyzjami zleceniodawcy (tabela na początku dokumentu): konto p
 | Q25 | Reset drugiego składnika (00, D28, D28a): jak doradca weryfikuje tożsamość osoby, która straciła dostęp do wszystkich zarejestrowanych aplikacji uwierzytelniających (np. telefon zwrotny na numer z polisy, dokument przy spotkaniu), kto w Aura Expert może wykonać reset (rola w `/panel`) i jak to opisać w regulaminie Strefy Klienta? Kodów zapasowych nie ma (00, D28a) | zleceniodawca + prawnik | Z1 |
 | Q26 | „Sprawy w toku” (4.4a; 00, D32): kto po stronie CRM Aura Expert buduje i utrzymuje przekaz spraw do `client_cases` i punkt „Dokończ” zwracający link (podpis serwer–serwer, odpowiedź ograniczona do jednego klienta, bez treści APK i wniosku) oraz czy `crm_ref` kont ma wskazywać `crm_renewals.klient_id`? Kontrakt – 12 §5.2–5.3 (Q2, Q7 w 12) | zleceniodawca + zespół CRM | P12 |
 | Q27 | Czy klient bez konta w strefie (nowa sprzedaż przed wystawieniem pierwszej polisy) dostaje link wyłącznie e-mailem (Założenie w 4.4a), czy konto ma powstawać już przy założeniu sprawy w CRM? | zleceniodawca | nie |
+| Q28 | Czy polisy NNW dla dzieci kupione online na platformie Colonnade (00, D35) oraz polisy grupowe ERGO zawarte po wniosku na ergo.auraexpert.pl lub po kalkulatorze ERGO Razem (00, D36) trafiają do CRM Aura Expert (kiedy, jakim przekazem, z jakimi danymi)? Od tego zależy, czy dają konto w Strefie (D-A) i czy są widoczne w strefie | zleceniodawca + zespół CRM | nie (bez odpowiedzi takie polisy nie trafiają do strefy) |
 
 ## 22. Decyzje (do rejestru w 08 – w przygotowaniu; do tego czasu rejestr w 00, rozdział 6)
 
@@ -1242,3 +1245,11 @@ Każdą uwagę sprawdzono na `snippets/strefa-klienta.sql` i tym dokumencie; wsz
 | Nowa sekcja „Sprawy w toku” dla właściciela z sesją `aal2`: sprawy OC konta (etap 2 – Tax Protect), stan i ważność linku, przycisk „Dokończ APK i wniosek” z linkiem pobieranym z CRM po stronie serwera, bez przechowywania kodu (TL;DR pkt 12, 4.4a, 5.1, 5.2, P12, 19, 22); nowe pytania Q26 (interfejs CRM) i Q27 (klient bez konta) | 00, D32 |
 | Klauzula ochrony prawnej na karcie polisy OC – widoczność zależna od danych polisy z CRM (4.4, P11, 22) | 00, D30, D32 |
 | Po przeglądzie makiet: trasa `/strefa-klienta/sprawy` = ta sama lista co karta na pulpicie (4.4a); „Odnów z doradcą” tylko bez otwartej sprawy odnowienia (4.5); dodanie i usunięcie czynnika TOTP tylko w `aal2` po ponownym kodzie, z dziennikiem i e-mailem (6.1 K4, 8); ekran „Dodaj zapasową aplikację” i warianty kart spraw w makietach (5.3) | 00, D28a, D32 |
+
+## 29. Zmiany po ustaleniach z 12–13.11.2026 (00, D35–D38)
+
+| Zmiana | Źródło |
+|---|---|
+| Polisy NNW dla dzieci kupione online na platformie Colonnade trafiają do Strefy tylko wtedy, gdy dotrą do CRM Aura Expert – do potwierdzenia; to samo dla polis grupowych ERGO (D-A, 4.1, nowe pytanie Q28) | 00, D35, D36 |
+| Ścieżka `/w/` i „Sprawy w toku” bez zmian – tylko OC (etap 2 – Tax Protect); NNW i grupowe nie mają spraw z osobistym linkiem (4.4a) | 00, D32, D35, D36 |
+| Informacje wymagane od agenta (10 zakładów, wynagrodzenie, reklamacje, kontakt) – ustalone wg ujawnienia Aura Expert; stopka strefy korzysta z `legal-distributor.json`; formuła z „XII Wydział” bez zmian (wstęp) | 00, D37, D38 |

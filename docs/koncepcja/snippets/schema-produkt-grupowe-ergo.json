@@ -1,0 +1,108 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://beautypolisa.eu/#ergo-hestia-zycie",
+      "name": "Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.",
+      "alternateName": "STU na Życie ERGO Hestia S.A."
+    },
+    {
+      "@type": "Service",
+      "@id": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#service-salon",
+      "name": "ERGO Życie w Biznesie – grupowe ubezpieczenie na życie dla branży beauty",
+      "serviceType": "Grupowe ubezpieczenie na życie dla firm",
+      "category": "Ubezpieczenia dla firm – grupowe ubezpieczenie na życie",
+      "description": "Grupowe ubezpieczenie na życie ERGO Życie w Biznesie dla firm z branży beauty (salony fryzjerskie, kosmetyczne, SPA, studia paznokci) zatrudniających od 2 do 100 osób; pracownicy w wieku 15–70 lat. Trzy warianty ze stałą składką miesięczną za osobę według cennika branżowego: 58, 68 albo 76 zł. Zakres i wyłączenia określają OWU EZwB 01/25.",
+      "url": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#dla-salonu",
+      "provider": {
+        "@id": "https://beautypolisa.eu/#ergo-hestia-zycie"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Polska"
+      },
+      "audience": {
+        "@type": "BusinessAudience",
+        "audienceType": "salony fryzjerskie, kosmetyczne, SPA i studia paznokci zatrudniające od 2 do 100 osób",
+        "numberOfEmployees": {
+          "@type": "QuantitativeValue",
+          "minValue": 2,
+          "maxValue": 100
+        }
+      },
+      "termsOfService": "OWU EZwB 01/25",
+      "availableChannel": {
+        "@type": "ServiceChannel",
+        "name": "Wniosek dla salonu na stronie Aura Expert",
+        "serviceUrl": "https://ergo.auraexpert.pl/wniosek?branza=beauty",
+        "availableLanguage": "pl"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "PLN",
+        "lowPrice": 58,
+        "highPrice": 76,
+        "offerCount": 3,
+        "url": "https://ergo.auraexpert.pl/wniosek?branza=beauty",
+        "eligibleRegion": "PL",
+        "validFrom": "2026-07-01",
+        "priceValidUntil": "2026-12-31",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "priceCurrency": "PLN",
+          "minPrice": 58,
+          "maxPrice": 76,
+          "unitText": "miesięcznie za osobę",
+          "referenceQuantity": {
+            "@type": "QuantitativeValue",
+            "value": 1,
+            "unitCode": "MON"
+          }
+        },
+        "description": "Składka miesięczna za osobę według cennika branżowego ERGO Hestii dla branży beauty (kod ulotki EH-UL-EZB-F-2607): wariant 1 – 58 zł, wariant 2 – 68 zł, wariant 3 – 76 zł; obowiązuje od 1.07.2026 do 31.12.2026 dla nowych klientów.",
+        "offeredBy": {
+          "@id": "https://beautypolisa.eu/#agency"
+        }
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#service-ergo-razem",
+      "name": "ERGO Razem – grupowe ubezpieczenie na życie (grupa otwarta)",
+      "serviceType": "Grupowe ubezpieczenie na życie – przystąpienie indywidualne",
+      "category": "Ubezpieczenia na życie dla osób prywatnych i rodzin",
+      "description": "Grupowe ubezpieczenie na życie ERGO Razem w formule grupy otwartej: przystąpienie indywidualne dla osób w wieku 18–65 lat, warianty Dla Mnie, Dla Nas i Dla Rodziny, wypłaty do 500 000 zł (maksymalnie za zgon w wyniku nieszczęśliwego wypadku), bez badań lekarskich – z ankietą medyczną online. Składka od 57 zł miesięcznie, zależy od wieku. Zakres i wyłączenia określają OWU kod ER 01/25.",
+      "url": "https://beautypolisa.eu/ubezpieczenia/grupowe-ergo#dla-rodziny",
+      "provider": {
+        "@id": "https://beautypolisa.eu/#ergo-hestia-zycie"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Polska"
+      },
+      "audience": {
+        "@type": "PeopleAudience",
+        "audienceType": "osoby w wieku 18–65 lat i ich rodziny",
+        "suggestedMinAge": 18,
+        "suggestedMaxAge": 65
+      },
+      "termsOfService": "OWU kod ER 01/25",
+      "availableChannel": {
+        "@type": "ServiceChannel",
+        "name": "Kalkulator ERGO Razem",
+        "serviceUrl": "https://ergo.beautypolisa.eu/",
+        "availableLanguage": "pl"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://ergo.beautypolisa.eu/",
+        "eligibleRegion": "PL",
+        "description": "Składka od 57 zł miesięcznie; zależy od wieku i wariantu – dokładną kwotę pokazuje kalkulator.",
+        "offeredBy": {
+          "@id": "https://beautypolisa.eu/#agency"
+        }
+      }
+    }
+  ]
+}

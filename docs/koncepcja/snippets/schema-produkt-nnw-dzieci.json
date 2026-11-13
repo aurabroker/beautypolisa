@@ -1,0 +1,43 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://beautypolisa.eu/ubezpieczenia/nnw-dzieci#service",
+  "name": "NNW dla dzieci (Colonnade)",
+  "alternateName": "Program ubezpieczenia następstw nieszczęśliwych wypadków dla dzieci",
+  "serviceType": "Ubezpieczenie następstw nieszczęśliwych wypadków (NNW) dla dzieci",
+  "category": "Ubezpieczenia osobowe – NNW dzieci",
+  "description": "Ubezpieczenie następstw nieszczęśliwych wypadków dla dzieci przed ukończeniem 19. roku życia, a w przypadku kontynuowania nauki – przed ukończeniem 27. roku życia. Ochrona działa 24 godziny na dobę na całym świecie, umowa jest zawierana na 12 miesięcy, a składka jest jednorazowa za cały rok: wariant I – 40 zł, wariant II – 94 zł, wariant III – 175 zł za osobę. Zakup online na platformie ubezpieczyciela Colonnade.",
+  "url": "https://beautypolisa.eu/ubezpieczenia/nnw-dzieci",
+  "provider": {
+    "@type": "Organization",
+    "@id": "https://beautypolisa.eu/#colonnade",
+    "name": "Colonnade Insurance S.A. Oddział w Polsce"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Polska"
+  },
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "rodzice i opiekunowie prawni dzieci przed ukończeniem 19. roku życia, a w przypadku kontynuowania nauki – przed ukończeniem 27. roku życia"
+  },
+  "termsOfService": "https://www.colonnade.pl/dla-firm/ubezpieczenia-osobowe/ubezpieczenie-nastepstw-nieszczesliwych-wypadkow-dla-dzieci",
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "name": "Zakup online na platformie ubezpieczyciela Colonnade",
+    "serviceUrl": "https://bit.ly/szkolneNNW2026",
+    "availableLanguage": "pl"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "PLN",
+    "lowPrice": 40,
+    "highPrice": 175,
+    "url": "https://beautypolisa.eu/ubezpieczenia/nnw-dzieci#warianty",
+    "eligibleRegion": "PL",
+    "description": "Jednorazowa składka roczna za osobę według stawek programu: wariant I – 40 zł, wariant II – 94 zł, wariant III – 175 zł. Umowa na 12 miesięcy.",
+    "offeredBy": {
+      "@id": "https://beautypolisa.eu/#agency"
+    }
+  }
+}

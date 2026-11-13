@@ -10,7 +10,7 @@
 - Zgody jako trzy osobne elementy (informacja RODO, zgoda e-mail, zgoda na telefon – ta ostatnia tylko tam, gdzie zbieramy numer), bez domyślnych zaznaczeń, bez pilności i ciemnych wzorców. Obowiązki informacyjne dystrybutora (IDD) warstwowo: stopka, `/o-nas`, `/dokumenty`, strona sukcesu formularza leada i pierwszy kontakt doradcy. Treści klauzul – do weryfikacji prawnej.
 - Kampania startowa 30 dni: brief, kalendarz (17 pozycji Canva, 3 e-maile, 4 posty LinkedIn, 3 Reels), inwentarz slotów dwóch szablonów, tabela luk (w repo nie ma zdjęć poza logo i `AEX.png`) i budżet generowania do zatwierdzenia. **Generowanie projektów w Canva wymaga osobnej zgody właściciela i dostępu do kont – ten dokument dostarcza wyłącznie brief, kalendarz i copy.**
 - KPI lejka jako przedziały [hipoteza], 3 testy A/B, macierz odpowiedzialności dev / marketing / doradca / prawnik, lista narzędzi i jawna lista tego, czego dokument nie robi.
-- **Koniec każdego lejka to prawdziwa ścieżka zakupu (ustalenia z 12.11.2026, 00, D32; pkt 0.1):** OC – kalkulator albo formularz → doradca Aura Expert → e-mail z osobistym linkiem do analizy potrzeb (APK) i wniosku w serwisie portal.beautypolisa.eu → podpis → polisa (dokumenty i polisa także w Strefie Klienta), plus „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa”; Tax Protect – kalkulator albo formularz → doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; grupowe, opieka medyczna, NNW dzieci – formularz → doradca. Link z kodem nigdy nie pojawia się w treściach, e-mailach serii ani na stronach sukcesu.
+- **Koniec każdego lejka to prawdziwa ścieżka zakupu (ustalenia z 12.11.2026, 00, D32; pkt 0.1):** OC – kalkulator albo formularz → doradca Aura Expert → e-mail z osobistym linkiem do analizy potrzeb (APK) i wniosku w serwisie portal.beautypolisa.eu → podpis → polisa (dokumenty i polisa także w Strefie Klienta), plus „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa”; Tax Protect – kalkulator albo formularz → doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; NNW dzieci – zakup online na platformie Colonnade albo formularz → doradca (00, D35); grupowe – wniosek dla salonu na ergo.auraexpert.pl albo kalkulator ERGO Razem na ergo.beautypolisa.eu, obok formularz → doradca (00, D36); opieka medyczna – formularz → doradca (lejki NNW i grupowe – pkt 0.2). Link z kodem nigdy nie pojawia się w treściach, e-mailach serii ani na stronach sukcesu.
 
 ---
 
@@ -45,9 +45,35 @@ Magnes oddaje kontakt doradcy; to, co dzieje się potem, opisujemy zgodnie z rze
 | 1, 2 | OC dla branży beauty | kalkulator (prewypełniony) albo formularz kontaktowy | Doradca Aura Expert kontaktuje się → CRM wysyła e-mail z osobistym linkiem do APK i wniosku w serwisie portal.beautypolisa.eu (zawsze ta domena, z datą ważności, nie przekazuj go innym) → podpis APK i wniosku → polisa; dokumenty i polisa także w Strefie Klienta. Obok zawsze: „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” |
 | 3 | Tax Protect | kalkulator albo formularz kontaktowy | Doradca Aura Expert kontaktuje się i prowadzi wniosek – bez wzmianki o osobistym linku (Tax Protect dołączy do ścieżki z linkiem w etapie 2, opisanym tylko w dokumentacji) |
 | narzędzie C1.4 (05) | Utrata dochodu | `/ubezpieczenia/utrata-dochodu` | Wniosek na utratadochodu.pl (`https://utratadochodu.pl/wniosek/?zawod=<slug>`) albo zakup online okresowej niezdolności u Leadenhall (`https://utratadochodu.pl/kup-online?z=beautypolisa`); bez kwot składek |
-| 4 | Grupowe ERGO | formularz kontaktowy („Wycena dla zespołu”) | Doradca Aura Expert kontaktuje się |
+| 4 | Grupowe ERGO – ERGO Życie w Biznesie (00, D36) | `/ubezpieczenia/grupowe-ergo#dla-salonu` → „Złóż wniosek dla salonu” (`https://ergo.auraexpert.pl/wniosek?branza=beauty`) albo formularz kontaktowy („Zapytaj doradcę”) | Wniosek na stronie Aura Expert; przy formularzu doradca Aura Expert kontaktuje się |
+| treści D (05) | NNW dzieci (00, D35) | `/ubezpieczenia/nnw-dzieci` → „Kup online u Colonnade” (`https://bit.ly/szkolneNNW2026`) albo „Zapytaj doradcę” | Zakup na platformie Colonnade (market.colonnade.pl), polisa i certyfikat e-mailem; przy formularzu – doradca |
+| treści E (05) | Grupowe ERGO – ERGO Razem (00, D36) | `/ubezpieczenia/grupowe-ergo#dla-rodziny` → „Sprawdź składkę dla swojego wieku” (`https://ergo.beautypolisa.eu/`) | Kalkulator ERGO Razem: wiek → ankieta medyczna → wybór oferty → agent Aura Expert oddzwania |
 
 Zasady: (1) strona sukcesu, e-maile E0–E4 i posty nigdy nie zawierają linku z kodem ani adresu `portal.beautypolisa.eu/w/…` – co najwyżej zdanie, że link przyjdzie e-mailem z tej domeny; (2) formularz nie „otwiera wniosku” i nie przekierowuje na osobisty link – kod wysyła wyłącznie CRM na adres zapisany w CRM (wpisanie cudzego NIP lub e-maila nie może otworzyć sprawy istniejącej firmy); (3) `konsultacja.beautypolisa.eu` nie jest APK ani wnioskiem i nie występuje w lejkach.
+
+### 0.2 Lejki NNW dla dzieci (zakup online) i grupowe ERGO (dwie drogi) – 00, D35, D36
+
+Oba lejki kończą się wyjściem z portalu do zakupu lub wniosku u ubezpieczyciela albo na stronie Aura Expert. Portal nie zbiera wtedy danych i nie wie, czy zakup nastąpił – mierzymy tylko kliknięcia wyjścia (zdarzenia first-party bez danych osobowych, 02 decyzja 11). Bez bramki e-mail, bez pilności („tylko do…”), warianty równorzędne – bez wskazywania „najlepszego”.
+
+**NNW dla dzieci – zakup online u Colonnade**
+
+| Etap | Co widzi użytkownik | Mierzymy |
+|---|---|---|
+| Wejście | Treści D1–D2 (05; sezon: publikacja 6–8 tygodni przed wrześniem), posty kampanii (IX), link w stopce i na stronach zawodów („NNW dzieci – jako rodzic”) | wejścia na `/ubezpieczenia/nnw-dzieci` (źródło, UTM) |
+| Rozważanie | `/ubezpieczenia/nnw-dzieci`: dla kogo (do 19 lat, przy nauce do 27), ochrona 24 h na świecie, tabela wariantów I–III `#warianty` (40 / 94 / 175 zł rocznie za osobę), pełna tabela świadczeń, OWU Colonnade, FAQ | przewinięcie do `#warianty`, otwarcie pełnej tabeli |
+| Decyzja | „Kup online u Colonnade” (`https://bit.ly/szkolneNNW2026`, nowa karta) – zakup w 4 krokach na platformie ubezpieczyciela; obok „Zapytaj doradcę” (formularz `product = nnw-dzieci` → doradca) | zdarzenie `outbound_click` z `target = colonnade_nnw`; leady `nnw-dzieci` w `/panel` |
+| Po zakupie | Polisa i certyfikat od Colonnade e-mailem; portal nie wysyła żadnej wiadomości | – (konto w Strefie tylko, jeśli polisa trafi do CRM – 11, do potwierdzenia) |
+
+KPI [hipoteza]: kliknięcia „Kup online” 5–15 % wejść na stronę w sezonie VIII–IX; statystyki zakupów z platformy Colonnade lub z bit.ly – czy zleceniodawca może je udostępnić, do potwierdzenia. Gdzie przy zakupie online odbywa się analiza potrzeb (platforma Colonnade) – do potwierdzenia (pkt 2.6).
+
+**Grupowe ERGO – dwie drogi**
+
+| Droga | Wejście | Strona | Wyjście | Mierzymy |
+|---|---|---|---|---|
+| Dla salonu z zespołem – ERGO Życie w Biznesie | magnes 4 „Rotacja vs pakiet” (1.4), artykuły E1–E2 (05; sezon XI–XII), posty kampanii | `/ubezpieczenia/grupowe-ergo#dla-salonu`: firma 2–100 osób, pracownicy 15–70 lat, 58 / 68 / 76 zł miesięcznie za osobę (stawki 1.07–31.12.2026), tabela świadczeń | „Złóż wniosek dla salonu” → `https://ergo.auraexpert.pl/wniosek?branza=beauty` (nowa karta) albo formularz `product = grupowe-ergo` → doradca | `outbound_click` z `target = ergo_wniosek_salon`; leady `grupowe-ergo` |
+| Dla Ciebie i rodziny – ERGO Razem (grupa otwarta) | treści o ochronie rodziny, strony zawodów, link „Dla Ciebie i rodziny” na stronie | `/ubezpieczenia/grupowe-ergo#dla-rodziny`: wiek 18–65 lat, bez badań lekarskich, warianty Dla Mnie / Dla Nas / Dla Rodziny, od 57 zł miesięcznie | „Sprawdź składkę dla swojego wieku” → `https://ergo.beautypolisa.eu/` (nowa karta): wiek → ankieta medyczna → oferta → agent oddzwania | `outbound_click` z `target = ergo_razem_kalkulator` |
+
+Sekcja „Która droga dla mnie” (`#ktora-droga`) porównuje fakty (kto zawiera umowę, wiek, składka, bliscy, OWU, jak zacząć) i nie wskazuje drogi. Magnes 4 kończy się teraz przyciskiem „Złóż wniosek dla salonu” obok „Poproś o ofertę grupową”. KPI [hipoteza]: wyjścia do wniosku 3–8 % wejść na `#dla-salonu` w sezonie XI–XII; wyjścia do kalkulatora ERGO Razem 5–12 % wejść na `#dla-rodziny`; czy ergo.auraexpert.pl i ergo.beautypolisa.eu mogą odczytać źródło `utm_source=beautypolisa` (bez danych osobowych) – do potwierdzenia.
 
 ---
 
@@ -132,7 +158,7 @@ Uwaga do nazwy: tytuł z zadania („…są objęte OC”) obiecuje potwierdzeni
 | Litera | Zastosowanie |
 |---|---|
 | M | Manager sieci / właścicielka zatrudniająca; szybka wygrana: jedna liczba – ile rocznie kosztuje ją rotacja – obok kosztu pakietu |
-| A | Grupowe ERGO dla beauty (pakiety 58 / 68 / 76 zł za osobę miesięcznie wg cennika programu); dół lejka, CTA „Poproś o ofertę grupową” |
+| A | Grupowe ERGO dla beauty – ERGO Życie w Biznesie (warianty 58 / 68 / 76 zł za osobę miesięcznie wg cennika branżowego `branze-2607`, stawki do 31.12.2026 – 00, D36); dół lejka, CTA „Złóż wniosek dla salonu” (ergo.auraexpert.pl) albo „Poproś o ofertę grupową” (formularz) – pkt 0.2 |
 | G | Wynik liczony na żywo przy każdej zmianie pola |
 | N | „Rotacja vs pakiet: policz różnicę na własnych liczbach” |
 | E | Artykuł E1.1 (05) → kalkulator → „Wyślij podsumowanie dla wspólnika / księgowej” (e-mail, imię) → E0 z linkiem do podsumowania → 2 e-maile (moduły MediOpieki wg OWU; jak wygląda wdrożenie grupowego w małej firmie) → „Poproś o ofertę” |
@@ -430,10 +456,10 @@ Podstawa wskazana w zadaniu: art. 172 Prawa telekomunikacyjnego – ta sama uwag
 | Obowiązek | Etap lejka | Miejsce |
 |---|---|---|
 | Firma, adres, status dystrybutora (agent ubezpieczeniowy), numer wpisu w Rejestrze Pośredników Ubezpieczeniowych (11229690/A) i sposób jego weryfikacji (https://rpu.knf.gov.pl/) | każdy kontakt z treścią | stopka wszystkich stron i e-maili (skrót) + `/o-nas#dystrybutor` (pełna treść) |
-| Charakter wynagrodzenia (do uzupełnienia); zakłady ubezpieczeń, w imieniu i na rzecz których działa agent (lista do potwierdzenia) | przed propozycją umowy | `/o-nas#dystrybutor`; strona sukcesu formularza leada; pierwsza wiadomość doradcy do leada |
-| Procedura reklamacji i pozasądowe rozwiązywanie sporów (Rzecznik Finansowy) | j.w. | `/o-nas#dystrybutor`, `/kontakt`, stopka e-maili serii (link) |
+| Charakter wynagrodzenia (prowizja od zakładu uwzględniona w składce; agent może otrzymywać także inny rodzaj wynagrodzenia); zakłady ubezpieczeń, na rzecz których działa agent (10 zakładów); brak udziałów ≥ 10% – wg ujawnienia Aura Expert (00, D37; `legal-distributor.json`) | przed propozycją umowy; przed wyjściem do zakupu online (NNW) lub wniosku (grupowe) – link „Informacje o agencie” przy przycisku | `/o-nas#dystrybutor`; strona sukcesu formularza leada; pierwsza wiadomość doradcy do leada; strony NNW i grupowe obok przycisków wyjścia |
+| Procedura reklamacji (pisemnie: ul. Bolkowska 2A/28, 01-466 Warszawa; ustnie: +48 504 400 901 lub do protokołu; e-mail: reklamacje@auraexpert.pl), skargi i pozasądowe rozwiązywanie sporów (Rzecznik Finansowy, www.rf.gov.pl) – 00, D37 | j.w. | `/o-nas#dystrybutor`, `/kontakt`, stopka e-maili serii (link) |
 | OWU i dokument informacyjny o produkcie (IPID) przed zawarciem umowy | strona produktowa / kontakt z doradcą | `/dokumenty` z wersjami OWU (05), link ze stron produktowych i z E1/E3 |
-| Analiza potrzeb klienta przed zaproponowaniem umowy | po kontakcie doradcy, przed wnioskiem | poza portalem beautypolisa.eu (00, D32): **OC** – analiza potrzeb (APK) pod osobistym linkiem w serwisie portal.beautypolisa.eu (CRM Aura Expert), podpisywana przez klienta razem z wnioskiem; **Tax Protect** – prowadzi doradca (ten sam link dopiero w etapie 2); **utrata dochodu** – w procesie wniosku na utratadochodu.pl [gdzie dokładnie – do potwierdzenia]; **pozostałe produkty** – doradca. Formularz leada zbiera tylko dane kontekstowe i nie zastępuje analizy (02, decyzja 10); `konsultacja.beautypolisa.eu` nie jest analizą potrzeb |
+| Analiza potrzeb klienta przed zaproponowaniem umowy | po kontakcie doradcy, przed wnioskiem | poza portalem beautypolisa.eu (00, D32): **OC** – analiza potrzeb (APK) pod osobistym linkiem w serwisie portal.beautypolisa.eu (CRM Aura Expert), podpisywana przez klienta razem z wnioskiem; **Tax Protect** – prowadzi doradca (ten sam link dopiero w etapie 2); **utrata dochodu** – w procesie wniosku na utratadochodu.pl [gdzie dokładnie – do potwierdzenia]; **NNW dzieci kupowane online** – na platformie Colonnade [do potwierdzenia]; **ERGO Życie w Biznesie** – we wniosku na ergo.auraexpert.pl albo z doradcą [do potwierdzenia]; **ERGO Razem** – ankieta medyczna w kalkulatorze, potem rozmowa z agentem [gdzie analiza potrzeb – do potwierdzenia]; **pozostałe produkty** – doradca. Formularz leada zbiera tylko dane kontekstowe i nie zastępuje analizy (02, decyzja 10); `konsultacja.beautypolisa.eu` nie jest analizą potrzeb |
 | Zastrzeżenie: treści portalu i kalkulator to informacja, nie oferta w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU | kalkulator, quiz, e-maile | adnotacja pod każdym wynikiem i w stopce E0–E4 |
 
 Landing magnesu sam w sobie nie jest czynnością dystrybucyjną, ale pochodzi od dystrybutora – stąd skrócona informacja w stopce każdej strony. Pełne obowiązki „przed zawarciem umowy” realizuje Aura Expert jako agent – przez doradcę w pierwszym kontakcie; portal ma zapewnić, że klient wcześniej widział, kim jest dystrybutor i gdzie są OWU.
@@ -749,7 +775,7 @@ R – wykonuje, A – zatwierdza, C – konsultuje, I – informowany.
 
 ## Pytania otwarte do zleceniodawcy
 
-1. ~~Status dystrybutora~~ – rozstrzygnięte 12.11.2026: Aura Expert sp. z o.o. jest agentem ubezpieczeniowym (RPU 11229690/A; 01, pkt 2; 02, pytanie 9). Otwarte: dokładna lista zakładów ubezpieczeń, na rzecz których działa agent, charakter wynagrodzenia i procedura reklamacyjna – do noty IDD w stopce i na `/o-nas#dystrybutor`.
+1. ~~Status dystrybutora~~ – rozstrzygnięte 12.11.2026: Aura Expert sp. z o.o. jest agentem ubezpieczeniowym (RPU 11229690/A; 01, pkt 2; 02, pytanie 9). Lista zakładów, charakter wynagrodzenia i procedura reklamacyjna – rozstrzygnięte 13.11.2026 wg ujawnienia Aura Expert (00, D37); trafiają do noty IDD w stopce i na `/o-nas#dystrybutor`. Otwarte: gdzie odbywa się analiza potrzeb przy zakupie NNW online i w drogach grupowych (pkt 2.6).
 2. ~~Kontakt do IOD~~ – rozstrzygnięte 12.11.2026: w klauzulach z pkt 2.6 podajemy iod@auraexpert.pl; administrator danych portalu: Aura Expert sp. z o.o.
 3. Kto zatwierdza prawnie wzór zgody na zabieg i checklistę kontroli oraz czy mogą być wydawane pod marką BeautyPolisa / Aura Expert (05, pytanie 9)?
 4. Czy prawnik potwierdzi aktualną podstawę prawną zgód (art. 398 PKE vs art. 10 u.ś.u.d.e. i art. 172 Pt) oraz oceni, czy e-mail E0 z linkiem do strony wyniku jest informacją handlową?

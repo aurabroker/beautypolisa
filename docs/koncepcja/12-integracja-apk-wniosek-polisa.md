@@ -13,8 +13,8 @@
 
 ## TL;DR
 
-1. **Jedna ścieżka zakupu z osobistym linkiem – tylko dla OC (etap 1), potem także Tax Protect (etap 2).** Klient liczy składkę w kalkulatorze albo zostawia kontakt w formularzu → doradca Aura Expert → e-mail z jednym osobistym linkiem `https://portal.beautypolisa.eu/w/XXXXXXXXXX` → APK, wniosek, ankieta, zgody i podpisy pod tym linkiem → polisa → dokumenty i polisa w Strefie Klienta. Dla OC dodatkowo: „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa”.
-2. **Pozostałe produkty – bez linku `/w/`.** Tax Protect dziś: kalkulator lub formularz → doradca kontaktuje się i prowadzi wniosek. Utrata dochodu: wniosek na utratadochodu.pl albo zakup online u Leadenhall. Grupowe ERGO, opieka medyczna, NNW dzieci: formularz → doradca. Strony publiczne nie opisują linku `/w/` przy żadnym produkcie poza OC.
+1. **Jedna ścieżka zakupu z osobistym linkiem – tylko dla OC (etap 1), potem także Tax Protect (etap 2).** Klient liczy składkę w kalkulatorze albo zostawia kontakt w formularzu → doradca Aura Expert → e-mail z jednym osobistym linkiem `https://portal.beautypolisa.eu/w/XXXXXXXXXX` → APK, wniosek, ankieta, zgody i podpisy pod tym linkiem → polisa → dokumenty i polisa w Strefie Klienta. Przy zabiegach z grupy 4 ankieta indywidualnej oceny ryzyka ERGO Hestii jest częścią tego samego linku (ustalenie 13.11.2026). Dla OC dodatkowo: „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” (członkostwo w Fundacji Beauty Razem nie jest wymagane – 00, D39).
+2. **Pozostałe produkty – bez linku `/w/`.** Tax Protect dziś: kalkulator lub formularz → doradca kontaktuje się i prowadzi wniosek. Utrata dochodu: wniosek na utratadochodu.pl albo zakup online u Leadenhall. NNW dzieci: zakup online na platformie Colonnade (`https://bit.ly/szkolneNNW2026` → market.colonnade.pl) albo formularz → doradca (00, D35). Grupowe ERGO: wniosek dla salonu na `ergo.auraexpert.pl` (ERGO Życie w Biznesie) albo kalkulator ERGO Razem na `ergo.beautypolisa.eu`; obok formularz → doradca (00, D36). Opieka medyczna: formularz → doradca. Strony publiczne nie opisują linku `/w/` przy żadnym produkcie poza OC.
 3. **Link tworzy wyłącznie doradca w CRM** (sprawa w `crm_renewals`, baza „aurabroker”) i CRM wysyła go wyłącznie na adres z CRM. **Formularz portalu nigdy nie przekierowuje na `/w/<kod>`, nigdy nie pokazuje kodu i odpowiada tak samo dla nowej i istniejącej firmy.**
 4. **Portal beautypolisa.eu nie dostaje dostępu do bazy CRM.** Leady trafiają do bazy portalu (02 §2.2), a do CRM – w v1 przez doradcę, później opcjonalnie przez wąski punkt przyjęcia leadów z osobnym sekretem (tylko zapis, bez odczytu). Sprawy i polisy wracają do Strefy Klienta jednokierunkowym, podpisanym przekazem – **bez kodów linków**.
 5. **Bezpieczeństwo linku to wymagania wobec `portal.beautypolisa.eu` i CRM:** ta sama neutralna strona dla każdego kodu (brak „wyroczni” ważności), limity prób liczone w aplikacji, Turnstile, `wazny_do` egzekwowane na serwerze (brak daty = link nieważny), blokada po złożeniu, **wymagany kod z e-maila** przed pokazaniem danych i przed każdym podpisem, dłuższe kody (≥ 16 znaków) dla nowych linków, kod usuwany z paska adresu, `/w/` tylko na hoście `portal.beautypolisa.eu` (nie na `*.pages.dev`), osobna rola bazy o najmniejszych uprawnieniach, `Referrer-Policy: no-referrer`, `noindex`, brak kodów w analityce i logach. Słabości starszego formularza APK i linków ofert UD w CRM (przegląd 12.11.2026) to ryzyko zależności – osobne zadanie utwardzenia CRM; minimum dla nich jest warunkiem startu etapu 1 (4.6).
@@ -40,7 +40,7 @@ Ustalić jedną, prawdziwą i bezpieczną drogę od zainteresowania produktem na
 | Mapa ścieżek per produkt i treść, którą o nich mówią strony publiczne | Zmiany w CRM Aura Expert i w serwisie `portal.beautypolisa.eu` (tu tylko wymagania) |
 | Przepływ lead → CRM → link `/w/<kod>` → polisa → Strefa Klienta | Treść APK, wniosku i ankiety (należą do CRM i ubezpieczyciela) |
 | Wymagania bezpieczeństwa wobec linku, CRM i portalu | Naprawa starszego formularza APK z tokenem i linków ofert UD (osobne zadanie utwardzenia, 4.6) |
-| Sprawy w toku i polisy z CRM w Strefie Klienta | Płatności online, sprzedaż bez doradcy |
+| Sprawy w toku i polisy z CRM w Strefie Klienta | Płatności online w portalu, sprzedaż bez doradcy w portalu; zakup online u ubezpieczyciela (NNW dzieci – Colonnade, utrata dochodu – Leadenhall) odbywa się poza portalem i poza tą ścieżką (00, D35, D40) |
 | UTM i pomiar bez danych osobowych i kodów | Moduł `konsultacja.beautypolisa.eu` – **nie jest APK ani wnioskiem** i nie należy do ścieżki zakupu (1.4) |
 
 ### 1.3 Słownik
@@ -66,12 +66,13 @@ Ustalić jedną, prawdziwą i bezpieczną drogę od zainteresowania produktem na
 
 | Produkt | Wejście na beautypolisa.eu | Co dzieje się dalej | Link `/w/<kod>` | Co mówi strona publiczna |
 |---|---|---|---|---|
-| **OC dla branży beauty (ERGO Hestia)** | kalkulator `/kalkulator/oc` albo formularz kontaktowy | doradca Aura Expert zakłada sprawę w CRM i wysyła e-mail z osobistym linkiem → APK, wniosek, ankieta, zgody, podpisy → polisa (numer i okres zapisuje CRM) → dokumenty i polisa w Strefie Klienta | **tak – etap 1** | Pełny opis ścieżki (5 kroków, 2.3) oraz „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” (`https://beautyrazem.pl/polisa`) |
+| **OC dla branży beauty (ERGO Hestia)** | kalkulator `/kalkulator/oc` albo formularz kontaktowy | doradca Aura Expert zakłada sprawę w CRM i wysyła e-mail z osobistym linkiem → APK, wniosek, ankieta, zgody, podpisy → polisa (numer i okres zapisuje CRM) → dokumenty i polisa w Strefie Klienta. **Grupa 4:** ankieta indywidualnej oceny ryzyka ERGO Hestii jest częścią tego samego osobistego linku `/w/` (ustalenie 13.11.2026) | **tak – etap 1** | Pełny opis ścieżki (5 kroków, 2.3) oraz „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” (`https://beautyrazem.pl/polisa`) |
 | **Tax Protect (Colonnade)** | kalkulator – zakładka Tax Protect na stronie głównej `/#kalkulator-tax` (taryfa – 02 §2.3) albo formularz kontaktowy | **dziś:** doradca Aura Expert kontaktuje się z klientem i prowadzi wniosek | **nie dziś; planowane w etapie 2** (opis tylko w dokumentacji) | „Policz składkę albo zostaw kontakt – doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek.” **Bez wzmianki o linku `/w/`** |
 | **Utrata dochodu** | strona `/ubezpieczenia/utrata-dochodu` (treść z utratadochodu.pl, bez kwot składek) | wniosek na `https://utratadochodu.pl/wniosek/?zawod=<slug>` albo zakup online okresowej niezdolności u Leadenhall: `https://utratadochodu.pl/kup-online?z=beautypolisa` | **nie** (ani teraz, ani w etapie 2) | Linki do utratadochodu.pl |
-| **Grupowe ERGO dla beauty** | formularz kontaktowy | doradca Aura Expert | **nie** | „Zostaw kontakt – doradca się odezwie” |
-| **Opieka medyczna (ENEL-MED / LUX MED)** | formularz kontaktowy | doradca Aura Expert | **nie** | jw. (abonament, nie ubezpieczenie – 02 F1) |
-| **NNW dzieci** | formularz kontaktowy („zapytaj o ofertę”) | doradca Aura Expert | **nie** | jw. |
+| **Grupowe ERGO – dla salonu (ERGO Życie w Biznesie)** (00, D36) | `/ubezpieczenia/grupowe-ergo#dla-salonu`: „Złóż wniosek dla salonu” albo formularz kontaktowy | wniosek na `https://ergo.auraexpert.pl/wniosek?branza=beauty` (strona Aura Expert, nowa karta); przy formularzu – doradca Aura Expert | **nie** | Link do wniosku; „Zapytaj doradcę” |
+| **Grupowe ERGO – dla Ciebie i rodziny (ERGO Razem, grupa otwarta)** (00, D36) | `/ubezpieczenia/grupowe-ergo#dla-rodziny`: „Sprawdź składkę dla swojego wieku” | kalkulator `https://ergo.beautypolisa.eu/`: wiek → ankieta medyczna → wybór oferty → agent oddzwania | **nie** | Link do kalkulatora |
+| **Opieka medyczna (ENEL-MED / LUX MED)** | formularz kontaktowy | doradca Aura Expert | **nie** | „Zostaw kontakt – doradca się odezwie” (abonament, nie ubezpieczenie – 02 F1) |
+| **NNW dzieci** (00, D35) | `/ubezpieczenia/nnw-dzieci`: „Kup online u Colonnade” albo „Zapytaj doradcę” (formularz) | **zakup online Colonnade:** `https://bit.ly/szkolneNNW2026` → market.colonnade.pl (platforma ubezpieczyciela, nowa karta) – 4 kroki, polisa i certyfikat e-mailem; przy formularzu – doradca Aura Expert. Polisa trafia do Strefy Klienta tylko, jeśli dotrze do CRM (do potwierdzenia – 11 Q28) | **nie** | Link do zakupu online; „Zapytaj doradcę” |
 
 Zasada redakcyjna: opis „e-mail z osobistym linkiem do APK i wniosku w serwisie portal.beautypolisa.eu” pojawia się **wyłącznie** na stronach i w treściach OC (strona produktu, kalkulator, FAQ OC, e-mail potwierdzenia leada OC). Rozszerzenie na Tax Protect następuje dopiero decyzją o starcie etapu 2 (D32) – wcześniej żadna strona publiczna Tax Protect go nie wspomina.
 
@@ -97,7 +98,14 @@ flowchart TD
 
   prod -->|"Utrata dochodu"| ud["utratadochodu.pl/wniosek/?zawod=slug<br/>albo kup online (Leadenhall)"]
 
-  prod -->|"Grupowe ERGO, opieka medyczna, NNW dzieci"| other["Formularz kontaktowy"] --> otherD["Doradca Aura Expert"]
+  prod -->|"NNW dzieci"| nnw["Kup online u Colonnade<br/>bit.ly/szkolneNNW2026 → market.colonnade.pl"]
+  nnw --> nnwPol["Polisa i certyfikat Colonnade e-mailem"]
+  nnwPol -.->|"tylko jeśli polisa dotrze do CRM (do potwierdzenia)"| strefa
+
+  prod -->|"Grupowe ERGO – salon"| gSal["Wniosek: ergo.auraexpert.pl/wniosek?branza=beauty"]
+  prod -->|"Grupowe ERGO – Ty i rodzina"| gRaz["Kalkulator ERGO Razem: ergo.beautypolisa.eu"] --> gAgent["Agent Aura Expert oddzwania"]
+
+  prod -->|"Opieka medyczna; „Zapytaj doradcę” przy NNW i grupowym"| other["Formularz kontaktowy"] --> otherD["Doradca Aura Expert"]
 ```
 
 ### 2.3 Treść ścieżki OC na stronach publicznych (wzorzec)
@@ -107,7 +115,7 @@ Pięć kroków, prostym językiem (do strony OC, kalkulatora i FAQ OC):
 1. **Policz składkę albo zostaw kontakt.** Kalkulator pokazuje składkę roczną wg taryfy programu.
 2. **Doradca Aura Expert sprawdza dane** i odzywa się do Ciebie.
 3. **Dostajesz e-mail z osobistym linkiem** do analizy potrzeb i wniosku. Link zawsze prowadzi do `portal.beautypolisa.eu` – innej domenie nie ufaj. Link jest tylko dla Ciebie: nie przekazuj go innym. Ma datę ważności – po niej poproś doradcę o nowy.
-4. **Wypełniasz i podpisujesz** analizę potrzeb i wniosek pod tym linkiem.
+4. **Wypełniasz i podpisujesz** analizę potrzeb i wniosek pod tym linkiem. Jeśli wykonujesz zabiegi z grupy 4, pod tym samym linkiem wypełniasz też ankietę indywidualnej oceny ryzyka ERGO Hestii.
 5. **Dostajesz polisę.** Dokumenty i polisa są też w Strefie Klienta.
 
 „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa.”
@@ -403,7 +411,7 @@ Zasada: **żadnych danych osobowych, kodów, numerów spraw ani numerów polis w
 | Q2 | Kto utrzymuje `portal.beautypolisa.eu` (projekt Pages `crmaura`) – i kto odpowiada za spełnienie R-W1–R-W17 przed startem etapu 1? Czy repozytorium tej aplikacji może dostać test nagłówków, limitów i odpowiedzi na `*.pages.dev` (R-W15) w CI? Jak aplikacja łączy się z bazą rolą z R-W16? | zleceniodawca + zespół CRM | etap 1 |
 | Q3 | Długość i alfabet kodu: jaki alfabet ma dziś `kod_krotki`? Czy nowe linki mogą mieć ≥ 16 znaków? Czy CRM może przechowywać tylko skrót kodu (wtedy przypomnienia i „Dokończ” wydają nowy kod)? Ile spraw ma dziś `wazny_do IS NULL` i jaki termin N dni nadać im przy migracji (R-CRM-3)? | zespół CRM | R-W1, R-W4, R-CRM-2, R-CRM-3 |
 | Q4 | **Forma** drugiego czynnika na stronie `/w/` przed pokazaniem danych i przed podpisem: kod z e-maila (R-W6 – wymagany w etapie 1) czy inny czynnik? Czy CRM może wydać jednorazowy token przekazania dla „Dokończ” ze Strefy (5.3, wariant lepszy) i porównać adres e-mail właściciela z `crm_renewals.email` po normalizacji? | zleceniodawca + zespół CRM | R-W6; 5.3 |
-| Q5 | Numer telefonu kontaktowego Aura Expert do stron produktów, e-maili i strony „link nieaktywny” (02 – kontakt awaryjny) | zleceniodawca | treści |
+| Q5 | Numer telefonu kontaktowego Aura Expert do stron produktów, e-maili i strony „link nieaktywny” (02 – kontakt awaryjny). Telefon agenta z ujawnienia: +48 504 400 901 (00, D37) – czy ten sam numer podajemy w kontakcie portalu, do potwierdzenia | zleceniodawca | treści |
 | Q6 | GA4: jedna usługa wspólna dla beautypolisa.eu i `portal.beautypolisa.eu` czy osobne? Czy na `portal.` działa dziś jakikolwiek tag (GA4, Zaraz, piksel)? Jak Zaraz w strefie jest ograniczony do hostów (R-W13)? | zleceniodawca | R-W13; 02 Q18 |
 | Q7 | Czy `client_accounts.crm_ref` ma wskazywać `crm_renewals.klient_id` w „aurabroker” (para z `crm_tenant` = `tenant_id`, 5.2)? Źródło polis jest rozstrzygnięte: CRM Aura Expert w „aurabroker” (`crm_renewals.nr_polisy`/`polisa_id`; 00 D32(e), 11 §7.4 M5) | zleceniodawca + zespół CRM | 5.2; korekta 11 |
 | Q8 | Rola `konsultacja.beautypolisa.eu` (`/k`, `/w`, baza „BEAUTY”, `konsultacja_*`): czy portal ma do niej w ogóle linkować (np. jako „porozmawiaj z asystentem”), skoro nie jest APK ani wnioskiem? Jeśli tak – gdzie i z jakim opisem, żeby nie mylić jej `/w` ze ścieżką zakupu | zleceniodawca | treści |
@@ -412,3 +420,4 @@ Zasada: **żadnych danych osobowych, kodów, numerów spraw ani numerów polis w
 | Q11 | Tax Protect dziś: jak doradca prowadzi wniosek bez linku `/w/` (dokumenty Colonnade, podpis) – do opisu na stronie Tax Protect w jednym zdaniu, bez obietnic | zleceniodawca | D34 |
 | Q12 | Okresy retencji APK, wniosków i spraw niezłożonych w CRM (4.7) oraz decyzja IOD o DPIA | IOD | 4.7 |
 | Q13 | Termin i zakres zadania utwardzenia CRM (4.6 Z1–Z3). Minimum dla Z1 i Z2 jest warunkiem startu etapu 1 bez możliwości akceptacji ryzyka; czy zleceniodawca – z IOD – akceptuje na czas startu tylko ryzyko Z3 (warunek z 4.6)? | zleceniodawca + IOD | start etapu 1 |
+| Q14 | NNW dzieci kupione online (00, D35) i polisy grupowe ERGO po wniosku na ergo.auraexpert.pl lub po kalkulatorze ERGO Razem (00, D36): czy i jak trafiają do CRM Aura Expert (`crm_renewals` albo inna tabela polis)? Bez tego nie pojawią się w Strefie Klienta (11 Q28). Ścieżka `/w/` dla tych produktów nie powstaje | zleceniodawca + zespół CRM | Strefa Klienta dla NNW i grupowych |
