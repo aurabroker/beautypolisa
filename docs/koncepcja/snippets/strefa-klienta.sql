@@ -30,6 +30,10 @@
 --       pracodawcy (GUS → employer_trusted_at), NIP rezerwowany dopiero przez aktywne konto, liczniki SMS
 --       niezależne od usuwania kont, potwierdzone adresy kontaktowe pracodawców, zawieszenie zdejmujące
 --       treści, retencja kont i zgłoszeń, walidacja w funkcjach bez wartości w komunikatach błędów.
+--   00, D41 (decyzja zleceniodawcy 13.11.2026): pole „Zabiegi” w ofertach i ogłoszeniach „Szukam pracy”
+--       (0–30 identyfikatorów z snippets/zabiegi-oc-beauty.json, funkcja zabiegi_ids() generowana z pliku)
+--       i filtr LUB na tablicy (zabiegi && …, indeks GIN); kolejność bez zmian – od najnowszej publikacji,
+--       bez dopasowywania (dok. 11 §11.10).
 --
 -- Konwencje (jak w schema.sql / rls-policies.sql):
 --  * domyślne granty odebrane w schema.sql (ALTER DEFAULT PRIVILEGES … FROM public, anon, authenticated);

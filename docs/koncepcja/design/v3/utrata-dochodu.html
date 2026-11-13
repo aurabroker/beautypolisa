@@ -397,8 +397,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .legal-idd-body ul{margin:0;padding-left:1.2em;display:grid;gap:2px;list-style:disc}
 @media (min-width:1024px){.footer-nav{grid-template-columns:repeat(4,minmax(0,1fr))}.footer-brand{grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:32px}}
 
-/* ---------- przycisk w zasięgu kciuka (telefony; pokazuje go skrypt) ---------- */
-.sticky-cta{display:none}
+/* ---------- pasek akcji na telefonie: wspólny komponent – blok gen:wspolne-css na końcu <head> ---------- */
 
 /* ---------- responsywność ---------- */
 @media (max-width:767px){
@@ -426,11 +425,6 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 @media (max-width:399px){.menu-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}}
 @media (max-width:359px){.header-bar{padding-left:14px;padding-right:8px;gap:8px}.brand small{letter-spacing:.06em}}
 @media (pointer:coarse){.footer-nav a{min-height:44px}}
-@media (max-width:767px){
-  .sticky-cta:not([hidden]){display:flex;align-items:center;justify-content:center;position:fixed;left:16px;right:16px;bottom:max(12px,env(safe-area-inset-bottom));z-index:var(--bp-z-sticky);min-height:52px;background:var(--color-navy);color:var(--color-ivory);border:1px solid rgba(217,192,137,.6);border-radius:var(--radius-btn);font:500 var(--text-xs)/1 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;text-decoration:none;box-shadow:0 14px 30px -14px rgba(20,28,51,.7)}
-  html.has-sticky{scroll-padding-bottom:88px}
-  html.has-sticky body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
-}
 @media (hover:hover) and (pointer:fine){
   .btn-navy{background-image:linear-gradient(var(--color-gold-light),var(--color-gold-light));background-repeat:no-repeat;background-position:50% calc(100% - 10px);background-size:0 1px;transition:background-size .5s var(--ease-lux),background-color .25s,color .25s,border-color .25s}
   .btn-navy:hover,.btn-navy:focus-visible{background-size:calc(100% - 56px) 1px}
@@ -526,7 +520,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   html.io-reveal .rv-curtain,html.io-reveal .rv-rise{opacity:1!important;translate:none!important;scale:none!important}
   html.io-reveal .rv-eyebrow::before,html.io-reveal .ledger .bar{transform:none!important}
   html.sl-js .chapter-no{translate:none!important}
-  .site-header,.sticky-cta{display:none!important}
+  .site-header{display:none!important}
 }
 </style>
 <noscript><style>
@@ -740,6 +734,68 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 }
 </script>
 <!-- /GEN:jsonld -->
+<!-- gen:wspolne-css -->
+<style>
+/* ===== Wspólne komponenty stron publicznych (gen_wspolne.py – nie edytuj ręcznie) ===== */
+/* --- menu „Ubezpieczenia” (≥ 1200 px): wzorzec disclosure, panel ivory bez backdrop-filter (nie liczy się do limitu tafli) --- */
+.main-nav .nav-produkty-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:0;padding:0 10px;background:none;border:0;border-radius:var(--radius-btn);font:500 var(--text-xs)/1 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase;text-decoration:none;color:var(--color-ink);white-space:nowrap;cursor:pointer}
+.main-nav .nav-produkty-btn:hover,.main-nav .nav-produkty-btn[aria-expanded="true"],.nav-produkty[data-biezacy] > .nav-produkty-btn{color:var(--color-navy);text-decoration:underline;text-underline-offset:6px;text-decoration-color:var(--color-gold)}
+.nav-produkty-btn svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform var(--bp-dur-2) var(--ease-lux)}
+.nav-produkty-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.mega{position:absolute;left:0;right:0;top:calc(100% + 10px);z-index:2;max-height:calc(100vh - 116px);overflow-y:auto;overscroll-behavior:contain;padding:22px 28px 22px;background:var(--color-ivory);border:1px solid rgba(184,151,90,.55);border-radius:var(--radius-card);box-shadow:0 0 0 1px rgba(42,59,104,.07),0 2px 4px rgba(20,28,51,.1),0 18px 40px -20px rgba(20,28,51,.6),inset 0 1px 0 rgba(255,255,255,.75)}
+.mega[hidden]{display:none}
+.mega-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;padding-bottom:12px;border-bottom:1px solid var(--color-gold)}
+.mega-title{margin:0;font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
+.main-nav .mega a{display:revert;min-height:0;padding:0;font:inherit;letter-spacing:normal;text-transform:none;white-space:normal;color:inherit;text-decoration:none}
+.main-nav .mega .mega-all{display:inline-flex;align-items:center;min-height:24px;font:500 var(--text-sm)/1.3 var(--font-sans);color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px}
+.main-nav .mega-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 20px;margin:14px 0 0;padding:0;list-style:none}
+.main-nav .mega .mega-item{display:grid;grid-template-columns:32px minmax(0,1fr);column-gap:16px;align-items:start;height:100%;padding:14px 14px 16px;border-radius:var(--radius-card);color:var(--color-ink);transition:background-color var(--bp-dur-1)}
+.main-nav .mega .mega-item:hover{background:var(--color-parchment)}
+.main-nav .mega .mega-item:hover .mega-name{text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px;text-decoration-thickness:1px}
+.main-nav .mega .mega-item[aria-current="page"]{background:var(--color-parchment);box-shadow:inset 2px 0 0 var(--color-gold)}
+.mega-item .lux-icon{margin-top:2px;color:var(--color-navy)}
+.mega-text{display:grid;gap:4px}
+.mega-name{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font:500 1.3rem/1.15 var(--font-serif);color:var(--color-navy)}
+.mega-tu{font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
+.mega-desc{font:400 var(--text-sm)/1.45 var(--font-sans);color:var(--color-taupe)}
+.mega-price{font:500 var(--text-sm)/1.4 var(--font-sans);color:var(--color-ink);font-variant-numeric:lining-nums tabular-nums}
+.mega-foot{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:12px;margin-top:14px;padding-top:16px;border-top:1px solid var(--bp-line-gold-soft)}
+.main-nav .mega .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 24px;font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.main-nav .mega .btn-navy,.main-nav .mega .btn-navy:hover{color:var(--color-ivory)}
+.main-nav .mega .btn-ghost,.main-nav .mega .btn-ghost:hover{color:var(--color-navy)}
+@media (max-width:1199px){.mega{display:none!important}}
+/* --- szuflada (< 1200 px): „Oblicz składkę OC” na górze + 6 produktów z ceną --- */
+.menu-panel .btn.mm-oblicz{width:100%;margin:4px 0 14px}
+.mm-tytul{margin:0;padding:4px 0 2px;font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
+.mm-produkty{margin:0 0 6px;padding:0;list-style:none}
+.menu-panel .mm-produkty a{display:grid;grid-template-columns:22px minmax(0,1fr);align-items:center;column-gap:14px;min-height:52px;padding:8px 0;border-bottom:1px solid var(--bp-line-gold-soft);font:500 var(--text-body)/1.3 var(--font-sans);letter-spacing:0;text-transform:none;text-decoration:none;color:var(--color-ink)}
+.menu-panel .mm-produkty a:hover .mm-name{text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px}
+.menu-panel .mm-produkty a[aria-current="page"]{margin-inline:-10px;padding-inline:10px;background:var(--color-parchment);box-shadow:inset 2px 0 0 var(--color-gold)}
+.mm-text{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 12px;min-width:0}
+.mm-price{font:400 var(--text-sm)/1.35 var(--font-sans);color:var(--color-taupe);white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
+/* --- pasek akcji na telefonie: jedno nieprzezroczyste tło midnight (bez backdrop-filter), safe-area --- */
+.pasek-akcji{display:none}
+@media (max-width:767px){
+  html.has-pasek{scroll-padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+  html.has-pasek .pasek-akcji{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:var(--bp-z-sticky);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;padding:6px;background:var(--color-midnight);border:1px solid rgba(217,192,137,.5);border-radius:var(--radius-card);box-shadow:0 14px 30px -12px rgba(20,28,51,.75);transform:translateY(calc(100% + 24px + env(safe-area-inset-bottom)));visibility:hidden;transition:transform var(--bp-dur-3) var(--ease-lux),visibility 0s linear var(--bp-dur-3)}
+  html.has-pasek .pasek-akcji[data-on="1"]{transform:none;visibility:visible;transition:transform var(--bp-dur-3) var(--ease-lux),visibility 0s}
+  .pasek-akcji a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:6px 12px;border-radius:var(--radius-btn);border:1px solid transparent;font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase;text-align:center;text-decoration:none}
+  .pasek-akcji .pa-glowny{background:var(--color-ivory);color:var(--color-navy);border-color:var(--color-ivory)}
+  .pasek-akcji .pa-glowny:hover{background:var(--color-parchment)}
+  .pasek-akcji .pa-tel{color:var(--color-ivory);border-color:rgba(217,192,137,.6);padding-inline:10px}
+  .pasek-akcji .pa-tel:hover{border-color:var(--color-gold-light)}
+  .pasek-akcji :focus-visible{outline:2px solid var(--color-gold-light);outline-offset:2px}
+  .pa-ikona{width:18px;height:18px;flex:none;fill:none;stroke:var(--color-gold-light);stroke-width:1.5;stroke-linejoin:round}
+  .pa-zewn{width:12px;height:12px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+  .pa-tel-txt{display:grid;justify-items:start;gap:2px;text-align:left}
+  .pa-nr{font:500 var(--text-xs)/1.1 var(--font-sans);letter-spacing:.02em;text-transform:none;color:var(--color-gold-light);white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
+}
+@media (max-width:359px){.pasek-akcji a{padding-inline:8px;letter-spacing:.1em}.pa-ikona{display:none}}
+@media (prefers-reduced-motion:reduce){.pasek-akcji,.pasek-akcji[data-on="1"],.nav-produkty-btn svg{transition:none!important}}
+@media (forced-colors:active){.mega,.pasek-akcji{border-color:CanvasText}.main-nav .mega .mega-item[aria-current="page"]{outline:2px solid Highlight}}
+@media print{.pasek-akcji,.mega{display:none!important}}
+</style>
+<!-- /gen:wspolne-css -->
 </head>
 <body>
 <a class="skip" href="#tresc">Przejdź do treści</a>
@@ -754,7 +810,24 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       </a>
       <nav class="main-nav" aria-label="Menu główne">
         <ul>
-          <li><a href="makieta-v3.html#ubezpieczenia">Ubezpieczenia</a></li>
+          <!-- gen:menu-produkty -->
+          <li class="nav-produkty" data-biezacy>
+            <!-- bez JS: link do sekcji produktów; skrypt (gen:wspolne-js) zamienia go na przycisk aria-expanded + aria-controls -->
+            <a class="nav-produkty-btn" href="makieta-v3.html#ubezpieczenia">Ubezpieczenia</a>
+            <div class="mega" id="menu-produkty" hidden>
+              <div class="mega-head"><p class="mega-title">Ubezpieczenia dla branży beauty</p><a class="mega-all" href="makieta-v3.html#ubezpieczenia">Wszystkie ubezpieczenia</a></div>
+              <ul class="mega-grid">
+                <li><a class="mega-item" href="oc-beauty.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name">OC dla branży beauty</span><span class="mega-desc">OC za szkody wyrządzone klientom podczas zabiegów – składka ze stałej taryfy ERGO Hestia.</span><span class="mega-price">od 400&nbsp;zł rocznie</span></span></a></li>
+                <li><a class="mega-item" href="tax-protect.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name">Tax Protect</span><span class="mega-desc">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (Colonnade).</span><span class="mega-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
+                <li><a class="mega-item" href="utrata-dochodu.html" aria-current="page"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name">Utrata dochodu<span class="mega-tu">Jesteś tutaj</span></span><span class="mega-desc">Prywatne L4 dla samozatrudnionych – Lloyd’s przez Leadenhall i&nbsp;CEU.</span><span class="mega-price">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></a></li>
+                <li><a class="mega-item" href="nnw-dzieci.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name">NNW dla dzieci</span><span class="mega-desc">Ochrona dziecka od następstw nieszczęśliwych wypadków – całą dobę (Colonnade).</span><span class="mega-price">od 40&nbsp;zł rocznie za dziecko · zakup online u&nbsp;Colonnade</span></span></a></li>
+                <li><a class="mega-item" href="grupowe-ergo.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name">Grupowe ERGO dla beauty</span><span class="mega-desc">Ubezpieczenie na życie dla zespołu (2–&#8288;100 osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</span><span class="mega-price">od 58&nbsp;zł za osobę miesięcznie · rodzina od 57&nbsp;zł miesięcznie</span></span></a></li>
+                <li><a class="mega-item" href="makieta-v3.html?produkt=opieka-medyczna#kontakt"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name">Opieka medyczna</span><span class="mega-desc">Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price">Według cennika programu</span></span></a></li>
+              </ul>
+              <div class="mega-foot"><a class="btn btn-navy" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a><a class="btn btn-ghost" href="makieta-v3.html#kalkulator-tax">Porównaj w&nbsp;kalkulatorze Tax Protect</a></div>
+            </div>
+          </li>
+          <!-- /gen:menu-produkty -->
           <li><a href="#zawody">Zawody</a></li>
           <li><a href="#zakres">Zakres</a></li>
           <li><a href="#jak-kupic">Jak kupić</a></li>
@@ -766,7 +839,18 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       <details class="menu">
         <summary><span class="menu-label">Menu</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></summary>
         <nav class="menu-panel" aria-label="Menu główne">
-          <a href="makieta-v3.html#ubezpieczenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-oc-beauty"/></svg>Ubezpieczenia</a>
+          <!-- gen:menu-mobilne -->
+          <a class="btn btn-navy mm-oblicz" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a>
+          <p class="mm-tytul" id="mm-produkty-t">Ubezpieczenia</p>
+          <ul class="mm-produkty" aria-labelledby="mm-produkty-t">
+            <li><a href="oc-beauty.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mm-text"><span class="mm-name">OC dla branży beauty</span><span class="mm-price">od 400&nbsp;zł rocznie</span></span></a></li>
+            <li><a href="tax-protect.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mm-text"><span class="mm-name">Tax Protect</span><span class="mm-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
+            <li><a href="utrata-dochodu.html" aria-current="page"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mm-text"><span class="mm-name">Utrata dochodu</span><span class="mm-price">składka po ocenie ryzyka</span></span></a></li>
+            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie</span></span></a></li>
+            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 57&nbsp;zł miesięcznie</span></span></a></li>
+            <li><a href="makieta-v3.html?produkt=opieka-medyczna#kontakt"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mm-text"><span class="mm-name">Opieka medyczna</span><span class="mm-price">według cennika</span></span></a></li>
+          </ul>
+          <!-- /gen:menu-mobilne -->
           <a href="#porownanie"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg>ZUS a&nbsp;polisa</a>
           <a href="#zawody"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Zawody beauty</a>
           <a href="#zakres"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Zakres i&nbsp;wyłączenia</a>
@@ -1219,7 +1303,19 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   <symbol id="lux-nnw-dzieci" viewBox="0 0 96 96"><title>NNW dzieci</title><path d="M18 69Q48 91 78 69M22 65Q48 84 74 65" /><path d="M30 52L25 68M37 52L34 72M58 51L65 71M64 47L72 67" /><path d="M28 52C28 44 32 38 38 38H51C52 30 55 24 62 22L68 17L69 25L76 38C76 41 71 43 69 39L64 35C61 40 61 47 64 51C53 57 40 57 28 52Z" /><path d="M38 38V44C38 51 51 52 53 44L54 37M54 32C57 25 60 24 64 24" /><path d="M30 41C25 34 20 38 20 46C20 51 18 54 16 55" /></symbol>
   <symbol id="lux-grupowe-ergo" viewBox="0 0 96 96"><title>Grupowe ERGO dla beauty</title><ellipse cx="48" cy="23" rx="5" ry="7" /><ellipse cx="27" cy="31" rx="4.5" ry="6" /><ellipse cx="69" cy="31" rx="4.5" ry="6" /><path d="M44 30L39 34C37 36 37 41 38 46L41 58L42 78M52 30L57 34C59 36 59 41 58 46L55 58L54 78M48 56V77" /><path d="M23 37L19 40C17 43 18 48 19 52L21 61L22 78M31 37L35 40M32 53L32 61L32 78M27 60V77" /><path d="M65 37L61 40M65 53L64 61V78M73 37L77 40C79 43 78 48 77 52L75 61L74 78M69 60V77" /></symbol>
 </svg>
-<a class="sticky-cta" href="https://utratadochodu.pl/wniosek/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu" hidden>Złóż wniosek</a>
+<!-- gen:pasek-akcji -->
+<!-- Pasek akcji na telefonie (< 768 px): pokazuje go skrypt gen:wspolne-js po przewinięciu poza pierwszy ekran;
+     chowa się przy polu formularza / klawiaturze, przy widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu,
+     karcie końcowej i stopce. Bez JS zostaje ukryty (te same akcje są w treści). -->
+<div class="pasek-akcji" id="pasek-akcji" hidden>
+  <a class="pa-glowny" href="makieta-v3.html?produkt=utrata-dochodu#kontakt">Zapytaj doradcę</a>
+  <a class="pa-tel" href="tel:+48504400901"><svg class="pa-ikona" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5 9 3l1.7 4.3-2.2 1.5a11.5 11.5 0 0 0 6.7 6.7l1.5-2.2L21 15l-.5 2.4A2.5 2.5 0 0 1 18 19.5 15.5 15.5 0 0 1 4.5 6 2.5 2.5 0 0 1 6.6 3.5Z"/></svg><span class="pa-tel-txt">Zadzwoń<span class="pa-nr"><span class="sr-only">: </span>+48&nbsp;504&nbsp;400&nbsp;901</span></span></a>
+</div>
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false">
+  <!-- symbole potrzebne menu „Ubezpieczenia” (kopie z makieta-v3.html) -->
+  <symbol id="lux-opieka-medyczna" viewBox="0 0 96 96"><title>Opieka medyczna</title><path d="M27 22H23C18 22 17 27 18 32L22 46C24 53 28 57 33 57C38 57 42 53 44 46L48 32C49 27 48 22 43 22" /><path d="M26 19H30V24H26ZM39 19H43V24H39Z" /><path d="M33 57V64C33 82 65 84 65 63V58" /><path d="M65 58C61 54 54 49 54 44C54 38 62 36 65 42C68 36 76 38 76 44C76 49 69 54 65 58Z" /><path d="M23 47C27 59 39 59 43 47" /></symbol>
+</svg>
+<!-- /gen:pasek-akcji -->
 <script>
 /* Odnośniki do pozycji w <details> (zabieg z /dla-kogo, grupa, pytanie): rozwijają ją przed przewinięciem */
 (function(){
@@ -1324,24 +1420,75 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   frame();
 })();
 
-/* Przycisk „Złóż wniosek” w zasięgu kciuka: telefony, poza otwarciem, kartą końcową i stopką */
+</script>
+<!-- gen:wspolne-js -->
+<script>
+/* Wspólne komponenty (gen_wspolne.py – nie edytuj ręcznie) */
+/* Menu „Ubezpieczenia”: link -> przycisk disclosure (aria-expanded + aria-controls, bez role=menu).
+   Zamykanie: Esc (fokus wraca na przycisk), klik poza, Tab poza panel, schowanie nagłówka. Najechanie otwiera z opóźnieniem tylko jako dodatek. */
 (function(){
-  var bar=document.querySelector('.sticky-cta'); if(!bar||!('IntersectionObserver' in window)) return;
-  var mq=window.matchMedia('(max-width:767px)'), inView=new Set(), io=null;
-  var targets=['.hero-actions','.end-card','.site-footer'].map(function(s){return document.querySelector(s)}).filter(Boolean);
-  function start(){
-    document.documentElement.classList.add('has-sticky');
-    io=new IntersectionObserver(function(entries){
-      entries.forEach(function(en){if(en.isIntersecting)inView.add(en.target);else inView.delete(en.target)});
-      bar.hidden=inView.size>0;
-    },{threshold:0});
-    targets.forEach(function(t){io.observe(t)});
+  var li=document.querySelector('.nav-produkty'), panel=document.getElementById('menu-produkty');
+  if(!li||!panel) return;
+  var link=li.querySelector('.nav-produkty-btn'), hdr=document.querySelector('.site-header');
+  var btn=document.createElement('button');
+  btn.type='button';btn.className='nav-produkty-btn';btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-controls','menu-produkty');
+  btn.innerHTML='Ubezpieczenia<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5 5 7l3.5-3.5"/></svg>';
+  link.parentNode.replaceChild(btn,link);
+  var via=null, tOpen=0, tClose=0, mqHover=window.matchMedia('(hover:hover) and (pointer:fine)');
+  function isOpen(){return !panel.hidden}
+  function open(how){clearTimeout(tClose);if(isOpen()){if(how==='click')via='click';return}panel.hidden=false;btn.setAttribute('aria-expanded','true');via=how}
+  function close(focus){clearTimeout(tOpen);clearTimeout(tClose);if(!isOpen())return;panel.hidden=true;btn.setAttribute('aria-expanded','false');via=null;if(focus)btn.focus()}
+  btn.addEventListener('click',function(){if(isOpen()&&via!=='hover')close(false);else open('click')});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&isOpen()){var inside=li.contains(document.activeElement);close(inside)}});
+  document.addEventListener('click',function(e){if(isOpen()&&!li.contains(e.target))close(false)});
+  li.addEventListener('focusout',function(e){if(isOpen()&&e.relatedTarget&&!li.contains(e.relatedTarget))close(false)});
+  panel.addEventListener('click',function(e){if(e.target.closest('a[href]'))close(false)});
+  li.addEventListener('pointerenter',function(e){if(e.pointerType!=='mouse'||!mqHover.matches)return;clearTimeout(tClose);if(!isOpen())tOpen=setTimeout(function(){open('hover')},180)});
+  li.addEventListener('pointerleave',function(e){if(e.pointerType!=='mouse')return;clearTimeout(tOpen);if(isOpen()&&via==='hover'&&!li.contains(document.activeElement))tClose=setTimeout(function(){close(false)},320)});
+  window.addEventListener('scroll',function(){if(isOpen()&&hdr&&hdr.dataset.hidden==='1')close(false)},{passive:true});
+  var mqWide=window.matchMedia('(min-width:1200px)');
+  function onWide(){if(!mqWide.matches)close(false)}
+  if(mqWide.addEventListener)mqWide.addEventListener('change',onWide);else if(mqWide.addListener)mqWide.addListener(onWide);
+})();
+
+/* Pasek akcji na telefonie (< 768 px): po przewinięciu poza pierwszy ekran; chowa się przy polu formularza/klawiaturze,
+   otwartej szufladzie menu, widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu, karcie końcowej, akcjach otwarcia i stopce */
+(function(){
+  var bar=document.getElementById('pasek-akcji'); if(!bar||!('IntersectionObserver' in window)) return;
+  var root=document.documentElement, mq=window.matchMedia('(max-width:767px)'), menu=document.querySelector('details.menu');
+  var FIELD='input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]):not([type=reset]):not([type=range]):not([type=file]):not([type=image]),textarea,select,[contenteditable="true"]';
+  var targets=[].slice.call(document.querySelectorAll('.calc-peek,.lead-form,.end-card,.hero-actions,.tariff-actions,.site-footer'));
+  var seen=new Set(), io=null, ticking=false;
+  function typing(){var a=document.activeElement;return !!(a&&a.matches&&a.matches(FIELD))}
+  function keyboard(){var v=window.visualViewport;return !!(v&&v.height<window.innerHeight*0.72)}
+  function update(){
+    ticking=false;if(!io)return;
+    var past=window.scrollY>window.innerHeight*0.9;
+    var on=past&&seen.size===0&&!typing()&&!keyboard()&&!(menu&&menu.open);
+    if(!on&&bar.contains(document.activeElement)&&!typing())on=true;
+    bar.dataset.on=on?'1':'0';bar.inert=!on;
   }
-  function stop(){if(io){io.disconnect();io=null}inView.clear();bar.hidden=true;document.documentElement.classList.remove('has-sticky')}
+  function req(){if(!ticking){ticking=true;requestAnimationFrame(update)}}
+  function start(){
+    root.classList.add('has-pasek');bar.hidden=false;
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){if(en.isIntersecting&&en.target.getClientRects().length)seen.add(en.target);else seen.delete(en.target)});
+      req();
+    },{threshold:0});
+    targets.forEach(function(t){io.observe(t)});req();
+  }
+  function stop(){if(io){io.disconnect();io=null}seen.clear();bar.hidden=true;bar.dataset.on='0';root.classList.remove('has-pasek')}
   function sync(){if(mq.matches){if(!io)start()}else stop()}
+  window.addEventListener('scroll',req,{passive:true});
+  window.addEventListener('resize',req);
+  if(window.visualViewport)window.visualViewport.addEventListener('resize',req);
+  document.addEventListener('focusin',req);
+  document.addEventListener('focusout',function(){setTimeout(req,0)});
+  if(menu)menu.addEventListener('toggle',req);
   if(mq.addEventListener)mq.addEventListener('change',sync);else if(mq.addListener)mq.addListener(sync);
   sync();
 })();
 </script>
+<!-- /gen:wspolne-js -->
 </body>
 </html>

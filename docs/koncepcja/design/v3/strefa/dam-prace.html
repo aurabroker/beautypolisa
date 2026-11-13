@@ -254,7 +254,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
 @media (pointer:coarse){.zab-chip{min-height:44px}}
 .zab-limit{font-size:var(--text-xs);line-height:1.5;color:var(--color-ink)}
 /* okno wyboru: modalny <dialog> (inert reszty strony, Esc, powrót fokusu) */
-.zab-sheet{width:min(680px,calc(100% - 32px));max-width:none;max-height:min(780px,calc(100dvh - 48px));padding:0;border:1px solid var(--bp-line-gold);border-radius:var(--radius-card);background:var(--color-ivory);color:var(--color-ink);box-shadow:var(--shadow-glass);overflow:hidden}
+.zab-sheet{width:min(680px,calc(100% - 32px));max-width:none;height:min(780px,calc(100dvh - 48px));max-height:none;padding:0;border:1px solid var(--bp-line-gold);border-radius:var(--radius-card);background:var(--color-ivory);color:var(--color-ink);box-shadow:var(--shadow-glass);overflow:hidden}
 .zab-sheet[open]{display:grid;grid-template-rows:auto auto minmax(0,1fr) auto}
 .zab-sheet::backdrop{background:rgba(20,28,51,.55)}
 html:has(.zab-sheet[open]){overflow:hidden}
@@ -265,7 +265,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
 .zab-sheet-head .drawer-close{grid-column:2;grid-row:1 / span 2}
 .zab-sheet-search{padding:12px 20px;border-bottom:1px solid var(--bp-line-gold-soft);background:var(--color-parchment)}
 .zab-sheet-search input{padding-left:42px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%232A3B68' stroke-width='1.6' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L21 21'/%3E%3C/svg%3E") no-repeat 14px 50%}
-.zab-sheet-body{overflow-y:auto;overscroll-behavior:contain;padding:4px 20px 12px}
+.zab-sheet-body{overflow-y:auto;overscroll-behavior:contain;padding:6px 20px 12px} /* 6px: obrys fokusu (2px + 3px odstępu) pierwszego nagłówka grupy nie jest przycinany */
 .zab-sheet-body .zab-groups{border-top:0}
 .zab-none{padding:16px 0;font-size:var(--text-sm)}
 .zab-sheet-foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 20px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--bp-line-gold-soft);background:var(--color-parchment)}
@@ -276,11 +276,20 @@ html:has(.zab-sheet[open]){overflow:hidden}
   .zab-sheet-foot .btn-navy{flex:1 1 100%}
   .zab-sheet-foot .zab-count{flex:1 1 auto}
 }
+/* niskie okna (telefon poziomo, powiększenie 400%): przewija się całe okno, stopka z „Pokaż ogłoszenia” przyklejona do dołu (WCAG 1.4.10, 1.3.4) */
+@media (max-height:600px){
+  .zab-sheet[open]{display:block;overflow-y:auto;overscroll-behavior:contain;scroll-padding-bottom:104px} /* fokus nie chowa się pod stopką (2.4.11) */
+  .zab-sheet-body{overflow:visible}
+  .zab-sheet-foot{position:sticky;bottom:0;z-index:1;padding-block:8px calc(8px + env(safe-area-inset-bottom))}
+  .zab-sheet-foot .zab-count{flex:1 1 100%;margin-right:0;font-size:var(--text-xs)}
+  .zab-sheet-foot .btn-navy{flex:1 1 auto}
+}
+@media (max-height:600px) and (max-width:419px){.zab-sheet[open]{scroll-padding-bottom:156px}}
 @media (prefers-reduced-motion:no-preference){
   .zab-sheet[open]{animation:zab-in .2s var(--ease-lux)}
   @keyframes zab-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 }
-/* zabiegi na kartach ogłoszeń: wybrane przez autora, w jego kolejności (do 3 chipów + „i N innych”) */
+/* zabiegi na kartach ogłoszeń: wybrane przez autora, w kolejności listy programu – stałej, bez „trafności” (do 3 chipów + „i N innych”) */
 .zab-tags{min-width:0}
 .offer > .zab-tags{grid-column:2;padding-top:6px}
 .zab-tags ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
@@ -721,7 +730,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
               <h3><a href="#oferta">Kosmetolog / kosmetolożka (przykład)</a></h3>
               <p class="offer-salon">Gabinet Przykładowy · Warszawa, mazowieckie</p>
               <ul class="offer-meta"><li>umowa o&nbsp;pracę</li><li>pełny etat</li><li>dodano <time datetime="2026-11-10">10.11.2026</time></li></ul>
-              <div class="zab-tags" data-ids="g1-18 g2-29 g2-17 g2-27 g2-22"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manualne oczyszczanie twarzy</li><li>Różnorodne peelingi chemiczne</li><li>Mezoterapia mikroigłowa</li><li class="zab-tags-more">i 2 inne</li></ul></div>
+              <div class="zab-tags" data-ids="g1-18 g2-17 g2-22 g2-27 g2-29"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manualne oczyszczanie twarzy</li><li>Mezoterapia mikroigłowa</li><li>Oczyszczanie wodorowo-tlenowe</li><li class="zab-tags-more">i 2 inne</li></ul></div>
               <p class="offer-pay"><strong>6&nbsp;500–8&nbsp;000&nbsp;zł</strong><span>brutto miesięcznie</span></p>
               <p class="offer-until">ważne do <time datetime="2026-12-01">1&nbsp;grudnia 2026&nbsp;r.</time></p>
             </li>
@@ -739,7 +748,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
               <h3><a href="#oferta">Fryzjer / fryzjerka (przykład)</a></h3>
               <p class="offer-salon">Pracownia Przykładowa · Gdańsk, pomorskie</p>
               <ul class="offer-meta"><li>B2B</li><li>elastyczny wymiar</li><li>dodano <time datetime="2026-11-06">6.11.2026</time></li></ul>
-              <div class="zab-tags" data-ids="g1-34 g1-10 g1-24 g1-01"><ul aria-label="Zabiegi w ogłoszeniu"><li>Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)</li><li>Koloryzacja i dekoloryzacja włosów</li><li>Pasemka i baleyage</li><li class="zab-tags-more">i 1 inny</li></ul></div>
+              <div class="zab-tags" data-ids="g1-01 g1-10 g1-24 g1-34"><ul aria-label="Zabiegi w ogłoszeniu"><li>Barbering</li><li>Koloryzacja i dekoloryzacja włosów</li><li>Pasemka i baleyage</li><li class="zab-tags-more">i 1 inny</li></ul></div>
               <p class="offer-pay"><strong>45–60&nbsp;zł</strong><span>netto za godzinę</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-27">27&nbsp;listopada 2026&nbsp;r.</time></p>
             </li>
@@ -748,7 +757,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
               <h3><a href="#oferta">Linergistka / linergista (przykład)</a></h3>
               <p class="offer-salon">Gabinet Przykładowy · Wrocław, dolnośląskie</p>
               <ul class="offer-meta"><li>umowa zlecenie</li><li>część etatu</li><li>dodano <time datetime="2026-11-02">2.11.2026</time></li></ul>
-              <div class="zab-tags" data-ids="g2-13 g2-18 g2-01"><ul aria-label="Zabiegi w ogłoszeniu"><li>Makijaż permanentny</li><li>Microblading</li><li>Chemiczne usuwanie makijażu permanentnego</li></ul></div>
+              <div class="zab-tags" data-ids="g2-01 g2-13 g2-18"><ul aria-label="Zabiegi w ogłoszeniu"><li>Chemiczne usuwanie makijażu permanentnego</li><li>Makijaż permanentny</li><li>Microblading</li></ul></div>
               <p class="offer-pay"><strong>50–70&nbsp;zł</strong><span>brutto za godzinę</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-23">23&nbsp;listopada 2026&nbsp;r.</time></p>
             </li>
@@ -757,7 +766,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
               <h3><a href="#oferta">Tatuażysta / tatuażystka (przykład)</a></h3>
               <p class="offer-salon">Pracownia Przykładowa · Gdynia, pomorskie</p>
               <ul class="offer-meta"><li>inna forma umowy</li><li>elastyczny wymiar</li><li>dodano <time datetime="2026-10-28">28.10.2026</time></li></ul>
-              <div class="zab-tags" data-ids="g2-32 g1-26"><ul aria-label="Zabiegi w ogłoszeniu"><li>Tatuaż</li><li>Piercing – przekłuwanie</li></ul></div>
+              <div class="zab-tags" data-ids="g1-26 g2-32"><ul aria-label="Zabiegi w ogłoszeniu"><li>Piercing – przekłuwanie</li><li>Tatuaż</li></ul></div>
               <p class="offer-pay"><strong>4&nbsp;000–6&nbsp;000&nbsp;zł</strong><span>netto miesięcznie</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-18">18&nbsp;listopada 2026&nbsp;r.</time></p>
             </li>
@@ -766,7 +775,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
               <h3><a href="#oferta">Kosmetolog / kosmetolożka (przykład)</a></h3>
               <p class="offer-salon">Salon Przykładowy · Kraków, małopolskie</p>
               <ul class="offer-meta"><li>umowa o&nbsp;pracę</li><li>pełny etat</li><li>dodano <time datetime="2026-10-25">25.10.2026</time></li></ul>
-              <div class="zab-tags" data-ids="g1-21 g2-14 g1-14 g1-29 g2-29 g1-36"><ul aria-label="Zabiegi w ogłoszeniu"><li>Masaż manualny ciała i twarzy</li><li>Masaż Kobido</li><li>Laminowanie brwi i rzęs</li><li class="zab-tags-more">i 3 inne</li></ul></div>
+              <div class="zab-tags" data-ids="g1-14 g1-21 g1-29 g1-36 g2-14 g2-29"><ul aria-label="Zabiegi w ogłoszeniu"><li>Laminowanie brwi i rzęs</li><li>Masaż manualny ciała i twarzy</li><li>Przedłużanie i zagęszczanie rzęs</li><li class="zab-tags-more">i 3 inne</li></ul></div>
               <p class="offer-pay"><strong>6&nbsp;000–7&nbsp;500&nbsp;zł</strong><span>brutto miesięcznie</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-15">15&nbsp;listopada 2026&nbsp;r.</time></p>
             </li>
@@ -775,7 +784,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
           <div class="empty is-pending" id="ofert-pusto">
             <svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg>
             <strong id="ofert-pusto-t">Brak ogłoszeń dla wybranych filtrów</strong>
-            <p id="ofert-pusto-p">Zmień zawód lub województwo albo wyczyść filtry. Nowe ogłoszenia pojawiają się po sprawdzeniu treści.</p>
+            <p id="ofert-pusto-p">Zmień zawód, województwo, rodzaj umowy lub zabiegi albo wyczyść filtry. Zabiegi wskazuje pracodawca&nbsp;– ogłoszenia bez zabiegów nie pojawiają się przy filtrze zabiegów. Nowe ogłoszenia pojawiają się po sprawdzeniu treści.</p>
             <button class="btn btn-ghost btn-sm" type="button" id="wyczysc">Wyczyść filtry</button>
             <p class="xsmall"><span class="mock-note">Pusty stan</span></p>
           </div>
@@ -1578,7 +1587,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
                 <h3 id="pv-tytul">Tatuażysta / tatuażystka (przykład)</h3>
                 <p class="offer-salon" id="pv-miejsce">Salon Przykładowy · Kraków, małopolskie</p>
                 <ul class="offer-meta"><li id="pv-umowa">B2B</li><li id="pv-wymiar">elastyczny wymiar</li></ul>
-                <div class="zab-tags" id="pv-zab" data-ids="g2-32 g1-26"><ul aria-label="Zabiegi w ogłoszeniu"><li>Tatuaż</li><li>Piercing – przekłuwanie</li></ul></div>
+                <div class="zab-tags" id="pv-zab" data-ids="g1-26 g2-32"><ul aria-label="Zabiegi w ogłoszeniu"><li>Piercing – przekłuwanie</li><li>Tatuaż</li></ul></div>
                 <p class="offer-pay"><strong id="pv-placa">60–90&nbsp;zł</strong><span id="pv-placa-opis">netto za godzinę</span></p>
                 <p class="offer-until">ważne 21&nbsp;dni od publikacji</p>
               </li>
@@ -1843,7 +1852,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
             <h2 class="card-title" id="t-sp-lista">Ogłoszenia</h2>
             <p class="small" id="sp-liczba" role="status">3 ogłoszenia <span class="muted">(dane przykładowe)</span></p>
           </div>
-          <span class="xsmall muted">Od najnowszych · bez wyszukiwarki, rankingu i&nbsp;„polecanych”</span>
+          <span class="xsmall muted">Od najnowszych · bez wyszukiwania kandydatów, rankingu i&nbsp;„polecanych”</span>
         </div>
         <ul class="cands" id="sp-lista">
           <li class="cand" data-zawod="kosmetolog" data-woj="malopolskie" data-forma="uop najem">
@@ -1856,7 +1865,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
                 <div><dt>Dostępność od</dt><dd><time datetime="2026-12-01">1&nbsp;grudnia 2026&nbsp;r.</time></dd></div>
               </dl>
               <p class="small">Zabiegi pielęgnacyjne twarzy i&nbsp;ciała, peelingi, oczyszczanie. Szukam pracy w&nbsp;Krakowie lub okolicy. Treść przykładowa.</p>
-              <div class="zab-tags" data-ids="g1-18 g2-29 g1-21 g2-22" data-more="details"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manualne oczyszczanie twarzy</li><li>Różnorodne peelingi chemiczne</li><li>Masaż manualny ciała i twarzy</li><li class="zab-tags-more"><details><summary>i 1 inny</summary><ul aria-label="Pozostałe zabiegi"><li>Oczyszczanie wodorowo-tlenowe</li></ul></details></li></ul></div>
+              <div class="zab-tags" data-ids="g1-18 g1-21 g2-22 g2-29" data-more="details"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manualne oczyszczanie twarzy</li><li>Masaż manualny ciała i twarzy</li><li>Oczyszczanie wodorowo-tlenowe</li><li class="zab-tags-more"><details><summary>i 1 inny</summary><ul aria-label="Pozostałe zabiegi"><li>Różnorodne peelingi chemiczne</li></ul></details></li></ul></div>
               <p class="xsmall muted">Dodano <time datetime="2026-11-11">11.11.2026</time> · ważne do <time datetime="2026-12-02">2.12.2026</time> · <span class="nowrap">nr SP-4F7Q</span> (przykład)</p>
             </div>
             <div class="cand-actions">
@@ -1892,7 +1901,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
                 <div><dt>Dostępność od</dt><dd><time datetime="2027-01-04">4&nbsp;stycznia 2027&nbsp;r.</time></dd></div>
               </dl>
               <p class="small">Strzyżenie damskie i&nbsp;męskie, koloryzacja. Szukam stanowiska do wynajęcia. Treść przykładowa.</p>
-              <div class="zab-tags" data-ids="g1-34 g1-10 g1-24 g1-37" data-more="details"><ul aria-label="Zabiegi w ogłoszeniu"><li>Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)</li><li>Koloryzacja i dekoloryzacja włosów</li><li>Pasemka i baleyage</li><li class="zab-tags-more"><details><summary>i 1 inny</summary><ul aria-label="Pozostałe zabiegi"><li>Zabiegi keratynowe</li></ul></details></li></ul></div>
+              <div class="zab-tags" data-ids="g1-10 g1-24 g1-34 g1-37" data-more="details"><ul aria-label="Zabiegi w ogłoszeniu"><li>Koloryzacja i dekoloryzacja włosów</li><li>Pasemka i baleyage</li><li>Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)</li><li class="zab-tags-more"><details><summary>i 1 inny</summary><ul aria-label="Pozostałe zabiegi"><li>Zabiegi keratynowe</li></ul></details></li></ul></div>
               <p class="xsmall muted">Dodano <time datetime="2026-11-08">8.11.2026</time> · ważne do <time datetime="2026-11-29">29.11.2026</time> · <span class="nowrap">nr SP-9K2D</span> (przykład)</p>
             </div>
             <div class="cand-actions">
@@ -1957,7 +1966,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
         <div class="empty is-pending" id="sp-pusto">
           <svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg>
           <strong id="sp-pusto-t">Brak ogłoszeń dla wybranych filtrów</strong>
-          <p id="sp-pusto-p">Zmień zawód, województwo lub formę współpracy. Nie wysyłamy powiadomień o&nbsp;nowych ogłoszeniach.</p>
+          <p id="sp-pusto-p">Zmień zawód, województwo, formę współpracy lub zabiegi. Zabiegi wskazuje autor ogłoszenia&nbsp;– ogłoszenia bez zabiegów nie pojawiają się przy filtrze zabiegów. Nie wysyłamy powiadomień o&nbsp;nowych ogłoszeniach.</p>
           <p class="xsmall"><span class="mock-note">Pusty stan</span></p>
         </div>
         <div class="sp-pager">
@@ -2186,7 +2195,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
             </fieldset>
             <fieldset class="field zab" id="zab-sa" data-zab="form" data-zab-max="30">
               <legend>Zabiegi <span>(opcjonalnie, maks.&nbsp;30)</span></legend>
-              <p class="hint" id="zab-sa-opis">Zabiegi, które wykonujesz&nbsp;– z&nbsp;listy zabiegów programu OC dla branży beauty. Pracodawcy mogą filtrować ogłoszenia po zabiegach; kolejność się nie zmienia, a&nbsp;nikt nie dobiera ani nie ocenia ogłoszeń.</p>
+              <p class="hint" id="zab-sa-opis">Wybierz zabiegi, które wykonujesz. <strong>Rzadkie połączenie zabiegów z&nbsp;miastem i&nbsp;imieniem może ułatwić rozpoznanie Cię przez obecnego pracodawcę&nbsp;– zaznacz tylko to, co chcesz pokazać.</strong> Lista pochodzi z&nbsp;programu OC dla branży beauty. Pracodawcy mogą filtrować ogłoszenia po zabiegach; kolejność się nie zmienia, a&nbsp;nikt nie dobiera ani nie ocenia ogłoszeń.</p>
 <!-- gen:zabiegi-checkboxy:sa checked="g1-18 g2-29 g1-21 g2-22" -->
 <div class="zab-groups">
   <details class="zab-grp" data-grupa="1" open>
@@ -2457,7 +2466,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
                     <div><dt>Dostępność od</dt><dd><time datetime="2026-12-01">1&nbsp;grudnia 2026&nbsp;r.</time></dd></div>
                   </dl>
                   <p class="small">Zabiegi pielęgnacyjne twarzy i&nbsp;ciała, peelingi, oczyszczanie. Szukam pracy w&nbsp;Krakowie lub okolicy. Treść przykładowa.</p>
-                  <div class="zab-tags" data-ids="g1-18 g2-29 g1-21 g2-22" data-limit="0"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manualne oczyszczanie twarzy</li><li>Różnorodne peelingi chemiczne</li><li>Masaż manualny ciała i twarzy</li><li>Oczyszczanie wodorowo-tlenowe</li></ul></div>
+                  <div class="zab-tags" data-ids="g1-18 g1-21 g2-22 g2-29" data-limit="0"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manualne oczyszczanie twarzy</li><li>Masaż manualny ciała i twarzy</li><li>Oczyszczanie wodorowo-tlenowe</li><li>Różnorodne peelingi chemiczne</li></ul></div>
                 </div>
               </li>
             </ul>
@@ -2853,8 +2862,11 @@ html:has(.zab-sheet[open]){overflow:hidden}
   var X_ICON = '<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
   function zabCount(n) { return n + NBSP + plural(n, 'zabieg', 'zabiegi', 'zabiegów'); }
   function moreLabel(k) { return 'i ' + k + ' ' + plural(k, 'inny', 'inne', 'innych'); }
-  /* chipy zabiegów na karcie – jak w generatorze (do 3 + „i N innych”) */
+  /* chipy zabiegów na karcie – jak w generatorze (kolejność listy programu, do 3 + „i N innych”) */
+  var ZORD = {};
+  if (ZAB) { ZAB.zabiegi.forEach(function (z, i) { ZORD[z.id] = i; }); }
   function renderTags(box, ids) {
+    ids = ids.slice().sort(function (a, b) { return ZORD[a] - ZORD[b]; });
     box.setAttribute('data-ids', ids.join(' '));
     var ul = document.createElement('ul'); ul.setAttribute('aria-label', 'Zabiegi w ogłoszeniu');
     ids.slice(0, 3).forEach(function (id) { var li = document.createElement('li'); li.textContent = ZNAME[id] || id; ul.appendChild(li); });
@@ -2897,7 +2909,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
       '<button class="drawer-close" type="button" aria-label="Zamknij okno zabiegów">' + X_ICON + '</button></div>' +
       '<div class="zab-sheet-search field"><label for="' + base + '-q">Szukaj zabiegu</label>' +
       '<input type="search" id="' + base + '-q" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" aria-describedby="' + base + '-q-hint">' +
-      '<p class="hint" id="' + base + '-q-hint">Wpisz część nazwy, np. „mezo” albo „rzesy”. Wielkość liter i polskie znaki nie mają znaczenia.</p>' +
+      '<p class="hint" id="' + base + '-q-hint">Wpisz część nazwy, np. „mezo” albo „peeling”. Wielkość liter i polskie znaki nie mają znaczenia – „rzes” znajdzie „rzęs”.</p>' +
       '<p class="sr-only" role="status" id="' + base + '-q-st"></p></div>' +
       '<div class="zab-sheet-body"><p class="zab-none" hidden></p></div>' +
       '<div class="zab-sheet-foot"><p class="zab-count" role="status"></p>' +
@@ -2914,7 +2926,8 @@ html:has(.zab-sheet[open]){overflow:hidden}
     function sync() {
       var sel = boxes.filter(function (b) { return b.checked; }), n = sel.length;
       open.querySelector('span').textContent = n ? 'Zabiegi: wybrano ' + n : 'Wybierz zabiegi';
-      count.textContent = n ? 'Wybrano: ' + zabCount(n) + (max ? ' z ' + max : '') : (mode === 'filter' ? 'Nie wybrano zabiegów' : 'Nie wybrano zabiegów (opcjonalne)');
+      count.textContent = (n ? 'Wybrano: ' + zabCount(n) + (max ? ' z ' + max : '') : (mode === 'filter' ? 'Nie wybrano zabiegów' : 'Nie wybrano zabiegów (opcjonalne)'))
+        + (mode === 'filter' && resultN !== null ? ' · ' + (resultN ? resultN + NBSP + plural(resultN, 'ogłoszenie', 'ogłoszenia', 'ogłoszeń') : 'brak ogłoszeń') : '');
       clear.disabled = !n;
       done.textContent = mode === 'filter' ? 'Pokaż ogłoszenia' + (resultN === null ? '' : ' (' + resultN + ')') : 'Gotowe';
       grps.forEach(function (g) {
@@ -2967,7 +2980,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
       none.hidden = hits > 0;
       none.textContent = hits ? '' : 'Brak zabiegu, którego nazwa zawiera „' + q.value.trim() + '”. Sprawdź pisownię albo przejrzyj grupy.';
       clearTimeout(stTimer);
-      stTimer = setTimeout(function () { qst.textContent = t ? (hits ? 'Pasujące zabiegi: ' + hits : 'Brak pasujących zabiegów') : ''; }, 450);
+      stTimer = setTimeout(function () { qst.textContent = t ? (hits ? 'Znalezione zabiegi: ' + hits : 'Nie znaleziono zabiegu') : ''; }, 450);
     }
     q.addEventListener('input', search);
     q.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); } });
@@ -3029,7 +3042,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
     byId('ofert-pusto-t').textContent = zb.length ? 'Brak ogłoszeń z wybranymi zabiegami' : 'Brak ogłoszeń dla wybranych filtrów';
     byId('ofert-pusto-p').textContent = zb.length
       ? 'Zabiegi wskazuje pracodawca – nie każde ogłoszenie je zawiera. ' + (onlyZab ? 'Wybierz inne zabiegi albo wyczyść filtry.' : 'Zmień zabiegi lub pozostałe filtry albo wyczyść filtry.') + ' Nowe ogłoszenia pojawiają się po sprawdzeniu treści.'
-      : 'Zmień zawód lub województwo albo wyczyść filtry. Nowe ogłoszenia pojawiają się po sprawdzeniu treści.';
+      : 'Zmień zawód, województwo lub rodzaj umowy albo wyczyść filtry. Nowe ogłoszenia pojawiają się po sprawdzeniu treści.';
     pickers['zab-oferty'].setResult(n);
     return n;
   }

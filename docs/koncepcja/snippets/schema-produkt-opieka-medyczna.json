@@ -1,0 +1,66 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna#service",
+  "name": "Opieka medyczna ENEL-MED i LUX MED dla branży beauty",
+  "alternateName": "Program abonamentów medycznych dla salonów beauty",
+  "serviceType": "Abonament medyczny (prywatna opieka medyczna) dla pracowników i ich bliskich",
+  "category": "Benefity dla firm – opieka medyczna",
+  "description": "Abonamenty medyczne ENEL-MED Standard i LUX MED Standard dla zespołów salonów beauty w zakresie Singiel, Partner albo Rodzina. Stawki miesięczne z cennika programu zależą od liczby osób w zespole (3–10, 11–20, 21–50): ENEL-MED Standard 194–216 zł (Singiel), 212–237 zł (Partner), 420–478 zł (Rodzina); LUX MED Standard 120–131 zł (Singiel), 212–234 zł (Partner), 314–347 zł (Rodzina). Od 51 osób – wycena indywidualna. Zamówienie przez zapytanie do doradcy Aura Expert.",
+  "url": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna",
+  "provider": [
+    {
+      "@type": "Organization",
+      "@id": "https://beautypolisa.eu/#enel-med",
+      "name": "ENEL-MED S.A."
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://beautypolisa.eu/#lux-med",
+      "name": "LUX MED sp. z o.o."
+    }
+  ],
+  "areaServed": {
+    "@type": "Country",
+    "name": "Polska"
+  },
+  "audience": {
+    "@type": "BusinessAudience",
+    "audienceType": "salony i firmy z branży beauty, ich pracownicy oraz partnerzy i rodziny pracowników",
+    "numberOfEmployees": {
+      "@type": "QuantitativeValue",
+      "minValue": 3
+    }
+  },
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "name": "Zapytanie do doradcy Aura Expert (formularz lub telefon)",
+    "serviceUrl": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna#zapytanie",
+    "availableLanguage": "pl",
+    "servicePhone": {
+      "@type": "ContactPoint",
+      "telephone": "+48 504 400 901",
+      "contactType": "doradca"
+    }
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "PLN",
+    "lowPrice": 120,
+    "highPrice": 478,
+    "url": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna#ceny",
+    "eligibleRegion": "PL",
+    "description": "Stawki miesięczne według cennika programu, zależne od sieci (ENEL-MED Standard, LUX MED Standard), zakresu (Singiel, Partner, Rodzina) i liczby osób w zespole (3–10, 11–20, 21–50). Od 51 osób – wycena indywidualna.",
+    "priceSpecification": {
+      "@type": "UnitPriceSpecification",
+      "priceCurrency": "PLN",
+      "minPrice": 120,
+      "maxPrice": 478,
+      "unitCode": "MON",
+      "unitText": "miesiąc"
+    },
+    "offeredBy": {
+      "@id": "https://beautypolisa.eu/#agency"
+    }
+  }
+}
