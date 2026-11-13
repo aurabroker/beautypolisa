@@ -16,6 +16,10 @@
 
 Dane strukturalne do makiety są w `specs/utratadochodu-wniosek.json`: kroki, wszystkie pola z opcjami i komunikatami, 7+20 pytań zdrowotnych, 15 aktywności, ryzyka, klauzule, zgody, 188 zawodów, protokół szkicu i wysyłki, kalibracja symulacji, strona podziękowania. Generator: `specs/tools/build_ud.py`.
 
+**Uzupełnienie 13.11.2026 – kod serwera.** Drugim źródłem jest płytki klon publicznego repozytorium zleceniodawcy `aurabroker/ud` (commit `793a158`, 12.10.2026; czytany, nieuruchamiany). Zawiera portal Astro (`apps/portal`), panel agenta (`apps/panel`), monitor (`apps/monitor`), schemat wniosku (`packages/wniosek`), funkcje brzegowe Supabase (`supabase/functions`) i migracje (`supabase/migrations`). Wyniki są w **§9** (backend, e-maile, zgody, dokumenty, leady), a rozliczenie braków U1–U10 w **§10**. Odwołania w formacie `ud/<ścieżka>:<linia>` dotyczą tego repozytorium. Dwa zastrzeżenia:
+- Repozytorium jest **starsze od produkcji**. Żywa strona z 13.11 ma box „Zakup online” i inny tekst „Co dostajesz”, a `ud/apps/portal/src/pages/wniosek/index.astro:84-90` jeszcze nie.
+- Według projektu funkcja brzegowa w repozytorium „bywa starsza niż wdrożona” (`ud/CLAUDE.md:1100-1118`). Dla `form-submit` CLAUDE.md podaje, że produkcyjna v25 to treść z repozytorium (`ud/CLAUDE.md:1023-1028`).
+
 ---
 
 ## 1. Przegląd i kroki
@@ -38,7 +42,7 @@ Dane strukturalne do makiety są w `specs/utratadochodu-wniosek.json`: kroki, ws
 | 5 | `zgody` | Zgody | 2 wymagane potwierdzenia, widoczny Turnstile, pole błędu wysyłki | oba checkboxy i token Turnstile |
 | — | `/podziekowanie/` | Wniosek przyjęty | statyczna strona i konwersja Ads | — |
 
-**Stała `G[].opis`** (l. 286–308) opisuje dane z każdego kroku. Komponent jej nie wyświetla (to martwy kod albo pozostałość po rejestrze RODO). Uwaga na rozbieżności: opis kroku `dane` mówi o „wysokości dochodu”, a opis `zakres` o „okresie wypłaty świadczenia”. **Formularz nie ma ani pola dochodu, ani pola okresu wypłaty.**
+**Stała `G[].opis`** (l. 286–308) opisuje dane z każdego kroku. Kreator jej nie wyświetla. *Poprawka po analizie repozytorium:* to nie martwy kod. W źródle jest to `KROKI[].opis` (`ud/packages/wniosek/src/schemat.js:202-213`), a strona `/klauzula-informacyjna/` wypisuje z niego kategorie danych z art. 13 RODO (`ud/apps/portal/src/pages/klauzula-informacyjna/index.astro:104-108`). Rozbieżność trafia więc do klauzuli informacyjnej (§9.4). Uwaga na rozbieżności: opis kroku `dane` mówi o „wysokości dochodu”, a opis `zakres` o „okresie wypłaty świadczenia”. **Formularz nie ma ani pola dochodu, ani pola okresu wypłaty.**
 
 **Obietnica symulacji jest niespełniona.** Lead i panel mówią: „Na końcu dostajesz symulację składki” oraz „Symulację składki od razu po wypełnieniu.”. W kodzie kreatora i strony `/podziekowanie/` **żadnej symulacji nie ma**, a po wysłaniu następuje przekierowanie na statyczną stronę. Symulacja istnieje tylko w osobnej wyspie Kalkulator (§4).
 
@@ -321,7 +325,7 @@ Pełne teksty modułu odkładania są w `ext/ud/kalkulator.md` i JSON.
 
 ## 5. Wysyłka danych
 
-Adresy pochodzą z `props` wyspy (`wniosek.html`). Projekt Supabase ma ref zaczynający się od `kukvgsjr…` (pełny adres jest w props, tu go nie powtarzam). Funkcje:
+Adresy pochodzą z `props` wyspy (`wniosek.html`). Adres projektu Supabase to wartość w konfiguracji, nie w dokumencie (*poprawka 13.11: usunięto stąd fragment identyfikatora projektu*). W kodzie składa go `funkcja(nazwa)` w `ud/apps/portal/src/lib/uslugi.ts`. Funkcje:
 - `urlFunkcji` → `/functions/v1/form-submit`
 - `urlSzkicu` → `/functions/v1/wniosek-szkic`
 
@@ -352,16 +356,16 @@ Klient **nie wysyła** nagłówków `apikey` ani `Authorization`, tylko `Content
 | `kontakt` | ponowne „Dalej” w kroku 1 (po „Wstecz”), gdy zmieniła się zgoda lub dane (porównanie `JSON.stringify([zgoda, zgoda?dane:null])`) | przy zgodzie i tokenie: `{akcja:"kontakt", id, "cf-turnstile-response", zgoda:true, zgoda_wersja, imie, email, phone}`. W przeciwnym razie `{akcja:"kontakt", id, zgoda:false}` (przy zgodzie bez tokenu kod czyści stan porównania, żeby spróbować ponownie). **Skutek uboczny:** przy zaznaczonej zgodzie, ale bez tokenu niewidocznego Turnstile, klient wysyła `zgoda:false` – czyli na serwerze kontakt ze szkicu jest kasowany, mimo że użytkownik zgody nie cofnął | ignorowana |
 | `krok` | udane „Dalej” w krokach 2, 3, 4 | `{akcja:"krok", id, krok:"dane"\|"zakres"\|"zdrowie"}` (id kroku **opuszczanego**) | ignorowana |
 | `ukoncz` | po udanej wysyłce finalnej | `{akcja:"ukoncz", id}`, keepalive | — |
-| `wycofaj` | strona `/wycofaj-zgode/#id=<id>&sig=<podpis>` (link z e-maila; hash czyszczony przez `history.replaceState`) | `{akcja:"wycofaj", id, sig}` | `ok` → „Zgoda wycofana.”, inaczej błąd |
+| `wycofaj` | strona `/wycofaj-zgode/#id=<id>&sig=<podpis>` (link z e-maila; hash czyszczony przez `history.replaceState`) | `{akcja:"wycofaj", id, sig}` | HTTP 2xx (`res.ok`; serwer zwraca `{status:"success"}`) → „Zgoda wycofana.”, inaczej błąd |
 
 Wnioski:
 - Szkic powstaje także **bez zgody**, jako anonimowy rekord lejka: `ostatni_krok`, `ukonczony_at`.
 - Dane kontaktowe trafiają tam tylko przy zgodzie.
 - Klient nie wysyła `zgoda_tresc`. Serwer musi mapować wersję `v1-2026-10` na treść (kolumna `zgoda_tresc`).
 - `client_id`, `ip_hash`, `zgoda_at` i `przypomnienie_wyslane_at` ustala serwer.
-- `sig` w linku wycofania podpisuje serwer (np. HMAC id).
+- `sig` w linku wycofania podpisuje serwer. *Potwierdzone w repozytorium:* to HMAC-SHA256 z `wycofaj:<id>`, szczegóły w §9.2.
 
-**Przypomnienia:** w kodzie klienckim nie ma żadnej logiki przypomnień. Z kodu wynika tylko tyle, że istnieje e-mail z linkiem `/wycofaj-zgode/#id=…&sig=…` dotyczący „niedokończonego wniosku” (tekst strony wycofania). Harmonogram, treść i warunki wysyłki są po stronie serwera (§7).
+**Przypomnienia:** w kodzie klienckim nie ma żadnej logiki przypomnień. Z kodu wynika tylko tyle, że istnieje e-mail z linkiem `/wycofaj-zgode/#id=…&sig=…` dotyczący „niedokończonego wniosku” (tekst strony wycofania). Harmonogram, treść i warunki wysyłki są po stronie serwera. *Uzupełnione z repozytorium w §9.2.*
 
 ### 5.3 Turnstile
 Skrypt `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onloadTurnstileCallback` ładowany jest async w `main`. Sitekey pochodzi z `props.kluczTurnstile` (jest w HTML, tu go nie powtarzam).

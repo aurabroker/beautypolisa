@@ -2304,6 +2304,82 @@ create policy training_registrations_staff_read on training_registrations
 -- zawsze zapisuje wgląd albo eksport w dzienniku – bezpośredni odczyt przez Data API omijałby dziennik.
 -- Personel: brak dostępu (minimalizacja); obsługa nadużyć kluczem serwisowym z wpisem w dzienniku.
 
+-- 8.6a Płatności za szkolenia (00, D42) -----------------------------------------------------------------
+-- Zapis wyłącznie funkcjami service_role (backend_only_guard). Odczyt:
+--  * uczestnik – własne zamówienia i własne dane do faktury; właściciel salonu – zamówienia „na firmę”
+--    swojego salonu (statusy i kwoty, bez danych kupującego);
+--  * organizator – BEZ polityk na zamówieniach i danych kupujących (SEC-01): lista zamówień swoich szkoleń
+--    i dane do faktury tylko funkcjami app_organizer_training_orders() / app_organizer_invoice_data()
+--    z wpisem w dzienniku; swój stan „Wypłat” i swoje warunki sprzedaży – przez RLS;
+--  * personel – audyt: zamówienia (bez danych kupującego), płatności, zwroty, zdarzenia operatora,
+--    rozbieżności, konta wypłat (bez identyfikatora konta u operatora), stawki prowizji.
+grant select (id, valid_from, fee_bps, fee_fixed_grosze, decision_ref, created_at) on platform_fee_settings to authenticated;
+create policy platform_fee_settings_org_read on platform_fee_settings      -- organizator widzi stawkę prowizji
+  for select to authenticated using (exists (select 1 from public.organizer_ids()));
+create policy platform_fee_settings_staff_read on platform_fee_settings
+  for select to authenticated using (app_is_staff());
+
+grant select (id, organizer_id, provider, status, charges_enabled, payouts_enabled, requirements_due,
+              status_checked_at, activated_at, created_at, updated_at)
+  on organizer_payout_accounts to authenticated;  -- bez provider_account_ref
+create policy organizer_payout_accounts_org_read on organizer_payout_accounts
+  for select to authenticated using (organizer_id in (select public.organizer_ids()));
+create policy organizer_payout_accounts_staff_read on organizer_payout_accounts
+  for select to authenticated using (app_is_staff());
+
+-- Warunki sprzedaży: aktywna wersja jest publiczna (informacje przedkontraktowe i dane sprzedawcy –
+-- DSA art. 30 ust. 7: nazwa, adres, telefon, e-mail, rejestr); organizator widzi wszystkie swoje wersje.
+grant select (id, organizer_id, version, status, seller_legal_name, seller_address, seller_nip, seller_register,
+              seller_email, seller_phone, cancellation_rules, withdrawal_info, complaint_info, terms_body, reviewed_at)
+  on organizer_sales_terms to anon, authenticated;
+grant select (submitted_at, rejection_reason) on organizer_sales_terms to authenticated;
+create policy organizer_sales_terms_public_read on organizer_sales_terms
+  for select to anon using (status = 'active');
+create policy organizer_sales_terms_public_read_auth on organizer_sales_terms
+  for select to authenticated using (status = 'active');
+create policy organizer_sales_terms_org_read on organizer_sales_terms
+  for select to authenticated using (organizer_id in (select public.organizer_ids()));
+create policy organizer_sales_terms_staff_read on organizer_sales_terms
+  for select to authenticated using (app_is_staff());
+
+grant select (id, order_ref, training_id, organizer_id, account_id, buyer_kind, status, amount_grosze, currency,
+              refunded_grosze, reserved_until, paid_at, expired_at, cancelled_at, cancel_requested_at, refund_reason,
+              invoice_number, invoice_added_at, created_at, updated_at)
+  on training_orders to authenticated;            -- bez user_id, idempotency_key, kont operatora i ścieżki pliku
+create policy training_orders_self_read on training_orders
+  for select to authenticated using (user_id = (select auth.uid()));
+create policy training_orders_owner_read on training_orders   -- zamówienia opłacane przez salon (faktura na NIP)
+  for select to authenticated
+  using (buyer_kind = 'firma' and account_id in (select public.client_account_ids('owner')));
+create policy training_orders_staff_read on training_orders
+  for select to authenticated using (app_is_staff());
+
+grant select (order_id, buyer_kind, buyer_name, nip, street, postal_code, city, invoice_email, participant_name,
+              participant_email)
+  on training_order_buyer_data to authenticated;
+create policy training_order_buyer_data_self_read on training_order_buyer_data
+  for select to authenticated
+  using (order_id in (select o.id from public.training_orders o where o.user_id = (select auth.uid())));
+
+grant select (id, order_id, provider, provider_payment_ref, attempt, status, amount_grosze, currency, method,
+              checkout_expires_at, succeeded_at, last_event_at, created_at, updated_at)
+  on training_payments to authenticated;
+create policy training_payments_staff_read on training_payments
+  for select to authenticated using (app_is_staff());
+grant select (id, order_id, payment_id, amount_grosze, reason, status, provider_refund_ref, requested_by,
+              failure_code, created_at, submitted_at, succeeded_at, failed_at)
+  on training_refunds to authenticated;
+create policy training_refunds_staff_read on training_refunds
+  for select to authenticated using (app_is_staff());
+grant select (id, provider, event_id, event_type, provider_ref, order_id, amount_grosze, currency, source,
+              occurred_at, received_at, status, result, processed_at)
+  on payment_webhook_events to authenticated;
+create policy payment_webhook_events_staff_read on payment_webhook_events
+  for select to authenticated using (app_is_staff('admin','agent'));
+grant select on payment_discrepancies to authenticated;
+create policy payment_discrepancies_staff_read on payment_discrepancies
+  for select to authenticated using (app_is_staff());
+
 -- 8.7 Zgłoszenia nadużyć: zapis przez serwer; personel czyta i oznacza obsłużone -------------------------
 grant select (id, target, job_offer_id, relay_id, training_id, organizer_id, candidate_ad_id, candidate_contact_id,
               reported_account_id, reason, details, good_faith, reporter_name, reporter_email, handled_at,
