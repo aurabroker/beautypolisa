@@ -1,0 +1,3610 @@
+{
+  "meta": {
+    "aplikacja": "ERGO Razem – Grupa Otwarta (kalkulator i wniosek)",
+    "zrodlo": "https://ergo.beautypolisa.eu/",
+    "technologia": "Next.js App Router (Turbopack), stan klienta: Zustand (bez persist)",
+    "ubezpieczyciel": "Sopockie TU na Życie ERGO Hestia S.A.",
+    "agent": "Aura Expert sp. z o.o.",
+    "kod_owu": "ER 01/25",
+    "owu_obowiazuje_od": "2.06.2025 r.",
+    "katalog_i_dodatki_obowiazuja_od": "13.02.2026",
+    "kolor_marki_zrodla": "#E4002B",
+    "uwaga": "Dane wyekstrahowane wyłącznie z kodu klienckiego dostępnego w pobranych chunkach. Kroki 2–6 kalkulatora (ankieta, weryfikacja, oferta, podsumowanie, sukces) NIE były w pobranych plikach – ich pola, treści i wysyłka są nieznane (patrz 'braki').",
+    "weryfikacja_2026_11_13": "Krytyk kompletności: potwierdzono PREMIUMS, ADDONS, getAgeGroup, calcMonthlyPremium, listy wariantów strony głównej, wybrane wiersze tabeli świadczeń. Kroki 2–6 nadal brak w kodzie."
+  },
+  "kroki": [
+    {
+      "nr": 1,
+      "etykieta": "Wiek",
+      "sciezka": "/kalkulator/wiek",
+      "dostepny_w_kodzie": true
+    },
+    {
+      "nr": 2,
+      "etykieta": "Ankieta",
+      "sciezka": "/kalkulator/ankieta",
+      "dostepny_w_kodzie": false,
+      "co_wiadomo": "Store: questionnaireComplete (bool). Wg treści: ankieta przetwarzana wyłącznie w przeglądarce, niewysyłana."
+    },
+    {
+      "nr": 3,
+      "etykieta": "Weryfikacja",
+      "sciezka": "/kalkulator/weryfikacja",
+      "dostepny_w_kodzie": false,
+      "co_wiadomo": "Store: turnstileVerified (bool) – krok najpewniej z Cloudflare Turnstile; sitekey i weryfikacja serwerowa nieznane."
+    },
+    {
+      "nr": 4,
+      "etykieta": "Oferta",
+      "sciezka": "/kalkulator/produkt",
+      "dostepny_w_kodzie": false,
+      "co_wiadomo": "Store: selectedProduct, selectedVariant, addons{mediplan,medicalAssistance,globalDoctors}; funkcja calcMonthlyPremium dostępna."
+    },
+    {
+      "nr": 5,
+      "etykieta": "Podsumowanie",
+      "sciezka": "/kalkulator/podsumowanie",
+      "dostepny_w_kodzie": false,
+      "co_wiadomo": "Wg FAQ/strony głównej: dane kontaktowe, po których agent oddzwania w 1–2 dni robocze. Pola i zgody nieznane."
+    },
+    {
+      "nr": 6,
+      "etykieta": "Gotowe",
+      "sciezka": "/kalkulator/sukces",
+      "dostepny_w_kodzie": false
+    }
+  ],
+  "trasy_wykluczen": [
+    {
+      "sciezka": "/wykluczenie/wiek",
+      "kiedy": "getAgeGroup(dataUrodzenia) === null (wiek <18 lub >=66)",
+      "tresc": "nieznana – brak chunka"
+    }
+  ],
+  "krok_wiek": {
+    "naglowek": "Sprawdź, czy możesz przystąpić",
+    "podtytul": "Grupowe ubezpieczenie na życie ERGO Razem — Grupa Otwarta",
+    "pola": [
+      {
+        "id": "birthdate",
+        "etykieta": "Data urodzenia",
+        "typ": "date",
+        "wymagane": true,
+        "min": "format(subYears(dziś,66),'yyyy-01-01')",
+        "max": "format(subYears(dziś,18),'yyyy-MM-dd')",
+        "blad_pusty": "Podaj datę urodzenia."
+      }
+    ],
+    "przycisk": "Dalej →",
+    "informacja_pod_formularzem": "Nie przechowujemy Twojej daty urodzenia po zamknięciu strony.",
+    "ramka_warunki": {
+      "pogrubione": "Warunki przystąpienia:",
+      "tekst": " wiek 18–65 lat w dniu objęcia ochroną."
+    },
+    "po_wyslaniu": "ageGroup!=null → zapis ageGroup i birthDate w store, przejście /kalkulator/ankieta; inaczej → /wykluczenie/wiek",
+    "ssr_atrybuty": {
+      "id": "birthdate",
+      "min": "1960-01-01",
+      "max": "2008-11-12",
+      "uwaga": "wartości z momentu renderu SSR; w kodzie liczone dynamicznie"
+    }
+  },
+  "grupy_wiekowe": {
+    "regula_kalkulatora": "wiek = differenceInYears(dziś, dataUrodzenia); <18 lub >=66 → brak; <54 → A1; <60 → A2; w pozostałych → B",
+    "A1": {
+      "od": 18,
+      "do": 53,
+      "etykieta": "18–53 lat"
+    },
+    "A2": {
+      "od": 54,
+      "do": 59,
+      "etykieta": "54–59 lat"
+    },
+    "B": {
+      "od": 60,
+      "do": 65,
+      "etykieta": "60–65 lat"
+    },
+    "strona_glowna_pole_wieku": {
+      "etykieta": "Twój wiek",
+      "typ": "number",
+      "min": 18,
+      "max": 65,
+      "placeholder": "np. 35",
+      "pusty": "Wpisz wiek, aby zobaczyć Twoje składki",
+      "blad": "Ubezpieczenie dostępne dla osób w wieku 18–65 lat.",
+      "plakietka": "Grupa {A1|A2|B} · {etykieta}",
+      "domyslna_grupa_gdy_brak_wieku": "A1"
+    }
+  },
+  "produkty": [
+    {
+      "klucz": "dla_mnie",
+      "etykieta": "Dla Mnie",
+      "opis": "Ubezpieczenie indywidualne — kompleksowa ochrona tylko dla Ciebie",
+      "obraz": "/girl.jpg",
+      "cechy": [
+        "Zgon z każdej przyczyny",
+        "Wypadki i NW",
+        "Leczenie szpitalne",
+        "Poważne zachorowania (56 jednostek)",
+        "Operacje chirurgiczne",
+        "Trwały uszczerbek"
+      ]
+    },
+    {
+      "klucz": "dla_nas",
+      "etykieta": "Dla Nas",
+      "opis": "Ty i Twój małżonek lub partner życiowy — ochrona dla dwojga",
+      "obraz": "/para.jpg",
+      "cechy": [
+        "Wszystko z pakietu \"Dla Mnie\"",
+        "Zgon małżonka / partnera",
+        "Trwałe inwalidztwo partnera",
+        "Poważne zachorowania partnera (12 jednostek)",
+        "Zgon rodziców i teściów"
+      ]
+    },
+    {
+      "klucz": "dla_rodziny",
+      "etykieta": "Dla Rodziny",
+      "opis": "Ty, partner, dzieci i rodzice — pełna ochrona całej rodziny",
+      "obraz": "/family.jpg",
+      "cechy": [
+        "Wszystko z pakietu \"Dla Nas\"",
+        "Zgon i inwalidztwo dziecka NW",
+        "Poważne zachorowania dziecka (18 jednostek)",
+        "Urodzenie dziecka / wada wrodzona",
+        "Osierocenie dziecka",
+        "Leczenie szpitalne dziecka"
+      ]
+    }
+  ],
+  "etykiety_wariantow": {
+    "podstawowy": "Podstawowy",
+    "rozszerzony": "Rozszerzony",
+    "komfort": "Komfort",
+    "premium": "Premium",
+    "prestiz": "Prestiż"
+  },
+  "skladki_miesieczne_zl": {
+    "A1": {
+      "dla_mnie": [
+        {
+          "wariant": "rozszerzony",
+          "etykieta": "Rozszerzony",
+          "skladka_mies_zl": 57
+        },
+        {
+          "wariant": "komfort",
+          "etykieta": "Komfort",
+          "skladka_mies_zl": 75
+        },
+        {
+          "wariant": "premium",
+          "etykieta": "Premium",
+          "skladka_mies_zl": 106
+        },
+        {
+          "wariant": "prestiz",
+          "etykieta": "Prestiż",
+          "skladka_mies_zl": 150
+        }
+      ],
+      "dla_nas": [
+        {
+          "wariant": "rozszerzony",
+          "etykieta": "Rozszerzony",
+          "skladka_mies_zl": 69
+        },
+        {
+          "wariant": "komfort",
+          "etykieta": "Komfort",
+          "skladka_mies_zl": 98
+        }
+      ],
+      "dla_rodziny": [
+        {
+          "wariant": "podstawowy",
+          "etykieta": "Podstawowy",
+          "skladka_mies_zl": 78
+        },
+        {
+          "wariant": "rozszerzony",
+          "etykieta": "Rozszerzony",
+          "skladka_mies_zl": 103
+        },
+        {
+          "wariant": "komfort",
+          "etykieta": "Komfort",
+          "skladka_mies_zl": 147
+        },
+        {
+          "wariant": "premium",
+          "etykieta": "Premium",
+          "skladka_mies_zl": 194
+        }
+      ]
+    },
+    "A2": {
+      "dla_mnie": [
+        {
+          "wariant": "podstawowy",
+          "etykieta": "Podstawowy",
+          "skladka_mies_zl": 50
+        },
+        {
+          "wariant": "rozszerzony",
+          "etykieta": "Rozszerzony",
+          "skladka_mies_zl": 89
+        },
+        {
+          "wariant": "komfort",
+          "etykieta": "Komfort",
+          "skladka_mies_zl": 115
+        },
+        {
+          "wariant": "premium",
+          "etykieta": "Premium",
+          "skladka_mies_zl": 139
+        }
+      ],
+      "dla_nas": [
+        {
+          "wariant": "podstawowy",
+          "etykieta": "Podstawowy",
+          "skladka_mies_zl": 70
+        },
+        {
+          "wariant": "rozszerzony",
+          "etykieta": "Rozszerzony",
+          "skladka_mies_zl": 116
+        },
+        {
+          "wariant": "komfort",
+          "etykieta": "Komfort",
+          "skladka_mies_zl": 152
+        }
+      ],
+      "dla_rodziny": [
+        {
+          "wariant": "podstawowy",
+          "etykieta": "Podstawowy",
+          "skladka_mies_zl": 105
+        },
+        {
+          "wariant": "rozszerzony",
+          "etykieta": "Rozszerzony",
+          "skladka_mies_zl": 151
+        },
+        {
+          "wariant": "komfort",
+          "etykieta": "Komfort",
+          "skladka_mies_zl": 210
+        }
+      ]
+    },
+    "B": {
+      "dla_mnie": [
+        {
+          "wariant": "podstawowy",
+          "etykieta": "Podstawowy",
+          "skladka_mies_zl": 72
+        },
+        {
+          "wariant": "rozszerzony",
+          "etykieta": "Rozszerzony",
+          "skladka_mies_zl": 110
+        },
+        {
+          "wariant": "komfort",
+          "etykieta": "Komfort",
+          "skladka_mies_zl": 146
+        }
+      ],
+      "dla_nas": [
+        {
+          "wariant": "podstawowy",
+          "etykieta": "Podstawowy",
+          "skladka_mies_zl": 99
+        },
+        {
+          "wariant": "rozszerzony",
+          "etykieta": "Rozszerzony",
+          "skladka_mies_zl": 159
+        }
+      ],
+      "dla_rodziny": [
+        {
+          "wariant": "podstawowy",
+          "etykieta": "Podstawowy",
+          "skladka_mies_zl": 139
+        },
+        {
+          "wariant": "rozszerzony",
+          "etykieta": "Rozszerzony",
+          "skladka_mies_zl": 203
+        }
+      ]
+    }
+  },
+  "warianty_pokazywane_na_stronie_glownej": {
+    "A1_A2": {
+      "dla_mnie": [
+        {
+          "key": "rozszerzony",
+          "label": "Rozszerzony"
+        },
+        {
+          "key": "komfort",
+          "label": "Komfort"
+        },
+        {
+          "key": "premium",
+          "label": "Premium"
+        },
+        {
+          "key": "prestiz",
+          "label": "Prestiż"
+        }
+      ],
+      "dla_nas": [
+        {
+          "key": "rozszerzony",
+          "label": "Rozszerzony"
+        },
+        {
+          "key": "komfort",
+          "label": "Komfort"
+        }
+      ],
+      "dla_rodziny": [
+        {
+          "key": "podstawowy",
+          "label": "Podstawowy"
+        },
+        {
+          "key": "rozszerzony",
+          "label": "Rozszerzony"
+        },
+        {
+          "key": "komfort",
+          "label": "Komfort"
+        },
+        {
+          "key": "premium",
+          "label": "Premium"
+        }
+      ]
+    },
+    "B": {
+      "dla_mnie": [
+        {
+          "key": "podstawowy",
+          "label": "Podstawowy"
+        },
+        {
+          "key": "rozszerzony",
+          "label": "Rozszerzony"
+        },
+        {
+          "key": "komfort",
+          "label": "Komfort"
+        }
+      ],
+      "dla_nas": [
+        {
+          "key": "podstawowy",
+          "label": "Podstawowy"
+        },
+        {
+          "key": "rozszerzony",
+          "label": "Rozszerzony"
+        }
+      ],
+      "dla_rodziny": [
+        {
+          "key": "podstawowy",
+          "label": "Podstawowy"
+        },
+        {
+          "key": "rozszerzony",
+          "label": "Rozszerzony"
+        }
+      ]
+    },
+    "uwaga": "Tabela na stronie głównej filtruje te listy przez PREMIUMS danej grupy; dla A2 nie pokazuje wariantu Podstawowy w Dla Mnie (50 zł) i Dla Nas (70 zł), choć są w PREMIUMS."
+  },
+  "dodatki": {
+    "mediplan": {
+      "etykieta": "MediPlan",
+      "skladka_mies_zl": 9,
+      "klucz_w_store": "mediplan"
+    },
+    "medical_assistance": {
+      "etykieta": "Medical Assistance",
+      "skladka_mies_zl": 6,
+      "klucz_w_store": "medicalAssistance"
+    },
+    "global_doctors": {
+      "etykieta": "Global Doctors",
+      "skladka_mies_zl": null,
+      "maks_wiek": 63,
+      "regula": "isGlobalDoctorsEligible: differenceInYears(dziś,dataUrodzenia) < 64",
+      "notka": "Składka zależna od wieku — podana przy wycenie",
+      "w_kalkulatorze_dodaje": 0,
+      "klucz_w_store": "globalDoctors"
+    }
+  },
+  "wzor_skladki": "skladka = PREMIUMS[grupa][produkt].find(wariant).monthly (0 gdy brak) + (mediplan ? 9 : 0) + (medicalAssistance ? 6 : 0) + (globalDoctors && wiek<64 ? 0 : 0)",
+  "swiadczenia": {
+    "A_dla_grup_A1_i_A2": {
+      "kolumny": [
+        {
+          "index": 0,
+          "produkt": "dla_mnie",
+          "wariant": "podstawowy",
+          "klucz": "dla_mnie.podstawowy"
+        },
+        {
+          "index": 1,
+          "produkt": "dla_mnie",
+          "wariant": "rozszerzony",
+          "klucz": "dla_mnie.rozszerzony"
+        },
+        {
+          "index": 2,
+          "produkt": "dla_mnie",
+          "wariant": "komfort",
+          "klucz": "dla_mnie.komfort"
+        },
+        {
+          "index": 3,
+          "produkt": "dla_mnie",
+          "wariant": "premium",
+          "klucz": "dla_mnie.premium"
+        },
+        {
+          "index": 4,
+          "produkt": "dla_mnie",
+          "wariant": "prestiz",
+          "klucz": "dla_mnie.prestiz"
+        },
+        {
+          "index": 5,
+          "produkt": "dla_nas",
+          "wariant": "podstawowy",
+          "klucz": "dla_nas.podstawowy"
+        },
+        {
+          "index": 6,
+          "produkt": "dla_nas",
+          "wariant": "rozszerzony",
+          "klucz": "dla_nas.rozszerzony"
+        },
+        {
+          "index": 7,
+          "produkt": "dla_nas",
+          "wariant": "komfort",
+          "klucz": "dla_nas.komfort"
+        },
+        {
+          "index": 8,
+          "produkt": "dla_rodziny",
+          "wariant": "podstawowy",
+          "klucz": "dla_rodziny.podstawowy"
+        },
+        {
+          "index": 9,
+          "produkt": "dla_rodziny",
+          "wariant": "rozszerzony",
+          "klucz": "dla_rodziny.rozszerzony"
+        },
+        {
+          "index": 10,
+          "produkt": "dla_rodziny",
+          "wariant": "komfort",
+          "klucz": "dla_rodziny.komfort"
+        },
+        {
+          "index": 11,
+          "produkt": "dla_rodziny",
+          "wariant": "premium",
+          "klucz": "dla_rodziny.premium"
+        }
+      ],
+      "wiersze": {
+        "ubezpieczony": [
+          {
+            "nazwa": "Zgon NW przy pracy — ruch lądowy/wodny/powietrzny",
+            "karencja": null,
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 100000,
+              "dla_mnie.rozszerzony": 140000,
+              "dla_mnie.komfort": 220000,
+              "dla_mnie.premium": 300000,
+              "dla_mnie.prestiz": 500000,
+              "dla_nas.podstawowy": 120000,
+              "dla_nas.rozszerzony": 180000,
+              "dla_nas.komfort": 260000,
+              "dla_rodziny.podstawowy": 160000,
+              "dla_rodziny.rozszerzony": 220000,
+              "dla_rodziny.komfort": 350000,
+              "dla_rodziny.premium": 430000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "100 000 zł",
+              "dla_mnie.rozszerzony": "140 000 zł",
+              "dla_mnie.komfort": "220 000 zł",
+              "dla_mnie.premium": "300 000 zł",
+              "dla_mnie.prestiz": "500 000 zł",
+              "dla_nas.podstawowy": "120 000 zł",
+              "dla_nas.rozszerzony": "180 000 zł",
+              "dla_nas.komfort": "260 000 zł",
+              "dla_rodziny.podstawowy": "160 000 zł",
+              "dla_rodziny.rozszerzony": "220 000 zł",
+              "dla_rodziny.komfort": "350 000 zł",
+              "dla_rodziny.premium": "430 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon NW przy pracy",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 60000,
+              "dla_mnie.rozszerzony": 90000,
+              "dla_mnie.komfort": 150000,
+              "dla_mnie.premium": 210000,
+              "dla_mnie.prestiz": 360000,
+              "dla_nas.podstawowy": 75000,
+              "dla_nas.rozszerzony": 120000,
+              "dla_nas.komfort": 180000,
+              "dla_rodziny.podstawowy": 100000,
+              "dla_rodziny.rozszerzony": 150000,
+              "dla_rodziny.komfort": 240000,
+              "dla_rodziny.premium": 300000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "60 000 zł",
+              "dla_mnie.rozszerzony": "90 000 zł",
+              "dla_mnie.komfort": "150 000 zł",
+              "dla_mnie.premium": "210 000 zł",
+              "dla_mnie.prestiz": "360 000 zł",
+              "dla_nas.podstawowy": "75 000 zł",
+              "dla_nas.rozszerzony": "120 000 zł",
+              "dla_nas.komfort": "180 000 zł",
+              "dla_rodziny.podstawowy": "100 000 zł",
+              "dla_rodziny.rozszerzony": "150 000 zł",
+              "dla_rodziny.komfort": "240 000 zł",
+              "dla_rodziny.premium": "300 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon NW — ruch lądowy/wodny/powietrzny",
+            "karencja": null,
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 60000,
+              "dla_mnie.rozszerzony": 90000,
+              "dla_mnie.komfort": 150000,
+              "dla_mnie.premium": 210000,
+              "dla_mnie.prestiz": 360000,
+              "dla_nas.podstawowy": 75000,
+              "dla_nas.rozszerzony": 120000,
+              "dla_nas.komfort": 180000,
+              "dla_rodziny.podstawowy": 100000,
+              "dla_rodziny.rozszerzony": 150000,
+              "dla_rodziny.komfort": 240000,
+              "dla_rodziny.premium": 300000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "60 000 zł",
+              "dla_mnie.rozszerzony": "90 000 zł",
+              "dla_mnie.komfort": "150 000 zł",
+              "dla_mnie.premium": "210 000 zł",
+              "dla_mnie.prestiz": "360 000 zł",
+              "dla_nas.podstawowy": "75 000 zł",
+              "dla_nas.rozszerzony": "120 000 zł",
+              "dla_nas.komfort": "180 000 zł",
+              "dla_rodziny.podstawowy": "100 000 zł",
+              "dla_rodziny.rozszerzony": "150 000 zł",
+              "dla_rodziny.komfort": "240 000 zł",
+              "dla_rodziny.premium": "300 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon NW",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 40000,
+              "dla_mnie.rozszerzony": 60000,
+              "dla_mnie.komfort": 100000,
+              "dla_mnie.premium": 140000,
+              "dla_mnie.prestiz": 240000,
+              "dla_nas.podstawowy": 50000,
+              "dla_nas.rozszerzony": 80000,
+              "dla_nas.komfort": 120000,
+              "dla_rodziny.podstawowy": 70000,
+              "dla_rodziny.rozszerzony": 100000,
+              "dla_rodziny.komfort": 160000,
+              "dla_rodziny.premium": 200000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "40 000 zł",
+              "dla_mnie.rozszerzony": "60 000 zł",
+              "dla_mnie.komfort": "100 000 zł",
+              "dla_mnie.premium": "140 000 zł",
+              "dla_mnie.prestiz": "240 000 zł",
+              "dla_nas.podstawowy": "50 000 zł",
+              "dla_nas.rozszerzony": "80 000 zł",
+              "dla_nas.komfort": "120 000 zł",
+              "dla_rodziny.podstawowy": "70 000 zł",
+              "dla_rodziny.rozszerzony": "100 000 zł",
+              "dla_rodziny.komfort": "160 000 zł",
+              "dla_rodziny.premium": "200 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon — zawał/udar",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 25000,
+              "dla_mnie.rozszerzony": 40000,
+              "dla_mnie.komfort": 65000,
+              "dla_mnie.premium": 90000,
+              "dla_mnie.prestiz": 160000,
+              "dla_nas.podstawowy": 35000,
+              "dla_nas.rozszerzony": 50000,
+              "dla_nas.komfort": 80000,
+              "dla_rodziny.podstawowy": 45000,
+              "dla_rodziny.rozszerzony": 65000,
+              "dla_rodziny.komfort": 100000,
+              "dla_rodziny.premium": 140000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "25 000 zł",
+              "dla_mnie.rozszerzony": "40 000 zł",
+              "dla_mnie.komfort": "65 000 zł",
+              "dla_mnie.premium": "90 000 zł",
+              "dla_mnie.prestiz": "160 000 zł",
+              "dla_nas.podstawowy": "35 000 zł",
+              "dla_nas.rozszerzony": "50 000 zł",
+              "dla_nas.komfort": "80 000 zł",
+              "dla_rodziny.podstawowy": "45 000 zł",
+              "dla_rodziny.rozszerzony": "65 000 zł",
+              "dla_rodziny.komfort": "100 000 zł",
+              "dla_rodziny.premium": "140 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon",
+            "karencja": null,
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 20000,
+              "dla_mnie.rozszerzony": 30000,
+              "dla_mnie.komfort": 50000,
+              "dla_mnie.premium": 70000,
+              "dla_mnie.prestiz": 120000,
+              "dla_nas.podstawowy": 25000,
+              "dla_nas.rozszerzony": 40000,
+              "dla_nas.komfort": 60000,
+              "dla_rodziny.podstawowy": 35000,
+              "dla_rodziny.rozszerzony": 50000,
+              "dla_rodziny.komfort": 80000,
+              "dla_rodziny.premium": 100000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "20 000 zł",
+              "dla_mnie.rozszerzony": "30 000 zł",
+              "dla_mnie.komfort": "50 000 zł",
+              "dla_mnie.premium": "70 000 zł",
+              "dla_mnie.prestiz": "120 000 zł",
+              "dla_nas.podstawowy": "25 000 zł",
+              "dla_nas.rozszerzony": "40 000 zł",
+              "dla_nas.komfort": "60 000 zł",
+              "dla_rodziny.podstawowy": "35 000 zł",
+              "dla_rodziny.rozszerzony": "50 000 zł",
+              "dla_rodziny.komfort": "80 000 zł",
+              "dla_rodziny.premium": "100 000 zł"
+            }
+          },
+          {
+            "nazwa": "Trwały uszczerbek NW — za 1%",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl_za_1proc",
+            "wartosci": {
+              "dla_mnie.podstawowy": 300,
+              "dla_mnie.rozszerzony": 400,
+              "dla_mnie.komfort": 500,
+              "dla_mnie.premium": 650,
+              "dla_mnie.prestiz": 800,
+              "dla_nas.podstawowy": 350,
+              "dla_nas.rozszerzony": 450,
+              "dla_nas.komfort": 500,
+              "dla_rodziny.podstawowy": 400,
+              "dla_rodziny.rozszerzony": 500,
+              "dla_rodziny.komfort": 650,
+              "dla_rodziny.premium": 750
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "300 zł/1%",
+              "dla_mnie.rozszerzony": "400 zł/1%",
+              "dla_mnie.komfort": "500 zł/1%",
+              "dla_mnie.premium": "650 zł/1%",
+              "dla_mnie.prestiz": "800 zł/1%",
+              "dla_nas.podstawowy": "350 zł/1%",
+              "dla_nas.rozszerzony": "450 zł/1%",
+              "dla_nas.komfort": "500 zł/1%",
+              "dla_rodziny.podstawowy": "400 zł/1%",
+              "dla_rodziny.rozszerzony": "500 zł/1%",
+              "dla_rodziny.komfort": "650 zł/1%",
+              "dla_rodziny.premium": "750 zł/1%"
+            }
+          },
+          {
+            "nazwa": "Trwały uszczerbek zawał/krwotok — za 1%",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl_za_1proc",
+            "wartosci": {
+              "dla_mnie.podstawowy": 200,
+              "dla_mnie.rozszerzony": 300,
+              "dla_mnie.komfort": 500,
+              "dla_mnie.premium": 600,
+              "dla_mnie.prestiz": 600,
+              "dla_nas.podstawowy": 250,
+              "dla_nas.rozszerzony": 300,
+              "dla_nas.komfort": 500,
+              "dla_rodziny.podstawowy": 300,
+              "dla_rodziny.rozszerzony": 400,
+              "dla_rodziny.komfort": 500,
+              "dla_rodziny.premium": 600
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "200 zł/1%",
+              "dla_mnie.rozszerzony": "300 zł/1%",
+              "dla_mnie.komfort": "500 zł/1%",
+              "dla_mnie.premium": "600 zł/1%",
+              "dla_mnie.prestiz": "600 zł/1%",
+              "dla_nas.podstawowy": "250 zł/1%",
+              "dla_nas.rozszerzony": "300 zł/1%",
+              "dla_nas.komfort": "500 zł/1%",
+              "dla_rodziny.podstawowy": "300 zł/1%",
+              "dla_rodziny.rozszerzony": "400 zł/1%",
+              "dla_rodziny.komfort": "500 zł/1%",
+              "dla_rodziny.premium": "600 zł/1%"
+            }
+          },
+          {
+            "nazwa": "Całkowita trwała niezdolność do pracy NW",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 10000,
+              "dla_mnie.rozszerzony": 25000,
+              "dla_mnie.komfort": 30000,
+              "dla_mnie.premium": 40000,
+              "dla_mnie.prestiz": 70000,
+              "dla_nas.podstawowy": 15000,
+              "dla_nas.rozszerzony": 30000,
+              "dla_nas.komfort": 40000,
+              "dla_rodziny.podstawowy": 30000,
+              "dla_rodziny.rozszerzony": 40000,
+              "dla_rodziny.komfort": 50000,
+              "dla_rodziny.premium": 70000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "10 000 zł",
+              "dla_mnie.rozszerzony": "25 000 zł",
+              "dla_mnie.komfort": "30 000 zł",
+              "dla_mnie.premium": "40 000 zł",
+              "dla_mnie.prestiz": "70 000 zł",
+              "dla_nas.podstawowy": "15 000 zł",
+              "dla_nas.rozszerzony": "30 000 zł",
+              "dla_nas.komfort": "40 000 zł",
+              "dla_rodziny.podstawowy": "30 000 zł",
+              "dla_rodziny.rozszerzony": "40 000 zł",
+              "dla_rodziny.komfort": "50 000 zł",
+              "dla_rodziny.premium": "70 000 zł"
+            }
+          },
+          {
+            "nazwa": "Operacja chirurgiczna Gr.1",
+            "karencja": "6 mies.",
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": 1500,
+              "dla_mnie.komfort": 2000,
+              "dla_mnie.premium": 3000,
+              "dla_mnie.prestiz": 4000,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": 2000,
+              "dla_nas.komfort": 2500,
+              "dla_rodziny.podstawowy": 1500,
+              "dla_rodziny.rozszerzony": 2000,
+              "dla_rodziny.komfort": 3000,
+              "dla_rodziny.premium": 3500
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "1500 zł",
+              "dla_mnie.komfort": "2000 zł",
+              "dla_mnie.premium": "3000 zł",
+              "dla_mnie.prestiz": "4000 zł",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "2000 zł",
+              "dla_nas.komfort": "2500 zł",
+              "dla_rodziny.podstawowy": "1500 zł",
+              "dla_rodziny.rozszerzony": "2000 zł",
+              "dla_rodziny.komfort": "3000 zł",
+              "dla_rodziny.premium": "3500 zł"
+            }
+          },
+          {
+            "nazwa": "Operacja chirurgiczna Gr.2",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": 900,
+              "dla_mnie.komfort": 1200,
+              "dla_mnie.premium": 1800,
+              "dla_mnie.prestiz": 2400,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": 1200,
+              "dla_nas.komfort": 1500,
+              "dla_rodziny.podstawowy": 900,
+              "dla_rodziny.rozszerzony": 1200,
+              "dla_rodziny.komfort": 1800,
+              "dla_rodziny.premium": 2100
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "900 zł",
+              "dla_mnie.komfort": "1200 zł",
+              "dla_mnie.premium": "1800 zł",
+              "dla_mnie.prestiz": "2400 zł",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "1200 zł",
+              "dla_nas.komfort": "1500 zł",
+              "dla_rodziny.podstawowy": "900 zł",
+              "dla_rodziny.rozszerzony": "1200 zł",
+              "dla_rodziny.komfort": "1800 zł",
+              "dla_rodziny.premium": "2100 zł"
+            }
+          },
+          {
+            "nazwa": "Operacja chirurgiczna Gr.3",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 300,
+              "dla_mnie.rozszerzony": 400,
+              "dla_mnie.komfort": 600,
+              "dla_mnie.premium": 800,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": 400,
+              "dla_nas.komfort": 500,
+              "dla_rodziny.podstawowy": 300,
+              "dla_rodziny.rozszerzony": 400,
+              "dla_rodziny.komfort": 600,
+              "dla_rodziny.premium": 700
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "300 zł",
+              "dla_mnie.rozszerzony": "400 zł",
+              "dla_mnie.komfort": "600 zł",
+              "dla_mnie.premium": "800 zł",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "400 zł",
+              "dla_nas.komfort": "500 zł",
+              "dla_rodziny.podstawowy": "300 zł",
+              "dla_rodziny.rozszerzony": "400 zł",
+              "dla_rodziny.komfort": "600 zł",
+              "dla_rodziny.premium": "700 zł"
+            }
+          },
+          {
+            "nazwa": "Poważne zachorowanie (56 j.ch.)",
+            "karencja": "3 mies.",
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 3000,
+              "dla_mnie.rozszerzony": 6000,
+              "dla_mnie.komfort": 12000,
+              "dla_mnie.premium": 15000,
+              "dla_mnie.prestiz": 20000,
+              "dla_nas.podstawowy": 4000,
+              "dla_nas.rozszerzony": 6000,
+              "dla_nas.komfort": 10000,
+              "dla_rodziny.podstawowy": 7000,
+              "dla_rodziny.rozszerzony": 9000,
+              "dla_rodziny.komfort": 12000,
+              "dla_rodziny.premium": 17000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "3000 zł",
+              "dla_mnie.rozszerzony": "6000 zł",
+              "dla_mnie.komfort": "12 000 zł",
+              "dla_mnie.premium": "15 000 zł",
+              "dla_mnie.prestiz": "20 000 zł",
+              "dla_nas.podstawowy": "4000 zł",
+              "dla_nas.rozszerzony": "6000 zł",
+              "dla_nas.komfort": "10 000 zł",
+              "dla_rodziny.podstawowy": "7000 zł",
+              "dla_rodziny.rozszerzony": "9000 zł",
+              "dla_rodziny.komfort": "12 000 zł",
+              "dla_rodziny.premium": "17 000 zł"
+            }
+          },
+          {
+            "nazwa": "Leczenie szpitalne NW",
+            "karencja": "2 mies. (od 15. dnia)",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": "120/50 zł",
+              "dla_mnie.rozszerzony": "160/60 zł",
+              "dla_mnie.komfort": "180/70 zł",
+              "dla_mnie.premium": "200/90 zł",
+              "dla_mnie.prestiz": "250/100 zł",
+              "dla_nas.podstawowy": "120/50 zł",
+              "dla_nas.rozszerzony": "140/60 zł",
+              "dla_nas.komfort": "160/70 zł",
+              "dla_rodziny.podstawowy": "170/60 zł",
+              "dla_rodziny.rozszerzony": "180/70 zł",
+              "dla_rodziny.komfort": "200/80 zł",
+              "dla_rodziny.premium": "220/100 zł"
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "120/50 zł",
+              "dla_mnie.rozszerzony": "160/60 zł",
+              "dla_mnie.komfort": "180/70 zł",
+              "dla_mnie.premium": "200/90 zł",
+              "dla_mnie.prestiz": "250/100 zł",
+              "dla_nas.podstawowy": "120/50 zł",
+              "dla_nas.rozszerzony": "140/60 zł",
+              "dla_nas.komfort": "160/70 zł",
+              "dla_rodziny.podstawowy": "170/60 zł",
+              "dla_rodziny.rozszerzony": "180/70 zł",
+              "dla_rodziny.komfort": "200/80 zł",
+              "dla_rodziny.premium": "220/100 zł"
+            }
+          },
+          {
+            "nazwa": "Leczenie szpitalne choroba",
+            "karencja": "2 mies.",
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": "50 zł/dzień",
+              "dla_mnie.rozszerzony": "60 zł/dzień",
+              "dla_mnie.komfort": "70 zł/dzień",
+              "dla_mnie.premium": "90 zł/dzień",
+              "dla_mnie.prestiz": "100 zł/dzień",
+              "dla_nas.podstawowy": "50 zł/dzień",
+              "dla_nas.rozszerzony": "60 zł/dzień",
+              "dla_nas.komfort": "70 zł/dzień",
+              "dla_rodziny.podstawowy": "60 zł/dzień",
+              "dla_rodziny.rozszerzony": "70 zł/dzień",
+              "dla_rodziny.komfort": "80 zł/dzień",
+              "dla_rodziny.premium": "100 zł/dzień"
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "50 zł/dzień",
+              "dla_mnie.rozszerzony": "60 zł/dzień",
+              "dla_mnie.komfort": "70 zł/dzień",
+              "dla_mnie.premium": "90 zł/dzień",
+              "dla_mnie.prestiz": "100 zł/dzień",
+              "dla_nas.podstawowy": "50 zł/dzień",
+              "dla_nas.rozszerzony": "60 zł/dzień",
+              "dla_nas.komfort": "70 zł/dzień",
+              "dla_rodziny.podstawowy": "60 zł/dzień",
+              "dla_rodziny.rozszerzony": "70 zł/dzień",
+              "dla_rodziny.komfort": "80 zł/dzień",
+              "dla_rodziny.premium": "100 zł/dzień"
+            }
+          },
+          {
+            "nazwa": "Leczenie szpitalne NW — ruch lądowy/wodny/powietrzny",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl_dzien",
+            "wartosci": {
+              "dla_mnie.podstawowy": 220,
+              "dla_mnie.rozszerzony": 310,
+              "dla_mnie.komfort": 330,
+              "dla_mnie.premium": 350,
+              "dla_mnie.prestiz": 400,
+              "dla_nas.podstawowy": 220,
+              "dla_nas.rozszerzony": 290,
+              "dla_nas.komfort": 310,
+              "dla_rodziny.podstawowy": 320,
+              "dla_rodziny.rozszerzony": 330,
+              "dla_rodziny.komfort": 350,
+              "dla_rodziny.premium": 400
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "220 zł/dzień",
+              "dla_mnie.rozszerzony": "310 zł/dzień",
+              "dla_mnie.komfort": "330 zł/dzień",
+              "dla_mnie.premium": "350 zł/dzień",
+              "dla_mnie.prestiz": "400 zł/dzień",
+              "dla_nas.podstawowy": "220 zł/dzień",
+              "dla_nas.rozszerzony": "290 zł/dzień",
+              "dla_nas.komfort": "310 zł/dzień",
+              "dla_rodziny.podstawowy": "320 zł/dzień",
+              "dla_rodziny.rozszerzony": "330 zł/dzień",
+              "dla_rodziny.komfort": "350 zł/dzień",
+              "dla_rodziny.premium": "400 zł/dzień"
+            }
+          },
+          {
+            "nazwa": "Leczenie szpitalne zawał/krwotok",
+            "karencja": "2 mies.",
+            "wyroznienie": false,
+            "format": "zl_dzien",
+            "wartosci": {
+              "dla_mnie.podstawowy": 80,
+              "dla_mnie.rozszerzony": 120,
+              "dla_mnie.komfort": 130,
+              "dla_mnie.premium": 150,
+              "dla_mnie.prestiz": 250,
+              "dla_nas.podstawowy": 80,
+              "dla_nas.rozszerzony": 120,
+              "dla_nas.komfort": 130,
+              "dla_rodziny.podstawowy": 120,
+              "dla_rodziny.rozszerzony": 140,
+              "dla_rodziny.komfort": 160,
+              "dla_rodziny.premium": 200
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "80 zł/dzień",
+              "dla_mnie.rozszerzony": "120 zł/dzień",
+              "dla_mnie.komfort": "130 zł/dzień",
+              "dla_mnie.premium": "150 zł/dzień",
+              "dla_mnie.prestiz": "250 zł/dzień",
+              "dla_nas.podstawowy": "80 zł/dzień",
+              "dla_nas.rozszerzony": "120 zł/dzień",
+              "dla_nas.komfort": "130 zł/dzień",
+              "dla_rodziny.podstawowy": "120 zł/dzień",
+              "dla_rodziny.rozszerzony": "140 zł/dzień",
+              "dla_rodziny.komfort": "160 zł/dzień",
+              "dla_rodziny.premium": "200 zł/dzień"
+            }
+          },
+          {
+            "nazwa": "Leczenie specjalistyczne",
+            "karencja": "3 mies.",
+            "wyroznienie": true,
+            "format": "do_zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 1500,
+              "dla_mnie.rozszerzony": 2000,
+              "dla_mnie.komfort": 4000,
+              "dla_mnie.premium": 5000,
+              "dla_mnie.prestiz": 7000,
+              "dla_nas.podstawowy": 1500,
+              "dla_nas.rozszerzony": 2500,
+              "dla_nas.komfort": 2500,
+              "dla_rodziny.podstawowy": 2000,
+              "dla_rodziny.rozszerzony": 2500,
+              "dla_rodziny.komfort": 3000,
+              "dla_rodziny.premium": 5000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "do 1500 zł",
+              "dla_mnie.rozszerzony": "do 2000 zł",
+              "dla_mnie.komfort": "do 4000 zł",
+              "dla_mnie.premium": "do 5000 zł",
+              "dla_mnie.prestiz": "do 7000 zł",
+              "dla_nas.podstawowy": "do 1500 zł",
+              "dla_nas.rozszerzony": "do 2500 zł",
+              "dla_nas.komfort": "do 2500 zł",
+              "dla_rodziny.podstawowy": "do 2000 zł",
+              "dla_rodziny.rozszerzony": "do 2500 zł",
+              "dla_rodziny.komfort": "do 3000 zł",
+              "dla_rodziny.premium": "do 5000 zł"
+            }
+          }
+        ],
+        "malzonek": [
+          {
+            "nazwa": "Zgon małżonka/partnera NW",
+            "karencja": null,
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": 14000,
+              "dla_nas.rozszerzony": 25000,
+              "dla_nas.komfort": 24000,
+              "dla_rodziny.podstawowy": 20000,
+              "dla_rodziny.rozszerzony": 24000,
+              "dla_rodziny.komfort": 30000,
+              "dla_rodziny.premium": 40000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "14 000 zł",
+              "dla_nas.rozszerzony": "25 000 zł",
+              "dla_nas.komfort": "24 000 zł",
+              "dla_rodziny.podstawowy": "20 000 zł",
+              "dla_rodziny.rozszerzony": "24 000 zł",
+              "dla_rodziny.komfort": "30 000 zł",
+              "dla_rodziny.premium": "40 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon małżonka/partnera",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": 7000,
+              "dla_nas.rozszerzony": 12000,
+              "dla_nas.komfort": 12000,
+              "dla_rodziny.podstawowy": 10000,
+              "dla_rodziny.rozszerzony": 12000,
+              "dla_rodziny.komfort": 15000,
+              "dla_rodziny.premium": 20000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "7000 zł",
+              "dla_nas.rozszerzony": "12 000 zł",
+              "dla_nas.komfort": "12 000 zł",
+              "dla_rodziny.podstawowy": "10 000 zł",
+              "dla_rodziny.rozszerzony": "12 000 zł",
+              "dla_rodziny.komfort": "15 000 zł",
+              "dla_rodziny.premium": "20 000 zł"
+            }
+          },
+          {
+            "nazwa": "Trwałe inwalidztwo małżonka/partnera NW",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "do_zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": 8000,
+              "dla_nas.rozszerzony": 10000,
+              "dla_nas.komfort": 12000,
+              "dla_rodziny.podstawowy": 10000,
+              "dla_rodziny.rozszerzony": 10000,
+              "dla_rodziny.komfort": 12000,
+              "dla_rodziny.premium": 12000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "do 8000 zł",
+              "dla_nas.rozszerzony": "do 10 000 zł",
+              "dla_nas.komfort": "do 12 000 zł",
+              "dla_rodziny.podstawowy": "do 10 000 zł",
+              "dla_rodziny.rozszerzony": "do 10 000 zł",
+              "dla_rodziny.komfort": "do 12 000 zł",
+              "dla_rodziny.premium": "do 12 000 zł"
+            }
+          },
+          {
+            "nazwa": "Poważne zachorowanie małżonka/partnera (12 j.ch.)",
+            "karencja": "3 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": 2000,
+              "dla_nas.rozszerzony": 3000,
+              "dla_nas.komfort": 3500,
+              "dla_rodziny.podstawowy": 2000,
+              "dla_rodziny.rozszerzony": 3000,
+              "dla_rodziny.komfort": 4000,
+              "dla_rodziny.premium": 5000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "2000 zł",
+              "dla_nas.rozszerzony": "3000 zł",
+              "dla_nas.komfort": "3500 zł",
+              "dla_rodziny.podstawowy": "2000 zł",
+              "dla_rodziny.rozszerzony": "3000 zł",
+              "dla_rodziny.komfort": "4000 zł",
+              "dla_rodziny.premium": "5000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon rodzica",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": 1200,
+              "dla_rodziny.podstawowy": null,
+              "dla_rodziny.rozszerzony": 1600,
+              "dla_rodziny.komfort": 2000,
+              "dla_rodziny.premium": 2200
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "1200 zł",
+              "dla_rodziny.podstawowy": "—",
+              "dla_rodziny.rozszerzony": "1600 zł",
+              "dla_rodziny.komfort": "2000 zł",
+              "dla_rodziny.premium": "2200 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon teścia",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": 1200,
+              "dla_rodziny.podstawowy": null,
+              "dla_rodziny.rozszerzony": 1600,
+              "dla_rodziny.komfort": 2000,
+              "dla_rodziny.premium": 2200
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "1200 zł",
+              "dla_rodziny.podstawowy": "—",
+              "dla_rodziny.rozszerzony": "1600 zł",
+              "dla_rodziny.komfort": "2000 zł",
+              "dla_rodziny.premium": "2200 zł"
+            }
+          }
+        ],
+        "dziecko": [
+          {
+            "nazwa": "Osierocenie dziecka",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": null,
+              "dla_rodziny.podstawowy": 3000,
+              "dla_rodziny.rozszerzony": 4000,
+              "dla_rodziny.komfort": 5000,
+              "dla_rodziny.premium": 6000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "—",
+              "dla_rodziny.podstawowy": "3000 zł",
+              "dla_rodziny.rozszerzony": "4000 zł",
+              "dla_rodziny.komfort": "5000 zł",
+              "dla_rodziny.premium": "6000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon dziecka NW",
+            "karencja": null,
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": null,
+              "dla_rodziny.podstawowy": 8000,
+              "dla_rodziny.rozszerzony": 10000,
+              "dla_rodziny.komfort": 12000,
+              "dla_rodziny.premium": 14000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "—",
+              "dla_rodziny.podstawowy": "8000 zł",
+              "dla_rodziny.rozszerzony": "10 000 zł",
+              "dla_rodziny.komfort": "12 000 zł",
+              "dla_rodziny.premium": "14 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon dziecka",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": null,
+              "dla_rodziny.podstawowy": 4000,
+              "dla_rodziny.rozszerzony": 5000,
+              "dla_rodziny.komfort": 6000,
+              "dla_rodziny.premium": 7000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "—",
+              "dla_rodziny.podstawowy": "4000 zł",
+              "dla_rodziny.rozszerzony": "5000 zł",
+              "dla_rodziny.komfort": "6000 zł",
+              "dla_rodziny.premium": "7000 zł"
+            }
+          },
+          {
+            "nazwa": "Urodzenie dziecka",
+            "karencja": "9 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": null,
+              "dla_rodziny.podstawowy": 1300,
+              "dla_rodziny.rozszerzony": 1300,
+              "dla_rodziny.komfort": 1500,
+              "dla_rodziny.premium": 1700
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "—",
+              "dla_rodziny.podstawowy": "1300 zł",
+              "dla_rodziny.rozszerzony": "1300 zł",
+              "dla_rodziny.komfort": "1500 zł",
+              "dla_rodziny.premium": "1700 zł"
+            }
+          },
+          {
+            "nazwa": "Urodzenie martwego noworodka",
+            "karencja": "9 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": null,
+              "dla_rodziny.podstawowy": 3000,
+              "dla_rodziny.rozszerzony": 3500,
+              "dla_rodziny.komfort": 4000,
+              "dla_rodziny.premium": 5000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "—",
+              "dla_rodziny.podstawowy": "3000 zł",
+              "dla_rodziny.rozszerzony": "3500 zł",
+              "dla_rodziny.komfort": "4000 zł",
+              "dla_rodziny.premium": "5000 zł"
+            }
+          },
+          {
+            "nazwa": "Trwałe inwalidztwo dziecka NW",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "do_zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": null,
+              "dla_rodziny.podstawowy": 10000,
+              "dla_rodziny.rozszerzony": 10000,
+              "dla_rodziny.komfort": 10000,
+              "dla_rodziny.premium": 10000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "—",
+              "dla_rodziny.podstawowy": "do 10 000 zł",
+              "dla_rodziny.rozszerzony": "do 10 000 zł",
+              "dla_rodziny.komfort": "do 10 000 zł",
+              "dla_rodziny.premium": "do 10 000 zł"
+            }
+          },
+          {
+            "nazwa": "Wada wrodzona dziecka",
+            "karencja": "9 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": null,
+              "dla_rodziny.podstawowy": 2000,
+              "dla_rodziny.rozszerzony": 2500,
+              "dla_rodziny.komfort": 3000,
+              "dla_rodziny.premium": 3500
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "—",
+              "dla_rodziny.podstawowy": "2000 zł",
+              "dla_rodziny.rozszerzony": "2500 zł",
+              "dla_rodziny.komfort": "3000 zł",
+              "dla_rodziny.premium": "3500 zł"
+            }
+          },
+          {
+            "nazwa": "Poważne zachorowanie dziecka (18 j.ch.)",
+            "karencja": "3 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": null,
+              "dla_rodziny.podstawowy": 4000,
+              "dla_rodziny.rozszerzony": 5000,
+              "dla_rodziny.komfort": 6000,
+              "dla_rodziny.premium": 8000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "—",
+              "dla_rodziny.podstawowy": "4000 zł",
+              "dla_rodziny.rozszerzony": "5000 zł",
+              "dla_rodziny.komfort": "6000 zł",
+              "dla_rodziny.premium": "8000 zł"
+            }
+          },
+          {
+            "nazwa": "Leczenie szpitalne dziecka",
+            "karencja": "2 mies.",
+            "wyroznienie": false,
+            "format": "zl_dzien",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_mnie.premium": null,
+              "dla_mnie.prestiz": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_nas.komfort": null,
+              "dla_rodziny.podstawowy": 400,
+              "dla_rodziny.rozszerzony": 500,
+              "dla_rodziny.komfort": 700,
+              "dla_rodziny.premium": 700
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_mnie.premium": "—",
+              "dla_mnie.prestiz": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_nas.komfort": "—",
+              "dla_rodziny.podstawowy": "400 zł/dzień",
+              "dla_rodziny.rozszerzony": "500 zł/dzień",
+              "dla_rodziny.komfort": "700 zł/dzień",
+              "dla_rodziny.premium": "700 zł/dzień"
+            }
+          }
+        ]
+      }
+    },
+    "B_dla_grupy_B": {
+      "kolumny": [
+        {
+          "index": 0,
+          "produkt": "dla_mnie",
+          "wariant": "podstawowy",
+          "klucz": "dla_mnie.podstawowy"
+        },
+        {
+          "index": 1,
+          "produkt": "dla_mnie",
+          "wariant": "rozszerzony",
+          "klucz": "dla_mnie.rozszerzony"
+        },
+        {
+          "index": 2,
+          "produkt": "dla_mnie",
+          "wariant": "komfort",
+          "klucz": "dla_mnie.komfort"
+        },
+        {
+          "index": 3,
+          "produkt": "dla_nas",
+          "wariant": "podstawowy",
+          "klucz": "dla_nas.podstawowy"
+        },
+        {
+          "index": 4,
+          "produkt": "dla_nas",
+          "wariant": "rozszerzony",
+          "klucz": "dla_nas.rozszerzony"
+        },
+        {
+          "index": 5,
+          "produkt": "dla_rodziny",
+          "wariant": "podstawowy",
+          "klucz": "dla_rodziny.podstawowy"
+        },
+        {
+          "index": 6,
+          "produkt": "dla_rodziny",
+          "wariant": "rozszerzony",
+          "klucz": "dla_rodziny.rozszerzony"
+        }
+      ],
+      "wiersze": {
+        "ubezpieczony": [
+          {
+            "nazwa": "Zgon NW przy pracy — ruch lądowy",
+            "karencja": null,
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 100000,
+              "dla_mnie.rozszerzony": 140000,
+              "dla_mnie.komfort": 220000,
+              "dla_nas.podstawowy": 120000,
+              "dla_nas.rozszerzony": 180000,
+              "dla_rodziny.podstawowy": 160000,
+              "dla_rodziny.rozszerzony": 220000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "100 000 zł",
+              "dla_mnie.rozszerzony": "140 000 zł",
+              "dla_mnie.komfort": "220 000 zł",
+              "dla_nas.podstawowy": "120 000 zł",
+              "dla_nas.rozszerzony": "180 000 zł",
+              "dla_rodziny.podstawowy": "160 000 zł",
+              "dla_rodziny.rozszerzony": "220 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon NW przy pracy",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 60000,
+              "dla_mnie.rozszerzony": 90000,
+              "dla_mnie.komfort": 150000,
+              "dla_nas.podstawowy": 75000,
+              "dla_nas.rozszerzony": 120000,
+              "dla_rodziny.podstawowy": 100000,
+              "dla_rodziny.rozszerzony": 150000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "60 000 zł",
+              "dla_mnie.rozszerzony": "90 000 zł",
+              "dla_mnie.komfort": "150 000 zł",
+              "dla_nas.podstawowy": "75 000 zł",
+              "dla_nas.rozszerzony": "120 000 zł",
+              "dla_rodziny.podstawowy": "100 000 zł",
+              "dla_rodziny.rozszerzony": "150 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon NW — ruch lądowy",
+            "karencja": null,
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 60000,
+              "dla_mnie.rozszerzony": 90000,
+              "dla_mnie.komfort": 150000,
+              "dla_nas.podstawowy": 75000,
+              "dla_nas.rozszerzony": 120000,
+              "dla_rodziny.podstawowy": 100000,
+              "dla_rodziny.rozszerzony": 150000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "60 000 zł",
+              "dla_mnie.rozszerzony": "90 000 zł",
+              "dla_mnie.komfort": "150 000 zł",
+              "dla_nas.podstawowy": "75 000 zł",
+              "dla_nas.rozszerzony": "120 000 zł",
+              "dla_rodziny.podstawowy": "100 000 zł",
+              "dla_rodziny.rozszerzony": "150 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon NW",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 40000,
+              "dla_mnie.rozszerzony": 60000,
+              "dla_mnie.komfort": 100000,
+              "dla_nas.podstawowy": 50000,
+              "dla_nas.rozszerzony": 80000,
+              "dla_rodziny.podstawowy": 70000,
+              "dla_rodziny.rozszerzony": 100000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "40 000 zł",
+              "dla_mnie.rozszerzony": "60 000 zł",
+              "dla_mnie.komfort": "100 000 zł",
+              "dla_nas.podstawowy": "50 000 zł",
+              "dla_nas.rozszerzony": "80 000 zł",
+              "dla_rodziny.podstawowy": "70 000 zł",
+              "dla_rodziny.rozszerzony": "100 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon — zawał/udar",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 25000,
+              "dla_mnie.rozszerzony": 40000,
+              "dla_mnie.komfort": 65000,
+              "dla_nas.podstawowy": 35000,
+              "dla_nas.rozszerzony": 50000,
+              "dla_rodziny.podstawowy": 45000,
+              "dla_rodziny.rozszerzony": 65000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "25 000 zł",
+              "dla_mnie.rozszerzony": "40 000 zł",
+              "dla_mnie.komfort": "65 000 zł",
+              "dla_nas.podstawowy": "35 000 zł",
+              "dla_nas.rozszerzony": "50 000 zł",
+              "dla_rodziny.podstawowy": "45 000 zł",
+              "dla_rodziny.rozszerzony": "65 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon",
+            "karencja": null,
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 20000,
+              "dla_mnie.rozszerzony": 30000,
+              "dla_mnie.komfort": 50000,
+              "dla_nas.podstawowy": 25000,
+              "dla_nas.rozszerzony": 40000,
+              "dla_rodziny.podstawowy": 35000,
+              "dla_rodziny.rozszerzony": 50000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "20 000 zł",
+              "dla_mnie.rozszerzony": "30 000 zł",
+              "dla_mnie.komfort": "50 000 zł",
+              "dla_nas.podstawowy": "25 000 zł",
+              "dla_nas.rozszerzony": "40 000 zł",
+              "dla_rodziny.podstawowy": "35 000 zł",
+              "dla_rodziny.rozszerzony": "50 000 zł"
+            }
+          },
+          {
+            "nazwa": "Trwały uszczerbek NW — za 1%",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl_za_1proc",
+            "wartosci": {
+              "dla_mnie.podstawowy": 300,
+              "dla_mnie.rozszerzony": 400,
+              "dla_mnie.komfort": 500,
+              "dla_nas.podstawowy": 350,
+              "dla_nas.rozszerzony": 450,
+              "dla_rodziny.podstawowy": 400,
+              "dla_rodziny.rozszerzony": 500
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "300 zł/1%",
+              "dla_mnie.rozszerzony": "400 zł/1%",
+              "dla_mnie.komfort": "500 zł/1%",
+              "dla_nas.podstawowy": "350 zł/1%",
+              "dla_nas.rozszerzony": "450 zł/1%",
+              "dla_rodziny.podstawowy": "400 zł/1%",
+              "dla_rodziny.rozszerzony": "500 zł/1%"
+            }
+          },
+          {
+            "nazwa": "Trwały uszczerbek zawał/krwotok — za 1%",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl_za_1proc",
+            "wartosci": {
+              "dla_mnie.podstawowy": 200,
+              "dla_mnie.rozszerzony": 300,
+              "dla_mnie.komfort": 500,
+              "dla_nas.podstawowy": 250,
+              "dla_nas.rozszerzony": 300,
+              "dla_rodziny.podstawowy": 300,
+              "dla_rodziny.rozszerzony": 400
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "200 zł/1%",
+              "dla_mnie.rozszerzony": "300 zł/1%",
+              "dla_mnie.komfort": "500 zł/1%",
+              "dla_nas.podstawowy": "250 zł/1%",
+              "dla_nas.rozszerzony": "300 zł/1%",
+              "dla_rodziny.podstawowy": "300 zł/1%",
+              "dla_rodziny.rozszerzony": "400 zł/1%"
+            }
+          },
+          {
+            "nazwa": "Całkowita trwała niezdolność do pracy NW",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 10000,
+              "dla_mnie.rozszerzony": 25000,
+              "dla_mnie.komfort": 30000,
+              "dla_nas.podstawowy": 15000,
+              "dla_nas.rozszerzony": 30000,
+              "dla_rodziny.podstawowy": 30000,
+              "dla_rodziny.rozszerzony": 40000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "10 000 zł",
+              "dla_mnie.rozszerzony": "25 000 zł",
+              "dla_mnie.komfort": "30 000 zł",
+              "dla_nas.podstawowy": "15 000 zł",
+              "dla_nas.rozszerzony": "30 000 zł",
+              "dla_rodziny.podstawowy": "30 000 zł",
+              "dla_rodziny.rozszerzony": "40 000 zł"
+            }
+          },
+          {
+            "nazwa": "Operacja chirurgiczna Gr.1",
+            "karencja": "6 mies.",
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": 1500,
+              "dla_mnie.komfort": 2000,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": 2000,
+              "dla_rodziny.podstawowy": 1500,
+              "dla_rodziny.rozszerzony": 2000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "1500 zł",
+              "dla_mnie.komfort": "2000 zł",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "2000 zł",
+              "dla_rodziny.podstawowy": "1500 zł",
+              "dla_rodziny.rozszerzony": "2000 zł"
+            }
+          },
+          {
+            "nazwa": "Operacja chirurgiczna Gr.2",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": 900,
+              "dla_mnie.komfort": 1200,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": 1200,
+              "dla_rodziny.podstawowy": 900,
+              "dla_rodziny.rozszerzony": 1200
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "900 zł",
+              "dla_mnie.komfort": "1200 zł",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "1200 zł",
+              "dla_rodziny.podstawowy": "900 zł",
+              "dla_rodziny.rozszerzony": "1200 zł"
+            }
+          },
+          {
+            "nazwa": "Operacja chirurgiczna Gr.3",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 300,
+              "dla_mnie.rozszerzony": 400,
+              "dla_mnie.komfort": 400,
+              "dla_nas.podstawowy": 300,
+              "dla_nas.rozszerzony": 400,
+              "dla_rodziny.podstawowy": 300,
+              "dla_rodziny.rozszerzony": 400
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "300 zł",
+              "dla_mnie.rozszerzony": "400 zł",
+              "dla_mnie.komfort": "400 zł",
+              "dla_nas.podstawowy": "300 zł",
+              "dla_nas.rozszerzony": "400 zł",
+              "dla_rodziny.podstawowy": "300 zł",
+              "dla_rodziny.rozszerzony": "400 zł"
+            }
+          },
+          {
+            "nazwa": "Poważne zachorowanie (34 j.ch.)",
+            "karencja": "3 mies.",
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 3000,
+              "dla_mnie.rozszerzony": 6000,
+              "dla_mnie.komfort": 12000,
+              "dla_nas.podstawowy": 4000,
+              "dla_nas.rozszerzony": 6000,
+              "dla_rodziny.podstawowy": 7000,
+              "dla_rodziny.rozszerzony": 9000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "3000 zł",
+              "dla_mnie.rozszerzony": "6000 zł",
+              "dla_mnie.komfort": "12 000 zł",
+              "dla_nas.podstawowy": "4000 zł",
+              "dla_nas.rozszerzony": "6000 zł",
+              "dla_rodziny.podstawowy": "7000 zł",
+              "dla_rodziny.rozszerzony": "9000 zł"
+            }
+          },
+          {
+            "nazwa": "Leczenie szpitalne NW",
+            "karencja": "2 mies. (od 15. dnia)",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": "120/50 zł",
+              "dla_mnie.rozszerzony": "160/60 zł",
+              "dla_mnie.komfort": "180/70 zł",
+              "dla_nas.podstawowy": "120/50 zł",
+              "dla_nas.rozszerzony": "140/60 zł",
+              "dla_rodziny.podstawowy": "170/60 zł",
+              "dla_rodziny.rozszerzony": "180/70 zł"
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "120/50 zł",
+              "dla_mnie.rozszerzony": "160/60 zł",
+              "dla_mnie.komfort": "180/70 zł",
+              "dla_nas.podstawowy": "120/50 zł",
+              "dla_nas.rozszerzony": "140/60 zł",
+              "dla_rodziny.podstawowy": "170/60 zł",
+              "dla_rodziny.rozszerzony": "180/70 zł"
+            }
+          },
+          {
+            "nazwa": "Leczenie szpitalne choroba",
+            "karencja": "2 mies.",
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": "50 zł/dzień",
+              "dla_mnie.rozszerzony": "60 zł/dzień",
+              "dla_mnie.komfort": "70 zł/dzień",
+              "dla_nas.podstawowy": "50 zł/dzień",
+              "dla_nas.rozszerzony": "60 zł/dzień",
+              "dla_rodziny.podstawowy": "60 zł/dzień",
+              "dla_rodziny.rozszerzony": "70 zł/dzień"
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "50 zł/dzień",
+              "dla_mnie.rozszerzony": "60 zł/dzień",
+              "dla_mnie.komfort": "70 zł/dzień",
+              "dla_nas.podstawowy": "50 zł/dzień",
+              "dla_nas.rozszerzony": "60 zł/dzień",
+              "dla_rodziny.podstawowy": "60 zł/dzień",
+              "dla_rodziny.rozszerzony": "70 zł/dzień"
+            }
+          },
+          {
+            "nazwa": "Leczenie szpitalne NW — ruch lądowy",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl_dzien",
+            "wartosci": {
+              "dla_mnie.podstawowy": 220,
+              "dla_mnie.rozszerzony": 310,
+              "dla_mnie.komfort": 330,
+              "dla_nas.podstawowy": 220,
+              "dla_nas.rozszerzony": 290,
+              "dla_rodziny.podstawowy": 320,
+              "dla_rodziny.rozszerzony": 330
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "220 zł/dzień",
+              "dla_mnie.rozszerzony": "310 zł/dzień",
+              "dla_mnie.komfort": "330 zł/dzień",
+              "dla_nas.podstawowy": "220 zł/dzień",
+              "dla_nas.rozszerzony": "290 zł/dzień",
+              "dla_rodziny.podstawowy": "320 zł/dzień",
+              "dla_rodziny.rozszerzony": "330 zł/dzień"
+            }
+          },
+          {
+            "nazwa": "Leczenie szpitalne zawał/krwotok",
+            "karencja": "2 mies.",
+            "wyroznienie": false,
+            "format": "zl_dzien",
+            "wartosci": {
+              "dla_mnie.podstawowy": 80,
+              "dla_mnie.rozszerzony": 120,
+              "dla_mnie.komfort": 130,
+              "dla_nas.podstawowy": 80,
+              "dla_nas.rozszerzony": 120,
+              "dla_rodziny.podstawowy": 120,
+              "dla_rodziny.rozszerzony": 140
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "80 zł/dzień",
+              "dla_mnie.rozszerzony": "120 zł/dzień",
+              "dla_mnie.komfort": "130 zł/dzień",
+              "dla_nas.podstawowy": "80 zł/dzień",
+              "dla_nas.rozszerzony": "120 zł/dzień",
+              "dla_rodziny.podstawowy": "120 zł/dzień",
+              "dla_rodziny.rozszerzony": "140 zł/dzień"
+            }
+          },
+          {
+            "nazwa": "Leczenie specjalistyczne",
+            "karencja": "3 mies.",
+            "wyroznienie": true,
+            "format": "do_zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": 1500,
+              "dla_mnie.rozszerzony": 2000,
+              "dla_mnie.komfort": 4000,
+              "dla_nas.podstawowy": 1500,
+              "dla_nas.rozszerzony": 2500,
+              "dla_rodziny.podstawowy": 2000,
+              "dla_rodziny.rozszerzony": 2500
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "do 1500 zł",
+              "dla_mnie.rozszerzony": "do 2000 zł",
+              "dla_mnie.komfort": "do 4000 zł",
+              "dla_nas.podstawowy": "do 1500 zł",
+              "dla_nas.rozszerzony": "do 2500 zł",
+              "dla_rodziny.podstawowy": "do 2000 zł",
+              "dla_rodziny.rozszerzony": "do 2500 zł"
+            }
+          }
+        ],
+        "malzonek": [
+          {
+            "nazwa": "Zgon małżonka/partnera NW",
+            "karencja": null,
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": 14000,
+              "dla_nas.rozszerzony": 25000,
+              "dla_rodziny.podstawowy": 20000,
+              "dla_rodziny.rozszerzony": 24000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "14 000 zł",
+              "dla_nas.rozszerzony": "25 000 zł",
+              "dla_rodziny.podstawowy": "20 000 zł",
+              "dla_rodziny.rozszerzony": "24 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon małżonka/partnera",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": 7000,
+              "dla_nas.rozszerzony": 12000,
+              "dla_rodziny.podstawowy": 10000,
+              "dla_rodziny.rozszerzony": 12000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "7000 zł",
+              "dla_nas.rozszerzony": "12 000 zł",
+              "dla_rodziny.podstawowy": "10 000 zł",
+              "dla_rodziny.rozszerzony": "12 000 zł"
+            }
+          },
+          {
+            "nazwa": "Trwałe inwalidztwo małżonka/partnera NW",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "do_zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": 8000,
+              "dla_nas.rozszerzony": 10000,
+              "dla_rodziny.podstawowy": 10000,
+              "dla_rodziny.rozszerzony": 10000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "do 8000 zł",
+              "dla_nas.rozszerzony": "do 10 000 zł",
+              "dla_rodziny.podstawowy": "do 10 000 zł",
+              "dla_rodziny.rozszerzony": "do 10 000 zł"
+            }
+          },
+          {
+            "nazwa": "Poważne zachorowanie małżonka/partnera (12 j.ch.)",
+            "karencja": "3 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": 2000,
+              "dla_nas.rozszerzony": 3000,
+              "dla_rodziny.podstawowy": 2000,
+              "dla_rodziny.rozszerzony": 3000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "2000 zł",
+              "dla_nas.rozszerzony": "3000 zł",
+              "dla_rodziny.podstawowy": "2000 zł",
+              "dla_rodziny.rozszerzony": "3000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon rodzica",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": null,
+              "dla_rodziny.rozszerzony": 1600
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "—",
+              "dla_rodziny.rozszerzony": "1600 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon teścia",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": null,
+              "dla_rodziny.rozszerzony": 1600
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "—",
+              "dla_rodziny.rozszerzony": "1600 zł"
+            }
+          }
+        ],
+        "dziecko": [
+          {
+            "nazwa": "Osierocenie dziecka",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": 3000,
+              "dla_rodziny.rozszerzony": 4000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "3000 zł",
+              "dla_rodziny.rozszerzony": "4000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon dziecka NW",
+            "karencja": null,
+            "wyroznienie": true,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": 8000,
+              "dla_rodziny.rozszerzony": 10000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "8000 zł",
+              "dla_rodziny.rozszerzony": "10 000 zł"
+            }
+          },
+          {
+            "nazwa": "Zgon dziecka",
+            "karencja": "6 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": 4000,
+              "dla_rodziny.rozszerzony": 5000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "4000 zł",
+              "dla_rodziny.rozszerzony": "5000 zł"
+            }
+          },
+          {
+            "nazwa": "Urodzenie dziecka",
+            "karencja": "9 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": 1300,
+              "dla_rodziny.rozszerzony": 1300
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "1300 zł",
+              "dla_rodziny.rozszerzony": "1300 zł"
+            }
+          },
+          {
+            "nazwa": "Urodzenie martwego noworodka",
+            "karencja": "9 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": 3000,
+              "dla_rodziny.rozszerzony": 3500
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "3000 zł",
+              "dla_rodziny.rozszerzony": "3500 zł"
+            }
+          },
+          {
+            "nazwa": "Trwałe inwalidztwo dziecka NW",
+            "karencja": null,
+            "wyroznienie": false,
+            "format": "do_zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": 10000,
+              "dla_rodziny.rozszerzony": 10000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "do 10 000 zł",
+              "dla_rodziny.rozszerzony": "do 10 000 zł"
+            }
+          },
+          {
+            "nazwa": "Wada wrodzona dziecka",
+            "karencja": "9 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": 2000,
+              "dla_rodziny.rozszerzony": 2500
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "2000 zł",
+              "dla_rodziny.rozszerzony": "2500 zł"
+            }
+          },
+          {
+            "nazwa": "Poważne zachorowanie dziecka (18 j.ch.)",
+            "karencja": "3 mies.",
+            "wyroznienie": false,
+            "format": "zl",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": 4000,
+              "dla_rodziny.rozszerzony": 5000
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "4000 zł",
+              "dla_rodziny.rozszerzony": "5000 zł"
+            }
+          },
+          {
+            "nazwa": "Leczenie szpitalne dziecka",
+            "karencja": "2 mies.",
+            "wyroznienie": false,
+            "format": "zl_dzien",
+            "wartosci": {
+              "dla_mnie.podstawowy": null,
+              "dla_mnie.rozszerzony": null,
+              "dla_mnie.komfort": null,
+              "dla_nas.podstawowy": null,
+              "dla_nas.rozszerzony": null,
+              "dla_rodziny.podstawowy": 400,
+              "dla_rodziny.rozszerzony": 500
+            },
+            "wyswietlane": {
+              "dla_mnie.podstawowy": "—",
+              "dla_mnie.rozszerzony": "—",
+              "dla_mnie.komfort": "—",
+              "dla_nas.podstawowy": "—",
+              "dla_nas.rozszerzony": "—",
+              "dla_rodziny.podstawowy": "400 zł/dzień",
+              "dla_rodziny.rozszerzony": "500 zł/dzień"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "swiadczenia_naglowki_kategorii": {
+    "ubezpieczony": "Pakiet ubezpieczonego",
+    "malzonek": "Pakiet małżonek / partner",
+    "dziecko": "Pakiet dziecko"
+  },
+  "swiadczenia_reguly": "getBenefits(grupa,produkt,wariant): wszystkie wiersze 'ubezpieczony' (null→'—'); dla dla_nas i dla_rodziny dodatkowo wiersze 'malzonek' z wartością ≠ '—'; dla dla_rodziny dodatkowo wiersze 'dziecko' z wartością ≠ '—'. Kolumna 'Karencja' (null→'—'). Wiersze z wyroznienie=true na tle bg-yellow-50.",
+  "katalog_zachorowan": {
+    "zrodlo": "WU/ER 01/25 · Załącznik 1",
+    "obowiazuje_od": "13.02.2026",
+    "statystyki": {
+      "wszystkich": 57,
+      "zakres_maksymalny": 34,
+      "zakres_komfort": 56,
+      "malzonek_rozszerzony": 12,
+      "dziecko": 18
+    },
+    "kategorie": [
+      "Choroby infekcyjne",
+      "Neurologiczne",
+      "Kardiologiczne",
+      "Onkologiczne",
+      "Gastroenterologiczne",
+      "Urazowe",
+      "Nefrologiczne",
+      "Hematologiczne",
+      "Metaboliczne",
+      "Reumatologiczne",
+      "Genetyczne",
+      "Pulmonologiczne",
+      "Operacje/Przeszczepy",
+      "Inne"
+    ],
+    "filtry_zakresu": [
+      "Wszystkie zakresy",
+      "Ubezpieczony – Maksymalny",
+      "Ubezpieczony – Komfort",
+      "Małżonek – Rozszerzony",
+      "Dziecko"
+    ],
+    "sortowanie": [
+      "Sortuj: LP (domyślnie)",
+      "Sortuj: Alfabetycznie"
+    ],
+    "uwaga": "Definicje (rozwijane ▾) są w chunku 03amb72-bgjst.js, którego nie pobrano. Nie wiadomo, której 1 z 57 pozycji brak w zakresie KOMFORT.",
+    "pozycje": [
+      {
+        "lp": 1,
+        "nazwa": "Bakteryjne zapalenie opon mózgowych",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 2,
+        "nazwa": "Bąblowiec mózgu",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 3,
+        "nazwa": "Cholera",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 4,
+        "nazwa": "Choroba Alzheimera",
+        "kategoria": "Neurologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 5,
+        "nazwa": "Choroba Creutzfeldta-Jakoba",
+        "kategoria": "Neurologiczne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 6,
+        "nazwa": "Choroba Crohna",
+        "kategoria": "Gastroenterologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 7,
+        "nazwa": "Choroba Heinego-Medina",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 8,
+        "nazwa": "Choroba Huntingtona (pląsawica Huntingtona)",
+        "kategoria": "Neurologiczne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 9,
+        "nazwa": "Choroba neuronu ruchowego",
+        "kategoria": "Neurologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 10,
+        "nazwa": "Choroba Parkinsona",
+        "kategoria": "Neurologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 11,
+        "nazwa": "Ciężki uraz głowy (następstwo wypadku)",
+        "kategoria": "Urazowe",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 12,
+        "nazwa": "Cukrzyca typu I",
+        "kategoria": "Metaboliczne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 13,
+        "nazwa": "Dur brzuszny",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 14,
+        "nazwa": "Dystrofia mięśniowa",
+        "kategoria": "Genetyczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 15,
+        "nazwa": "Gorączka denga",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 16,
+        "nazwa": "Gorączka zachodniego Nilu",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 17,
+        "nazwa": "Kardiomiopatia",
+        "kategoria": "Kardiologiczne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 18,
+        "nazwa": "Łagodny guz mózgu",
+        "kategoria": "Onkologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 19,
+        "nazwa": "Łagodny guz rdzenia kręgowego",
+        "kategoria": "Onkologiczne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 20,
+        "nazwa": "Malaria",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 21,
+        "nazwa": "Miastenia",
+        "kategoria": "Neurologiczne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 22,
+        "nazwa": "Neuroborelioza",
+        "kategoria": "Choroby infekcyjne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 23,
+        "nazwa": "Niedokrwistość aplastyczna",
+        "kategoria": "Hematologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 24,
+        "nazwa": "Niewydolność nerek",
+        "kategoria": "Nefrologiczne",
+        "max": true,
+        "malzonek": true,
+        "dziecko": true
+      },
+      {
+        "lp": 25,
+        "nazwa": "Nowotwór złośliwy",
+        "kategoria": "Onkologiczne",
+        "max": true,
+        "malzonek": true,
+        "dziecko": true
+      },
+      {
+        "lp": 26,
+        "nazwa": "Operacja aorty",
+        "kategoria": "Kardiologiczne",
+        "max": true,
+        "malzonek": true,
+        "dziecko": false
+      },
+      {
+        "lp": 27,
+        "nazwa": "Operacja mózgu",
+        "kategoria": "Neurologiczne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 28,
+        "nazwa": "Operacyjne wykonanie pomostów naczyniowych (by-pass)",
+        "kategoria": "Kardiologiczne",
+        "max": true,
+        "malzonek": true,
+        "dziecko": false
+      },
+      {
+        "lp": 29,
+        "nazwa": "Paraliż",
+        "kategoria": "Neurologiczne",
+        "max": true,
+        "malzonek": true,
+        "dziecko": true
+      },
+      {
+        "lp": 30,
+        "nazwa": "Pierwotne nadciśnienie płucne",
+        "kategoria": "Kardiologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 31,
+        "nazwa": "Piorunujące wirusowe zapalenie wątroby",
+        "kategoria": "Gastroenterologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 32,
+        "nazwa": "Poparzenie",
+        "kategoria": "Urazowe",
+        "max": true,
+        "malzonek": true,
+        "dziecko": true
+      },
+      {
+        "lp": 33,
+        "nazwa": "Posocznica (sepsa)",
+        "kategoria": "Choroby infekcyjne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 34,
+        "nazwa": "Postępująca twardzina układowa",
+        "kategoria": "Reumatologiczne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 35,
+        "nazwa": "Przeszczep narządu",
+        "kategoria": "Operacje/Przeszczepy",
+        "max": true,
+        "malzonek": true,
+        "dziecko": true
+      },
+      {
+        "lp": 36,
+        "nazwa": "Przeszczep zastawki serca",
+        "kategoria": "Kardiologiczne",
+        "max": true,
+        "malzonek": true,
+        "dziecko": false
+      },
+      {
+        "lp": 37,
+        "nazwa": "Przewlekła niewydolność oddechowa",
+        "kategoria": "Pulmonologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 38,
+        "nazwa": "Schistosomatoza",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 39,
+        "nazwa": "Schyłkowa niewydolność wątroby",
+        "kategoria": "Gastroenterologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 40,
+        "nazwa": "Stwardnienie rozsiane",
+        "kategoria": "Neurologiczne",
+        "max": true,
+        "malzonek": true,
+        "dziecko": false
+      },
+      {
+        "lp": 41,
+        "nazwa": "Śpiączka",
+        "kategoria": "Neurologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 42,
+        "nazwa": "Tężec",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 43,
+        "nazwa": "Toczniowe zapalenie nerek",
+        "kategoria": "Nefrologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 44,
+        "nazwa": "Udar mózgu",
+        "kategoria": "Neurologiczne",
+        "max": true,
+        "malzonek": true,
+        "dziecko": false
+      },
+      {
+        "lp": 45,
+        "nazwa": "Uraz wielonarządowy",
+        "kategoria": "Urazowe",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 46,
+        "nazwa": "Usunięcie płuca",
+        "kategoria": "Pulmonologiczne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 47,
+        "nazwa": "Utrata kończyn",
+        "kategoria": "Urazowe",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 48,
+        "nazwa": "Utrata mowy",
+        "kategoria": "Neurologiczne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 49,
+        "nazwa": "Utrata możliwości samodzielnej egzystencji",
+        "kategoria": "Inne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 50,
+        "nazwa": "Utrata słuchu",
+        "kategoria": "Inne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 51,
+        "nazwa": "Utrata wzroku",
+        "kategoria": "Inne",
+        "max": true,
+        "malzonek": true,
+        "dziecko": true
+      },
+      {
+        "lp": 52,
+        "nazwa": "Wścieklizna",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 53,
+        "nazwa": "Zakażenie wirusem HIV w wyniku transfuzji krwi",
+        "kategoria": "Choroby infekcyjne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 54,
+        "nazwa": "Zapalenie mózgu",
+        "kategoria": "Choroby infekcyjne",
+        "max": true,
+        "malzonek": false,
+        "dziecko": true
+      },
+      {
+        "lp": 55,
+        "nazwa": "Zawał mięśnia sercowego",
+        "kategoria": "Kardiologiczne",
+        "max": true,
+        "malzonek": true,
+        "dziecko": false
+      },
+      {
+        "lp": 56,
+        "nazwa": "Zgorzel gazowa",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      },
+      {
+        "lp": 57,
+        "nazwa": "Żółta gorączka",
+        "kategoria": "Choroby infekcyjne",
+        "max": false,
+        "malzonek": false,
+        "dziecko": false
+      }
+    ]
+  },
+  "ubezpieczenia_dodatkowe_szczegoly": {
+    "MediPlan": {
+      "title": "MediPlan",
+      "subtitle": "§ 62–66 WU ER 01/25",
+      "accentColor": "#1565C0",
+      "lightColor": "#E3F2FD",
+      "icon": "🏥",
+      "summary": "Organizacja i pokrycie kosztów specjalistycznej pomocy medycznej po nieszczęśliwym wypadku na terytorium Polski. Suma ubezpieczenia: 10 000 zł. Telefon Centrum Alarmowego: 22 522 29 94",
+      "trigger": "Nieszczęśliwy wypadek skutkujący: pęknięciem/złamaniem kości, zwichnięciem/skręceniem stawu, urazem kręgosłupa, urazem głowy (wstrząśnienie, pęknięcie czaszki), urazem narządów wewnętrznych lub urazem oka.",
+      "definitions": [
+        {
+          "term": "Nieszczęśliwy wypadek",
+          "def": "Nagłe zdarzenie wywołane przyczyną zewnętrzną, w następstwie którego Ubezpieczony – niezależnie od woli i stanu zdrowia – doznał uszkodzenia ciała skutkującego złamaniem, zwichnięciem, urazem kręgosłupa, głowy, narządów wewnętrznych lub oka."
+        },
+        {
+          "term": "Centrum Alarmowe",
+          "def": "Podmiot organizujący i świadczący usługi assistance w imieniu ERGO Hestii. Tel: 22 522 29 94."
+        },
+        {
+          "term": "Lekarz prowadzący",
+          "def": "Lekarz przydzielony do opieki nad Ubezpieczonym w placówce medycznej, w której leczono następstwa wypadku."
+        },
+        {
+          "term": "Placówka medyczna",
+          "def": "Podmiot prowadzący działalność leczniczą na terytorium Polski. Nie są nią: ośrodki opieki społecznej, hospicja, ośrodki leczenia uzależnień, sanatoria, SPA."
+        }
+      ],
+      "limits": [
+        {
+          "label": "Suma ubezpieczenia łączna",
+          "value": "10 000 zł",
+          "note": ""
+        },
+        {
+          "label": "Maks. liczba świadczeń na jedno zdarzenie",
+          "value": "20",
+          "note": "Każde zrealizowane świadczenie pomniejsza pula"
+        },
+        {
+          "label": "Rehabilitacja",
+          "value": "maks. 40 zabiegów",
+          "note": "Liczone jako 1 świadczenie"
+        },
+        {
+          "label": "Tomografia komputerowa",
+          "value": "1 badanie / zdarzenie",
+          "note": ""
+        },
+        {
+          "label": "Rezonans magnetyczny",
+          "value": "1 badanie / zdarzenie",
+          "note": ""
+        },
+        {
+          "label": "Termin zgłoszenia",
+          "value": "30 dni",
+          "note": "Od daty zdarzenia, tel. 22 522 29 94"
+        },
+        {
+          "label": "Czas realizacji – specjalista",
+          "value": "do 5 dni roboczych",
+          "note": "Od decyzji o uznaniu"
+        },
+        {
+          "label": "Czas realizacji – pozostałe",
+          "value": "do 3 dni roboczych",
+          "note": "Od decyzji o uznaniu"
+        }
+      ],
+      "benefits": [
+        {
+          "group": "Informacyjno-organizacyjne",
+          "color": "#1565C0",
+          "items": [
+            {
+              "name": "Telefoniczna informacja medyczna",
+              "detail": "Ogólna informacja o stanach nagłych, jednostkach chorobowych, zachowaniach prozdrowotnych, dietach, lekach, szczepieniach, ukąszeniach, wynikach badań, telefonach zaufania, danych placówek medycznych i aptek na terenie Polski. Możliwość telefonicznej konsultacji z lekarzem Centrum Alarmowego (informacje mają charakter ogólny, nie stanowią porady medycznej).",
+              "limit": "bez limitu"
+            },
+            {
+              "name": "Infolinia szpitalna",
+              "detail": "Informacje o szpitalach w sieci Centrum Alarmowego: dostępność, specjalności, numery telefonów, średnie ceny usług. Wskazówki co zabrać do szpitala, na co zwrócić uwagę, czego spodziewać się podczas leczenia.",
+              "limit": "bez limitu"
+            }
+          ]
+        },
+        {
+          "group": "Pomoc medyczna (maks. 20 świadczeń na zdarzenie)",
+          "color": "#00695C",
+          "items": [
+            {
+              "name": "Konsultacja chirurga",
+              "detail": "Centrum Alarmowe zorganizuje i pokryje koszty wizyty na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Konsultacja okulisty",
+              "detail": "Centrum Alarmowe zorganizuje i pokryje koszty wizyty na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Konsultacja otolaryngologa",
+              "detail": "Centrum Alarmowe zorganizuje i pokryje koszty wizyty na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Konsultacja ortopedy",
+              "detail": "Centrum Alarmowe zorganizuje i pokryje koszty wizyty na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Konsultacja kardiologa",
+              "detail": "Centrum Alarmowe zorganizuje i pokryje koszty wizyty na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Konsultacja neurologa",
+              "detail": "Centrum Alarmowe zorganizuje i pokryje koszty wizyty na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Konsultacja pulmonologa",
+              "detail": "Centrum Alarmowe zorganizuje i pokryje koszty wizyty na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Konsultacja lekarza rehabilitacji",
+              "detail": "Centrum Alarmowe zorganizuje i pokryje koszty wizyty na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Konsultacja neurochirurga",
+              "detail": "Centrum Alarmowe zorganizuje i pokryje koszty wizyty na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Konsultacja psychologa",
+              "detail": "Centrum Alarmowe zorganizuje i pokryje koszty wizyty na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Zabiegi ambulatoryjne",
+              "detail": "Zabiegi chirurgiczne, laryngologiczne, okulistyczne, ortopedyczne według wykazu procedur medycznych z Załącznika 4 OWU (m.in. nacięcia, drenaże, nastawienie zwichnięć, opatrunki gipsowe, usunięcie ciał obcych).",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Badania laboratoryjne",
+              "detail": "Morfologia krwi obwodowej (kompletna, z rozmazem, z retikulocytami), OB. Na podstawie pisemnego zalecenia lekarza prowadzącego. Traktowane jako 1 świadczenie niezależnie od liczby zleconych badań.",
+              "limit": "1 świadczenie z puli 20"
+            },
+            {
+              "name": "Badania radiologiczne",
+              "detail": "Pełen wykaz zdjęć RTG: czaszka, klatka piersiowa, kręgosłup (szyjny, piersiowy, lędźwiowy), miednica, kończyny górne i dolne, biodro, kolano, staw skokowy, stopa i inne. Na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Ultrasonografia",
+              "detail": "USG: klatka piersiowa, jama brzuszna, miednica, moszna i jej zawartość, kończyny (naczyniowe i nienaczyniowe). Na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "z puli 20 świadczeń"
+            },
+            {
+              "name": "Rehabilitacja",
+              "detail": "Wizyta fizjoterapeuty w miejscu pobytu lub wizyta w poradni rehabilitacyjnej. Obejmuje ćwiczenia indywidualne i grupowe, terapię manualną, wyciągi, kinesiotaping, fizykoterapię (diatermia, podczerwień, UV, ultradźwięki, jonoforeza, galwanizacja, elektrostymulacja, prądy TENS, Traberta, Kotza, diadynamiczne, interferencyjne, pole magnetyczne, laseroterapia, krioterapia, okłady).",
+              "limit": "maks. 40 zabiegów = 1 świadczenie"
+            },
+            {
+              "name": "Tomografia komputerowa",
+              "detail": "CT głowy/mózgu, oczodołu, tkanek miękkich szyi, klatki piersiowej, kręgosłupa (szyjny, piersiowy, lędźwiowy), miednicy, kończyn, jamy brzusznej – bez kontrastu i z kontrastem. Na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "1 badanie na zdarzenie"
+            },
+            {
+              "name": "Rezonans magnetyczny (MRI)",
+              "detail": "MRI oczodołu/twarzy/szyi, mózgu, klatki piersiowej, kanału kręgowego (szyjny, piersiowy, lędźwiowy), miednicy, kończyn górnych i dolnych, stawów, jamy brzusznej – bez kontrastu i z kontrastem. Na podstawie pisemnego zalecenia lekarza prowadzącego.",
+              "limit": "1 badanie na zdarzenie"
+            }
+          ]
+        }
+      ],
+      "exclusions": [
+        "Obrażenia niemające normalnego związku przyczynowego ze zdarzeniem ubezpieczeniowym",
+        "Brak zgody Ubezpieczonego na udostępnienie dokumentacji medycznej (gdy wymagana)",
+        "Powódź, huragan, pożar, działania wojenne, zamieszki, strajki, terroryzm, trzęsienie ziemi, energii jądrowej",
+        "Działanie w stanie po spożyciu alkoholu, narkotyków, leków psychotropowych",
+        "Zaburzenia psychiczne zdiagnozowane lub leczone w ciągu 3 lat przed objęciem ubezpieczeniem",
+        "Prowadzenie pojazdu bez wymaganych uprawnień",
+        "Uczestnictwo w bójce (z wyłączeniem obrony koniecznej)",
+        "Umyślne działanie Ubezpieczonego lub osoby ze wspólnego gospodarstwa domowego",
+        "Rażące niedbalstwo Ubezpieczonego",
+        "Wyczynowe uprawianie sportu",
+        "Amatorskie uprawianie sportów wysokiego ryzyka: powietrznych, motorowych, motorowodnych, speleologii, wspinaczki z sprzętem asekuracyjnym, raftingu, nurkowania ze sprzętem specjalistycznym, heliskiingu, heliboardingu, skoków na gumowej linie",
+        "ERGO Hestia nie odpowiada za przebieg i skutki organizowanej terapii, leczenia ani badań",
+        "Skutki braku zastosowania się do zaleceń lekarza Centrum Alarmowego"
+      ],
+      "procedure": [
+        "Zadzwoń do Centrum Alarmowego pod numer 22 522 29 94 — niezwłocznie, max. 30 dni od zdarzenia",
+        "Podaj: imię i nazwisko, PESEL, adres zamieszkania, datę zdarzenia, telefon kontaktowy, opis zdarzenia",
+        "Wypełnij i przekaż „Wniosek o realizację świadczeń” z kopią skierowania lekarza prowadzącego i dokumentacją medyczną potwierdzającą związek obrażeń z wypadkiem",
+        "Centrum Alarmowe w ciągu 3 dni roboczych poinformuje o decyzji lekarza Centrum Alarmowego",
+        "Przy każdym kolejnym świadczeniu: przekaż kopię skierowania/zalecenia lekarza prowadzącego",
+        "Świadczenia realizowane są wyłącznie w placówkach należących do sieci Centrum Alarmowego",
+        "Koszty pokrywane są bezpośrednio na rzecz placówki medycznej (nie refundacja!)",
+        "Dokumenty wysyłaj na adres: pmu.szkody@mondial-assistance.pl"
+      ]
+    },
+    "MedicalAssistance": {
+      "title": "Medical Assistance",
+      "subtitle": "§ 67–71 WU ER 01/25",
+      "accentColor": "#00695C",
+      "lightColor": "#E0F2F1",
+      "icon": "🚑",
+      "summary": "Organizacja i pokrycie kosztów pomocy opiekuńczo-medycznej po nieszczęśliwym wypadku lub nagłym zachorowaniu na terytorium Polski. Łączny roczny limit: 3 000 zł. Telefon Centrum Alarmowego: (22) 522 29 94.",
+      "trigger": "Uszkodzenie ciała lub rozstrój zdrowia wskutek nieszczęśliwego wypadku lub nagłego zachorowania (nagłe stany wymagające natychmiastowej pomocy medycznej) na terytorium Polski.",
+      "definitions": [
+        {
+          "term": "Nagłe zachorowanie",
+          "def": "Stan chorobowy powstały w sposób nagły, wymagający natychmiastowej pomocy medycznej."
+        },
+        {
+          "term": "Współubezpieczony",
+          "def": "Osoba bliska Ubezpieczonego, wspólnie z nim zamieszkująca."
+        },
+        {
+          "term": "Centrum Alarmowe",
+          "def": "Podmiot organizujący i świadczący usługi assistance w imieniu ERGO Hestii. Tel: (22) 522 29 94."
+        },
+        {
+          "term": "Rok polisowy",
+          "def": "Okres od dnia wskazanego w certyfikacie jako data rozpoczęcia ochrony do dnia poprzedzającego pierwszą lub kolejną rocznicę polisy."
+        },
+        {
+          "term": "Siła wyższa",
+          "def": "Zdarzenie zewnętrzne, niemożliwe do przewidzenia, którego skutkom nie można było zapobiec."
+        }
+      ],
+      "limits": [
+        {
+          "label": "Łączny roczny limit na wszystkie świadczenia",
+          "value": "3 000 zł",
+          "note": "Dotyczy łącznie Ubezpieczonego i współubezpieczonych"
+        },
+        {
+          "label": "Wizyta lekarza I kontaktu Centrum Alarmowego",
+          "value": "500 zł / rok",
+          "note": ""
+        },
+        {
+          "label": "Dostawa artykułów żywnościowych / higienicznych / leków",
+          "value": "300 zł / rok",
+          "note": "Koszt zakupu ponosi Ubezpieczony, pokrywane są koszty dostawy"
+        },
+        {
+          "label": "Transport medyczny",
+          "value": "bez limitu",
+          "note": ""
+        },
+        {
+          "label": "Wizyta pielęgniarki",
+          "value": "1 000 zł / rok",
+          "note": ""
+        },
+        {
+          "label": "Opieka nad dziećmi lub osobami niesamodzielnymi",
+          "value": "450 zł / rok",
+          "note": "Po min. 3 dobach hospitalizacji"
+        },
+        {
+          "label": "Transport opiekuna do dzieci / osób niesamodzielnych",
+          "value": "200 zł / rok",
+          "note": "Po min. 3 dobach hospitalizacji"
+        },
+        {
+          "label": "Opieka nad zwierzętami domowymi",
+          "value": "300 zł / rok",
+          "note": "Po min. 3 dobach hospitalizacji"
+        },
+        {
+          "label": "Powiadamianie rodziny",
+          "value": "bez limitu",
+          "note": ""
+        },
+        {
+          "label": "Infolinia medyczna",
+          "value": "bez limitu",
+          "note": ""
+        },
+        {
+          "label": "Opieka domowa po hospitalizacji",
+          "value": "400 zł / rok",
+          "note": "Po hospitalizacji trwającej powyżej 7 dni"
+        },
+        {
+          "label": "Organizacja wizyty u lekarza specjalisty",
+          "value": "bez limitu",
+          "note": "Koszt wizyty ponosi Ubezpieczony"
+        },
+        {
+          "label": "Wizyta fizykoterapeuty / poradnia rehabilitacyjna",
+          "value": "500 zł / rok",
+          "note": "Wyłącznie po wypadku"
+        },
+        {
+          "label": "Dostawa sprzętu rehabilitacyjnego",
+          "value": "300 zł / rok",
+          "note": "Wyłącznie po wypadku"
+        },
+        {
+          "label": "Wizyta u psychologa",
+          "value": "1 000 zł / rok",
+          "note": "Wyłącznie po trwałym inwalidztwie z wypadku"
+        },
+        {
+          "label": "Serwis Tele-Maluch",
+          "value": "bez limitu",
+          "note": "Informacje dla rodziców"
+        }
+      ],
+      "benefits": [
+        {
+          "group": "Pomoc medyczna i pielęgniarska",
+          "color": "#00695C",
+          "items": [
+            {
+              "name": "Pokrycie kosztów wizyty lekarza I kontaktu Centrum Alarmowego",
+              "detail": "Organizacja i pokrycie kosztów pierwszej wizyty lekarza pierwszego kontaktu w miejscu pobytu Ubezpieczonego lub współubezpieczonego (dojazd i honorarium lekarza). Zdarzenie: nieszczęśliwy wypadek lub nagłe zachorowanie.",
+              "limit": "500 zł / rok"
+            },
+            {
+              "name": "Transport medyczny",
+              "detail": "Organizacja i pokrycie kosztów transportu Ubezpieczonego lub współubezpieczonego z miejsca pobytu do szpitala lub innej placówki medycznej, zgodnie z zaleceniami lekarza Centrum Alarmowego.",
+              "limit": "bez limitu"
+            },
+            {
+              "name": "Pokrycie kosztów wizyty pielęgniarki",
+              "detail": "Organizacja i pokrycie kosztów wizyty pielęgniarki w miejscu pobytu Ubezpieczonego lub współubezpieczonego, zgodnie z zaleceniami lekarza Centrum Alarmowego.",
+              "limit": "1 000 zł / rok"
+            },
+            {
+              "name": "Opieka domowa po hospitalizacji",
+              "detail": "Organizacja i pokrycie kosztów opieki domowej po zakończonej hospitalizacji trwającej powyżej 7 dni, zgodnie z zaleceniami lekarza prowadzącego.",
+              "limit": "400 zł / rok"
+            },
+            {
+              "name": "Organizacja wizyty u lekarza specjalisty",
+              "detail": "Organizacja wizyty u lekarza specjalisty w terminie wskazanym przez Ubezpieczonego, jeżeli lekarz Centrum Alarmowego zaleci taką wizytę. Koszt wizyty pokrywa Ubezpieczony.",
+              "limit": "bez limitu (org.); koszt = Ubezpieczony"
+            },
+            {
+              "name": "Pokrycie kosztów wizyty fizykoterapeuty / poradni rehabilitacyjnej",
+              "detail": "Organizacja i pokrycie kosztów pracy rehabilitanta lub wizyty w poradni, jeżeli po wypadku lekarz zalecił zabiegi rehabilitacyjne w celu przywrócenia lub poprawy sprawności. Dotyczy wyłącznie wypadku.",
+              "limit": "500 zł / rok"
+            },
+            {
+              "name": "Dostawa sprzętu rehabilitacyjnego",
+              "detail": "Organizacja i pokrycie kosztów transportu sprzętu rehabilitacyjnego do Ubezpieczonego lub współubezpieczonego, jeżeli wypadek spowodował konieczność użycia takiego sprzętu zgodnie z zaleceniem lekarza.",
+              "limit": "300 zł / rok"
+            },
+            {
+              "name": "Pokrycie kosztów wizyty u psychologa",
+              "detail": "Organizacja i pokrycie kosztów wizyty lub wizyt u psychologa, jeżeli wypadek spowodował trwałe inwalidztwo Ubezpieczonego lub współubezpieczonego. Wyłącznie po trwałym inwalidztwie z wypadku.",
+              "limit": "1 000 zł / rok"
+            }
+          ]
+        },
+        {
+          "group": "Pomoc opiekuńcza i logistyczna",
+          "color": "#6A1B9A",
+          "items": [
+            {
+              "name": "Dostawa podstawowych artykułów żywnościowych, higienicznych i leków",
+              "detail": "Organizacja i pokrycie kosztów dostarczenia leków lub artykułów żywnościowych i higienicznych do miejsca pobytu, gdy Ubezpieczony lub współubezpieczony nie może opuszczać miejsca pobytu wg zaleceń lekarza. Koszt zakupu ponosi Ubezpieczony — pokrywane są jedynie koszty dostawy.",
+              "limit": "300 zł / rok"
+            },
+            {
+              "name": "Opieka nad dziećmi lub osobami niesamodzielnymi",
+              "detail": "Organizacja i pokrycie kosztów opieki nad dziećmi lub osobami niesamodzielnymi w miejscu zamieszkania, jeżeli Ubezpieczony lub współubezpieczony przebywa w szpitalu przez co najmniej 3 dni po wypadku i nie ma innej osoby mogącej zapewnić opiekę. Wymagana pisemna zgoda Ubezpieczonego.",
+              "limit": "450 zł / rok"
+            },
+            {
+              "name": "Transport opiekuna do dzieci lub osób niesamodzielnych",
+              "detail": "Organizacja i pokrycie kosztów przejazdu (pociąg lub autobus, dla odległości < 20 km — taksówka) w obie strony osoby wyznaczonej do opieki z miejsca jej pobytu do miejsca zamieszkania Ubezpieczonego. Warunek: hospitalizacja min. 3 dni po wypadku.",
+              "limit": "200 zł / rok"
+            },
+            {
+              "name": "Opieka nad zwierzętami domowymi",
+              "detail": "Organizacja i pokrycie kosztów opieki nad zwierzętami domowymi w miejscu zamieszkania Ubezpieczonego lub współubezpieczonego, gdy przebywają w szpitalu przez co najmniej 3 dni po wypadku.",
+              "limit": "300 zł / rok"
+            },
+            {
+              "name": "Powiadamianie rodziny",
+              "detail": "Centrum Alarmowe, na życzenie Ubezpieczonego lub współubezpieczonego, przekazuje wiadomości między nim a rodziną, gdy przebywa on w szpitalu po wypadku.",
+              "limit": "bez limitu"
+            }
+          ]
+        },
+        {
+          "group": "Informacyjne",
+          "color": "#1565C0",
+          "items": [
+            {
+              "name": "Infolinia medyczna",
+              "detail": "Ogólna informacja o: działaniu leków (stosowanie, odpowiedniki, skutki uboczne, interakcje, ciąża), lokalizacji i godzinach pracy aptek, przychodni i szpitali, badaniach kontrolnych dla grup ryzyka, grupach wsparcia i telefonach zaufania (alkohol, narkotyki, depresja, przemoc domowa, ciężkie choroby), placówkach rehabilitacyjnych i sanatoryjnych.",
+              "limit": "bez limitu"
+            },
+            {
+              "name": "Serwis informacyjny dla rodziców „Tele-Maluch”",
+              "detail": "Informacje o szkołach rodzenia, pielęgnacji w czasie ciąży i po porodzie, pielęgnacji noworodka, szczepieniach dzieci, przedszkolach, szkołach, uczelniach, ośrodkach kolonijnych, schroniskach i ośrodkach sportowo-rekreacyjnych na terenie kraju.",
+              "limit": "bez limitu"
+            }
+          ]
+        }
+      ],
+      "exclusions": [
+        "Zdarzenia i świadczenia poza terytorium Polski",
+        "Koszty poniesione samodzielnie bez wcześniejszego uzgodnienia z Centrum Alarmowym",
+        "Działanie po użyciu alkoholu lub w stanie nietrzeźwości",
+        "Uszkodzenia trzustki lub wątroby spowodowane spożywaniem alkoholu",
+        "Zaburzenia psychiczne, uzależnienia lub choroby układu nerwowego zdiagnozowane lub leczone w ciągu 3 lat przed objęciem ubezpieczeniem",
+        "Próba samobójcza Ubezpieczonego lub współubezpieczonego",
+        "Działania wojenne, zamieszki, powstania, akty terroryzmu",
+        "Choroby zdiagnozowane, leczone lub wymagające stałej kontroli w ciągu 3 lat przed objęciem ubezpieczeniem",
+        "Rekonwalescencja (świadczenia opiekuńcze po wyleczeniu)",
+        "Schorzenia w trakcie leczenia, które jeszcze nie zostały wyleczone"
+      ],
+      "procedure": [
+        "Zadzwoń do Centrum Alarmowego pod numer (22) 522 29 94 — niezwłocznie po zajściu zdarzenia",
+        "Centrum Alarmowe zorganizuje odpowiednie świadczenia i pokryje koszty bezpośrednio",
+        "Nie ponoś kosztów samodzielnie bez wcześniejszego uzgodnienia z Centrum Alarmowym — brak refundacji poniesionych samodzielnie wydatków",
+        "Pamiętaj: sumy ubezpieczenia są wspólne dla Ubezpieczonego i wszystkich współubezpieczonych",
+        "Sumy ubezpieczenia odnawiają się z początkiem każdego roku polisowego",
+        "Łączny limit roczny dla wszystkich świadczeń wynosi 3 000 zł"
+      ]
+    },
+    "wazne": "⚠️ Ważne: Świadczenia MUSZĄ być zorganizowane przez Centrum Alarmowe. ERGO Hestia nie zwraca kosztów poniesionych samodzielnie bez wcześniejszego uzgodnienia.",
+    "kluczowe_roznice": [
+      [
+        "Trigger",
+        "tylko nieszczęśliwy wypadek",
+        "wypadek LUB nagłe zachorowanie"
+      ],
+      [
+        "Co pokrywa",
+        "konsultacje specjalistów, zabiegi, badania diagnostyczne (RTG, USG, CT, MRI), rehabilitacja",
+        "wizyta lekarza I kontaktu, pielęgniarka, transport, opieka nad dziećmi/zwierzętami, dostawa artykułów"
+      ],
+      [
+        "Dla kogo",
+        "tylko Ubezpieczony",
+        "Ubezpieczony + współubezpieczeni (rodzina)"
+      ],
+      [
+        "Suma ubezpieczenia",
+        "10 000 zł (bez odnowienia w roku)",
+        "3 000 zł / rok (odnawia się rocznie)"
+      ],
+      [
+        "Jak działa",
+        "Centrum Alarmowe organizuje po weryfikacji dokumentów medycznych",
+        "Centrum Alarmowe organizuje po jednym telefonie – od razu"
+      ],
+      [
+        "Czas reakcji",
+        "3–5 dni roboczych",
+        "natychmiast po kontakcie telefonicznym"
+      ]
+    ],
+    "zakladki": [
+      "Świadczenia",
+      "Limity",
+      "Wyłączenia",
+      "Jak skorzystać",
+      "Definicje"
+    ]
+  },
+  "global_doctors_strona": {
+    "kod": "GD 02/24",
+    "dostepnosc": "Dostępne dla Ubezpieczonych do 63. roku życia.",
+    "organizator": "Centrum Pomocy Osobom Poszkodowanym sp. z o.o. w Gdańsku",
+    "zgloszenie": [
+      "telefonicznie pod numerem 801 107 107 lub (58) 555 55 55 ,",
+      "przez formularz na stronie zgloszenieroszczenia.ergohestia.pl ."
+    ],
+    "kontakt_agenta": "biuro@utratadochodu.com"
+  },
+  "faq": [
+    {
+      "sekcja": "Przystąpienie i ankieta medyczna",
+      "pytania": [
+        {
+          "q": "Kto może przystąpić do ERGO Razem?",
+          "a": "Osoby w wieku 18–65 lat, w ramach Grupy Otwartej. Wiek w dniu przystąpienia decyduje o przypisaniu do grupy taryfowej: A1 (18–53 lat), A2 (54–59 lat) lub B (60–65 lat)."
+        },
+        {
+          "q": "Czy muszę przechodzić badania lekarskie?",
+          "a": "Nie. Wystarczy wypełnić krótką ankietę medyczną online. Ankieta jest przetwarzana wyłącznie lokalnie w Twojej przeglądarce i nigdzie nie jest wysyłana ani zapisywana."
+        },
+        {
+          "q": "Ile trwa cały proces?",
+          "a": "Wybór wariantu i wyliczenie orientacyjnej składki zajmuje kilka minut online. Po zostawieniu danych kontaktowych agent ERGO Hestia oddzwania zwykle w ciągu 1–2 dni roboczych, aby dopiąć formalności."
+        },
+        {
+          "q": "Mam mniej niż 18 lub więcej niż 65 lat — czy mogę przystąpić?",
+          "a": "Niestety nie — w trybie Grupy Otwartej ERGO Razem jest dostępne wyłącznie dla osób w wieku 18–65 lat."
+        }
+      ]
+    },
+    {
+      "sekcja": "Warianty i zakres ochrony",
+      "pytania": [
+        {
+          "q": "Jakie warianty produktu są dostępne?",
+          "a": "Dla Mnie (ochrona indywidualna), Dla Nas (Ty i małżonek lub partner) oraz Dla Rodziny (Ty, partner, dzieci, rodzice i teściowie). W ramach każdego z nich dostępnych jest kilka wariantów składkowych — Podstawowy, Rozszerzony, Komfort i Premium/Prestiż — a ich dostępność zależy od produktu i grupy wiekowej."
+        },
+        {
+          "q": "Ile poważnych zachorowań obejmuje ochrona?",
+          "a": "Pełny katalog obejmuje kilkadziesiąt jednostek chorobowych — dokładna liczba zależy od wybranego wariantu i osoby ubezpieczonej. Szczegółową listę z definicjami znajdziesz w [Katalogu poważnych zachorowań](/katalog-zachorowan)."
+        },
+        {
+          "q": "Czy ochrona obejmuje też rodzinę?",
+          "a": "Tak. W wariantach Dla Nas i Dla Rodziny ochroną można objąć małżonka lub partnera życiowego, dzieci oraz rodziców i teściów — dokładny zakres różni się w zależności od wybranego wariantu."
+        },
+        {
+          "q": "Gdzie i kiedy działa ubezpieczenie?",
+          "a": "Ochrona obowiązuje 24 godziny na dobę, zarówno w Polsce, jak i za granicą."
+        }
+      ]
+    },
+    {
+      "sekcja": "Składki i płatności",
+      "pytania": [
+        {
+          "q": "Ile kosztuje ubezpieczenie?",
+          "a": "Składki zaczynają się od 57 zł miesięcznie i zależą od wybranego produktu, wariantu, grupy wiekowej oraz dodatków. Dokładną, orientacyjną kwotę poznasz w kalkulatorze składek."
+        },
+        {
+          "q": "Czy wysokość składki zmienia się z wiekiem?",
+          "a": "Składka zależy od grupy wiekowej, do której należysz w momencie przystąpienia (18–53, 54–59 lub 60–65 lat) — nie zmienia się automatycznie w trakcie trwania umowy z powodu upływu czasu w ramach tej samej grupy."
+        },
+        {
+          "q": "Czy wyliczenie w kalkulatorze jest wiążącą ofertą?",
+          "a": "Nie. Kalkulator służy wyłącznie do orientacyjnego wyliczenia składki. Wiążącą ofertę i szczegóły płatności przedstawia agent ubezpieczeniowy po kontakcie."
+        }
+      ]
+    },
+    {
+      "sekcja": "Ubezpieczenia dodatkowe",
+      "pytania": [
+        {
+          "q": "Czym jest MediPlan?",
+          "a": "To dodatek pokrywający koszty specjalistycznej pomocy medycznej po nieszczęśliwym wypadku (m.in. konsultacje specjalistów, badania diagnostyczne, rehabilitację) do sumy 10 000 zł. Zobacz [pełne szczegóły MediPlan](/ubezpieczenia-dodatkowe)."
+        },
+        {
+          "q": "Czym jest Medical Assistance?",
+          "a": "To pomoc opiekuńczo-medyczna dla Ubezpieczonego i najbliższych (m.in. wizyta lekarza, pielęgniarka, transport medyczny, opieka nad dziećmi lub zwierzętami) do 3 000 zł rocznie. Zobacz [pełne szczegóły Medical Assistance](/ubezpieczenia-dodatkowe)."
+        },
+        {
+          "q": "Czym jest Global Doctors?",
+          "a": "To dodatkowe ubezpieczenie (kod GD 02/24) dające dostęp do konsultacji z lekarzami specjalistami za granicą w przypadku poważnej diagnozy. Zobacz [szczegóły Global Doctors](/global-doctors)."
+        },
+        {
+          "q": "Czy dodatki są obowiązkowe?",
+          "a": "Nie. MediPlan, Medical Assistance i Global Doctors to opcjonalne pakiety, które możesz włączyć lub pominąć podczas konfigurowania oferty w kalkulatorze."
+        }
+      ]
+    },
+    {
+      "sekcja": "Roszczenia i rezygnacja",
+      "pytania": [
+        {
+          "q": "Jak zgłosić roszczenie?",
+          "a": "Roszczenie z podstawowej ochrony zgłaszasz przez Platformę Zgłaszania Roszczeń, podczas wizyty u agenta lub listownie. Roszczenia z MediPlan i Medical Assistance zgłasza się przez Centrum Alarmowe, a z Global Doctors — telefonicznie lub przez formularz online. Pełne instrukcje znajdziesz na stronie [Zgłoś roszczenie](/zglos-roszczenie)."
+        },
+        {
+          "q": "Czy mogę zrezygnować z ubezpieczenia?",
+          "a": "Tak. Zgodę na przetwarzanie danych oraz udział w ubezpieczeniu możesz wycofać w dowolnym momencie, kontaktując się z agentem — bez wpływu na zgodność z prawem wcześniejszego przetwarzania."
+        },
+        {
+          "q": "Czy przesłanie formularza w kalkulatorze zobowiązuje mnie do zawarcia umowy?",
+          "a": "Nie. Formularz służy wyłącznie do przedstawienia oferty — umowę zawierasz dopiero po kontakcie i weryfikacji z agentem."
+        }
+      ]
+    },
+    {
+      "sekcja": "Dokumenty i kontakt",
+      "pytania": [
+        {
+          "q": "Kto jest ubezpieczycielem?",
+          "a": "Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. z siedzibą w Sopocie."
+        },
+        {
+          "q": "Kto pośredniczy w sprzedaży?",
+          "a": "Aura Expert sp. z o.o. — agent ubezpieczeniowy działający na rzecz wielu towarzystw ubezpieczeń, w tym ERGO Hestii. Pełne informacje znajdziesz na stronie [Informacja o agencie](/informacja-o-agencie)."
+        },
+        {
+          "q": "Jak się z Wami skontaktować?",
+          "a": "Napisz na [biuro@utratadochodu.com](mailto:biuro@utratadochodu.com) lub zostaw dane kontaktowe w [kalkulatorze](/kalkulator/wiek) — agent oddzwoni w ciągu 1–2 dni roboczych."
+        }
+      ]
+    }
+  ],
+  "zgody": {
+    "w_kodzie": [],
+    "uwaga": "Brak treści zgód/klauzul w dostępnych chunkach – były w krokach Podsumowanie/Sukces lub na stronach /rodo, /polityka-prywatnosci, /regulamin (niepobrane). FAQ potwierdza istnienie 'zgody na przetwarzanie danych'."
+  },
+  "ankieta": {
+    "pytania": [],
+    "reguly": [],
+    "uwaga": "Brak w dostępnych chunkach. W store tylko flaga questionnaireComplete."
+  },
+  "wysylka": {
+    "server_actions": [],
+    "uwaga": "Brak identyfikatorów akcji w pobranych chunkach (createServerReference wyłącznie w runtime Next.js). Endpoint/kształt danych nieznany."
+  }
+}

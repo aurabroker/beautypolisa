@@ -1,0 +1,6326 @@
+{
+  "_zrodlo": "Inżynieria wsteczna kodu klienckiego https://ergo.auraexpert.pl/wniosek?branza=beauty (SvelteKit, adapter-static/SPA). Cennik osadzony w chunku _app/immutable/chunks/s4z72ZNe.js (stała H), formularz w nodes/7.75cyHC3C.js. Wartości liczbowe skopiowane 1:1; pola *_tekst wygenerowane wg funkcji formatujących z kodu (O, D, b) — w oryginale separator tysięcy to twarda spacja (U+00A0) z toLocaleString('pl-PL').",
+  "produkt": {
+    "nazwa": "ERGO Życie w Biznesie",
+    "ubezpieczyciel": "Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.",
+    "dystrybutor": "Aura Expert sp. z o.o.",
+    "owu": {
+      "glowne": "EZwB 01/25",
+      "mediopieka": "MA 01/25",
+      "global_doctors": "GD-GZ 01/25"
+    },
+    "okres_oferty": "1.07–31.12.2026",
+    "grupa": {
+      "min_osob": 2,
+      "max_osob": 100,
+      "wiek_min": 15,
+      "wiek_max": 70
+    },
+    "kod_ulotki_beauty": "EH-UL-EZB-F-2607",
+    "wersja_cennika_w_kliencie": null,
+    "uwaga_wersja": "Klient nie zawiera numeru wersji cennika (brak pola meta); w bazie CRM tabela ezb_cenniki ma wersję 'branze-2607' — powiązanie ustala serwer."
+  },
+  "sesja": {
+    "klucz_sessionStorage": "ezb-wniosek-v1",
+    "pola": [
+      "krok",
+      "branza",
+      "wariant",
+      "medi",
+      "gd",
+      "pakiety",
+      "adopcja",
+      "tryb",
+      "liczbaOsob",
+      "struktura",
+      "gus",
+      "kontakt",
+      "zgody"
+    ],
+    "stan_poczatkowy": {
+      "krok": 1,
+      "branza": null,
+      "wariant": 0,
+      "medi": [],
+      "gd": false,
+      "pakiety": {},
+      "adopcja": 0.5,
+      "tryb": 0,
+      "liczbaOsob": 0,
+      "struktura": null,
+      "gus": null,
+      "kontakt": {
+        "imie": "",
+        "stanowisko": "",
+        "email": "",
+        "telefon": "",
+        "start": ""
+      },
+      "zgody": {}
+    }
+  },
+  "kroki": [
+    {
+      "nr": 1,
+      "etykieta_steppera": "Branża",
+      "eyebrow": "Krok 1",
+      "tytul": "Jaka to branża?",
+      "pomijany_gdy": "parametr URL ?branza=<slug> pasuje do cennika i bieżący krok==1 → skok do kroku 2"
+    },
+    {
+      "nr": 2,
+      "etykieta_steppera": "Wariant",
+      "eyebrow": "Krok 2 · {nazwa branży}",
+      "tytul": "Wybierz wariant",
+      "przycisk_dalej": "Dalej: rozszerzenia →"
+    },
+    {
+      "nr": 3,
+      "etykieta_steppera": "Rozszerzenia",
+      "eyebrow": "Krok 3",
+      "tytul": "Co udostępniasz pracownikom",
+      "przycisk_dalej": "Dalej: struktura zespołu →"
+    },
+    {
+      "nr": 4,
+      "etykieta_steppera": "Struktura",
+      "eyebrow": "Krok 4",
+      "tytul": "Ile osób ubezpieczasz?",
+      "dopisek_tytulu": "— musi być od 2 do 100",
+      "przycisk_dalej": "Dalej: dane firmy →",
+      "dalej_aktywne_gdy": "2 <= liczbaOsob <= 100"
+    },
+    {
+      "nr": 5,
+      "etykieta_steppera": "Firma",
+      "eyebrow": "Krok 5",
+      "tytul": "Dane firmy",
+      "przycisk_dalej": "Dalej: podsumowanie →",
+      "dalej_aktywne_gdy": "(GUS ok LUB tryb ręczny) ORAZ imie.trim().length>2 ORAZ /.+@.+\\..+/.test(email) ORAZ cyfry(telefon).length>=9 ORAZ (tryb ręczny ⇒ nazwa.trim().length>2)"
+    },
+    {
+      "nr": 6,
+      "etykieta_steppera": "Zgody",
+      "eyebrow": "Krok 6",
+      "tytul": "Podsumowanie i zgody",
+      "przycisk_dalej": "Złóż wniosek",
+      "przycisk_w_trakcie": "Wysyłam…",
+      "dalej_aktywne_gdy": "wszystkie zgody wymagane (z1–z5) zaznaczone i brak trwającej wysyłki"
+    }
+  ],
+  "pola": [
+    {
+      "krok": 1,
+      "pole": "branza",
+      "typ": "kafel (button)",
+      "wymagane": true,
+      "opcje": [
+        {
+          "slug": "beauty",
+          "nazwa": "Beauty",
+          "opis": "Salony fryzjerskie, kosmetyczne, SPA, studia paznokci",
+          "od_os_mies": 58
+        },
+        {
+          "slug": "budownictwo",
+          "nazwa": "Budownictwo",
+          "opis": "Firmy budowlane, wykończeniowe, instalacyjne",
+          "od_os_mies": 63
+        },
+        {
+          "slug": "gastronomia-hotelarstwo",
+          "nazwa": "Gastronomia i hotelarstwo",
+          "opis": "Restauracje, kawiarnie, catering, hotele i pensjonaty",
+          "od_os_mies": 63
+        },
+        {
+          "slug": "ksiegowosc",
+          "nazwa": "Księgowość",
+          "opis": "Biura rachunkowe, doradztwo podatkowe, audyt",
+          "od_os_mies": 63
+        },
+        {
+          "slug": "nieruchomosci",
+          "nazwa": "Nieruchomości",
+          "opis": "Biura nieruchomości, zarządzanie najmem, deweloperzy",
+          "od_os_mies": 70
+        },
+        {
+          "slug": "piekarnictwo",
+          "nazwa": "Piekarnictwo",
+          "opis": "Piekarnie, cukiernie, produkcja pieczywa",
+          "od_os_mies": 65
+        },
+        {
+          "slug": "stomatologia",
+          "nazwa": "Stomatologia",
+          "opis": "Gabinety i kliniki stomatologiczne",
+          "od_os_mies": 74
+        },
+        {
+          "slug": "transport-ladowy",
+          "nazwa": "Transport lądowy",
+          "opis": "Firmy transportowe, spedycja, kurierzy",
+          "od_os_mies": 63
+        }
+      ]
+    },
+    {
+      "krok": 2,
+      "pole": "wariant",
+      "typ": "karta wyboru (button)",
+      "wymagane": true,
+      "domyslnie": 0,
+      "opcje": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "krok": 3,
+      "pole": "medi",
+      "typ": "multi-checkbox (button)",
+      "wymagane": false,
+      "opcje": [
+        "assistance-medyczny",
+        "assistance-chorobowy",
+        "assistance-onkologiczny",
+        "teleopieka-kardiologiczna",
+        "mediplan"
+      ]
+    },
+    {
+      "krok": 3,
+      "pole": "gd",
+      "typ": "checkbox (button)",
+      "wymagane": false
+    },
+    {
+      "krok": 3,
+      "pole": "pakiety",
+      "typ": "mapa slug→wariant 0..2 (div role=checkbox + 3 przyciski wariantu)",
+      "wymagane": false,
+      "domyslny_wariant_po_zaznaczeniu": 0
+    },
+    {
+      "krok": 3,
+      "pole": "adopcja",
+      "typ": "range",
+      "min": 0,
+      "max": 100,
+      "domyslnie": 50,
+      "zapis": "wartość/100",
+      "widoczne_gdy": "wybrano jakiekolwiek rozszerzenie",
+      "wymagane": false,
+      "krok_poprawka": "poprawione z 5 na 3 (suwak jest w kroku 3 Rozszerzenia, nodes/7 l. ~737)",
+      "etykieta": "Zakładam, że rozszerzenia wybierze {X}% zespołu",
+      "step": 5
+    },
+    {
+      "krok": 4,
+      "pole": "tryb",
+      "typ": "przełącznik 2 przyciski",
+      "opcje": [
+        {
+          "wartosc": 0,
+          "etykieta": "Mam listę — wkleję teraz"
+        },
+        {
+          "wartosc": 1,
+          "etykieta": "Podam samą liczbę, resztę uzupełnię później"
+        }
+      ],
+      "domyslnie": 0
+    },
+    {
+      "krok": 4,
+      "pole": "paste (tylko lokalnie, nie zapisywane)",
+      "id": "paste",
+      "typ": "textarea rows=12",
+      "etykieta": "Wklej dane (jedna osoba w wierszu) — PESEL, data urodzenia + płeć albo sam rocznik + płeć",
+      "placeholder": "85031255515\n99113012345\n2001-05-15 K\n1978 M\n…",
+      "przyciski": [
+        "Przelicz strukturę",
+        "Wklej dane demo"
+      ],
+      "parser": {
+        "pesel": "11 cyfr po usunięciu spacji/NBSP; suma kontrolna wagi [1,3,7,9,1,3,7,9,1,3], (10 - Σ%10)%10 == cyfra 11; data z miesiąca +0/20/40/60/80 → 1900/2000/2100/2200/1800, odrzucenie nieistniejącej daty; płeć: 10. cyfra nieparzysta = M, parzysta = K",
+        "data_plec": "/^(\\d{4})-(\\d{2})-(\\d{2})\\s*[;,\\t ]\\s*([KMkm])$/ — data NIE jest sprawdzana (np. 2001-02-31 przejdzie przez przeniesienie w Date)",
+        "rocznik_plec": "/^(\\d{4})\\s*[;,\\t ]\\s*([KMkm])$/ — wiek = bieżący rok − rocznik",
+        "wiek_na_dzien": "dzisiejsza data przeglądarki (new Date()); PESEL i data: pełne lata",
+        "filtr_wieku": [
+          15,
+          70
+        ]
+      }
+    },
+    {
+      "krok": 4,
+      "pole": "liczbaOsob",
+      "id": "cntM",
+      "typ": "number",
+      "min": 2,
+      "max": 100,
+      "domyslnie_w_polu": 12,
+      "etykieta": "Liczba osób do ubezpieczenia",
+      "wymagane": true,
+      "klamra_kodu": "Math.max(0, Math.min(999, wartość||0))",
+      "pomoc": "Arkusz struktury wiekowej wyślemy mailem razem z potwierdzeniem. Polisę wystawimy, gdy go odeślesz — składka się nie zmieni."
+    },
+    {
+      "krok": 5,
+      "pole": "nip",
+      "id": "nip",
+      "typ": "text maxlength=13",
+      "placeholder": "np. 5252248481",
+      "etykieta": "NIP",
+      "wymagane": true,
+      "walidacja": "cyfry=usuń nie-cyfry; długość 10; wagi [6,5,7,2,3,4,5,6,7]; suma mod 11 != 10 i == cyfra 10",
+      "blad": "Nieprawidłowy NIP — suma kontrolna się nie zgadza.",
+      "przycisk": "Sprawdź w GUS",
+      "przycisk_w_trakcie": "Odpytuję REGON…"
+    },
+    {
+      "krok": 5,
+      "pole": "gus.nazwa (tryb ręczny)",
+      "id": "nazwaR",
+      "typ": "text",
+      "placeholder": "Pełna nazwa firmy",
+      "etykieta": "Nazwa firmy",
+      "wymagane": true,
+      "walidacja": "trim().length > 2",
+      "widoczne_gdy": "kliknięto 'Wpisz dane ręcznie'"
+    },
+    {
+      "krok": 5,
+      "pole": "kontakt.imie",
+      "id": "imie",
+      "typ": "text",
+      "placeholder": "Imię i nazwisko",
+      "etykieta": "Osoba do kontaktu",
+      "wymagane": true,
+      "walidacja": "trim().length > 2"
+    },
+    {
+      "krok": 5,
+      "pole": "kontakt.stanowisko",
+      "id": "stan",
+      "typ": "text",
+      "placeholder": "np. właściciel, HR",
+      "etykieta": "Stanowisko",
+      "wymagane": false
+    },
+    {
+      "krok": 5,
+      "pole": "kontakt.email",
+      "id": "mail",
+      "typ": "email",
+      "placeholder": "na ten adres wyślemy potwierdzenie",
+      "etykieta": "E-mail",
+      "wymagane": true,
+      "walidacja": "/.+@.+\\..+/"
+    },
+    {
+      "krok": 5,
+      "pole": "kontakt.telefon",
+      "id": "tel",
+      "typ": "text",
+      "placeholder": "+48",
+      "etykieta": "Telefon",
+      "wymagane": true,
+      "walidacja": "liczba cyfr >= 9"
+    },
+    {
+      "krok": 5,
+      "pole": "kontakt.start",
+      "id": "start",
+      "typ": "date",
+      "etykieta": "Planowany start ochrony",
+      "wymagane": false
+    },
+    {
+      "krok": 6,
+      "pole": "zgody.z1..z7",
+      "typ": "checkbox",
+      "wymagane": "z1–z5 tak, z6–z7 nie"
+    }
+  ],
+  "struktura_wiekowa": {
+    "formaty_wiersza": [
+      {
+        "format": "PESEL (11 cyfr, białe znaki usuwane)",
+        "walidacja": "wagi [1,3,7,9,1,3,7,9,1,3], (10 - suma mod 10) mod 10 == cyfra 11; data: miesiąc+0→1900, +20→2000, +40→2100, +60→2200, +80→1800; płeć: cyfra 10 nieparzysta = M, parzysta = K"
+      },
+      {
+        "format": "RRRR-MM-DD <sep> K|M",
+        "regex": "^(\\d{4})-(\\d{2})-(\\d{2})\\s*[;,\\t ]\\s*([KMkm])$"
+      },
+      {
+        "format": "RRRR <sep> K|M",
+        "regex": "^(\\d{4})\\s*[;,\\t ]\\s*([KMkm])$",
+        "wiek": "bieżący rok - rocznik"
+      }
+    ],
+    "filtr_wieku": {
+      "min": 15,
+      "max": 70,
+      "wlacznie": true
+    },
+    "agregat_wysylany": "lista {rok, plec:'K'|'M', liczba} posortowana rosnąco po roku, potem płci",
+    "kubelki_wykresu": [
+      [
+        15,
+        24
+      ],
+      [
+        25,
+        34
+      ],
+      [
+        35,
+        44
+      ],
+      [
+        45,
+        54
+      ],
+      [
+        55,
+        70
+      ]
+    ],
+    "bledy_wiersza": [
+      "PESEL — błędna suma kontrolna",
+      "PESEL — nieprawidłowa data",
+      "nierozpoznany format"
+    ],
+    "dane_demo": "10 wierszy (PESEL-e, roczniki, data) — w kodzie, nie kopiujemy; do makiety użyć własnych fikcyjnych"
+  },
+  "gus": {
+    "endpoint": "GET /api/gus?nip=<10 cyfr>",
+    "404": "nie-znaleziono",
+    "inny_blad_lub_wyjatek": "awaria",
+    "200_pola_uzywane": [
+      "nazwa",
+      "regon",
+      "adres",
+      "pkd_kod",
+      "pkd_opis",
+      "data_zawieszenia"
+    ],
+    "zapis_w_stanie": "gus = {...odpowiedź, nip, zrodlo:'gus'}; ręcznie: {nip, nazwa, zrodlo:'recznie'}"
+  },
+  "wysylka": {
+    "endpoint": "POST /api/wnioski",
+    "naglowki": {
+      "content-type": "application/json"
+    },
+    "ksztalt": {
+      "branza": "string slug",
+      "wariant": "0|1|2",
+      "rozszerzenia": {
+        "medi": [
+          "slug mediopieki"
+        ],
+        "gd": "bool",
+        "pakiety": {
+          "<slug pakietu>": "0|1|2"
+        }
+      },
+      "zalozona_adopcja": "0..1 (krok 0,05)",
+      "liczba_osob": "int",
+      "struktura": "[{rok,plec,liczba}] | null",
+      "firma": "obiekt gus | null",
+      "kontakt": {
+        "imie": "",
+        "stanowisko": "",
+        "email": "",
+        "telefon": "",
+        "start": "YYYY-MM-DD|''"
+      },
+      "zgody": {
+        "<kod>": {
+          "wersja": "2026-07-a"
+        }
+      },
+      "skladka_klienta": {
+        "min": "number",
+        "max": "number",
+        "szacunek": "number"
+      }
+    },
+    "odpowiedz_ok": {
+      "nr_wniosku": "string"
+    },
+    "po_sukcesie": "sessionStorage.removeItem('ezb-wniosek-v1'); goto /wniosek/dziekujemy?nr=<nr>&email=<email>&kompletny=<1 jeśli struktura podana, inaczej 0>",
+    "blad": "komunikat: 'Nie udało się wysłać wniosku. Spróbuj ponownie za chwilę. (<status>: <pierwsze 200 znaków treści>)'",
+    "turnstile": false,
+    "honeypot": false
+  },
+  "wzor_skladki": {
+    "opis": "K(cennik, branza, wariant, {medi, gd, pakiety}, liczbaOsob, adopcja)",
+    "baza": "branza.skladka[wariant]",
+    "opcje": "każda zaznaczona mediopieka: skladka; GD: 135; każdy pakiet: pakiet.skladka[wariantPakietu]",
+    "sumaOpcji": "Σ opcje",
+    "min": "baza × liczbaOsob",
+    "max": "(baza + sumaOpcji) × liczbaOsob",
+    "szacunek": "min + sumaOpcji × liczbaOsob × adopcja",
+    "walidacja": "Nieznana branża → wyjątek; adopcja poza 0–1 → wyjątek 'Adopcja poza zakresem 0–1'",
+    "rocznie": "pasek dolny: szacunek × 12; bez rozszerzeń: min × 12"
+  },
+  "przyklad_beauty": {
+    "zalozenia": "Beauty, Wariant I, 10 osób, Assistance medyczny (3 zł) + Pakiet Życie WI (12 zł), adopcja 50%",
+    "baza": 58,
+    "sumaOpcji": 15,
+    "min": 580,
+    "max": 730,
+    "szacunek": 655.0
+  },
+  "cennik": {
+    "beauty": {
+      "slug": "beauty",
+      "nazwa": "Beauty",
+      "opis": "Salony fryzjerskie, kosmetyczne, SPA, studia paznokci",
+      "kod_ulotki": "EH-UL-EZB-F-2607",
+      "skladka": [
+        58,
+        68,
+        76
+      ],
+      "skladka_zgon": [
+        15.59,
+        14.06,
+        12.08
+      ],
+      "ostrzezenie_wariant3_wyzszy_zgon": false,
+      "karty_wariantow": [
+        {
+          "wariant": 0,
+          "nazwa": "Wariant I",
+          "skladka_os_mies": 58,
+          "skladka_tekst": "58 zł",
+          "liczba_swiadczen": 32,
+          "czesc_na_zgon": 15.59,
+          "czesc_na_zgon_tekst": "15,59 zł",
+          "kluczowe": [
+            {
+              "kod": "zgon",
+              "etykieta": "Zgon ubezpieczonego",
+              "wartosc": 100000,
+              "tekst": "100 000 zł"
+            },
+            {
+              "kod": "pz_max",
+              "etykieta": "Poważne zachorowanie — zakres maksymalny",
+              "wartosc": 11000,
+              "tekst": "do 11 000 zł"
+            },
+            {
+              "kod": "operacja",
+              "etykieta": "Operacja chirurgiczna — 5 podgrup",
+              "wartosc": 4500,
+              "tekst": "4500 zł"
+            },
+            {
+              "kod": "szpital_choroba",
+              "etykieta": "Leczenie szpitalne — choroba",
+              "wartosc": 90,
+              "tekst": "90 zł / dzień"
+            },
+            {
+              "kod": "tu_nw",
+              "etykieta": "Trwały uszczerbek w wyniku nieszczęśliwego wypadku",
+              "wartosc": 650,
+              "tekst": "650 zł / 1%"
+            },
+            {
+              "kod": "niezdolnosc_choroba_nw",
+              "etykieta": "Całkowita trwała niezdolność do pracy w wyniku choroby lub NW",
+              "wartosc": 25000,
+              "tekst": "25 000 zł"
+            },
+            {
+              "kod": "zgon_malzonka",
+              "etykieta": "Zgon małżonka albo partnera",
+              "wartosc": null,
+              "tekst": "—"
+            },
+            {
+              "kod": "zgon_dziecka",
+              "etykieta": "Zgon dziecka",
+              "wartosc": null,
+              "tekst": "—"
+            }
+          ]
+        },
+        {
+          "wariant": 1,
+          "nazwa": "Wariant II",
+          "skladka_os_mies": 68,
+          "skladka_tekst": "68 zł",
+          "liczba_swiadczen": 44,
+          "czesc_na_zgon": 14.06,
+          "czesc_na_zgon_tekst": "14,06 zł",
+          "kluczowe": [
+            {
+              "kod": "zgon",
+              "etykieta": "Zgon ubezpieczonego",
+              "wartosc": 80000,
+              "tekst": "80 000 zł"
+            },
+            {
+              "kod": "pz_max",
+              "etykieta": "Poważne zachorowanie — zakres maksymalny",
+              "wartosc": 8000,
+              "tekst": "do 8000 zł"
+            },
+            {
+              "kod": "operacja",
+              "etykieta": "Operacja chirurgiczna — 5 podgrup",
+              "wartosc": 3500,
+              "tekst": "3500 zł"
+            },
+            {
+              "kod": "szpital_choroba",
+              "etykieta": "Leczenie szpitalne — choroba",
+              "wartosc": 80,
+              "tekst": "80 zł / dzień"
+            },
+            {
+              "kod": "tu_nw",
+              "etykieta": "Trwały uszczerbek w wyniku nieszczęśliwego wypadku",
+              "wartosc": 600,
+              "tekst": "600 zł / 1%"
+            },
+            {
+              "kod": "niezdolnosc_choroba_nw",
+              "etykieta": "Całkowita trwała niezdolność do pracy w wyniku choroby lub NW",
+              "wartosc": 25000,
+              "tekst": "25 000 zł"
+            },
+            {
+              "kod": "zgon_malzonka",
+              "etykieta": "Zgon małżonka albo partnera",
+              "wartosc": 15000,
+              "tekst": "15 000 zł"
+            },
+            {
+              "kod": "zgon_dziecka",
+              "etykieta": "Zgon dziecka",
+              "wartosc": null,
+              "tekst": "—"
+            }
+          ]
+        },
+        {
+          "wariant": 2,
+          "nazwa": "Wariant III",
+          "skladka_os_mies": 76,
+          "skladka_tekst": "76 zł",
+          "liczba_swiadczen": 57,
+          "czesc_na_zgon": 12.08,
+          "czesc_na_zgon_tekst": "12,08 zł",
+          "kluczowe": [
+            {
+              "kod": "zgon",
+              "etykieta": "Zgon ubezpieczonego",
+              "wartosc": 75000,
+              "tekst": "75 000 zł"
+            },
+            {
+              "kod": "pz_max",
+              "etykieta": "Poważne zachorowanie — zakres maksymalny",
+              "wartosc": 7500,
+              "tekst": "do 7500 zł"
+            },
+            {
+              "kod": "operacja",
+              "etykieta": "Operacja chirurgiczna — 5 podgrup",
+              "wartosc": 3500,
+              "tekst": "3500 zł"
+            },
+            {
+              "kod": "szpital_choroba",
+              "etykieta": "Leczenie szpitalne — choroba",
+              "wartosc": 80,
+              "tekst": "80 zł / dzień"
+            },
+            {
+              "kod": "tu_nw",
+              "etykieta": "Trwały uszczerbek w wyniku nieszczęśliwego wypadku",
+              "wartosc": 550,
+              "tekst": "550 zł / 1%"
+            },
+            {
+              "kod": "niezdolnosc_choroba_nw",
+              "etykieta": "Całkowita trwała niezdolność do pracy w wyniku choroby lub NW",
+              "wartosc": 25000,
+              "tekst": "25 000 zł"
+            },
+            {
+              "kod": "zgon_malzonka",
+              "etykieta": "Zgon małżonka albo partnera",
+              "wartosc": 15000,
+              "tekst": "15 000 zł"
+            },
+            {
+              "kod": "zgon_dziecka",
+              "etykieta": "Zgon dziecka",
+              "wartosc": 5000,
+              "tekst": "5000 zł"
+            }
+          ]
+        }
+      ],
+      "tabela_swiadczen": [
+        {
+          "grupa": "zgon",
+          "naglowek": "Pakiet świadczeń dotyczący zgonu ubezpieczonego",
+          "pozycje": [
+            {
+              "kod": "zgon",
+              "etykieta": "Zgon ubezpieczonego",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                100000,
+                80000,
+                75000
+              ],
+              "wartosci_tekst": [
+                "100 000 zł",
+                "80 000 zł",
+                "75 000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_nw",
+              "etykieta": "Zgon ubezpieczonego w wyniku nieszczęśliwego wypadku",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                210000,
+                170000,
+                160000
+              ],
+              "wartosci_tekst": [
+                "210 000 zł",
+                "170 000 zł",
+                "160 000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_komunikacyjny",
+              "etykieta": "Zgon ubezpieczonego w wyniku wypadku komunikacyjnego",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                320000,
+                260000,
+                245000
+              ],
+              "wartosci_tekst": [
+                "320 000 zł",
+                "260 000 zł",
+                "245 000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_w_pracy",
+              "etykieta": "Zgon ubezpieczonego w wyniku wypadku w pracy",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                320000,
+                260000,
+                245000
+              ],
+              "wartosci_tekst": [
+                "320 000 zł",
+                "260 000 zł",
+                "245 000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_komunikacyjny_w_pracy",
+              "etykieta": "Zgon ubezpieczonego w wyniku wypadku komunikacyjnego w pracy",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                480000,
+                380000,
+                360000
+              ],
+              "wartosci_tekst": [
+                "480 000 zł",
+                "380 000 zł",
+                "360 000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_zawal_udar",
+              "etykieta": "Zgon ubezpieczonego w wyniku zawału mięśnia sercowego lub udaru mózgu",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                150000,
+                120000,
+                110000
+              ],
+              "wartosci_tekst": [
+                "150 000 zł",
+                "120 000 zł",
+                "110 000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_nowotwor",
+              "etykieta": "Zgon ubezpieczonego w wyniku choroby nowotworowej",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                110000,
+                90000,
+                85000
+              ],
+              "wartosci_tekst": [
+                "110 000 zł",
+                "90 000 zł",
+                "85 000 zł"
+              ]
+            }
+          ]
+        },
+        {
+          "grupa": "wypadek",
+          "naglowek": "Pakiet świadczeń dotyczący wypadku ubezpieczonego",
+          "pozycje": [
+            {
+              "kod": "tu_nw",
+              "etykieta": "Trwały uszczerbek w wyniku nieszczęśliwego wypadku",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln_1pct",
+              "do_kwoty": false,
+              "wartosci": [
+                650,
+                600,
+                550
+              ],
+              "wartosci_tekst": [
+                "650 zł / 1%",
+                "600 zł / 1%",
+                "550 zł / 1%"
+              ]
+            },
+            {
+              "kod": "tu_komunikacyjny",
+              "etykieta": "Trwały uszczerbek w wyniku wypadku komunikacyjnego",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln_1pct",
+              "do_kwoty": false,
+              "wartosci": [
+                1000,
+                800,
+                700
+              ],
+              "wartosci_tekst": [
+                "1000 zł / 1%",
+                "800 zł / 1%",
+                "700 zł / 1%"
+              ]
+            },
+            {
+              "kod": "tu_w_pracy",
+              "etykieta": "Trwały uszczerbek w wyniku wypadku w pracy",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln_1pct",
+              "do_kwoty": false,
+              "wartosci": [
+                750,
+                700,
+                625
+              ],
+              "wartosci_tekst": [
+                "750 zł / 1%",
+                "700 zł / 1%",
+                "625 zł / 1%"
+              ]
+            },
+            {
+              "kod": "tu_komunikacyjny_w_pracy",
+              "etykieta": "Trwały uszczerbek w wyniku wypadku komunikacyjnego w pracy",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln_1pct",
+              "do_kwoty": false,
+              "wartosci": [
+                1200,
+                1000,
+                850
+              ],
+              "wartosci_tekst": [
+                "1200 zł / 1%",
+                "1000 zł / 1%",
+                "850 zł / 1%"
+              ]
+            },
+            {
+              "kod": "uraz_bez_uszczerbku",
+              "etykieta": "Uraz niepowodujący trwałego uszczerbku (NW)",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                200,
+                150,
+                100
+              ],
+              "wartosci_tekst": [
+                "200 zł",
+                "150 zł",
+                "100 zł"
+              ]
+            },
+            {
+              "kod": "koszty_rehabilitacji_nw",
+              "etykieta": "Koszty rehabilitacji wskutek trwałego uszczerbku (NW)",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                5000,
+                5000,
+                3000
+              ],
+              "wartosci_tekst": [
+                "5000 zł",
+                "5000 zł",
+                "3000 zł"
+              ]
+            },
+            {
+              "kod": "niezdolnosc_choroba_nw",
+              "etykieta": "Całkowita trwała niezdolność do pracy w wyniku choroby lub NW",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                25000,
+                25000,
+                25000
+              ],
+              "wartosci_tekst": [
+                "25 000 zł",
+                "25 000 zł",
+                "25 000 zł"
+              ]
+            }
+          ]
+        },
+        {
+          "grupa": "choroba",
+          "naglowek": "Pakiet świadczeń dotyczący choroby ubezpieczonego",
+          "pozycje": [
+            {
+              "kod": "tu_zawal_udar",
+              "etykieta": "Trwały uszczerbek w wyniku zawału serca lub udaru mózgu",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln_1pct",
+              "do_kwoty": false,
+              "wartosci": [
+                500,
+                400,
+                300
+              ],
+              "wartosci_tekst": [
+                "500 zł / 1%",
+                "400 zł / 1%",
+                "300 zł / 1%"
+              ]
+            },
+            {
+              "kod": "pz_max",
+              "etykieta": "Poważne zachorowanie — zakres maksymalny",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                11000,
+                8000,
+                7500
+              ],
+              "wartosci_tekst": [
+                "do 11 000 zł",
+                "do 8000 zł",
+                "do 7500 zł"
+              ]
+            },
+            {
+              "kod": "pz_nowotworowa",
+              "etykieta": "Poważne zachorowanie na chorobę nowotworową",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                3000,
+                2000,
+                2000
+              ],
+              "wartosci_tekst": [
+                "do 3000 zł",
+                "do 2000 zł",
+                "do 2000 zł"
+              ]
+            },
+            {
+              "kod": "pz_in_situ",
+              "etykieta": "Poważne zachorowanie na nowotwór in situ",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                3000,
+                2000,
+                2000
+              ],
+              "wartosci_tekst": [
+                "do 3000 zł",
+                "do 2000 zł",
+                "do 2000 zł"
+              ]
+            },
+            {
+              "kod": "pz_zakazna",
+              "etykieta": "Poważne zachorowanie na chorobę zakaźną",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                3000,
+                2000,
+                2000
+              ],
+              "wartosci_tekst": [
+                "do 3000 zł",
+                "do 2000 zł",
+                "do 2000 zł"
+              ]
+            },
+            {
+              "kod": "leczenie_spec",
+              "etykieta": "Leczenie specjalistyczne",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                4000,
+                3000,
+                3000
+              ],
+              "wartosci_tekst": [
+                "do 4000 zł",
+                "do 3000 zł",
+                "do 3000 zł"
+              ]
+            },
+            {
+              "kod": "leczenie_spec_kardio",
+              "etykieta": "Leczenie specjalistyczne kardiologiczne",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                3000,
+                2000,
+                2000
+              ],
+              "wartosci_tekst": [
+                "do 3000 zł",
+                "do 2000 zł",
+                "do 2000 zł"
+              ]
+            }
+          ]
+        },
+        {
+          "grupa": "szpital",
+          "naglowek": "Pakiet świadczeń dotyczący leczenia szpitalnego ubezpieczonego",
+          "pozycje": [
+            {
+              "kod": "szpital_choroba",
+              "etykieta": "Leczenie szpitalne — choroba",
+              "dni": "1–180",
+              "karencja": "brak",
+              "jednostka": "pln_dzien",
+              "do_kwoty": false,
+              "wartosci": [
+                90,
+                80,
+                80
+              ],
+              "wartosci_tekst": [
+                "90 zł / dzień",
+                "80 zł / dzień",
+                "80 zł / dzień"
+              ]
+            },
+            {
+              "kod": "szpital_nw",
+              "etykieta": "Leczenie szpitalne — nieszczęśliwy wypadek",
+              "dni": "1–180",
+              "karencja": "brak",
+              "jednostka": "pln_dzien",
+              "do_kwoty": false,
+              "wartosci": [
+                200,
+                200,
+                200
+              ],
+              "wartosci_tekst": [
+                "200 zł / dzień",
+                "200 zł / dzień",
+                "200 zł / dzień"
+              ]
+            },
+            {
+              "kod": "szpital_komunikacyjny",
+              "etykieta": "Leczenie szpitalne — wypadek komunikacyjny",
+              "dni": "1–180",
+              "karencja": "brak",
+              "jednostka": "pln_dzien",
+              "do_kwoty": false,
+              "wartosci": [
+                350,
+                350,
+                350
+              ],
+              "wartosci_tekst": [
+                "350 zł / dzień",
+                "350 zł / dzień",
+                "350 zł / dzień"
+              ]
+            },
+            {
+              "kod": "szpital_w_pracy",
+              "etykieta": "Leczenie szpitalne — wypadek w pracy",
+              "dni": "1–180",
+              "karencja": "brak",
+              "jednostka": "pln_dzien",
+              "do_kwoty": false,
+              "wartosci": [
+                350,
+                350,
+                350
+              ],
+              "wartosci_tekst": [
+                "350 zł / dzień",
+                "350 zł / dzień",
+                "350 zł / dzień"
+              ]
+            },
+            {
+              "kod": "szpital_zawal_udar",
+              "etykieta": "Leczenie szpitalne — zawał serca lub udar mózgu",
+              "dni": "1–180",
+              "karencja": "brak",
+              "jednostka": "pln_dzien",
+              "do_kwoty": false,
+              "wartosci": [
+                140,
+                140,
+                120
+              ],
+              "wartosci_tekst": [
+                "140 zł / dzień",
+                "140 zł / dzień",
+                "120 zł / dzień"
+              ]
+            },
+            {
+              "kod": "szpital_oiom",
+              "etykieta": "Leczenie szpitalne na OIOM/OIT",
+              "dni": "1–14",
+              "karencja": "brak",
+              "jednostka": "pln_dzien",
+              "do_kwoty": false,
+              "wartosci": [
+                50,
+                50,
+                50
+              ],
+              "wartosci_tekst": [
+                "50 zł / dzień",
+                "50 zł / dzień",
+                "50 zł / dzień"
+              ]
+            },
+            {
+              "kod": "niezdolnosc_po_szpitalu",
+              "etykieta": "Czasowa niezdolność do pracy po leczeniu szpitalnym",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                250,
+                250,
+                250
+              ],
+              "wartosci_tekst": [
+                "250 zł",
+                "250 zł",
+                "250 zł"
+              ]
+            },
+            {
+              "kod": "szpital_rehabilitacyjny",
+              "etykieta": "Leczenie szpitalne na oddziale rehabilitacyjnym",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln_dzien",
+              "do_kwoty": false,
+              "wartosci": [
+                50,
+                40,
+                40
+              ],
+              "wartosci_tekst": [
+                "50 zł / dzień",
+                "40 zł / dzień",
+                "40 zł / dzień"
+              ]
+            },
+            {
+              "kod": "koszty_poszpitalne",
+              "etykieta": "Koszty leczenia poszpitalnego (karta apteczna)",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                200,
+                150,
+                150
+              ],
+              "wartosci_tekst": [
+                "200 zł",
+                "150 zł",
+                "150 zł"
+              ]
+            }
+          ]
+        },
+        {
+          "grupa": "operacje",
+          "naglowek": "Pakiet świadczeń dotyczący operacji ubezpieczonego",
+          "pozycje": [
+            {
+              "kod": "operacja",
+              "etykieta": "Operacja chirurgiczna — 5 podgrup",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                4500,
+                3500,
+                3500
+              ],
+              "wartosci_tekst": [
+                "4500 zł",
+                "3500 zł",
+                "3500 zł"
+              ]
+            },
+            {
+              "kod": "powiklania",
+              "etykieta": "Powikłania pooperacyjne",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                1500,
+                1000,
+                1000
+              ],
+              "wartosci_tekst": [
+                "1500 zł",
+                "1000 zł",
+                "1000 zł"
+              ]
+            }
+          ]
+        },
+        {
+          "grupa": "malzonek",
+          "naglowek": "Pakiet świadczeń dotyczący małżonka albo partnera",
+          "pozycje": [
+            {
+              "kod": "zgon_malzonka",
+              "etykieta": "Zgon małżonka albo partnera",
+              "dni": null,
+              "karencja": "6 miesięcy",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                15000,
+                15000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "15 000 zł",
+                "15 000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_malzonka_nw",
+              "etykieta": "Zgon małżonka albo partnera w wyniku NW",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                30000,
+                30000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "30 000 zł",
+                "30 000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_malzonka_komunikacyjny",
+              "etykieta": "Zgon małżonka albo partnera w wyniku wypadku komunikacyjnego",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                40000,
+                40000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "40 000 zł",
+                "40 000 zł"
+              ]
+            },
+            {
+              "kod": "pz_malzonka_max",
+              "etykieta": "Poważne zachorowanie małżonka — zakres maksymalny",
+              "dni": null,
+              "karencja": "3 miesiące",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                null,
+                4500,
+                4500
+              ],
+              "wartosci_tekst": [
+                "—",
+                "do 4500 zł",
+                "do 4500 zł"
+              ]
+            },
+            {
+              "kod": "pz_malzonka_in_situ",
+              "etykieta": "Poważne zachorowanie małżonka na nowotwór in situ",
+              "dni": null,
+              "karencja": "3 miesiące",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                null,
+                1000,
+                1000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "do 1000 zł",
+                "do 1000 zł"
+              ]
+            },
+            {
+              "kod": "leczenie_spec_malzonka",
+              "etykieta": "Leczenie specjalistyczne małżonka",
+              "dni": null,
+              "karencja": "3 miesiące",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                null,
+                1500,
+                1500
+              ],
+              "wartosci_tekst": [
+                "—",
+                "do 1500 zł",
+                "do 1500 zł"
+              ]
+            },
+            {
+              "kod": "operacja_malzonka",
+              "etykieta": "Operacja chirurgiczna małżonka — 5 podgrup",
+              "dni": null,
+              "karencja": "6 miesięcy",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                null,
+                2000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "2000 zł"
+              ]
+            },
+            {
+              "kod": "powiklania_malzonka",
+              "etykieta": "Powikłania pooperacyjne małżonka",
+              "dni": null,
+              "karencja": "6 miesięcy",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                null,
+                1000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "1000 zł"
+              ]
+            }
+          ]
+        },
+        {
+          "grupa": "dziecko",
+          "naglowek": "Pakiet świadczeń dotyczący dziecka",
+          "pozycje": [
+            {
+              "kod": "zgon_dziecka",
+              "etykieta": "Zgon dziecka",
+              "dni": null,
+              "karencja": "6 miesięcy",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                null,
+                5000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "5000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_dziecka_nw",
+              "etykieta": "Zgon dziecka w wyniku NW",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                null,
+                10000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "10 000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_dziecka_komunikacyjny",
+              "etykieta": "Zgon dziecka w wyniku wypadku komunikacyjnego",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                null,
+                15000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "15 000 zł"
+              ]
+            },
+            {
+              "kod": "osierocenie",
+              "etykieta": "Osierocenie dziecka w wyniku zgonu ubezpieczonego",
+              "dni": null,
+              "karencja": "6 miesięcy",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                null,
+                4000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "4000 zł"
+              ]
+            },
+            {
+              "kod": "osierocenie_oboje_nw",
+              "etykieta": "Osierocenie dziecka wskutek zgonu obojga rodziców w wyniku NW",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                null,
+                10000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "10 000 zł"
+              ]
+            },
+            {
+              "kod": "urodzenie_dziecka",
+              "etykieta": "Urodzenie się dziecka",
+              "dni": null,
+              "karencja": "9 miesięcy",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                null,
+                1500
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "1500 zł"
+              ]
+            },
+            {
+              "kod": "urodzenie_martwego",
+              "etykieta": "Urodzenie martwego noworodka",
+              "dni": null,
+              "karencja": "9 miesięcy",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                null,
+                3000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "3000 zł"
+              ]
+            },
+            {
+              "kod": "pz_dziecka",
+              "etykieta": "Poważne zachorowanie dziecka",
+              "dni": null,
+              "karencja": "3 miesiące",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                null,
+                null,
+                5000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "do 5000 zł"
+              ]
+            },
+            {
+              "kod": "pz_dziecka_nowotworowa",
+              "etykieta": "Poważne zachorowanie dziecka na chorobę nowotworową",
+              "dni": null,
+              "karencja": "3 miesiące",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                null,
+                null,
+                2000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "do 2000 zł"
+              ]
+            },
+            {
+              "kod": "leczenie_spec_dziecka",
+              "etykieta": "Leczenie specjalistyczne dziecka",
+              "dni": null,
+              "karencja": "3 miesiące",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                null,
+                null,
+                2000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "do 2000 zł"
+              ]
+            },
+            {
+              "kod": "leczenie_spec_onko_dziecka",
+              "etykieta": "Leczenie specjalistyczne onkologiczne dziecka",
+              "dni": null,
+              "karencja": "3 miesiące",
+              "jednostka": "pln",
+              "do_kwoty": true,
+              "wartosci": [
+                null,
+                null,
+                1500
+              ],
+              "wartosci_tekst": [
+                "—",
+                "—",
+                "do 1500 zł"
+              ]
+            }
+          ]
+        },
+        {
+          "grupa": "rodzic",
+          "naglowek": "Pakiet świadczeń dotyczący rodzica",
+          "pozycje": [
+            {
+              "kod": "zgon_rodzica",
+              "etykieta": "Zgon rodzica ubezpieczonego",
+              "dni": null,
+              "karencja": "6 miesięcy",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                1800,
+                1800
+              ],
+              "wartosci_tekst": [
+                "—",
+                "1800 zł",
+                "1800 zł"
+              ]
+            },
+            {
+              "kod": "zgon_rodzica_nw",
+              "etykieta": "Zgon rodzica ubezpieczonego w wyniku NW",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                3800,
+                3800
+              ],
+              "wartosci_tekst": [
+                "—",
+                "3800 zł",
+                "3800 zł"
+              ]
+            },
+            {
+              "kod": "zgon_rodzica_komunikacyjny",
+              "etykieta": "Zgon rodzica ubezpieczonego w wyniku wypadku komunikacyjnego",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                5000,
+                5000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "5000 zł",
+                "5000 zł"
+              ]
+            },
+            {
+              "kod": "zgon_rodzica_malzonka",
+              "etykieta": "Zgon rodzica małżonka albo partnera",
+              "dni": null,
+              "karencja": "6 miesięcy",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                1800,
+                1800
+              ],
+              "wartosci_tekst": [
+                "—",
+                "1800 zł",
+                "1800 zł"
+              ]
+            },
+            {
+              "kod": "zgon_rodzica_malzonka_nw",
+              "etykieta": "Zgon rodzica małżonka albo partnera w wyniku NW",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                3800,
+                3800
+              ],
+              "wartosci_tekst": [
+                "—",
+                "3800 zł",
+                "3800 zł"
+              ]
+            },
+            {
+              "kod": "zgon_rodzica_malzonka_komunikacyjny",
+              "etykieta": "Zgon rodzica małżonka albo partnera w wyniku wypadku komunikacyjnego",
+              "dni": null,
+              "karencja": "brak",
+              "jednostka": "pln",
+              "do_kwoty": false,
+              "wartosci": [
+                null,
+                5000,
+                5000
+              ],
+              "wartosci_tekst": [
+                "—",
+                "5000 zł",
+                "5000 zł"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "mediopieka": [
+      {
+        "slug": "assistance-medyczny",
+        "nazwa": "Assistance medyczny",
+        "skladka": 3,
+        "obejmuje": [
+          "ubezpieczony",
+          "małżonek/partner",
+          "dziecko",
+          "rodzic",
+          "rodzic małżonka"
+        ],
+        "limit_roczny": 10000,
+        "opis": "Nagłe zachorowanie, NW lub urodzenie dziecka. Limit 10 000 zł na rok polisowy łącznie na wszystkie usługi.",
+        "swiadczenia": [
+          {
+            "n": "Dostarczenie leków, artykułów żywnościowych i higienicznych",
+            "v": "500 zł"
+          },
+          {
+            "n": "Transporty medyczne (do placówki / z placówki / między placówkami)",
+            "v": "800 zł"
+          },
+          {
+            "n": "Rehabilitacja",
+            "v": "1 500 zł"
+          },
+          {
+            "n": "Wypożyczenie albo zakup sprzętu rehabilitacyjnego",
+            "v": "1 000 zł"
+          },
+          {
+            "n": "Opieka nad niepełnoletnimi dziećmi i osobami niesamodzielnymi",
+            "v": "700 zł"
+          },
+          {
+            "n": "Usługi pielęgniarskie w miejscu pobytu",
+            "v": "1 000 zł"
+          },
+          {
+            "n": "Pomoc domowa w miejscu zamieszkania",
+            "v": "500 zł"
+          },
+          {
+            "n": "Opieka nad zwierzętami domowymi w czasie pobytu w szpitalu",
+            "v": "300 zł"
+          },
+          {
+            "n": "Wizyta lekarska",
+            "v": "800 zł"
+          },
+          {
+            "n": "Wizyty u psychologa",
+            "v": "5 konsultacji"
+          },
+          {
+            "n": "Telemedycyna",
+            "v": "10 porad lekarskich"
+          },
+          {
+            "n": "Infolinie (medyczna, zdrowe odżywianie, Tele Maluch, pogrzebowa)",
+            "v": "bez limitu"
+          },
+          {
+            "n": "Rodzic: osobisty asystent / książki / posiłki / artykuły pierwszej potrzeby",
+            "v": "500 / 250 / 500 / 400 zł"
+          },
+          {
+            "n": "Urodzenie dziecka: zajęcia z trenerem fitness / wizyty położnicze",
+            "v": "700 zł / 3 wizyty"
+          },
+          {
+            "n": "Wada wrodzona dziecka: pomoc domowa / położna / transport / rehabilitacja / psycholog",
+            "v": "1 000 zł / 5 wizyt / 1 500 zł / 1 500 zł / 5 konsultacji"
+          },
+          {
+            "n": "Depresja poporodowa: leki / psycholog",
+            "v": "500 zł / 5 konsultacji"
+          }
+        ]
+      },
+      {
+        "slug": "assistance-chorobowy",
+        "nazwa": "Assistance chorobowy ubezpieczonego",
+        "skladka": 2.5,
+        "obejmuje": [
+          "ubezpieczony"
+        ],
+        "wersje_dla_bliskich": [
+          "małżonek/partner",
+          "dziecko"
+        ],
+        "opis": "Wsparcie medyczne przy poważnym zachorowaniu. Wchodzi w skład Pakietu Zdrowie."
+      },
+      {
+        "slug": "assistance-onkologiczny",
+        "nazwa": "Assistance onkologiczny ubezpieczonego",
+        "skladka": 2,
+        "obejmuje": [
+          "ubezpieczony"
+        ],
+        "wersje_dla_bliskich": [
+          "małżonek/partner",
+          "dziecko"
+        ],
+        "opis": "Konsultacje onkologiczno-genetyczne, badania, wsparcie psychoonkologiczne. Wchodzi w skład Pakietu Onkologicznego."
+      },
+      {
+        "slug": "teleopieka-kardiologiczna",
+        "nazwa": "Teleopieka kardiologiczna ubezpieczonego",
+        "skladka": 0.8,
+        "obejmuje": [
+          "ubezpieczony"
+        ],
+        "wersje_dla_bliskich": [
+          "małżonek/partner"
+        ],
+        "opis": "Zestaw teleopieki (EKG), dostarczenie, szkolenie i kontakt z lekarzem. Wchodzi w skład Pakietu Kardiologicznego."
+      },
+      {
+        "slug": "mediplan",
+        "nazwa": "MediPlan",
+        "skladka": 2.8,
+        "obejmuje": [
+          "ubezpieczony"
+        ],
+        "opis": "Organizacja i pokrycie kosztów świadczeń medycznych po nieszczęśliwym wypadku. Pracodawca wybiera jeden z 3 wariantów.",
+        "warianty": [
+          {
+            "nazwa": "podstawowy",
+            "limit_swiadczen": 10,
+            "rehabilitacja": null,
+            "tomografia": false,
+            "rezonans": false,
+            "usg": false
+          },
+          {
+            "nazwa": "rozszerzony",
+            "limit_swiadczen": 15,
+            "rehabilitacja": "1 świadczenie, maks. 20 zabiegów",
+            "tomografia": false,
+            "rezonans": false,
+            "usg": true
+          },
+          {
+            "nazwa": "maksymalny",
+            "limit_swiadczen": 20,
+            "rehabilitacja": "1 świadczenie, maks. 40 zabiegów",
+            "tomografia": true,
+            "rezonans": true,
+            "usg": true
+          }
+        ],
+        "konsultacje": [
+          "chirurg",
+          "okulista",
+          "otolaryngolog",
+          "ortopeda",
+          "kardiolog",
+          "neurolog",
+          "pulmonolog",
+          "lekarz rehabilitacji",
+          "neurochirurg",
+          "psycholog",
+          "zabiegi ambulatoryjne",
+          "badania laboratoryjne",
+          "badania radiologiczne",
+          "badania USG (od wariantu rozszerzonego)"
+        ],
+        "UWAGA": "Cennik branżowy podaje jedną składkę 2,80 zł, bez rozbicia na 3 warianty MediPlanu — do potwierdzenia w taryfie."
+      }
+    ],
+    "global_doctors": {
+      "nazwa": "Global Doctors",
+      "skladka": 135,
+      "suma_ubezpieczenia": "2 000 000 € na całe życie ubezpieczonego",
+      "zgon_ubezpieczonego": 10000,
+      "ograniczenie_nw": "90 dni",
+      "wiek": {
+        "min": 18,
+        "max": 64
+      },
+      "warunek_rezydencji": "Zamieszkanie na stałe w Polsce + min. 183 dni pobytu w kraju w ciągu 12 miesięcy przed objęciem ochroną",
+      "moduly": [
+        "nowotwór złośliwy (w tym in situ i ciężka dysplazja przednowotworowa)",
+        "wymiana lub naprawa zastawek serca",
+        "operacja pomostowania tętnic wieńcowych",
+        "operacja neurochirurgiczna",
+        "przeszczep narządu od żywego dawcy lub szpiku kostnego"
+      ],
+      "limity": {
+        "leki_po_leczeniu": "50 000 € na całe życie",
+        "swiadczenie_szpitalne": "100 € / dzień, maks. 60 dni na moduł",
+        "dieta_badania_kliniczne": "100 € / dzień, maks. 60 dni na roszczenie",
+        "konsultacje_psychologiczne": "4 wideokonsultacje na moduł (poza ciężką dysplazją)"
+      },
+      "medycyna_precyzyjna": [
+        "profilowanie molekularne",
+        "testy rodzinne (germinalne)",
+        "przewodnik pacjenta w badaniach klinicznych"
+      ],
+      "okres_swiadczeniowy": "36 miesięcy"
+    },
+    "pakiety_dodatkowe": [
+      {
+        "nr": 1,
+        "slug": "zycie",
+        "nazwa": "Pakiet Życie",
+        "podgrupy_operacji": null,
+        "skladka": [
+          12,
+          15,
+          20
+        ],
+        "dla_kogo": "Osoby z zobowiązaniami finansowymi, wychowujące dzieci, główni żywiciele rodziny, zawody o podwyższonym ryzyku",
+        "domyslnie_widoczny": true,
+        "ostrzezenie": null,
+        "pozycje": [
+          {
+            "kod": "zgon",
+            "etykieta": "Zgon ubezpieczonego",
+            "dni": null,
+            "wartosci": [
+              25000,
+              35000,
+              45000
+            ],
+            "wartosci_tekst": [
+              "25 000 zł",
+              "35 000 zł",
+              "45 000 zł"
+            ]
+          },
+          {
+            "kod": "zgon_nw",
+            "etykieta": "Zgon ubezpieczonego w wyniku nieszczęśliwego wypadku",
+            "dni": null,
+            "wartosci": [
+              45000,
+              65000,
+              85000
+            ],
+            "wartosci_tekst": [
+              "45 000 zł",
+              "65 000 zł",
+              "85 000 zł"
+            ]
+          },
+          {
+            "kod": "zgon_komunikacyjny",
+            "etykieta": "Zgon ubezpieczonego w wyniku wypadku komunikacyjnego",
+            "dni": null,
+            "wartosci": [
+              65000,
+              95000,
+              125000
+            ],
+            "wartosci_tekst": [
+              "65 000 zł",
+              "95 000 zł",
+              "125 000 zł"
+            ]
+          },
+          {
+            "kod": "zgon_w_pracy",
+            "etykieta": "Zgon ubezpieczonego w wyniku wypadku w pracy",
+            "dni": null,
+            "wartosci": [
+              65000,
+              95000,
+              125000
+            ],
+            "wartosci_tekst": [
+              "65 000 zł",
+              "95 000 zł",
+              "125 000 zł"
+            ]
+          },
+          {
+            "kod": "zgon_komunikacyjny_w_pracy",
+            "etykieta": "Zgon ubezpieczonego w wyniku wypadku komunikacyjnego w pracy",
+            "dni": null,
+            "wartosci": [
+              85000,
+              125000,
+              165000
+            ],
+            "wartosci_tekst": [
+              "85 000 zł",
+              "125 000 zł",
+              "165 000 zł"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 12 zł",
+          "WII · 15 zł",
+          "WIII · 20 zł"
+        ]
+      },
+      {
+        "nr": 2,
+        "slug": "zdrowie-3",
+        "nazwa": "Pakiet Zdrowie (3 podgrupy operacji)",
+        "podgrupy_operacji": 3,
+        "skladka": [
+          18,
+          28,
+          40
+        ],
+        "domyslnie_widoczny": false,
+        "ostrzezenie": "⚠ Niezgodny z pakietem głównym (5 podgrup operacji).",
+        "pozycje": [
+          {
+            "kod": "pz_max",
+            "etykieta": "Poważne zachorowanie — zakres maksymalny",
+            "dni": null,
+            "wartosci": [
+              7000,
+              12000,
+              20000
+            ],
+            "wartosci_tekst": [
+              "do 7000 zł",
+              "do 12 000 zł",
+              "do 20 000 zł"
+            ]
+          },
+          {
+            "kod": "szpital_choroba_90",
+            "etykieta": "Leczenie szpitalne — choroba",
+            "dni": "1–90",
+            "wartosci": [
+              40,
+              60,
+              100
+            ],
+            "wartosci_tekst": [
+              "40 zł / dzień",
+              "60 zł / dzień",
+              "100 zł / dzień"
+            ]
+          },
+          {
+            "kod": "leczenie_spec",
+            "etykieta": "Leczenie specjalistyczne",
+            "dni": null,
+            "wartosci": [
+              2000,
+              2500,
+              3500
+            ],
+            "wartosci_tekst": [
+              "do 2000 zł",
+              "do 2500 zł",
+              "do 3500 zł"
+            ]
+          },
+          {
+            "kod": "operacja",
+            "etykieta": "Operacja chirurgiczna — 5 podgrup",
+            "dni": null,
+            "wartosci": [
+              1500,
+              2500,
+              3500
+            ],
+            "wartosci_tekst": [
+              "1500 zł",
+              "2500 zł",
+              "3500 zł"
+            ]
+          },
+          {
+            "kod": "assistance_chorobowy",
+            "etykieta": "Assistance chorobowy (Tabele 7–8 OWU MediOpieki)",
+            "dni": null,
+            "wartosci": [
+              true,
+              true,
+              true
+            ],
+            "wartosci_tekst": [
+              "✓ w pakiecie",
+              "✓ w pakiecie",
+              "✓ w pakiecie"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 18 zł",
+          "WII · 28 zł",
+          "WIII · 40 zł"
+        ]
+      },
+      {
+        "nr": 3,
+        "slug": "zdrowie-5",
+        "nazwa": "Pakiet Zdrowie (5 podgrup operacji)",
+        "podgrupy_operacji": 5,
+        "skladka": [
+          17,
+          27,
+          39
+        ],
+        "zgodny_z_pakietem_glownym": true,
+        "domyslnie_widoczny": true,
+        "ostrzezenie": null,
+        "pozycje": [
+          {
+            "kod": "pz_max",
+            "etykieta": "Poważne zachorowanie — zakres maksymalny",
+            "dni": null,
+            "wartosci": [
+              7000,
+              12000,
+              20000
+            ],
+            "wartosci_tekst": [
+              "do 7000 zł",
+              "do 12 000 zł",
+              "do 20 000 zł"
+            ]
+          },
+          {
+            "kod": "szpital_choroba_90",
+            "etykieta": "Leczenie szpitalne — choroba",
+            "dni": "1–90",
+            "wartosci": [
+              40,
+              60,
+              100
+            ],
+            "wartosci_tekst": [
+              "40 zł / dzień",
+              "60 zł / dzień",
+              "100 zł / dzień"
+            ]
+          },
+          {
+            "kod": "leczenie_spec",
+            "etykieta": "Leczenie specjalistyczne",
+            "dni": null,
+            "wartosci": [
+              2000,
+              2500,
+              3500
+            ],
+            "wartosci_tekst": [
+              "do 2000 zł",
+              "do 2500 zł",
+              "do 3500 zł"
+            ]
+          },
+          {
+            "kod": "operacja",
+            "etykieta": "Operacja chirurgiczna — 5 podgrup",
+            "dni": null,
+            "wartosci": [
+              1500,
+              2500,
+              3500
+            ],
+            "wartosci_tekst": [
+              "1500 zł",
+              "2500 zł",
+              "3500 zł"
+            ]
+          },
+          {
+            "kod": "assistance_chorobowy",
+            "etykieta": "Assistance chorobowy (Tabele 7–8 OWU MediOpieki)",
+            "dni": null,
+            "wartosci": [
+              true,
+              true,
+              true
+            ],
+            "wartosci_tekst": [
+              "✓ w pakiecie",
+              "✓ w pakiecie",
+              "✓ w pakiecie"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 17 zł",
+          "WII · 27 zł",
+          "WIII · 39 zł"
+        ]
+      },
+      {
+        "nr": 4,
+        "slug": "wypadek-3",
+        "nazwa": "Pakiet Wypadek (3 podgrupy operacji)",
+        "podgrupy_operacji": 3,
+        "skladka": [
+          12,
+          16,
+          20
+        ],
+        "domyslnie_widoczny": false,
+        "ostrzezenie": "⚠ Niezgodny z pakietem głównym (5 podgrup operacji).",
+        "pozycje": [
+          {
+            "kod": "tu_nw",
+            "etykieta": "Trwały uszczerbek w wyniku nieszczęśliwego wypadku",
+            "dni": null,
+            "wartosci": [
+              300,
+              350,
+              450
+            ],
+            "wartosci_tekst": [
+              "300 zł / 1%",
+              "350 zł / 1%",
+              "450 zł / 1%"
+            ]
+          },
+          {
+            "kod": "tu_komunikacyjny",
+            "etykieta": "Trwały uszczerbek w wyniku wypadku komunikacyjnego",
+            "dni": null,
+            "wartosci": [
+              500,
+              650,
+              850
+            ],
+            "wartosci_tekst": [
+              "500 zł / 1%",
+              "650 zł / 1%",
+              "850 zł / 1%"
+            ]
+          },
+          {
+            "kod": "niezdolnosc_nw",
+            "etykieta": "Całkowita trwała niezdolność do pracy w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              15000,
+              20000,
+              25000
+            ],
+            "wartosci_tekst": [
+              "15 000 zł",
+              "20 000 zł",
+              "25 000 zł"
+            ]
+          },
+          {
+            "kod": "szpital_nw_90",
+            "etykieta": "Leczenie szpitalne — nieszczęśliwy wypadek",
+            "dni": "1–90",
+            "wartosci": [
+              100,
+              150,
+              200
+            ],
+            "wartosci_tekst": [
+              "100 zł / dzień",
+              "150 zł / dzień",
+              "200 zł / dzień"
+            ]
+          },
+          {
+            "kod": "operacja_nw",
+            "etykieta": "Operacja chirurgiczna w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              2000,
+              3000,
+              4000
+            ],
+            "wartosci_tekst": [
+              "2000 zł",
+              "3000 zł",
+              "4000 zł"
+            ]
+          },
+          {
+            "kod": "powiklania_nw",
+            "etykieta": "Powikłania pooperacyjne (NW)",
+            "dni": null,
+            "wartosci": [
+              1000,
+              1500,
+              2000
+            ],
+            "wartosci_tekst": [
+              "1000 zł",
+              "1500 zł",
+              "2000 zł"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 12 zł",
+          "WII · 16 zł",
+          "WIII · 20 zł"
+        ]
+      },
+      {
+        "nr": 5,
+        "slug": "wypadek-5",
+        "nazwa": "Pakiet Wypadek (5 podgrup operacji)",
+        "podgrupy_operacji": 5,
+        "skladka": [
+          11,
+          15,
+          19
+        ],
+        "zgodny_z_pakietem_glownym": true,
+        "domyslnie_widoczny": true,
+        "ostrzezenie": null,
+        "pozycje": [
+          {
+            "kod": "tu_nw",
+            "etykieta": "Trwały uszczerbek w wyniku nieszczęśliwego wypadku",
+            "dni": null,
+            "wartosci": [
+              300,
+              350,
+              450
+            ],
+            "wartosci_tekst": [
+              "300 zł / 1%",
+              "350 zł / 1%",
+              "450 zł / 1%"
+            ]
+          },
+          {
+            "kod": "tu_komunikacyjny",
+            "etykieta": "Trwały uszczerbek w wyniku wypadku komunikacyjnego",
+            "dni": null,
+            "wartosci": [
+              500,
+              650,
+              850
+            ],
+            "wartosci_tekst": [
+              "500 zł / 1%",
+              "650 zł / 1%",
+              "850 zł / 1%"
+            ]
+          },
+          {
+            "kod": "niezdolnosc_nw",
+            "etykieta": "Całkowita trwała niezdolność do pracy w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              15000,
+              20000,
+              25000
+            ],
+            "wartosci_tekst": [
+              "15 000 zł",
+              "20 000 zł",
+              "25 000 zł"
+            ]
+          },
+          {
+            "kod": "szpital_nw_90",
+            "etykieta": "Leczenie szpitalne — nieszczęśliwy wypadek",
+            "dni": "1–90",
+            "wartosci": [
+              100,
+              150,
+              200
+            ],
+            "wartosci_tekst": [
+              "100 zł / dzień",
+              "150 zł / dzień",
+              "200 zł / dzień"
+            ]
+          },
+          {
+            "kod": "operacja_nw",
+            "etykieta": "Operacja chirurgiczna w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              2000,
+              3000,
+              4000
+            ],
+            "wartosci_tekst": [
+              "2000 zł",
+              "3000 zł",
+              "4000 zł"
+            ]
+          },
+          {
+            "kod": "powiklania_nw",
+            "etykieta": "Powikłania pooperacyjne (NW)",
+            "dni": null,
+            "wartosci": [
+              1000,
+              1500,
+              2000
+            ],
+            "wartosci_tekst": [
+              "1000 zł",
+              "1500 zł",
+              "2000 zł"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 11 zł",
+          "WII · 15 zł",
+          "WIII · 19 zł"
+        ]
+      },
+      {
+        "nr": 6,
+        "slug": "onkologiczny",
+        "nazwa": "Pakiet Onkologiczny",
+        "podgrupy_operacji": null,
+        "skladka": [
+          12,
+          16,
+          22
+        ],
+        "domyslnie_widoczny": true,
+        "ostrzezenie": null,
+        "pozycje": [
+          {
+            "kod": "pz_nowotworowa",
+            "etykieta": "Poważne zachorowanie na chorobę nowotworową",
+            "dni": null,
+            "wartosci": [
+              20000,
+              25000,
+              35000
+            ],
+            "wartosci_tekst": [
+              "do 20 000 zł",
+              "do 25 000 zł",
+              "do 35 000 zł"
+            ]
+          },
+          {
+            "kod": "pz_in_situ",
+            "etykieta": "Poważne zachorowanie na nowotwór in situ",
+            "dni": null,
+            "wartosci": [
+              1000,
+              2000,
+              3000
+            ],
+            "wartosci_tekst": [
+              "do 1000 zł",
+              "do 2000 zł",
+              "do 3000 zł"
+            ]
+          },
+          {
+            "kod": "szpital_nowotwor_90",
+            "etykieta": "Leczenie szpitalne — choroba nowotworowa",
+            "dni": "1–90",
+            "wartosci": [
+              55,
+              65,
+              75
+            ],
+            "wartosci_tekst": [
+              "55 zł / dzień",
+              "65 zł / dzień",
+              "75 zł / dzień"
+            ]
+          },
+          {
+            "kod": "leczenie_spec_onko",
+            "etykieta": "Leczenie specjalistyczne onkologiczne",
+            "dni": null,
+            "wartosci": [
+              1500,
+              2000,
+              2500
+            ],
+            "wartosci_tekst": [
+              "do 1500 zł",
+              "do 2000 zł",
+              "do 2500 zł"
+            ]
+          },
+          {
+            "kod": "assistance_onkologiczny",
+            "etykieta": "Assistance onkologiczny",
+            "dni": null,
+            "wartosci": [
+              true,
+              true,
+              true
+            ],
+            "wartosci_tekst": [
+              "✓ w pakiecie",
+              "✓ w pakiecie",
+              "✓ w pakiecie"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 12 zł",
+          "WII · 16 zł",
+          "WIII · 22 zł"
+        ]
+      },
+      {
+        "nr": 7,
+        "slug": "kardiologiczny",
+        "nazwa": "Pakiet Kardiologiczny",
+        "podgrupy_operacji": null,
+        "skladka": [
+          10,
+          14,
+          18
+        ],
+        "domyslnie_widoczny": true,
+        "ostrzezenie": null,
+        "pozycje": [
+          {
+            "kod": "zgon_zawal_udar",
+            "etykieta": "Zgon ubezpieczonego w wyniku zawału mięśnia sercowego lub udaru mózgu",
+            "dni": null,
+            "wartosci": [
+              20000,
+              30000,
+              40000
+            ],
+            "wartosci_tekst": [
+              "20 000 zł",
+              "30 000 zł",
+              "40 000 zł"
+            ]
+          },
+          {
+            "kod": "tu_zawal_udar",
+            "etykieta": "Trwały uszczerbek w wyniku zawału serca lub udaru mózgu",
+            "dni": null,
+            "wartosci": [
+              150,
+              200,
+              250
+            ],
+            "wartosci_tekst": [
+              "150 zł / 1%",
+              "200 zł / 1%",
+              "250 zł / 1%"
+            ]
+          },
+          {
+            "kod": "pz_uklad_krazenia",
+            "etykieta": "Poważne zachorowanie na chorobę układu krążenia",
+            "dni": null,
+            "wartosci": [
+              10000,
+              15000,
+              20000
+            ],
+            "wartosci_tekst": [
+              "do 10 000 zł",
+              "do 15 000 zł",
+              "do 20 000 zł"
+            ]
+          },
+          {
+            "kod": "szpital_zawal_udar_90",
+            "etykieta": "Leczenie szpitalne — zawał serca lub udar mózgu",
+            "dni": "1–90",
+            "wartosci": [
+              50,
+              75,
+              100
+            ],
+            "wartosci_tekst": [
+              "50 zł / dzień",
+              "75 zł / dzień",
+              "100 zł / dzień"
+            ]
+          },
+          {
+            "kod": "leczenie_spec_kardio",
+            "etykieta": "Leczenie specjalistyczne kardiologiczne",
+            "dni": null,
+            "wartosci": [
+              1500,
+              2000,
+              2500
+            ],
+            "wartosci_tekst": [
+              "do 1500 zł",
+              "do 2000 zł",
+              "do 2500 zł"
+            ]
+          },
+          {
+            "kod": "teleopieka_kardiologiczna",
+            "etykieta": "Teleopieka kardiologiczna (zestaw EKG)",
+            "dni": null,
+            "wartosci": [
+              true,
+              true,
+              true
+            ],
+            "wartosci_tekst": [
+              "✓ w pakiecie",
+              "✓ w pakiecie",
+              "✓ w pakiecie"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 10 zł",
+          "WII · 14 zł",
+          "WIII · 18 zł"
+        ]
+      },
+      {
+        "nr": 8,
+        "slug": "dziecko-nw-3",
+        "nazwa": "Pakiet Dziecko NW (3 podgrupy operacji)",
+        "podgrupy_operacji": 3,
+        "skladka": [
+          6,
+          8,
+          12
+        ],
+        "uwaga": "Jedna składka obejmuje wszystkie dzieci ubezpieczonego do 25. roku życia.",
+        "domyslnie_widoczny": false,
+        "ostrzezenie": "⚠ Niezgodny z pakietem głównym (5 podgrup operacji).",
+        "pozycje": [
+          {
+            "kod": "zgon_dziecka_nw",
+            "etykieta": "Zgon dziecka w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              3000,
+              5000,
+              7000
+            ],
+            "wartosci_tekst": [
+              "3000 zł",
+              "5000 zł",
+              "7000 zł"
+            ]
+          },
+          {
+            "kod": "tu_dziecka_nw",
+            "etykieta": "Trwały uszczerbek dziecka w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              100,
+              150,
+              200
+            ],
+            "wartosci_tekst": [
+              "100 zł / 1%",
+              "150 zł / 1%",
+              "200 zł / 1%"
+            ]
+          },
+          {
+            "kod": "tu_dziecka_komunikacyjny",
+            "etykieta": "Trwały uszczerbek dziecka — wypadek komunikacyjny",
+            "dni": null,
+            "wartosci": [
+              250,
+              350,
+              450
+            ],
+            "wartosci_tekst": [
+              "250 zł / 1%",
+              "350 zł / 1%",
+              "450 zł / 1%"
+            ]
+          },
+          {
+            "kod": "szpital_dziecka_nw_90",
+            "etykieta": "Leczenie szpitalne dziecka — NW",
+            "dni": "1–90",
+            "wartosci": [
+              120,
+              160,
+              200
+            ],
+            "wartosci_tekst": [
+              "120 zł / dzień",
+              "160 zł / dzień",
+              "200 zł / dzień"
+            ]
+          },
+          {
+            "kod": "operacja_dziecka_nw",
+            "etykieta": "Operacja chirurgiczna dziecka w wyniku NW — 5 podgrup",
+            "dni": null,
+            "wartosci": [
+              1500,
+              2000,
+              2500
+            ],
+            "wartosci_tekst": [
+              "1500 zł",
+              "2000 zł",
+              "2500 zł"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 6 zł",
+          "WII · 8 zł",
+          "WIII · 12 zł"
+        ]
+      },
+      {
+        "nr": 9,
+        "slug": "dziecko-nw-5",
+        "nazwa": "Pakiet Dziecko NW (5 podgrup operacji)",
+        "podgrupy_operacji": 5,
+        "skladka": [
+          5,
+          7,
+          11
+        ],
+        "zgodny_z_pakietem_glownym": true,
+        "uwaga": "Jedna składka obejmuje wszystkie dzieci ubezpieczonego do 25. roku życia.",
+        "domyslnie_widoczny": true,
+        "ostrzezenie": null,
+        "pozycje": [
+          {
+            "kod": "zgon_dziecka_nw",
+            "etykieta": "Zgon dziecka w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              3000,
+              5000,
+              7000
+            ],
+            "wartosci_tekst": [
+              "3000 zł",
+              "5000 zł",
+              "7000 zł"
+            ]
+          },
+          {
+            "kod": "tu_dziecka_nw",
+            "etykieta": "Trwały uszczerbek dziecka w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              100,
+              150,
+              200
+            ],
+            "wartosci_tekst": [
+              "100 zł / 1%",
+              "150 zł / 1%",
+              "200 zł / 1%"
+            ]
+          },
+          {
+            "kod": "tu_dziecka_komunikacyjny",
+            "etykieta": "Trwały uszczerbek dziecka — wypadek komunikacyjny",
+            "dni": null,
+            "wartosci": [
+              250,
+              350,
+              450
+            ],
+            "wartosci_tekst": [
+              "250 zł / 1%",
+              "350 zł / 1%",
+              "450 zł / 1%"
+            ]
+          },
+          {
+            "kod": "szpital_dziecka_nw_90",
+            "etykieta": "Leczenie szpitalne dziecka — NW",
+            "dni": "1–90",
+            "wartosci": [
+              120,
+              160,
+              200
+            ],
+            "wartosci_tekst": [
+              "120 zł / dzień",
+              "160 zł / dzień",
+              "200 zł / dzień"
+            ]
+          },
+          {
+            "kod": "operacja_dziecka_nw",
+            "etykieta": "Operacja chirurgiczna dziecka w wyniku NW — 5 podgrup",
+            "dni": null,
+            "wartosci": [
+              1500,
+              2000,
+              2500
+            ],
+            "wartosci_tekst": [
+              "1500 zł",
+              "2000 zł",
+              "2500 zł"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 5 zł",
+          "WII · 7 zł",
+          "WIII · 11 zł"
+        ]
+      },
+      {
+        "nr": 10,
+        "slug": "malzonek-nw-3",
+        "nazwa": "Pakiet Małżonek NW (3 podgrupy operacji)",
+        "podgrupy_operacji": 3,
+        "skladka": [
+          6,
+          8,
+          12
+        ],
+        "domyslnie_widoczny": false,
+        "ostrzezenie": "⚠ Niezgodny z pakietem głównym (5 podgrup operacji).",
+        "pozycje": [
+          {
+            "kod": "zgon_malzonka_nw",
+            "etykieta": "Zgon małżonka albo partnera w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              10000,
+              15000,
+              20000
+            ],
+            "wartosci_tekst": [
+              "10 000 zł",
+              "15 000 zł",
+              "20 000 zł"
+            ]
+          },
+          {
+            "kod": "tu_malzonka_nw",
+            "etykieta": "Trwały uszczerbek małżonka w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              150,
+              200,
+              250
+            ],
+            "wartosci_tekst": [
+              "150 zł / 1%",
+              "200 zł / 1%",
+              "250 zł / 1%"
+            ]
+          },
+          {
+            "kod": "tu_malzonka_komunikacyjny",
+            "etykieta": "Trwały uszczerbek małżonka — wypadek komunikacyjny",
+            "dni": null,
+            "wartosci": [
+              350,
+              500,
+              650
+            ],
+            "wartosci_tekst": [
+              "350 zł / 1%",
+              "500 zł / 1%",
+              "650 zł / 1%"
+            ]
+          },
+          {
+            "kod": "szpital_malzonka_nw_90",
+            "etykieta": "Leczenie szpitalne małżonka — NW",
+            "dni": "1–90",
+            "wartosci": [
+              120,
+              160,
+              200
+            ],
+            "wartosci_tekst": [
+              "120 zł / dzień",
+              "160 zł / dzień",
+              "200 zł / dzień"
+            ]
+          },
+          {
+            "kod": "operacja_malzonka_nw",
+            "etykieta": "Operacja chirurgiczna małżonka w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              1500,
+              2000,
+              2500
+            ],
+            "wartosci_tekst": [
+              "1500 zł",
+              "2000 zł",
+              "2500 zł"
+            ]
+          },
+          {
+            "kod": "powiklania_malzonka_nw",
+            "etykieta": "Powikłania pooperacyjne małżonka (NW)",
+            "dni": null,
+            "wartosci": [
+              1000,
+              1500,
+              2000
+            ],
+            "wartosci_tekst": [
+              "1000 zł",
+              "1500 zł",
+              "2000 zł"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 6 zł",
+          "WII · 8 zł",
+          "WIII · 12 zł"
+        ]
+      },
+      {
+        "nr": 11,
+        "slug": "malzonek-nw-5",
+        "nazwa": "Pakiet Małżonek NW (5 podgrup operacji)",
+        "podgrupy_operacji": 5,
+        "skladka": [
+          5,
+          7,
+          11
+        ],
+        "zgodny_z_pakietem_glownym": true,
+        "domyslnie_widoczny": true,
+        "ostrzezenie": null,
+        "pozycje": [
+          {
+            "kod": "zgon_malzonka_nw",
+            "etykieta": "Zgon małżonka albo partnera w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              10000,
+              15000,
+              20000
+            ],
+            "wartosci_tekst": [
+              "10 000 zł",
+              "15 000 zł",
+              "20 000 zł"
+            ]
+          },
+          {
+            "kod": "tu_malzonka_nw",
+            "etykieta": "Trwały uszczerbek małżonka w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              150,
+              200,
+              250
+            ],
+            "wartosci_tekst": [
+              "150 zł / 1%",
+              "200 zł / 1%",
+              "250 zł / 1%"
+            ]
+          },
+          {
+            "kod": "tu_malzonka_komunikacyjny",
+            "etykieta": "Trwały uszczerbek małżonka — wypadek komunikacyjny",
+            "dni": null,
+            "wartosci": [
+              350,
+              500,
+              650
+            ],
+            "wartosci_tekst": [
+              "350 zł / 1%",
+              "500 zł / 1%",
+              "650 zł / 1%"
+            ]
+          },
+          {
+            "kod": "szpital_malzonka_nw_90",
+            "etykieta": "Leczenie szpitalne małżonka — NW",
+            "dni": "1–90",
+            "wartosci": [
+              120,
+              160,
+              200
+            ],
+            "wartosci_tekst": [
+              "120 zł / dzień",
+              "160 zł / dzień",
+              "200 zł / dzień"
+            ]
+          },
+          {
+            "kod": "operacja_malzonka_nw",
+            "etykieta": "Operacja chirurgiczna małżonka w wyniku NW",
+            "dni": null,
+            "wartosci": [
+              1500,
+              2000,
+              2500
+            ],
+            "wartosci_tekst": [
+              "1500 zł",
+              "2000 zł",
+              "2500 zł"
+            ]
+          },
+          {
+            "kod": "powiklania_malzonka_nw",
+            "etykieta": "Powikłania pooperacyjne małżonka (NW)",
+            "dni": null,
+            "wartosci": [
+              1000,
+              1500,
+              2000
+            ],
+            "wartosci_tekst": [
+              "1000 zł",
+              "1500 zł",
+              "2000 zł"
+            ]
+          }
+        ],
+        "przyciski_wariantow": [
+          "WI · 5 zł",
+          "WII · 7 zł",
+          "WIII · 11 zł"
+        ]
+      }
+    ],
+    "grupy": {
+      "zgon": "Pakiet świadczeń dotyczący zgonu ubezpieczonego",
+      "wypadek": "Pakiet świadczeń dotyczący wypadku ubezpieczonego",
+      "choroba": "Pakiet świadczeń dotyczący choroby ubezpieczonego",
+      "szpital": "Pakiet świadczeń dotyczący leczenia szpitalnego ubezpieczonego",
+      "operacje": "Pakiet świadczeń dotyczący operacji ubezpieczonego",
+      "malzonek": "Pakiet świadczeń dotyczący małżonka albo partnera",
+      "dziecko": "Pakiet świadczeń dotyczący dziecka",
+      "rodzic": "Pakiet świadczeń dotyczący rodzica"
+    },
+    "katalog_swiadczen": {
+      "zgon": {
+        "l": "Zgon ubezpieczonego",
+        "g": "zgon",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_nw": {
+        "l": "Zgon ubezpieczonego w wyniku nieszczęśliwego wypadku",
+        "g": "zgon",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_komunikacyjny": {
+        "l": "Zgon ubezpieczonego w wyniku wypadku komunikacyjnego",
+        "g": "zgon",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_w_pracy": {
+        "l": "Zgon ubezpieczonego w wyniku wypadku w pracy",
+        "g": "zgon",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_komunikacyjny_w_pracy": {
+        "l": "Zgon ubezpieczonego w wyniku wypadku komunikacyjnego w pracy",
+        "g": "zgon",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_zawal_udar": {
+        "l": "Zgon ubezpieczonego w wyniku zawału mięśnia sercowego lub udaru mózgu",
+        "g": "zgon",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_nowotwor": {
+        "l": "Zgon ubezpieczonego w wyniku choroby nowotworowej",
+        "g": "zgon",
+        "u": "pln",
+        "k": "brak"
+      },
+      "tu_nw": {
+        "l": "Trwały uszczerbek w wyniku nieszczęśliwego wypadku",
+        "g": "wypadek",
+        "u": "pln_1pct",
+        "k": "brak"
+      },
+      "tu_komunikacyjny": {
+        "l": "Trwały uszczerbek w wyniku wypadku komunikacyjnego",
+        "g": "wypadek",
+        "u": "pln_1pct",
+        "k": "brak"
+      },
+      "tu_w_pracy": {
+        "l": "Trwały uszczerbek w wyniku wypadku w pracy",
+        "g": "wypadek",
+        "u": "pln_1pct",
+        "k": "brak"
+      },
+      "tu_komunikacyjny_w_pracy": {
+        "l": "Trwały uszczerbek w wyniku wypadku komunikacyjnego w pracy",
+        "g": "wypadek",
+        "u": "pln_1pct",
+        "k": "brak"
+      },
+      "uraz_bez_uszczerbku": {
+        "l": "Uraz niepowodujący trwałego uszczerbku (NW)",
+        "g": "wypadek",
+        "u": "pln",
+        "k": "brak"
+      },
+      "koszty_rehabilitacji_nw": {
+        "l": "Koszty rehabilitacji wskutek trwałego uszczerbku (NW)",
+        "g": "wypadek",
+        "u": "pln",
+        "k": "brak"
+      },
+      "niezdolnosc_nw": {
+        "l": "Całkowita trwała niezdolność do pracy w wyniku NW",
+        "g": "wypadek",
+        "u": "pln",
+        "k": "brak"
+      },
+      "niezdolnosc_choroba_nw": {
+        "l": "Całkowita trwała niezdolność do pracy w wyniku choroby lub NW",
+        "g": "wypadek",
+        "u": "pln",
+        "k": "brak"
+      },
+      "tu_zawal_udar": {
+        "l": "Trwały uszczerbek w wyniku zawału serca lub udaru mózgu",
+        "g": "choroba",
+        "u": "pln_1pct",
+        "k": "brak"
+      },
+      "pz_max": {
+        "l": "Poważne zachorowanie — zakres maksymalny",
+        "g": "choroba",
+        "u": "pln",
+        "max": true,
+        "k": "brak"
+      },
+      "pz_nowotworowa": {
+        "l": "Poważne zachorowanie na chorobę nowotworową",
+        "g": "choroba",
+        "u": "pln",
+        "max": true,
+        "k": "brak"
+      },
+      "pz_in_situ": {
+        "l": "Poważne zachorowanie na nowotwór in situ",
+        "g": "choroba",
+        "u": "pln",
+        "max": true,
+        "k": "brak"
+      },
+      "pz_uklad_krazenia": {
+        "l": "Poważne zachorowanie na chorobę układu krążenia",
+        "g": "choroba",
+        "u": "pln",
+        "max": true,
+        "k": "brak"
+      },
+      "pz_zakazna": {
+        "l": "Poważne zachorowanie na chorobę zakaźną",
+        "g": "choroba",
+        "u": "pln",
+        "max": true,
+        "k": "brak"
+      },
+      "leczenie_spec": {
+        "l": "Leczenie specjalistyczne",
+        "g": "choroba",
+        "u": "pln",
+        "max": true,
+        "k": "brak"
+      },
+      "leczenie_spec_onko": {
+        "l": "Leczenie specjalistyczne onkologiczne",
+        "g": "choroba",
+        "u": "pln",
+        "max": true,
+        "k": "brak"
+      },
+      "leczenie_spec_kardio": {
+        "l": "Leczenie specjalistyczne kardiologiczne",
+        "g": "choroba",
+        "u": "pln",
+        "max": true,
+        "k": "brak"
+      },
+      "szpital_choroba": {
+        "l": "Leczenie szpitalne — choroba",
+        "g": "szpital",
+        "u": "pln_dzien",
+        "dni": "1–180",
+        "k": "brak"
+      },
+      "szpital_nw": {
+        "l": "Leczenie szpitalne — nieszczęśliwy wypadek",
+        "g": "szpital",
+        "u": "pln_dzien",
+        "dni": "1–180",
+        "k": "brak"
+      },
+      "szpital_komunikacyjny": {
+        "l": "Leczenie szpitalne — wypadek komunikacyjny",
+        "g": "szpital",
+        "u": "pln_dzien",
+        "dni": "1–180",
+        "k": "brak"
+      },
+      "szpital_w_pracy": {
+        "l": "Leczenie szpitalne — wypadek w pracy",
+        "g": "szpital",
+        "u": "pln_dzien",
+        "dni": "1–180",
+        "k": "brak"
+      },
+      "szpital_komunikacyjny_w_pracy": {
+        "l": "Leczenie szpitalne — wypadek komunikacyjny w pracy",
+        "g": "szpital",
+        "u": "pln_dzien",
+        "dni": "1–180",
+        "k": "brak"
+      },
+      "szpital_zawal_udar": {
+        "l": "Leczenie szpitalne — zawał serca lub udar mózgu",
+        "g": "szpital",
+        "u": "pln_dzien",
+        "dni": "1–180",
+        "k": "brak"
+      },
+      "szpital_oiom": {
+        "l": "Leczenie szpitalne na OIOM/OIT",
+        "g": "szpital",
+        "u": "pln_dzien",
+        "dni": "1–14",
+        "k": "brak"
+      },
+      "niezdolnosc_po_szpitalu": {
+        "l": "Czasowa niezdolność do pracy po leczeniu szpitalnym",
+        "g": "szpital",
+        "u": "pln",
+        "k": "brak"
+      },
+      "szpital_rehabilitacyjny": {
+        "l": "Leczenie szpitalne na oddziale rehabilitacyjnym",
+        "g": "szpital",
+        "u": "pln_dzien",
+        "k": "brak"
+      },
+      "koszty_poszpitalne": {
+        "l": "Koszty leczenia poszpitalnego (karta apteczna)",
+        "g": "szpital",
+        "u": "pln",
+        "k": "brak"
+      },
+      "sanatorium": {
+        "l": "Pobyt w sanatorium po leczeniu szpitalnym",
+        "g": "szpital",
+        "u": "pln",
+        "k": "brak"
+      },
+      "operacja": {
+        "l": "Operacja chirurgiczna — 5 podgrup",
+        "g": "operacje",
+        "u": "pln",
+        "k": "brak"
+      },
+      "powiklania": {
+        "l": "Powikłania pooperacyjne",
+        "g": "operacje",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_malzonka": {
+        "l": "Zgon małżonka albo partnera",
+        "g": "malzonek",
+        "u": "pln",
+        "k": "6 miesięcy"
+      },
+      "zgon_malzonka_nw": {
+        "l": "Zgon małżonka albo partnera w wyniku NW",
+        "g": "malzonek",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_malzonka_komunikacyjny": {
+        "l": "Zgon małżonka albo partnera w wyniku wypadku komunikacyjnego",
+        "g": "malzonek",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_malzonka_zawal_udar": {
+        "l": "Zgon małżonka albo partnera w wyniku zawału serca lub udaru mózgu",
+        "g": "malzonek",
+        "u": "pln",
+        "k": "6 miesięcy"
+      },
+      "pz_malzonka_max": {
+        "l": "Poważne zachorowanie małżonka — zakres maksymalny",
+        "g": "malzonek",
+        "u": "pln",
+        "max": true,
+        "k": "3 miesiące"
+      },
+      "pz_malzonka_rozszerzony": {
+        "l": "Poważne zachorowanie małżonka — zakres rozszerzony",
+        "g": "malzonek",
+        "u": "pln",
+        "max": true,
+        "k": "3 miesiące"
+      },
+      "pz_malzonka_podstawowy": {
+        "l": "Poważne zachorowanie małżonka — zakres podstawowy",
+        "g": "malzonek",
+        "u": "pln",
+        "max": true,
+        "k": "3 miesiące"
+      },
+      "pz_malzonka_in_situ": {
+        "l": "Poważne zachorowanie małżonka na nowotwór in situ",
+        "g": "malzonek",
+        "u": "pln",
+        "max": true,
+        "k": "3 miesiące"
+      },
+      "leczenie_spec_malzonka": {
+        "l": "Leczenie specjalistyczne małżonka",
+        "g": "malzonek",
+        "u": "pln",
+        "max": true,
+        "k": "3 miesiące"
+      },
+      "szpital_malzonka_choroba": {
+        "l": "Leczenie szpitalne małżonka — choroba",
+        "g": "malzonek",
+        "u": "pln_dzien",
+        "dni": "1–90",
+        "k": "1 miesiąc"
+      },
+      "szpital_malzonka_nw": {
+        "l": "Leczenie szpitalne małżonka — NW",
+        "g": "malzonek",
+        "u": "pln_dzien",
+        "dni": "1–90",
+        "k": "brak"
+      },
+      "operacja_malzonka": {
+        "l": "Operacja chirurgiczna małżonka — 5 podgrup",
+        "g": "malzonek",
+        "u": "pln",
+        "k": "6 miesięcy"
+      },
+      "powiklania_malzonka": {
+        "l": "Powikłania pooperacyjne małżonka",
+        "g": "malzonek",
+        "u": "pln",
+        "k": "6 miesięcy"
+      },
+      "zgon_dziecka": {
+        "l": "Zgon dziecka",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "6 miesięcy"
+      },
+      "zgon_dziecka_nw": {
+        "l": "Zgon dziecka w wyniku NW",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_dziecka_komunikacyjny": {
+        "l": "Zgon dziecka w wyniku wypadku komunikacyjnego",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "brak"
+      },
+      "osierocenie": {
+        "l": "Osierocenie dziecka w wyniku zgonu ubezpieczonego",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "6 miesięcy"
+      },
+      "osierocenie_oboje_nw": {
+        "l": "Osierocenie dziecka wskutek zgonu obojga rodziców w wyniku NW",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "brak"
+      },
+      "urodzenie_dziecka": {
+        "l": "Urodzenie się dziecka",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "9 miesięcy"
+      },
+      "urodzenie_martwego": {
+        "l": "Urodzenie martwego noworodka",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "9 miesięcy"
+      },
+      "pz_dziecka": {
+        "l": "Poważne zachorowanie dziecka",
+        "g": "dziecko",
+        "u": "pln",
+        "max": true,
+        "k": "3 miesiące"
+      },
+      "pz_dziecka_nowotworowa": {
+        "l": "Poważne zachorowanie dziecka na chorobę nowotworową",
+        "g": "dziecko",
+        "u": "pln",
+        "max": true,
+        "k": "3 miesiące"
+      },
+      "pz_dziecka_zakazna": {
+        "l": "Poważne zachorowanie dziecka na chorobę zakaźną",
+        "g": "dziecko",
+        "u": "pln",
+        "max": true,
+        "k": "3 miesiące"
+      },
+      "leczenie_spec_dziecka": {
+        "l": "Leczenie specjalistyczne dziecka",
+        "g": "dziecko",
+        "u": "pln",
+        "max": true,
+        "k": "3 miesiące"
+      },
+      "leczenie_spec_onko_dziecka": {
+        "l": "Leczenie specjalistyczne onkologiczne dziecka",
+        "g": "dziecko",
+        "u": "pln",
+        "max": true,
+        "k": "3 miesiące"
+      },
+      "wada_wrodzona": {
+        "l": "Wada wrodzona dziecka",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "9 miesięcy"
+      },
+      "szpital_dziecka_choroba": {
+        "l": "Leczenie szpitalne dziecka — choroba (leczenie dłuższe niż 4 dni)",
+        "g": "dziecko",
+        "u": "pln_dzien",
+        "dni": "1–90",
+        "k": "1 miesiąc"
+      },
+      "szpital_dziecka_nw": {
+        "l": "Leczenie szpitalne dziecka — NW (leczenie dłuższe niż 4 dni)",
+        "g": "dziecko",
+        "u": "pln_dzien",
+        "dni": "1–90",
+        "k": "brak"
+      },
+      "szpital_dziecka_komunikacyjny": {
+        "l": "Leczenie szpitalne dziecka — wypadek komunikacyjny",
+        "g": "dziecko",
+        "u": "pln_dzien",
+        "dni": "1–90",
+        "k": "brak"
+      },
+      "szpital_dziecka_oiom": {
+        "l": "Leczenie szpitalne dziecka na OIOM/OIT",
+        "g": "dziecko",
+        "u": "pln_dzien",
+        "dni": "1–90",
+        "k": "1 miesiąc"
+      },
+      "szpital_dziecka_psychiatryczny": {
+        "l": "Leczenie szpitalne dziecka na oddziale psychiatrycznym",
+        "g": "dziecko",
+        "u": "pln_dzien",
+        "k": "1 miesiąc"
+      },
+      "operacja_dziecka": {
+        "l": "Operacja chirurgiczna dziecka — 5 podgrup",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "6 miesięcy"
+      },
+      "operacja_dziecka_nw": {
+        "l": "Operacja chirurgiczna dziecka w wyniku NW — 5 podgrup",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "brak"
+      },
+      "powiklania_dziecka": {
+        "l": "Powikłania pooperacyjne dziecka",
+        "g": "dziecko",
+        "u": "pln",
+        "k": "6 miesięcy"
+      },
+      "zgon_rodzica": {
+        "l": "Zgon rodzica ubezpieczonego",
+        "g": "rodzic",
+        "u": "pln",
+        "k": "6 miesięcy"
+      },
+      "zgon_rodzica_nw": {
+        "l": "Zgon rodzica ubezpieczonego w wyniku NW",
+        "g": "rodzic",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_rodzica_komunikacyjny": {
+        "l": "Zgon rodzica ubezpieczonego w wyniku wypadku komunikacyjnego",
+        "g": "rodzic",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_rodzica_malzonka": {
+        "l": "Zgon rodzica małżonka albo partnera",
+        "g": "rodzic",
+        "u": "pln",
+        "k": "6 miesięcy"
+      },
+      "zgon_rodzica_malzonka_nw": {
+        "l": "Zgon rodzica małżonka albo partnera w wyniku NW",
+        "g": "rodzic",
+        "u": "pln",
+        "k": "brak"
+      },
+      "zgon_rodzica_malzonka_komunikacyjny": {
+        "l": "Zgon rodzica małżonka albo partnera w wyniku wypadku komunikacyjnego",
+        "g": "rodzic",
+        "u": "pln",
+        "k": "brak"
+      }
+    },
+    "etykiety_pozycji_pakietow": {
+      "szpital_choroba_90": {
+        "l": "Leczenie szpitalne — choroba",
+        "u": "pln_dzien",
+        "dni": "1–90"
+      },
+      "assistance_chorobowy": {
+        "l": "Assistance chorobowy (Tabele 7–8 OWU MediOpieki)",
+        "u": "bool"
+      },
+      "szpital_nw_90": {
+        "l": "Leczenie szpitalne — nieszczęśliwy wypadek",
+        "u": "pln_dzien",
+        "dni": "1–90"
+      },
+      "operacja_nw": {
+        "l": "Operacja chirurgiczna w wyniku NW",
+        "u": "pln"
+      },
+      "powiklania_nw": {
+        "l": "Powikłania pooperacyjne (NW)",
+        "u": "pln"
+      },
+      "szpital_nowotwor_90": {
+        "l": "Leczenie szpitalne — choroba nowotworowa",
+        "u": "pln_dzien",
+        "dni": "1–90"
+      },
+      "assistance_onkologiczny": {
+        "l": "Assistance onkologiczny",
+        "u": "bool"
+      },
+      "szpital_zawal_udar_90": {
+        "l": "Leczenie szpitalne — zawał serca lub udar mózgu",
+        "u": "pln_dzien",
+        "dni": "1–90"
+      },
+      "teleopieka_kardiologiczna": {
+        "l": "Teleopieka kardiologiczna (zestaw EKG)",
+        "u": "bool"
+      },
+      "tu_dziecka_nw": {
+        "l": "Trwały uszczerbek dziecka w wyniku NW",
+        "u": "pln_1pct"
+      },
+      "tu_dziecka_komunikacyjny": {
+        "l": "Trwały uszczerbek dziecka — wypadek komunikacyjny",
+        "u": "pln_1pct"
+      },
+      "szpital_dziecka_nw_90": {
+        "l": "Leczenie szpitalne dziecka — NW",
+        "u": "pln_dzien",
+        "dni": "1–90"
+      },
+      "tu_malzonka_nw": {
+        "l": "Trwały uszczerbek małżonka w wyniku NW",
+        "u": "pln_1pct"
+      },
+      "tu_malzonka_komunikacyjny": {
+        "l": "Trwały uszczerbek małżonka — wypadek komunikacyjny",
+        "u": "pln_1pct"
+      },
+      "szpital_malzonka_nw_90": {
+        "l": "Leczenie szpitalne małżonka — NW",
+        "u": "pln_dzien",
+        "dni": "1–90"
+      },
+      "operacja_malzonka_nw": {
+        "l": "Operacja chirurgiczna małżonka w wyniku NW",
+        "u": "pln"
+      },
+      "powiklania_malzonka_nw": {
+        "l": "Powikłania pooperacyjne małżonka (NW)",
+        "u": "pln"
+      }
+    },
+    "branze_wszystkie": [
+      {
+        "slug": "beauty",
+        "nazwa": "Beauty",
+        "opis": "Salony fryzjerskie, kosmetyczne, SPA, studia paznokci",
+        "kod_ulotki": "EH-UL-EZB-F-2607",
+        "skladka": [
+          58,
+          68,
+          76
+        ],
+        "skladka_zgon": [
+          15.59,
+          14.06,
+          12.08
+        ],
+        "s": {
+          "zgon": [
+            100000,
+            80000,
+            75000
+          ],
+          "zgon_nw": [
+            210000,
+            170000,
+            160000
+          ],
+          "zgon_komunikacyjny": [
+            320000,
+            260000,
+            245000
+          ],
+          "zgon_w_pracy": [
+            320000,
+            260000,
+            245000
+          ],
+          "zgon_komunikacyjny_w_pracy": [
+            480000,
+            380000,
+            360000
+          ],
+          "zgon_zawal_udar": [
+            150000,
+            120000,
+            110000
+          ],
+          "zgon_nowotwor": [
+            110000,
+            90000,
+            85000
+          ],
+          "tu_nw": [
+            650,
+            600,
+            550
+          ],
+          "tu_komunikacyjny": [
+            1000,
+            800,
+            700
+          ],
+          "tu_w_pracy": [
+            750,
+            700,
+            625
+          ],
+          "tu_komunikacyjny_w_pracy": [
+            1200,
+            1000,
+            850
+          ],
+          "uraz_bez_uszczerbku": [
+            200,
+            150,
+            100
+          ],
+          "koszty_rehabilitacji_nw": [
+            5000,
+            5000,
+            3000
+          ],
+          "tu_zawal_udar": [
+            500,
+            400,
+            300
+          ],
+          "niezdolnosc_choroba_nw": [
+            25000,
+            25000,
+            25000
+          ],
+          "pz_max": [
+            11000,
+            8000,
+            7500
+          ],
+          "pz_nowotworowa": [
+            3000,
+            2000,
+            2000
+          ],
+          "pz_in_situ": [
+            3000,
+            2000,
+            2000
+          ],
+          "pz_zakazna": [
+            3000,
+            2000,
+            2000
+          ],
+          "leczenie_spec": [
+            4000,
+            3000,
+            3000
+          ],
+          "leczenie_spec_kardio": [
+            3000,
+            2000,
+            2000
+          ],
+          "szpital_choroba": [
+            90,
+            80,
+            80
+          ],
+          "szpital_nw": [
+            200,
+            200,
+            200
+          ],
+          "szpital_komunikacyjny": [
+            350,
+            350,
+            350
+          ],
+          "szpital_w_pracy": [
+            350,
+            350,
+            350
+          ],
+          "szpital_zawal_udar": [
+            140,
+            140,
+            120
+          ],
+          "szpital_oiom": [
+            50,
+            50,
+            50
+          ],
+          "niezdolnosc_po_szpitalu": [
+            250,
+            250,
+            250
+          ],
+          "szpital_rehabilitacyjny": [
+            50,
+            40,
+            40
+          ],
+          "koszty_poszpitalne": [
+            200,
+            150,
+            150
+          ],
+          "operacja": [
+            4500,
+            3500,
+            3500
+          ],
+          "powiklania": [
+            1500,
+            1000,
+            1000
+          ],
+          "zgon_malzonka": [
+            null,
+            15000,
+            15000
+          ],
+          "zgon_malzonka_nw": [
+            null,
+            30000,
+            30000
+          ],
+          "zgon_malzonka_komunikacyjny": [
+            null,
+            40000,
+            40000
+          ],
+          "pz_malzonka_max": [
+            null,
+            4500,
+            4500
+          ],
+          "pz_malzonka_in_situ": [
+            null,
+            1000,
+            1000
+          ],
+          "leczenie_spec_malzonka": [
+            null,
+            1500,
+            1500
+          ],
+          "operacja_malzonka": [
+            null,
+            null,
+            2000
+          ],
+          "powiklania_malzonka": [
+            null,
+            null,
+            1000
+          ],
+          "zgon_rodzica": [
+            null,
+            1800,
+            1800
+          ],
+          "zgon_rodzica_nw": [
+            null,
+            3800,
+            3800
+          ],
+          "zgon_rodzica_komunikacyjny": [
+            null,
+            5000,
+            5000
+          ],
+          "zgon_rodzica_malzonka": [
+            null,
+            1800,
+            1800
+          ],
+          "zgon_rodzica_malzonka_nw": [
+            null,
+            3800,
+            3800
+          ],
+          "zgon_rodzica_malzonka_komunikacyjny": [
+            null,
+            5000,
+            5000
+          ],
+          "zgon_dziecka": [
+            null,
+            null,
+            5000
+          ],
+          "zgon_dziecka_nw": [
+            null,
+            null,
+            10000
+          ],
+          "zgon_dziecka_komunikacyjny": [
+            null,
+            null,
+            15000
+          ],
+          "osierocenie": [
+            null,
+            null,
+            4000
+          ],
+          "osierocenie_oboje_nw": [
+            null,
+            null,
+            10000
+          ],
+          "urodzenie_dziecka": [
+            null,
+            null,
+            1500
+          ],
+          "urodzenie_martwego": [
+            null,
+            null,
+            3000
+          ],
+          "pz_dziecka": [
+            null,
+            null,
+            5000
+          ],
+          "pz_dziecka_nowotworowa": [
+            null,
+            null,
+            2000
+          ],
+          "leczenie_spec_dziecka": [
+            null,
+            null,
+            2000
+          ],
+          "leczenie_spec_onko_dziecka": [
+            null,
+            null,
+            1500
+          ]
+        }
+      },
+      {
+        "slug": "budownictwo",
+        "nazwa": "Budownictwo",
+        "opis": "Firmy budowlane, wykończeniowe, instalacyjne",
+        "kod_ulotki": "EH-UL-EZB-C-2607",
+        "skladka": [
+          63,
+          68,
+          79
+        ],
+        "skladka_zgon": [
+          19.7,
+          15.71,
+          15.71
+        ],
+        "s": {
+          "zgon": [
+            80000,
+            70000,
+            70000
+          ],
+          "zgon_nw": [
+            160000,
+            140000,
+            140000
+          ],
+          "zgon_komunikacyjny": [
+            240000,
+            210000,
+            210000
+          ],
+          "zgon_w_pracy": [
+            240000,
+            210000,
+            210000
+          ],
+          "zgon_komunikacyjny_w_pracy": [
+            370000,
+            320000,
+            320000
+          ],
+          "zgon_zawal_udar": [
+            90000,
+            80000,
+            80000
+          ],
+          "zgon_nowotwor": [
+            90000,
+            80000,
+            80000
+          ],
+          "tu_nw": [
+            550,
+            500,
+            500
+          ],
+          "tu_komunikacyjny": [
+            700,
+            650,
+            650
+          ],
+          "tu_w_pracy": [
+            600,
+            550,
+            550
+          ],
+          "koszty_rehabilitacji_nw": [
+            5000,
+            5000,
+            5000
+          ],
+          "niezdolnosc_nw": [
+            20000,
+            15000,
+            15000
+          ],
+          "pz_max": [
+            9000,
+            8000,
+            7500
+          ],
+          "pz_in_situ": [
+            2000,
+            2000,
+            2000
+          ],
+          "pz_uklad_krazenia": [
+            2000,
+            2000,
+            2000
+          ],
+          "pz_zakazna": [
+            2000,
+            2000,
+            2000
+          ],
+          "leczenie_spec": [
+            3000,
+            2500,
+            2000
+          ],
+          "leczenie_spec_kardio": [
+            3000,
+            2500,
+            2000
+          ],
+          "szpital_choroba": [
+            70,
+            70,
+            65
+          ],
+          "szpital_nw": [
+            250,
+            250,
+            250
+          ],
+          "szpital_komunikacyjny": [
+            400,
+            400,
+            350
+          ],
+          "szpital_w_pracy": [
+            400,
+            400,
+            350
+          ],
+          "szpital_rehabilitacyjny": [
+            30,
+            30,
+            30
+          ],
+          "operacja": [
+            4000,
+            4000,
+            4000
+          ],
+          "powiklania": [
+            2000,
+            2000,
+            2000
+          ],
+          "zgon_malzonka": [
+            null,
+            8000,
+            9000
+          ],
+          "zgon_malzonka_nw": [
+            null,
+            18000,
+            24000
+          ],
+          "zgon_malzonka_komunikacyjny": [
+            null,
+            33000,
+            39000
+          ],
+          "zgon_dziecka": [
+            null,
+            7000,
+            7000
+          ],
+          "zgon_dziecka_nw": [
+            null,
+            14000,
+            14000
+          ],
+          "zgon_dziecka_komunikacyjny": [
+            null,
+            21000,
+            21000
+          ],
+          "osierocenie": [
+            null,
+            6000,
+            5000
+          ],
+          "osierocenie_oboje_nw": [
+            null,
+            16000,
+            15000
+          ],
+          "urodzenie_dziecka": [
+            null,
+            1200,
+            1200
+          ],
+          "urodzenie_martwego": [
+            null,
+            3000,
+            3000
+          ],
+          "pz_dziecka": [
+            null,
+            8000,
+            6000
+          ],
+          "leczenie_spec_dziecka": [
+            null,
+            2000,
+            2000
+          ],
+          "operacja_dziecka_nw": [
+            null,
+            1500,
+            1200
+          ],
+          "zgon_rodzica": [
+            null,
+            null,
+            1700
+          ],
+          "zgon_rodzica_nw": [
+            null,
+            null,
+            3700
+          ],
+          "zgon_rodzica_komunikacyjny": [
+            null,
+            null,
+            6000
+          ],
+          "zgon_rodzica_malzonka": [
+            null,
+            null,
+            1700
+          ],
+          "zgon_rodzica_malzonka_nw": [
+            null,
+            null,
+            3700
+          ],
+          "zgon_rodzica_malzonka_komunikacyjny": [
+            null,
+            null,
+            6000
+          ]
+        }
+      },
+      {
+        "slug": "gastronomia-hotelarstwo",
+        "nazwa": "Gastronomia i hotelarstwo",
+        "opis": "Restauracje, kawiarnie, catering, hotele i pensjonaty",
+        "kod_ulotki": "EH-UL-EZB-E-2607",
+        "skladka": [
+          63,
+          68,
+          79
+        ],
+        "skladka_zgon": [
+          20.16,
+          18.74,
+          18.74
+        ],
+        "uwaga": "Tabela świadczeń identyczna jak w branży budownictwo; różni się wyłącznie część składki przeznaczona na zgon.",
+        "s": {
+          "zgon": [
+            80000,
+            70000,
+            70000
+          ],
+          "zgon_nw": [
+            160000,
+            140000,
+            140000
+          ],
+          "zgon_komunikacyjny": [
+            240000,
+            210000,
+            210000
+          ],
+          "zgon_w_pracy": [
+            240000,
+            210000,
+            210000
+          ],
+          "zgon_komunikacyjny_w_pracy": [
+            370000,
+            320000,
+            320000
+          ],
+          "zgon_zawal_udar": [
+            90000,
+            80000,
+            80000
+          ],
+          "zgon_nowotwor": [
+            90000,
+            80000,
+            80000
+          ],
+          "tu_nw": [
+            550,
+            500,
+            500
+          ],
+          "tu_komunikacyjny": [
+            700,
+            650,
+            650
+          ],
+          "tu_w_pracy": [
+            600,
+            550,
+            550
+          ],
+          "koszty_rehabilitacji_nw": [
+            5000,
+            5000,
+            5000
+          ],
+          "niezdolnosc_nw": [
+            20000,
+            15000,
+            15000
+          ],
+          "pz_max": [
+            9000,
+            8000,
+            7500
+          ],
+          "pz_in_situ": [
+            2000,
+            2000,
+            2000
+          ],
+          "pz_uklad_krazenia": [
+            2000,
+            2000,
+            2000
+          ],
+          "pz_zakazna": [
+            2000,
+            2000,
+            2000
+          ],
+          "leczenie_spec": [
+            3000,
+            2500,
+            2000
+          ],
+          "leczenie_spec_kardio": [
+            3000,
+            2500,
+            2000
+          ],
+          "szpital_choroba": [
+            70,
+            70,
+            65
+          ],
+          "szpital_nw": [
+            250,
+            250,
+            250
+          ],
+          "szpital_komunikacyjny": [
+            400,
+            400,
+            350
+          ],
+          "szpital_w_pracy": [
+            400,
+            400,
+            350
+          ],
+          "szpital_rehabilitacyjny": [
+            30,
+            30,
+            30
+          ],
+          "operacja": [
+            4000,
+            4000,
+            4000
+          ],
+          "powiklania": [
+            2000,
+            2000,
+            2000
+          ],
+          "zgon_malzonka": [
+            null,
+            8000,
+            9000
+          ],
+          "zgon_malzonka_nw": [
+            null,
+            18000,
+            24000
+          ],
+          "zgon_malzonka_komunikacyjny": [
+            null,
+            33000,
+            39000
+          ],
+          "zgon_dziecka": [
+            null,
+            7000,
+            7000
+          ],
+          "zgon_dziecka_nw": [
+            null,
+            14000,
+            14000
+          ],
+          "zgon_dziecka_komunikacyjny": [
+            null,
+            21000,
+            21000
+          ],
+          "osierocenie": [
+            null,
+            6000,
+            5000
+          ],
+          "osierocenie_oboje_nw": [
+            null,
+            16000,
+            15000
+          ],
+          "urodzenie_dziecka": [
+            null,
+            1200,
+            1200
+          ],
+          "urodzenie_martwego": [
+            null,
+            3000,
+            3000
+          ],
+          "pz_dziecka": [
+            null,
+            8000,
+            6000
+          ],
+          "leczenie_spec_dziecka": [
+            null,
+            2000,
+            2000
+          ],
+          "operacja_dziecka_nw": [
+            null,
+            1500,
+            1200
+          ],
+          "zgon_rodzica": [
+            null,
+            null,
+            1700
+          ],
+          "zgon_rodzica_nw": [
+            null,
+            null,
+            3700
+          ],
+          "zgon_rodzica_komunikacyjny": [
+            null,
+            null,
+            6000
+          ],
+          "zgon_rodzica_malzonka": [
+            null,
+            null,
+            1700
+          ],
+          "zgon_rodzica_malzonka_nw": [
+            null,
+            null,
+            3700
+          ],
+          "zgon_rodzica_malzonka_komunikacyjny": [
+            null,
+            null,
+            6000
+          ]
+        }
+      },
+      {
+        "slug": "ksiegowosc",
+        "nazwa": "Księgowość",
+        "opis": "Biura rachunkowe, doradztwo podatkowe, audyt",
+        "kod_ulotki": "EH-UL-EZB-I-2607",
+        "skladka": [
+          63,
+          70,
+          78
+        ],
+        "skladka_zgon": [
+          13.79,
+          13.79,
+          13.74
+        ],
+        "s": {
+          "zgon": [
+            90000,
+            90000,
+            80000
+          ],
+          "zgon_nw": [
+            180000,
+            180000,
+            160000
+          ],
+          "zgon_komunikacyjny": [
+            270000,
+            270000,
+            240000
+          ],
+          "zgon_w_pracy": [
+            270000,
+            270000,
+            240000
+          ],
+          "zgon_komunikacyjny_w_pracy": [
+            400000,
+            400000,
+            350000
+          ],
+          "zgon_zawal_udar": [
+            120000,
+            120000,
+            110000
+          ],
+          "zgon_nowotwor": [
+            100000,
+            100000,
+            90000
+          ],
+          "tu_nw": [
+            650,
+            600,
+            550
+          ],
+          "tu_komunikacyjny": [
+            950,
+            900,
+            850
+          ],
+          "tu_w_pracy": [
+            800,
+            750,
+            700
+          ],
+          "tu_komunikacyjny_w_pracy": [
+            1200,
+            1150,
+            1100
+          ],
+          "niezdolnosc_nw": [
+            35000,
+            30000,
+            25000
+          ],
+          "tu_zawal_udar": [
+            500,
+            450,
+            400
+          ],
+          "pz_max": [
+            15000,
+            15000,
+            12000
+          ],
+          "pz_in_situ": [
+            3000,
+            3000,
+            3000
+          ],
+          "pz_uklad_krazenia": [
+            3000,
+            3000,
+            3000
+          ],
+          "pz_zakazna": [
+            3000,
+            3000,
+            3000
+          ],
+          "leczenie_spec": [
+            3000,
+            3000,
+            2500
+          ],
+          "leczenie_spec_kardio": [
+            3000,
+            3000,
+            2500
+          ],
+          "szpital_choroba": [
+            85,
+            80,
+            80
+          ],
+          "szpital_nw": [
+            200,
+            200,
+            200
+          ],
+          "szpital_komunikacyjny": [
+            400,
+            350,
+            350
+          ],
+          "szpital_w_pracy": [
+            400,
+            350,
+            350
+          ],
+          "szpital_komunikacyjny_w_pracy": [
+            700,
+            600,
+            600
+          ],
+          "szpital_zawal_udar": [
+            135,
+            110,
+            110
+          ],
+          "szpital_oiom": [
+            70,
+            60,
+            50
+          ],
+          "niezdolnosc_po_szpitalu": [
+            250,
+            250,
+            250
+          ],
+          "szpital_rehabilitacyjny": [
+            50,
+            40,
+            40
+          ],
+          "koszty_poszpitalne": [
+            150,
+            150,
+            150
+          ],
+          "operacja": [
+            4500,
+            4000,
+            3500
+          ],
+          "powiklania": [
+            2000,
+            2000,
+            2000
+          ],
+          "zgon_malzonka": [
+            15000,
+            15000,
+            12000
+          ],
+          "zgon_malzonka_nw": [
+            30000,
+            30000,
+            25000
+          ],
+          "zgon_malzonka_komunikacyjny": [
+            45000,
+            45000,
+            40000
+          ],
+          "pz_malzonka_rozszerzony": [
+            3000,
+            3000,
+            3000
+          ],
+          "szpital_malzonka_choroba": [
+            50,
+            50,
+            50
+          ],
+          "szpital_malzonka_nw": [
+            100,
+            100,
+            100
+          ],
+          "zgon_dziecka": [
+            null,
+            6000,
+            7000
+          ],
+          "zgon_dziecka_nw": [
+            null,
+            12000,
+            14000
+          ],
+          "zgon_dziecka_komunikacyjny": [
+            null,
+            18000,
+            21000
+          ],
+          "urodzenie_dziecka": [
+            null,
+            1500,
+            1300
+          ],
+          "urodzenie_martwego": [
+            null,
+            3000,
+            3000
+          ],
+          "pz_dziecka": [
+            null,
+            8000,
+            9000
+          ],
+          "leczenie_spec_dziecka": [
+            null,
+            2000,
+            2000
+          ],
+          "wada_wrodzona": [
+            null,
+            3500,
+            3000
+          ],
+          "szpital_dziecka_choroba": [
+            null,
+            40,
+            40
+          ],
+          "szpital_dziecka_nw": [
+            null,
+            100,
+            100
+          ],
+          "operacja_dziecka": [
+            null,
+            2000,
+            1500
+          ],
+          "zgon_rodzica": [
+            null,
+            null,
+            1700
+          ],
+          "zgon_rodzica_nw": [
+            null,
+            null,
+            4000
+          ],
+          "zgon_rodzica_komunikacyjny": [
+            null,
+            null,
+            5000
+          ],
+          "zgon_rodzica_malzonka": [
+            null,
+            null,
+            1700
+          ],
+          "zgon_rodzica_malzonka_nw": [
+            null,
+            null,
+            4000
+          ],
+          "zgon_rodzica_malzonka_komunikacyjny": [
+            null,
+            null,
+            5000
+          ]
+        }
+      },
+      {
+        "slug": "nieruchomosci",
+        "nazwa": "Nieruchomości",
+        "opis": "Biura nieruchomości, zarządzanie najmem, deweloperzy",
+        "kod_ulotki": "EH-UL-EZB-J-2607",
+        "skladka": [
+          70,
+          76,
+          86
+        ],
+        "skladka_zgon": [
+          21.98,
+          16.15,
+          17.36
+        ],
+        "s": {
+          "zgon": [
+            80000,
+            70000,
+            60000
+          ],
+          "zgon_nw": [
+            170000,
+            150000,
+            130000
+          ],
+          "zgon_komunikacyjny": [
+            260000,
+            230000,
+            200000
+          ],
+          "zgon_w_pracy": [
+            260000,
+            230000,
+            200000
+          ],
+          "zgon_komunikacyjny_w_pracy": [
+            390000,
+            350000,
+            310000
+          ],
+          "zgon_zawal_udar": [
+            120000,
+            110000,
+            100000
+          ],
+          "zgon_nowotwor": [
+            90000,
+            80000,
+            70000
+          ],
+          "osierocenie": [
+            null,
+            5000,
+            5000
+          ],
+          "osierocenie_oboje_nw": [
+            null,
+            10000,
+            10000
+          ],
+          "tu_nw": [
+            600,
+            550,
+            500
+          ],
+          "tu_komunikacyjny": [
+            750,
+            700,
+            650
+          ],
+          "tu_w_pracy": [
+            700,
+            650,
+            600
+          ],
+          "tu_zawal_udar": [
+            400,
+            400,
+            400
+          ],
+          "pz_max": [
+            10000,
+            9000,
+            8000
+          ],
+          "pz_in_situ": [
+            2000,
+            2000,
+            2000
+          ],
+          "pz_uklad_krazenia": [
+            2000,
+            2000,
+            2000
+          ],
+          "pz_zakazna": [
+            3000,
+            3000,
+            3000
+          ],
+          "leczenie_spec": [
+            4000,
+            4000,
+            4000
+          ],
+          "leczenie_spec_kardio": [
+            2000,
+            2000,
+            2000
+          ],
+          "szpital_choroba": [
+            80,
+            70,
+            70
+          ],
+          "szpital_nw": [
+            300,
+            250,
+            250
+          ],
+          "szpital_komunikacyjny": [
+            450,
+            400,
+            400
+          ],
+          "szpital_w_pracy": [
+            450,
+            400,
+            400
+          ],
+          "szpital_zawal_udar": [
+            130,
+            120,
+            120
+          ],
+          "szpital_oiom": [
+            60,
+            60,
+            60
+          ],
+          "niezdolnosc_po_szpitalu": [
+            200,
+            200,
+            200
+          ],
+          "koszty_poszpitalne": [
+            200,
+            200,
+            150
+          ],
+          "operacja": [
+            5000,
+            4000,
+            3000
+          ],
+          "powiklania": [
+            2000,
+            2000,
+            1500
+          ],
+          "zgon_malzonka": [
+            null,
+            15000,
+            15000
+          ],
+          "zgon_malzonka_nw": [
+            null,
+            30000,
+            30000
+          ],
+          "zgon_malzonka_komunikacyjny": [
+            null,
+            40000,
+            40000
+          ],
+          "zgon_dziecka": [
+            null,
+            6000,
+            6000
+          ],
+          "zgon_dziecka_nw": [
+            null,
+            12000,
+            12000
+          ],
+          "zgon_dziecka_komunikacyjny": [
+            null,
+            18000,
+            18000
+          ],
+          "urodzenie_dziecka": [
+            null,
+            1200,
+            1200
+          ],
+          "urodzenie_martwego": [
+            null,
+            3000,
+            3000
+          ],
+          "zgon_rodzica": [
+            null,
+            null,
+            1700
+          ],
+          "zgon_rodzica_nw": [
+            null,
+            null,
+            3700
+          ],
+          "zgon_rodzica_komunikacyjny": [
+            null,
+            null,
+            5100
+          ],
+          "zgon_rodzica_malzonka": [
+            null,
+            null,
+            1700
+          ],
+          "zgon_rodzica_malzonka_nw": [
+            null,
+            null,
+            3700
+          ],
+          "zgon_rodzica_malzonka_komunikacyjny": [
+            null,
+            null,
+            5100
+          ]
+        }
+      },
+      {
+        "slug": "piekarnictwo",
+        "nazwa": "Piekarnictwo",
+        "opis": "Piekarnie, cukiernie, produkcja pieczywa",
+        "kod_ulotki": "EH-UL-EZB-H-2607",
+        "skladka": [
+          65,
+          72,
+          80
+        ],
+        "skladka_zgon": [
+          16.76,
+          14.63,
+          13.23
+        ],
+        "s": {
+          "zgon": [
+            80000,
+            70000,
+            60000
+          ],
+          "zgon_nw": [
+            160000,
+            140000,
+            120000
+          ],
+          "zgon_komunikacyjny": [
+            240000,
+            210000,
+            180000
+          ],
+          "zgon_w_pracy": [
+            240000,
+            210000,
+            180000
+          ],
+          "zgon_komunikacyjny_w_pracy": [
+            370000,
+            320000,
+            270000
+          ],
+          "zgon_zawal_udar": [
+            100000,
+            90000,
+            70000
+          ],
+          "zgon_nowotwor": [
+            90000,
+            80000,
+            70000
+          ],
+          "tu_nw": [
+            700,
+            650,
+            600
+          ],
+          "tu_komunikacyjny": [
+            900,
+            800,
+            700
+          ],
+          "tu_w_pracy": [
+            800,
+            750,
+            700
+          ],
+          "uraz_bez_uszczerbku": [
+            200,
+            200,
+            200
+          ],
+          "koszty_rehabilitacji_nw": [
+            5000,
+            5000,
+            5000
+          ],
+          "niezdolnosc_nw": [
+            30000,
+            25000,
+            25000
+          ],
+          "tu_zawal_udar": [
+            500,
+            450,
+            400
+          ],
+          "pz_max": [
+            10000,
+            9000,
+            8000
+          ],
+          "pz_in_situ": [
+            3000,
+            2500,
+            2000
+          ],
+          "pz_zakazna": [
+            3000,
+            2500,
+            2000
+          ],
+          "leczenie_spec": [
+            3000,
+            3000,
+            2500
+          ],
+          "szpital_choroba": [
+            80,
+            80,
+            80
+          ],
+          "szpital_nw": [
+            200,
+            200,
+            220
+          ],
+          "szpital_komunikacyjny": [
+            400,
+            400,
+            370
+          ],
+          "szpital_w_pracy": [
+            400,
+            400,
+            370
+          ],
+          "szpital_komunikacyjny_w_pracy": [
+            700,
+            700,
+            620
+          ],
+          "szpital_zawal_udar": [
+            150,
+            150,
+            140
+          ],
+          "szpital_oiom": [
+            80,
+            80,
+            70
+          ],
+          "niezdolnosc_po_szpitalu": [
+            250,
+            250,
+            250
+          ],
+          "koszty_poszpitalne": [
+            200,
+            150,
+            100
+          ],
+          "sanatorium": [
+            500,
+            500,
+            500
+          ],
+          "operacja": [
+            4500,
+            4000,
+            3500
+          ],
+          "powiklania": [
+            2000,
+            2000,
+            1500
+          ],
+          "zgon_malzonka": [
+            null,
+            15000,
+            12000
+          ],
+          "zgon_malzonka_nw": [
+            null,
+            30000,
+            27000
+          ],
+          "zgon_malzonka_komunikacyjny": [
+            null,
+            50000,
+            47000
+          ],
+          "pz_malzonka_podstawowy": [
+            null,
+            3000,
+            2000
+          ],
+          "zgon_dziecka": [
+            null,
+            7000,
+            7000
+          ],
+          "zgon_dziecka_nw": [
+            null,
+            14000,
+            14000
+          ],
+          "zgon_dziecka_komunikacyjny": [
+            null,
+            21000,
+            21000
+          ],
+          "urodzenie_dziecka": [
+            null,
+            1200,
+            1400
+          ],
+          "urodzenie_martwego": [
+            null,
+            4000,
+            4000
+          ],
+          "szpital_dziecka_choroba": [
+            null,
+            40,
+            40
+          ],
+          "szpital_dziecka_nw": [
+            null,
+            100,
+            100
+          ],
+          "operacja_dziecka": [
+            null,
+            1500,
+            1500
+          ],
+          "powiklania_dziecka": [
+            null,
+            1000,
+            1000
+          ],
+          "zgon_rodzica": [
+            null,
+            null,
+            1700
+          ],
+          "zgon_rodzica_nw": [
+            null,
+            null,
+            3700
+          ],
+          "zgon_rodzica_komunikacyjny": [
+            null,
+            null,
+            5000
+          ],
+          "zgon_rodzica_malzonka": [
+            null,
+            null,
+            1700
+          ],
+          "zgon_rodzica_malzonka_nw": [
+            null,
+            null,
+            3700
+          ],
+          "zgon_rodzica_malzonka_komunikacyjny": [
+            null,
+            null,
+            5000
+          ]
+        }
+      },
+      {
+        "slug": "stomatologia",
+        "nazwa": "Stomatologia",
+        "opis": "Gabinety i kliniki stomatologiczne",
+        "kod_ulotki": "EH-UL-EZB-G-2607",
+        "skladka": [
+          74,
+          82,
+          92
+        ],
+        "skladka_zgon": [
+          10.6,
+          9.59,
+          13.45
+        ],
+        "uwaga": "Jedyna branża, w której Wariant III ma wyższe sumy na zgon niż Wariant I — kolejność wariantów NIE jest monotoniczna.",
+        "s": {
+          "zgon": [
+            90000,
+            80000,
+            100000
+          ],
+          "zgon_nw": [
+            190000,
+            170000,
+            200000
+          ],
+          "zgon_komunikacyjny": [
+            290000,
+            260000,
+            300000
+          ],
+          "zgon_w_pracy": [
+            290000,
+            260000,
+            300000
+          ],
+          "zgon_komunikacyjny_w_pracy": [
+            480000,
+            430000,
+            490000
+          ],
+          "zgon_zawal_udar": [
+            130000,
+            120000,
+            140000
+          ],
+          "zgon_nowotwor": [
+            100000,
+            90000,
+            110000
+          ],
+          "tu_nw": [
+            700,
+            650,
+            650
+          ],
+          "tu_komunikacyjny": [
+            1000,
+            950,
+            950
+          ],
+          "tu_w_pracy": [
+            800,
+            750,
+            750
+          ],
+          "uraz_bez_uszczerbku": [
+            200,
+            200,
+            200
+          ],
+          "tu_zawal_udar": [
+            550,
+            500,
+            500
+          ],
+          "niezdolnosc_choroba_nw": [
+            30000,
+            30000,
+            30000
+          ],
+          "pz_max": [
+            13000,
+            11000,
+            13000
+          ],
+          "pz_nowotworowa": [
+            2000,
+            2000,
+            2000
+          ],
+          "pz_in_situ": [
+            2000,
+            2000,
+            3000
+          ],
+          "pz_uklad_krazenia": [
+            2000,
+            2000,
+            3000
+          ],
+          "pz_zakazna": [
+            3000,
+            3000,
+            3000
+          ],
+          "leczenie_spec": [
+            3000,
+            3000,
+            3000
+          ],
+          "leczenie_spec_onko": [
+            3000,
+            2000,
+            3000
+          ],
+          "leczenie_spec_kardio": [
+            3000,
+            2000,
+            3000
+          ],
+          "szpital_choroba": [
+            80,
+            75,
+            80
+          ],
+          "szpital_nw": [
+            220,
+            220,
+            220
+          ],
+          "szpital_komunikacyjny": [
+            420,
+            420,
+            420
+          ],
+          "szpital_w_pracy": [
+            420,
+            420,
+            420
+          ],
+          "szpital_komunikacyjny_w_pracy": [
+            720,
+            720,
+            720
+          ],
+          "szpital_zawal_udar": [
+            150,
+            145,
+            150
+          ],
+          "szpital_oiom": [
+            70,
+            70,
+            70
+          ],
+          "niezdolnosc_po_szpitalu": [
+            250,
+            250,
+            250
+          ],
+          "szpital_rehabilitacyjny": [
+            50,
+            50,
+            50
+          ],
+          "koszty_poszpitalne": [
+            200,
+            200,
+            200
+          ],
+          "operacja": [
+            5000,
+            4500,
+            5000
+          ],
+          "powiklania": [
+            2000,
+            2000,
+            2000
+          ],
+          "zgon_malzonka": [
+            15000,
+            14000,
+            15000
+          ],
+          "zgon_malzonka_nw": [
+            30000,
+            29000,
+            30000
+          ],
+          "zgon_malzonka_komunikacyjny": [
+            50000,
+            49000,
+            50000
+          ],
+          "zgon_malzonka_zawal_udar": [
+            25000,
+            24000,
+            25000
+          ],
+          "pz_malzonka_podstawowy": [
+            4000,
+            3000,
+            4000
+          ],
+          "zgon_dziecka": [
+            7000,
+            7000,
+            7000
+          ],
+          "zgon_dziecka_nw": [
+            14000,
+            14000,
+            14000
+          ],
+          "zgon_dziecka_komunikacyjny": [
+            21000,
+            21000,
+            21000
+          ],
+          "osierocenie": [
+            7000,
+            6000,
+            6000
+          ],
+          "osierocenie_oboje_nw": [
+            17000,
+            16000,
+            16000
+          ],
+          "urodzenie_dziecka": [
+            1400,
+            1300,
+            1500
+          ],
+          "urodzenie_martwego": [
+            3000,
+            3000,
+            3000
+          ],
+          "pz_dziecka": [
+            10000,
+            8000,
+            10000
+          ],
+          "pz_dziecka_nowotworowa": [
+            2000,
+            2000,
+            2000
+          ],
+          "pz_dziecka_zakazna": [
+            2000,
+            2000,
+            2000
+          ],
+          "leczenie_spec_dziecka": [
+            2000,
+            1500,
+            2000
+          ],
+          "leczenie_spec_onko_dziecka": [
+            2000,
+            1500,
+            2000
+          ],
+          "wada_wrodzona": [
+            3000,
+            3000,
+            3000
+          ],
+          "szpital_dziecka_choroba": [
+            50,
+            40,
+            50
+          ],
+          "szpital_dziecka_nw": [
+            100,
+            100,
+            100
+          ],
+          "szpital_dziecka_komunikacyjny": [
+            200,
+            200,
+            200
+          ],
+          "szpital_dziecka_oiom": [
+            40,
+            40,
+            40
+          ],
+          "szpital_dziecka_psychiatryczny": [
+            40,
+            40,
+            40
+          ],
+          "operacja_dziecka": [
+            2000,
+            1600,
+            2000
+          ],
+          "powiklania_dziecka": [
+            1500,
+            1000,
+            1500
+          ],
+          "zgon_rodzica": [
+            null,
+            1800,
+            2000
+          ],
+          "zgon_rodzica_nw": [
+            null,
+            3800,
+            4000
+          ],
+          "zgon_rodzica_komunikacyjny": [
+            null,
+            6000,
+            6500
+          ],
+          "zgon_rodzica_malzonka": [
+            null,
+            1800,
+            2000
+          ],
+          "zgon_rodzica_malzonka_nw": [
+            null,
+            3800,
+            4000
+          ],
+          "zgon_rodzica_malzonka_komunikacyjny": [
+            null,
+            6000,
+            6500
+          ]
+        }
+      },
+      {
+        "slug": "transport-ladowy",
+        "nazwa": "Transport lądowy",
+        "opis": "Firmy transportowe, spedycja, kurierzy",
+        "kod_ulotki": "EH-UL-EZB-D-2607",
+        "skladka": [
+          63,
+          65,
+          75
+        ],
+        "skladka_zgon": [
+          20.28,
+          17.62,
+          17.62
+        ],
+        "s": {
+          "zgon": [
+            80000,
+            60000,
+            60000
+          ],
+          "zgon_nw": [
+            180000,
+            160000,
+            160000
+          ],
+          "zgon_komunikacyjny": [
+            280000,
+            260000,
+            260000
+          ],
+          "zgon_w_pracy": [
+            280000,
+            260000,
+            260000
+          ],
+          "zgon_komunikacyjny_w_pracy": [
+            420000,
+            420000,
+            420000
+          ],
+          "zgon_zawal_udar": [
+            120000,
+            100000,
+            100000
+          ],
+          "zgon_nowotwor": [
+            90000,
+            70000,
+            70000
+          ],
+          "tu_nw": [
+            650,
+            450,
+            450
+          ],
+          "tu_komunikacyjny": [
+            1000,
+            800,
+            800
+          ],
+          "tu_w_pracy": [
+            750,
+            525,
+            525
+          ],
+          "tu_komunikacyjny_w_pracy": [
+            1200,
+            950,
+            950
+          ],
+          "koszty_rehabilitacji_nw": [
+            5000,
+            5000,
+            5000
+          ],
+          "niezdolnosc_nw": [
+            30000,
+            25000,
+            25000
+          ],
+          "tu_zawal_udar": [
+            400,
+            300,
+            300
+          ],
+          "pz_max": [
+            12000,
+            6000,
+            6000
+          ],
+          "pz_nowotworowa": [
+            2000,
+            1500,
+            1500
+          ],
+          "pz_in_situ": [
+            3000,
+            2000,
+            2000
+          ],
+          "pz_uklad_krazenia": [
+            3000,
+            2000,
+            2000
+          ],
+          "leczenie_spec": [
+            4000,
+            3000,
+            3000
+          ],
+          "leczenie_spec_kardio": [
+            3000,
+            2000,
+            2000
+          ],
+          "szpital_choroba": [
+            80,
+            60,
+            60
+          ],
+          "szpital_nw": [
+            200,
+            200,
+            200
+          ],
+          "szpital_komunikacyjny": [
+            350,
+            350,
+            350
+          ],
+          "szpital_w_pracy": [
+            350,
+            350,
+            350
+          ],
+          "szpital_zawal_udar": [
+            130,
+            130,
+            130
+          ],
+          "szpital_oiom": [
+            50,
+            50,
+            50
+          ],
+          "niezdolnosc_po_szpitalu": [
+            250,
+            250,
+            250
+          ],
+          "szpital_rehabilitacyjny": [
+            50,
+            40,
+            40
+          ],
+          "koszty_poszpitalne": [
+            200,
+            100,
+            100
+          ],
+          "sanatorium": [
+            500,
+            300,
+            300
+          ],
+          "operacja": [
+            4000,
+            3000,
+            3000
+          ],
+          "powiklania": [
+            1500,
+            1000,
+            1000
+          ],
+          "zgon_malzonka": [
+            null,
+            9000,
+            9000
+          ],
+          "zgon_malzonka_nw": [
+            null,
+            19000,
+            19000
+          ],
+          "zgon_malzonka_komunikacyjny": [
+            null,
+            29000,
+            29000
+          ],
+          "zgon_rodzica": [
+            null,
+            1700,
+            1700
+          ],
+          "zgon_rodzica_nw": [
+            null,
+            3700,
+            3700
+          ],
+          "zgon_rodzica_komunikacyjny": [
+            null,
+            5000,
+            5000
+          ],
+          "zgon_rodzica_malzonka": [
+            null,
+            1700,
+            1700
+          ],
+          "zgon_rodzica_malzonka_nw": [
+            null,
+            3700,
+            3700
+          ],
+          "zgon_rodzica_malzonka_komunikacyjny": [
+            null,
+            5000,
+            5000
+          ],
+          "zgon_dziecka": [
+            null,
+            null,
+            6000
+          ],
+          "zgon_dziecka_nw": [
+            null,
+            null,
+            12000
+          ],
+          "zgon_dziecka_komunikacyjny": [
+            null,
+            null,
+            18000
+          ],
+          "osierocenie": [
+            null,
+            null,
+            5000
+          ],
+          "osierocenie_oboje_nw": [
+            null,
+            null,
+            15000
+          ],
+          "urodzenie_dziecka": [
+            null,
+            null,
+            1300
+          ],
+          "urodzenie_martwego": [
+            null,
+            null,
+            3000
+          ],
+          "pz_dziecka": [
+            null,
+            null,
+            5000
+          ],
+          "leczenie_spec_dziecka": [
+            null,
+            null,
+            1500
+          ],
+          "leczenie_spec_onko_dziecka": [
+            null,
+            null,
+            1000
+          ]
+        }
+      }
+    ]
+  },
+  "zgody": [
+    {
+      "kod": "z1",
+      "wymagana": true,
+      "wersja": "2026-07-a",
+      "etykieta": "Zgoda na objęcie grupowym ubezpieczeniem na życie ERGO Życie w Biznesie",
+      "tresc": "Wnioskuję o zawarcie umowy grupowego ubezpieczenia na życie ERGO Życie w Biznesie na warunkach określonych w OWU (kod: EZwB 01/25) oraz OWU ubezpieczeń dodatkowych, które wybrałem w tym wniosku."
+    },
+    {
+      "kod": "z2",
+      "wymagana": true,
+      "wersja": "2026-07-a",
+      "etykieta": "Oświadczenie o zapoznaniu się z OWU i kartami produktu",
+      "tresc": "Oświadczam, że przed złożeniem wniosku otrzymałem i zapoznałem się z Ogólnymi warunkami ubezpieczenia (EZwB 01/25), OWU MediOpieka (MA 01/25) oraz OWU Global Doctors (GD-GZ 01/25), w tym z wyłączeniami i ograniczeniami odpowiedzialności."
+    },
+    {
+      "kod": "z3",
+      "wymagana": true,
+      "wersja": "2026-07-a",
+      "etykieta": "Zgoda na przetwarzanie danych osobowych (RODO)",
+      "tresc": "Administratorem danych jest Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. Dane przetwarzamy w celu zawarcia i wykonania umowy ubezpieczenia (art. 6 ust. 1 lit. b RODO) oraz w celach wynikających z prawnie uzasadnionych interesów administratora."
+    },
+    {
+      "kod": "z4",
+      "wymagana": true,
+      "wersja": "2026-07-a",
+      "etykieta": "Oświadczenie o liczbie i wieku osób zgłaszanych do ubezpieczenia",
+      "tresc": "Oświadczam, że osoby zgłaszane do ubezpieczenia są aktywne zawodowo, mają od 15 do 70 lat, a ich liczba mieści się w przedziale 2–100."
+    },
+    {
+      "kod": "z5",
+      "wymagana": true,
+      "wersja": "2026-07-a",
+      "etykieta": "Oświadczenie o statusie nowego klienta",
+      "tresc": "Oświadczam, że firma nie posiada obecnie umowy grupowego ubezpieczenia na życie w ERGO Hestii — oferta branżowa dotyczy nowych klientów."
+    },
+    {
+      "kod": "z6",
+      "wymagana": false,
+      "wersja": "2026-07-a",
+      "etykieta": "Zgoda marketingowa — e-mail",
+      "tresc": "Zgoda na otrzymywanie informacji handlowych drogą elektroniczną. Dobrowolna, można wycofać w każdej chwili."
+    },
+    {
+      "kod": "z7",
+      "wymagana": false,
+      "wersja": "2026-07-a",
+      "etykieta": "Zgoda marketingowa — telefon",
+      "tresc": "Zgoda na kontakt telefoniczny w celach marketingowych. Dobrowolna, można wycofać w każdej chwili."
+    }
+  ],
+  "opisy_pakietow_zakres_ochrony": [
+    {
+      "slug": "zycie",
+      "nazwa": "Pakiet Życie",
+      "jedno_zdanie": "Wypłata dla bliskich, jeśli ubezpieczonego zabraknie.",
+      "dla_kogo": "Dla tych, którzy chcą zabezpieczyć finansowo swoich bliskich na wypadek śmierci.",
+      "polecamy_osobom": [
+        "posiadającym zobowiązania finansowe",
+        "wychowującym dzieci",
+        "będącym głównymi żywicielami rodziny",
+        "wykonującym zawód o podwyższonym ryzyku wypadków"
+      ],
+      "korzysci": [
+        "Świadczenie finansowe, które może zapewnić stabilność materialną i pokryć bieżące wydatki — spłatę kredytu czy codzienne potrzeby rodziny.",
+        "Środki na przyszłość: edukacja dzieci lub realizacja innych ważnych celów życiowych.",
+        "Wsparcie w trudnych chwilach, które minimalizuje stres związany z niespodziewanymi wydatkami."
+      ],
+      "warianty_skladka": [
+        12,
+        15,
+        20
+      ],
+      "uwaga_kumulacja": "Kwoty w osobnych wierszach nie kumulują się — wartość przy zgonie w wyniku wypadku zawiera już kwotę za zgon."
+    },
+    {
+      "slug": "zdrowie",
+      "nazwa": "Pakiet Zdrowie",
+      "jedno_zdanie": "Pieniądze i wsparcie medyczne, gdy pojawia się poważna choroba.",
+      "dla_kogo": "Dla osób, które chcą zapewnić sobie bezpieczeństwo finansowe i wsparcie w powrocie do zdrowia w przypadku choroby.",
+      "polecamy_osobom": [
+        "które obawiają się, że pogorszenie stanu zdrowia obciąży rodzinny budżet",
+        "które w czasie choroby chcą skupić się na walce z nią, a nie myśleć o kosztach leczenia"
+      ],
+      "korzysci": [
+        "Świadczenie finansowe, które można przeznaczyć na pokrycie kosztów leczenia, rehabilitacji lub inne potrzeby związane z powrotem do zdrowia.",
+        "Szeroki zakres ochrony obejmujący 87 poważnych zachorowań i szeroki katalog operacji chirurgicznych.",
+        "Wsparcie przy leczeniu specjalistycznym w razie konieczności zastosowania jednej z 20 metod.",
+        "Świadczenie szpitalne już od pierwszego dnia pobytu w szpitalu.",
+        "Assistance chorobowy: organizacja i pokrycie kosztów konsultacji lekarskich, diagnostyki laboratoryjnej, badań specjalistycznych oraz wsparcia psychologicznego."
+      ],
+      "warianty_skladka_5podgrup": [
+        17,
+        27,
+        39
+      ],
+      "warianty_skladka_3podgrupy": [
+        18,
+        28,
+        40
+      ],
+      "uwaga_podgrupy": "Pakiet główny rozlicza operacje w 5 podgrupach — spójny jest wariant 5-podgrupowy."
+    },
+    {
+      "slug": "wypadek",
+      "nazwa": "Pakiet Wypadek",
+      "jedno_zdanie": "Wsparcie finansowe po nieszczęśliwym wypadku, aż do powrotu do sprawności.",
+      "dla_kogo": "Dla osób, które chcą zadbać o swoje bezpieczeństwo i zabezpieczyć się na wypadek nieprzewidzianych zdarzeń.",
+      "polecamy_osobom": [
+        "prowadzącym aktywny tryb życia",
+        "które nie chcą, aby kontuzja pokrzyżowała ich plany",
+        "które chcą mieć zapewnione wsparcie w powrocie do pełnej sprawności po nieszczęśliwym wypadku"
+      ],
+      "korzysci": [
+        "Dodatkowe świadczenie w przypadku trwałego uszczerbku spowodowanego wypadkiem komunikacyjnym.",
+        "Wsparcie finansowe za każdy dzień pobytu w szpitalu spowodowany nieszczęśliwym wypadkiem.",
+        "Szeroki katalog operacji oraz ochrona przy ewentualnych powikłaniach po zabiegu.",
+        "Dodatkowe wsparcie finansowe, które pomoże zabezpieczyć budżet domowy w trudnym okresie."
+      ],
+      "warianty_skladka_5podgrup": [
+        11,
+        15,
+        19
+      ],
+      "warianty_skladka_3podgrupy": [
+        12,
+        16,
+        20
+      ]
+    },
+    {
+      "slug": "onkologiczny",
+      "nazwa": "Pakiet Onkologiczny",
+      "jedno_zdanie": "Wypłata przy diagnozie nowotworu plus assistance onkologiczny w trakcie leczenia.",
+      "dla_kogo": "Dla osób, które chcą zabezpieczyć się na wypadek diagnozy choroby nowotworowej.",
+      "korzysci": [
+        "Świadczenie pieniężne za poważne zachorowanie oraz za leczenie szpitalne już od pierwszego dnia hospitalizacji.",
+        "Dodatkowe świadczenie za jedną z procedur leczenia specjalistycznego.",
+        "Konsultacje lekarskie, konsultacje onkologiczno-genetyczne oraz wsparcie psychoonkologiczne.",
+        "Pokrycie kosztów badań laboratoryjnych, badań specjalistycznych oraz testu genetycznego określającego zwiększone ryzyko zachorowania na raka określonych narządów."
+      ],
+      "procedury_leczenia_specjalistycznego_wymienione_w_ulotce": [
+        "celowana terapia nowotworowa",
+        "chemioterapia",
+        "hormonoterapia",
+        "immunoterapia",
+        "radioterapia"
+      ],
+      "warianty_skladka": [
+        12,
+        16,
+        22
+      ]
+    },
+    {
+      "slug": "kardiologiczny",
+      "nazwa": "Pakiet Kardiologiczny",
+      "jedno_zdanie": "Ochrona przy chorobach sercowo-naczyniowych, z teleopieką kardiologiczną.",
+      "dla_kogo": "Dla osób, które poszukują kompleksowej ochrony na wypadek chorób sercowo-naczyniowych.",
+      "korzysci": [
+        "Wsparcie finansowe w przypadku poważnego zachorowania, hospitalizacji lub trwałego uszczerbku na zdrowiu.",
+        "Ochrona finansowa dla bliskich w przypadku śmierci ubezpieczonego.",
+        "Szybki dostęp do teleopieki kardiologicznej, w tym pokrycie kosztów korzystania z zestawu teleopieki.",
+        "Dodatkowe świadczenie za wykonanie jednej z procedur leczenia specjalistycznego."
+      ],
+      "procedury_leczenia_specjalistycznego_wymienione_w_ulotce": [
+        "ablacja serca",
+        "embolizacja tętniaka tętnic mózgowych",
+        "wszczepienie kardiowertera / defibrylatora",
+        "wszczepienie rozrusznika serca"
+      ],
+      "warianty_skladka": [
+        10,
+        14,
+        18
+      ]
+    },
+    {
+      "slug": "dziecko-nw",
+      "nazwa": "Pakiet Dziecko NW",
+      "jedno_zdanie": "Wszystkie dzieci ubezpieczonego do 25 lat — w ramach jednej składki.",
+      "dla_kogo": "Dla rodziców, którzy chcą kompleksowo zadbać o bezpieczeństwo swoich dzieci.",
+      "sprawdzi_sie_gdy_dzieci": [
+        "są aktywne",
+        "biorą udział w zajęciach pozaszkolnych, wyjazdach, obozach",
+        "dojeżdżają do szkoły rowerem lub autobusem"
+      ],
+      "korzysci": [
+        "Ochrona obejmuje wszystkie dzieci ubezpieczonego w wieku do 25 lat w ramach jednej składki.",
+        "Świadczenie finansowe za leczenie szpitalne, trwały uszczerbek na zdrowiu lub zgon dziecka w wyniku nieszczęśliwego wypadku.",
+        "Szeroki katalog operacji chirurgicznych.",
+        "Wsparcie finansowe może zostać przeznaczone na rehabilitację, prywatną opiekę medyczną lub korepetycje."
+      ],
+      "warianty_skladka_5podgrup": [
+        5,
+        7,
+        11
+      ],
+      "warianty_skladka_3podgrupy": [
+        6,
+        8,
+        12
+      ]
+    },
+    {
+      "slug": "malzonek-nw",
+      "nazwa": "Pakiet Małżonek NW",
+      "jedno_zdanie": "Ochrona małżonka albo partnera na wypadek nieszczęśliwego wypadku.",
+      "dla_kogo": "Dla osób, które chcą zapewnić swoim najbliższym bezpieczeństwo i ochronę zdrowia.",
+      "korzysci": [
+        "Świadczenie finansowe w razie nieszczęśliwego wypadku małżonka albo partnera.",
+        "Wypłata świadczenia za pobyt w szpitalu już od pierwszego dnia, do nawet 90 dni hospitalizacji.",
+        "Świadczenie za trwały uszczerbek na zdrowiu spowodowany nieszczęśliwym wypadkiem lub wypadkiem komunikacyjnym.",
+        "Szeroki katalog operacji, a także ochrona w przypadku ewentualnych powikłań po zabiegach."
+      ],
+      "warianty_skladka_5podgrup": [
+        5,
+        7,
+        11
+      ],
+      "warianty_skladka_3podgrupy": [
+        6,
+        8,
+        12
+      ]
+    },
+    {
+      "slug": "mediplan",
+      "nazwa": "MediPlan",
+      "jedno_zdanie": "Organizacja i pokrycie kosztów świadczeń medycznych po nieszczęśliwym wypadku.",
+      "dla_kogo": "Pracodawca wybiera jeden z trzech wariantów dla całej grupy.",
+      "zasady": [
+        "Przy jednym nieszczęśliwym wypadku można skorzystać kilkukrotnie z tego samego świadczenia — do wyczerpania limitu.",
+        "Przy jednym nieszczęśliwym wypadku ze świadczeń rehabilitacji, tomografii komputerowej i rezonansu magnetycznego można skorzystać tylko raz.",
+        "W ramach jednego świadczenia rehabilitacji można wykonać kilka zabiegów — do wyczerpania limitu liczby zabiegów.",
+        "W ramach jednego świadczenia badań laboratoryjnych można wykonać wszystkie badania zlecone na jednym skierowaniu."
+      ],
+      "warianty": [
+        {
+          "nazwa": "podstawowy",
+          "swiadczen_rocznie": 10,
+          "rehabilitacja": "—",
+          "usg": false,
+          "tk": false,
+          "mr": false
+        },
+        {
+          "nazwa": "rozszerzony",
+          "swiadczen_rocznie": 15,
+          "rehabilitacja": "1 świadczenie, maks. 20 zabiegów",
+          "usg": true,
+          "tk": false,
+          "mr": false
+        },
+        {
+          "nazwa": "maksymalny",
+          "swiadczen_rocznie": 20,
+          "rehabilitacja": "1 świadczenie, maks. 40 zabiegów",
+          "usg": true,
+          "tk": true,
+          "mr": true
+        }
+      ],
+      "konsultacje": [
+        "chirurg",
+        "okulista",
+        "otolaryngolog",
+        "ortopeda",
+        "kardiolog",
+        "neurolog",
+        "pulmonolog",
+        "lekarz rehabilitacji",
+        "neurochirurg",
+        "psycholog"
+      ],
+      "badania": [
+        "zabiegi ambulatoryjne",
+        "badania laboratoryjne",
+        "badania radiologiczne",
+        "badania ultrasonograficzne (od wariantu rozszerzonego)"
+      ],
+      "swiadczenia_informacyjne": "Telefoniczna informacja medyczna i infolinia szpitalna — bez limitu we wszystkich wariantach.",
+      "LUKA": "Cennik branżowy podaje jedną składkę 2,80 zł. Który wariant MediPlanu ona obejmuje? BRAK_DANYCH."
+    },
+    {
+      "slug": "assistance-medyczny",
+      "nazwa": "Assistance medyczny",
+      "jedno_zdanie": "Pomoc w domu i transport medyczny przy nagłym zachorowaniu, wypadku lub narodzinach dziecka.",
+      "kogo_obejmuje": [
+        "ubezpieczony",
+        "małżonek albo partner",
+        "dziecko",
+        "rodzic ubezpieczonego",
+        "rodzic małżonka albo partnera"
+      ],
+      "limit_glowny": "10 000 zł na rok polisowy — łącznie na wszystkie usługi assistance medycznego.",
+      "zasada_limitu": "Do każdego świadczenia przypisana jest kwota, którą można wykorzystać w roku polisowym. Kwota określana jest odrębnie dla ubezpieczonego i dla każdej osoby, której realizowana jest usługa. Wykorzystana kwota zmniejsza wartość limitu 10 000 zł.",
+      "kiedy_przysluguje": "Nagłe zachorowanie, nieszczęśliwy wypadek albo zdarzenie dotyczące urodzenia dziecka."
+    },
+    {
+      "slug": "global-doctors",
+      "nazwa": "Global Doctors",
+      "jedno_zdanie": "Leczenie w renomowanych klinikach za granicą, suma 2 mln € na całe życie.",
+      "kto_moze_skorzystac": "Pracownicy i ich bliscy w wieku od 18 do 64 lat, mieszkający na stałe w Polsce, którzy w okresie 12 miesięcy poprzedzających objęcie ochroną przebywali w kraju łącznie co najmniej pół roku (183 dni).",
+      "moduly_ochrony": [
+        "nowotwór złośliwy (m.in. białaczka, chłoniak, mięsak, rak płuc, rak trzustki, czerniak)",
+        "nowotwór złośliwy w stadium przedinwazyjnym / nowotwór in situ / ciężka dysplazja przednowotworowa",
+        "wymiana lub naprawa zastawek serca",
+        "operacja pomostowania tętnic wieńcowych",
+        "operacja neurochirurgiczna",
+        "przeszczepienie narządu od żyjącego dawcy lub przeszczepienie szpiku kostnego"
+      ],
+      "swiadczenia": [
+        "druga opinia medyczna — raport ekspercki na temat poważnego stanu chorobowego",
+        "organizacja opieki medycznej za granicą z pokryciem kosztów medycznych, podróży, zakwaterowania i repatriacji zwłok",
+        "kontrola stanu zdrowia po leczeniu za granicą (w 36-miesięcznym okresie świadczeniowym)",
+        "pokrycie kosztów leków po leczeniu za granicą",
+        "dzienne świadczenie szpitalne",
+        "wsparcie psychologiczne — 4 wideokonsultacje na moduł ochrony",
+        "medycyna precyzyjna przy szczególnej postaci nowotworu złośliwego"
+      ],
+      "medycyna_precyzyjna": [
+        "profilowanie molekularne — badanie bioprób w celu scharakteryzowania cech komórek nowotworowych; wykonywane raz dla każdej szczególnej postaci nowotworu złośliwego (wg kodu ICD)",
+        "testy rodzinne — testy mutacji dziedzicznych (germinalnych) dla biologicznego rodzeństwa i biologicznych dzieci ubezpieczonego, za ich zgodą",
+        "przewodnik pacjenta w ramach badań klinicznych — wyszukiwanie badań maks. 2 razy dla każdej szczególnej postaci nowotworu"
+      ],
+      "warunki_medycyny_precyzyjnej": [
+        "nowotwór złośliwy nieodpowiadający na leczenie pierwszego rzutu zastosowane przez onkologa",
+        "nowotwór złośliwy w III lub IV stadium zaawansowania"
+      ],
+      "skladka": 135
+    }
+  ],
+  "slowniczek": [
+    {
+      "termin": "Suma ubezpieczenia",
+      "wyjasnienie": "Kwota, którą wypłacamy w razie zdarzenia. W pakiecie głównym świadczenie z tytułu zgonu ubezpieczonego jest równe sumie ubezpieczenia — to ona zwalnia pracodawcę z odprawy pośmiertnej."
+    },
+    {
+      "termin": "Skumulowana kwota świadczeń",
+      "wyjasnienie": "Kwoty w tabeli nie dodają się do siebie. Wiersz „zgon w wyniku wypadku komunikacyjnego w pracy” zawiera już w sobie kwotę za zgon, za zgon w wyniku wypadku i za zgon w wyniku wypadku w pracy — dostajesz tę jedną, najwyższą kwotę."
+    },
+    {
+      "termin": "Karencja",
+      "wyjasnienie": "Okres liczony od początku ochrony, w którym dane świadczenie jeszcze nie przysługuje. Chroni przed przystąpieniem do ubezpieczenia dopiero wtedy, gdy zdarzenie jest już przewidywalne. Świadczenia dla samego ubezpieczonego nie mają karencji."
+    },
+    {
+      "termin": "Nieszczęśliwy wypadek (NW)",
+      "wyjasnienie": "Nagłe zdarzenie wywołane przyczyną zewnętrzną, w wyniku którego doszło do urazu. Odróżniamy je od choroby, bo świadczenia za NW są wyższe.",
+      "definicja_wiazaca": "OWU"
+    },
+    {
+      "termin": "Wypadek komunikacyjny",
+      "wyjasnienie": "Nieszczęśliwy wypadek z udziałem pojazdu. Świadczenia są wyższe niż za zwykły NW.",
+      "definicja_wiazaca": "OWU"
+    },
+    {
+      "termin": "Wypadek w pracy",
+      "wyjasnienie": "Nieszczęśliwy wypadek, który wydarzył się w związku z wykonywaną pracą. Podnosi wysokość świadczenia; kumuluje się z wypadkiem komunikacyjnym (najwyższa kwota to wypadek komunikacyjny w pracy).",
+      "definicja_wiazaca": "OWU"
+    },
+    {
+      "termin": "Trwały uszczerbek na zdrowiu",
+      "wyjasnienie": "Trwałe uszkodzenie ciała wyrażone w procentach. Świadczenie liczymy jako kwotę za 1% uszczerbku × orzeczony procent. Przykład: 650 zł za 1% i orzeczone 20% = 13 000 zł.",
+      "definicja_wiazaca": "OWU"
+    },
+    {
+      "termin": "Uraz niepowodujący trwałego uszczerbku",
+      "wyjasnienie": "Jednorazowe świadczenie za uraz, po którym nie pozostał trwały ślad — np. złamanie, które się zrosło. Dostępne w części branż."
+    },
+    {
+      "termin": "Poważne zachorowanie",
+      "wyjasnienie": "Choroba z zamkniętej listy w OWU (87 pozycji w Pakiecie Zdrowie, 102 jednostki w programie głównym). Wypłata jest jednorazowa, a jej wysokość zależy od tego, w którym zakresie znajduje się rozpoznana choroba.",
+      "definicja_wiazaca": "OWU — załącznik z katalogiem"
+    },
+    {
+      "termin": "Nowotwór in situ",
+      "wyjasnienie": "Nowotwór w stadium przedinwazyjnym — nie nacieka jeszcze sąsiednich tkanek. Ma osobne, niższe świadczenie niż nowotwór złośliwy.",
+      "definicja_wiazaca": "OWU"
+    },
+    {
+      "termin": "Leczenie specjalistyczne",
+      "wyjasnienie": "Świadczenie za zastosowanie jednej z 20 nowoczesnych metod leczenia (m.in. chemioterapia, radioterapia, ablacja serca, wszczepienie rozrusznika). Wypłacane niezależnie od świadczenia za poważne zachorowanie.",
+      "definicja_wiazaca": "OWU"
+    },
+    {
+      "termin": "Operacja chirurgiczna — podgrupy",
+      "wyjasnienie": "Katalog operacji jest podzielony na 5 grup według ciężkości. Grupa 1 to 100% kwoty świadczenia, Grupa 5 — 10%. Ile dokładnie dostaniesz, zależy od tego, do której grupy trafi Twoja operacja.",
+      "definicja_wiazaca": "OWU — katalog operacji"
+    },
+    {
+      "termin": "Powikłania pooperacyjne",
+      "wyjasnienie": "Dodatkowe świadczenie, jeśli po operacji objętej ochroną wystąpiły powikłania z listy w OWU.",
+      "definicja_wiazaca": "OWU"
+    },
+    {
+      "termin": "Świadczenie dzienne (szpitalne)",
+      "wyjasnienie": "Kwota za każdy dzień pobytu w szpitalu. W pakiecie głównym płatna od 1. do 180. dnia, u bliskich i w pakietach dodatkowych do 90. dnia. Na OIOM — do 14. dnia."
+    },
+    {
+      "termin": "OIOM / OIT",
+      "wyjasnienie": "Oddział intensywnej opieki medycznej / terapii. Pobyt na nim ma osobne, dodatkowe świadczenie dzienne."
+    },
+    {
+      "termin": "Koszty leczenia poszpitalnego (karta apteczna)",
+      "wyjasnienie": "Jednorazowa kwota po wyjściu ze szpitala, przeznaczona na leki i środki opatrunkowe."
+    },
+    {
+      "termin": "Całkowita trwała niezdolność do pracy",
+      "wyjasnienie": "Trwała utrata zdolności do wykonywania jakiejkolwiek pracy. Jednorazowe świadczenie, w części branż wypłacane tylko wtedy, gdy przyczyną był nieszczęśliwy wypadek, w innych — także choroba.",
+      "definicja_wiazaca": "OWU"
+    },
+    {
+      "termin": "Osierocenie dziecka",
+      "wyjasnienie": "Świadczenie wypłacane dziecku ubezpieczonego po jego śmierci — niezależnie od świadczenia dla uposażonych."
+    },
+    {
+      "termin": "Uposażony (beneficjent)",
+      "wyjasnienie": "Osoba wskazana przez ubezpieczonego do otrzymania świadczenia po jego śmierci. Można ją zmienić w każdej chwili."
+    },
+    {
+      "termin": "Rok polisowy",
+      "wyjasnienie": "12 miesięcy liczone od początku ochrony, a nie rok kalendarzowy. Limity roczne (np. 10 000 zł assistance medycznego) odnawiają się z jego początkiem."
+    },
+    {
+      "termin": "E-deklaracja",
+      "wyjasnienie": "Elektroniczne przystąpienie pracownika do ubezpieczenia. To w niej pracownik wskazuje, które pakiety dodatkowe wybiera i kogo wskazuje jako uposażonego."
+    },
+    {
+      "termin": "Indywidualna kontynuacja",
+      "wyjasnienie": "Możliwość zachowania ochrony na własną rękę po odejściu z firmy, bez ponownej oceny stanu zdrowia.",
+      "definicja_wiazaca": "OWU"
+    },
+    {
+      "termin": "Odprawa pośmiertna",
+      "wyjasnienie": "Świadczenie, które pracodawca musi wypłacić rodzinie zmarłego pracownika (Kodeks pracy). Finansując składkę na ubezpieczenie na życie, pracodawca jest z niej zwolniony do wysokości wypłaconego świadczenia z tytułu zgonu."
+    },
+    {
+      "termin": "Medycyna precyzyjna",
+      "wyjasnienie": "W Global Doctors: dobranie terapii na podstawie profilu molekularnego guza. Stosowana, gdy nowotwór nie odpowiada na leczenie pierwszego rzutu albo jest w III–IV stadium."
+    },
+    {
+      "termin": "Profilowanie molekularne",
+      "wyjasnienie": "Badanie próbki guza, które pokazuje jego cechy genetyczne i pozwala dobrać celowaną terapię. W Global Doctors wykonywane raz dla każdej postaci nowotworu."
+    }
+  ],
+  "dokumenty": [
+    {
+      "nazwa": "OWU — ERGO Życie w Biznesie",
+      "kod": "EZwB 01/25",
+      "plik": "/dokumenty/owu-ergo-zycie-w-biznesie.pdf"
+    },
+    {
+      "nazwa": "OWU — Medi Opieka",
+      "kod": "MA 01/25",
+      "plik": "/dokumenty/owu-medi-opieka.pdf"
+    },
+    {
+      "nazwa": "OWU — Global Doctors",
+      "kod": "GD-GZ 01/25",
+      "plik": "/dokumenty/owu-global-doctors.pdf"
+    },
+    {
+      "nazwa": "Karta Produktu — ERGO Życie w Biznesie",
+      "kod": "EZwB 01/25",
+      "plik": "/dokumenty/karta-produktu-ergo-zycie-w-biznesie.pdf"
+    },
+    {
+      "nazwa": "Karta Produktu — Medi Opieka",
+      "kod": "MA 01/25",
+      "plik": "/dokumenty/karta-produktu-medi-opieka.pdf"
+    },
+    {
+      "nazwa": "Karta Produktu — Global Doctors",
+      "kod": "GD-GZ 01/25",
+      "plik": "/dokumenty/karta-produktu-global-doctors.pdf"
+    }
+  ],
+  "_weryfikacja": {
+    "2026-11-13": "Krytyk kompletności: sprawdzono cennik beauty (58/68/76, liczby świadczeń 32/44/57), wzór K(), walidacje kroku 5 (NIP, imie>2, e-mail, telefon ≥9 cyfr), ładunek POST /api/wnioski, wersję zgód 2026-07-a. Poprawiono krok pola adopcja (5→3) i dodano opis parsera struktury."
+  }
+}

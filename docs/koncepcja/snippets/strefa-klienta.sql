@@ -412,6 +412,45 @@ alter table outbox_emails
 --    P1c: ogłoszenie wisi najwyżej 21 dni od publikacji (CHECK) – długość z app_promotions.ad_days.
 -- -----------------------------------------------------------------------------------------------------
 
+-- Zabiegi w ogłoszeniach (00, D41 – decyzja zleceniodawcy 13.11.2026): pole „Zabiegi” w ofertach
+-- (job_offers) i w ogłoszeniach „Szukam pracy” (candidate_ads) oraz filtr na tablicy. Lista = kanoniczna
+-- lista 117 zabiegów z snippets/zabiegi-oc-beauty.json (D29) – dane w repozytorium, import przy budowaniu:
+-- baza NIE ma tabeli słownikowej (nazwy i grupy renderuje aplikacja z tego samego pliku), a dozwolone
+-- identyfikatory zwraca funkcja IMMUTABLE wygenerowana z pliku (blok gen:zabiegi-ids). Dlaczego tak:
+-- (a) CHECK nie czyta tabeli (deterministyczny, bez zależności kolejności przy pg_dump/restore), (b) brak
+-- tabeli = brak dodatkowych polityk RLS i grantów, (c) jedno źródło prawdy jak w kalkulatorze i na stronie OC.
+-- Wersjonowanie: identyfikatory są stabilne i lista tylko rośnie – pozycja usunięta z pliku przechodzi do
+-- „wycofanych”: zostaje dozwolona w ogłoszeniach, które już ją mają (CHECK z p_tylko_aktywne = false), ale
+-- nowo dodawane zabiegi muszą być aktywne (guard ofert, app_candidate_ad_save). Zmiana listy = nowa migracja
+-- z tego samego skryptu (CI: --check). Nazwa ani grupa zabiegu nie trafiają do bazy.
+-- EXECUTE: authenticated (CHECK w job_offers sprawdza się przy zapisie właściciela przez Data API) i service_role;
+-- anon – nie (tylko czyta). Funkcja zwraca wyłącznie publiczne identyfikatory z listy na stronie OC.
+-- gen:zabiegi-ids
+-- Wygenerowane skryptem gen_zabiegi_sql.py z snippets/zabiegi-oc-beauty.json – NIE EDYTOWAĆ RĘCZNIE.
+-- Wersja listy: 117 pozycji (grupa 1: 40, 2: 38, 3: 31, 4: 8), sha256 pliku a527564cf868fd23546c1c21a69ce7f52a0adb153c67043c7663990370f249c1.
+-- Wycofane (usunięte z pliku w kolejnych wersjach – dozwolone tylko w ogłoszeniach, które już je mają): brak.
+create or replace function public.zabiegi_ids(p_tylko_aktywne boolean default false)
+returns text[]
+language plpgsql immutable parallel safe set search_path = '' as $$
+declare
+  v_aktywne  text[] := array['g1-01','g1-02','g1-03','g1-04','g1-05','g1-06','g1-07','g1-08','g1-09','g1-10','g1-11','g1-12',
+                      'g1-13','g1-14','g1-15','g1-16','g1-17','g1-18','g1-19','g1-20','g1-21','g1-22','g1-23','g1-24',
+                      'g1-25','g1-26','g1-27','g1-28','g1-29','g1-30','g1-31','g1-32','g1-33','g1-34','g1-35','g1-36',
+                      'g1-37','g1-38','g1-39','g1-40','g2-01','g2-02','g2-03','g2-04','g2-05','g2-06','g2-07','g2-08',
+                      'g2-09','g2-10','g2-11','g2-12','g2-13','g2-14','g2-15','g2-16','g2-17','g2-18','g2-19','g2-20',
+                      'g2-21','g2-22','g2-23','g2-24','g2-25','g2-26','g2-27','g2-28','g2-29','g2-30','g2-31','g2-32',
+                      'g2-33','g2-34','g2-35','g2-36','g2-37','g2-38','g3-01','g3-02','g3-03','g3-04','g3-05','g3-06',
+                      'g3-07','g3-08','g3-09','g3-10','g3-11','g3-12','g3-13','g3-14','g3-15','g3-16','g3-17','g3-18',
+                      'g3-19','g3-20','g3-21','g3-22','g3-23','g3-24','g3-25','g3-26','g3-27','g3-28','g3-29','g3-30',
+                      'g3-31','g4-01','g4-02','g4-03','g4-04','g4-05','g4-06','g4-07','g4-08']::text[];
+  v_wycofane text[] := array[]::text[];
+begin
+  return case when p_tylko_aktywne then v_aktywne else v_aktywne || v_wycofane end;
+end $$;
+-- /gen:zabiegi-ids
+revoke all on function public.zabiegi_ids(boolean) from public, anon;
+grant execute on function public.zabiegi_ids(boolean) to authenticated, service_role;
+
 create table job_offers (
   id               uuid primary key default gen_random_uuid(),
   account_id       uuid not null references client_accounts(id) on delete cascade,

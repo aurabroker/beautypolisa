@@ -12,6 +12,7 @@
 <!-- Produkcja (11-strefa-klienta.md §5.1, §11, §17):
      /dam-prace, /dam-prace/<slug> – publiczne, indeksowane (oferty pracodawców); dane z cache bez sesji; „Pokaż kontakt” i formularz – osobne wywołania dynamiczne.
        JSON-LD JobPosting tylko na stronie oferty (directApply: false, hiringOrganization.name = nazwa wyświetlana, bez nazwy z rejestru, NIP i kontaktu); filtry → noindex, follow + canonical /dam-prace.
+       Filtr „Zabiegi” (13.11.2026): ?zabieg=<id>&zabieg=<id> (id z snippets/zabiegi-oc-beauty.json), „zawiera którykolwiek”, kolejność bez zmian – też noindex, follow.
      /strefa-klienta/dam-prace* – noindex, no-store, bez klienta Supabase w przeglądarce; uprawnienia egzekwuje RLS.
      „Szukam pracy” (decyzja P1a) – przełącznik szukam_pracy WŁĄCZONY od startu:
        /strefa-klienta/dam-prace/szukam-pracy* – tylko pracodawca z poziomem 2 (potwierdzona reprezentacja firmy, TOTP); dane wyłącznie z app_candidate_ads_page() – 20 kart, kwota dzienna; noindex, no-store, poza sitemap, JSON-LD i llms.txt.
@@ -224,7 +225,76 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
 .state-list > li{display:grid;gap:8px;justify-items:start;padding:16px 0;border-top:1px solid var(--bp-line-gold-soft)}
 .state-list > li:first-child{border-top:0;padding-top:4px}
 .state-list > li > p{font-size:var(--text-sm)}
-@media (forced-colors:active){.chip span{border:1px solid CanvasText}.chip input:checked + span{outline:2px solid Highlight}.mailprev{border:1px solid CanvasText}}
+/* ---------- zabiegi (decyzja 13.11.2026): filtr i pole formularza, lista 1:1 z programu OC (117 pozycji, 4 grupy) ----------
+   Bez JS: checkboxy w <details> per grupa – zwykły formularz (?zabieg=g2-12&zabieg=…).
+   Z JS: przycisk „Wybierz zabiegi” → okno (na telefonie arkusz na cały ekran) z wyszukiwarką, grupami, licznikiem,
+   „Wyczyść” i „Pokaż ogłoszenia (N)”; wybrane jako usuwalne chipy. Okno na kryjącej kości słoniowej – nie jest taflą szkła. */
+.zab{display:grid;gap:8px}
+.zab-groups{display:grid;border-top:1px solid var(--bp-line-gold-soft)}
+.zab-grp{border-bottom:1px solid var(--bp-line-gold-soft)}
+.zab-grp > summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 12px;min-height:48px;padding:8px 2px;cursor:pointer;font-size:var(--text-sm);line-height:1.4;color:var(--color-navy)}
+.zab-grp > summary::-webkit-details-marker{display:none}
+.zab-grp > summary::after{content:"";grid-column:2;grid-row:1;justify-self:end;width:8px;height:8px;margin-right:4px;border-right:1.5px solid var(--color-navy);border-bottom:1.5px solid var(--color-navy);transform:rotate(45deg) translateY(-2px);transition:transform var(--bp-dur)}
+.zab-grp[open] > summary::after{transform:rotate(-135deg) translateY(-1px)}
+.zab-grp-name{font-weight:500}
+.zab-grp-meta{grid-column:1;display:flex;flex-wrap:wrap;gap:0 10px;font-size:var(--text-xs);color:var(--color-taupe)}
+.zab-grp-sel:not(:empty){color:var(--color-navy);font-weight:500}
+.zab-grp-sel:not(:empty)::before{content:"·";margin-right:10px;color:var(--color-gold)}
+.zab-list{border:0;margin:0;padding:0 0 10px;min-width:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:0 18px}
+.zab-list .check-row{min-height:40px;padding-top:8px}
+.zab-list .check-row:has(input:disabled){color:var(--color-taupe);cursor:not-allowed}
+.zab-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.zab-open .ui-icon{width:16px;height:16px}
+.zab-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.zab-chips:empty{display:none}
+.zab-chip{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-height:36px;padding:4px 6px 4px 12px;border:1px solid var(--color-navy);border-radius:999px;background:#fff;font:400 var(--text-xs)/1.35 var(--font-sans);color:var(--color-navy);text-align:left;cursor:pointer}
+.zab-chip span{min-width:0;overflow-wrap:anywhere}
+.zab-chip .ui-icon{width:16px;height:16px;flex:none}
+.zab-chip:hover{background:var(--color-parchment)}
+@media (pointer:coarse){.zab-chip{min-height:44px}}
+.zab-limit{font-size:var(--text-xs);line-height:1.5;color:var(--color-ink)}
+/* okno wyboru: modalny <dialog> (inert reszty strony, Esc, powrót fokusu) */
+.zab-sheet{width:min(680px,calc(100% - 32px));max-width:none;max-height:min(780px,calc(100dvh - 48px));padding:0;border:1px solid var(--bp-line-gold);border-radius:var(--radius-card);background:var(--color-ivory);color:var(--color-ink);box-shadow:var(--shadow-glass);overflow:hidden}
+.zab-sheet[open]{display:grid;grid-template-rows:auto auto minmax(0,1fr) auto}
+.zab-sheet::backdrop{background:rgba(20,28,51,.55)}
+html:has(.zab-sheet[open]){overflow:hidden}
+.zab-sheet-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:start;padding:18px 20px 12px;border-bottom:1px solid var(--bp-line-gold-soft)}
+.zab-sheet-head h2{font-size:1.7rem;line-height:1.1}
+.zab-sheet-head h2:focus{outline:none}
+.zab-sheet-head p{grid-column:1;font-size:var(--text-xs);line-height:1.55;color:var(--color-ink)}
+.zab-sheet-head .drawer-close{grid-column:2;grid-row:1 / span 2}
+.zab-sheet-search{padding:12px 20px;border-bottom:1px solid var(--bp-line-gold-soft);background:var(--color-parchment)}
+.zab-sheet-search input{padding-left:42px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%232A3B68' stroke-width='1.6' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L21 21'/%3E%3C/svg%3E") no-repeat 14px 50%}
+.zab-sheet-body{overflow-y:auto;overscroll-behavior:contain;padding:4px 20px 12px}
+.zab-sheet-body .zab-groups{border-top:0}
+.zab-none{padding:16px 0;font-size:var(--text-sm)}
+.zab-sheet-foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 20px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--bp-line-gold-soft);background:var(--color-parchment)}
+.zab-sheet-foot .zab-count{margin-right:auto;font-size:var(--text-sm);color:var(--color-ink)}
+@media (max-width:639px){
+  .zab-sheet{width:100%;height:100%;max-height:none;margin:0;border:0;border-radius:0}
+  .zab-sheet-head,.zab-sheet-search,.zab-sheet-body,.zab-sheet-foot{padding-inline:16px}
+  .zab-sheet-foot .btn-navy{flex:1 1 100%}
+  .zab-sheet-foot .zab-count{flex:1 1 auto}
+}
+@media (prefers-reduced-motion:no-preference){
+  .zab-sheet[open]{animation:zab-in .2s var(--ease-lux)}
+  @keyframes zab-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+}
+/* zabiegi na kartach ogłoszeń: wybrane przez autora, w jego kolejności (do 3 chipów + „i N innych”) */
+.zab-tags{min-width:0}
+.offer > .zab-tags{grid-column:2;padding-top:6px}
+.zab-tags ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.zab-tags li{display:inline-flex;align-items:center;max-width:100%;min-height:26px;padding:2px 10px;border:1px solid var(--bp-line-gold);border-radius:999px;background:rgba(255,255,255,.8);font-size:var(--text-xs);line-height:1.35;color:var(--color-ink);overflow-wrap:anywhere}
+.zab-tags li.zab-tags-more{border-style:dashed;color:var(--color-taupe);background:transparent}
+.zab-tags li.zab-tags-more:has(details){padding:0;border:0}
+.zab-tags details > summary{display:inline-flex;align-items:center;gap:6px;min-height:26px;padding:2px 10px;border:1px dashed var(--color-navy);border-radius:999px;font-size:var(--text-xs);color:var(--color-navy);cursor:pointer;list-style:none}
+.zab-tags details > summary::-webkit-details-marker{display:none}
+.zab-tags details > summary::after{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px)}
+.zab-tags details[open] > summary::after{transform:rotate(-135deg) translateY(-1px)}
+.zab-tags details > ul{margin-top:6px}
+@media (pointer:coarse){.zab-tags details > summary{min-height:32px}}
+.prose .zab-tags ul{padding-left:0}
+@media (forced-colors:active){.chip span{border:1px solid CanvasText}.chip input:checked + span{outline:2px solid Highlight}.mailprev{border:1px solid CanvasText}.zab-chip,.zab-tags li,.zab-sheet{border:1px solid CanvasText}}
 @media print{.pub-header{display:none!important}}
 </style>
 <script>(function(d){d.classList.add('js');var h=location.hash.slice(1),e=/[?&]konto=pracodawca(&|$)/.test(location.search);d.setAttribute('data-ctx',/^(szukam-(dodaj|moje|konto)|sa-)/.test(h)?'seeker':(/^(pulpit-pracodawcy|konto-studio)$/.test(h)?'employer':(/^(moje-ogloszenia|ogloszenie-wyslane|nowe-ogloszenie|podglad|konto-pracodawcy|szukam-pracy|sp-|wlacz-)/.test(h)?(e?'employer':'zone'):'public')))})(document.documentElement)</script>
@@ -480,11 +550,160 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
               <option value="inna">Inna</option>
             </select>
           </div>
+          <fieldset class="field zab" id="zab-oferty" data-zab="filter">
+            <legend>Zabiegi <span>(opcjonalnie)</span></legend>
+            <p class="hint" id="zab-oferty-opis">Pokazujemy ogłoszenia z&nbsp;co najmniej jednym z&nbsp;wybranych zabiegów. Zabiegi wskazuje pracodawca w&nbsp;ogłoszeniu&nbsp;– oferty bez zabiegów nie pojawią się przy tym filtrze.</p>
+<!-- gen:zabiegi-checkboxy:oferty -->
+<div class="zab-groups">
+  <details class="zab-grp" data-grupa="1">
+    <summary><span class="zab-grp-name">Grupa 1 – Kosmetyka i fryzjerstwo</span><span class="zab-grp-meta"><span class="zab-grp-n">40&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 1 – Kosmetyka i fryzjerstwo</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-01"> <span>Barbering</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-02"> <span>Depilacja pastą cukrową</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-03"> <span>Depilacja woskiem</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-04"> <span>Dermabrazja i peeling skóry głowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-05"> <span>Diagnoza skóry głowy i USG włosa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-06"> <span>Elektrostymulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-07"> <span>Endermologia – masaż podciśnieniowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-08"> <span>Golenie głowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-09"> <span>Henna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-10"> <span>Koloryzacja i dekoloryzacja włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-11"> <span>Kosmetyczna diagnostyka trychologiczna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-12"> <span>Kosmetyczny zabieg trychologiczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-13"> <span>Kuracje nawilżające i odbudowujące włosy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-14"> <span>Laminowanie brwi i rzęs</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-15"> <span>Laminowanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-16"> <span>Makijaż</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-17"> <span>Manicure</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-18"> <span>Manualne oczyszczanie twarzy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-19"> <span>Masaż bańką chińską</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-20"> <span>Masaż endodermiczny i drenaż limfatyczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-21"> <span>Masaż manualny ciała i twarzy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-22"> <span>Mycie i suszenie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-23"> <span>Oczyszczanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-24"> <span>Pasemka i baleyage</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-25"> <span>Pedicure kosmetyczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-26"> <span>Piercing – przekłuwanie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-27"> <span>Presoterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-28"> <span>Przekłuwanie uszu</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-29"> <span>Przedłużanie i zagęszczanie rzęs</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-30"> <span>Przedłużanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-31"> <span>Prostowanie włosów na stałe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-32"> <span>Retusz siwizny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-33"> <span>Sauna na włosy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-34"> <span>Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-35"> <span>Trwała ondulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-36"> <span>Zabiegi z zastosowaniem składników aktywnych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-37"> <span>Zabiegi keratynowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-38"> <span>Zabiegi przeciwłupieżowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-39"> <span>Zabiegi LED – terapeutyczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-40"> <span>Zagęszczanie włosów</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="2">
+    <summary><span class="zab-grp-name">Grupa 2 – Kosmetologia i tatuaż</span><span class="zab-grp-meta"><span class="zab-grp-n">38&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 2 – Kosmetologia i tatuaż</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-01"> <span>Chemiczne usuwanie makijażu permanentnego</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-02"> <span>Cool Lifting</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-03"> <span>Elektroliza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-04"> <span>Elektrokoagulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-05"> <span>Elektroporacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-06"> <span>Fala akustyczna i energia wysokiej częstotliwości</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-07"> <span>Infuzja tlenowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-08"> <span>Jonoforeza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-09"> <span>Karboksyterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-10"> <span>Kawitacja ultradźwiękowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-11"> <span>Kriolipoliza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-12"> <span>Makijaż okolicznościowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-13"> <span>Makijaż permanentny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-14"> <span>Masaż Kobido</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-15"> <span>Mezoterapia bezigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-16"> <span>Mezoterapia igłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-17"> <span>Mezoterapia mikroigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-18"> <span>Microblading</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-19"> <span>Mikronakłuwanie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-20"> <span>Mikropigmentacja rekonstrukcyjna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-21"> <span>Mikrodermabrazja korundowa i diamentowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-22"> <span>Oczyszczanie wodorowo-tlenowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-23"> <span>Opalanie natryskowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-24"> <span>Oxybrazja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-25"> <span>Pedicure kosmetyczny (niezastrzeżony dla podologów)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-26"> <span>Peeling węglowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-27"> <span>Radiofrekwencja mikroigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-28"> <span>Radiotermoliza zmian skórnych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-29"> <span>Różnorodne peelingi chemiczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-30"> <span>Sauny infrared</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-31"> <span>Sonoforeza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-32"> <span>Tatuaż</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-33"> <span>Zabiegi falą radiową</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-34"> <span>Zabiegi IPL (fotoodmładzanie, przebarwienia, teleangiektazje, depilacja)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-35"> <span>Zabiegi laserem frakcyjnym nieablacyjnym</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-36"> <span>Zabiegi laserem nieablacyjnym (naczynia, tatuaż, depilacja)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-37"> <span>Zabiegi z zastosowaniem podczerwieni</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-38"> <span>Zastosowanie prądów małej i dużej częstotliwości</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="3">
+    <summary><span class="zab-grp-name">Grupa 3 – Podologia medyczna</span><span class="zab-grp-meta"><span class="zab-grp-n">31&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 3 – Podologia medyczna</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-01"> <span>Analiza chodu (ocena dynamiczna, wideoanaliza)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-02"> <span>Badanie grzybicze paznokcia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-03"> <span>Badanie podoskopowe / podoskanerem</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-04"> <span>Delikatna koloryzacja rekonstrukcyjna paznokci</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-05"> <span>Diagnostyka i leczenie brodawek</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-06"> <span>Diagnostyka różnicowa brodawka vs odcisk</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-07"> <span>Dobór indywidualnych wkładek korygujących</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-08"> <span>Dobór ortez i separatorów żelowych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-09"> <span>Instruktaż ochrony mechanicznej i modyfikacji obuwia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-10"> <span>Intensywne kuracje nawilżająco-regenerujące</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-11"> <span>Klamry ortonyksyjne – aplikacja i aktywacje</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-12"> <span>Konsultacja podologiczna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-13"> <span>Kontrola po klamrze / rekonstrukcji / opatrunku</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-14"> <span>Korekty ustawienia palucha: taping / fiksatory</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-15"> <span>Krioterapia zmian skórnych (CO2, punktowa)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-16"> <span>Odciążanie miejsc bolesnych (taping)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-17"> <span>Opatrunki specjalistyczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-18"> <span>Opracowanie łożyska przy onycholizie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-19"> <span>Opracowanie modzeli, odcisków, nagniotków</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-20"> <span>Opracowanie pęknięć i rozpadlin pięt</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-21"> <span>Opracowanie wałów z ziarniną</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-22"> <span>Ozonoterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-23"> <span>Pedicure podologiczny (medyczny) całościowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-24"> <span>Pobieranie próbek do badań</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-25"> <span>Profilaktyka i zabiegi u osób z grup ryzyka</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-26"> <span>Protetyka / rekonstrukcja paznokcia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-27"> <span>Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-28"> <span>Skrócenie i wyrównanie paznokci (zmienionych chorobowo)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-29"> <span>Terapia nadpotliwości stóp (jonoforeza)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-30"> <span>Usuwanie zrogowaciałego naskórka</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-31"> <span>Zabiegi skalpelem, dłutem i frezami</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="4">
+    <summary><span class="zab-grp-name">Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)</span><span class="zab-grp-meta"><span class="zab-grp-n">8&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-01"> <span>Zabiegi technologią HIFU</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-02"> <span>Zabiegi z użyciem toksyny botulinowej</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-03"> <span>Zabiegi osoczem bogatopłytkowym (PRP)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-04"> <span>Zabiegi technologią PLASMA</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-05"> <span>Wypełniacze – kwas hialuronowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-06"> <span>Zabiegi z użyciem nici PDO</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-07"> <span>Lipoliza iniekcyjna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-08"> <span>Zabiegi laserem ablacyjnym</span></label>
+    </fieldset>
+  </details>
+</div>
+<!-- /gen:zabiegi-checkboxy:oferty -->
+          </fieldset>
           <div class="form-foot">
             <button class="btn btn-navy btn-sm" type="submit">Pokaż ogłoszenia</button>
             <button class="link-quiet" type="reset">Wyczyść filtry</button>
           </div>
-          <p class="hint">Kolejność: od najnowszej publikacji. Bez wyróżnień i&nbsp;rankingów.</p>
+          <p class="hint">Kolejność: od najnowszej publikacji&nbsp;– także z&nbsp;filtrem „Zabiegi”. Bez wyróżnień, rankingów i&nbsp;sortowania według dopasowania.</p>
           </div>
           </details>
         </form>
@@ -502,6 +721,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
               <h3><a href="#oferta">Kosmetolog / kosmetolożka (przykład)</a></h3>
               <p class="offer-salon">Gabinet Przykładowy · Warszawa, mazowieckie</p>
               <ul class="offer-meta"><li>umowa o&nbsp;pracę</li><li>pełny etat</li><li>dodano <time datetime="2026-11-10">10.11.2026</time></li></ul>
+              <div class="zab-tags" data-ids="g1-18 g2-29 g2-17 g2-27 g2-22"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manualne oczyszczanie twarzy</li><li>Różnorodne peelingi chemiczne</li><li>Mezoterapia mikroigłowa</li><li class="zab-tags-more">i 2 inne</li></ul></div>
               <p class="offer-pay"><strong>6&nbsp;500–8&nbsp;000&nbsp;zł</strong><span>brutto miesięcznie</span></p>
               <p class="offer-until">ważne do <time datetime="2026-12-01">1&nbsp;grudnia 2026&nbsp;r.</time></p>
             </li>
@@ -510,6 +730,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
               <h3><a href="#oferta">Stylistka / stylista paznokci (przykład)</a></h3>
               <p class="offer-salon">Studio Przykładowe · Kraków, małopolskie</p>
               <ul class="offer-meta"><li>umowa o&nbsp;pracę</li><li>pełny etat</li><li>dodano <time datetime="2026-11-09">9.11.2026</time></li></ul>
+              <div class="zab-tags" data-ids="g1-17 g1-25"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manicure</li><li>Pedicure kosmetyczny</li></ul></div>
               <p class="offer-pay"><strong>5&nbsp;500–7&nbsp;000&nbsp;zł</strong><span>brutto miesięcznie</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-30">30&nbsp;listopada 2026&nbsp;r.</time></p>
             </li>
@@ -518,6 +739,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
               <h3><a href="#oferta">Fryzjer / fryzjerka (przykład)</a></h3>
               <p class="offer-salon">Pracownia Przykładowa · Gdańsk, pomorskie</p>
               <ul class="offer-meta"><li>B2B</li><li>elastyczny wymiar</li><li>dodano <time datetime="2026-11-06">6.11.2026</time></li></ul>
+              <div class="zab-tags" data-ids="g1-34 g1-10 g1-24 g1-01"><ul aria-label="Zabiegi w ogłoszeniu"><li>Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)</li><li>Koloryzacja i dekoloryzacja włosów</li><li>Pasemka i baleyage</li><li class="zab-tags-more">i 1 inny</li></ul></div>
               <p class="offer-pay"><strong>45–60&nbsp;zł</strong><span>netto za godzinę</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-27">27&nbsp;listopada 2026&nbsp;r.</time></p>
             </li>
@@ -526,6 +748,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
               <h3><a href="#oferta">Linergistka / linergista (przykład)</a></h3>
               <p class="offer-salon">Gabinet Przykładowy · Wrocław, dolnośląskie</p>
               <ul class="offer-meta"><li>umowa zlecenie</li><li>część etatu</li><li>dodano <time datetime="2026-11-02">2.11.2026</time></li></ul>
+              <div class="zab-tags" data-ids="g2-13 g2-18 g2-01"><ul aria-label="Zabiegi w ogłoszeniu"><li>Makijaż permanentny</li><li>Microblading</li><li>Chemiczne usuwanie makijażu permanentnego</li></ul></div>
               <p class="offer-pay"><strong>50–70&nbsp;zł</strong><span>brutto za godzinę</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-23">23&nbsp;listopada 2026&nbsp;r.</time></p>
             </li>
@@ -534,6 +757,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
               <h3><a href="#oferta">Tatuażysta / tatuażystka (przykład)</a></h3>
               <p class="offer-salon">Pracownia Przykładowa · Gdynia, pomorskie</p>
               <ul class="offer-meta"><li>inna forma umowy</li><li>elastyczny wymiar</li><li>dodano <time datetime="2026-10-28">28.10.2026</time></li></ul>
+              <div class="zab-tags" data-ids="g2-32 g1-26"><ul aria-label="Zabiegi w ogłoszeniu"><li>Tatuaż</li><li>Piercing – przekłuwanie</li></ul></div>
               <p class="offer-pay"><strong>4&nbsp;000–6&nbsp;000&nbsp;zł</strong><span>netto miesięcznie</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-18">18&nbsp;listopada 2026&nbsp;r.</time></p>
             </li>
@@ -542,6 +766,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
               <h3><a href="#oferta">Kosmetolog / kosmetolożka (przykład)</a></h3>
               <p class="offer-salon">Salon Przykładowy · Kraków, małopolskie</p>
               <ul class="offer-meta"><li>umowa o&nbsp;pracę</li><li>pełny etat</li><li>dodano <time datetime="2026-10-25">25.10.2026</time></li></ul>
+              <div class="zab-tags" data-ids="g1-21 g2-14 g1-14 g1-29 g2-29 g1-36"><ul aria-label="Zabiegi w ogłoszeniu"><li>Masaż manualny ciała i twarzy</li><li>Masaż Kobido</li><li>Laminowanie brwi i rzęs</li><li class="zab-tags-more">i 3 inne</li></ul></div>
               <p class="offer-pay"><strong>6&nbsp;000–7&nbsp;500&nbsp;zł</strong><span>brutto miesięcznie</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-15">15&nbsp;listopada 2026&nbsp;r.</time></p>
             </li>
@@ -549,8 +774,8 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
           <!-- pusty stan: z JS pokazuje się, gdy filtry nic nie zwracają; bez JS widoczny jako wzór -->
           <div class="empty is-pending" id="ofert-pusto">
             <svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg>
-            <strong>Brak ogłoszeń dla wybranych filtrów</strong>
-            <p>Zmień zawód lub województwo albo wyczyść filtry. Nowe ogłoszenia pojawiają się po sprawdzeniu treści.</p>
+            <strong id="ofert-pusto-t">Brak ogłoszeń dla wybranych filtrów</strong>
+            <p id="ofert-pusto-p">Zmień zawód lub województwo albo wyczyść filtry. Nowe ogłoszenia pojawiają się po sprawdzeniu treści.</p>
             <button class="btn btn-ghost btn-sm" type="button" id="wyczysc">Wyczyść filtry</button>
             <p class="xsmall"><span class="mock-note">Pusty stan</span></p>
           </div>
@@ -620,6 +845,8 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
           <div class="prose">
             <h2 id="t-opis">O&nbsp;stanowisku</h2>
             <p>Studio Przykładowe szuka osoby do stylizacji paznokci dłoni i&nbsp;stóp. Pracujemy na zapisach, w&nbsp;trzyosobowym zespole, od poniedziałku do soboty według stałego grafiku. Treść ogłoszenia jest przykładowa.</p>
+            <h2>Zabiegi</h2>
+            <div class="zab-tags" data-ids="g1-17 g1-25" data-limit="0"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manicure</li><li>Pedicure kosmetyczny</li></ul></div>
             <h2>Wymagania</h2>
             <ul>
               <li>doświadczenie w&nbsp;manicure hybrydowym i&nbsp;żelowym,</li>
@@ -1105,6 +1332,155 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
                 <p class="hint" id="n-kod-hint">Format 00-000.</p>
               </div>
             </div>
+            <fieldset class="field zab" id="zab-nowe" data-zab="form" data-zab-max="30">
+              <legend>Zabiegi <span>(opcjonalnie, maks.&nbsp;30)</span></legend>
+              <p class="hint" id="zab-nowe-opis">Zabiegi, które obejmuje stanowisko&nbsp;– z&nbsp;listy zabiegów programu OC dla branży beauty. Pokażemy je na karcie ogłoszenia, a&nbsp;kandydaci mogą filtrować oferty po zabiegach. Kolejność na tablicy się nie zmienia; nikt nie dobiera ani nie ocenia ogłoszeń.</p>
+<!-- gen:zabiegi-checkboxy:nowe checked="g2-32 g1-26" -->
+<div class="zab-groups">
+  <details class="zab-grp" data-grupa="1" open>
+    <summary><span class="zab-grp-name">Grupa 1 – Kosmetyka i fryzjerstwo</span><span class="zab-grp-meta"><span class="zab-grp-n">40&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 1 – Kosmetyka i fryzjerstwo</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-01"> <span>Barbering</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-02"> <span>Depilacja pastą cukrową</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-03"> <span>Depilacja woskiem</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-04"> <span>Dermabrazja i peeling skóry głowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-05"> <span>Diagnoza skóry głowy i USG włosa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-06"> <span>Elektrostymulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-07"> <span>Endermologia – masaż podciśnieniowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-08"> <span>Golenie głowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-09"> <span>Henna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-10"> <span>Koloryzacja i dekoloryzacja włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-11"> <span>Kosmetyczna diagnostyka trychologiczna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-12"> <span>Kosmetyczny zabieg trychologiczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-13"> <span>Kuracje nawilżające i odbudowujące włosy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-14"> <span>Laminowanie brwi i rzęs</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-15"> <span>Laminowanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-16"> <span>Makijaż</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-17"> <span>Manicure</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-18"> <span>Manualne oczyszczanie twarzy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-19"> <span>Masaż bańką chińską</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-20"> <span>Masaż endodermiczny i drenaż limfatyczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-21"> <span>Masaż manualny ciała i twarzy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-22"> <span>Mycie i suszenie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-23"> <span>Oczyszczanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-24"> <span>Pasemka i baleyage</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-25"> <span>Pedicure kosmetyczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-26" checked> <span>Piercing – przekłuwanie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-27"> <span>Presoterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-28"> <span>Przekłuwanie uszu</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-29"> <span>Przedłużanie i zagęszczanie rzęs</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-30"> <span>Przedłużanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-31"> <span>Prostowanie włosów na stałe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-32"> <span>Retusz siwizny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-33"> <span>Sauna na włosy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-34"> <span>Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-35"> <span>Trwała ondulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-36"> <span>Zabiegi z zastosowaniem składników aktywnych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-37"> <span>Zabiegi keratynowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-38"> <span>Zabiegi przeciwłupieżowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-39"> <span>Zabiegi LED – terapeutyczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-40"> <span>Zagęszczanie włosów</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="2" open>
+    <summary><span class="zab-grp-name">Grupa 2 – Kosmetologia i tatuaż</span><span class="zab-grp-meta"><span class="zab-grp-n">38&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 2 – Kosmetologia i tatuaż</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-01"> <span>Chemiczne usuwanie makijażu permanentnego</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-02"> <span>Cool Lifting</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-03"> <span>Elektroliza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-04"> <span>Elektrokoagulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-05"> <span>Elektroporacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-06"> <span>Fala akustyczna i energia wysokiej częstotliwości</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-07"> <span>Infuzja tlenowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-08"> <span>Jonoforeza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-09"> <span>Karboksyterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-10"> <span>Kawitacja ultradźwiękowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-11"> <span>Kriolipoliza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-12"> <span>Makijaż okolicznościowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-13"> <span>Makijaż permanentny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-14"> <span>Masaż Kobido</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-15"> <span>Mezoterapia bezigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-16"> <span>Mezoterapia igłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-17"> <span>Mezoterapia mikroigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-18"> <span>Microblading</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-19"> <span>Mikronakłuwanie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-20"> <span>Mikropigmentacja rekonstrukcyjna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-21"> <span>Mikrodermabrazja korundowa i diamentowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-22"> <span>Oczyszczanie wodorowo-tlenowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-23"> <span>Opalanie natryskowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-24"> <span>Oxybrazja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-25"> <span>Pedicure kosmetyczny (niezastrzeżony dla podologów)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-26"> <span>Peeling węglowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-27"> <span>Radiofrekwencja mikroigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-28"> <span>Radiotermoliza zmian skórnych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-29"> <span>Różnorodne peelingi chemiczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-30"> <span>Sauny infrared</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-31"> <span>Sonoforeza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-32" checked> <span>Tatuaż</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-33"> <span>Zabiegi falą radiową</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-34"> <span>Zabiegi IPL (fotoodmładzanie, przebarwienia, teleangiektazje, depilacja)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-35"> <span>Zabiegi laserem frakcyjnym nieablacyjnym</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-36"> <span>Zabiegi laserem nieablacyjnym (naczynia, tatuaż, depilacja)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-37"> <span>Zabiegi z zastosowaniem podczerwieni</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-38"> <span>Zastosowanie prądów małej i dużej częstotliwości</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="3">
+    <summary><span class="zab-grp-name">Grupa 3 – Podologia medyczna</span><span class="zab-grp-meta"><span class="zab-grp-n">31&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 3 – Podologia medyczna</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-01"> <span>Analiza chodu (ocena dynamiczna, wideoanaliza)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-02"> <span>Badanie grzybicze paznokcia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-03"> <span>Badanie podoskopowe / podoskanerem</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-04"> <span>Delikatna koloryzacja rekonstrukcyjna paznokci</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-05"> <span>Diagnostyka i leczenie brodawek</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-06"> <span>Diagnostyka różnicowa brodawka vs odcisk</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-07"> <span>Dobór indywidualnych wkładek korygujących</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-08"> <span>Dobór ortez i separatorów żelowych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-09"> <span>Instruktaż ochrony mechanicznej i modyfikacji obuwia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-10"> <span>Intensywne kuracje nawilżająco-regenerujące</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-11"> <span>Klamry ortonyksyjne – aplikacja i aktywacje</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-12"> <span>Konsultacja podologiczna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-13"> <span>Kontrola po klamrze / rekonstrukcji / opatrunku</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-14"> <span>Korekty ustawienia palucha: taping / fiksatory</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-15"> <span>Krioterapia zmian skórnych (CO2, punktowa)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-16"> <span>Odciążanie miejsc bolesnych (taping)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-17"> <span>Opatrunki specjalistyczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-18"> <span>Opracowanie łożyska przy onycholizie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-19"> <span>Opracowanie modzeli, odcisków, nagniotków</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-20"> <span>Opracowanie pęknięć i rozpadlin pięt</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-21"> <span>Opracowanie wałów z ziarniną</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-22"> <span>Ozonoterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-23"> <span>Pedicure podologiczny (medyczny) całościowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-24"> <span>Pobieranie próbek do badań</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-25"> <span>Profilaktyka i zabiegi u osób z grup ryzyka</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-26"> <span>Protetyka / rekonstrukcja paznokcia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-27"> <span>Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-28"> <span>Skrócenie i wyrównanie paznokci (zmienionych chorobowo)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-29"> <span>Terapia nadpotliwości stóp (jonoforeza)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-30"> <span>Usuwanie zrogowaciałego naskórka</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-31"> <span>Zabiegi skalpelem, dłutem i frezami</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="4">
+    <summary><span class="zab-grp-name">Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)</span><span class="zab-grp-meta"><span class="zab-grp-n">8&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-01"> <span>Zabiegi technologią HIFU</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-02"> <span>Zabiegi z użyciem toksyny botulinowej</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-03"> <span>Zabiegi osoczem bogatopłytkowym (PRP)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-04"> <span>Zabiegi technologią PLASMA</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-05"> <span>Wypełniacze – kwas hialuronowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-06"> <span>Zabiegi z użyciem nici PDO</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-07"> <span>Lipoliza iniekcyjna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-08"> <span>Zabiegi laserem ablacyjnym</span></label>
+    </fieldset>
+  </details>
+</div>
+<!-- /gen:zabiegi-checkboxy:nowe -->
+            </fieldset>
 
             <hr class="rule">
             <fieldset class="group" aria-describedby="n-placa-hint">
@@ -1202,6 +1578,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
                 <h3 id="pv-tytul">Tatuażysta / tatuażystka (przykład)</h3>
                 <p class="offer-salon" id="pv-miejsce">Salon Przykładowy · Kraków, małopolskie</p>
                 <ul class="offer-meta"><li id="pv-umowa">B2B</li><li id="pv-wymiar">elastyczny wymiar</li></ul>
+                <div class="zab-tags" id="pv-zab" data-ids="g2-32 g1-26"><ul aria-label="Zabiegi w ogłoszeniu"><li>Tatuaż</li><li>Piercing – przekłuwanie</li></ul></div>
                 <p class="offer-pay"><strong id="pv-placa">60–90&nbsp;zł</strong><span id="pv-placa-opis">netto za godzinę</span></p>
                 <p class="offer-until">ważne 21&nbsp;dni od publikacji</p>
               </li>
@@ -1308,6 +1685,155 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
           <div class="field"><label for="sp-f-forma">Forma współpracy</label>
             <select id="sp-f-forma" name="forma"><option value="">Każda</option><option value="uop">umowa o&nbsp;pracę</option><option value="zlecenie">umowa zlecenie</option><option value="b2b">B2B</option><option value="najem">najem stanowiska lub fotela</option><option value="inna">inna</option></select></div>
         </fieldset>
+        <fieldset class="field zab" id="zab-sp" data-zab="filter">
+          <legend>Zabiegi <span>(opcjonalnie)</span></legend>
+          <p class="hint" id="zab-sp-opis">Pokazujemy ogłoszenia z&nbsp;co najmniej jednym z&nbsp;wybranych zabiegów. Zabiegi wskazuje autor ogłoszenia&nbsp;– ogłoszenia bez zabiegów nie pojawią się przy tym filtrze. Kolejność bez zmian: od najnowszych.</p>
+<!-- gen:zabiegi-checkboxy:sp -->
+<div class="zab-groups">
+  <details class="zab-grp" data-grupa="1">
+    <summary><span class="zab-grp-name">Grupa 1 – Kosmetyka i fryzjerstwo</span><span class="zab-grp-meta"><span class="zab-grp-n">40&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 1 – Kosmetyka i fryzjerstwo</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-01"> <span>Barbering</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-02"> <span>Depilacja pastą cukrową</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-03"> <span>Depilacja woskiem</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-04"> <span>Dermabrazja i peeling skóry głowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-05"> <span>Diagnoza skóry głowy i USG włosa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-06"> <span>Elektrostymulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-07"> <span>Endermologia – masaż podciśnieniowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-08"> <span>Golenie głowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-09"> <span>Henna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-10"> <span>Koloryzacja i dekoloryzacja włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-11"> <span>Kosmetyczna diagnostyka trychologiczna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-12"> <span>Kosmetyczny zabieg trychologiczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-13"> <span>Kuracje nawilżające i odbudowujące włosy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-14"> <span>Laminowanie brwi i rzęs</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-15"> <span>Laminowanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-16"> <span>Makijaż</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-17"> <span>Manicure</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-18"> <span>Manualne oczyszczanie twarzy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-19"> <span>Masaż bańką chińską</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-20"> <span>Masaż endodermiczny i drenaż limfatyczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-21"> <span>Masaż manualny ciała i twarzy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-22"> <span>Mycie i suszenie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-23"> <span>Oczyszczanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-24"> <span>Pasemka i baleyage</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-25"> <span>Pedicure kosmetyczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-26"> <span>Piercing – przekłuwanie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-27"> <span>Presoterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-28"> <span>Przekłuwanie uszu</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-29"> <span>Przedłużanie i zagęszczanie rzęs</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-30"> <span>Przedłużanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-31"> <span>Prostowanie włosów na stałe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-32"> <span>Retusz siwizny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-33"> <span>Sauna na włosy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-34"> <span>Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-35"> <span>Trwała ondulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-36"> <span>Zabiegi z zastosowaniem składników aktywnych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-37"> <span>Zabiegi keratynowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-38"> <span>Zabiegi przeciwłupieżowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-39"> <span>Zabiegi LED – terapeutyczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-40"> <span>Zagęszczanie włosów</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="2">
+    <summary><span class="zab-grp-name">Grupa 2 – Kosmetologia i tatuaż</span><span class="zab-grp-meta"><span class="zab-grp-n">38&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 2 – Kosmetologia i tatuaż</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-01"> <span>Chemiczne usuwanie makijażu permanentnego</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-02"> <span>Cool Lifting</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-03"> <span>Elektroliza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-04"> <span>Elektrokoagulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-05"> <span>Elektroporacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-06"> <span>Fala akustyczna i energia wysokiej częstotliwości</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-07"> <span>Infuzja tlenowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-08"> <span>Jonoforeza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-09"> <span>Karboksyterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-10"> <span>Kawitacja ultradźwiękowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-11"> <span>Kriolipoliza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-12"> <span>Makijaż okolicznościowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-13"> <span>Makijaż permanentny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-14"> <span>Masaż Kobido</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-15"> <span>Mezoterapia bezigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-16"> <span>Mezoterapia igłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-17"> <span>Mezoterapia mikroigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-18"> <span>Microblading</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-19"> <span>Mikronakłuwanie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-20"> <span>Mikropigmentacja rekonstrukcyjna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-21"> <span>Mikrodermabrazja korundowa i diamentowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-22"> <span>Oczyszczanie wodorowo-tlenowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-23"> <span>Opalanie natryskowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-24"> <span>Oxybrazja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-25"> <span>Pedicure kosmetyczny (niezastrzeżony dla podologów)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-26"> <span>Peeling węglowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-27"> <span>Radiofrekwencja mikroigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-28"> <span>Radiotermoliza zmian skórnych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-29"> <span>Różnorodne peelingi chemiczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-30"> <span>Sauny infrared</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-31"> <span>Sonoforeza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-32"> <span>Tatuaż</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-33"> <span>Zabiegi falą radiową</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-34"> <span>Zabiegi IPL (fotoodmładzanie, przebarwienia, teleangiektazje, depilacja)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-35"> <span>Zabiegi laserem frakcyjnym nieablacyjnym</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-36"> <span>Zabiegi laserem nieablacyjnym (naczynia, tatuaż, depilacja)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-37"> <span>Zabiegi z zastosowaniem podczerwieni</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-38"> <span>Zastosowanie prądów małej i dużej częstotliwości</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="3">
+    <summary><span class="zab-grp-name">Grupa 3 – Podologia medyczna</span><span class="zab-grp-meta"><span class="zab-grp-n">31&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 3 – Podologia medyczna</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-01"> <span>Analiza chodu (ocena dynamiczna, wideoanaliza)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-02"> <span>Badanie grzybicze paznokcia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-03"> <span>Badanie podoskopowe / podoskanerem</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-04"> <span>Delikatna koloryzacja rekonstrukcyjna paznokci</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-05"> <span>Diagnostyka i leczenie brodawek</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-06"> <span>Diagnostyka różnicowa brodawka vs odcisk</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-07"> <span>Dobór indywidualnych wkładek korygujących</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-08"> <span>Dobór ortez i separatorów żelowych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-09"> <span>Instruktaż ochrony mechanicznej i modyfikacji obuwia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-10"> <span>Intensywne kuracje nawilżająco-regenerujące</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-11"> <span>Klamry ortonyksyjne – aplikacja i aktywacje</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-12"> <span>Konsultacja podologiczna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-13"> <span>Kontrola po klamrze / rekonstrukcji / opatrunku</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-14"> <span>Korekty ustawienia palucha: taping / fiksatory</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-15"> <span>Krioterapia zmian skórnych (CO2, punktowa)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-16"> <span>Odciążanie miejsc bolesnych (taping)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-17"> <span>Opatrunki specjalistyczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-18"> <span>Opracowanie łożyska przy onycholizie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-19"> <span>Opracowanie modzeli, odcisków, nagniotków</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-20"> <span>Opracowanie pęknięć i rozpadlin pięt</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-21"> <span>Opracowanie wałów z ziarniną</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-22"> <span>Ozonoterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-23"> <span>Pedicure podologiczny (medyczny) całościowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-24"> <span>Pobieranie próbek do badań</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-25"> <span>Profilaktyka i zabiegi u osób z grup ryzyka</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-26"> <span>Protetyka / rekonstrukcja paznokcia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-27"> <span>Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-28"> <span>Skrócenie i wyrównanie paznokci (zmienionych chorobowo)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-29"> <span>Terapia nadpotliwości stóp (jonoforeza)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-30"> <span>Usuwanie zrogowaciałego naskórka</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-31"> <span>Zabiegi skalpelem, dłutem i frezami</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="4">
+    <summary><span class="zab-grp-name">Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)</span><span class="zab-grp-meta"><span class="zab-grp-n">8&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-01"> <span>Zabiegi technologią HIFU</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-02"> <span>Zabiegi z użyciem toksyny botulinowej</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-03"> <span>Zabiegi osoczem bogatopłytkowym (PRP)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-04"> <span>Zabiegi technologią PLASMA</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-05"> <span>Wypełniacze – kwas hialuronowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-06"> <span>Zabiegi z użyciem nici PDO</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-07"> <span>Lipoliza iniekcyjna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-08"> <span>Zabiegi laserem ablacyjnym</span></label>
+    </fieldset>
+  </details>
+</div>
+<!-- /gen:zabiegi-checkboxy:sp -->
+        </fieldset>
         <div class="form-foot"><button class="btn btn-navy btn-sm" type="submit">Pokaż ogłoszenia</button><button class="link-quiet" type="reset">Wyczyść filtry</button></div>
       </form>
 
@@ -1330,6 +1856,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
                 <div><dt>Dostępność od</dt><dd><time datetime="2026-12-01">1&nbsp;grudnia 2026&nbsp;r.</time></dd></div>
               </dl>
               <p class="small">Zabiegi pielęgnacyjne twarzy i&nbsp;ciała, peelingi, oczyszczanie. Szukam pracy w&nbsp;Krakowie lub okolicy. Treść przykładowa.</p>
+              <div class="zab-tags" data-ids="g1-18 g2-29 g1-21 g2-22" data-more="details"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manualne oczyszczanie twarzy</li><li>Różnorodne peelingi chemiczne</li><li>Masaż manualny ciała i twarzy</li><li class="zab-tags-more"><details><summary>i 1 inny</summary><ul aria-label="Pozostałe zabiegi"><li>Oczyszczanie wodorowo-tlenowe</li></ul></details></li></ul></div>
               <p class="xsmall muted">Dodano <time datetime="2026-11-11">11.11.2026</time> · ważne do <time datetime="2026-12-02">2.12.2026</time> · <span class="nowrap">nr SP-4F7Q</span> (przykład)</p>
             </div>
             <div class="cand-actions">
@@ -1365,6 +1892,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
                 <div><dt>Dostępność od</dt><dd><time datetime="2027-01-04">4&nbsp;stycznia 2027&nbsp;r.</time></dd></div>
               </dl>
               <p class="small">Strzyżenie damskie i&nbsp;męskie, koloryzacja. Szukam stanowiska do wynajęcia. Treść przykładowa.</p>
+              <div class="zab-tags" data-ids="g1-34 g1-10 g1-24 g1-37" data-more="details"><ul aria-label="Zabiegi w ogłoszeniu"><li>Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)</li><li>Koloryzacja i dekoloryzacja włosów</li><li>Pasemka i baleyage</li><li class="zab-tags-more"><details><summary>i 1 inny</summary><ul aria-label="Pozostałe zabiegi"><li>Zabiegi keratynowe</li></ul></details></li></ul></div>
               <p class="xsmall muted">Dodano <time datetime="2026-11-08">8.11.2026</time> · ważne do <time datetime="2026-11-29">29.11.2026</time> · <span class="nowrap">nr SP-9K2D</span> (przykład)</p>
             </div>
             <div class="cand-actions">
@@ -1399,6 +1927,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
                 <div><dt>Doświadczenie</dt><dd>1–3&nbsp;lata</dd></div>
                 <div><dt>Dostępność od</dt><dd><time datetime="2026-11-16">16&nbsp;listopada 2026&nbsp;r.</time></dd></div>
               </dl>
+              <div class="zab-tags" data-ids="g1-17 g1-25" data-more="details"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manicure</li><li>Pedicure kosmetyczny</li></ul></div>
               <p class="xsmall muted">Dodano <time datetime="2026-11-03">3.11.2026</time> · ważne do <time datetime="2026-11-24">24.11.2026</time> · <span class="nowrap">nr SP-2M8R</span> (przykład)</p>
             </div>
             <div class="cand-actions">
@@ -1427,8 +1956,8 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
         </ul>
         <div class="empty is-pending" id="sp-pusto">
           <svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg>
-          <strong>Brak ogłoszeń dla wybranych filtrów</strong>
-          <p>Zmień zawód, województwo lub formę współpracy. Nie wysyłamy powiadomień o&nbsp;nowych ogłoszeniach.</p>
+          <strong id="sp-pusto-t">Brak ogłoszeń dla wybranych filtrów</strong>
+          <p id="sp-pusto-p">Zmień zawód, województwo lub formę współpracy. Nie wysyłamy powiadomień o&nbsp;nowych ogłoszeniach.</p>
           <p class="xsmall"><span class="mock-note">Pusty stan</span></p>
         </div>
         <div class="sp-pager">
@@ -1607,7 +2136,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
         <p class="lead">Ogłoszenie zobaczą tylko zalogowani pracodawcy, których firmę potwierdziła Aura Expert. Nie podajesz nazwiska ani kontaktu&nbsp;– pracodawca napisze przez formularz, a&nbsp;wiadomość przyjdzie na Twój <span class="nowrap">e-mail</span>.</p>
         <p class="promo-tag"><strong>Promocja na otwarcie</strong><span>ogłoszenie bez opłat, widoczne 21&nbsp;dni</span></p>
         <ol class="howto">
-          <li><strong>Wypełniasz</strong><span>Imię, zawód, region, forma współpracy, doświadczenie i&nbsp;krótki opis.</span></li>
+          <li><strong>Wypełniasz</strong><span>Imię, zawód, region, forma współpracy, doświadczenie, zabiegi (opcjonalnie) i&nbsp;krótki opis.</span></li>
           <li><strong>Sprawdzamy treść</strong><span>Publikacja dopiero po akceptacji. Każda zmiana wraca do sprawdzenia.</span></li>
           <li><strong>Widoczne 21&nbsp;dni</strong><span>Potem możesz opublikować je ponownie. Usuniesz je w&nbsp;każdej chwili.</span></li>
         </ol>
@@ -1654,6 +2183,155 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
                 <label class="check-row"><input type="checkbox" name="forma" value="inna"> <span>inna</span></label>
               </div>
               <p class="field-error" id="sa-forma-err" hidden></p>
+            </fieldset>
+            <fieldset class="field zab" id="zab-sa" data-zab="form" data-zab-max="30">
+              <legend>Zabiegi <span>(opcjonalnie, maks.&nbsp;30)</span></legend>
+              <p class="hint" id="zab-sa-opis">Zabiegi, które wykonujesz&nbsp;– z&nbsp;listy zabiegów programu OC dla branży beauty. Pracodawcy mogą filtrować ogłoszenia po zabiegach; kolejność się nie zmienia, a&nbsp;nikt nie dobiera ani nie ocenia ogłoszeń.</p>
+<!-- gen:zabiegi-checkboxy:sa checked="g1-18 g2-29 g1-21 g2-22" -->
+<div class="zab-groups">
+  <details class="zab-grp" data-grupa="1" open>
+    <summary><span class="zab-grp-name">Grupa 1 – Kosmetyka i fryzjerstwo</span><span class="zab-grp-meta"><span class="zab-grp-n">40&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 1 – Kosmetyka i fryzjerstwo</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-01"> <span>Barbering</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-02"> <span>Depilacja pastą cukrową</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-03"> <span>Depilacja woskiem</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-04"> <span>Dermabrazja i peeling skóry głowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-05"> <span>Diagnoza skóry głowy i USG włosa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-06"> <span>Elektrostymulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-07"> <span>Endermologia – masaż podciśnieniowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-08"> <span>Golenie głowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-09"> <span>Henna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-10"> <span>Koloryzacja i dekoloryzacja włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-11"> <span>Kosmetyczna diagnostyka trychologiczna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-12"> <span>Kosmetyczny zabieg trychologiczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-13"> <span>Kuracje nawilżające i odbudowujące włosy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-14"> <span>Laminowanie brwi i rzęs</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-15"> <span>Laminowanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-16"> <span>Makijaż</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-17"> <span>Manicure</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-18" checked> <span>Manualne oczyszczanie twarzy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-19"> <span>Masaż bańką chińską</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-20"> <span>Masaż endodermiczny i drenaż limfatyczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-21" checked> <span>Masaż manualny ciała i twarzy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-22"> <span>Mycie i suszenie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-23"> <span>Oczyszczanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-24"> <span>Pasemka i baleyage</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-25"> <span>Pedicure kosmetyczny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-26"> <span>Piercing – przekłuwanie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-27"> <span>Presoterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-28"> <span>Przekłuwanie uszu</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-29"> <span>Przedłużanie i zagęszczanie rzęs</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-30"> <span>Przedłużanie włosów</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-31"> <span>Prostowanie włosów na stałe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-32"> <span>Retusz siwizny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-33"> <span>Sauna na włosy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-34"> <span>Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-35"> <span>Trwała ondulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-36"> <span>Zabiegi z zastosowaniem składników aktywnych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-37"> <span>Zabiegi keratynowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-38"> <span>Zabiegi przeciwłupieżowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-39"> <span>Zabiegi LED – terapeutyczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g1-40"> <span>Zagęszczanie włosów</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="2" open>
+    <summary><span class="zab-grp-name">Grupa 2 – Kosmetologia i tatuaż</span><span class="zab-grp-meta"><span class="zab-grp-n">38&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 2 – Kosmetologia i tatuaż</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-01"> <span>Chemiczne usuwanie makijażu permanentnego</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-02"> <span>Cool Lifting</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-03"> <span>Elektroliza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-04"> <span>Elektrokoagulacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-05"> <span>Elektroporacja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-06"> <span>Fala akustyczna i energia wysokiej częstotliwości</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-07"> <span>Infuzja tlenowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-08"> <span>Jonoforeza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-09"> <span>Karboksyterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-10"> <span>Kawitacja ultradźwiękowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-11"> <span>Kriolipoliza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-12"> <span>Makijaż okolicznościowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-13"> <span>Makijaż permanentny</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-14"> <span>Masaż Kobido</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-15"> <span>Mezoterapia bezigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-16"> <span>Mezoterapia igłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-17"> <span>Mezoterapia mikroigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-18"> <span>Microblading</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-19"> <span>Mikronakłuwanie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-20"> <span>Mikropigmentacja rekonstrukcyjna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-21"> <span>Mikrodermabrazja korundowa i diamentowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-22" checked> <span>Oczyszczanie wodorowo-tlenowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-23"> <span>Opalanie natryskowe</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-24"> <span>Oxybrazja</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-25"> <span>Pedicure kosmetyczny (niezastrzeżony dla podologów)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-26"> <span>Peeling węglowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-27"> <span>Radiofrekwencja mikroigłowa</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-28"> <span>Radiotermoliza zmian skórnych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-29" checked> <span>Różnorodne peelingi chemiczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-30"> <span>Sauny infrared</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-31"> <span>Sonoforeza</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-32"> <span>Tatuaż</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-33"> <span>Zabiegi falą radiową</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-34"> <span>Zabiegi IPL (fotoodmładzanie, przebarwienia, teleangiektazje, depilacja)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-35"> <span>Zabiegi laserem frakcyjnym nieablacyjnym</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-36"> <span>Zabiegi laserem nieablacyjnym (naczynia, tatuaż, depilacja)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-37"> <span>Zabiegi z zastosowaniem podczerwieni</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g2-38"> <span>Zastosowanie prądów małej i dużej częstotliwości</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="3">
+    <summary><span class="zab-grp-name">Grupa 3 – Podologia medyczna</span><span class="zab-grp-meta"><span class="zab-grp-n">31&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 3 – Podologia medyczna</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-01"> <span>Analiza chodu (ocena dynamiczna, wideoanaliza)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-02"> <span>Badanie grzybicze paznokcia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-03"> <span>Badanie podoskopowe / podoskanerem</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-04"> <span>Delikatna koloryzacja rekonstrukcyjna paznokci</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-05"> <span>Diagnostyka i leczenie brodawek</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-06"> <span>Diagnostyka różnicowa brodawka vs odcisk</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-07"> <span>Dobór indywidualnych wkładek korygujących</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-08"> <span>Dobór ortez i separatorów żelowych</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-09"> <span>Instruktaż ochrony mechanicznej i modyfikacji obuwia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-10"> <span>Intensywne kuracje nawilżająco-regenerujące</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-11"> <span>Klamry ortonyksyjne – aplikacja i aktywacje</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-12"> <span>Konsultacja podologiczna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-13"> <span>Kontrola po klamrze / rekonstrukcji / opatrunku</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-14"> <span>Korekty ustawienia palucha: taping / fiksatory</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-15"> <span>Krioterapia zmian skórnych (CO2, punktowa)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-16"> <span>Odciążanie miejsc bolesnych (taping)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-17"> <span>Opatrunki specjalistyczne</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-18"> <span>Opracowanie łożyska przy onycholizie</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-19"> <span>Opracowanie modzeli, odcisków, nagniotków</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-20"> <span>Opracowanie pęknięć i rozpadlin pięt</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-21"> <span>Opracowanie wałów z ziarniną</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-22"> <span>Ozonoterapia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-23"> <span>Pedicure podologiczny (medyczny) całościowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-24"> <span>Pobieranie próbek do badań</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-25"> <span>Profilaktyka i zabiegi u osób z grup ryzyka</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-26"> <span>Protetyka / rekonstrukcja paznokcia</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-27"> <span>Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-28"> <span>Skrócenie i wyrównanie paznokci (zmienionych chorobowo)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-29"> <span>Terapia nadpotliwości stóp (jonoforeza)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-30"> <span>Usuwanie zrogowaciałego naskórka</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g3-31"> <span>Zabiegi skalpelem, dłutem i frezami</span></label>
+    </fieldset>
+  </details>
+  <details class="zab-grp" data-grupa="4">
+    <summary><span class="zab-grp-name">Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)</span><span class="zab-grp-meta"><span class="zab-grp-n">8&nbsp;zabiegów</span><span class="zab-grp-sel"></span></span></summary>
+    <fieldset class="zab-list">
+      <legend class="sr-only">Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)</legend>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-01"> <span>Zabiegi technologią HIFU</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-02"> <span>Zabiegi z użyciem toksyny botulinowej</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-03"> <span>Zabiegi osoczem bogatopłytkowym (PRP)</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-04"> <span>Zabiegi technologią PLASMA</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-05"> <span>Wypełniacze – kwas hialuronowy</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-06"> <span>Zabiegi z użyciem nici PDO</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-07"> <span>Lipoliza iniekcyjna</span></label>
+      <label class="check-row"><input type="checkbox" name="zabieg" value="g4-08"> <span>Zabiegi laserem ablacyjnym</span></label>
+    </fieldset>
+  </details>
+</div>
+<!-- /gen:zabiegi-checkboxy:sa -->
             </fieldset>
             <div class="fields-2">
               <div class="field">
@@ -1738,7 +2416,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
           <aside class="card surface" aria-labelledby="t-kto">
             <h2 class="card-title" id="t-kto">Co zobaczy pracodawca</h2>
             <ul class="checklist">
-              <li><span>Imię, zawód, województwo (i&nbsp;miasto, jeśli je podasz), formę współpracy, doświadczenie, dostępność i&nbsp;opis.</span></li>
+              <li><span>Imię, zawód, województwo (i&nbsp;miasto, jeśli je podasz), formę współpracy, doświadczenie, dostępność, wybrane zabiegi i&nbsp;opis.</span></li>
               <li><span>Nie zobaczy Twojego <span class="nowrap">e-maila</span>, telefonu ani konta. Twój adres pozna dopiero wtedy, gdy sama lub sam odpiszesz.</span></li>
               <li><span>Ogłoszenia nie ma w&nbsp;wyszukiwarkach ani na stronie publicznej.</span></li>
             </ul>
@@ -1779,6 +2457,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
                     <div><dt>Dostępność od</dt><dd><time datetime="2026-12-01">1&nbsp;grudnia 2026&nbsp;r.</time></dd></div>
                   </dl>
                   <p class="small">Zabiegi pielęgnacyjne twarzy i&nbsp;ciała, peelingi, oczyszczanie. Szukam pracy w&nbsp;Krakowie lub okolicy. Treść przykładowa.</p>
+                  <div class="zab-tags" data-ids="g1-18 g2-29 g1-21 g2-22" data-limit="0"><ul aria-label="Zabiegi w ogłoszeniu"><li>Manualne oczyszczanie twarzy</li><li>Różnorodne peelingi chemiczne</li><li>Masaż manualny ciała i twarzy</li><li>Oczyszczanie wodorowo-tlenowe</li></ul></div>
                 </div>
               </li>
             </ul>
@@ -1859,6 +2538,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
         <li><strong>Pracodawca (P1b):</strong> dowolna firma; rejestracja w&nbsp;<a href="logowanie.html#s-rej">logowanie.html</a> (NIP → GUS → telefon SMS → TOTP). Dwa konta w&nbsp;makiecie: salon z&nbsp;polisą (firma potwierdzona z&nbsp;urzędu; pierwsze wejście&nbsp;– <a href="dam-prace.html#wlacz-dam-prace">„Włącz Dam pracę”</a>: NIP z&nbsp;konta → GUS → SMS) i&nbsp;pracodawca z&nbsp;rejestracji „Studio Przykładowe” (<a href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy">?konto=pracodawca</a>: pulpit pracodawcy, moje ogłoszenia, „Szukam pracy” w&nbsp;stanie „czeka na potwierdzenie firmy”; menu z&nbsp;11 §5.2, bez polis, zespołu i&nbsp;szkoleń).</li>
         <li><strong>„Szukam pracy” (P1a, aktywne):</strong> karty widzi tylko pracodawca z&nbsp;potwierdzoną firmą; wiadomość przez formularz przekazujący, bez ujawniania kontaktu. Widoczność wyłącznie dla zalogowanych pracodawców i&nbsp;noindex&nbsp;– <span class="mock-note">Założenie</span>.</li>
         <li><strong>Założenia:</strong> najwyżej 5&nbsp;ogłoszeń w&nbsp;szkicu lub moderacji, usunięcie kontaktu 30&nbsp;dni po zakończeniu, limity formularzy i&nbsp;wiadomości, kwota 200&nbsp;kart dziennie, retencja. Widełki i&nbsp;treści ogłoszeń są przykładowe.</li>
+        <li><strong>Zabiegi (decyzja 13.11.2026):</strong> filtr „Zabiegi” na liście ofert i&nbsp;w&nbsp;„Szukam pracy” oraz pole „Zabiegi (opcjonalnie, maks.&nbsp;30)” w&nbsp;obu formularzach ogłoszeń. Lista 1:1 z&nbsp;programu OC (117 pozycji, 4&nbsp;grupy, bez synonimów). Filtr działa wyłącznie na zabiegach wybranych przez autora ogłoszenia, logika „co najmniej jeden z&nbsp;wybranych” (LUB); kolejność bez zmian&nbsp;– od najnowszych, bez „najlepiej dopasowanych”, procentu dopasowania i&nbsp;powiadomień o&nbsp;pasujących ogłoszeniach. Z&nbsp;JS: okno z&nbsp;wyszukiwarką (bez polskich znaków i&nbsp;wielkości liter), grupami, licznikiem, „Wyczyść” i&nbsp;„Pokaż ogłoszenia (N)”, wybrane jako usuwalne chipy; bez JS: checkboxy w&nbsp;grupach, formularz GET <code>?zabieg=g2-12&amp;zabieg=…</code>.</li>
         <li>Szkło: najwyżej 3&nbsp;tafle w&nbsp;widoku (nagłówek strony publicznej i&nbsp;nagłówek treści albo pasek, menu boczne i&nbsp;nagłówek treści w&nbsp;strefie). Bez JavaScriptu wszystkie ekrany są widoczne pod sobą, a&nbsp;stany „po wysłaniu”&nbsp;– jako wzory.</li>
       </ul>
     </aside>
@@ -1906,6 +2586,134 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
   <symbol id="lux-serce" viewBox="0 0 96 96"><title>Serce BeautyPolisa</title><path d="M48 77C41 69 18 53 18 37C18 17 41 15 48 33C55 15 78 17 78 37C78 53 55 69 48 77Z" /></symbol>
 </svg>
 
+<!-- Dane zabiegów (filtr i pole „Zabiegi”, decyzja 13.11.2026): pola id, nazwa, grupa + nazwy grup z docs/koncepcja/snippets/zabiegi-oc-beauty.json
+     (lista 1:1, 117 pozycji, grupy 1–4: 40/38/31/8; bez synonimów). NIE edytuj ręcznie: bloki gen:zabiegi-data, gen:zabiegi-checkboxy:*
+     i treść div.zab-tags generuje skrypt gen_strefa_zabiegi.py z tego pliku. W Next.js – import tego samego JSON przy budowaniu;
+     w bazie ogłoszenie przechowuje tylko id (0–30, tylko z listy), filtr: „zawiera którykolwiek z wybranych”, kolejność od najnowszych. -->
+<!-- gen:zabiegi-data -->
+<script type="application/json" id="zabiegi-data">
+{"grupy":[{"grupa":1,"nazwa":"Grupa 1 – Kosmetyka i fryzjerstwo"},{"grupa":2,"nazwa":"Grupa 2 – Kosmetologia i tatuaż"},{"grupa":3,"nazwa":"Grupa 3 – Podologia medyczna"},{"grupa":4,"nazwa":"Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)"}],
+"zabiegi":[
+{"id":"g1-01","nazwa":"Barbering","grupa":1},
+{"id":"g1-02","nazwa":"Depilacja pastą cukrową","grupa":1},
+{"id":"g1-03","nazwa":"Depilacja woskiem","grupa":1},
+{"id":"g1-04","nazwa":"Dermabrazja i peeling skóry głowy","grupa":1},
+{"id":"g1-05","nazwa":"Diagnoza skóry głowy i USG włosa","grupa":1},
+{"id":"g1-06","nazwa":"Elektrostymulacja","grupa":1},
+{"id":"g1-07","nazwa":"Endermologia – masaż podciśnieniowy","grupa":1},
+{"id":"g1-08","nazwa":"Golenie głowy","grupa":1},
+{"id":"g1-09","nazwa":"Henna","grupa":1},
+{"id":"g1-10","nazwa":"Koloryzacja i dekoloryzacja włosów","grupa":1},
+{"id":"g1-11","nazwa":"Kosmetyczna diagnostyka trychologiczna","grupa":1},
+{"id":"g1-12","nazwa":"Kosmetyczny zabieg trychologiczny","grupa":1},
+{"id":"g1-13","nazwa":"Kuracje nawilżające i odbudowujące włosy","grupa":1},
+{"id":"g1-14","nazwa":"Laminowanie brwi i rzęs","grupa":1},
+{"id":"g1-15","nazwa":"Laminowanie włosów","grupa":1},
+{"id":"g1-16","nazwa":"Makijaż","grupa":1},
+{"id":"g1-17","nazwa":"Manicure","grupa":1},
+{"id":"g1-18","nazwa":"Manualne oczyszczanie twarzy","grupa":1},
+{"id":"g1-19","nazwa":"Masaż bańką chińską","grupa":1},
+{"id":"g1-20","nazwa":"Masaż endodermiczny i drenaż limfatyczny","grupa":1},
+{"id":"g1-21","nazwa":"Masaż manualny ciała i twarzy","grupa":1},
+{"id":"g1-22","nazwa":"Mycie i suszenie włosów","grupa":1},
+{"id":"g1-23","nazwa":"Oczyszczanie włosów","grupa":1},
+{"id":"g1-24","nazwa":"Pasemka i baleyage","grupa":1},
+{"id":"g1-25","nazwa":"Pedicure kosmetyczny","grupa":1},
+{"id":"g1-26","nazwa":"Piercing – przekłuwanie","grupa":1},
+{"id":"g1-27","nazwa":"Presoterapia","grupa":1},
+{"id":"g1-28","nazwa":"Przekłuwanie uszu","grupa":1},
+{"id":"g1-29","nazwa":"Przedłużanie i zagęszczanie rzęs","grupa":1},
+{"id":"g1-30","nazwa":"Przedłużanie włosów","grupa":1},
+{"id":"g1-31","nazwa":"Prostowanie włosów na stałe","grupa":1},
+{"id":"g1-32","nazwa":"Retusz siwizny","grupa":1},
+{"id":"g1-33","nazwa":"Sauna na włosy","grupa":1},
+{"id":"g1-34","nazwa":"Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)","grupa":1},
+{"id":"g1-35","nazwa":"Trwała ondulacja","grupa":1},
+{"id":"g1-36","nazwa":"Zabiegi z zastosowaniem składników aktywnych","grupa":1},
+{"id":"g1-37","nazwa":"Zabiegi keratynowe","grupa":1},
+{"id":"g1-38","nazwa":"Zabiegi przeciwłupieżowe","grupa":1},
+{"id":"g1-39","nazwa":"Zabiegi LED – terapeutyczne","grupa":1},
+{"id":"g1-40","nazwa":"Zagęszczanie włosów","grupa":1},
+{"id":"g2-01","nazwa":"Chemiczne usuwanie makijażu permanentnego","grupa":2},
+{"id":"g2-02","nazwa":"Cool Lifting","grupa":2},
+{"id":"g2-03","nazwa":"Elektroliza","grupa":2},
+{"id":"g2-04","nazwa":"Elektrokoagulacja","grupa":2},
+{"id":"g2-05","nazwa":"Elektroporacja","grupa":2},
+{"id":"g2-06","nazwa":"Fala akustyczna i energia wysokiej częstotliwości","grupa":2},
+{"id":"g2-07","nazwa":"Infuzja tlenowa","grupa":2},
+{"id":"g2-08","nazwa":"Jonoforeza","grupa":2},
+{"id":"g2-09","nazwa":"Karboksyterapia","grupa":2},
+{"id":"g2-10","nazwa":"Kawitacja ultradźwiękowa","grupa":2},
+{"id":"g2-11","nazwa":"Kriolipoliza","grupa":2},
+{"id":"g2-12","nazwa":"Makijaż okolicznościowy","grupa":2},
+{"id":"g2-13","nazwa":"Makijaż permanentny","grupa":2},
+{"id":"g2-14","nazwa":"Masaż Kobido","grupa":2},
+{"id":"g2-15","nazwa":"Mezoterapia bezigłowa","grupa":2},
+{"id":"g2-16","nazwa":"Mezoterapia igłowa","grupa":2},
+{"id":"g2-17","nazwa":"Mezoterapia mikroigłowa","grupa":2},
+{"id":"g2-18","nazwa":"Microblading","grupa":2},
+{"id":"g2-19","nazwa":"Mikronakłuwanie","grupa":2},
+{"id":"g2-20","nazwa":"Mikropigmentacja rekonstrukcyjna","grupa":2},
+{"id":"g2-21","nazwa":"Mikrodermabrazja korundowa i diamentowa","grupa":2},
+{"id":"g2-22","nazwa":"Oczyszczanie wodorowo-tlenowe","grupa":2},
+{"id":"g2-23","nazwa":"Opalanie natryskowe","grupa":2},
+{"id":"g2-24","nazwa":"Oxybrazja","grupa":2},
+{"id":"g2-25","nazwa":"Pedicure kosmetyczny (niezastrzeżony dla podologów)","grupa":2},
+{"id":"g2-26","nazwa":"Peeling węglowy","grupa":2},
+{"id":"g2-27","nazwa":"Radiofrekwencja mikroigłowa","grupa":2},
+{"id":"g2-28","nazwa":"Radiotermoliza zmian skórnych","grupa":2},
+{"id":"g2-29","nazwa":"Różnorodne peelingi chemiczne","grupa":2},
+{"id":"g2-30","nazwa":"Sauny infrared","grupa":2},
+{"id":"g2-31","nazwa":"Sonoforeza","grupa":2},
+{"id":"g2-32","nazwa":"Tatuaż","grupa":2},
+{"id":"g2-33","nazwa":"Zabiegi falą radiową","grupa":2},
+{"id":"g2-34","nazwa":"Zabiegi IPL (fotoodmładzanie, przebarwienia, teleangiektazje, depilacja)","grupa":2},
+{"id":"g2-35","nazwa":"Zabiegi laserem frakcyjnym nieablacyjnym","grupa":2},
+{"id":"g2-36","nazwa":"Zabiegi laserem nieablacyjnym (naczynia, tatuaż, depilacja)","grupa":2},
+{"id":"g2-37","nazwa":"Zabiegi z zastosowaniem podczerwieni","grupa":2},
+{"id":"g2-38","nazwa":"Zastosowanie prądów małej i dużej częstotliwości","grupa":2},
+{"id":"g3-01","nazwa":"Analiza chodu (ocena dynamiczna, wideoanaliza)","grupa":3},
+{"id":"g3-02","nazwa":"Badanie grzybicze paznokcia","grupa":3},
+{"id":"g3-03","nazwa":"Badanie podoskopowe / podoskanerem","grupa":3},
+{"id":"g3-04","nazwa":"Delikatna koloryzacja rekonstrukcyjna paznokci","grupa":3},
+{"id":"g3-05","nazwa":"Diagnostyka i leczenie brodawek","grupa":3},
+{"id":"g3-06","nazwa":"Diagnostyka różnicowa brodawka vs odcisk","grupa":3},
+{"id":"g3-07","nazwa":"Dobór indywidualnych wkładek korygujących","grupa":3},
+{"id":"g3-08","nazwa":"Dobór ortez i separatorów żelowych","grupa":3},
+{"id":"g3-09","nazwa":"Instruktaż ochrony mechanicznej i modyfikacji obuwia","grupa":3},
+{"id":"g3-10","nazwa":"Intensywne kuracje nawilżająco-regenerujące","grupa":3},
+{"id":"g3-11","nazwa":"Klamry ortonyksyjne – aplikacja i aktywacje","grupa":3},
+{"id":"g3-12","nazwa":"Konsultacja podologiczna","grupa":3},
+{"id":"g3-13","nazwa":"Kontrola po klamrze / rekonstrukcji / opatrunku","grupa":3},
+{"id":"g3-14","nazwa":"Korekty ustawienia palucha: taping / fiksatory","grupa":3},
+{"id":"g3-15","nazwa":"Krioterapia zmian skórnych (CO2, punktowa)","grupa":3},
+{"id":"g3-16","nazwa":"Odciążanie miejsc bolesnych (taping)","grupa":3},
+{"id":"g3-17","nazwa":"Opatrunki specjalistyczne","grupa":3},
+{"id":"g3-18","nazwa":"Opracowanie łożyska przy onycholizie","grupa":3},
+{"id":"g3-19","nazwa":"Opracowanie modzeli, odcisków, nagniotków","grupa":3},
+{"id":"g3-20","nazwa":"Opracowanie pęknięć i rozpadlin pięt","grupa":3},
+{"id":"g3-21","nazwa":"Opracowanie wałów z ziarniną","grupa":3},
+{"id":"g3-22","nazwa":"Ozonoterapia","grupa":3},
+{"id":"g3-23","nazwa":"Pedicure podologiczny (medyczny) całościowy","grupa":3},
+{"id":"g3-24","nazwa":"Pobieranie próbek do badań","grupa":3},
+{"id":"g3-25","nazwa":"Profilaktyka i zabiegi u osób z grup ryzyka","grupa":3},
+{"id":"g3-26","nazwa":"Protetyka / rekonstrukcja paznokcia","grupa":3},
+{"id":"g3-27","nazwa":"Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin","grupa":3},
+{"id":"g3-28","nazwa":"Skrócenie i wyrównanie paznokci (zmienionych chorobowo)","grupa":3},
+{"id":"g3-29","nazwa":"Terapia nadpotliwości stóp (jonoforeza)","grupa":3},
+{"id":"g3-30","nazwa":"Usuwanie zrogowaciałego naskórka","grupa":3},
+{"id":"g3-31","nazwa":"Zabiegi skalpelem, dłutem i frezami","grupa":3},
+{"id":"g4-01","nazwa":"Zabiegi technologią HIFU","grupa":4},
+{"id":"g4-02","nazwa":"Zabiegi z użyciem toksyny botulinowej","grupa":4},
+{"id":"g4-03","nazwa":"Zabiegi osoczem bogatopłytkowym (PRP)","grupa":4},
+{"id":"g4-04","nazwa":"Zabiegi technologią PLASMA","grupa":4},
+{"id":"g4-05","nazwa":"Wypełniacze – kwas hialuronowy","grupa":4},
+{"id":"g4-06","nazwa":"Zabiegi z użyciem nici PDO","grupa":4},
+{"id":"g4-07","nazwa":"Lipoliza iniekcyjna","grupa":4},
+{"id":"g4-08","nazwa":"Zabiegi laserem ablacyjnym","grupa":4}
+]}
+</script>
+<!-- /gen:zabiegi-data -->
 <script>
 /* Makieta „Dam pracę” / „Szukam pracy”: widoki (hash) i kontekst strony (publiczna, salon z polisą, pracodawca
    z rejestracji – ?konto=pracodawca, osoba szukająca pracy), filtry, „Pokaż kontakt”, formularze demonstracyjne,
