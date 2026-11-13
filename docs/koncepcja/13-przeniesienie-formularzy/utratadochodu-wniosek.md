@@ -393,6 +393,13 @@ Skrypt `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&on
 
 ## 7. Czego NIE da się odtworzyć z kodu klienckiego (do pozyskania od zleceniodawcy)
 
+> **Stan po analizie repozytorium `ud` (13.11.2026):**
+> - zamknięte: punkty 1, 2, 3 i 4 (kod funkcji, szkic, przypomnienia, e-maile);
+> - częściowo zamknięte: punkty 5 i 6 (proces w panelu oraz klauzula informacyjna; regulamin i polityki są w `ud/apps/portal/src/pages/*`);
+> - otwarte: punkty 7–11.
+>
+> Szczegóły w §9 i §10. Lista poniżej zostaje w pierwotnym brzmieniu.
+
 1. **Funkcja `form-submit`** (Supabase Edge, projekt CRM „aurabroker”):
    - weryfikacja Turnstile (secret);
    - walidacje serwerowe (czy powtarza PESEL i 18–65?);
@@ -420,7 +427,7 @@ Skrypt `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&on
   - sitekey Turnstile (`props.kluczTurnstile`);
   - identyfikatory GA4, Google Ads, Meta Pixel i etykieta konwersji (`window.UD_TAGI`).
 
-  W żadnym z analizowanych plików **nie ma** anon key Supabase, bo funkcje są wywoływane bez JWT. Brak JWT oznacza, że jedyną ochroną endpointów jest Turnstile i walidacja serwerowa. Do weryfikacji, czy obie funkcje ją faktycznie robią.
+  W żadnym z analizowanych plików **nie ma** anon key Supabase, bo funkcje są wywoływane bez JWT. Brak JWT oznacza, że jedyną ochroną endpointów jest Turnstile i walidacja serwerowa. Do weryfikacji, czy obie funkcje ją faktycznie robią. *Zweryfikowane 13.11 (§9.1, §9.2):* obie weryfikują Turnstile przez `siteverify` (bez sprawdzania `hostname`/`action`). `form-submit` ma walidację serwerową tylko częściową i nie ma limitu żądań.
 - **Dane szczególnej kategorii (art. 9 RODO):** wniosek zbiera dane o zdrowiu (7–27 pytań, opisy chorób, HIV/AIDS, palenie, waga i wzrost). Brakuje wyraźnej zgody na przetwarzanie danych o zdrowiu. Jest tylko potwierdzenie zapoznania się z klauzulą, choć `G[3].opis` deklaruje „wyłącznie za wyraźną zgodą”. W portalu BeautyPolisy trzeba dodać osobny, niezaznaczony domyślnie checkbox zgody na dane zdrowotne (cel: ocena ryzyka i przygotowanie oferty, odbiorcy: ubezpieczyciel lub coverholder). Treść musi dostarczyć zleceniodawca lub prawnik.
 - **Brak zgody na przekazanie danych ubezpieczycielowi/coverholderom** oraz brak klauzuli informacyjnej w samym formularzu. Jest tylko link.
 - **PESEL** idzie w ładunku jawnie (HTTPS). Klient sprawdza tylko sumę kontrolną i wiek. W portalu warto ograniczyć logowanie PESEL-u i opisów zdrowia w Workerach i Sentry.

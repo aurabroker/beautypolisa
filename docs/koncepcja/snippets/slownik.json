@@ -1,5 +1,5 @@
 {
-  "$comment": "Słownik pojęć dla użytkowników BeautyPolisa (właścicielki i właściciele salonów, kosmetolożki, fryzjerzy, podolodzy, rodzice – bez wiedzy ubezpieczeniowej). Zlecenie 13.11.2026: „trzeba dodać słownik z definicjami dla userów”. Hasła zebrane z makiet design/v3 (makieta-v3, oc-beauty, tax-protect, utrata-dochodu, nnw-dzieci, grupowe-ergo, opieka-medyczna, strefa/*), 25 haseł słowniczka ERGO Życie w Biznesie (typ ergo-slowniczek), stron utratadochodu.pl i ergo.beautypolisa.eu, ulotki NNW Colonnade, dokumentów koncepcji 00–12 i snippetów (klauzula-ochrona-prawna.json, legal-distributor.json, zabiegi-oc-beauty.json) oraz przepisów (KC, ustawa o dystrybucji ubezpieczeń, ustawa o działalności ubezpieczeniowej i reasekuracyjnej, RODO, ustawa o rozpatrywaniu reklamacji, Kodeks pracy). Definicje są ogólne i nie zastępują OWU – przy każdym produkcie wiążą OWU i polisa; na stronie słownika pod definicjami umieszczamy zdanie: „Definicje wyjaśniają pojęcia prostym językiem. O zakresie ochrony decydują ogólne warunki ubezpieczenia (OWU) konkretnego produktu.” Bez rekomendacji produktów; kwoty wyłącznie ze źródeł (taryfy, cenniki, słowniczek ERGO). Pola: id (slug, stały – używany w adresach /slownik#<id> i w zobacz_tez), termin, alias (odmiany i synonimy do wyszukiwarki i oznaczania pojęć w treści), kategoria (id z listy kategorie), definicja (1–3 zdania), przyklad (opcjonalnie, „Przykład z salonu”), gdzie (makiety design/v3 z kotwicami – w aplikacji mapować na trasy, np. oc-beauty.html → /ubezpieczenia/oc-beauty), zobacz_tez (id innych haseł), zrodlo (typ: ergo-slowniczek | przepis | strona | koncepcja), do_potwierdzenia (opcjonalnie – nie publikować na stronie; usunąć pole po potwierdzeniu). Oznaczanie pojęć w treści: dopasowanie bez rozróżniania wielkości liter i z normalizacją apostrofów (’ = '), najdłuższe dopasowanie wygrywa, tylko całe wyrazy, tylko pierwsze wystąpienie na stronie, bez oznaczania w nagłówkach, linkach, przyciskach, nazwach zabiegów z zabiegi-oc-beauty.json i dosłownej treści klauzuli ochrony prawnej (00, D30). Krótkie aliasy (OC, NW, SU, IOD, L4, agent, limit, wariant, taryfa, abonament, zaproszenie) oznaczać tylko w akapitach tekstu. Hasła sortowane alfabetycznie według terminu: polska kolejność liter, wyraz po wyrazie, dopisek w nawiasie pomijany przy sortowaniu. Test CI: unikalne id, unikalne aliasy (także względem terminów innych haseł), zobacz_tez i kategoria wskazują istniejące id.",
+  "$comment": "Słownik pojęć dla użytkowników BeautyPolisa (właścicielki i właściciele salonów, kosmetolożki, fryzjerzy, podolodzy, rodzice – bez wiedzy ubezpieczeniowej). Zlecenie 13.11.2026: „trzeba dodać słownik z definicjami dla userów”. Hasła zebrane z makiet design/v3 (makieta-v3, oc-beauty, tax-protect, utrata-dochodu, nnw-dzieci, grupowe-ergo, opieka-medyczna, strefa/*), 25 haseł słowniczka ERGO Życie w Biznesie (typ ergo-slowniczek), stron utratadochodu.pl i ergo.beautypolisa.eu, ulotki NNW Colonnade, dokumentów koncepcji 00–12 i snippetów (klauzula-ochrona-prawna.json, legal-distributor.json, zabiegi-oc-beauty.json) oraz przepisów (KC, ustawa o dystrybucji ubezpieczeń, ustawa o działalności ubezpieczeniowej i reasekuracyjnej, RODO, ustawa o rozpatrywaniu reklamacji, Kodeks pracy). Definicje są ogólne i nie zastępują OWU – przy każdym produkcie wiążą OWU i polisa; na stronie słownika pod definicjami umieszczamy zdanie: „Definicje wyjaśniają pojęcia prostym językiem. O zakresie ochrony decydują ogólne warunki ubezpieczenia (OWU) konkretnego produktu.” Bez rekomendacji produktów; kwoty wyłącznie ze źródeł (taryfy, cenniki, słowniczek ERGO). Pola: id (slug, stały – używany w adresach /slownik#<id> i w zobacz_tez), termin, alias (odmiany i synonimy do wyszukiwarki i oznaczania pojęć w treści), kategoria (id z listy kategorie), definicja (1–3 zdania), przyklad (opcjonalnie, „Przykład z salonu”), gdzie (makiety design/v3 z kotwicami – w aplikacji mapować na trasy, np. oc-beauty.html → /ubezpieczenia/oc-beauty), zobacz_tez (id innych haseł), zrodlo (typ: ergo-slowniczek | przepis | strona | koncepcja), do_potwierdzenia (opcjonalnie – nie publikować na stronie; usunąć pole po potwierdzeniu). Oznaczanie pojęć w treści: dopasowanie bez rozróżniania wielkości liter i z normalizacją apostrofów (’ = '), najdłuższe dopasowanie wygrywa, tylko całe wyrazy, tylko pierwsze wystąpienie na stronie, bez oznaczania w nagłówkach, linkach, przyciskach, nazwach zabiegów z zabiegi-oc-beauty.json i dosłownej treści klauzuli ochrony prawnej (00, D30). Krótkie aliasy (OC, NW, SU, IOD, L4, APK, KNF, TOTP, 2FA, OIT, OIOM, NNW, RPU, OWU, agent, wariant, taryfa, abonament) oznaczać tylko w akapitach tekstu. Wyrażenia wykluczone – blokują dopasowanie w tym miejscu (porównanie jak przy aliasach): „doradca podatkowy”, „doradcy podatkowego”, „doradcę podatkowego”, „doradcą podatkowym”, „doradców podatkowych”, „adwokata lub doradcy”, „czasowa niezdolność do pracy”, „czasowej niezdolności do pracy”, „kod z e-maila”, „kodu z e-maila”. Hasło „Doradca Aura Expert” ma tylko aliasy z nazwą „Aura Expert” – goła forma „doradca” nie jest oznaczana (w Tax Protect oznacza doradcę podatkowego lub prawnego z zakresu polisy). Hasło „Limit (podlimit)” ma tylko aliasy złożone („limit świadczenia”, „limit odpowiedzialności” itd.) – w Strefie „limit” oznacza ograniczenie techniczne (np. dzienny limit przeglądania ogłoszeń). Hasła drugi-skladnik, role-w-strefie i osobisty-link oznaczać tylko na stronach strefa/*; na stronach produktów pojawiają się wyłącznie w samym słowniku. Hasła sortowane alfabetycznie według terminu: polska kolejność liter, wyraz po wyrazie, dopisek w nawiasie pomijany przy sortowaniu. Test CI: unikalne id, unikalne aliasy (także względem terminów innych haseł), zobacz_tez i kategoria wskazują istniejące id.",
   "wersja": "2026-11-13",
   "kategorie": [
     {
@@ -17,6 +17,10 @@
     {
       "id": "oc",
       "nazwa": "OC i ochrona prawna"
+    },
+    {
+      "id": "tax-protect",
+      "nazwa": "Tax Protect"
     },
     {
       "id": "zycie-zdrowie",
@@ -92,7 +96,7 @@
         "agentowi"
       ],
       "kategoria": "dystrybucja-prawo",
-      "definicja": "Pośrednik, który na podstawie umowy z zakładami ubezpieczeń działa w ich imieniu i na ich rzecz przy zawieraniu umów; musi być wpisany do rejestru prowadzonego przez KNF. Aura Expert sp. z o.o. jest agentem (RPU 11229690/A) działającym na rzecz kilku ubezpieczycieli – wynagrodzenie dostaje od nich jako prowizję zawartą w składce. Agent to nie broker.",
+      "definicja": "Pośrednik, który na podstawie umowy z zakładami ubezpieczeń zajmuje się dystrybucją ubezpieczeń w ich imieniu lub na ich rzecz; musi być wpisany do rejestru prowadzonego przez KNF. Aura Expert sp. z o.o. jest agentem (RPU 11229690/A) działającym na rzecz kilku ubezpieczycieli – wynagrodzenie dostaje od nich jako prowizję zawartą w składce (przy niektórych produktach w racie jest też opłata dystrybucyjna). Agent to nie broker.",
       "gdzie": [
         {
           "strona": "oc-beauty.html",
@@ -112,18 +116,20 @@
         "doradca",
         "rpu",
         "prowizja",
+        "oplata-dystrybucyjna",
         "informacje-o-agencie"
       ],
       "zrodlo": [
         {
           "typ": "przepis",
-          "opis": "ustawa z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń, art. 3 ust. 1 – definicje agenta i brokera ubezpieczeniowego"
+          "opis": "ustawa z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń – definicje agenta i brokera ubezpieczeniowego (dokładny artykuł do potwierdzenia)"
         },
         {
           "typ": "koncepcja",
           "opis": "00-koncepcja-portalu-beautypolisa.md, D25 – Aura Expert jest agentem, nie brokerem"
         }
-      ]
+      ],
+      "do_potwierdzenia": "Dokładny artykuł i punkt ustawy o dystrybucji ubezpieczeń z definicją agenta i brokera – do sprawdzenia przez prawnika przed publikacją."
     },
     {
       "id": "ankieta-indywidualnej-oceny-ryzyka",
@@ -252,52 +258,6 @@
       "do_potwierdzenia": "Gdzie w drodze online na utratadochodu.pl odbywa się APK – w makiecie utrata-dochodu.html oznaczone jako do potwierdzenia."
     },
     {
-      "id": "aplikacja-uwierzytelniajaca",
-      "termin": "Aplikacja uwierzytelniająca",
-      "alias": [
-        "aplikacji uwierzytelniającej",
-        "aplikację uwierzytelniającą",
-        "aplikacją uwierzytelniającą",
-        "zapasowe urządzenie",
-        "zapasowego urządzenia",
-        "zapasowa aplikacja",
-        "zapasowej aplikacji",
-        "zapasową aplikację",
-        "Google Authenticator",
-        "Microsoft Authenticator"
-      ],
-      "kategoria": "strefa-klienta",
-      "definicja": "Aplikacja w telefonie (np. Google Authenticator albo Microsoft Authenticator) albo menedżer haseł, który pokazuje kody drugiego składnika; konto dodajesz, skanując kod QR. Kodów zapasowych nie ma, dlatego dodaj zapasowe urządzenie – drugą aplikację na innym telefonie albo w menedżerze haseł. Po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości.",
-      "gdzie": [
-        {
-          "strona": "strefa/logowanie.html#s-pierwsze",
-          "etykieta": "Pierwsze logowanie – włączenie drugiego składnika"
-        },
-        {
-          "strona": "strefa/logowanie.html#s-zapas",
-          "etykieta": "Pierwsze logowanie – zapasowa aplikacja"
-        },
-        {
-          "strona": "strefa/panel.html#t-totp",
-          "etykieta": "Strefa Klienta – urządzenia"
-        }
-      ],
-      "zobacz_tez": [
-        "drugi-skladnik",
-        "strefa-klienta"
-      ],
-      "zrodlo": [
-        {
-          "typ": "strona",
-          "opis": "strefa/logowanie.html#s-pierwsze i #s-zapas"
-        },
-        {
-          "typ": "koncepcja",
-          "opis": "00-koncepcja-portalu-beautypolisa.md, D28a – bez kodów zapasowych"
-        }
-      ]
-    },
-    {
       "id": "assistance",
       "termin": "Assistance",
       "alias": [
@@ -349,7 +309,7 @@
         "brokera ubezpieczeniowego"
       ],
       "kategoria": "dystrybucja-prawo",
-      "definicja": "Pośrednik, który działa w imieniu lub na rzecz klienta, a nie ubezpieczyciela – na podstawie zezwolenia KNF szuka dla klienta ochrony u różnych ubezpieczycieli. Aura Expert nie jest brokerem: działa jako agent ubezpieczeniowy, w imieniu i na rzecz ubezpieczycieli.",
+      "definicja": "Pośrednik, który działa w imieniu lub na rzecz klienta, a nie ubezpieczyciela – na podstawie zezwolenia KNF szuka dla klienta ochrony u różnych ubezpieczycieli. Aura Expert nie jest brokerem: działa jako agent ubezpieczeniowy, w imieniu lub na rzecz ubezpieczycieli.",
       "gdzie": [
         {
           "strona": "oc-beauty.html",
@@ -363,13 +323,43 @@
       "zrodlo": [
         {
           "typ": "przepis",
-          "opis": "ustawa z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń, art. 3 ust. 1 – definicje agenta i brokera ubezpieczeniowego"
+          "opis": "ustawa z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń – definicje agenta i brokera ubezpieczeniowego (dokładny artykuł do potwierdzenia)"
         },
         {
           "typ": "koncepcja",
           "opis": "00-koncepcja-portalu-beautypolisa.md, D25"
         }
-      ]
+      ],
+      "do_potwierdzenia": "Dokładny artykuł i punkt ustawy o dystrybucji ubezpieczeń z definicją agenta i brokera – do sprawdzenia przez prawnika przed publikacją."
+    },
+    {
+      "id": "certyfikat-ubezpieczenia",
+      "termin": "Certyfikat ubezpieczenia",
+      "alias": [
+        "certyfikatu ubezpieczenia",
+        "certyfikatem ubezpieczenia"
+      ],
+      "kategoria": "podstawy",
+      "definicja": "Dokument potwierdzający, że konkretna osoba – np. dziecko – jest objęta ochroną z danej umowy. Zwykle podaje ubezpieczonego, wariant i okres ochrony; zakres ochrony określają OWU i polisa.",
+      "przyklad": "Po zakupie NNW dla dziecka dokument polisy i certyfikat ubezpieczenia przychodzą automatycznie e-mailem.",
+      "gdzie": [
+        {
+          "strona": "nnw-dzieci.html#jak-kupic",
+          "etykieta": "NNW dla dzieci – zakup online w czterech krokach"
+        }
+      ],
+      "zobacz_tez": [
+        "polisa",
+        "owu",
+        "nnw"
+      ],
+      "zrodlo": [
+        {
+          "typ": "strona",
+          "opis": "nnw-dzieci.html#jak-kupic – „Dokument polisy oraz certyfikat ubezpieczenia otrzymasz automatycznie e-mailem”"
+        }
+      ],
+      "do_potwierdzenia": "Co dokładnie zawiera certyfikat Colonnade w programie NNW dla dzieci – według dokumentów ubezpieczyciela."
     },
     {
       "id": "coverholder",
@@ -490,6 +480,10 @@
         {
           "typ": "strona",
           "opis": "oc-beauty.html#pytanie-5 – formularze zgody na zabieg w ankiecie ERGO Hestii"
+        },
+        {
+          "typ": "koncepcja",
+          "opis": "snippets/schema-howto-szkoda.json – informacje o użytych produktach i urządzeniach oraz dane osoby wykonującej zabieg"
         }
       ]
     },
@@ -497,15 +491,16 @@
       "id": "doradca",
       "termin": "Doradca Aura Expert",
       "alias": [
-        "doradca",
-        "doradcy",
-        "doradcę",
-        "doradcą",
-        "doradców",
-        "doradcom"
+        "doradcy Aura Expert",
+        "doradcę Aura Expert",
+        "doradcą Aura Expert",
+        "doradców Aura Expert",
+        "doradcom Aura Expert",
+        "doradca z Aura Expert",
+        "doradcy z Aura Expert"
       ],
       "kategoria": "dystrybucja-prawo",
-      "definicja": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem. O ochronie i składce (poza stałą taryfą) decyduje ubezpieczyciel.",
+      "definicja": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym. O ochronie i składce – także w stałej taryfie – decyduje ubezpieczyciel.",
       "gdzie": [
         {
           "strona": "makieta-v3.html#kontakt",
@@ -546,33 +541,50 @@
         "2FA",
         "kod z aplikacji",
         "kodu z aplikacji",
-        "kod z e-maila",
-        "kodu z e-maila"
+        "aplikacja uwierzytelniająca",
+        "aplikacji uwierzytelniającej",
+        "aplikację uwierzytelniającą",
+        "aplikacją uwierzytelniającą",
+        "zapasowe urządzenie",
+        "zapasowego urządzenia",
+        "zapasowa aplikacja",
+        "zapasowej aplikacji",
+        "zapasową aplikację",
+        "Google Authenticator",
+        "Microsoft Authenticator"
       ],
       "kategoria": "strefa-klienta",
-      "definicja": "Dodatkowe zabezpieczenie konta. Strefa nie ma haseł: logujesz się sześciocyfrowym kodem z e-maila, a potem kodem z aplikacji uwierzytelniającej w telefonie, który zmienia się co 30 sekund (TOTP – jednorazowy kod zależny od czasu); sam dostęp do skrzynki e-mail nie wystarczy więc, by ktoś wszedł na konto. Drugi składnik jest obowiązkowy dla właścicieli kont salonów, pracodawców i organizatorów szkoleń; SMS nie jest drugim składnikiem.",
+      "definicja": "Dodatkowe zabezpieczenie konta. Strefa nie ma haseł: najpierw podajesz sześciocyfrowy kod z e-maila, a potem – jako drugi składnik – kod z aplikacji uwierzytelniającej, który zmienia się co 30 sekund (TOTP – jednorazowy kod zależny od czasu); sam dostęp do skrzynki e-mail nie wystarczy więc, by ktoś wszedł na konto. Aplikacją może być np. Google Authenticator, Microsoft Authenticator albo menedżer haseł; kodów zapasowych nie ma, dlatego dodaj zapasowe urządzenie, a po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości. Drugi składnik jest obowiązkowy dla właścicieli kont salonów, pracodawców i organizatorów szkoleń; SMS nie jest drugim składnikiem.",
       "gdzie": [
         {
           "strona": "strefa/logowanie.html#s-totp",
           "etykieta": "Logowanie – kod z aplikacji"
         },
         {
+          "strona": "strefa/logowanie.html#s-pierwsze",
+          "etykieta": "Pierwsze logowanie – włączenie drugiego składnika"
+        },
+        {
+          "strona": "strefa/logowanie.html#s-zapas",
+          "etykieta": "Pierwsze logowanie – zapasowa aplikacja"
+        },
+        {
           "strona": "strefa/panel.html#t-totp",
-          "etykieta": "Strefa Klienta – ustawienia drugiego składnika"
+          "etykieta": "Strefa Klienta – ustawienia drugiego składnika i urządzenia"
         }
       ],
       "zobacz_tez": [
-        "aplikacja-uwierzytelniajaca",
-        "strefa-klienta"
+        "strefa-klienta",
+        "role-w-strefie"
       ],
       "zrodlo": [
         {
           "typ": "strona",
-          "opis": "strefa/logowanie.html#s-totp, strefa/panel.html#t-totp"
+          "opis": "strefa/logowanie.html#s-totp, #s-pierwsze i #s-zapas, strefa/panel.html#t-totp"
         },
         {
           "typ": "koncepcja",
-          "opis": "00-koncepcja-portalu-beautypolisa.md, D28 i D28a"
+          "opis": "00-koncepcja-portalu-beautypolisa.md, D28 i D28a – bez kodów zapasowych"
         }
       ]
     },
@@ -790,6 +802,44 @@
       ]
     },
     {
+      "id": "inwalidztwo",
+      "termin": "Inwalidztwo",
+      "alias": [
+        "inwalidztwa",
+        "inwalidztwem",
+        "trwałe inwalidztwo",
+        "trwałego inwalidztwa"
+      ],
+      "kategoria": "zycie-zdrowie",
+      "definicja": "Trwała, poważna utrata sprawności, którą OWU wymieniają jako podstawę jednorazowego świadczenia – w BeautyPolisa zwykle wtedy, gdy jest skutkiem nieszczęśliwego wypadku. To nie to samo co trwały uszczerbek na zdrowiu (świadczenie liczone od procentu uszczerbku) ani niezdolność do pracy (chodzi o możliwość zarabiania). Definicję wiążącą podają OWU konkretnego produktu.",
+      "gdzie": [
+        {
+          "strona": "utrata-dochodu.html#zakres",
+          "etykieta": "Utrata dochodu – śmierć i inwalidztwo wskutek NW"
+        },
+        {
+          "strona": "grupowe-ergo.html#warianty-razem",
+          "etykieta": "ERGO Razem – trwałe inwalidztwo partnera, inwalidztwo dziecka w wyniku NW"
+        }
+      ],
+      "zobacz_tez": [
+        "trwaly-uszczerbek",
+        "trwala-niezdolnosc",
+        "nieszczesliwy-wypadek"
+      ],
+      "zrodlo": [
+        {
+          "typ": "strona",
+          "opis": "utrata-dochodu.html#zakres – „Śmierć i inwalidztwo wskutek nieszczęśliwego wypadku. Świadczenia jednorazowe”"
+        },
+        {
+          "typ": "strona",
+          "opis": "grupowe-ergo.html#warianty-razem – „Trwałe inwalidztwo partnera”, „Zgon i inwalidztwo dziecka w wyniku NW”"
+        }
+      ],
+      "do_potwierdzenia": "Lista stanów uznawanych za inwalidztwo w wariantach UD (Leadenhall, CEU) i w OWU ER 01/25 – według OWU."
+    },
+    {
       "id": "karencja",
       "termin": "Karencja",
       "alias": [
@@ -883,7 +933,7 @@
       ],
       "kategoria": "podstawy",
       "definicja": "Dodatkowe postanowienie dołączone do umowy, które zmienia jej zakres – najczęściej rozszerza ochronę o coś, czego podstawowe warunki nie obejmują, zwykle za dodatkową składką. Klauzula działa razem z OWU: postanowienia, których nie zmienia, obowiązują bez zmian.",
-      "przyklad": "Klauzula ochrony prawnej rozszerza OC salonu o koszty adwokata lub radcy prawnego – za 92 zł rocznie.",
+      "przyklad": "Klauzula ochrony prawnej rozszerza OC salonu o koszty obrony – np. jednego adwokata lub radcy prawnego do wysokości stawek minimalnych – za 92 zł rocznie.",
       "gdzie": [
         {
           "strona": "oc-beauty.html#ochrona-prawna",
@@ -923,11 +973,10 @@
         "inspektor ochrony danych",
         "inspektora ochrony danych",
         "inspektorem ochrony danych",
-        "IOD",
-        "RODO"
+        "IOD"
       ],
       "kategoria": "dystrybucja-prawo",
-      "definicja": "Informacja o tym, kto przetwarza Twoje dane (administrator), w jakim celu, na jakiej podstawie, jak długo i jakie masz prawa – RODO wymaga jej przy zbieraniu danych. Administratorem danych w BeautyPolisa i Strefie Klienta jest Aura Expert sp. z o.o.; z inspektorem ochrony danych (IOD) skontaktujesz się pod adresem iod@auraexpert.pl.",
+      "definicja": "Informacja o tym, kto przetwarza Twoje dane (administrator), w jakim celu, na jakiej podstawie, jak długo i jakie masz prawa – RODO wymaga jej przy zbieraniu danych. Administratorem danych w BeautyPolisa i Strefie Klienta jest Aura Expert sp. z o.o.; z inspektorem ochrony danych (IOD) skontaktujesz się pod adresem iod@auraexpert.pl. Ubezpieczyciele, którym przekazujemy dane do umowy, są odrębnymi administratorami danych z polis – ich klauzule informacyjne dostajesz z dokumentami ubezpieczenia.",
       "gdzie": [
         {
           "strona": "makieta-v3.html#kontakt",
@@ -954,6 +1003,10 @@
         {
           "typ": "koncepcja",
           "opis": "00-koncepcja-portalu-beautypolisa.md, D24–D25"
+        },
+        {
+          "typ": "koncepcja",
+          "opis": "12-integracja-apk-wniosek-polisa.md – ubezpieczyciele (ERGO Hestia, Colonnade) jako odrębni administratorzy"
         }
       ]
     },
@@ -971,8 +1024,8 @@
         "kosztów ochrony prawnej"
       ],
       "kategoria": "oc",
-      "definicja": "Rozszerzenie OC w programie ERGO Hestii o zwrot kosztów obrony – np. adwokata lub radcy prawnego, biegłych, opłat sądowych – gdy w sprawie związanej z Twoją pracą występujesz przed polskim sądem jako pozwana lub pozwany (sprawa cywilna), podejrzana lub oskarżona (sprawa karna), także w postępowaniu dyscyplinarnym. Postępowanie musi zostać wszczęte w Polsce w okresie ubezpieczenia. Kosztuje 92 zł rocznie, a ochronę ogranicza suma ubezpieczenia wskazana w umowie.",
-      "przyklad": "Klientka pozywa Cię o odszkodowanie po zabiegu – jesteś pozwaną, a koszty Twojego adwokata może zwrócić klauzula.",
+      "definicja": "Rozszerzenie OC w programie ERGO Hestii o zwrot kosztów obrony – np. adwokata lub radcy prawnego, biegłych, opłat sądowych – w sprawie dotyczącej Twoich czynności zawodowych objętych umową, gdy przed polskim sądem jesteś pozwaną lub pozwanym (sprawa cywilna), podejrzaną lub oskarżoną (sprawa karna), także w postępowaniu dyscyplinarnym; postępowanie musi zostać wszczęte w Polsce w okresie ubezpieczenia. Koszty jednego adwokata lub radcy prawnego zwracane są do wysokości stawek minimalnych; w sprawach karnych – tylko gdy zarzut dotyczy czynu nieumyślnego. Kosztuje 92 zł rocznie, a górną granicą zwrotu jest suma ubezpieczenia wskazana w umowie.",
+      "przyklad": "Po zabiegu, przy którym klientka doznała obrażeń, przeciwko Tobie toczy się postępowanie karne o nieumyślne spowodowanie uszczerbku – koszty obrońcy, do wysokości stawek minimalnych, może zwrócić klauzula.",
       "gdzie": [
         {
           "strona": "oc-beauty.html#ochrona-prawna",
@@ -1002,6 +1055,10 @@
         {
           "typ": "strona",
           "opis": "oc-beauty.html#ochrona-prawna"
+        },
+        {
+          "typ": "strona",
+          "opis": "makieta-v3.html#faq-ochrona-prawna – zwrot kosztów jednego pełnomocnika do wysokości stawek minimalnych; w sprawach karnych tylko czyny nieumyślne"
         }
       ]
     },
@@ -1109,15 +1166,18 @@
       "id": "limit",
       "termin": "Limit (podlimit)",
       "alias": [
-        "limit",
-        "limitu",
-        "limity",
-        "limitem",
-        "limitów",
         "podlimit",
         "podlimitu",
+        "podlimity",
         "limit świadczenia",
-        "limit odpowiedzialności"
+        "limitu świadczenia",
+        "limit świadczeń",
+        "limity świadczeń",
+        "limitów świadczeń",
+        "limitami świadczeń",
+        "limit odpowiedzialności",
+        "limitu odpowiedzialności",
+        "limit na rok polisowy"
       ],
       "kategoria": "ochrona",
       "definicja": "Najwyższa kwota albo liczba usług, jaką ubezpieczyciel pokryje w danej pozycji – np. za jeden rodzaj kosztów, na jedną osobę albo na rok. Podlimit to limit „w środku” większej kwoty, dotyczący tylko jednej części ochrony.",
@@ -1181,26 +1241,58 @@
       ]
     },
     {
-      "id": "medycyna-precyzyjna",
-      "termin": "Medycyna precyzyjna (Global Doctors)",
+      "id": "malzonek-partner",
+      "termin": "Małżonek albo partner",
       "alias": [
-        "medycyna precyzyjna",
+        "małżonek",
+        "małżonka",
+        "małżonkowi",
+        "małżonkiem",
+        "małżonek / partner",
+        "małżonek/partner",
+        "partner życiowy",
+        "partnera życiowego"
+      ],
+      "kategoria": "strony",
+      "definicja": "Bliska osoba ubezpieczonego, którą można objąć ochroną albo za której zgon czy chorobę przysługuje świadczenie – np. w grupowym ERGO. Kogo uznaje się za partnera (np. czy wymagane jest wspólne gospodarstwo domowe), określają OWU albo regulamin konkretnego produktu – przed przystąpieniem sprawdź tę definicję.",
+      "gdzie": [
+        {
+          "strona": "grupowe-ergo.html#warianty-razem",
+          "etykieta": "ERGO Razem – małżonek lub partner życiowy"
+        },
+        {
+          "strona": "grupowe-ergo.html#mediopieka",
+          "etykieta": "Grupowe ERGO – MediOpieka dla małżonka/partnera"
+        }
+      ],
+      "zobacz_tez": [
+        "ubezpieczony",
+        "uposazony",
+        "karencja"
+      ],
+      "zrodlo": [
+        {
+          "typ": "strona",
+          "opis": "grupowe-ergo.html – „Zgon małżonka / partnera”, „Ty i Twój małżonek lub partner życiowy”"
+        }
+      ],
+      "do_potwierdzenia": "Definicja partnera w OWU EZwB 01/25 i OWU ER 01/25 – do uzupełnienia po lekturze OWU."
+    },
+    {
+      "id": "medycyna-precyzyjna",
+      "termin": "Medycyna precyzyjna",
+      "alias": [
         "medycyny precyzyjnej",
         "profilowanie molekularne",
-        "profilowania molekularnego",
-        "Global Doctors"
+        "profilowania molekularnego"
       ],
       "kategoria": "zycie-zdrowie",
-      "definicja": "Dobranie terapii nowotworu na podstawie profilu molekularnego guza – stosowane, gdy nowotwór nie odpowiada na leczenie pierwszego rzutu albo jest w III–IV stadium. Profilowanie molekularne to badanie próbki guza, które pokazuje jego cechy genetyczne. Oba hasła pochodzą ze słowniczka ERGO i dotyczą dodatkowego ubezpieczenia Global Doctors (konsultacje, druga opinia i leczenie u lekarzy spoza Polski przy poważnej diagnozie).",
+      "definicja": "Dobranie leczenia nowotworu na podstawie badania próbki guza (profilowania molekularnego), które pokazuje jego cechy genetyczne – stosowane, gdy nowotwór nie reaguje na zwykłe leczenie albo jest zaawansowany. To część ubezpieczenia Global Doctors GD-GZ 01/25 do ERGO Życie w Biznesie (ubezpieczenie dla salonu). Global Doctors GD 02/24 w ERGO Razem daje konsultacje i drugą opinię lekarzy spoza Polski, a nie medycynę precyzyjną.",
       "przyklad": "W Global Doctors do ERGO Życie w Biznesie profilowanie molekularne wykonuje się raz dla każdej postaci nowotworu.",
       "gdzie": [
         {
           "strona": "grupowe-ergo.html#mediopieka",
-          "etykieta": "Grupowe ERGO – MediOpieka i Global Doctors"
-        },
-        {
-          "strona": "grupowe-ergo.html#dodatki-razem",
-          "etykieta": "ERGO Razem – Global Doctors"
+          "etykieta": "Grupowe ERGO – Global Doctors GD-GZ 01/25, medycyna precyzyjna"
         }
       ],
       "zobacz_tez": [
@@ -1218,7 +1310,11 @@
         },
         {
           "typ": "strona",
-          "opis": "ergo.beautypolisa.eu/global-doctors – konsultacje i druga opinia lekarzy spoza Polski"
+          "opis": "grupowe-ergo.html#mediopieka – Global Doctors GD-GZ 01/25, „Medycyna precyzyjna: profilowanie molekularne, testy rodzinne (germinalne), przewodnik pacjenta w badaniach klinicznych”"
+        },
+        {
+          "typ": "strona",
+          "opis": "ergo.beautypolisa.eu/global-doctors – GD 02/24 (ERGO Razem): konsultacje i druga opinia lekarzy spoza Polski"
         }
       ]
     },
@@ -1314,7 +1410,7 @@
         "in situ"
       ],
       "kategoria": "zycie-zdrowie",
-      "definicja": "Nowotwór we wczesnym, przedinwazyjnym stadium – nie nacieka jeszcze sąsiednich tkanek. W ERGO ma osobne, niższe świadczenie niż nowotwór złośliwy; definicję podają OWU.",
+      "definicja": "Nowotwór we wczesnym, przedinwazyjnym stadium – nie nacieka jeszcze sąsiednich tkanek. W ERGO może mieć osobne, niższe świadczenie niż nowotwór złośliwy (np. w Pakiecie Onkologicznym); definicję i kwoty podają OWU.",
       "gdzie": [
         {
           "strona": "grupowe-ergo.html#pelna-lista",
@@ -1326,15 +1422,15 @@
         }
       ],
       "zobacz_tez": [
-        "powazne-zachorowanie",
-        "medycyna-precyzyjna"
+        "powazne-zachorowanie"
       ],
       "zrodlo": [
         {
           "typ": "ergo-slowniczek",
           "opis": "Słowniczek ERGO Życie w Biznesie (25 haseł z aplikacji wniosku ergo.auraexpert.pl), hasło „Nowotwór in situ”; definicja wiążąca – OWU"
         }
-      ]
+      ],
+      "do_potwierdzenia": "Słowniczek ERGO mówi o niższym świadczeniu, a tabela pakietu głównego (grupowe-ergo.html#gr-choroba) podaje dla in situ te same kwoty co dla nowotworu złośliwego – do potwierdzenia z OWU EZwB 01/25."
     },
     {
       "id": "odpowiedzialnosc-cywilna",
@@ -1357,7 +1453,7 @@
       ],
       "kategoria": "oc",
       "definicja": "Ubezpieczenie, które płaci za Ciebie, gdy wyrządzisz szkodę komuś innemu (osobie trzeciej) i odpowiadasz za nią – np. klientce, u której zabieg spowodował uraz. Ubezpieczyciel wypłaca poszkodowanemu odszkodowanie do wysokości sumy gwarancyjnej, w zakresie i z wyłączeniami z warunków ubezpieczenia.",
-      "przyklad": "Klientka po peelingu chemicznym ma poparzoną skórę i żąda pokrycia kosztów leczenia – to roszczenie zgłaszasz z OC salonu.",
+      "przyklad": "Klientka po peelingu chemicznym ma poparzoną skórę i żąda pokrycia kosztów leczenia – to roszczenie zgłaszasz z OC salonu, jeśli peeling chemiczny jest objęty Twoją polisą (grupa 2).",
       "gdzie": [
         {
           "strona": "oc-beauty.html#pytanie-1",
@@ -1373,7 +1469,8 @@
         "odszkodowanie",
         "roszczenie",
         "grupa-ryzyka",
-        "regres"
+        "regres",
+        "oc-w-zyciu-prywatnym"
       ],
       "zrodlo": [
         {
@@ -1383,6 +1480,34 @@
         {
           "typ": "strona",
           "opis": "oc-beauty.html#pytanie-1"
+        }
+      ]
+    },
+    {
+      "id": "oc-w-zyciu-prywatnym",
+      "termin": "OC w życiu prywatnym",
+      "alias": [
+        "OC w życiu prywatnym oraz w związku z nauką",
+        "OC w życiu prywatnym oraz w związku z nauką lub odbywaniem praktyk"
+      ],
+      "kategoria": "oc",
+      "definicja": "Ochrona na wypadek, gdy ubezpieczony – np. dziecko – w codziennym życiu wyrządzi komuś szkodę i musi ją naprawić, np. w szkole albo na praktykach. To coś innego niż OC zawodowe salonu, które dotyczy szkód przy wykonywaniu zabiegów. Definicję wiążącą podają OWU konkretnego produktu.",
+      "przyklad": "W NNW dla dzieci ta ochrona jest jedną z pozycji tabeli świadczeń.",
+      "gdzie": [
+        {
+          "strona": "nnw-dzieci.html#pelna-tabela",
+          "etykieta": "NNW dla dzieci – OC w życiu prywatnym oraz w związku z nauką lub odbywaniem praktyk"
+        }
+      ],
+      "zobacz_tez": [
+        "odpowiedzialnosc-cywilna",
+        "nnw",
+        "suma-gwarancyjna"
+      ],
+      "zrodlo": [
+        {
+          "typ": "strona",
+          "opis": "nnw-dzieci.html#pelna-tabela, poz. 7.21; ulotka programu NNW dla dzieci Colonnade 2026"
         }
       ]
     },
@@ -1438,7 +1563,7 @@
         "sprawy karnoskarbowe",
         "sprawach karnoskarbowych"
       ],
-      "kategoria": "oc",
+      "kategoria": "tax-protect",
       "definicja": "Sekcja 1 Tax Protect: pokrycie kosztów obrony właściciela lub członka zarządu w sprawach o przestępstwa i wykroczenia skarbowe, np. związane z podatkami – m.in. adwokata w dochodzeniu lub śledztwie i porady prawnej przed oficjalnym roszczeniem. Odpowiedzialność karnoskarbowa jest osobista: nie przejmie jej zewnętrzne biuro rachunkowe.",
       "gdzie": [
         {
@@ -1461,7 +1586,7 @@
           "opis": "tax-protect.html#sekcja-1 i #pytanie-4"
         }
       ],
-      "do_potwierdzenia": "Limity w sekcji 1 (tryb awaryjny – refundacja do 30% sumy, grzywny i kary – do 75% sumy, zwrot kar w tym PIP) – w makiecie oznaczone jako do potwierdzenia z OWU Tax Protect."
+      "do_potwierdzenia": "Limity w sekcji 1 (tryb awaryjny – refundacja do 30% sumy, grzywny i kary – do 75% sumy, zwrot kar w tym nałożonych przez Państwową Inspekcję Pracy (PIP)) – w makiecie oznaczone jako do potwierdzenia z OWU Tax Protect."
     },
     {
       "id": "ochrona-podatkowa",
@@ -1476,8 +1601,8 @@
         "sporów podatkowych",
         "sporze podatkowym"
       ],
-      "kategoria": "oc",
-      "definicja": "Sekcja 2 Tax Protect: pomoc dla firmy w sporze z urzędem – reprezentacja przez doradcę podatkowego przy kontroli i w postępowaniu (urząd skarbowy i KAS, ZUS, PIP, PFRON), asysta podatkowa oraz wniosek o wiążącą interpretację indywidualną do KIS. Taryfa obejmuje jeden pełny spór podatkowy w roku; 2–4 spory to wycena indywidualna.",
+      "kategoria": "tax-protect",
+      "definicja": "Sekcja 2 Tax Protect: pomoc dla firmy w sporze z urzędem. Przy kontroli i w postępowaniu przed urzędem skarbowym i Krajową Administracją Skarbową (KAS) reprezentuje Cię doradca podatkowy; w sprawach z ZUS, Państwową Inspekcją Pracy (PIP) i PFRON przysługuje zastępstwo prawne. Do tego asysta podatkowa oraz wniosek o wiążącą interpretację indywidualną do Krajowej Informacji Skarbowej (KIS). Taryfa obejmuje jeden pełny spór podatkowy w roku; 2–4 spory to wycena indywidualna.",
       "gdzie": [
         {
           "strona": "tax-protect.html#sekcja-2",
@@ -1509,7 +1634,7 @@
         "odprawą pośmiertną"
       ],
       "kategoria": "zycie-zdrowie",
-      "definicja": "Pieniądze, które pracodawca musi wypłacić rodzinie zmarłego pracownika na podstawie Kodeksu pracy. Jeśli pracodawca ubezpieczył pracownika na życie, a wypłata z ubezpieczenia jest nie niższa niż odprawa, odprawa nie przysługuje; jeśli jest niższa – pracodawca dopłaca różnicę.",
+      "definicja": "Pieniądze, które pracodawca musi wypłacić rodzinie zmarłego pracownika na podstawie Kodeksu pracy. Jeśli pracodawca ubezpieczył pracownika na życie, opłacając składkę, a wypłata z ubezpieczenia jest nie niższa niż odprawa, odprawa nie przysługuje; jeśli jest niższa – pracodawca dopłaca różnicę.",
       "gdzie": [
         {
           "strona": "grupowe-ergo.html#warianty",
@@ -1544,7 +1669,7 @@
       ],
       "kategoria": "ochrona",
       "definicja": "Pieniądze, które mają wyrównać rzeczywistą szkodę – np. koszty leczenia klientki poszkodowanej przy zabiegu. W ubezpieczeniu OC odszkodowanie płaci poszkodowanemu ubezpieczyciel za ubezpieczonego, do wysokości sumy gwarancyjnej.",
-      "przyklad": "Dzień po zabiegu klientka dzwoni, że skóra wciąż jest podrażniona, i pyta o odszkodowanie – takie roszczenia obejmuje OC w zakresie warunków programu.",
+      "przyklad": "Dzień po zabiegu klientka dzwoni, że skóra wciąż jest podrażniona, i pyta o odszkodowanie. Takie roszczenie zgłaszasz z OC salonu. Czy i ile wypłaci ubezpieczyciel, zależy od tego, czy salon odpowiada za szkodę, i od warunków programu.",
       "gdzie": [
         {
           "strona": "makieta-v3.html#dzien-w-salonie",
@@ -1569,6 +1694,49 @@
         {
           "typ": "strona",
           "opis": "makieta-v3.html#dzien-w-salonie"
+        }
+      ]
+    },
+    {
+      "id": "oferta",
+      "termin": "Oferta a materiał informacyjny i symulacja",
+      "alias": [
+        "oferta w rozumieniu art. 66",
+        "oferty w rozumieniu art. 66",
+        "nie stanowią oferty",
+        "nie jest ofertą",
+        "symulacja, nie oferta",
+        "symulacja składki",
+        "symulację składki",
+        "oferta po wniosku",
+        "ofercie po wniosku"
+      ],
+      "kategoria": "podstawy",
+      "definicja": "Oferta w rozumieniu prawa to propozycja zawarcia umowy z jej istotnymi warunkami – wystarczy ją przyjąć, by umowa doszła do skutku. Opisy, ceny z taryf, kalkulatory i symulacje w BeautyPolisa ofertą nie są: to materiał informacyjny, a wiążące warunki poznasz z oferty ubezpieczyciela, OWU i polisy.",
+      "przyklad": "Kalkulator utraty dochodu pokazuje „Symulację, nie ofertę” – dokładną składkę podaje dopiero oferta po wniosku.",
+      "gdzie": [
+        {
+          "strona": "oc-beauty.html",
+          "etykieta": "Stopka każdej strony – informacje nie stanowią oferty"
+        },
+        {
+          "strona": "utrata-dochodu.html#ledger-title",
+          "etykieta": "Utrata dochodu – symulacja, nie oferta"
+        }
+      ],
+      "zobacz_tez": [
+        "owu",
+        "polisa",
+        "wycena-indywidualna"
+      ],
+      "zrodlo": [
+        {
+          "typ": "przepis",
+          "opis": "Kodeks cywilny, art. 66 § 1 – oferta"
+        },
+        {
+          "typ": "strona",
+          "opis": "stopki makiet design/v3 – „Informacje na tej stronie nie stanowią oferty w rozumieniu art. 66 Kodeksu cywilnego”; utrata-dochodu.html – „Symulacja, nie oferta”"
         }
       ]
     },
@@ -1621,8 +1789,8 @@
         "okresu ochrony"
       ],
       "kategoria": "podstawy",
-      "definicja": "Czas, w którym ubezpieczenie chroni – od dnia początku do dnia końca wskazanych w polisie. To, czy zdarzenie jest objęte ochroną, zależy m.in. od tego, czy nastąpiło w tym czasie. Nie myl go z karencją ani okresem wyczekiwania – to krótsze odcinki, w których świadczenie jeszcze nie przysługuje.",
-      "przyklad": "Polisa OC z okresem ochrony 1 stycznia – 31 grudnia 2026 r. kończy się 31 grudnia; przed tym dniem w Strefie Klienta pojawia się sprawa odnowienia.",
+      "definicja": "Czas, w którym ubezpieczenie chroni – od dnia początku do dnia końca wskazanych w polisie. To, czy zdarzenie jest objęte ochroną, zależy m.in. od tego, czy nastąpiło w tym czasie. Nie myl go z karencją (liczoną od początku ochrony czasem, gdy dane świadczenie jeszcze nie przysługuje) ani z okresem wyczekiwania (liczonym od początku niezdolności do pracy, zanim ruszy wypłata).",
+      "przyklad": "Polisa OC z okresem ochrony 1 stycznia – 31 grudnia 2026 r. kończy się 31 grudnia; przed końcem ochrony doradca może przygotować odnowienie – zobaczysz je w Strefie Klienta.",
       "gdzie": [
         {
           "strona": "strefa/panel.html#polisy",
@@ -1659,7 +1827,7 @@
         "okresem wyczekiwania"
       ],
       "kategoria": "utrata-dochodu",
-      "definicja": "Czas, który musi upłynąć, zanim ubezpieczenie utraty dochodu zacznie wypłacać świadczenie – pierwsza wypłata przychodzi dopiero po nim. Jego długość ustala umowa i wpływa ona na składkę. W odróżnieniu od karencji, liczonej od początku umowy, okres wyczekiwania w tym ubezpieczeniu zwykle liczy się od początku niezdolności do pracy.",
+      "definicja": "Czas, który musi upłynąć, zanim ubezpieczenie utraty dochodu zacznie wypłacać świadczenie – pierwsza wypłata przychodzi dopiero po nim. Jego długość ustala umowa i wpływa ona na składkę. W odróżnieniu od karencji, liczonej od początku ochrony, okres wyczekiwania liczy się od początku niezdolności do pracy.",
       "gdzie": [
         {
           "strona": "utrata-dochodu.html#zakres",
@@ -1679,9 +1847,13 @@
         {
           "typ": "strona",
           "opis": "utrata-dochodu.html#zakres i #pytanie-3 – „Pierwsza wypłata – po okresie wyczekiwania ustalonym w umowie”"
+        },
+        {
+          "typ": "strona",
+          "opis": "utratadochodu.pl (index.md) – „Po upływie okresu wyczekiwania ustalonego w umowie, liczonego od początku niezdolności do pracy”"
         }
       ],
-      "do_potwierdzenia": "Od kiedy liczy się okres wyczekiwania i jakie długości są do wyboru w wariantach Leadenhall i CEU – według OWU. W warunkach szczególnych HIV/WZW ten sam termin oznacza 12 miesięcy przed wypłatą za samo zakażenie WZW (utratadochodu.pl/wylaczenia)."
+      "do_potwierdzenia": "Jakie długości okresu wyczekiwania są do wyboru w wariantach Leadenhall i CEU – według OWU. W warunkach szczególnych HIV/WZW ten sam termin oznacza 12 miesięcy przed wypłatą za samo zakażenie WZW (utratadochodu.pl/wylaczenia)."
     },
     {
       "id": "okres-wyplaty",
@@ -1727,7 +1899,7 @@
       ],
       "kategoria": "utrata-dochodu",
       "definicja": "Czasowy stan, w którym choroba albo wypadek całkowicie uniemożliwiają wykonywanie Twojego zawodu – za ten czas ubezpieczenie utraty dochodu wypłaca świadczenie miesięczne. Częściowa niezdolność, czyli praca w mniejszym wymiarze albo przejście na lżejsze obowiązki, nie spełnia warunku wypłaty.",
-      "przyklad": "Stylistka paznokci z rozpoznaną astmą od oparów akrylanów nie może pracować przez kilka miesięcy – to okresowa niezdolność; jeśli przyjmuje mniej klientek, ale pracuje – to niezdolność częściowa, bez świadczenia.",
+      "przyklad": "Właścicielka salonu skręca nadgarstek i przez kilka tygodni nie może przyjmować klientek – to może być okresowa niezdolność; jeśli przyjmuje mniej klientek, ale pracuje – to niezdolność częściowa, bez świadczenia. O wypłacie decyduje ubezpieczyciel według OWU.",
       "gdzie": [
         {
           "strona": "utrata-dochodu.html#zakres",
@@ -1751,6 +1923,10 @@
         {
           "typ": "strona",
           "opis": "utratadochodu.pl/wylaczenia – „Częściowa niezdolność do pracy”"
+        },
+        {
+          "typ": "strona",
+          "opis": "makieta-v3.html#dzien-w-salonie – skręcony nadgarstek"
         }
       ]
     },
@@ -1791,6 +1967,36 @@
           "opis": "grupowe-ergo.html#warianty – G1 100% / G2 75% / G3 50% / G4 25% / G5 10%"
         }
       ]
+    },
+    {
+      "id": "oplata-dystrybucyjna",
+      "termin": "Opłata dystrybucyjna",
+      "alias": [
+        "opłaty dystrybucyjnej",
+        "opłatę dystrybucyjną",
+        "opłatą dystrybucyjną",
+        "opłacie dystrybucyjnej"
+      ],
+      "kategoria": "dystrybucja-prawo",
+      "definicja": "Opłata za pośrednictwo w zawarciu umowy, którą przy części produktów płacisz w racie obok składki – np. w ubezpieczeniu utraty dochodu. To nie jest prowizja ukryta w składce: jej wysokość podaje oferta.",
+      "gdzie": [
+        {
+          "strona": "utrata-dochodu.html#zakres",
+          "etykieta": "Utrata dochodu – składka i opłata w racie"
+        }
+      ],
+      "zobacz_tez": [
+        "skladka",
+        "prowizja",
+        "agent-ubezpieczeniowy"
+      ],
+      "zrodlo": [
+        {
+          "typ": "strona",
+          "opis": "utratadochodu.pl (index.md, kalkulator.md, jak-to-dziala.md) – „razem z opłatą dystrybucyjną, którą płaci się w racie”"
+        }
+      ],
+      "do_potwierdzenia": "Kto pobiera opłatę dystrybucyjną (coverholder, Aura Expert czy inny podmiot), za co dokładnie i czy pojawia się na stronie utrata-dochodu.html – do potwierdzenia przed publikacją."
     },
     {
       "id": "osierocenie-dziecka",
@@ -2051,7 +2257,7 @@
         "programie OC"
       ],
       "kategoria": "podstawy",
-      "definicja": "Ubezpieczenie przygotowane dla określonej grupy klientów na wspólnych, z góry ustalonych warunkach i ze wspólną taryfą. Program OC dla branży beauty (nr WA50/003353/24/A) ERGO Hestia prowadzi we współpracy z Fundacją Beauty Razem; członkostwo w fundacji nie jest wymagane.",
+      "definicja": "Ubezpieczenie przygotowane dla określonej grupy klientów na wspólnych, z góry ustalonych warunkach i ze wspólną taryfą. Program OC dla branży beauty (nr WA50/003353/24/A) to program ERGO Hestii realizowany we współpracy z Fundacją Beauty Razem; obsługuje go Aura Expert – agent ubezpieczeniowy. Członkostwo w fundacji nie jest wymagane.",
       "gdzie": [
         {
           "strona": "oc-beauty.html",
@@ -2089,7 +2295,7 @@
         "wynagrodzenia agenta"
       ],
       "kategoria": "dystrybucja-prawo",
-      "definicja": "Wynagrodzenie, które agent dostaje od ubezpieczyciela za pośrednictwo przy zawarciu umowy. Nie płacisz jej osobno – jest już uwzględniona w składce. Agent może też otrzymywać od ubezpieczyciela inny rodzaj wynagrodzenia.",
+      "definicja": "Wynagrodzenie, które agent dostaje od ubezpieczyciela za pośrednictwo przy zawarciu umowy; jest uwzględnione w składce, więc nie płacisz go osobno. Agent może też otrzymywać od ubezpieczyciela inny rodzaj wynagrodzenia. Przy części produktów, np. w ubezpieczeniu utraty dochodu, w racie płacisz też opłatę dystrybucyjną – jej wysokość podaje oferta.",
       "gdzie": [
         {
           "strona": "oc-beauty.html",
@@ -2098,6 +2304,7 @@
       ],
       "zobacz_tez": [
         "skladka",
+        "oplata-dystrybucyjna",
         "agent-ubezpieczeniowy",
         "informacje-o-agencie"
       ],
@@ -2109,8 +2316,13 @@
         {
           "typ": "koncepcja",
           "opis": "00-koncepcja-portalu-beautypolisa.md, D37"
+        },
+        {
+          "typ": "strona",
+          "opis": "utratadochodu.pl (index.md, kalkulator.md, jak-to-dziala.md) – składka „razem z opłatą dystrybucyjną, którą płaci się w racie”"
         }
-      ]
+      ],
+      "do_potwierdzenia": "Kto pobiera opłatę dystrybucyjną w ubezpieczeniu utraty dochodu (coverholder, Aura Expert czy inny podmiot) i jak opisać ją w informacjach o wynagrodzeniu agenta (art. 22 ustawy o dystrybucji ubezpieczeń) – do potwierdzenia z prawnikiem."
     },
     {
       "id": "regres",
@@ -2124,7 +2336,7 @@
         "prawo regresu"
       ],
       "kategoria": "oc",
-      "definicja": "Prawo ubezpieczyciela, który już zapłacił, do odzyskania tych pieniędzy od kogoś innego. Najczęściej chodzi o sprawcę szkody: z dniem wypłaty odszkodowania roszczenie wobec niego przechodzi na ubezpieczyciela. Umowa może też przewidywać regres wobec samego ubezpieczonego – np. w klauzuli ochrony prawnej, gdy sąd prawomocnie stwierdzi winę umyślną.",
+      "definicja": "Prawo ubezpieczyciela, który już zapłacił, do odzyskania tych pieniędzy od kogoś innego. W ubezpieczeniach majątkowych (np. OC) z dniem wypłaty odszkodowania roszczenie wobec sprawcy szkody przechodzi na ubezpieczyciela; nie dotyczy to ubezpieczeń na życie i NNW. W BeautyPolisa regres spotkasz głównie w klauzuli ochrony prawnej: ubezpieczyciel może żądać zwrotu kosztów od samego ubezpieczonego, gdy sąd prawomocnie stwierdzi winę umyślną.",
       "przyklad": "Klauzula ochrony prawnej obejmuje tylko czyny karane przy nieumyślnym popełnieniu; jeśli prawomocny wyrok stwierdzi winę umyślną, ERGO Hestia może zażądać zwrotu wypłaconych kosztów.",
       "gdzie": [
         {
@@ -2140,7 +2352,7 @@
       "zrodlo": [
         {
           "typ": "przepis",
-          "opis": "Kodeks cywilny, art. 828 § 1 – przejście roszczenia na ubezpieczyciela"
+          "opis": "Kodeks cywilny, art. 828 § 1 – przejście roszczenia na ubezpieczyciela (przepis z działu o ubezpieczeniach majątkowych)"
         },
         {
           "typ": "koncepcja",
@@ -2162,7 +2374,7 @@
         "reklamacją"
       ],
       "kategoria": "szkody",
-      "definicja": "Formalne zastrzeżenie klienta wobec ubezpieczyciela albo agenta – np. gdy nie zgadzasz się z decyzją o wypłacie albo z obsługą. Odpowiedź powinna przyjść co do zasady w ciągu 30 dni, a w szczególnie skomplikowanych sprawach – najpóźniej w ciągu 60 dni. Reklamację na działalność Aura Expert niezwiązaną z ochroną ubezpieczeniową złożysz pisemnie, ustnie albo e-mailem na reklamacje@auraexpert.pl.",
+      "definicja": "Formalne zastrzeżenie klienta wobec ubezpieczyciela albo agenta – np. gdy nie zgadzasz się z decyzją o wypłacie albo z obsługą. Reklamację dotyczącą wypłaty lub ochrony kierujesz do ubezpieczyciela (dane w OWU i polisie); reklamację na działalność Aura Expert niezwiązaną z ochroną ubezpieczeniową złożysz pisemnie, ustnie albo e-mailem na reklamacje@auraexpert.pl. Odpowiedź powinna przyjść co do zasady w ciągu 30 dni, a w szczególnie skomplikowanych sprawach – najpóźniej w ciągu 60 dni.",
       "gdzie": [
         {
           "strona": "oc-beauty.html",
@@ -2184,7 +2396,7 @@
           "opis": "00-koncepcja-portalu-beautypolisa.md, D37; snippets/legal-distributor.json – tryb reklamacji agenta"
         }
       ],
-      "do_potwierdzenia": "Numery artykułów ustawy o rozpatrywaniu reklamacji (art. 2, 7, 8) – do sprawdzenia przez prawnika przed publikacją."
+      "do_potwierdzenia": "Numery artykułów ustawy o rozpatrywaniu reklamacji (art. 2, 7, 8) – do sprawdzenia przez prawnika przed publikacją. Do rozważenia zdanie, że brak odpowiedzi w terminie oznacza rozpatrzenie reklamacji zgodnie z wolą klienta – z artykułem po weryfikacji przez prawnika."
     },
     {
       "id": "rok-polisowy",
@@ -2305,7 +2517,7 @@
         "rf.gov.pl"
       ],
       "kategoria": "szkody",
-      "definicja": "Publiczna instytucja, która chroni klientów rynku finansowego, w tym ubezpieczycieli i agentów: udziela porad, interweniuje i prowadzi pozasądowe postępowania w sporach. Zwykle zwracasz się do niej po negatywnie rozpatrzonej reklamacji; w sporze osoby fizycznej z Aura Expert w sprawach niezwiązanych z ochroną udział agenta w takim postępowaniu jest obowiązkowy.",
+      "definicja": "Publiczna instytucja, która chroni klientów podmiotów rynku finansowego, w tym klientów ubezpieczycieli i agentów: udziela porad, interweniuje i prowadzi pozasądowe postępowania w sporach. Zwykle zwracasz się do niej po negatywnie rozpatrzonej reklamacji; w sporze osoby fizycznej z Aura Expert w sprawach niezwiązanych z ochroną udział agenta w takim postępowaniu jest obowiązkowy.",
       "gdzie": [
         {
           "strona": "oc-beauty.html",
@@ -2374,7 +2586,7 @@
         "składki rocznej"
       ],
       "kategoria": "podstawy",
-      "definicja": "Cena ubezpieczenia – kwota, którą ubezpieczający płaci ubezpieczycielowi za ochronę, jednorazowo albo w ratach (np. co miesiąc). Jej wysokość zależy od ryzyka i wybranego zakresu; wynika ze stałej taryfy albo z wyliczenia ubezpieczyciela po ocenie ryzyka.",
+      "definicja": "Cena ubezpieczenia – kwota, którą ubezpieczający płaci ubezpieczycielowi za ochronę, jednorazowo albo w ratach (np. co miesiąc). Jej wysokość zależy od ryzyka i wybranego zakresu; wynika ze stałej taryfy albo z wyliczenia ubezpieczyciela po ocenie ryzyka. Przy części produktów rata obejmuje oprócz składki także opłatę dystrybucyjną – wtedy nie cała rata trafia do ubezpieczyciela.",
       "przyklad": "W OC dla branży beauty składka zależy od grupy ryzyka zabiegów, sumy gwarancyjnej i liczby osób w zespole.",
       "gdzie": [
         {
@@ -2394,6 +2606,7 @@
         "stala-taryfa",
         "wycena-indywidualna",
         "prowizja",
+        "oplata-dystrybucyjna",
         "ocena-ryzyka"
       ],
       "zrodlo": [
@@ -2546,8 +2759,8 @@
         "sumy gwarancyjne"
       ],
       "kategoria": "ochrona",
-      "definicja": "Górna granica tego, ile ubezpieczyciel zapłaci poszkodowanym w ubezpieczeniu OC – np. klientce, której stała się krzywda podczas zabiegu. Za szkody ponad tę kwotę odpowiadasz z własnych pieniędzy. W programie OC dla branży beauty wybierasz 100, 200 albo 300 tys. zł.",
-      "przyklad": "Salon z zabiegami z grupy 2 wybiera sumę gwarancyjną 200 tys. zł; składka dla zespołu do 5 osób wynosi wtedy według taryfy 790 zł rocznie.",
+      "definicja": "Górna granica tego, ile ubezpieczyciel zapłaci poszkodowanym w ubezpieczeniu OC – np. klientce, której stała się krzywda podczas zabiegu. Za szkody ponad tę kwotę odpowiadasz z własnych pieniędzy. W programie OC dla branży beauty wybierasz 100, 200 albo 300 tys. zł; czy suma zmniejsza się o wypłaty w okresie ubezpieczenia, określają warunki programu.",
+      "przyklad": "Gdy roszczenie klientki przekroczy sumę gwarancyjną, nadwyżkę pokrywasz sama.",
       "gdzie": [
         {
           "strona": "oc-beauty.html#taryfa",
@@ -2570,18 +2783,18 @@
       "zrodlo": [
         {
           "typ": "strona",
-          "opis": "oc-beauty.html#taryfa"
+          "opis": "oc-beauty.html#taryfa – sumy gwarancyjne 100, 200 i 300 tys. zł; warunki ubezpieczenia programu WA50/003353/24/A"
         },
         {
           "typ": "przepis",
-          "opis": "Kodeks cywilny, art. 822 § 1 – ubezpieczenie odpowiedzialności cywilnej"
+          "opis": "Kodeks cywilny, art. 822 § 1 (ubezpieczenie OC – kontekst, przepis nie definiuje sumy gwarancyjnej) i art. 824 § 1 (zmniejszenie sumy o wypłaty, „jeżeli nie umówiono się inaczej”) – do weryfikacji przez prawnika"
         },
         {
           "typ": "koncepcja",
           "opis": "05-strategia-tresci.md – suma gwarancyjna wśród terminów do zdefiniowania"
         }
       ],
-      "do_potwierdzenia": "Czy suma gwarancyjna w programie WA50/003353/24/A dotyczy jednego zdarzenia, czy wszystkich zdarzeń w okresie ubezpieczenia, i czy są podlimity – według warunków programu."
+      "do_potwierdzenia": "Czy suma gwarancyjna w programie WA50/003353/24/A dotyczy jednego zdarzenia, czy wszystkich zdarzeń w okresie ubezpieczenia, czy zmniejsza się o wypłaty i czy są podlimity – według warunków programu. Zastosowanie art. 824 KC do sumy gwarancyjnej – do weryfikacji przez prawnika."
     },
     {
       "id": "suma-ubezpieczenia",
@@ -2906,7 +3119,7 @@
         "ubezpieczenie grupowe na życie"
       ],
       "kategoria": "strony",
-      "definicja": "Jedna umowa obejmująca wiele osób. Zwykle zawiera ją firma (np. salon) dla swoich pracowników, a każdy pracownik decyduje, czy przystąpić; warunki i składka są wspólne dla grupy.",
+      "definicja": "Jedna umowa obejmująca wiele osób. Zwykle zawiera ją firma (np. salon) dla swoich pracowników, a każdy pracownik decyduje, czy przystąpić. Warunki są wspólne dla grupy; w ubezpieczeniu pracowniczym składka jest zwykle jednakowa dla osób w tym samym wariancie, a w grupie otwartej może zależeć od wieku.",
       "przyklad": "W ERGO Życie w Biznesie umowę zawiera firma z branży beauty zatrudniająca od 2 do 100 osób, a przystępują pracownicy w wieku 15–70 lat.",
       "gdzie": [
         {
@@ -2928,6 +3141,10 @@
         {
           "typ": "strona",
           "opis": "grupowe-ergo.html#ktora-droga"
+        },
+        {
+          "typ": "strona",
+          "opis": "ergo.beautypolisa.eu (ERGO Razem, kalkulator wieku) – składka zależna od wieku"
         }
       ]
     },
@@ -2945,7 +3162,7 @@
         "ubezpieczenie utraty dochodu"
       ],
       "kategoria": "utrata-dochodu",
-      "definicja": "Ubezpieczenie, które co miesiąc wypłaca świadczenie, gdy choroba albo nieszczęśliwy wypadek całkowicie uniemożliwią Ci wykonywanie zawodu. Świadczenie liczy się od udokumentowanego dochodu – do 80% przy działalności i B2B, do 65% przy umowie o pracę i zleceniu (w CEU „Utrata dochodu” 65% także na B2B), najwyżej 50 000 zł miesięcznie. Nie chroni przed brakiem klientek ani utratą zleceń.",
+      "definicja": "Ubezpieczenie, które co miesiąc wypłaca świadczenie, gdy choroba albo nieszczęśliwy wypadek całkowicie uniemożliwią Ci wykonywanie zawodu. Świadczenie liczy się od udokumentowanego dochodu – do 80% przy działalności i B2B, do 65% przy umowie o pracę i zleceniu (w CEU „Utrata dochodu” 65% także na B2B), najwyżej 50 000 zł miesięcznie. Oferta po wniosku może obejmować też trwałą niezdolność do pracy oraz śmierć i inwalidztwo po wypadku – świadczenia jednorazowe. Nie chroni przed brakiem klientek ani utratą zleceń.",
       "gdzie": [
         {
           "strona": "utrata-dochodu.html",
@@ -2961,7 +3178,10 @@
         "okres-wyczekiwania",
         "okres-wyplaty",
         "udokumentowany-dochod",
-        "zasilek-chorobowy"
+        "zasilek-chorobowy",
+        "trwala-niezdolnosc",
+        "inwalidztwo",
+        "oplata-dystrybucyjna"
       ],
       "zrodlo": [
         {
@@ -3033,7 +3253,7 @@
         "towarzystwo ubezpieczeń"
       ],
       "kategoria": "strony",
-      "definicja": "Firma, która udziela ochrony: przyjmuje składkę, rozpatruje zgłoszenia i decyduje o wypłacie. Działalność ubezpieczeniową mogą prowadzić tylko zakłady ubezpieczeń spełniające wymogi przepisów (także ubezpieczyciele z innych państw UE działający w Polsce, np. przez oddział). W BeautyPolisa ubezpieczycielami są m.in. ERGO Hestia, Colonnade i Lloyd’s Insurance Company – Aura Expert nim nie jest.",
+      "definicja": "Firma, która udziela ochrony: przyjmuje składkę, rozpatruje zgłoszenia i decyduje o wypłacie. Działalność ubezpieczeniową mogą prowadzić tylko zakłady ubezpieczeń spełniające wymogi przepisów (także ubezpieczyciele z innych państw UE działający w Polsce, np. przez oddział). W BeautyPolisa ubezpieczycielami są m.in. dwie spółki ERGO Hestii – Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A. (OC) i Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. (grupowe ERGO) – oraz Colonnade i Lloyd’s Insurance Company; Aura Expert nim nie jest.",
       "gdzie": [
         {
           "strona": "oc-beauty.html",
@@ -3062,6 +3282,10 @@
         {
           "typ": "koncepcja",
           "opis": "00-koncepcja-portalu-beautypolisa.md, D37 – lista zakładów, na rzecz których działa agent"
+        },
+        {
+          "typ": "koncepcja",
+          "opis": "snippets/legal-distributor.json – lista zakładów, w tym obie spółki ERGO Hestii"
         }
       ]
     },
@@ -3142,7 +3366,7 @@
         "beneficjenta"
       ],
       "kategoria": "strony",
-      "definicja": "Osoba wskazana do otrzymania świadczenia po śmierci ubezpieczonego. Wskazanie można w każdej chwili zmienić. Uposażonym nie musi być ani ubezpieczający, ani członek rodziny – decyduje wskazanie.",
+      "definicja": "Osoba wskazana do otrzymania świadczenia po śmierci ubezpieczonego. Wskazuje go ubezpieczony i może to w każdej chwili zmienić; uposażonym nie musi być ani ubezpieczający, ani członek rodziny. Gdy nikt nie jest wskazany, świadczenie dostają członkowie rodziny w kolejności z OWU.",
       "przyklad": "W ERGO Życie w Biznesie pracownik wskazuje uposażonego w e-deklaracji.",
       "gdzie": [
         {
@@ -3162,7 +3386,7 @@
         },
         {
           "typ": "przepis",
-          "opis": "Kodeks cywilny, art. 831 – wskazanie uposażonego"
+          "opis": "Kodeks cywilny, art. 831 – wskazanie uposażonego i świadczenie dla członków rodziny, gdy uposażonego nie wskazano"
         }
       ]
     },
@@ -3252,11 +3476,7 @@
         "właściciel konta",
         "właściciela konta",
         "właścicielka konta",
-        "właścicielki konta",
-        "pracownik salonu",
-        "zaproszenie",
-        "zaproszenia",
-        "zaproszeniem"
+        "właścicielki konta"
       ],
       "kategoria": "strefa-klienta",
       "definicja": "Właściciel konta salonu widzi polisy, dokumenty i zgłoszenia szkód, zaprasza pracowników i publikuje ogłoszenia. Pracownik – zaproszony e-mailem przez właściciela (zaproszenie jest ważne 7 dni) – widzi tylko „Szkolenia” i ogłoszenia salonu w „Dam pracę”, bez polis. Drugiego właściciela dodaje, a właściciela zmienia doradca Aura Expert.",

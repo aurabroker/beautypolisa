@@ -1042,6 +1042,7 @@ create index training_orders_user_idx     on training_orders (user_id, created_a
 -- szkolenia [Założenie] – organizator przenosi je do swojej księgowości.
 create table training_order_buyer_data (
   order_id          uuid primary key references training_orders(id) on delete cascade,
+  user_id           uuid not null references auth.users(id) on delete cascade, -- warunek RLS (bez grantu)
   buyer_kind        text not null check (buyer_kind in ('osoba','firma')),
   buyer_name        text not null check (char_length(buyer_name) between 2 and 200),
   nip               text check (nip ~ '^[0-9]{10}$'),
@@ -1102,7 +1103,7 @@ create table training_refunds (
   updated_at          timestamptz not null default now()
 );
 create index training_refunds_order_idx on training_refunds (order_id);
-create unique index training_refunds_active_uq on training_refunds (order_id) where status in ('requested','submitted');
+create index training_refunds_active_idx on training_refunds (status, created_at) where status in ('requested','submitted');
 
 -- Dziennik zdarzeń od operatora (deduplikacja i ślad). Zapisujemy wyłącznie zdarzenia z poprawnym podpisem
 -- (sprawdza Worker przed wywołaniem bazy) i tylko pola znormalizowane + skrót treści – bez surowego JSON
@@ -1232,7 +1233,8 @@ create table client_audit_log (
                   'training_refund_requested','training_refund_status_changed','payment_event_rejected',
                   'payout_account_created','payout_account_status_changed','sales_terms_submitted',
                   'sales_terms_approved','sales_terms_rejected','platform_fee_changed','organizer_orders_viewed',
-                  'organizer_invoice_data_viewed','training_invoice_attached','payment_discrepancy_resolved')),
+                  'organizer_invoice_data_viewed','training_invoice_attached','payment_discrepancy_resolved',
+                  'training_orders_purged')),
   entity        text not null check (entity in ('account','member','invitation','policy','document','claim',
                   'job_offer','training','training_registration','organizer','organizer_member',
                   'feature_flag','candidate_ad','job_seeker','phone','promotion','organizer_plan',
@@ -2358,8 +2360,7 @@ grant select (order_id, buyer_kind, buyer_name, nip, street, postal_code, city, 
               participant_email)
   on training_order_buyer_data to authenticated;
 create policy training_order_buyer_data_self_read on training_order_buyer_data
-  for select to authenticated
-  using (order_id in (select o.id from public.training_orders o where o.user_id = (select auth.uid())));
+  for select to authenticated using (user_id = (select auth.uid()));
 
 grant select (id, order_id, provider, provider_payment_ref, attempt, status, amount_grosze, currency, method,
               checkout_expires_at, succeeded_at, last_event_at, created_at, updated_at)
@@ -3117,6 +3118,14 @@ begin
     if v_t.starts_at > v_until then
       raise exception 'moderate training: szkolenie zaczyna się po końcu planu organizatora';
     end if;
+    -- 00, D42: płatność online tylko u organizatora z aktywnymi „Wypłatami” i zatwierdzonymi warunkami sprzedaży
+    if v_t.payment_mode = 'online' and (
+         not exists (select 1 from public.organizer_payout_accounts pa
+                      where pa.organizer_id = v_t.organizer_id and pa.status = 'active')
+      or not exists (select 1 from public.organizer_sales_terms st
+                      where st.organizer_id = v_t.organizer_id and st.status = 'active')) then
+      raise exception 'moderate training: płatność online wymaga aktywnych wypłat i warunków sprzedaży organizatora';
+    end if;
     update public.trainings
        set status = 'published', published_at = coalesce(published_at, now()), moderated_by = p_actor,
            moderation_note = p_note, rejection_reason = null, plan_valid_until = v_until, updated_at = now()
@@ -3134,6 +3143,8 @@ begin
        set status = 'removed', moderated_by = p_actor, moderation_note = p_note, rejection_reason = p_reason,
            cancelled_at = now(), updated_at = now()
      where id = p_training;            -- zapisanym serwer wysyła training_cancelled
+    -- 00, D42: usunięte szkolenie = zwroty wszystkim opłaconym i zamknięte rezerwacje
+    perform public.training_orders_refund_all(p_training, 'staff:' || p_actor::text);
   else
     raise exception 'moderate training: niedozwolona decyzja % dla statusu %', p_decision, v_t.status;
   end if;
@@ -3179,14 +3190,16 @@ begin
   if v_t.status not in ('draft','pending_review','published','rejected') then
     raise exception 'capacity: szkolenie zakończone albo odwołane';
   end if;
-  if p_capacity is not null and (p_capacity < 1 or p_capacity < v_t.seats_registered) then
-    raise exception 'capacity: limit nie może być mniejszy niż liczba zapisanych (%)', v_t.seats_registered;
+  -- 00, D42: miejsca w rezerwacjach (seats_held) liczą się jak zajęte
+  if p_capacity is not null and (p_capacity < 1 or p_capacity < v_t.seats_registered + v_t.seats_held) then
+    raise exception 'capacity: limit nie może być mniejszy niż liczba zapisanych i zarezerwowanych (%)',
+      v_t.seats_registered + v_t.seats_held;
   end if;
   update public.trainings set capacity = p_capacity, updated_at = now() where id = p_training;
 
   loop
     exit when p_capacity is not null
-          and (select seats_registered from public.trainings where id = p_training) >= p_capacity;
+          and (select seats_registered + seats_held from public.trainings where id = p_training) >= p_capacity;
     select r.id into v_next from public.training_registrations r
      where r.training_id = p_training and r.status = 'waitlisted'
      order by r.created_at limit 1 for update;
@@ -3226,6 +3239,8 @@ begin
   insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id, payload)
   values (v_t.organizer_id, v_kind || p_actor::text, 'training_event_cancelled', 'training', p_training,
           jsonb_build_object('reason', left(coalesce(p_reason, ''), 200)));
+  -- 00, D42: odwołanie = pełne zwroty wszystkim opłaconym zamówieniom (wykonuje operator) i zamknięte rezerwacje
+  perform public.training_orders_refund_all(p_training, v_kind || p_actor::text);
 end $$;
 
 -- 10.15 Zapis na szkolenie: blokada wiersza szkolenia, limit miejsc, limit na salon, lista rezerwowa,
@@ -3260,6 +3275,9 @@ begin
      or v_t.plan_valid_until is null or v_t.plan_valid_until <= now()      -- P1d: tylko przy aktywnym planie
      or v_t.starts_at > v_t.plan_valid_until then                          -- BIZ-15: termin w okresie planu
     raise exception 'register: szkolenie niedostępne';
+  end if;
+  if v_t.payment_mode = 'online' then                                      -- 00, D42: tylko przez zamówienie
+    raise exception 'register: szkolenie płatne online – zapis przez zamówienie' using errcode = 'BP409';
   end if;
   -- PRIV-12: walidacja przed zapisem, bez wartości w komunikacie (CHECK zwróciłby cały wiersz w DETAIL)
   if coalesce(char_length(trim(p_participant_name)), 0) not between 2 and 120
@@ -3344,6 +3362,12 @@ begin
     v_prefix := 'staff:';
   else
     raise exception 'cancel: brak uprawnień';
+  end if;
+  -- 00, D42: opłacone miejsce zwalnia wyłącznie zwrot (decyzja organizatora albo odwołanie szkolenia) –
+  -- uczestnik prosi o rezygnację przez app_training_order_cancel_request()
+  if exists (select 1 from public.training_orders o
+              where o.registration_id = v_reg.id and o.status in ('paid','partially_refunded','refund_pending')) then
+    raise exception 'cancel: szkolenie opłacone – rezygnacja przez zamówienie' using errcode = 'BP409';
   end if;
 
   update public.training_registrations
