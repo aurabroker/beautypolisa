@@ -20,14 +20,17 @@
 <!-- gen:slownik-css -->
 <style>
 /* ===== Pojęcia ze słownika w treści + dymek z definicją (gen_terminy.py – nie edytuj ręcznie) ===== */
-/* bez JS: zwykły link do słownika z dyskretnym kropkowanym podkreśleniem (rozróżnienie nie tylko kolorem – WCAG 1.4.1) */
-a.bp-termin.bp-termin{display:inline;min-height:0;padding:0;margin:0;border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-decoration-color:rgba(42,59,104,.8);text-underline-offset:.24em;text-decoration-skip-ink:auto;cursor:pointer;border-radius:2px}
+/* bez JS: zwykły link do słownika z dyskretnym kropkowanym podkreśleniem (rozróżnienie nie tylko kolorem – WCAG 1.4.1).
+   Podkreślenie i obwódka fokusu idą za kolorem tekstu (currentColor) – kontrast z tłem jak tekst akapitu, także na ciemnych tłach
+   bez klasy .dark (np. baner odnowienia w Strefie); w znanych ciemnych kontekstach – złoto jasne (gold light). */
+a.bp-termin.bp-termin{display:inline;min-height:0;padding:0;margin:0;border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-decoration-color:currentColor;text-underline-offset:.24em;text-decoration-skip-ink:auto;cursor:pointer;border-radius:2px}
 a.bp-termin.bp-termin:hover{text-decoration-style:solid;text-decoration-color:var(--color-gold,#B8975A)}
 a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.3);text-decoration-style:solid}
-.dark a.bp-termin.bp-termin{text-decoration-color:var(--color-gold-light,#D9C089)}
-.dark a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
-a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
-.dark a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
+a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+:is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin{text-decoration-color:var(--color-gold-light,#D9C089)}
+:is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin:hover{text-decoration-color:var(--color-gold-light,#D9C089)}
+:is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
+:is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
 /* dymek: kryjące ivory (bez backdrop-filter – nie liczy się do limitu 3 tafli), złota linia, cień */
 .bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
 .bp-dymek[hidden]{display:none}
@@ -35,6 +38,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
 .bp-dymek:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
 .bp-dymek-t{margin:0 44px 6px 0;padding-bottom:8px;border-bottom:1px solid rgba(184,151,90,.45);font:600 1.4rem/1.2 var(--font-serif,Georgia,serif);color:var(--color-navy,#2A3B68);text-wrap:balance}
 .bp-dymek-d{margin:0;color:var(--color-ink,#1B2233);text-wrap:pretty}
+.bp-dymek-o{margin:8px 0 0;font-size:var(--text-sm,.875rem);line-height:1.5;color:var(--color-taupe,#5F574D)}
+.bp-dymek-o[hidden]{display:none}
 .bp-dymek-akcje{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;margin-top:6px}
 .bp-dymek a.bp-dymek-wiecej{display:inline-flex;align-items:center;min-height:44px;padding:0;font:500 var(--text-sm,.875rem)/1.3 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-transform:none;color:var(--color-navy,#2A3B68);text-decoration:underline;text-decoration-color:var(--color-gold,#B8975A);text-decoration-thickness:1px;text-underline-offset:5px}
 .bp-dymek a.bp-dymek-wiecej:hover{text-decoration-thickness:2px}
@@ -42,9 +47,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
 .bp-dymek-x:hover{background:var(--color-parchment,#EDE5D8)}
 .bp-dymek-x svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
 .bp-dymek :focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
-/* wąskie ekrany: panel u dołu okna (mieści się od 320 px), nad paskiem akcji */
-@media (max-width:599px){
-  .bp-dymek{position:fixed;top:auto!important;left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));width:auto;max-height:min(70vh,560px);overflow-y:auto;overscroll-behavior:contain;padding:14px 16px 10px}
+/* wąskie i niskie okna (telefon, telefon poziomo, powiększenie 200%): panel u dołu okna (mieści się od 320 px), nad paskiem akcji */
+@media (max-width:599px),(max-height:599px){
+  .bp-dymek{position:fixed;top:auto!important;left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));width:auto;max-width:560px;margin-inline:auto;max-height:min(70vh,560px)!important;overflow-y:auto;overscroll-behavior:contain;padding:14px 16px 10px}
 }
 @media (prefers-contrast:more){.bp-dymek{border-color:var(--color-navy,#2A3B68)}a.bp-termin.bp-termin{text-decoration-color:currentColor}}
 @media (forced-colors:active){.bp-dymek{border:2px solid CanvasText}a.bp-termin.bp-termin{text-decoration-color:LinkText}a.bp-termin.bp-termin[aria-expanded="true"]{background:none;outline:1px solid Highlight}}
@@ -164,7 +169,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
         <svg class="lux-icon" aria-hidden="true"><use href="#lux-doradca"/></svg>
         <div>
           <strong id="t-odnow">Odnowienie w&nbsp;toku&nbsp;– dokończ APK i&nbsp;wniosek</strong>
-          <p><a class="bp-termin" href="../slownik.html#haslo-odpowiedzialnosc-cywilna" data-termin="odpowiedzialnosc-cywilna">OC</a> dla branży beauty, <a class="bp-termin" href="../slownik.html#haslo-polisa" data-termin="polisa">polisa</a> BP/2026/000123 (przykład), ochrona do 31&nbsp;grudnia 2026&nbsp;r. Odnowienie przygotował doradca Aura Expert, a&nbsp;<a class="bp-termin" href="../slownik.html#haslo-skladka" data-termin="skladka">składka</a> wynika z&nbsp;<a class="bp-termin" href="../slownik.html#haslo-stala-taryfa" data-termin="stala-taryfa">taryfy programu</a>.</p>
+          <p><a class="bp-termin" href="../slownik.html#haslo-odpowiedzialnosc-cywilna" data-termin="odpowiedzialnosc-cywilna">OC</a> dla branży beauty, polisa BP/2026/000123 (przykład), ochrona do 31&nbsp;grudnia 2026&nbsp;r. Odnowienie przygotował doradca Aura Expert, a&nbsp;składka wynika z&nbsp;taryfy programu.</p>
         </div>
         <a class="btn btn-ivory" href="#sprawy">Przejdź do sprawy</a>
       </div>
@@ -198,7 +203,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
             <p class="case-status small js-case-status" role="status" hidden><span class="mock-note">Makieta</span> W&nbsp;produkcji: POST <code>/strefa-klienta/sprawy/[id]/dokoncz</code> → 303 na <code>portal.beautypolisa.eu/w/XXXXXXXXXX</code>. Makieta nie otwiera tego adresu.</p>
           </li>
         </ul>
-        <p class="case-note small" id="sprawy-domena"><svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg><span>Przycisk otwiera serwis <strong>portal.beautypolisa.eu</strong>&nbsp;– tam wypełnisz <a class="bp-termin" href="../slownik.html#haslo-apk" data-termin="apk">APK</a> i&nbsp;wniosek i&nbsp;je podpiszesz. Link do sprawy jest osobisty, ma termin ważności i&nbsp;zawsze prowadzi do tej domeny; nie przekazuj go innym osobom. Przed pokazaniem danych i&nbsp;przed podpisem poprosimy o&nbsp;kod wysłany na adres e-mail podany w&nbsp;sprawie; na ten adres przyszedł też link do sprawy. Aura Expert nigdy nie poprosi Cię o&nbsp;link ani o&nbsp;kod przez telefon. Polisa pojawi się w&nbsp;<a class="bp-termin" href="../slownik.html#haslo-strefa-klienta" data-termin="strefa-klienta">Strefie Klienta</a> po wystawieniu.</span></p>
+        <p class="case-note small" id="sprawy-domena"><svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg><span>Przycisk otwiera serwis <strong>portal.beautypolisa.eu</strong>&nbsp;– tam wypełnisz <a class="bp-termin" href="../slownik.html#haslo-apk" data-termin="apk">APK</a> i&nbsp;wniosek i&nbsp;je podpiszesz. Link do sprawy jest osobisty, ma termin ważności i&nbsp;zawsze prowadzi do tej domeny; nie przekazuj go innym osobom. Przed pokazaniem danych i&nbsp;przed podpisem poprosimy o&nbsp;kod wysłany na adres e-mail podany w&nbsp;sprawie; na ten adres przyszedł też link do sprawy. Aura Expert nigdy nie poprosi Cię o&nbsp;link ani o&nbsp;kod przez telefon. <a class="bp-termin" href="../slownik.html#haslo-polisa" data-termin="polisa">Polisa</a> pojawi się w&nbsp;Strefie Klienta po wystawieniu.</span></p>
 
         <!-- Warianty karty (11 §4.4a pkt 4; 12 §5.3) – w strefie właściciel widzi tylko jeden, bieżący stan sprawy -->
         <div class="case-variants">
@@ -271,7 +276,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
             <strong>882&nbsp;zł</strong>
             <span>składka roczna: 790&nbsp;zł z&nbsp;taryfy programu + 92&nbsp;zł klauzula ochrony prawnej</span>
           </div>
-          <p class="xsmall muted">Zakres i&nbsp;<a class="bp-termin" href="../slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">wyłączenia</a> określają <a class="bp-termin" href="../slownik.html#haslo-owu" data-termin="owu">warunki ubezpieczenia programu</a>. Dane polisy pochodzą z&nbsp;CRM Aura Expert.</p>
+          <p class="xsmall muted">Zakres i&nbsp;<a class="bp-termin" href="../slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">wyłączenia</a> określają warunki ubezpieczenia programu. Dane polisy pochodzą z&nbsp;CRM Aura Expert.</p>
           <div class="actions">
             <a class="btn btn-navy js-drawer-open" href="#polisa-oc">Szczegóły i&nbsp;dokumenty</a>
             <a class="btn btn-ghost" href="#szkoda">Zgłoś szkodę</a>
@@ -511,7 +516,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
               <li>Przekazane do ubezpieczyciela</li>
               <li>Zamknięte</li>
             </ol>
-            <p class="small">Status znajdziesz też w&nbsp;„Polisach”, w&nbsp;zakładce „<a class="bp-termin" href="../slownik.html#haslo-zgloszenie-szkody" data-termin="zgloszenie-szkody">Zgłoszenia szkód</a>”.</p>
+            <p class="small">Status znajdziesz też w&nbsp;„Polisach”, w&nbsp;zakładce „Zgłoszenia szkód”.</p>
             <div class="actions"><a class="btn btn-ghost btn-sm" href="#pulpit">Wróć do pulpitu</a></div>
           </section>
         </div>
@@ -521,9 +526,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
           <ol class="steps">
             <li><strong>Zabezpiecz <a class="bp-termin" href="../slownik.html#haslo-dokumentacja-zabiegu" data-termin="dokumentacja-zabiegu">dokumentację zabiegu</a></strong><p>Karta klienta, podpisany formularz zgody, zdjęcia przed i&nbsp;po, informacje o&nbsp;produktach i&nbsp;urządzeniach. Nie poprawiaj wpisów po fakcie.</p></li>
             <li><strong>Przyjmij <a class="bp-termin" href="../slownik.html#haslo-roszczenie" data-termin="roszczenie">roszczenie</a>, nie uznawaj winy</strong><p>Poproś o&nbsp;roszczenie na piśmie i&nbsp;potwierdź jego odbiór. Nie zawieraj ugody na własną rękę.</p></li>
-            <li><strong>Zgłoś szkodę niezwłocznie</strong><p>Terminy zgłoszenia określają OWU – im szybciej, tym lepiej.</p></li>
+            <li><strong><a class="bp-termin" href="../slownik.html#haslo-zgloszenie-szkody" data-termin="zgloszenie-szkody">Zgłoś szkodę</a> niezwłocznie</strong><p>Terminy zgłoszenia określają <a class="bp-termin" href="../slownik.html#haslo-owu" data-termin="owu">OWU</a> – im szybciej, tym lepiej.</p></li>
             <li><strong>Przygotuj komplet dokumentów</strong><p>Doradca powie, co przekazać <a class="bp-termin" href="../slownik.html#haslo-ubezpieczyciel" data-termin="ubezpieczyciel">ubezpieczycielowi</a>. Brakujące dokumenty wydłużają likwidację szkody.</p></li>
-            <li><strong>Współpracuj z&nbsp;likwidatorem</strong><p>Odpowiadaj na wezwania ubezpieczyciela w&nbsp;wyznaczonych terminach.</p></li>
+            <li><strong>Współpracuj z&nbsp;<a class="bp-termin" href="../slownik.html#haslo-likwidacja-szkody" data-termin="likwidacja-szkody">likwidatorem</a></strong><p>Odpowiadaj na wezwania ubezpieczyciela w&nbsp;wyznaczonych terminach.</p></li>
           </ol>
           <p class="xsmall muted">Zakres ochrony – zgodnie z&nbsp;OWU.</p>
         </aside>
@@ -699,10 +704,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
             <span class="badge badge--ok">Włączony</span>
           </div>
           <button class="switch" type="button" role="switch" aria-checked="true" disabled aria-describedby="totp-why">Drugi składnik</button>
-          <p class="small" id="totp-why">Dla właściciela konta drugi składnik jest obowiązkowy i&nbsp;nie można go wyłączyć.</p>
+          <p class="small" id="totp-why">Dla <a class="bp-termin" href="../slownik.html#haslo-role-w-strefie" data-termin="role-w-strefie">właściciela konta</a> drugi składnik jest obowiązkowy i&nbsp;nie można go wyłączyć.</p>
           <!-- 00, D28a: Supabase Auth nie wydaje kodów zapasowych – zapasem jest drugi zarejestrowany czynnik TOTP; reset po utracie wszystkich – doradca (Q25) -->
           <ul class="list" aria-label="Urządzenia z aplikacją uwierzytelniającą">
-            <li><div class="grow"><strong>Telefon&nbsp;– aplikacja uwierzytelniająca</strong><span class="meta">dodano <time datetime="2025-11-04">4&nbsp;listopada 2025&nbsp;r.</time></span></div><span class="badge badge--ok">Aktywne</span></li>
+            <li><div class="grow"><strong>Telefon&nbsp;– <a class="bp-termin" href="../slownik.html#haslo-drugi-skladnik" data-termin="drugi-skladnik">aplikacja uwierzytelniająca</a></strong><span class="meta">dodano <time datetime="2025-11-04">4&nbsp;listopada 2025&nbsp;r.</time></span></div><span class="badge badge--ok">Aktywne</span></li>
           </ul>
           <p class="small" id="totp-backup-hint"><strong>Masz jedno urządzenie.</strong> Dodaj zapasowe&nbsp;– drugą aplikację uwierzytelniającą na innym telefonie albo w&nbsp;menedżerze haseł. Gdy zgubisz telefon, zalogujesz się kodem z&nbsp;zapasowego urządzenia. Kodów zapasowych nie ma.</p>
           <!-- 11 §6.1 K4, §8: dodanie i usunięcie czynnika tylko w sesji aal2 po ponownym podaniu kodu TOTP; zdarzenie w dzienniku audytu i e-mail do właściciela konta -->
@@ -1187,62 +1192,71 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
  "odpowiedzialnosc-cywilna": {
   "t": "OC (ubezpieczenie odpowiedzialności cywilnej)",
   "d": "Ubezpieczenie, które płaci za Ciebie, gdy wyrządzisz szkodę komuś innemu (osobie trzeciej) i odpowiadasz za nią – np. klientce, u której zabieg spowodował uraz. Ubezpieczyciel wypłaca poszkodowanemu odszkodowanie do wysokości sumy gwarancyjnej, w zakresie i z wyłączeniami z warunków ubezpieczenia.",
-  "u": "../slownik.html#haslo-odpowiedzialnosc-cywilna"
- },
- "polisa": {
-  "t": "Polisa",
-  "d": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę.",
-  "u": "../slownik.html#haslo-polisa"
- },
- "skladka": {
-  "t": "Składka",
-  "d": "Cena ubezpieczenia – kwota, którą ubezpieczający płaci ubezpieczycielowi za ochronę, jednorazowo albo w ratach (np. co miesiąc). Jej wysokość zależy od ryzyka i wybranego zakresu; wynika ze stałej taryfy albo z wyliczenia ubezpieczyciela po ocenie ryzyka.",
-  "u": "../slownik.html#haslo-skladka"
- },
- "stala-taryfa": {
-  "t": "Stała taryfa",
-  "d": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. grupę ryzyka i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
-  "u": "../slownik.html#haslo-stala-taryfa"
+  "u": "../slownik.html#haslo-odpowiedzialnosc-cywilna",
+  "o": 1
  },
  "apk": {
   "t": "APK (analiza potrzeb klienta)",
   "d": "Ankieta przed zawarciem umowy, w której ustala się Twoje wymagania i potrzeby – na tej podstawie sprawdza się, czy proponowane ubezpieczenie do nich pasuje. To obowiązek każdego dystrybutora ubezpieczeń.",
   "u": "../slownik.html#haslo-apk"
  },
- "strefa-klienta": {
-  "t": "Strefa Klienta",
-  "d": "Konto w BeautyPolisa: polisy i dokumenty salonu w jednym miejscu, sprawy w toku (np. APK i wniosek przy odnowieniu OC), zgłoszenia szkód oraz dostęp do „Dam pracę” i „Szkoleń”. Konto klienta z polisą aktywuje Aura Expert po zawarciu ubezpieczenia – zaproszenie przychodzi e-mailem.",
-  "u": "../slownik.html#haslo-strefa-klienta"
+ "polisa": {
+  "t": "Polisa",
+  "d": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę.",
+  "u": "../slownik.html#haslo-polisa",
+  "o": 1
  },
  "zakres-i-wylaczenia": {
   "t": "Zakres ochrony i wyłączenia",
-  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia to opisane w OWU sytuacje, w których – mimo że zdarzenie wygląda na objęte ochroną – wypłaty nie będzie.",
-  "u": "../slownik.html#haslo-zakres-i-wylaczenia"
- },
- "owu": {
-  "t": "OWU (ogólne warunki ubezpieczenia)",
-  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. To OWU – a nie strona internetowa czy ulotka – rozstrzygają o wypłacie.",
-  "u": "../slownik.html#haslo-owu"
- },
- "zgloszenie-szkody": {
-  "t": "Zgłoszenie szkody",
-  "d": "Poinformowanie ubezpieczyciela o zdarzeniu, z którego może być wypłata – od tego zaczyna się likwidacja szkody. Zgłoś je niezwłocznie (terminy podają OWU), z numerem polisy i dokumentami.",
-  "u": "../slownik.html#haslo-zgloszenie-szkody"
+  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
+  "u": "../slownik.html#haslo-zakres-i-wylaczenia",
+  "o": 1
  },
  "dokumentacja-zabiegu": {
   "t": "Dokumentacja zabiegu",
   "d": "Zapisy, które pokazują, jak przebiegał zabieg: karta klienta, podpisany przez klientkę formularz zgody na zabieg, zdjęcia przed i po, informacje o użytych produktach i urządzeniach. Przy roszczeniu to podstawowy dowód dla ubezpieczyciela – zabezpiecz ją i nie poprawiaj wpisów po fakcie.",
-  "u": "../slownik.html#haslo-dokumentacja-zabiegu"
+  "u": "../slownik.html#haslo-dokumentacja-zabiegu",
+  "o": 1
  },
  "roszczenie": {
   "t": "Roszczenie",
   "d": "Żądanie zapłaty albo innego świadczenia. Klientka może mieć roszczenie wobec salonu (np. o pokrycie kosztów leczenia po zabiegu), a Ty – wobec ubezpieczyciela (o wypłatę z polisy).",
-  "u": "../slownik.html#haslo-roszczenie"
+  "u": "../slownik.html#haslo-roszczenie",
+  "o": 1
+ },
+ "zgloszenie-szkody": {
+  "t": "Zgłoszenie szkody",
+  "d": "Poinformowanie ubezpieczyciela o zdarzeniu, z którego może być wypłata – od tego zaczyna się likwidacja szkody. Szkodę z OC możesz zgłosić przez BeautyPolisa – doradca zbierze szczegóły telefonicznie i przekaże zgłoszenie ubezpieczycielowi – albo bezpośrednio u ubezpieczyciela.",
+  "u": "../slownik.html#haslo-zgloszenie-szkody",
+  "o": 1
+ },
+ "owu": {
+  "t": "OWU (ogólne warunki ubezpieczenia)",
+  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. Ubezpieczyciel ma obowiązek doręczyć je przed zawarciem umowy.",
+  "u": "../slownik.html#haslo-owu",
+  "o": 1
  },
  "ubezpieczyciel": {
   "t": "Ubezpieczyciel (zakład ubezpieczeń)",
-  "d": "Firma, która udziela ochrony: przyjmuje składkę, rozpatruje zgłoszenia i decyduje o wypłacie. Działalność ubezpieczeniową mogą prowadzić tylko zakłady ubezpieczeń spełniające wymogi przepisów (także ubezpieczyciele z innych państw UE działający w Polsce, np. przez oddział).",
-  "u": "../slownik.html#haslo-ubezpieczyciel"
+  "d": "Firma, która udziela ochrony: przyjmuje składkę, rozpatruje zgłoszenia i decyduje o wypłacie. W BeautyPolisa ubezpieczycielami są m.in. dwie spółki ERGO Hestii – Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A. (OC) i Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. (grupowe ERGO) – oraz Colonnade i Lloyd’s Insurance Company; Aura Expert nim nie jest.",
+  "u": "../slownik.html#haslo-ubezpieczyciel",
+  "o": 1
+ },
+ "likwidacja-szkody": {
+  "t": "Likwidacja szkody",
+  "d": "Postępowanie ubezpieczyciela po zgłoszeniu: zbiera dokumenty, ustala, czy zdarzenie jest objęte ochroną i ile się należy, po czym wypłaca albo odmawia. Prowadzi je likwidator – pracownik ubezpieczyciela albo firma, której ubezpieczyciel to powierzył (np. WAGAS S.A. w wariantach CEU utraty dochodu); BeautyPolisa szkód nie likwiduje.",
+  "u": "../slownik.html#haslo-likwidacja-szkody",
+  "o": 1
+ },
+ "role-w-strefie": {
+  "t": "Właściciel konta i pracownik (role w Strefie)",
+  "d": "Właściciel konta salonu widzi polisy, dokumenty i zgłoszenia szkód, zaprasza pracowników i publikuje ogłoszenia. Pracownik – zaproszony e-mailem przez właściciela (zaproszenie jest ważne 7 dni) – widzi tylko „Szkolenia” i ogłoszenia salonu w „Dam pracę”, bez polis.",
+  "u": "../slownik.html#haslo-role-w-strefie"
+ },
+ "drugi-skladnik": {
+  "t": "Drugi składnik logowania (TOTP)",
+  "d": "Dodatkowe zabezpieczenie konta. Strefa nie ma haseł: najpierw podajesz sześciocyfrowy kod z e-maila, a potem – jako drugi składnik – kod z aplikacji uwierzytelniającej, który zmienia się co 30 sekund (TOTP – jednorazowy kod zależny od czasu); sam dostęp do skrzynki e-mail nie wystarczy więc, by ktoś wszedł na konto.",
+  "u": "../slownik.html#haslo-drugi-skladnik"
  }
 }
 </script>
@@ -1252,8 +1266,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
    klik / Enter / Spacja otwiera niemodalny dialog (role="dialog" + aria-labelledby/aria-describedby – w środku link i przycisk, więc nie tooltip).
    Fokus przechodzi do dialogu; Esc i „Zamknij” zamykają i oddają fokus pojęciu; Tab za ostatnim elementem i Shift+Tab przed pierwszym też wracają do pojęcia;
    klik poza dymkiem zamyka. Najechanie myszą niczego nie otwiera ani nie zamyka (WCAG 1.4.13: dymek nie znika, gdy kursor jest nad nim).
-   Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Szerokie ekrany: dymek pod pojęciem (albo nad nim), w granicach okna;
-   poniżej 600 px: panel u dołu okna. */
+   Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Okno od 600 × 600 px: dymek pod ostatnią linią pojęcia albo nad
+   pierwszą (gdzie się mieści); gdy nie mieści się z żadnej strony – po stronie z większym miejscem, z max-height i przewijaniem wewnątrz
+   (dymek ma tabindex=-1, więc przewija się też z klawiatury). Okno węższe lub niższe niż 600 px: panel u dołu okna. */
 (function(){
   var dane=document.getElementById('slownik-dymki'); if(!dane) return;
   var D; try{D=JSON.parse(dane.textContent)}catch(e){return}
@@ -1262,27 +1277,34 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
   box.className='bp-dymek';box.id='bp-dymek';box.hidden=true;box.tabIndex=-1;
   box.setAttribute('role','dialog');box.setAttribute('aria-labelledby','bp-dymek-t');box.setAttribute('aria-describedby','bp-dymek-d');
   box.innerHTML='<p class="bp-dymek-t" id="bp-dymek-t"></p><p class="bp-dymek-d" id="bp-dymek-d"></p>'+
+    '<p class="bp-dymek-o" hidden>Objaśnienie ogólne – wiążą OWU produktu i&nbsp;umowa.</p>'+
     '<div class="bp-dymek-akcje"><a class="bp-dymek-wiecej" href="#">Więcej w&nbsp;słowniku</a></div>'+
     '<button type="button" class="bp-dymek-x" aria-label="Zamknij objaśnienie"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg></button>';
   document.body.appendChild(box);
-  var tytul=box.querySelector('.bp-dymek-t'), opis=box.querySelector('.bp-dymek-d'), wiecej=box.querySelector('.bp-dymek-wiecej'), zamknij=box.querySelector('.bp-dymek-x');
-  var mqWaski=window.matchMedia('(max-width:599px)'), biezace=null;
+  var tytul=box.querySelector('.bp-dymek-t'), opis=box.querySelector('.bp-dymek-d'), owu=box.querySelector('.bp-dymek-o'), wiecej=box.querySelector('.bp-dymek-wiecej'), zamknij=box.querySelector('.bp-dymek-x');
+  var mqWaski=window.matchMedia('(max-width:599px),(max-height:599px)'), biezace=null, GORA=88, M=12;
   pojecia.forEach(function(a){
     if(!D[a.getAttribute('data-termin')])return;
     a.setAttribute('role','button');a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
   });
   function pozycja(){
     if(!biezace||box.hidden)return;
+    box.style.maxHeight='';box.style.overflowY='';
     if(mqWaski.matches){box.style.top='';box.style.left='';return}
-    var r=biezace.getClientRects()[0]||biezace.getBoundingClientRect(), vw=document.documentElement.clientWidth, vh=window.innerHeight;
-    var w=box.offsetWidth, h=box.offsetHeight, x=Math.min(Math.max(16,r.left),vw-w-16), y=r.bottom+10;
-    if(y+h>vh-12&&r.top-h-10>76)y=r.top-h-10;
+    var rs=biezace.getClientRects(), r1=rs[0]||biezace.getBoundingClientRect(), r2=rs[rs.length-1]||r1;
+    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.offsetHeight;
+    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y;
+    if(h<=pod){y=r2.bottom+10}
+    else if(h<=nad){r=r1;y=r1.top-10-h}
+    else if(pod>=nad){y=r2.bottom+10;box.style.maxHeight=Math.max(160,pod)+'px';box.style.overflowY='auto'}
+    else{r=r1;box.style.maxHeight=Math.max(160,nad)+'px';box.style.overflowY='auto';y=r1.top-10-box.offsetHeight}
+    var x=Math.min(Math.max(16,r.left),vw-w-16);
     box.style.left=Math.round(x+window.scrollX)+'px';box.style.top=Math.round(y+window.scrollY)+'px';
   }
   function otworz(a){
     var d=D[a.getAttribute('data-termin')]; if(!d)return;
     if(biezace&&biezace!==a)biezace.setAttribute('aria-expanded','false');
-    biezace=a;tytul.textContent=d.t;opis.textContent=d.d;wiecej.href=d.u;
+    biezace=a;tytul.textContent=d.t;opis.textContent=d.d;owu.hidden=!d.o;wiecej.href=d.u;box.scrollTop=0;
     box.hidden=false;a.setAttribute('aria-expanded','true');pozycja();
     try{box.focus({preventScroll:true})}catch(e){box.focus()}
   }

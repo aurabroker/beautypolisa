@@ -803,14 +803,17 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 <!-- gen:slownik-css -->
 <style>
 /* ===== Pojęcia ze słownika w treści + dymek z definicją (gen_terminy.py – nie edytuj ręcznie) ===== */
-/* bez JS: zwykły link do słownika z dyskretnym kropkowanym podkreśleniem (rozróżnienie nie tylko kolorem – WCAG 1.4.1) */
-a.bp-termin.bp-termin{display:inline;min-height:0;padding:0;margin:0;border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-decoration-color:rgba(42,59,104,.8);text-underline-offset:.24em;text-decoration-skip-ink:auto;cursor:pointer;border-radius:2px}
+/* bez JS: zwykły link do słownika z dyskretnym kropkowanym podkreśleniem (rozróżnienie nie tylko kolorem – WCAG 1.4.1).
+   Podkreślenie i obwódka fokusu idą za kolorem tekstu (currentColor) – kontrast z tłem jak tekst akapitu, także na ciemnych tłach
+   bez klasy .dark (np. baner odnowienia w Strefie); w znanych ciemnych kontekstach – złoto jasne (gold light). */
+a.bp-termin.bp-termin{display:inline;min-height:0;padding:0;margin:0;border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-decoration-color:currentColor;text-underline-offset:.24em;text-decoration-skip-ink:auto;cursor:pointer;border-radius:2px}
 a.bp-termin.bp-termin:hover{text-decoration-style:solid;text-decoration-color:var(--color-gold,#B8975A)}
 a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.3);text-decoration-style:solid}
-.dark a.bp-termin.bp-termin{text-decoration-color:var(--color-gold-light,#D9C089)}
-.dark a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
-a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
-.dark a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
+a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+:is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin{text-decoration-color:var(--color-gold-light,#D9C089)}
+:is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin:hover{text-decoration-color:var(--color-gold-light,#D9C089)}
+:is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
+:is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
 /* dymek: kryjące ivory (bez backdrop-filter – nie liczy się do limitu 3 tafli), złota linia, cień */
 .bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
 .bp-dymek[hidden]{display:none}
@@ -818,6 +821,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
 .bp-dymek:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
 .bp-dymek-t{margin:0 44px 6px 0;padding-bottom:8px;border-bottom:1px solid rgba(184,151,90,.45);font:600 1.4rem/1.2 var(--font-serif,Georgia,serif);color:var(--color-navy,#2A3B68);text-wrap:balance}
 .bp-dymek-d{margin:0;color:var(--color-ink,#1B2233);text-wrap:pretty}
+.bp-dymek-o{margin:8px 0 0;font-size:var(--text-sm,.875rem);line-height:1.5;color:var(--color-taupe,#5F574D)}
+.bp-dymek-o[hidden]{display:none}
 .bp-dymek-akcje{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;margin-top:6px}
 .bp-dymek a.bp-dymek-wiecej{display:inline-flex;align-items:center;min-height:44px;padding:0;font:500 var(--text-sm,.875rem)/1.3 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-transform:none;color:var(--color-navy,#2A3B68);text-decoration:underline;text-decoration-color:var(--color-gold,#B8975A);text-decoration-thickness:1px;text-underline-offset:5px}
 .bp-dymek a.bp-dymek-wiecej:hover{text-decoration-thickness:2px}
@@ -825,9 +830,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
 .bp-dymek-x:hover{background:var(--color-parchment,#EDE5D8)}
 .bp-dymek-x svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
 .bp-dymek :focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
-/* wąskie ekrany: panel u dołu okna (mieści się od 320 px), nad paskiem akcji */
-@media (max-width:599px){
-  .bp-dymek{position:fixed;top:auto!important;left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));width:auto;max-height:min(70vh,560px);overflow-y:auto;overscroll-behavior:contain;padding:14px 16px 10px}
+/* wąskie i niskie okna (telefon, telefon poziomo, powiększenie 200%): panel u dołu okna (mieści się od 320 px), nad paskiem akcji */
+@media (max-width:599px),(max-height:599px){
+  .bp-dymek{position:fixed;top:auto!important;left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));width:auto;max-width:560px;margin-inline:auto;max-height:min(70vh,560px)!important;overflow-y:auto;overscroll-behavior:contain;padding:14px 16px 10px}
 }
 @media (prefers-contrast:more){.bp-dymek{border-color:var(--color-navy,#2A3B68)}a.bp-termin.bp-termin{text-decoration-color:currentColor}}
 @media (forced-colors:active){.bp-dymek{border:2px solid CanvasText}a.bp-termin.bp-termin{text-decoration-color:LinkText}a.bp-termin.bp-termin[aria-expanded="true"]{background:none;outline:1px solid Highlight}}
@@ -923,7 +928,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
         </nav>
         <p class="eyebrow">Prywatne L4 · Lloyd’s Insurance Company S.A.</p>
         <h1 id="hero-title">Ubezpieczenie utraty dochodu dla branży beauty</h1>
-        <p class="lead"><a class="bp-termin" href="slownik.html#haslo-ubezpieczenie-utraty-dochodu" data-termin="ubezpieczenie-utraty-dochodu">Prywatne L4</a> dla samozatrudnionych w&nbsp;beauty. Gdy choroba albo wypadek wyłączą Cię z&nbsp;pracy, ZUS policzy zasiłek od zadeklarowanej podstawy <a class="bp-termin" href="slownik.html#haslo-skladka" data-termin="skladka">składek</a> – nie od tego, ile naprawdę zarabiasz. <a class="bp-termin" href="slownik.html#haslo-polisa" data-termin="polisa">Polisa</a> wypłaca co miesiąc <a class="bp-termin" href="slownik.html#haslo-swiadczenie" data-termin="swiadczenie">świadczenie</a> liczone od <a class="bp-termin" href="slownik.html#haslo-udokumentowany-dochod" data-termin="udokumentowany-dochod">udokumentowanego dochodu</a>.</p>
+        <p class="lead">Prywatne L4 dla samozatrudnionych w&nbsp;beauty. Gdy choroba albo wypadek wyłączą Cię z&nbsp;pracy, ZUS policzy zasiłek od zadeklarowanej podstawy składek – nie od tego, ile naprawdę zarabiasz. Polisa wypłaca co miesiąc świadczenie liczone od udokumentowanego dochodu.</p>
         <div class="hero-actions">
           <a class="btn btn-navy" href="https://utratadochodu.pl/wniosek/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Złóż wniosek na utratadochodu.pl</a>
           <a class="btn btn-ghost" href="#porownanie">Porównaj z&nbsp;zasiłkiem ZUS</a>
@@ -1073,11 +1078,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
         <div class="scope glass glass--tint rv-rise">
           <div class="scope-head"><svg class="lux-icon" aria-hidden="true"><use href="#lux-w-zakresie"/></svg><h3>Co obejmuje</h3></div>
           <ul class="scope-list">
-            <li><strong><a class="bp-termin" href="slownik.html#haslo-okresowa-niezdolnosc" data-termin="okresowa-niezdolnosc">Okresowa niezdolność do pracy</a></strong>Świadczenie co miesiąc, gdy choroba albo <a class="bp-termin" href="slownik.html#haslo-nieszczesliwy-wypadek" data-termin="nieszczesliwy-wypadek">nieszczęśliwy wypadek</a> całkowicie uniemożliwiają wykonywanie zawodu.</li>
+            <li><strong><a class="bp-termin" href="slownik.html#haslo-okresowa-niezdolnosc" data-termin="okresowa-niezdolnosc">Okresowa niezdolność do pracy</a></strong>Świadczenie co miesiąc, gdy choroba albo nieszczęśliwy wypadek całkowicie uniemożliwiają wykonywanie zawodu.</li>
             <li><strong><a class="bp-termin" href="slownik.html#haslo-trwala-niezdolnosc" data-termin="trwala-niezdolnosc">Trwała niezdolność do pracy</a></strong>Świadczenie jednorazowe.</li>
             <li><strong>Śmierć i&nbsp;<a class="bp-termin" href="slownik.html#haslo-inwalidztwo" data-termin="inwalidztwo">inwalidztwo</a> wskutek nieszczęśliwego wypadku</strong>Świadczenia jednorazowe.</li>
-            <li><strong>Wysokość świadczenia</strong>Do 80% udokumentowanego dochodu przy działalności i&nbsp;kontrakcie B2B, do 65% przy umowie o&nbsp;pracę i&nbsp;zleceniu; w&nbsp;CEU „Utrata dochodu” 65% także na B2B. Najwyżej 50&nbsp;000&nbsp;zł miesięcznie.</li>
-            <li><strong>Okres wypłaty i&nbsp;wyczekiwania</strong>Okres wypłaty wybierasz przy zawarciu umowy: 24, 36, 48 albo 60 miesięcy. Pierwsza wypłata – po okresie wyczekiwania ustalonym w&nbsp;umowie.</li>
+            <li><strong>Wysokość <a class="bp-termin" href="slownik.html#haslo-swiadczenie" data-termin="swiadczenie">świadczenia</a></strong>Do 80% udokumentowanego dochodu przy działalności i&nbsp;kontrakcie B2B, do 65% przy umowie o&nbsp;pracę i&nbsp;zleceniu; w&nbsp;CEU „Utrata dochodu” 65% także na B2B. Najwyżej 50&nbsp;000&nbsp;zł miesięcznie.</li>
+            <li><strong><a class="bp-termin" href="slownik.html#haslo-okres-wyplaty" data-termin="okres-wyplaty">Okres wypłaty</a> i&nbsp;wyczekiwania</strong>Okres wypłaty wybierasz przy zawarciu umowy: 24, 36, 48 albo 60 miesięcy. Pierwsza wypłata – po <a class="bp-termin" href="slownik.html#haslo-okres-wyczekiwania" data-termin="okres-wyczekiwania">okresie wyczekiwania</a> ustalonym w&nbsp;umowie.</li>
           </ul>
         </div>
         <div class="scope scope--out glass glass--tint rv-rise">
@@ -1086,16 +1091,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
             <li><strong>Częściowej niezdolności do pracy</strong>Praca w&nbsp;mniejszym wymiarze albo przejście na lżejsze obowiązki nie spełnia warunku wypłaty.</li>
             <li><strong>Wypalenia zawodowego jako samodzielnej diagnozy</strong>Nie jest jednostką chorobową w&nbsp;klasyfikacji ICD. Stres i&nbsp;przemęczenie też nie są rozpoznaniem.</li>
             <li><strong>Chorób i&nbsp;zaburzeń psychicznych</strong>W&nbsp;Leadenhall – gdy są jedyną przyczyną niezdolności; w&nbsp;CEU – także bez tego zastrzeżenia.</li>
-            <li><strong>Schorzeń leczonych w&nbsp;ciągu 24 miesięcy przed umową</strong>Chyba że zgłosisz je w&nbsp;ankiecie medycznej, a&nbsp;ubezpieczyciel przyjmie je do ochrony.</li>
+            <li><strong><a class="bp-termin" href="slownik.html#haslo-schorzenia-sprzed-umowy" data-termin="schorzenia-sprzed-umowy">Schorzeń leczonych w&nbsp;ciągu 24 miesięcy przed umową</a></strong>Chyba że zgłosisz je w&nbsp;ankiecie medycznej, a&nbsp;ubezpieczyciel przyjmie je do ochrony.</li>
             <li><strong>Przerwy z&nbsp;braku klientek lub zleceń</strong>Polisa chroni zdolność do pracy, nie popyt na usługi. Kwarantanna i&nbsp;izolacja bez orzeczonej niezdolności też nie wystarczą.</li>
             <li><strong>Zdarzeń w&nbsp;określonych okolicznościach</strong>Alkohol, narkotyki i&nbsp;środki odurzające (poza zaleconymi przez lekarza), umyślne samookaleczenie i&nbsp;próba samobójcza, działania wojenne, zamieszki i&nbsp;terroryzm, wyczynowy sport i&nbsp;sporty wysokiego ryzyka – część z&nbsp;nich da się objąć po zgłoszeniu we wniosku.</li>
           </ul>
-          <p class="note">To streszczenie. Każde wyłączenie z&nbsp;wyjaśnieniem znajdziesz na stronie <a href="https://utratadochodu.pl/wylaczenia/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">czego to ubezpieczenie nie obejmuje</a>, a&nbsp;wiążące OWU i&nbsp;karty produktu – w&nbsp;<a href="https://utratadochodu.pl/dokumenty/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">dokumentach do pobrania</a>.</p>
+          <p class="note">To streszczenie. Każde wyłączenie z&nbsp;wyjaśnieniem znajdziesz na stronie <a href="https://utratadochodu.pl/wylaczenia/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">czego to ubezpieczenie nie obejmuje</a>, a&nbsp;wiążące OWU i&nbsp;<a class="bp-termin" href="slownik.html#haslo-karta-produktu" data-termin="karta-produktu">karty produktu</a> – w&nbsp;<a href="https://utratadochodu.pl/dokumenty/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">dokumentach do pobrania</a>.</p>
         </div>
       </div>
       <div class="scope-aside rv-rise">
         <h3>Tatuaż, piercing, zabiegi iniekcyjne i&nbsp;aparaturowe</h3>
-        <p>Zakażenie HIV albo WZW nie jest wyłączone – niezdolność do pracy, do której doprowadzi, ocenia się na zasadach ogólnych, jak przy każdej innej chorobie. Osobna klauzula HIV/WZW z&nbsp;jednorazową wypłatą za samo zakażenie jest dostępna tylko w&nbsp;wariantach dla zawodów medycznych.</p>
+        <p>Zakażenie HIV albo WZW nie jest wyłączone – niezdolność do pracy, do której doprowadzi, ocenia się na zasadach ogólnych, jak przy każdej innej chorobie. Osobna <a class="bp-termin" href="slownik.html#haslo-klauzula" data-termin="klauzula">klauzula</a> HIV/WZW z&nbsp;jednorazową wypłatą za samo zakażenie jest dostępna tylko w&nbsp;wariantach dla zawodów medycznych.</p>
         <p>Wykonujesz zabiegi aparaturowe lub iniekcyjne? Opisz ich zakres dokładnie we wniosku – zmienia to ocenę ryzyka.</p>
       </div>
     </div>
@@ -1552,65 +1557,77 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
 <!-- gen:slownik-js -->
 <script type="application/json" id="slownik-dymki">
 {
- "ubezpieczenie-utraty-dochodu": {
-  "t": "Ubezpieczenie utraty dochodu (prywatne L4)",
-  "d": "Ubezpieczenie, które co miesiąc wypłaca świadczenie, gdy choroba albo nieszczęśliwy wypadek całkowicie uniemożliwią Ci wykonywanie zawodu. Świadczenie liczy się od udokumentowanego dochodu – do 80% przy działalności i B2B, do 65% przy umowie o pracę i zleceniu (w CEU „Utrata dochodu” 65% także na B2B), najwyżej 50 000 zł miesięcznie.",
-  "u": "slownik.html#haslo-ubezpieczenie-utraty-dochodu"
- },
- "skladka": {
-  "t": "Składka",
-  "d": "Cena ubezpieczenia – kwota, którą ubezpieczający płaci ubezpieczycielowi za ochronę, jednorazowo albo w ratach (np. co miesiąc). Jej wysokość zależy od ryzyka i wybranego zakresu; wynika ze stałej taryfy albo z wyliczenia ubezpieczyciela po ocenie ryzyka.",
-  "u": "slownik.html#haslo-skladka"
- },
- "polisa": {
-  "t": "Polisa",
-  "d": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę.",
-  "u": "slownik.html#haslo-polisa"
- },
- "swiadczenie": {
-  "t": "Świadczenie",
-  "d": "To, co daje ubezpieczyciel, gdy zdarzy się zdarzenie objęte ochroną: wypłata pieniędzy (jednorazowa, co miesiąc albo za każdy dzień) albo zorganizowana usługa, np. wizyta lekarza w ramach assistance. W ubezpieczeniach osobowych kwota świadczenia zwykle wynika z tabeli w umowie, a nie z wysokości poniesionej straty.",
-  "u": "slownik.html#haslo-swiadczenie"
- },
- "udokumentowany-dochod": {
-  "t": "Udokumentowany dochód",
-  "d": "Dochód, który możesz wykazać dokumentami – od niego, a nie od podstawy składek ZUS, liczy się świadczenie z ubezpieczenia utraty dochodu. Przy działalności to zwykle PIT za poprzedni rok i wyciągi albo zestawienie faktur z ostatnich miesięcy, przy umowie o pracę – zaświadczenie o zarobkach.",
-  "u": "slownik.html#haslo-udokumentowany-dochod"
- },
  "zasilek-chorobowy": {
   "t": "Zasiłek chorobowy z ZUS",
   "d": "Pieniądze z ZUS za czas zwolnienia lekarskiego (L4). Przedsiębiorca dostaje go tylko wtedy, gdy opłaca dobrowolne ubezpieczenie chorobowe – po 90 dniach nieprzerwanego ubezpieczenia, najdłużej przez 182 dni.",
-  "u": "slownik.html#haslo-zasilek-chorobowy"
+  "u": "slownik.html#haslo-zasilek-chorobowy",
+  "o": 1
  },
  "zakres-i-wylaczenia": {
   "t": "Zakres ochrony i wyłączenia",
-  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia to opisane w OWU sytuacje, w których – mimo że zdarzenie wygląda na objęte ochroną – wypłaty nie będzie.",
-  "u": "slownik.html#haslo-zakres-i-wylaczenia"
+  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
+  "u": "slownik.html#haslo-zakres-i-wylaczenia",
+  "o": 1
  },
  "owu": {
   "t": "OWU (ogólne warunki ubezpieczenia)",
-  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. To OWU – a nie strona internetowa czy ulotka – rozstrzygają o wypłacie.",
-  "u": "slownik.html#haslo-owu"
+  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. Ubezpieczyciel ma obowiązek doręczyć je przed zawarciem umowy.",
+  "u": "slownik.html#haslo-owu",
+  "o": 1
  },
  "okresowa-niezdolnosc": {
   "t": "Okresowa niezdolność do pracy",
   "d": "Czasowy stan, w którym choroba albo wypadek całkowicie uniemożliwiają wykonywanie Twojego zawodu – za ten czas ubezpieczenie utraty dochodu wypłaca świadczenie miesięczne. Częściowa niezdolność, czyli praca w mniejszym wymiarze albo przejście na lżejsze obowiązki, nie spełnia warunku wypłaty.",
-  "u": "slownik.html#haslo-okresowa-niezdolnosc"
- },
- "nieszczesliwy-wypadek": {
-  "t": "Nieszczęśliwy wypadek (NW)",
-  "d": "Nagłe zdarzenie wywołane przyczyną zewnętrzną, w wyniku którego doszło do urazu. Odróżnia się go od choroby, bo świadczenia za NW są zwykle wyższe albo przysługują tylko po wypadku.",
-  "u": "slownik.html#haslo-nieszczesliwy-wypadek"
+  "u": "slownik.html#haslo-okresowa-niezdolnosc",
+  "o": 1
  },
  "trwala-niezdolnosc": {
   "t": "Trwała niezdolność do pracy",
-  "d": "Stan, w którym na stałe nie możesz pracować; świadczenie jest jednorazowe. W ERGO Życie w Biznesie chodzi o całkowitą, trwałą utratę zdolności do wykonywania jakiejkolwiek pracy – w części branż tylko po nieszczęśliwym wypadku, w innych, także w beauty, również po chorobie.",
-  "u": "slownik.html#haslo-trwala-niezdolnosc"
+  "d": "Stan, w którym na stałe nie możesz pracować; świadczenie jest jednorazowe. W ubezpieczeniu utraty dochodu to osobne ryzyko obok okresowej niezdolności; dokładną definicję podają OWU wariantu.",
+  "u": "slownik.html#haslo-trwala-niezdolnosc",
+  "o": 1
  },
  "inwalidztwo": {
   "t": "Inwalidztwo",
   "d": "Trwała, poważna utrata sprawności, którą OWU wymieniają jako podstawę jednorazowego świadczenia – w BeautyPolisa zwykle wtedy, gdy jest skutkiem nieszczęśliwego wypadku. To nie to samo co trwały uszczerbek na zdrowiu (świadczenie liczone od procentu uszczerbku) ani niezdolność do pracy (chodzi o możliwość zarabiania).",
-  "u": "slownik.html#haslo-inwalidztwo"
+  "u": "slownik.html#haslo-inwalidztwo",
+  "o": 1
+ },
+ "swiadczenie": {
+  "t": "Świadczenie",
+  "d": "To, co daje ubezpieczyciel, gdy zdarzy się zdarzenie objęte ochroną: wypłata pieniędzy (jednorazowa, co miesiąc albo za każdy dzień) albo zorganizowana usługa, np. wizyta lekarza w ramach assistance. W ubezpieczeniach osobowych kwota świadczenia zwykle wynika z tabeli w umowie, a nie z wysokości poniesionej straty.",
+  "u": "slownik.html#haslo-swiadczenie",
+  "o": 1
+ },
+ "okres-wyplaty": {
+  "t": "Okres wypłaty świadczenia",
+  "d": "Najdłuższy czas, przez który ubezpieczenie utraty dochodu wypłaca świadczenie miesięczne, dopóki trwa niezdolność do pracy. Wybierasz go przy zawarciu umowy: 24, 36, 48 albo 60 miesięcy – dłuższy okres oznacza wyższą składkę.",
+  "u": "slownik.html#haslo-okres-wyplaty",
+  "o": 1
+ },
+ "okres-wyczekiwania": {
+  "t": "Okres wyczekiwania",
+  "d": "Czas, który musi upłynąć, zanim ubezpieczenie utraty dochodu zacznie wypłacać świadczenie – pierwsza wypłata przychodzi dopiero po nim. Jego długość ustala umowa i wpływa ona na składkę.",
+  "u": "slownik.html#haslo-okres-wyczekiwania",
+  "o": 1
+ },
+ "schorzenia-sprzed-umowy": {
+  "t": "Schorzenia sprzed umowy",
+  "d": "Choroby i dolegliwości leczone przed zawarciem umowy. W ubezpieczeniu utraty dochodu schorzenia leczone w ciągu 24 miesięcy przed umową są wyłączone – chyba że zgłosisz je w ankiecie medycznej, a ubezpieczyciel przyjmie je do ochrony (czasem ze zwyżką składki albo z wyłączeniem jednego narządu).",
+  "u": "slownik.html#haslo-schorzenia-sprzed-umowy",
+  "o": 1
+ },
+ "karta-produktu": {
+  "t": "Karta produktu (IPID)",
+  "d": "Krótki dokument w ujednoliconym układzie (IPID – z ang. Insurance Product Information Document), który streszcza ubezpieczenie: co obejmuje, czego nie obejmuje, gdzie działa i jakie masz obowiązki. Ułatwia porównanie produktów, ale wiążące są OWU i polisa.",
+  "u": "slownik.html#haslo-karta-produktu",
+  "o": 1
+ },
+ "klauzula": {
+  "t": "Klauzula (rozszerzenie zakresu)",
+  "d": "Dodatkowe postanowienie dołączone do umowy, które zmienia jej zakres – najczęściej rozszerza ochronę o coś, czego podstawowe warunki nie obejmują, zwykle za dodatkową składką. Klauzula działa razem z OWU: postanowienia, których nie zmienia, obowiązują bez zmian.",
+  "u": "slownik.html#haslo-klauzula",
+  "o": 1
  }
 }
 </script>
@@ -1620,8 +1637,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
    klik / Enter / Spacja otwiera niemodalny dialog (role="dialog" + aria-labelledby/aria-describedby – w środku link i przycisk, więc nie tooltip).
    Fokus przechodzi do dialogu; Esc i „Zamknij” zamykają i oddają fokus pojęciu; Tab za ostatnim elementem i Shift+Tab przed pierwszym też wracają do pojęcia;
    klik poza dymkiem zamyka. Najechanie myszą niczego nie otwiera ani nie zamyka (WCAG 1.4.13: dymek nie znika, gdy kursor jest nad nim).
-   Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Szerokie ekrany: dymek pod pojęciem (albo nad nim), w granicach okna;
-   poniżej 600 px: panel u dołu okna. */
+   Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Okno od 600 × 600 px: dymek pod ostatnią linią pojęcia albo nad
+   pierwszą (gdzie się mieści); gdy nie mieści się z żadnej strony – po stronie z większym miejscem, z max-height i przewijaniem wewnątrz
+   (dymek ma tabindex=-1, więc przewija się też z klawiatury). Okno węższe lub niższe niż 600 px: panel u dołu okna. */
 (function(){
   var dane=document.getElementById('slownik-dymki'); if(!dane) return;
   var D; try{D=JSON.parse(dane.textContent)}catch(e){return}
@@ -1630,27 +1648,34 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);
   box.className='bp-dymek';box.id='bp-dymek';box.hidden=true;box.tabIndex=-1;
   box.setAttribute('role','dialog');box.setAttribute('aria-labelledby','bp-dymek-t');box.setAttribute('aria-describedby','bp-dymek-d');
   box.innerHTML='<p class="bp-dymek-t" id="bp-dymek-t"></p><p class="bp-dymek-d" id="bp-dymek-d"></p>'+
+    '<p class="bp-dymek-o" hidden>Objaśnienie ogólne – wiążą OWU produktu i&nbsp;umowa.</p>'+
     '<div class="bp-dymek-akcje"><a class="bp-dymek-wiecej" href="#">Więcej w&nbsp;słowniku</a></div>'+
     '<button type="button" class="bp-dymek-x" aria-label="Zamknij objaśnienie"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg></button>';
   document.body.appendChild(box);
-  var tytul=box.querySelector('.bp-dymek-t'), opis=box.querySelector('.bp-dymek-d'), wiecej=box.querySelector('.bp-dymek-wiecej'), zamknij=box.querySelector('.bp-dymek-x');
-  var mqWaski=window.matchMedia('(max-width:599px)'), biezace=null;
+  var tytul=box.querySelector('.bp-dymek-t'), opis=box.querySelector('.bp-dymek-d'), owu=box.querySelector('.bp-dymek-o'), wiecej=box.querySelector('.bp-dymek-wiecej'), zamknij=box.querySelector('.bp-dymek-x');
+  var mqWaski=window.matchMedia('(max-width:599px),(max-height:599px)'), biezace=null, GORA=88, M=12;
   pojecia.forEach(function(a){
     if(!D[a.getAttribute('data-termin')])return;
     a.setAttribute('role','button');a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
   });
   function pozycja(){
     if(!biezace||box.hidden)return;
+    box.style.maxHeight='';box.style.overflowY='';
     if(mqWaski.matches){box.style.top='';box.style.left='';return}
-    var r=biezace.getClientRects()[0]||biezace.getBoundingClientRect(), vw=document.documentElement.clientWidth, vh=window.innerHeight;
-    var w=box.offsetWidth, h=box.offsetHeight, x=Math.min(Math.max(16,r.left),vw-w-16), y=r.bottom+10;
-    if(y+h>vh-12&&r.top-h-10>76)y=r.top-h-10;
+    var rs=biezace.getClientRects(), r1=rs[0]||biezace.getBoundingClientRect(), r2=rs[rs.length-1]||r1;
+    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.offsetHeight;
+    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y;
+    if(h<=pod){y=r2.bottom+10}
+    else if(h<=nad){r=r1;y=r1.top-10-h}
+    else if(pod>=nad){y=r2.bottom+10;box.style.maxHeight=Math.max(160,pod)+'px';box.style.overflowY='auto'}
+    else{r=r1;box.style.maxHeight=Math.max(160,nad)+'px';box.style.overflowY='auto';y=r1.top-10-box.offsetHeight}
+    var x=Math.min(Math.max(16,r.left),vw-w-16);
     box.style.left=Math.round(x+window.scrollX)+'px';box.style.top=Math.round(y+window.scrollY)+'px';
   }
   function otworz(a){
     var d=D[a.getAttribute('data-termin')]; if(!d)return;
     if(biezace&&biezace!==a)biezace.setAttribute('aria-expanded','false');
-    biezace=a;tytul.textContent=d.t;opis.textContent=d.d;wiecej.href=d.u;
+    biezace=a;tytul.textContent=d.t;opis.textContent=d.d;owu.hidden=!d.o;wiecej.href=d.u;box.scrollTop=0;
     box.hidden=false;a.setAttribute('aria-expanded','true');pozycja();
     try{box.focus({preventScroll:true})}catch(e){box.focus()}
   }
