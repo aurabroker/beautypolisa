@@ -1553,5 +1553,65 @@
       }
     ]
   },
-  "weryfikacja_2026_11_13": "Potwierdzono w kodzie: przedziały, sumy, domyślne, podlimit ×0,75, suma kontrolna NIP w obu komponentach klienta (WniosekForm.tsx:36-42, WycenaModal.tsx:7-15) i w tax-wniosek/index.ts:21-27 (tax-wycena nie sprawdza sumy kontrolnej, l. 91), kolejność walidacji i komunikaty, 5+3 zgody dosłownie, ładunki i mapowanie, fail-open Turnstile, brak escapowania w tax-potwierdz, PDF ze Storage, brak linków do PDF, puste strony informacyjne, metadane i treść PDF. Niesprawdzalne z kodu: wartości w bazie, wersje wdrożone, autoryzacja tax-admin. Dopisane usterki: dane z GUS nieczyszczone po zmianie NIP (WniosekForm.tsx:297, 149-151); modal wyceny bez resetu stanu (WycenaModal.tsx:18-29, 72, 151)."
+  "weryfikacja_2026_11_13": "Potwierdzono w kodzie: przedziały, sumy, domyślne, podlimit ×0,75, suma kontrolna NIP w obu komponentach klienta (WniosekForm.tsx:36-42, WycenaModal.tsx:7-15) i w tax-wniosek/index.ts:21-27 (tax-wycena nie sprawdza sumy kontrolnej, l. 91), kolejność walidacji i komunikaty, 5+3 zgody dosłownie, ładunki i mapowanie, fail-open Turnstile, brak escapowania w tax-potwierdz, PDF ze Storage, brak linków do PDF, puste strony informacyjne, metadane i treść PDF. Niesprawdzalne z kodu: wartości w bazie, wersje wdrożone, autoryzacja tax-admin. Dopisane usterki: dane z GUS nieczyszczone po zmianie NIP (WniosekForm.tsx:297, 149-151); modal wyceny bez resetu stanu (WycenaModal.tsx:18-29, 72, 151).",
+  "przeglad_repo_13_11": {
+    "opis": "GUS (T9) i Turnstile (T10) na tle innych repozytoriów zleceniodawcy (przegląd repo 13.11). Raport .md §13; pełne porównanie proxy REGON i wzorca ac: ergo-zycie-w-biznesie.md §13 (JSON: przeglad_repo_13_11).",
+    "zrodla": [
+      "aurabroker/branzowe @ 8dc9a90",
+      "aurabroker/katalogbeauty @ cab57b5 (2026-07-16)",
+      "aurabroker/crmaura @ e01fbfb (2026-11-11)",
+      "aurabroker/ac @ b5f59c0 (2026-11-13)"
+    ],
+    "pominiete": "klucze, site key Turnstile, adresy odbiorców",
+    "gus_T9": {
+      "kontrakt_tax_gus_jak_crmaura": "{found, nazwa, regon, adres, data_zawieszenia}; bez klucza {available:false, reason:'no_key'}; błąd {found:false, error:'gus_error'} (apiregon.md:171-175, 222-235; crmaura/src/routes/api/regon/lookup/+server.ts:47-49, 104-114); żaden nie zwraca PKD; czy wdrożony tax-gus odpowiada wzorowi – do potwierdzenia",
+      "klient_czyta_pkd": "components/WniosekForm.tsx:117 (data.pkd) → tax-wniosek numer_pkd (supabase/functions/tax-wniosek/index.ts:134); pola 'pkd' nie zwraca żadne z przejrzanych proxy",
+      "pkd_zrodlo": "tylko branzowe: DanePobierzPelnyRaport z raportem *Pkd → pkd_kod, pkd_opis (branzowe/src/lib/serwer/gus.ts:104-122); katalogbeauty /api/regon PKD nie zwraca",
+      "bez_klucza": "tax-gus → tryb ręczny; katalogbeauty → wykaz podatników VAT MF: nazwa, REGON, adres, bez PKD i daty zawieszenia (katalogbeauty/src/routes/api/regon/+server.ts:68-101)",
+      "zawieszenie": "taxbp tylko ostrzega (WniosekForm.tsx:118-120); datę czyta branzowe (wyszukiwanie) i great-noether (raport pełny + active); reguła dla Tax – decyzja",
+      "wnioski": [
+        "wspólny proxy portalu E2/T9 z kontraktem branzowe {nazwa, regon, adres, pkd_kod, pkd_opis, data_zawieszenia}; numer_pkd ← pkd_kod (opis – do decyzji)",
+        "awaryjnie wykaz MF bez klucza: nazwa, REGON, adres; puste PKD i oznaczone źródło",
+        "usterka §6.1 (zmiana NIP nie czyści danych z GUS) usuwana w portalu niezależnie od proxy",
+        "kod wdrożonego tax-gus niepotrzebny do uruchomienia portalu (tylko do porównania); zostają klucz BIR i reguła dla zawieszonych"
+      ],
+      "status": "T9 bez zmian: nie blokuje (tryb ręczny)"
+    },
+    "turnstile_T10": {
+      "wzorzec": "ac/functions/api/kontakt.js – opis i ograniczenia w ergo-zycie-w-biznesie.md §13.2",
+      "zestawienie": [
+        {
+          "taxbp": "bez sekretu verifyTurnstile zwraca true (fail-open)",
+          "ac": "bez sekretu Turnstile pomijany – też fail-open, jawnie z konfiguracji (kontakt.js:148)",
+          "portal": "brak sekretu blokuje wysyłkę"
+        },
+        {
+          "taxbp": "sprawdza tylko success",
+          "ac": "success, action i hostname (kontakt.js:74-75)",
+          "portal": "action 'lead', produkt w cData, hostname portalu (02 §2.2)"
+        },
+        {
+          "taxbp": "błąd sieci przy siteverify – nieobsłużony wyjątek (500)",
+          "ac": "timeout 10 s; brak odpowiedzi → 503 z telefonem (kontakt.js:66-78, 150-152)",
+          "portal": "503 z innym kanałem kontaktu"
+        },
+        {
+          "taxbp": "widżet bez action, appearance, language (WniosekForm.tsx:81-99)",
+          "ac": "render=explicit, managed + interaction-only, ładowanie przy pierwszym fokusie (src/lib/turnstile.ts:1-15)",
+          "portal": "widżet z action, renderowany przy każdym zamontowaniu kontenera (§10)"
+        },
+        {
+          "taxbp": "brak pułapki, minimalnego czasu, limitu, Origin; CORS *",
+          "ac": "pułapka, 3 s, 1 wysyłka / 20 s / IP, Origin lub Referer (kontakt.js:102-106, 123-127, 158-163)",
+          "portal": "warstwy według 02 §2.2"
+        },
+        {
+          "taxbp": "tax-wycena wysyła treść użytkownika na dowolny adres z pola e-mail",
+          "ac": "e-mail tylko do skrzynki serwisu, reply_to = klient, escapowanie (kontakt.js:48-50, 199-213)",
+          "portal": "bez e-maila z treścią użytkownika do niezweryfikowanego adresu; escapowanie"
+        }
+      ],
+      "status": "T10 bez zmian: TAK (W2) – brakuje site key i sekretu dla domeny portalu"
+    }
+  }
 }

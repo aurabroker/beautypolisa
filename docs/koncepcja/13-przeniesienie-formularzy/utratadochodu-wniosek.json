@@ -2551,5 +2551,135 @@
       "status": "częściowo",
       "zostaje": "decyzja, czyje tagi w portalu"
     }
-  ]
+  ],
+  "przeglad_repo_13_11": {
+    "opis": "Panel ofert UD po wniosku – repozytorium udapp. To NIE jest formularz: zaczyna się tam, gdzie wniosek się kończy. Raport .md §11 (weryfikacja w klonie: §11.5).",
+    "zrodlo": {
+      "repo": "aurabroker/udapp (płytki klon, tylko odczyt, kod nieuruchamiany)",
+      "commit": "36ae901",
+      "data_commita": "2026-10-20",
+      "porownanie_z": "ud/apps/panel @ 793a158 (2026-10-12)",
+      "odwolania": "udapp/app/<ścieżka>:<linia>",
+      "stos": "SvelteKit na Cloudflare Pages; Supabase projekt 'aurabroker' (tabele ud_*); SMS przez SMSAPI; e-mail przez Resend (README.md:1-11, DEPLOY.md:1-43)",
+      "pominiete": "adres projektu Supabase, klucze, sekrety, adresy nadawców i odbiorców"
+    },
+    "tabele_ud": [
+      "ud_offers",
+      "ud_offer_documents",
+      "ud_offer_files",
+      "ud_offer_pins",
+      "ud_offer_questions",
+      "ud_owu_library",
+      "ud_settings",
+      "ud_send_log",
+      "ud_clients",
+      "ud_user_profiles"
+    ],
+    "kubelki": {
+      "ud-owu": "prywatny, OWU",
+      "ud-public": "Informacja o dystrybutorze"
+    },
+    "przeplyw_oferty": [
+      {
+        "etap": "utworzenie",
+        "opis": "ud_offers z share_token (24 znaki, crypto.getRandomValues) i access_code; warianty w ud_offer_documents, pliki w ud_offer_files; status 'draft'",
+        "dowod": "src/lib/server/offers.js:79-104; src/lib/server/crypto.js:8-15"
+      },
+      {
+        "etap": "kod_dostepu",
+        "opis": "hasło PDF ubezpieczyciela, jeśli ma co najmniej 4 cyfry (^\\d{4,}$), inaczej losowy 4-cyfrowy PIN; przy wysyłce hash PBKDF2-SHA256 (100 000 iteracji) w ud_offer_pins z expires_at = teraz + PIN_TTL_HOURS (domyślnie 48 h)",
+        "dowod": "offers.js:83-85, 527-542; crypto.js:17-40; DEPLOY.md:43"
+      },
+      {
+        "etap": "wysylka",
+        "opis": "e-mail z linkiem /offer/[token] (temat 'Twoja oferta ubezpieczenia utraty dochodu — nr …') i SMS z hasłem oraz linkiem; każda próba w ud_send_log; status 'sent' tylko gdy coś wyszło",
+        "dowod": "offers.js:544-599"
+      },
+      {
+        "etap": "bramka",
+        "opis": "przed weryfikacją tylko token, client_name i nazwa oferty; POST …/unlock przyjmuje dokładnie 4 cyfry, sprawdza wygaśnięcie i attempts/max_attempts, ustawia ciasteczko httpOnly podpisane HMAC na ścieżce oferty",
+        "dowod": "src/routes/offer/[token]/+page.server.js:7-27; …/unlock/+server.js:6-66; src/lib/server/clientAuth.js:17-34"
+      },
+      {
+        "etap": "podglad",
+        "opis": "status sent → viewed (viewed_at); warianty, pliki, warunki oferty, link do Informacji o dystrybutorze",
+        "dowod": "+page.server.js:29-58"
+      },
+      {
+        "etap": "wybor_wariantu",
+        "opis": "POST …/choice: 'choose' (wariant) albo 'reject'; zapis client_choice, status chosen/rejected, decided_at; e-mail do agenta; komunikat 'Dziękujemy! Twój wybór został zapisany. Agent skontaktuje się z Tobą.'",
+        "dowod": "…/choice/+server.js:20-62; src/lib/components/OfferView.svelte:158"
+      },
+      {
+        "etap": "pytania_do_agenta",
+        "opis": "'Masz pytanie?': 3–2000 znaków → ud_offer_questions i e-mail do agenta z Reply-To klienta (pola escapowane); wymaga zweryfikowanego ciasteczka",
+        "dowod": "…/question/+server.js:7-47; src/lib/server/templates.js:65-88"
+      },
+      {
+        "etap": "owu",
+        "opis": "aktywne pozycje ud_owu_library danego ubezpieczyciela; dopasowanie po symbolu: Leadenhall baza LW044/LW046/LW047, warunki HIV/WZW (LW048/LW049) tylko przy LW046/LW047; CEU jedno dopasowanie; 'Leadenhall ma 3 OWU, CEU 2'",
+        "dowod": "offers.js:163-190; src/lib/server/owuMatch.js:1-4, 47-80; DEPLOY.md:64-67"
+      },
+      {
+        "etap": "dystrybutor",
+        "opis": "GET /dystrybutor strumieniuje PDF z kubełka ud-public według ud_settings.distributor_pdf_path (inline, no-store); bez ustawienia 404; bez wersji w adresie",
+        "dowod": "src/routes/dystrybutor/+server.js:5-24; src/lib/server/settings.js:6-17"
+      },
+      {
+        "etap": "stopka",
+        "opis": "stopka spółki Aura Expert z 'XII Wydział Gospodarczy Krajowego Rejestru Sądowego' i numerem RPU w warunkach oferty, PDF i e-mailu; w e-mailu ud_settings.pdf_footer, a gdy puste – stała stopka",
+        "dowod": "src/lib/server/offerConditions.js:83; src/lib/server/pdf/conditionsDoc.js:75-79; templates.js:4, 19"
+      }
+    ],
+    "brak_w_udapp": [
+      "/kup-online i link afiliacyjny",
+      "zakup, umowa, płatność, status 'bought'",
+      "tagi analityczne (gtag, googletagmanager, fbq)"
+    ],
+    "uzupelnienia_weryfikacji": [
+      {
+        "ustalenie": "Hasło PDF dłuższe niż 4 cyfry zostaje kodem dostępu i idzie SMS-em, ale bramka, odnowienie PIN-u i pole przyjmują dokładnie 4 cyfry – klient takiej oferty nie otworzy. Czy hasła PDF Leadenhall mają zawsze 4 cyfry – do potwierdzenia",
+        "dowod": "offers.js:85, 527-542, 567; unlock/+server.js:8, 31; offer/[token]/+page.svelte:47-48"
+      },
+      {
+        "ustalenie": "Akceptacja wyłączeń ('Zapoznałem/am się z wyłączeniami i akceptuję warunki.') tylko w przeglądarce; serwer dostaje {action, documentId} i jej nie zapisuje",
+        "dowod": "OfferView.svelte:68, 80, 197, 203; choice/+server.js:7-9, 33-39"
+      },
+      {
+        "ustalenie": "Każdy POST …/choice nadpisuje client_choice, status i decided_at i wysyła kolejny e-mail do agenta (bez escapowania; dane z panelu i PDF)",
+        "dowod": "choice/+server.js:45-61"
+      },
+      {
+        "ustalenie": "Powiązanie oferty z ud_clients (client_id) jest opcjonalne, ustawia je agent",
+        "dowod": "offers.js:72, 95; src/routes/panel/new/+page.server.js:32, 42-46"
+      },
+      {
+        "ustalenie": "Ręczne dodanie klienta: ud_clients z source 'manual' i referred_by; serwer egzekwuje okresową niezdolność jako ryzyko podstawowe i ankietę rozszerzoną (hs_*, hsd_*) przy sumie trwałej > 1 000 000 zł – te same reguły co kreator; potwierdza ud_clients jako tabelę docelową U1",
+        "dowod": "src/routes/panel/klienci/nowy/+page.server.js:45, 52-72; src/lib/healthSurvey.js:8"
+      }
+    ],
+    "wplyw_na_braki": {
+      "U9": {
+        "status": "otwarty (bez zmian)",
+        "ocena": "udapp opisuje ścieżkę po wniosku: oferta agenta → porównanie → wybór → kontakt agenta. Wybór nie jest zakupem; umowa, polisa i płatność poza udapp (bought w ud, §9.6), kto i jak – do potwierdzenia. Portal może opisać ścieżkę do etapu 'wybór → kontakt agenta', bez obietnicy zakupu online po ofercie. /kup-online (zakup u Leadenhall) nadal nieznany."
+      },
+      "U10": {
+        "status": "częściowo (decyzja bez zmian)",
+        "ocena": "Brak tagów w udapp; viewed/chosen/rejected tylko jako statusy i znaczniki czasu w ud_offers. Pomiar poza wysłaniem wniosku tylko po stronie serwera (np. webhook HUB utm-attribution). Konwersję 'wybór oferty' można przypisać wnioskowi tylko przy client_id; liczy się ostatni decided_at."
+      },
+      "W4": "wniosek z portalu w ud_clients (wariant A) skutkuje ofertą z marką UtrataDochodu; domyślny nadawca z domeny UD, gdy brak RESEND_FROM (src/lib/server/email.js:8, 20)",
+      "D38": "stopka udapp potwierdza 'XII Wydział'"
+    },
+    "dwie_wersje_panelu": "udapp: kod = hasło PDF lub losowy PIN, SMS z hasłem i linkiem; ud/apps/panel: kod = 4 ostatnie cyfry PESEL, SMS bez linku i kodu, wersja oferty, strażnik wersji OWU. Która działa na produkcji – do potwierdzenia (§11.2)",
+    "wzorce_dla_portalu": [
+      "token z CSPRNG o wysokiej entropii",
+      "kod jako drugi czynnik: limit prób, twardy TTL bez cichego odnawiania, tylko hash, nie fragment PESEL",
+      "jeden format kodu w generatorze, SMS-ie i bramce",
+      "SMS bez linku; log wysyłek z numerem wersji oferty",
+      "akceptacja warunków i wyłączeń zapisywana na serwerze (treść z wersją, czas, wariant); decyzja jednorazowa albo z historią",
+      "Informacja o dystrybutorze z własnej domeny, z wersją w adresie lub nazwie i hashem w kopercie wniosku",
+      "OWU dopasowywane po symbolu ze strażnikiem wersji",
+      "neutralne 'Dzień dobry,' i wersja tekstowa e-maila"
+    ]
+  }
 }

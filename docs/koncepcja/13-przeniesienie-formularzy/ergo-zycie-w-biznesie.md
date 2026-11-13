@@ -15,6 +15,8 @@
 
 **Uzupełnienie 13.11.2026:** backend (serwer `/api/wnioski` i `/api/gus`, e-maile, baza, dokumenty, katalogi OWU) opisują §9–§12 na podstawie repozytorium `aurabroker/branzowe`. Aplikacja to SvelteKit z adapterem Cloudflare Workers; produkcja odpowiada gałęzi PR #1 (`3c5086f`, §9.0).
 
+**[przegląd repo 13.11]** Proxy REGON z `aurabroker/katalogbeauty` (porównanie z `/api/gus`, E2) i wzorzec ochrony formularza z `aurabroker/ac` (Turnstile, W2) opisuje **§13**.
+
 Dane strukturalne do makiety: `ergo-zycie-w-biznesie.json` w tym samym katalogu (kroki, pola, opcje, pełny cennik wszystkich 8 branż, rozpisane karty wariantów i tabela świadczeń dla beauty, mediopieka, Global Doctors, 11 pakietów dodatkowych, zgody, słowniczek, opisy pakietów, dokumenty).
 
 ---
@@ -614,7 +616,7 @@ Stan na 13.11.2026, źródło `aurabroker/branzowe` @ `8dc9a90` (produkcja = `3c
 | # | Brak (z `00-braki-i-decyzje.md`) | Status | Dowód / co zostaje |
 |---|---|---|---|
 | E1 | Kod `/api/wnioski`: walidacje (PESEL), przeliczenie składki, `nr_wniosku`, statusy, `ezb_wnioski`, `cennik_wersja`, `ezb_zdarzenia`, rate limit | **zamknięty** | §9.1: kolejność i walidacje (`+server.ts:19-157`), PESEL (`rodo.ts:26-31`), składka i 409 (l. 159–180), `cennik_wersja` = stała `branze-2607` (l. 14), numer `EZB-RRRR-NNNNNN` (`init.sql:18-19`), statusy bez obsługi w kodzie (l. 33–34), zdarzenia `wyslano`/`atrybucja_pominieta` (tylko `990b947`+, nie na produkcji)/`mail_blad` (l. 243–253). **Rate limitu, Turnstile, honeypota i idempotencji nie ma** |
-| E2 | `/api/gus`: dostęp BIR1, mapowanie adresu i PKD, cache | **zamknięty** (klucz celowo poza dokumentem) | §9.2: BIR 1.1 SOAP, nowa sesja na każde zapytanie bez `Wyloguj` (`gus.ts:59-73`), adres (l. 90–100), PKD z raportów `*Pkd` (l. 104–122), cache 24 h (`api/gus/+server.ts:6-27`), kody 400/404/502/503/500. **Zostaje:** klucz GUS od zleceniodawcy albo własny; weryfikacja na żywym API, czy `DataZawieszeniaDzialalnosci` jest w wyniku wyszukiwania; wariant `great-noether` jako baza implementacji portalu |
+| E2 | `/api/gus`: dostęp BIR1, mapowanie adresu i PKD, cache | **zamknięty** (klucz celowo poza dokumentem) | §9.2: BIR 1.1 SOAP, nowa sesja na każde zapytanie bez `Wyloguj` (`gus.ts:59-73`), adres (l. 90–100), PKD z raportów `*Pkd` (l. 104–122), cache 24 h (`api/gus/+server.ts:6-27`), kody 400/404/502/503/500. **Zostaje:** klucz GUS od zleceniodawcy albo własny; weryfikacja na żywym API, czy `DataZawieszeniaDzialalnosci` jest w wyniku wyszukiwania; wariant `great-noether` jako baza implementacji portalu. [przegląd repo 13.11] PKD w EZB już jest. `katalogbeauty` daje tylko zapasowe źródło MF bez klucza, bez PKD i bez daty zawieszenia (§13.1) |
 | E3 | Szablony e-maili, nadawca, szablon XLSX, PDF „Informacja o dystrybutorze” | **zamknięty** | §9.3: tematy i treści dosłownie (`resend.ts:53-92`), nadawca i odbiorcy z sekretów, 3 załączniki, kolumny arkusza; pliki w `static/dokumenty/`. **Zostaje (W4):** kto wysyła z portalu i czy treść ma zostać (rozbieżności: „kopia oferty”, „dane osób przystępujących”, arkusz 18–69 lat, PESEL w arkuszu) |
 | E4 | PDF OWU i karty produktu | **zamknięty** | §9.5: 6 plików + `rodo.pdf` + `informacja-o-dystrybutorze.pdf` w repozytorium, kody EZwB 01/25, MA 01/25, GD-GZ 01/25, wejście w życie 22.12.2025, errata ER/EHZ01/2602 od 13.02.2026. Kopiowanie robi zadanie „docs” |
 | E5 | Zatwierdzona klauzula art. 13; sprzeczność z3 a `/rodo` | **częściowo** (sprzeczność rozstrzygnięta na podstawie kodu; akceptacja prawnika – otwarta) | §9.4: `/rodo`, `rodo.pdf` (załącznik każdego potwierdzenia), regulamin i przepływ danych wskazują **Aura Expert**; z3 to robocza treść z prototypu (`zgody.ts:4`). Do prawnika: rola agenta (administrator czy podmiot przetwarzający), błędy w `rodo.pdf` („czynności brokerskie”, XII/XIII Wydział), transfer poza UE (Resend, Cloudflare) |
@@ -679,11 +681,11 @@ Dziś po stronie EZB nikt statusów nie zmienia, więc w praktyce synchronizacja
 
 | # | Ustalenie | Dowód | Waga | Co w portalu |
 |---|---|---|---|---|
-| B1 | Publiczny `POST /api/wnioski` bez Turnstile, honeypota, rate limitu i idempotencji; każde wywołanie to `INSERT` z kluczem `service_role` i dwa maile | `+server.ts:134-255`; `hooks.server.ts` (tylko robots); brak w `wrangler.jsonc` | wysoka | standard 02 §2.2: honeypot → idempotencja → rate limit → Zod → Turnstile (`siteverify` z `hostname`/`action`) |
+| B1 | Publiczny `POST /api/wnioski` bez Turnstile, honeypota, rate limitu i idempotencji; każde wywołanie to `INSERT` z kluczem `service_role` i dwa maile | `+server.ts:134-255`; `hooks.server.ts` (tylko robots); brak w `wrangler.jsonc` | wysoka | standard 02 §2.2: honeypot → idempotencja → rate limit → Zod → Turnstile (`siteverify` z `hostname`/`action`). [przegląd repo 13.11] Wzorzec w kodzie zleceniodawcy: `ac/functions/api/kontakt.js` (§13.2) |
 | B2 | Mail z marką ERGO HESTIA i domeną `auraexpert.pl` (DKIM) wysyłany **na dowolny adres** podany w formularzu, z załącznikami PDF i treścią częściowo sterowaną przez wysyłającego (imię, nazwa firmy w trybie ręcznym). Gotowy kanał phishingu i spamu z zaufanej domeny | `resend.ts:53-75, 107-114`; `+server.ts:226-241`; brak B1 | wysoka | wysyłka dopiero po Turnstile; limit maili na adres i IP; ewentualnie potwierdzenie adresu przed wysyłką załączników |
 | B3 | Brak escapowania HTML w szablonach (`imie`, `firmaNazwa`, `email`, `telefon`, nazwy z GUS) – wstrzyknięcie linków lub HTML w mail do klienta i opiekuna | `resend.ts:30, 58-61, 79-89` | wysoka | escapowanie wszystkich pól, szablony z silnikiem escapującym |
 | B4 | Worker trzyma klucz `service_role` projektu współdzielonego z CRM (`crm_*`), UD (`ud_*`) i innymi. Kompromitacja Workera EZB lub jego sekretów daje pełny dostęp do CRM | `supabase.ts:8-12`; commit `438d70a`; `README.md:29-30` | wysoka | portal bez `service_role` do „aurabroker”; dedykowana funkcja z kluczem integracji i minimalnymi uprawnieniami (§11) |
-| B5 | `/api/gus` bez limitu – otwarte proxy do BIR na kluczu Aura Expert (zużycie limitu GUS, enumeracja NIP). Każde zapytanie spoza cache otwiera sesję BIR bez `Wyloguj`; timeout kończy się 500 | `api/gus/+server.ts:8-33`; `gus.ts:38, 59-66` | średnia | rate limit, Turnstile lub token sesji formularza, `Wyloguj` lub współdzielona sesja, mapowanie timeoutu na 502 |
+| B5 | `/api/gus` bez limitu – otwarte proxy do BIR na kluczu Aura Expert (zużycie limitu GUS, enumeracja NIP). Każde zapytanie spoza cache otwiera sesję BIR bez `Wyloguj`; timeout kończy się 500 | `api/gus/+server.ts:8-33`; `gus.ts:38, 59-66` | średnia | rate limit, Turnstile lub token sesji formularza, `Wyloguj` lub współdzielona sesja, mapowanie timeoutu na 502. [przegląd repo 13.11] Proxy `katalogbeauty` ma tę samą wadę (§13.1) |
 | B6 | Dane osobowe w logu zdarzeń: `mail_blad` zapisuje adres e-mail odbiorcy i treść błędu; `console.error` przy błędzie zapisu | `+server.ts:220, 251`; `resend.ts:117-121` | średnia | log bez PII (hash adresu), retencja |
 | B7 | Zgody bez rozliczalności: tylko kod, wersja i czas serwera; brak treści lub hasha, IP, UA; wersja i nieznane kody nieweryfikowane; brak wycofania z6/z7 | `+server.ts:60, 155-157, 193-195`; `zgody.ts:2-4` | średnia (RODO art. 7 ust. 1) | rejestr zgód z hashem treści (W3) |
 | B8 | Negatywna walidacja PESEL to heurystyka: PESEL z separatorami przechodzi, a 14-cyfrowy REGON lub e-mail z 11 cyframi daje fałszywe odrzucenie. Równolegle arkusz XLSX prosi o PESEL-e mailem | `rodo.ts:18-30`; `lista-ubezpieczonych.xlsx` (`ObliczeniaPESEL`) | średnia | normalizacja cyfr przed testem i wyłączenie pól o znanym formacie (`nip`, `regon`); arkusz bez PESEL |
@@ -711,6 +713,74 @@ Pozytywne (zachować w portalu):
 - §6: „kodu brak” przy GUS zastąpione odwołaniem do §9.2; `ezb_zdarzenia` zasila tylko `/api/wnioski` (3 typy zdarzeń, §9.1); katalogi `/dane/owu/*.json` opisane w §9.6.
 - §3.3: pliki PDF są w repozytorium (§9.5).
 - §7 i §8: dopisano stan po analizie repozytorium. Większość punktów §7 jest zamknięta (§10). Ryzyka z §8 potwierdzone i rozszerzone w §12.
+
+---
+
+## 13. Wzorce z innych repozytoriów zleceniodawcy [przegląd repo 13.11]
+
+Źródła: płytkie klony `aurabroker/katalogbeauty` (`cab57b5`, 16.07.2026), `aurabroker/ac` (`b5f59c0`, 13.11.2026) i `aurabroker/hub` (`e2f6824`, 26.10.2026), a do porównania `aurabroker/crmaura` (`e01fbfb`, 11.11.2026). Kod był czytany, nie uruchamiany. Klucze, site key Turnstile i adresy odbiorców pominąłem. Odwołania mają format `<repo>/<ścieżka>:<linia>`. W tabeli §13.1 same numery linii („l.”) w kolumnie `katalogbeauty` dotyczą `src/routes/api/regon/+server.ts`, a ścieżki w kolumnie `branzowe` – tego repozytorium (jak w §9). Ścieżki bez prefiksu w §13.2 dotyczą `ac`.
+
+### 13.1 Proxy REGON: `katalogbeauty` `/api/regon` a `/api/gus` (E2)
+
+**Czy EZB ma już GUS z PKD? Tak.** `/api/gus` z `branzowe` pobiera PKD przeważające raportem `DanePobierzPelnyRaport` (`BIR11OsPrawnaPkd` albo `BIR11OsFizycznaPkd`, `branzowe/src/lib/serwer/gus.ts:104-122`; §9.2). Proxy z `katalogbeauty` PKD nie zwraca, więc dla EZB nie zastępuje `branzowe`. Daje dwie rzeczy, których `branzowe` nie ma: wyszukiwanie po REGON i zapasowe źródło bez klucza.
+
+| | `katalogbeauty` `GET /api/regon` | `branzowe` `GET /api/gus` (produkcja EZB, §9.2) | `great-noether` (§9.2) |
+|---|---|---|---|
+| Wejście | `nip` albo `regon` (l. 47-56) | tylko `nip` (`api/gus/+server.ts:9-10`) | REGON-9/14, NIP, KRS i listy |
+| Walidacja offline | NIP z sumą kontrolną (l. 28-33); REGON tylko długość 9 lub 14, bez sumy (l. 36-38) | NIP z sumą (`src/lib/domena/nip.ts:6`) | NIP, REGON-9 i REGON-14 z sumami, format KRS |
+| Źródła | BIR 1.1, gdy jest sekret `GUS_API_KEY` (l. 58-66). Każdy błąd BIR jest połykany i endpoint przechodzi do wykazu podatników VAT MF po NIP, bez klucza (l. 68-76, 82-101) | tylko BIR; bez klucza 503 (`api/gus/+server.ts:11-12`) | tylko BIR |
+| Sesja BIR | `Zaloguj` przy każdym zapytaniu; `Wyloguj` wysyłany bez czekania na wynik (`void`, l. 155-176) | bez `Wyloguj` | `Wyloguj` w `finally` |
+| PKD | **brak**, tylko `DaneSzukajPodmioty` (l. 164-171) | przeważające z raportu `*Pkd`; błąd nie blokuje | `pkdMain` z pól `podstawowaFormaPrawna_Symbol_PKD` albo `dzialalnoscPodstawowa` raportu pełnego, a nie z raportu `*Pkd` (`gus-regon-verification.json`, l. 163). Czy BIR 1.1 zwraca te pola – do potwierdzenia na żywym API |
+| Data zawieszenia | **brak** w kodzie; opisana tylko w `docs/REGON-API.md:174, 288` | `DataZawieszeniaDzialalnosci` z wyszukiwania (`gus.ts:101`) | z raportu pełnego, razem z datą wznowienia i zakończenia |
+| Odpowiedź | `{name, nip, regon, street, postal_code, city, voivodeship}` (l. 10, 15-23, 197-205), bez informacji o źródle; 400 i 404 | `{nazwa, regon, adres?, pkd_kod?, pkd_opis?, data_zawieszenia?}`; 400/404/502/503/500 | `{valid, found, active, identifierType, entity, …}` |
+| Awaria | gdy BIR i MF zawiodą, endpoint zwraca 404 „Nie znaleziono firmy o podanych danych.” (l. 78), czyli awarii nie da się odróżnić od braku firmy | 404 osobno od 502 | kody błędów BIR |
+| Cache, limit, timeout | brak; `fetch` bez limitu czasu (l. 124-140) | cache 24 h; bez limitu; timeout 5 s | timeout 15 s |
+| Dostęp | publiczny: endpoint nie sprawdza sesji, a w repozytorium nie ma `src/hooks.server.ts`. Wywołuje go panel salonu (`src/routes/panel/+page.svelte:170`) | publiczny (B5) | biblioteka |
+
+**Pochodzenie dokumentacji.** `katalogbeauty/docs/REGON-API.md` jest bajtowo identyczny z `branzowe/docs/REGONAPILOGIN.md` (porównanie plików). Jako implementację referencyjną wskazuje `src/routes/api/regon/lookup/+server.ts` (l. 8). Tej ścieżki nie ma w `katalogbeauty`, jest w `crmaura`: `crmaura/src/routes/api/regon/lookup/+server.ts` wymaga logowania (l. 44), nie pobiera PKD i zwraca `data_zawieszenia` (l. 98, 104-111).
+
+**Wnioski dla E2** (zgodne z wierszem E2 w `00-braki-i-decyzje.md`):
+- Rdzeń proxy portalu zostaje jak w §9.2: kontrakt i PKD z `branzowe`, a walidacja offline, `Wyloguj` i ocena aktywności z `great-noether`.
+- Z `katalogbeauty` przejąć zapasowe źródło MF po NIP (bez klucza), gdy BIR nie działa albo nie ma klucza. Opcjonalnie także wyszukiwanie po REGON.
+- Odpowiedź z MF nie ma PKD ani daty zawieszenia. Portal musi ją oznaczyć osobnym źródłem (np. `zrodlo: 'mf'`), bo schemat EZB zna dziś tylko `'gus' | 'recznie'` (§9.1). Karta kroku 5 pokaże wtedy brak PKD, a opiekun sprawdzi PKD i status przed wystawieniem polisy, jak w trybie ręcznym.
+- Limity zapytań wykazu MF przy ruchu z portalu – do potwierdzenia.
+- Nie przejmować: zamiany awarii na 404, braku limitu czasu, cache i limitu na IP oraz walidacji REGON bez sumy kontrolnej.
+- Wszystkie trzy repozytoria używają tej samej nazwy sekretu: `GUS_API_KEY`. Wartość pochodzi od zleceniodawcy.
+
+### 13.2 Ochrona formularza: wzorzec `ac/functions/api/kontakt.js` (W2; B1, B5)
+
+Formularz kontaktowy serwisu Aura Consulting to Cloudflare Pages Function `POST /api/kontakt` (227 linii). Klient: `src/components/ContactForm.astro`, `src/scripts/contact-form.ts`, `src/lib/turnstile.ts`. To najpełniejsza ochrona formularza w repozytoriach zleceniodawcy i jest zgodna ze standardem portalu (`02-architektura-i-bezpieczenstwo.md` §2.2).
+
+| Warstwa | Jak działa w `ac` | Dowód |
+|---|---|---|
+| Origin | `Origin` albo `Referer` musi być na liście hostów, inaczej 403 | `functions/api/kontakt.js:16, 52-60, 102-106` |
+| Pułapka i czas | wypełnione ukryte pole `website` albo wysyłka szybciej niż 3 s od pierwszego fokusu (pole `t`) → udawany sukces, nic nie wychodzi | `kontakt.js:123-127`; `src/components/ContactForm.astro:39, 43`; `src/scripts/contact-form.ts:114-115` |
+| Walidacja i zgoda | imię, e-mail, treść, zaznaczona prośba o kontakt; błędy pól → 422 | `kontakt.js:129-144` |
+| Turnstile | gdy jest sekret `TURNSTILE_SECRET_KEY`: token najwyżej 2048 znaków, `siteverify` z `remoteip` i `idempotency_key`, timeout 10 s. Wymaga `success`, `action` = `kontakt` i `hostname` z listy. Brak odpowiedzi → 503 z numerem telefonu, odrzucenie → 403 | `kontakt.js:62-79, 146-156` |
+| Limit | 1 wysyłka na 20 s z adresu IP (`cf-connecting-ip`), licznik w `caches.default` | `kontakt.js:18, 158-163, 221` |
+| E-mail | usunięte znaki sterujące, pola jednowierszowe, escapowany HTML, `reply_to` = adres klienta, wersja tekstowa obok HTML | `kontakt.js:48-50, 175-213` |
+| Bez JS | zwykły POST i odpowiedź 303 na `#formularz-wyslano` albo `#formularz-blad`. Przy włączonym Turnstile wysyłka bez JS jest odrzucana, a `<noscript>` podaje telefon | `kontakt.js:11, 88-99`; `ContactForm.astro:5-10, 80-83` |
+| Klient | widżet `render=explicit`, tryb managed z `interaction-only`, ładowany przy pierwszym fokusie; token resetowany po każdej próbie; CSP w `public/_headers` | `src/lib/turnstile.ts:1-15`; `contact-form.ts:6-7` |
+
+Czego nie kopiować 1:1:
+- **Bez sekretu Turnstile jest pomijany** (`kontakt.js:148`). W portalu brak sekretu ma blokować wysyłkę.
+- **`idempotency_key` jest losowany przy każdym wywołaniu** (`kontakt.js:69`), więc nie chroni przed podwójnym wnioskiem. Portal ma własny klucz idempotencji formularza (02 §2.2, pkt 4c).
+- **Limit liczy tylko udane wysyłki**, bo licznik zapisuje się po wysłaniu e-maila (l. 221). Cache Cloudflare działa osobno w każdej lokalizacji, więc limit nie jest globalny. W portalu: reguła strefy i binding (02 §2.2, pkt 3 i 4d).
+- **Minimalny czas zależy od pola `t`**, które ustawia JS. Gdy `t` jest puste, test czasu się nie wykonuje (l. 124-125).
+- **Nazwa pułapki `website`**: standard portalu celowo jej unika (02 §2.2, pkt 1: `extraInfo`).
+- **`action` = `kontakt`**: w portalu `action` = `lead`, a produkt w `cData` (02 §2.2, pkt 1).
+
+Stan w repozytoriach formularzy:
+
+| Repozytorium | Turnstile | Pozostałe warstwy |
+|---|---|---|
+| `branzowe` (EZB) | brak | brak pułapki, limitu i idempotencji; `/api/gus` bez limitu (§12, B1, B5) |
+| `taxbp` (Tax) | bez sekretu przepuszcza wszystko; sprawdza tylko `success` | brak (`tax-protect-wniosek.md` §5.7, §13.2) |
+| `ud` (`form-submit`) | bez `hostname` i `action` | brak deduplikacji i limitu (`utratadochodu-wniosek.md` §9.1) |
+| `hub` | bez sekretu odrzuca (`hub/src/lib/server/turnstile.ts:9`), ale sprawdza tylko `success` (l. 18-19) i nie ma timeoutu; w `src` nikt go nie wywołuje | nie kopiować |
+| `ac` | pełna weryfikacja (tabela wyżej) | Origin, pułapka, czas, limit, escapowanie |
+
+**Rekomendacja (W2).** Middleware Workera portalu według 02 §2.2, uzupełniony o elementy z `ac`: timeout `siteverify` i 503 z innym kanałem kontaktu, limit długości tokenu, minimalny czas wypełnienia liczony od znacznika wydanego przez serwer (a nie od pola z przeglądarki), escapowanie i pola jednowierszowe w e-mailach (B3), sprawdzenie Origin lub Referer. Proxy GUS portalu (E2) za Turnstile albo tokenem sesji formularza i z limitem (B5).
 
 ---
 

@@ -7351,5 +7351,107 @@
     "wniosek zapisany mimo awarii maila lub braku kolumny atrybucji",
     "noindex + X-Robots-Tag na krokach lejka",
     "brak wartości sekretów w repozytorium i historii .env.example"
-  ]
+  ],
+  "przeglad_repo_13_11": {
+    "opis": "Wzorce z innych repozytoriów zleceniodawcy (przegląd repo 13.11): proxy REGON z katalogbeauty (E2) i ochrona formularza z ac (W2). Raport .md §13.",
+    "pominiete": "klucze, site key Turnstile, identyfikatory projektów Supabase, adresy odbiorców",
+    "proxy_regon_katalogbeauty": {
+      "md": "§13.1",
+      "zrodlo": "aurabroker/katalogbeauty @ cab57b5 (2026-07-16), src/routes/api/regon/+server.ts (206 linii); kod czytany, nieuruchamiany",
+      "ezb_ma_juz_pkd": "tak – branzowe /api/gus pobiera PKD przeważające raportem DanePobierzPelnyRaport (BIR11OsPrawnaPkd / BIR11OsFizycznaPkd), branzowe/src/lib/serwer/gus.ts:104-122",
+      "katalogbeauty": {
+        "endpoint": "GET /api/regon?nip=…|regon=…",
+        "wejscie": "nip albo regon (l. 47-56)",
+        "walidacja": "NIP z sumą kontrolną (l. 28-33); REGON tylko długość 9 lub 14, bez sumy (l. 36-38)",
+        "zrodla": [
+          "BIR 1.1 (SOAP 1.2), gdy jest sekret GUS_API_KEY (l. 58-66); każdy błąd BIR połykany",
+          "awaryjnie wykaz podatników VAT MF po NIP, bez klucza (l. 68-76, 82-101)"
+        ],
+        "sesja_bir": "Zaloguj przy każdym zapytaniu; Wyloguj bez czekania na wynik (void, l. 155-176)",
+        "odpowiedz": "{name, nip, regon, street, postal_code, city, voivodeship} (l. 10, 15-23, 197-205), bez informacji o źródle",
+        "pkd": "brak – tylko DaneSzukajPodmioty (l. 164-171)",
+        "data_zawieszenia": "brak w kodzie; opisana tylko w docs/REGON-API.md:174, 288",
+        "awaria": "gdy BIR i MF zawiodą – 404 'Nie znaleziono firmy o podanych danych.' (l. 78); awarii nie da się odróżnić od braku firmy",
+        "cache_limit_timeout": "brak; fetch bez limitu czasu (l. 124-140)",
+        "dostep": "publiczny (brak sprawdzenia sesji, brak src/hooks.server.ts); wywołuje panel salonu (src/routes/panel/+page.svelte:170)",
+        "konfiguracja": ".env.example:9-13 – pusty GUS_API_KEY oznacza tylko wykaz MF"
+      },
+      "porownanie": {
+        "branzowe_api_gus": "tylko nip; tylko BIR (bez klucza 503); PKD z raportu *Pkd; DataZawieszeniaDzialalnosci z wyszukiwania; cache 24 h; bez limitu; timeout 5 s; bez Wyloguj (§9.2)",
+        "great_noether": "walidacja offline NIP/REGON-9/REGON-14/KRS; Wyloguj w finally; ocena aktywności; pkdMain z pól podstawowaFormaPrawna_Symbol_PKD / dzialalnoscPodstawowa raportu pełnego (gus-regon-verification.json, l. 163), nie z raportu *Pkd – czy BIR 1.1 zwraca te pola, do potwierdzenia",
+        "crmaura_regon_lookup": "implementacja referencyjna wskazana w docs/REGON-API.md:8; crmaura/src/routes/api/regon/lookup/+server.ts – wymaga logowania (l. 44), bez PKD, data_zawieszenia (l. 98, 104-111)"
+      },
+      "dokumentacja": "katalogbeauty/docs/REGON-API.md bajtowo identyczny z branzowe/docs/REGONAPILOGIN.md; wskazana tam ścieżka src/routes/api/regon/lookup/+server.ts istnieje tylko w crmaura",
+      "wnioski_E2": [
+        "rdzeń jak w §9.2: kontrakt i PKD z branzowe; walidacja offline, Wyloguj, ocena aktywności z great-noether",
+        "z katalogbeauty: zapasowe źródło MF po NIP bez klucza (gdy BIR nie działa lub brak klucza); opcjonalnie wyszukiwanie po REGON",
+        "odpowiedź z MF bez PKD i daty zawieszenia – osobne źródło (np. zrodlo 'mf'; schemat EZB zna dziś tylko 'gus' | 'recznie', §9.1); opiekun sprawdza PKD i status jak w trybie ręcznym",
+        "limity zapytań wykazu MF przy ruchu z portalu – do potwierdzenia",
+        "nie przejmować: 404 przy awarii, braku timeoutu, cache i limitu na IP, walidacji REGON bez sumy",
+        "nazwa sekretu we wszystkich trzech repo: GUS_API_KEY (wartość od zleceniodawcy)"
+      ]
+    },
+    "turnstile_wzorzec_ac": {
+      "md": "§13.2",
+      "zrodlo": "aurabroker/ac @ b5f59c0 (2026-11-13), functions/api/kontakt.js (227 linii); klient src/components/ContactForm.astro, src/scripts/contact-form.ts, src/lib/turnstile.ts; site key i adresy odbiorców pominięte",
+      "zgodnosc": "zgodny ze standardem portalu 02-architektura-i-bezpieczenstwo.md §2.2",
+      "warstwy": [
+        {
+          "warstwa": "Origin",
+          "opis": "Origin albo Referer z listy hostów, inaczej 403",
+          "dowod": "functions/api/kontakt.js:16, 52-60, 102-106"
+        },
+        {
+          "warstwa": "pułapka i minimalny czas",
+          "opis": "ukryte pole 'website' albo wysyłka < 3 s (pole t) → udawany sukces, bez wysyłki",
+          "dowod": "kontakt.js:123-127; ContactForm.astro:39, 43; contact-form.ts:114-115"
+        },
+        {
+          "warstwa": "walidacja i zgoda",
+          "opis": "imię, e-mail, treść, prośba o kontakt → 422",
+          "dowod": "kontakt.js:129-144"
+        },
+        {
+          "warstwa": "Turnstile",
+          "opis": "przy sekrecie TURNSTILE_SECRET_KEY: token ≤ 2048 znaków, siteverify z remoteip i idempotency_key, timeout 10 s; wymaga success, action = 'kontakt' i hostname z listy; brak odpowiedzi → 503 z telefonem, odrzucenie → 403",
+          "dowod": "kontakt.js:62-79, 146-156"
+        },
+        {
+          "warstwa": "limit",
+          "opis": "1 wysyłka / 20 s / IP (cf-connecting-ip) w caches.default",
+          "dowod": "kontakt.js:18, 158-163, 221"
+        },
+        {
+          "warstwa": "e-mail",
+          "opis": "usunięte znaki sterujące, pola jednowierszowe, escapowany HTML, reply_to = klient, wersja tekstowa",
+          "dowod": "kontakt.js:48-50, 175-213"
+        },
+        {
+          "warstwa": "bez JS",
+          "opis": "POST formularza i 303 na #formularz-wyslano / #formularz-blad; przy włączonym Turnstile wysyłka bez JS odrzucana, <noscript> podaje telefon",
+          "dowod": "kontakt.js:11, 88-99; ContactForm.astro:5-10, 80-83"
+        },
+        {
+          "warstwa": "klient",
+          "opis": "render=explicit, managed + interaction-only, ładowanie przy pierwszym fokusie, reset tokenu po próbie, CSP w public/_headers",
+          "dowod": "src/lib/turnstile.ts:1-15; contact-form.ts:6-7"
+        }
+      ],
+      "nie_kopiowac": [
+        "bez sekretu Turnstile pomijany (kontakt.js:148) – w portalu brak sekretu blokuje wysyłkę",
+        "idempotency_key losowany przy każdym wywołaniu (kontakt.js:69) – nie chroni przed podwójnym wnioskiem; portal ma własny klucz idempotencji (02 §2.2 pkt 4c)",
+        "limit liczy tylko udane wysyłki (l. 221) i działa osobno w każdej lokalizacji Cloudflare – w portalu reguła strefy i binding (02 §2.2 pkt 3, 4d)",
+        "minimalny czas zależy od pola t ustawianego przez JS; puste t pomija test (l. 124-125)",
+        "nazwa pułapki 'website' – standard portalu używa extraInfo",
+        "action 'kontakt' – w portalu action 'lead' i produkt w cData"
+      ],
+      "stan_w_repo_formularzy": {
+        "branzowe": "brak Turnstile, pułapki, limitu i idempotencji; /api/gus bez limitu (B1, B5)",
+        "taxbp": "fail-open bez sekretu, tylko success (tax-protect-wniosek.md §5.7, §13.2)",
+        "ud_form_submit": "bez hostname i action; brak deduplikacji i limitu (utratadochodu-wniosek.md §9.1)",
+        "hub": "bez sekretu odrzuca (hub/src/lib/server/turnstile.ts:9), ale tylko success (l. 18-19), bez timeoutu; nieużywany – nie kopiować"
+      },
+      "rekomendacja_W2": "middleware Workera według 02 §2.2 plus z ac: timeout siteverify i 503 z innym kanałem kontaktu, limit długości tokenu, minimalny czas od znacznika wydanego przez serwer, escapowanie i pola jednowierszowe w e-mailach (B3), Origin/Referer; proxy GUS portalu za Turnstile lub tokenem sesji formularza i z limitem (B5)"
+    }
+  }
 }

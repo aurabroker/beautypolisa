@@ -23,6 +23,7 @@ Zastrzeżenia:
 - **Repozytorium nie zawiera trzech funkcji, które kod wywołuje:** `tax-warianty` (`app/page.tsx:10`), `tax-gus` (`components/WniosekForm.tsx:111`) i `tax-admin` (`app/admin/page.tsx:8`). Nie ma też migracji tabel `tax_wnioski` i `tax_warianty`, choć README twierdzi, że zostały „utworzone migracją” (`README.md:15`). Schemat odtworzyłem z zapytań w kodzie (§5.2).
 - Wartości z konfiguracji są poza dokumentem: adres projektu Supabase, klucz anon, site key Turnstile, sekrety i adresy odbiorców. Publiczne repozytorium zawiera jednak w kodzie: adres projektu (`WniosekForm.tsx:27`, `WycenaModal.tsx:5`, `app/page.tsx:6`, `app/admin/page.tsx:6`), klucz anon (`app/admin/page.tsx:7`) i site key Turnstile (`WniosekForm.tsx:78`, `WycenaModal.tsx:34`, także treść commita). W `.env.example:17-18` są ponadto **imienny adres e-mail pracownika partnera (odbiorca „Colonnade”) i adres zarządu Aura Expert** (§9).
 - W cytatach adresy e-mail zastępuję opisami w nawiasach kwadratowych. Placeholdery pól („np. Anna Kowalska”) to przykłady z interfejsu, nie dane klientów.
+- **[przegląd repo 13.11]** GUS (T9) i Turnstile (T10) na tle innych repozytoriów zleceniodawcy (`branzowe`, `katalogbeauty`, `crmaura`, `ac`): **§13**.
 
 ---
 
@@ -591,8 +592,8 @@ Legenda kolumny „Blokuje” jak w `00-braki-i-decyzje.md`: **TAK** – bez teg
 | T6 | Zapowiedź „Drugi e-mail będzie zawierał ofertę formalną…”; statusy w panelu | Proces po wniosku: kto przygotowuje i wysyła ofertę (Colonnade, Aura Expert, pośrednik po stronie Colonnade?), wzór oferty, sposób akceptacji, płatność (jednorazowo albo w ratach – karta produktu), wystawienie polisy, numer polisy do CRM i Strefy Klienta; rola odbiorcy `EMAIL_COLONNADE` | Zleceniodawca / Colonnade | **TAK** |
 | T7 | 6 szablonów e-maili dosłownie (§5.5) | Decyzja W4 (kto wysyła), nadawca i `reply_to`, odbiorcy (sekrety), czy portal ma powiadamiać Colonnade; szablony bez emoji i bez treści promocyjnych | Zleceniodawca | **TAK** (W4) |
 | T8 | OWU (kod 157/0625, OWU z 25.01.2023) i karta produktu (27.01.2023) w `public/` | Potwierdzenie aktualnych wersji i zgodności z plikami w kubełku `dokumenty`; poprawiona karta produktu (pozycje o wycieku danych spoza OWU, niejasne wyłączenie KKS, format A4); „Załącznik 002BR” cytowany na stronie; dostęp do OWU i karty **przed** wnioskiem | Colonnade | **TAK** (dokumenty przedumowne, W5) |
-| T9 | Kontrakt i wzór `tax-gus` (`apiregon.md`) | Kod wdrożonej funkcji, klucz BIR (sekret), pole `pkd` (klient je czyta, wzór go nie zwraca), reguła dla działalności zawieszonej (dziś tylko ostrzeżenie) | Zleceniodawca | nie (tryb ręczny) |
-| T10 | Mechanizm Turnstile w 3 funkcjach | Site key i sekret dla domeny portalu; usunięcie fail-open; sprawdzanie `hostname` i `action` (W2) | Zleceniodawca (konto Cloudflare) + portal | **TAK** (W2) |
+| T9 | Kontrakt i wzór `tax-gus` (`apiregon.md`). [przegląd repo 13.11] PKD pobiera `branzowe`, tryb bez klucza (wykaz MF) ma `katalogbeauty` – wspólny proxy z E2 (§13.1) | Kod wdrożonej funkcji, klucz BIR (sekret), pole `pkd` (klient je czyta, wzór go nie zwraca), reguła dla działalności zawieszonej (dziś tylko ostrzeżenie) | Zleceniodawca | nie (tryb ręczny) |
+| T10 | Mechanizm Turnstile w 3 funkcjach. [przegląd repo 13.11] Wzorzec `ac/functions/api/kontakt.js` (§13.2) | Site key i sekret dla domeny portalu; usunięcie fail-open; sprawdzanie `hostname` i `action` (W2) | Zleceniodawca (konto Cloudflare) + portal | **TAK** (W2) |
 | T11 | Modal wyceny (tylko e-mail, bez zapisu) | Zasady wyceny indywidualnej: przychód > 3 mln zł, 2–4 spory (portal) albo „więcej niż 1” (`taxbp`), sumy > 100 000 zł; kto wycenia i w jakim czasie | Zleceniodawca / Colonnade | nie (formularz kontaktowy portalu z tematem „Tax Protect”) |
 | T12 | Panel `/admin` (statusy, numer polisy) | Kod i reguła autoryzacji `tax-admin`; kto z niego korzysta; zastąpienie sprawami w CRM (`crm_renewals`, etap 2) | Zleceniodawca / zespół CRM | nie dla portalu (ale ryzyko bezpieczeństwa – §9) |
 | T13 | Treści strony `taxbp` | Źródła i potwierdzenie: rating „A- (AM Best)”, „pełne pokrycie retroaktywne”, refundacja mandatów z kontroli PIP, „Wyłączenia z ochrony (wyciąg z OWU § 8–9)” (`app/page.tsx:202`), zakres „Koszty obrony” | Colonnade | nie (ale przed publikacją w portalu) |
@@ -624,6 +625,41 @@ Numery linii makiety podaję według stanu z commita `a82d8b1` (ta sama wersja p
 | P15 | Ścieżka zakupu | omówienie: kalkulator lub formularz → doradca → analiza potrzeb → wniosek z doradcą → polisa i Strefa Klienta (`#jak-kupic`, l. 934–978; `#pytanie-5`, l. 991) | wniosek online bez analizy potrzeb → e-mail do Colonnade i brokera → oferta e-mailem → panel `/admin` | umowa przez akceptację oferty (§ 16) | sprzeczne procesy; portal zgodny z D32/D34 (T5, T6) |
 | P16 | Czas | brak terminu | „zwykle w 1–2 dni robocze” (`app/page.tsx:231`, `tax-potwierdz/index.ts:155`) | wypłata 30 dni (§ 38) | SLA do potwierdzenia przed użyciem w portalu |
 | P17 | Asysta i KIS | „Asysta podatkowa … czynnościach sprawdzających”, „Wniosek do KIS … wiążącą interpretację indywidualną” (`#sekcja-2`, l. 880–881) | „Asysta podatkowa: szybkie odpowiedzi…”, „Wsparcie przy czynnościach sprawdzających i wnioskach do KIS” (`app/page.tsx:190-191`) | Problem Podatkowy = prosty problem, Czynność Sprawdzająca, Wniosek do KIS (§ 14 ust. 37); liczba – pkt 4 polisy | zgodne co do zakresu; liczba nieznana |
+
+---
+
+## 13. Wzorce z innych repozytoriów zleceniodawcy [przegląd repo 13.11]
+
+Źródła: płytkie klony `aurabroker/branzowe` (`8dc9a90`), `aurabroker/katalogbeauty` (`cab57b5`, 16.07.2026), `aurabroker/crmaura` (`e01fbfb`, 11.11.2026) i `aurabroker/ac` (`b5f59c0`, 13.11.2026). Kod był czytany, nie uruchamiany. Klucze, site key Turnstile i adresy odbiorców pominąłem. Pełne porównanie proxy REGON i opis wzorca `ac` są w `ergo-zycie-w-biznesie.md` §13. Tu tylko to, co dotyczy Tax Protect.
+
+### 13.1 GUS / REGON (T9)
+
+- **Kontrakt `tax-gus` ma ten sam kształt co `crmaura`.** Oba zwracają `{found, nazwa, regon, adres, data_zawieszenia}`, bez klucza `{available:false, reason:"no_key"}`, a przy błędzie `{found:false, error:"gus_error"}` (`apiregon.md:171-175, 222-235`; `crmaura/src/routes/api/regon/lookup/+server.ts:47-49, 104-114`). Żaden nie zwraca PKD. Czy wdrożony `tax-gus` odpowiada temu wzorowi – do potwierdzenia (T9).
+- **Klient czyta `data.pkd`** (`components/WniosekForm.tsx:117`), a `tax-wniosek` zapisuje go jako `numer_pkd` (`supabase/functions/tax-wniosek/index.ts:134`). Pola o nazwie `pkd` nie zwraca żadne z przejrzanych proxy.
+- **PKD pobiera tylko `branzowe`:** `DanePobierzPelnyRaport` z raportem `*Pkd`, wynik w `pkd_kod` i `pkd_opis` (`branzowe/src/lib/serwer/gus.ts:104-122`). `katalogbeauty` `/api/regon` PKD nie zwraca.
+- **Bez klucza** `tax-gus` przełącza klienta w tryb ręczny (`available:false`). `katalogbeauty` w tej sytuacji pobiera nazwę, REGON i adres z wykazu podatników VAT MF (`katalogbeauty/src/routes/api/regon/+server.ts:68-101`), bez PKD i bez daty zawieszenia.
+- **Działalność zawieszona:** `taxbp` tylko ostrzega (`WniosekForm.tsx:118-120`). Datę zawieszenia czyta `branzowe` (z wyszukiwania) i `great-noether` (z raportu pełnego, razem z oceną `active`; `ergo-zycie-w-biznesie.md` §9.2). Reguła dla Tax Protect (ostrzeżenie czy blokada) pozostaje decyzją (T9).
+
+**Wnioski dla T9:**
+- jeden proxy portalu dla EZB i Tax (E2/T9) z kontraktem `branzowe` `{nazwa, regon, adres, pkd_kod, pkd_opis, data_zawieszenia}`; w Tax `numer_pkd` ← `pkd_kod` (czy zapisywać także opis – do decyzji);
+- awaryjnie wykaz MF bez klucza: nazwa, REGON i adres; puste PKD i oznaczone źródło;
+- usterkę z §6.1 (zmiana NIP nie czyści danych z GUS) portal usuwa niezależnie od proxy (§10);
+- przy wspólnym proxy kod wdrożonego `tax-gus` nie jest potrzebny do uruchomienia portalu, przydaje się tylko do porównania. Pole `pkd` zapewni proxy portalu. **Zostają:** klucz BIR i reguła dla działalności zawieszonej. Status T9 bez zmian („nie” – tryb ręczny).
+
+### 13.2 Turnstile (T10)
+
+Wzorzec `ac/functions/api/kontakt.js` z dowodami i ograniczeniami opisuje `ergo-zycie-w-biznesie.md` §13.2. Zestawienie z usterkami `taxbp` (§5.7, §9):
+
+| `taxbp` dziś | `ac` | Portal |
+|---|---|---|
+| bez sekretu `verifyTurnstile` zwraca `true` (fail-open) | bez sekretu Turnstile jest pomijany – też fail-open, tylko wynika jawnie z konfiguracji (`kontakt.js:148`) | brak sekretu blokuje wysyłkę |
+| sprawdza tylko `success` | `success`, `action` i `hostname` (`kontakt.js:74-75`) | `action` = `lead`, produkt w `cData`, `hostname` portalu (02 §2.2) |
+| błąd sieci przy `siteverify` to nieobsłużony wyjątek (500 platformy) | timeout 10 s; brak odpowiedzi → 503 z telefonem (`kontakt.js:66-78, 150-152`) | 503 z innym kanałem kontaktu |
+| widżet bez `action`, `appearance` i `language` (`WniosekForm.tsx:81-99`) | `render=explicit`, managed z `interaction-only`, ładowany przy pierwszym fokusie (`src/lib/turnstile.ts:1-15`) | widżet z `action`, renderowany przy każdym zamontowaniu kontenera (§10) |
+| brak pułapki, minimalnego czasu, limitu i sprawdzenia Origin; `CORS *` | pułapka, 3 s, 1 wysyłka na 20 s z IP, Origin lub Referer (`kontakt.js:102-106, 123-127, 158-163`) | warstwy według 02 §2.2 |
+| `tax-wycena` wysyła treść użytkownika na dowolny adres z pola e-mail (§9) | e-mail tylko do skrzynki serwisu, `reply_to` = klient, escapowanie (`kontakt.js:48-50, 199-213`) | bez e-maila z treścią użytkownika do niezweryfikowanego adresu; escapowanie |
+
+Status T10 bez zmian (**TAK**, W2): wzorzec jest znany, a brakuje site key i sekretu dla domeny portalu.
 
 ---
 
