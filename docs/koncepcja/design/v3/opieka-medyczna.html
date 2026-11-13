@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Opieka medyczna ENEL-MED i LUX MED dla salonu | BeautyPolisa</title>
-<meta name="description" content="Abonamenty medyczne ENEL-MED i LUX MED dla zespołu salonu beauty: Singiel, Partner, Rodzina. Singiel od 120 zł/mies. za pracownika. Zapytaj doradcę.">
+<meta name="description" content="Abonamenty medyczne ENEL-MED i LUX MED dla zespołu salonu beauty: Singiel, Partner, Rodzina. Porównaj pakiety, sprawdź specjalizacje i zapytaj doradcę o ofertę.">
 <link rel="canonical" href="https://beautypolisa.eu/ubezpieczenia/opieka-medyczna">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:site_name" content="BeautyPolisa">
 <meta property="og:url" content="https://beautypolisa.eu/ubezpieczenia/opieka-medyczna">
 <meta property="og:title" content="Opieka medyczna ENEL-MED i LUX MED dla salonu | BeautyPolisa">
-<meta property="og:description" content="Abonamenty medyczne ENEL-MED i LUX MED dla zespołu salonu beauty: Singiel, Partner, Rodzina. Singiel od 120 zł/mies. za pracownika. Zapytaj doradcę.">
+<meta property="og:description" content="Abonamenty medyczne ENEL-MED i LUX MED dla zespołu salonu beauty: Singiel, Partner, Rodzina. Porównaj pakiety, sprawdź specjalizacje i zapytaj doradcę o ofertę.">
 <meta name="theme-color" content="#141C33">
 <meta name="color-scheme" content="only light">
 <!-- Makieta strony produktu: docelowy adres https://beautypolisa.eu/ubezpieczenia/opieka-medyczna (04, mapa URL).
@@ -24,7 +24,10 @@
      „najbardziej pożądany benefit”, „błyskawiczna diagnostyka”, „od ręki”, „zysk podatkowy / w całości w koszty” (tylko jako
      „do potwierdzenia z księgowym”), „konsultacja kosmetologa z zabiegiem w cenie” (ENEL) – oznaczone jako do potwierdzenia.
      Numer „obsługi technicznej” z medical.html (500…) – nie używamy; kontakt: formularz i +48 504 400 901 (kontakt agenta).
-     Warianty i sieci równorzędne – bez rekomendacji i bez odznak (IDD). Ceny: stawki programu – nigdy „orientacyjne”. -->
+     Warianty i sieci równorzędne – bez rekomendacji i bez odznak (IDD).
+     Ceny (decyzja zleceniodawcy 13.11.2026): cennika programu jeszcze nie ma – kwoty z medical.html są tylko PRZYKŁADEM.
+     Kwoty wyłącznie w elementach data-przyklad="tak" ze znacznikiem „przykład”; bez kwot w meta, og:, JSON-LD, FAQ, otwarciu i CTA.
+     Słowo „przykładowe” (nie „orientacyjne/szacunkowe”). -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
@@ -34,7 +37,7 @@
    System wizualny 1:1 z nnw-dzieci.html / grupowe-ergo.html / oc-beauty.html (tokeny, nagłówek, stopka, ruch).
    Bez atrybutów style (CSP z nonce). Ruch wyłącznie jako ulepszenie.
    Tafle z backdrop-filter: belka nagłówka, otwarcie, „jak to działa”, pytania, stopka – w jednym widoku najwyżej trzy.
-   Cennik, porównanie, wyszukiwarka i formularz stoją na kryjących kartach / taflach bez rozmycia (glass--tint).
+   Przykładowe stawki, porównanie, wyszukiwarka i formularz stoją na kryjących kartach / taflach bez rozmycia (glass--tint).
    ========================================================= */
 
 /* ---------- fonty zastępcze o zgodnych metrykach (bez skoku układu) ---------- */
@@ -533,6 +536,11 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 .rate-table thead th.is-col{text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:2px;text-underline-offset:6px}
 .price-note{display:grid;gap:8px;font-size:var(--text-sm);color:var(--color-ink);max-width:62rem}
 .price-note strong{font-weight:500;color:var(--color-navy)}
+/* przykładowe stawki (cennik w przygotowaniu): notka sekcji + plakietka „przykład” przy każdej kwocie */
+.przyklad-note{max-width:44rem;font-size:var(--text-sm);line-height:1.6;color:var(--color-navy)}
+.przyklad-note .mock-note{margin:0 6px 0 0}
+.op-fig .mock-note,.cmp-price .mock-note{margin:0;justify-self:start}
+.op-head .mock-note{margin:0;justify-self:start}
 .price-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px}
 
 /* ---------- III · porównanie: tabela od 1024 px, karty poniżej ---------- */
@@ -703,11 +711,11 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 @media (max-width:767px){.scene--silk{background-image:url(img/tlo-jedwab-1024.webp)}.scene--marble{background-image:url(img/tlo-marmur-len-1024.webp)}}
 </style></noscript>
 <!-- JSON-LD: WebPage, BreadcrumbList, Service (provider = ENEL-MED S.A. i LUX MED sp. z o.o. jako Organization – forma prawna do potwierdzenia;
-     offers = AggregateOffer z najniższą i najwyższą stawką miesięczną cennika; offers.offeredBy = Aura Expert (#agency) – bez „broker”),
+     offers = Offer bez ceny (cennik programu w przygotowaniu – cenę przygotuje doradca); offers.offeredBy = Aura Expert (#agency) – bez „broker”),
      Organization i InsuranceAgency (węzły 1:1 z nnw-dzieci.html), FAQPage (= widoczne pytania, tekst bez znaczników).
      Ten sam węzeł Service: snippets/schema-produkt-opieka-medyczna.json. -->
-<!-- Dla koordynatora: kwoty w meta description / og:description i w JSON-LD (Service, AggregateOffer, FAQPage) pochodzą z cennika
-     dotychczasowej strony programu – przed publikacją zweryfikować ich aktualność z operatorami (na stronie: adnotacje „do potwierdzenia”). -->
+<!-- Dla koordynatora: meta description / og:description i JSON-LD (Service, Offer, FAQPage) celowo BEZ kwot – cennika programu jeszcze nie ma
+     (decyzja 13.11.2026). Kwoty z medical.html zostają tylko w sekcji „Przykładowe stawki” (data-przyklad="tak"); po otrzymaniu cennika podmienić dane i usunąć oznaczenia. -->
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -718,7 +726,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
    "url": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna",
    "inLanguage": "pl-PL",
    "name": "Opieka medyczna ENEL-MED i LUX MED dla salonu | BeautyPolisa",
-   "description": "Abonamenty medyczne ENEL-MED i LUX MED dla zespołu salonu beauty: Singiel, Partner, Rodzina. Singiel od 120 zł/mies. za pracownika. Zapytaj doradcę.",
+   "description": "Abonamenty medyczne ENEL-MED i LUX MED dla zespołu salonu beauty: Singiel, Partner, Rodzina. Porównaj pakiety, sprawdź specjalizacje i zapytaj doradcę o ofertę.",
    "breadcrumb": {
     "@id": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna#breadcrumb"
    },
@@ -760,7 +768,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
    "alternateName": "Program abonamentów medycznych dla salonów beauty",
    "serviceType": "Abonament medyczny (prywatna opieka medyczna) dla pracowników i ich bliskich",
    "category": "Benefity dla firm – opieka medyczna",
-   "description": "Abonamenty medyczne ENEL-MED Standard i LUX MED Standard dla zespołów salonów beauty w zakresie Singiel, Partner albo Rodzina. Stawki miesięczne z cennika programu zależą od liczby osób w zespole (3–10, 11–20, 21–50): ENEL-MED Standard 194–216 zł (Singiel), 212–237 zł (Partner), 420–478 zł (Rodzina); LUX MED Standard 120–131 zł (Singiel), 212–234 zł (Partner), 314–347 zł (Rodzina). Od 51 osób – wycena indywidualna. Cennik z dotychczasowej strony programu – aktualność do potwierdzenia. Zamówienie przez zapytanie do doradcy Aura Expert.",
+   "description": "Abonamenty medyczne ENEL-MED Standard i LUX MED Standard dla zespołów salonów beauty w zakresie Singiel, Partner albo Rodzina. Cenę dla zespołu przygotuje doradca Aura Expert po zapytaniu; cennik programu jest w przygotowaniu.",
    "url": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna",
    "provider": [
     {
@@ -798,21 +806,10 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
     }
    },
    "offers": {
-    "@type": "AggregateOffer",
-    "priceCurrency": "PLN",
-    "lowPrice": 120,
-    "highPrice": 478,
-    "url": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna#ceny",
+    "@type": "Offer",
+    "url": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna#zapytanie",
     "eligibleRegion": "PL",
-    "description": "Stawki miesięczne według cennika programu, zależne od sieci (ENEL-MED Standard, LUX MED Standard), zakresu (Singiel – za pracownika, Partner, Rodzina) i liczby osób w zespole (3–10, 11–20, 21–50). Od 51 osób – wycena indywidualna. Aktualność cennika do potwierdzenia.",
-    "priceSpecification": {
-     "@type": "UnitPriceSpecification",
-     "priceCurrency": "PLN",
-     "minPrice": 120,
-     "maxPrice": 478,
-     "unitCode": "MON",
-     "unitText": "miesiąc"
-    },
+    "description": "Cenę przygotuje doradca po zapytaniu; cennik programu jest w przygotowaniu.",
     "offeredBy": {
      "@id": "https://beautypolisa.eu/#agency"
     }
@@ -863,7 +860,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
    "@id": "https://beautypolisa.eu/#agency",
    "name": "BeautyPolisa",
    "alternateName": "BeautyPolisa created by Aura Expert",
-   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
+   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dla dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
    "url": "https://beautypolisa.eu/",
    "address": {
     "@type": "PostalAddress",
@@ -887,7 +884,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
      "name": "Dla kogo jest opieka medyczna w BeautyPolisa?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Dla salonów i firm z branży beauty, które chcą zapewnić zespołowi abonament medyczny ENEL-MED albo LUX MED. Cennik programu obejmuje zespoły od 3 do 50 osób, a dla 51 i więcej osób doradca przygotowuje wycenę indywidualną. W zakresie Partner albo Rodzina abonament obejmuje także bliskich pracownika."
+      "text": "Dla salonów i firm z branży beauty, które chcą zapewnić zespołowi abonament medyczny ENEL-MED albo LUX MED. W zakresie Partner albo Rodzina abonament obejmuje także bliskich pracownika. Ofertę dla Twojego zespołu przygotuje doradca po zapytaniu."
      }
     },
     {
@@ -895,7 +892,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
      "name": "Ile kosztuje abonament medyczny?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Stawka miesięczna zależy od sieci, liczby osób w zespole i zakresu. Według cennika programu pakiet ENEL-MED Standard kosztuje 194–216 zł w zakresie Singiel (za pracownika), 212–237 zł w zakresie Partner i 420–478 zł w zakresie Rodzina, a pakiet LUX MED Standard – 120–131 zł (Singiel), 212–234 zł (Partner) i 314–347 zł (Rodzina) miesięcznie. Im większy zespół, tym niższa stawka. Od 51 osób – wycena indywidualna. Cennik pochodzi z dotychczasowej strony programu – jego aktualność potwierdzi doradca."
+      "text": "Cenę przygotuje doradca po zapytaniu; cennik programu jest w przygotowaniu."
      }
     },
     {
@@ -959,7 +956,8 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 .mega-name{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font:500 1.3rem/1.15 var(--font-serif);color:var(--color-navy)}
 .mega-tu{font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
 .mega-desc{font:400 var(--text-sm)/1.45 var(--font-sans);color:var(--color-taupe)}
-.mega-price{font:500 var(--text-sm)/1.4 var(--font-sans);color:var(--color-ink);font-variant-numeric:lining-nums tabular-nums}
+.mega-price{display:grid;gap:2px;margin-top:2px;font:500 var(--text-sm)/1.4 var(--font-sans);color:var(--color-ink);font-variant-numeric:lining-nums tabular-nums}
+.mega-dop{font-weight:400;color:var(--color-taupe)}
 .mega-foot{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:12px;margin-top:14px;padding-top:16px;border-top:1px solid var(--bp-line-gold-soft)}
 .main-nav .mega .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 24px;font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;text-decoration:none;white-space:nowrap}
 .main-nav .mega .btn-navy,.main-nav .mega .btn-navy:hover{color:var(--color-ivory)}
@@ -974,17 +972,19 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 .menu-panel .mm-produkty a[aria-current="page"]{margin-inline:-10px;padding-inline:10px;background:var(--color-parchment);box-shadow:inset 2px 0 0 var(--color-gold)}
 .mm-text{display:grid;gap:1px;min-width:0}
 @media (min-width:600px){.mm-text{display:flex;align-items:baseline;justify-content:space-between;gap:16px}}
-.mm-price{font:400 var(--text-sm)/1.35 var(--font-sans);color:var(--color-taupe);white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
+.mm-price{font:400 var(--text-sm)/1.35 var(--font-sans);color:var(--color-taupe);font-variant-numeric:lining-nums tabular-nums}
+@media (min-width:600px){.mm-price{flex:none;max-width:55%;text-align:right}}
 /* --- pasek akcji na telefonie: jedno nieprzezroczyste tło midnight (bez backdrop-filter), safe-area --- */
 .pasek-akcji{display:none}
 @media (max-width:767px){
   html.has-pasek{scroll-padding-bottom:calc(92px + env(safe-area-inset-bottom))}
-  html.has-pasek .pasek-akcji{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:var(--bp-z-sticky);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;padding:6px;background:var(--color-midnight);border:1px solid rgba(217,192,137,.5);border-radius:var(--radius-card);box-shadow:0 14px 30px -12px rgba(20,28,51,.75);transform:translateY(calc(100% + 24px + env(safe-area-inset-bottom)));visibility:hidden;transition:transform var(--bp-dur-3) var(--ease-lux),visibility 0s linear var(--bp-dur-3)}
+  html.has-pasek .pasek-akcji{position:fixed;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(10px + env(safe-area-inset-bottom));z-index:var(--bp-z-sticky);display:flex;flex-wrap:wrap;gap:6px;padding:6px;background:var(--color-midnight);border:1px solid rgba(217,192,137,.5);border-radius:var(--radius-card);box-shadow:0 14px 30px -12px rgba(20,28,51,.75);transform:translateY(calc(100% + 24px + env(safe-area-inset-bottom)));visibility:hidden;transition:transform var(--bp-dur-3) var(--ease-lux),visibility 0s linear var(--bp-dur-3)}
   html.has-pasek .pasek-akcji[data-on="1"]{transform:none;visibility:visible;transition:transform var(--bp-dur-3) var(--ease-lux),visibility 0s}
   .pasek-akcji a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:6px 12px;border-radius:var(--radius-btn);border:1px solid transparent;font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase;text-align:center;text-decoration:none}
-  .pasek-akcji .pa-glowny{background:var(--color-ivory);color:var(--color-navy);border-color:var(--color-ivory)}
+  /* przy powiększonym tekście (WCAG 1.4.4) przyciski przechodzą do dwóch wierszy zamiast obcinać etykietę */
+  .pasek-akcji .pa-glowny{flex:1 1 8rem;min-width:0;background:var(--color-ivory);color:var(--color-navy);border-color:var(--color-ivory)}
   .pasek-akcji .pa-glowny:hover{background:var(--color-parchment)}
-  .pasek-akcji .pa-tel{color:var(--color-ivory);border-color:rgba(217,192,137,.6);padding-inline:10px}
+  .pasek-akcji .pa-tel{flex:1 0 auto;max-width:100%;color:var(--color-ivory);border-color:rgba(217,192,137,.6);padding-inline:10px}
   .pasek-akcji .pa-tel:hover{border-color:var(--color-gold-light)}
   .pasek-akcji :focus-visible{outline:2px solid var(--color-gold-light);outline-offset:2px}
   .pa-ikona{width:18px;height:18px;flex:none;fill:none;stroke:var(--color-gold-light);stroke-width:1.5;stroke-linejoin:round}
@@ -1020,18 +1020,18 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
             <div class="mega" id="menu-produkty" hidden>
               <div class="mega-head"><p class="mega-title">Ubezpieczenia dla branży beauty</p><a class="mega-all" href="makieta-v3.html#ubezpieczenia">Wszystkie ubezpieczenia</a></div>
               <ul class="mega-grid">
-                <li><a class="mega-item" href="oc-beauty.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name">OC dla branży beauty</span><span class="mega-desc">OC za szkody wyrządzone klientom podczas zabiegów – składka ze stałej taryfy ERGO Hestia.</span><span class="mega-price">od 400&nbsp;zł rocznie</span></span></a></li>
-                <li><a class="mega-item" href="tax-protect.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name">Tax Protect</span><span class="mega-desc">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (Colonnade).</span><span class="mega-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
-                <li><a class="mega-item" href="utrata-dochodu.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name">Utrata dochodu</span><span class="mega-desc">Prywatne L4 dla samozatrudnionych – Lloyd’s przez Leadenhall i&nbsp;CEU.</span><span class="mega-price">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></a></li>
-                <li><a class="mega-item" href="nnw-dzieci.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name">NNW dla dzieci</span><span class="mega-desc">Ochrona dziecka od następstw nieszczęśliwych wypadków – całą dobę (Colonnade).</span><span class="mega-price">od 40&nbsp;zł rocznie za dziecko · zakup online u&nbsp;Colonnade</span></span></a></li>
-                <li><a class="mega-item" href="grupowe-ergo.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name">Grupowe ERGO dla beauty</span><span class="mega-desc">Ubezpieczenie na życie dla zespołu (2–&#8288;100 osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</span><span class="mega-price">od 58&nbsp;zł za osobę miesięcznie · rodzina od 57&nbsp;zł miesięcznie</span></span></a></li>
-                <li><a class="mega-item" href="opieka-medyczna.html" aria-current="page"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name">Opieka medyczna<span class="mega-tu">Jesteś tutaj</span></span><span class="mega-desc">Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price">Według cennika programu</span></span></a></li>
+                <li><a class="mega-item" href="oc-beauty.html" aria-labelledby="mp-oc-beauty-n" aria-describedby="mp-oc-beauty-d mp-oc-beauty-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name" id="mp-oc-beauty-n">OC dla branży beauty</span><span class="mega-desc" id="mp-oc-beauty-d">OC za szkody wyrządzone klientom podczas zabiegów – składka ze stałej taryfy ERGO Hestia.</span><span class="mega-price" id="mp-oc-beauty-c"><span class="mega-cena">od 400&nbsp;zł rocznie</span></span></span></a></li>
+                <li><a class="mega-item" href="tax-protect.html" aria-labelledby="mp-tax-protect-n" aria-describedby="mp-tax-protect-d mp-tax-protect-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name" id="mp-tax-protect-n">Tax Protect</span><span class="mega-desc" id="mp-tax-protect-d">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (Colonnade).</span><span class="mega-price" id="mp-tax-protect-c"><span class="mega-cena">od 1&nbsp;532&nbsp;zł rocznie</span></span></span></a></li>
+                <li><a class="mega-item" href="utrata-dochodu.html" aria-labelledby="mp-utrata-dochodu-n" aria-describedby="mp-utrata-dochodu-d mp-utrata-dochodu-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name" id="mp-utrata-dochodu-n">Utrata dochodu</span><span class="mega-desc" id="mp-utrata-dochodu-d">Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy – Lloyd’s przez Leadenhall i&nbsp;CEU.</span><span class="mega-price" id="mp-utrata-dochodu-c"><span class="mega-cena">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></span></a></li>
+                <li><a class="mega-item" href="nnw-dzieci.html" aria-labelledby="mp-nnw-dzieci-n" aria-describedby="mp-nnw-dzieci-d mp-nnw-dzieci-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name" id="mp-nnw-dzieci-n">NNW dla dzieci</span><span class="mega-desc" id="mp-nnw-dzieci-d">Ochrona dziecka od następstw nieszczęśliwych wypadków – całą dobę (Colonnade).</span><span class="mega-price" id="mp-nnw-dzieci-c"><span class="mega-cena">od 40&nbsp;zł rocznie za dziecko</span><span class="mega-dop">Zakup online u&nbsp;Colonnade</span></span></span></a></li>
+                <li><a class="mega-item" href="grupowe-ergo.html" aria-labelledby="mp-grupowe-ergo-n" aria-describedby="mp-grupowe-ergo-d mp-grupowe-ergo-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name" id="mp-grupowe-ergo-n">Grupowe ERGO dla beauty</span><span class="mega-desc" id="mp-grupowe-ergo-d">Ubezpieczenie na życie dla zespołu (2–&#8288;100 osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</span><span class="mega-price" id="mp-grupowe-ergo-c"><span class="mega-cena">Zespół: od 58&nbsp;zł za osobę / mies.</span><span class="mega-cena">ERGO Razem: od 57&nbsp;zł / mies.</span></span></span></a></li>
+                <li><a class="mega-item" href="opieka-medyczna.html" aria-current="page" aria-labelledby="mp-opieka-medyczna-n" aria-describedby="mp-opieka-medyczna-d mp-opieka-medyczna-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name" id="mp-opieka-medyczna-n">Opieka medyczna<span class="mega-tu" aria-hidden="true">Jesteś tutaj</span></span><span class="mega-desc" id="mp-opieka-medyczna-d">Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price" id="mp-opieka-medyczna-c"><span class="mega-cena">Według cennika programu</span></span></span></a></li>
               </ul>
-              <div class="mega-foot"><a class="btn btn-navy" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a><a class="btn btn-ghost" href="makieta-v3.html#kalkulator-tax">Porównaj w&nbsp;kalkulatorze Tax Protect</a></div>
+              <div class="mega-foot"><a class="btn btn-navy" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a><a class="btn btn-ghost" href="makieta-v3.html#kalkulator-tax">Oblicz składkę Tax Protect</a></div>
             </div>
           </li>
           <!-- /gen:menu-produkty -->
-          <li><a href="#ceny">Ceny</a></li>
+          <li><a href="#ceny">Stawki</a></li>
           <li><a href="#porownanie">Porównanie</a></li>
           <li><a href="#specjalizacje">Specjalizacje</a></li>
         </ul>
@@ -1048,14 +1048,14 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
           <ul class="mm-produkty" aria-labelledby="mm-produkty-t">
             <li><a href="oc-beauty.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mm-text"><span class="mm-name">OC dla branży beauty</span><span class="mm-price">od 400&nbsp;zł rocznie</span></span></a></li>
             <li><a href="tax-protect.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mm-text"><span class="mm-name">Tax Protect</span><span class="mm-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
-            <li><a href="utrata-dochodu.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mm-text"><span class="mm-name">Utrata dochodu</span><span class="mm-price">składka po ocenie ryzyka</span></span></a></li>
-            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie</span></span></a></li>
-            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 57&nbsp;zł miesięcznie</span></span></a></li>
-            <li><a href="opieka-medyczna.html" aria-current="page"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mm-text"><span class="mm-name">Opieka medyczna</span><span class="mm-price">według cennika</span></span></a></li>
+            <li><a href="utrata-dochodu.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mm-text"><span class="mm-name">Utrata dochodu</span><span class="mm-price">składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></a></li>
+            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie za dziecko</span></span></a></li>
+            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 58&nbsp;zł za osobę / mies.</span></span></a></li>
+            <li><a href="opieka-medyczna.html" aria-current="page"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mm-text"><span class="mm-name">Opieka medyczna</span><span class="mm-price">według cennika programu</span></span></a></li>
           </ul>
           <!-- /gen:menu-mobilne -->
           <a href="#dla-kogo"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg>Dla kogo</a>
-          <a href="#ceny"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kalkulator"/></svg>Ceny</a>
+          <a href="#ceny"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kalkulator"/></svg>Przykładowe stawki</a>
           <a href="#porownanie"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Porównanie pakietów</a>
           <a href="#specjalizacje"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-szybka-wycena"/></svg>Wyszukiwarka specjalizacji</a>
           <a href="#jak-to-dziala"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Jak to działa</a>
@@ -1075,7 +1075,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 <main id="tresc">
 
   <!-- PROLOG · otwarcie: dwa przyciski (wzorzec nnw-dzieci) – jeden produkt, bez „dróg”; zakresy Partner/Rodzina opisuje sekcja I.
-       Liczby w .figures: progi 3–50 osób i najniższe stawki Singiel (za pracownika) obu sieci – równorzędnie, bez rekomendacji. -->
+       Liczby w .figures: bez kwot (cennik w przygotowaniu) – dwie sieci, trzy zakresy, cztery pakiety w porównaniu; równorzędnie, bez rekomendacji. -->
   <section class="scene scene--marble scene--pos-ct page-hero" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero-panel glass frame">
@@ -1089,18 +1089,18 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
         </nav>
         <p class="eyebrow">ENEL-MED · LUX MED · abonamenty medyczne</p>
         <h1 id="hero-title">Opieka medyczna <em>dla zespołu salonu</em></h1>
-        <p class="lead">Program dla branży beauty: abonamenty medyczne ENEL-MED i&nbsp;LUX MED dla pracowników salonu – w&nbsp;zakresie Partner albo Rodzina także dla ich bliskich. Porównaj pakiety i&nbsp;stawki według liczby osób w&nbsp;zespole, sprawdź specjalizacje i&nbsp;zapytaj doradcę Aura Expert o&nbsp;ofertę.</p>
+        <p class="lead">Program dla branży beauty: abonamenty medyczne ENEL-MED i&nbsp;LUX MED dla pracowników salonu – w&nbsp;zakresie Partner albo Rodzina także dla ich bliskich. Porównaj pakiety, sprawdź specjalizacje i&nbsp;zapytaj doradcę Aura Expert o&nbsp;ofertę – cenę dla Twojego zespołu przygotuje doradca.</p>
         <div class="hero-actions">
-          <a class="btn btn-navy" href="#ceny">Zobacz stawki</a>
+          <a class="btn btn-navy" href="#porownanie">Porównaj pakiety</a>
           <a class="btn btn-ghost" href="#zapytanie">Zapytaj doradcę</a>
         </div>
-        <p class="hero-note">Pracujesz sama/sam albo w&nbsp;zespole 1–2 osób? <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a> o&nbsp;możliwość. <span class="mock-note">do potwierdzenia (cennik źródła od 3&nbsp;osób)</span></p>
+        <p class="hero-note">Pracujesz sama/sam albo w&nbsp;zespole 1–2 osób? <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a> o&nbsp;możliwość. <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
         <dl class="figures">
-          <div><dt>Osób w&nbsp;cenniku zespołowym</dt><dd>3–50</dd></div>
-          <div><dt>ENEL-MED Standard · Singiel, za pracownika miesięcznie</dt><dd>od 194&nbsp;zł</dd></div>
-          <div><dt>LUX MED Standard · Singiel, za pracownika miesięcznie</dt><dd>od 120&nbsp;zł</dd></div>
+          <div><dt>Sieci medyczne: ENEL-MED i&nbsp;LUX MED</dt><dd>2</dd></div>
+          <div><dt>Zakresy: Singiel, Partner, Rodzina</dt><dd>3</dd></div>
+          <div><dt>Pakiety w&nbsp;porównaniu</dt><dd>4</dd></div>
         </dl>
-        <p class="figures-note"><span class="mock-note">cennik z&nbsp;dotychczasowej strony programu – aktualność do potwierdzenia</span></p>
+        <p class="figures-note"><span class="mock-note">cennik programu w&nbsp;przygotowaniu – cenę dla zespołu przygotuje doradca po zapytaniu</span></p>
       </div>
     </div>
   </section>
@@ -1113,7 +1113,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
         <span class="chapter-no" aria-hidden="true">I</span>
         <p class="eyebrow">Dla kogo</p>
         <h2 id="dk-title" class="rv-curtain">Dla zespołu <em>i&nbsp;dla bliskich pracowników</em></h2>
-        <p class="lead">Abonament wybierasz w&nbsp;jednej z&nbsp;dwóch sieci medycznych i&nbsp;w jednym z&nbsp;trzech zakresów: Singiel, Partner albo Rodzina. Stawka zależy od liczby osób w&nbsp;zespole.</p>
+        <p class="lead">Abonament wybierasz w&nbsp;jednej z&nbsp;dwóch sieci medycznych i&nbsp;w jednym z&nbsp;trzech zakresów: Singiel, Partner albo Rodzina. Cenę dla Twojego zespołu przygotuje doradca po zapytaniu.</p>
       </div>
       <div class="scope">
         <article class="scope-card rv-rise" id="dla-zespolu" aria-labelledby="dz-title">
@@ -1123,14 +1123,14 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
             <p class="scope-for">Dla salonów i&nbsp;firm z&nbsp;branży beauty, które chcą zapewnić pracownikom prywatną opiekę medyczną.</p>
           </header>
           <ul class="scope-list">
-            <li><strong>Dwie sieci do wyboru.</strong> ENEL-MED (pakiet Standard) albo LUX MED (pakiet Standard) – ceny w&nbsp;cenniku programu. Możesz też poprosić o&nbsp;porównanie obu.</li>
-            <li><strong>Cennik od 3 osób.</strong> Progi 3–10, 11–20 i&nbsp;21–50 osób – im większy zespół, tym niższa stawka. Od 51 osób doradca przygotowuje wycenę indywidualną.</li>
-            <li><strong>Zakres dla każdego pracownika.</strong> Singiel, Partner albo Rodzina – stawki dla wszystkich trzech zakresów pokazuje cennik.</li>
-            <li><strong>Pakiety podstawowe.</strong> ENEL-MED Basic i&nbsp;LUX MED Podstawowa znajdziesz w&nbsp;porównaniu zakresów. <span class="mock-note">ceny pakietów podstawowych – brak w&nbsp;cenniku źródła, do potwierdzenia</span></li>
+            <li><strong>Dwie sieci do wyboru.</strong> ENEL-MED (pakiet Standard) albo LUX MED (pakiet Standard). Możesz też poprosić o&nbsp;porównanie obu.</li>
+            <li><strong>Cena dla zespołu.</strong> Cennik programu jest w&nbsp;przygotowaniu – ofertę dla Twojego zespołu przygotuje doradca po zapytaniu. Jak może wyglądać stawka według liczby osób, pokazują przykładowe stawki. <span class="mock-note">progi liczby osób – do potwierdzenia</span></li>
+            <li><strong>Zakres dla każdego pracownika.</strong> Singiel, Partner albo Rodzina – cenę każdego zakresu przygotuje doradca.</li>
+            <li><strong>Pakiety podstawowe.</strong> ENEL-MED Basic i&nbsp;LUX MED Podstawowa znajdziesz w&nbsp;porównaniu zakresów. <span class="mock-note">ceny pakietów – cennik programu w&nbsp;przygotowaniu</span></li>
             <li><strong>Koszty w&nbsp;firmie.</strong> Sposób rozliczenia abonamentu w&nbsp;salonie (koszt, przychód pracownika) <span class="mock-note">do potwierdzenia z&nbsp;księgowym/prawnikiem</span></li>
           </ul>
-          <p class="scope-solo">Pracujesz sama/sam albo w&nbsp;zespole 1–2 osób? <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a>. <span class="mock-note">do potwierdzenia (cennik źródła od 3&nbsp;osób)</span></p>
-          <p class="scope-actions"><a class="link-lux" href="#ceny">Zobacz ceny dla zespołu</a></p>
+          <p class="scope-solo">Pracujesz sama/sam albo w&nbsp;zespole 1–2 osób? <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a>. <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
+          <p class="scope-actions"><a class="link-lux" href="#ceny">Zobacz przykładowe stawki</a></p>
         </article>
         <article class="scope-card rv-rise" id="dla-rodziny" aria-labelledby="dr-title">
           <header class="scope-head">
@@ -1141,9 +1141,9 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
           <ul class="scope-list">
             <li><strong>Partner.</strong> Abonament obejmuje pracownika i&nbsp;jego partnera.</li>
             <li><strong>Rodzina.</strong> Według dotychczasowej strony programu do abonamentu można dołączyć małżonka, dzieci i&nbsp;rodziców. <span class="mock-note">kogo dokładnie obejmuje zakres Rodzina (np. wiek dzieci, rodzice) – do potwierdzenia</span></li>
-            <li><strong>Te same sieci i&nbsp;progi.</strong> Stawka za zakres Partner i&nbsp;Rodzina też zależy od sieci i&nbsp;liczby osób w&nbsp;zespole. <span class="mock-note">czy kwota Partner/Rodzina obejmuje pracownika (łączna) – do potwierdzenia</span></li>
+            <li><strong>Te same sieci.</strong> Zakres Partner i&nbsp;Rodzina wybierasz w&nbsp;tej samej sieci co pracownik. Cenę przygotuje doradca. <span class="mock-note">czy cena Partner/Rodzina obejmuje pracownika (łączna) – do potwierdzenia</span></li>
           </ul>
-          <p class="scope-actions"><a class="link-lux" href="#ceny" data-set-scope="rodzina">Zobacz ceny w&nbsp;zakresie Rodzina</a></p>
+          <p class="scope-actions"><a class="link-lux" href="#ceny" data-set-scope="rodzina">Zobacz przykładowe stawki w&nbsp;zakresie Rodzina</a></p>
         </article>
       </div>
       <div class="mind">
@@ -1157,16 +1157,18 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
     </div>
   </section>
 
-  <!-- II · CENY: pData z medical.html (ENEL „Pakiet Standard”, LuxMed „Opieka Standard”), zł miesięcznie; od 51 osób – wycena (max-staff-msg).
+  <!-- II · PRZYKŁADOWE STAWKI: pData z medical.html (ENEL „Pakiet Standard”, LuxMed „Opieka Standard”) – wyłącznie PRZYKŁAD (cennika programu
+       jeszcze nie ma, decyzja 13.11.2026). Każda kwota w elemencie data-przyklad="tak" ze znacznikiem „przykład”; od 51 osób – wycena (max-staff-msg).
        Bez JS: obie tabele w całości (wszystkie progi), przełączniki ukryte. Ze skryptem: przełącznik zespołu i zakresu aktualizuje
        liczbę nad tabelą, wyróżnia wiersz/kolumnę i przenosi wybór do formularza (#zapytanie). Karty sieci równorzędne – bez wyróżnień. -->
   <section class="section" id="ceny" aria-labelledby="ceny-title">
     <div class="container">
       <div class="section-head">
         <span class="chapter-no" aria-hidden="true">II</span>
-        <p class="eyebrow">Ceny</p>
-        <h2 id="ceny-title" class="rv-curtain">Stawki miesięczne <em>według wielkości zespołu</em></h2>
-        <p class="lead">Wybierz liczbę osób w&nbsp;zespole i&nbsp;zakres – zobaczysz stawki ENEL-MED Standard i&nbsp;LUX MED Standard. Cennik obejmuje zespoły od 3 do 50 osób.</p>
+        <p class="eyebrow">Przykładowe stawki</p>
+        <h2 id="ceny-title" class="rv-curtain">Przykładowe stawki <em>według wielkości zespołu</em></h2>
+        <p class="lead">Wybierz liczbę osób w&nbsp;zespole i&nbsp;zakres – zobaczysz, jak działa wybór dla ENEL-MED Standard i&nbsp;LUX MED Standard. Kwoty są tylko przykładem.</p>
+        <p class="przyklad-note" id="ceny-przyklad"><span class="mock-note">przykład</span> Przykładowe stawki z&nbsp;makiety – cennik programu w&nbsp;przygotowaniu. Cenę dla Twojego zespołu przygotuje doradca po zapytaniu.</p>
       </div>
       <div class="price-panel glass glass--tint">
         <div class="price-controls" id="ceny-wybor" hidden>
@@ -1188,20 +1190,20 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
             </div>
           </fieldset>
         </div>
-        <p class="sr-only" id="ceny-status" role="status"></p>
+        <p class="sr-only" id="ceny-status" role="status" data-przyklad="tak"></p>
         <div class="scope-legend">
-          <p><strong>Singiel</strong> – stawka za pracownika. <strong>Partner</strong> – stawka za pracownika z&nbsp;partnerem. <strong>Rodzina</strong> – stawka za pracownika z&nbsp;rodziną. <span class="mock-note">czy kwota Partner/Rodzina jest łączna z&nbsp;pracownikiem – do potwierdzenia</span></p>
+          <p><strong>Singiel</strong> – za pracownika. <strong>Partner</strong> – za pracownika z&nbsp;partnerem. <strong>Rodzina</strong> – za pracownika z&nbsp;rodziną. <span class="mock-note">czy cena Partner/Rodzina jest łączna z&nbsp;pracownikiem – do potwierdzenia</span></p>
         </div>
         <div class="prices">
-        <article class="op-card rv-rise" id="cena-enel" data-op="enel" aria-labelledby="op-enel-t">
+        <article class="op-card rv-rise" id="cena-enel" data-op="enel" data-przyklad="tak" aria-labelledby="op-enel-t">
           <div class="op-head">
             <p class="op-legal">ENEL-MED S.A.</p>
             <h3 id="op-enel-t">ENEL-MED Standard</h3>
           </div>
-          <p class="op-fig"><span class="op-fig-num" data-fig>216&nbsp;zł</span><span class="op-fig-cap" data-fig-cap>za pracownika miesięcznie · Singiel · zespół 3–10&nbsp;osób</span></p>
-          <div class="table-scroll">
+          <p class="op-fig" data-przyklad="tak"><span class="mock-note">przykład</span><span class="op-fig-num" data-fig>216&nbsp;zł</span><span class="op-fig-cap" data-fig-cap>za pracownika miesięcznie · Singiel · zespół 3–10&nbsp;osób</span></p>
+          <div class="table-scroll" data-przyklad="tak">
             <table class="rate-table">
-              <caption><span class="sr-only">ENEL-MED Standard – </span>Stawki miesięczne w&nbsp;zł: Singiel za pracownika, Partner i&nbsp;Rodzina za pracownika z&nbsp;bliskimi – według liczby osób w&nbsp;zespole</caption>
+              <caption><span class="sr-only">ENEL-MED Standard – </span>Przykładowe stawki miesięczne w&nbsp;zł (cennik programu w&nbsp;przygotowaniu): Singiel za pracownika, Partner i&nbsp;Rodzina za pracownika z&nbsp;bliskimi – według liczby osób w&nbsp;zespole</caption>
               <thead><tr><th scope="col">Osób w&nbsp;zespole</th><th scope="col" data-scope="singiel">Singiel</th><th scope="col" data-scope="partner">Partner</th><th scope="col" data-scope="rodzina">Rodzina</th></tr></thead>
               <tbody>
                 <tr data-team="3-10"><th scope="row">3–10</th><td data-scope="singiel">216&nbsp;zł</td><td data-scope="partner">237&nbsp;zł</td><td data-scope="rodzina">478&nbsp;zł</td></tr>
@@ -1213,15 +1215,15 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
           </div>
           <a class="btn btn-navy" href="#zapytanie" data-to-form data-op="enel"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Zapytaj o&nbsp;ENEL-MED<span class="sr-only"> Standard</span></a>
         </article>
-        <article class="op-card rv-rise" id="cena-lux" data-op="lux" aria-labelledby="op-lux-t">
+        <article class="op-card rv-rise" id="cena-lux" data-op="lux" data-przyklad="tak" aria-labelledby="op-lux-t">
           <div class="op-head">
             <p class="op-legal">LUX MED sp. z&nbsp;o.o.</p>
             <h3 id="op-lux-t">LUX MED Standard</h3>
           </div>
-          <p class="op-fig"><span class="op-fig-num" data-fig>131&nbsp;zł</span><span class="op-fig-cap" data-fig-cap>za pracownika miesięcznie · Singiel · zespół 3–10&nbsp;osób</span></p>
-          <div class="table-scroll">
+          <p class="op-fig" data-przyklad="tak"><span class="mock-note">przykład</span><span class="op-fig-num" data-fig>131&nbsp;zł</span><span class="op-fig-cap" data-fig-cap>za pracownika miesięcznie · Singiel · zespół 3–10&nbsp;osób</span></p>
+          <div class="table-scroll" data-przyklad="tak">
             <table class="rate-table">
-              <caption><span class="sr-only">LUX MED Standard – </span>Stawki miesięczne w&nbsp;zł: Singiel za pracownika, Partner i&nbsp;Rodzina za pracownika z&nbsp;bliskimi – według liczby osób w&nbsp;zespole</caption>
+              <caption><span class="sr-only">LUX MED Standard – </span>Przykładowe stawki miesięczne w&nbsp;zł (cennik programu w&nbsp;przygotowaniu): Singiel za pracownika, Partner i&nbsp;Rodzina za pracownika z&nbsp;bliskimi – według liczby osób w&nbsp;zespole</caption>
               <thead><tr><th scope="col">Osób w&nbsp;zespole</th><th scope="col" data-scope="singiel">Singiel</th><th scope="col" data-scope="partner">Partner</th><th scope="col" data-scope="rodzina">Rodzina</th></tr></thead>
               <tbody>
                 <tr data-team="3-10"><th scope="row">3–10</th><td data-scope="singiel">131&nbsp;zł</td><td data-scope="partner">234&nbsp;zł</td><td data-scope="rodzina">347&nbsp;zł</td></tr>
@@ -1235,11 +1237,11 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
         </article>
         </div>
         <div class="price-note">
-          <p><strong>Stawki miesięczne programu</strong> – cennik z&nbsp;dotychczasowej strony programu. <span class="mock-note">aktualność cennika do potwierdzenia</span></p>
+          <p><strong>Kwoty powyżej to przykład</strong> z&nbsp;makiety, nie cennik programu – ten jest w&nbsp;przygotowaniu. Cenę dla Twojego zespołu przygotuje doradca po zapytaniu.</p>
           <p><strong>Od 51 osób</strong> – wycena indywidualna: doradca przygotuje ofertę dla większego zespołu.</p>
-          <p><strong>Mniej niż 3 osoby?</strong> <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a> o&nbsp;możliwość. <span class="mock-note">do potwierdzenia (cennik źródła od 3&nbsp;osób)</span></p>
-          <p class="price-actions"><a class="btn btn-ghost" href="#zapytanie" data-to-form data-op="porownanie">Chcę porównać obie sieci</a></p>
-        </div>
+          <p class="price-actions"><a class="btn btn-navy" href="#zapytanie" data-to-form data-op="porownanie">Zapytaj doradcę o&nbsp;cenę</a></p>
+          <p><strong>Mniej niż 3 osoby?</strong> <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a> o&nbsp;możliwość. <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
+                  </div>
       </div>
     </div>
   </section>
@@ -1248,7 +1250,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
        „17 specjalności” przy 10 nazwach (ENEL Basic), „33” przy 20 (ENEL Standard), „11” przy 7 (LuxMed Podstawowa), „17” przy 15 (LuxMed Standard).
        Wiersz „Różnice” = logika źródła („Czego brakuje?”): lekarze z list innych wybranych pakietów, których nie ma na liście danego pakietu.
        Bez JS: wszystkie 4 pakiety (tabela ≥ 1024 px, poniżej układ „najpierw atrybut”); ze skryptem: wybór 2–4 pakietów,
-       domyślnie dwa pakiety z cennikiem (ENEL-MED Standard, LUX MED Standard) – Basic i Podstawową dodajesz na żądanie. -->
+       domyślnie dwa pakiety z przykładowymi stawkami (ENEL-MED Standard, LUX MED Standard) – Basic i Podstawową dodajesz na żądanie. -->
   <section class="section band" id="porownanie" aria-labelledby="por-title">
     <div class="container">
       <div class="section-head">
@@ -1275,7 +1277,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
             <caption>Zakres pakietów według zestawienia z&nbsp;dotychczasowej strony programu</caption>
             <thead><tr><th scope="col" class="cmp-corner"><span class="sr-only">Zakres</span></th><th scope="col" data-pkg="enel-basic">ENEL-MED Basic</th><th scope="col" data-pkg="enel-std">ENEL-MED Standard</th><th scope="col" data-pkg="lux-basic">LUX MED Podstawowa</th><th scope="col" data-pkg="lux-std">LUX MED Standard</th></tr></thead>
             <tbody>
-              <tr><th scope="row">Cena w&nbsp;cenniku programu</th><td data-pkg="enel-basic">brak w&nbsp;cenniku <span class="mock-note">cena – do potwierdzenia u&nbsp;doradcy</span></td><td data-pkg="enel-std">Singiel: 194–216&nbsp;zł; Partner: 212–237&nbsp;zł; Rodzina: 420–478&nbsp;zł miesięcznie (Singiel za pracownika; zespół 3–50&nbsp;osób) – <a href="#ceny">zobacz ceny</a> <span class="mock-note">cennik z&nbsp;dotychczasowej strony programu – aktualność do potwierdzenia</span></td><td data-pkg="lux-basic">brak w&nbsp;cenniku <span class="mock-note">cena – do potwierdzenia u&nbsp;doradcy</span></td><td data-pkg="lux-std">Singiel: 120–131&nbsp;zł; Partner: 212–234&nbsp;zł; Rodzina: 314–347&nbsp;zł miesięcznie (Singiel za pracownika; zespół 3–50&nbsp;osób) – <a href="#ceny">zobacz ceny</a> <span class="mock-note">cennik z&nbsp;dotychczasowej strony programu – aktualność do potwierdzenia</span></td></tr>
+              <tr><th scope="row">Przykładowe stawki (cennik w&nbsp;przygotowaniu)</th><td data-pkg="enel-basic">brak przykładu – cenę przygotuje doradca <span class="mock-note">cennik programu w&nbsp;przygotowaniu</span></td><td data-pkg="enel-std"><span class="cmp-price" data-przyklad="tak"><span class="mock-note">przykład</span> Singiel: 194&#8288;–&#8288;216&nbsp;zł; Partner: 212&#8288;–&#8288;237&nbsp;zł; Rodzina: 420&#8288;–&#8288;478&nbsp;zł miesięcznie (Singiel za pracownika; zespół 3&#8288;–&#8288;50&nbsp;osób)</span> – <a href="#ceny">zobacz przykładowe stawki</a></td><td data-pkg="lux-basic">brak przykładu – cenę przygotuje doradca <span class="mock-note">cennik programu w&nbsp;przygotowaniu</span></td><td data-pkg="lux-std"><span class="cmp-price" data-przyklad="tak"><span class="mock-note">przykład</span> Singiel: 120&#8288;–&#8288;131&nbsp;zł; Partner: 212&#8288;–&#8288;234&nbsp;zł; Rodzina: 314&#8288;–&#8288;347&nbsp;zł miesięcznie (Singiel za pracownika; zespół 3&#8288;–&#8288;50&nbsp;osób)</span> – <a href="#ceny">zobacz przykładowe stawki</a></td></tr>
               <tr><th scope="row">Lekarze wymienieni w&nbsp;zestawieniu</th><td data-pkg="enel-basic">Chirurg, Ginekolog, Internista, Kardiolog, Laryngolog, Neurolog, Okulista, Pediatra, Urolog, Lekarz Rodzinny</td><td data-pkg="enel-std">Chirurg, Ginekolog, Internista, Kardiolog, Laryngolog, Neurolog, Okulista, Pediatra, Urolog, Lekarz Rodzinny, Alergolog, Chirurg Onkolog, Dermatolog, Diabetolog, Endokrynolog, Gastrolog, Hematolog, Nefrolog, Ortopeda, Reumatolog</td><td data-pkg="lux-basic">Internista, Pediatra, Lekarz Rodzinny, Ginekolog, Okulista, Chirurg, Dermatolog</td><td data-pkg="lux-std">Internista, Pediatra, Lekarz Rodzinny, Ginekolog, Okulista, Chirurg, Dermatolog, Kardiolog, Laryngolog, Neurolog, Ortopeda, Urolog, Pulmonolog, Hematolog, Lekarz Dyżurny</td></tr>
               <tr><th scope="row">Diagnostyka laboratoryjna</th><td data-pkg="enel-basic">Morfologia, mocz, cytologia (1/rok bez skierowania)</td><td data-pkg="enel-std">Ponad 300 badań laboratoryjnych, nielimitowana liczba badań</td><td data-pkg="lux-basic">52 badania podstawowe (hematologia, analityka)</td><td data-pkg="lux-std">263 badania laboratoryjne (szeroka diagnostyka)</td></tr>
               <tr><th scope="row">Diagnostyka obrazowa i&nbsp;RTG</th><td data-pkg="enel-basic">Audiogram, EKG, RTG klatki i&nbsp;miednicy (podstawowe)</td><td data-pkg="enel-std">Pełne RTG kostne i&nbsp;diagnostyka obrazowa</td><td data-pkg="lux-basic">RTG klatki piersiowej, EKG spoczynkowe</td><td data-pkg="lux-std">Rozszerzone RTG kostne, USG jamy brzusznej</td></tr>
@@ -1287,7 +1289,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
           </table>
         </div>
         <div class="cmp-attrs">
-          <section class="cmp-attr" aria-labelledby="ca-price"><h3 id="ca-price">Cena w&nbsp;cenniku programu</h3><dl><div data-pkg="enel-basic"><dt>ENEL-MED Basic</dt><dd>brak w&nbsp;cenniku <span class="mock-note">cena – do potwierdzenia u&nbsp;doradcy</span></dd></div><div data-pkg="enel-std"><dt>ENEL-MED Standard</dt><dd>Singiel: 194–216&nbsp;zł; Partner: 212–237&nbsp;zł; Rodzina: 420–478&nbsp;zł miesięcznie (Singiel za pracownika; zespół 3–50&nbsp;osób) – <a href="#ceny">zobacz ceny</a> <span class="mock-note">cennik z&nbsp;dotychczasowej strony programu – aktualność do potwierdzenia</span></dd></div><div data-pkg="lux-basic"><dt>LUX MED Podstawowa</dt><dd>brak w&nbsp;cenniku <span class="mock-note">cena – do potwierdzenia u&nbsp;doradcy</span></dd></div><div data-pkg="lux-std"><dt>LUX MED Standard</dt><dd>Singiel: 120–131&nbsp;zł; Partner: 212–234&nbsp;zł; Rodzina: 314–347&nbsp;zł miesięcznie (Singiel za pracownika; zespół 3–50&nbsp;osób) – <a href="#ceny">zobacz ceny</a> <span class="mock-note">cennik z&nbsp;dotychczasowej strony programu – aktualność do potwierdzenia</span></dd></div></dl></section>
+          <section class="cmp-attr" aria-labelledby="ca-price"><h3 id="ca-price">Przykładowe stawki (cennik w&nbsp;przygotowaniu)</h3><dl><div data-pkg="enel-basic"><dt>ENEL-MED Basic</dt><dd>brak przykładu – cenę przygotuje doradca <span class="mock-note">cennik programu w&nbsp;przygotowaniu</span></dd></div><div data-pkg="enel-std"><dt>ENEL-MED Standard</dt><dd><span class="cmp-price" data-przyklad="tak"><span class="mock-note">przykład</span> Singiel: 194&#8288;–&#8288;216&nbsp;zł; Partner: 212&#8288;–&#8288;237&nbsp;zł; Rodzina: 420&#8288;–&#8288;478&nbsp;zł miesięcznie (Singiel za pracownika; zespół 3&#8288;–&#8288;50&nbsp;osób)</span> – <a href="#ceny">zobacz przykładowe stawki</a></dd></div><div data-pkg="lux-basic"><dt>LUX MED Podstawowa</dt><dd>brak przykładu – cenę przygotuje doradca <span class="mock-note">cennik programu w&nbsp;przygotowaniu</span></dd></div><div data-pkg="lux-std"><dt>LUX MED Standard</dt><dd><span class="cmp-price" data-przyklad="tak"><span class="mock-note">przykład</span> Singiel: 120&#8288;–&#8288;131&nbsp;zł; Partner: 212&#8288;–&#8288;234&nbsp;zł; Rodzina: 314&#8288;–&#8288;347&nbsp;zł miesięcznie (Singiel za pracownika; zespół 3&#8288;–&#8288;50&nbsp;osób)</span> – <a href="#ceny">zobacz przykładowe stawki</a></dd></div></dl></section>
           <section class="cmp-attr" aria-labelledby="ca-list"><h3 id="ca-list">Lekarze wymienieni w&nbsp;zestawieniu</h3><dl><div data-pkg="enel-basic"><dt>ENEL-MED Basic</dt><dd>Chirurg, Ginekolog, Internista, Kardiolog, Laryngolog, Neurolog, Okulista, Pediatra, Urolog, Lekarz Rodzinny</dd></div><div data-pkg="enel-std"><dt>ENEL-MED Standard</dt><dd>Chirurg, Ginekolog, Internista, Kardiolog, Laryngolog, Neurolog, Okulista, Pediatra, Urolog, Lekarz Rodzinny, Alergolog, Chirurg Onkolog, Dermatolog, Diabetolog, Endokrynolog, Gastrolog, Hematolog, Nefrolog, Ortopeda, Reumatolog</dd></div><div data-pkg="lux-basic"><dt>LUX MED Podstawowa</dt><dd>Internista, Pediatra, Lekarz Rodzinny, Ginekolog, Okulista, Chirurg, Dermatolog</dd></div><div data-pkg="lux-std"><dt>LUX MED Standard</dt><dd>Internista, Pediatra, Lekarz Rodzinny, Ginekolog, Okulista, Chirurg, Dermatolog, Kardiolog, Laryngolog, Neurolog, Ortopeda, Urolog, Pulmonolog, Hematolog, Lekarz Dyżurny</dd></div></dl></section>
           <section class="cmp-attr" aria-labelledby="ca-labs"><h3 id="ca-labs">Diagnostyka laboratoryjna</h3><dl><div data-pkg="enel-basic"><dt>ENEL-MED Basic</dt><dd>Morfologia, mocz, cytologia (1/rok bez skierowania)</dd></div><div data-pkg="enel-std"><dt>ENEL-MED Standard</dt><dd>Ponad 300 badań laboratoryjnych, nielimitowana liczba badań</dd></div><div data-pkg="lux-basic"><dt>LUX MED Podstawowa</dt><dd>52 badania podstawowe (hematologia, analityka)</dd></div><div data-pkg="lux-std"><dt>LUX MED Standard</dt><dd>263 badania laboratoryjne (szeroka diagnostyka)</dd></div></dl></section>
           <section class="cmp-attr" aria-labelledby="ca-diag"><h3 id="ca-diag">Diagnostyka obrazowa i&nbsp;RTG</h3><dl><div data-pkg="enel-basic"><dt>ENEL-MED Basic</dt><dd>Audiogram, EKG, RTG klatki i&nbsp;miednicy (podstawowe)</dd></div><div data-pkg="enel-std"><dt>ENEL-MED Standard</dt><dd>Pełne RTG kostne i&nbsp;diagnostyka obrazowa</dd></div><div data-pkg="lux-basic"><dt>LUX MED Podstawowa</dt><dd>RTG klatki piersiowej, EKG spoczynkowe</dd></div><div data-pkg="lux-std"><dt>LUX MED Standard</dt><dd>Rozszerzone RTG kostne, USG jamy brzusznej</dd></div></dl></section>
@@ -1608,7 +1610,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
             <span class="numeral" aria-hidden="true">3</span>
             <h3>Oferta</h3>
             <span class="step-where">ENEL-MED, LUX MED albo obie</span>
-            <p>Dostajesz ofertę wybranej sieci albo porównanie obu – z&nbsp;cennikiem dla Twojego zespołu.</p>
+            <p>Dostajesz ofertę wybranej sieci albo porównanie obu – z&nbsp;ceną dla Twojego zespołu.</p>
           </li>
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">4</span>
@@ -1691,7 +1693,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
               <label class="seg-opt"><input type="radio" name="medTeam" value="51+"><span>od 51</span></label>
               <label class="seg-opt"><input type="radio" name="medTeam" value="1-2"><span>mniej niż 3 – zapytam o&nbsp;możliwość</span></label>
             </div>
-            <p class="field-hint seg-hint"><span class="mock-note">mniej niż 3 osoby – do potwierdzenia (cennik źródła od 3&nbsp;osób)</span></p>
+            <p class="field-hint seg-hint"><span class="mock-note">mniej niż 3 osoby – do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
           </fieldset>
           <fieldset class="seg" id="m-zakres">
             <legend>Zakres</legend>
@@ -1734,8 +1736,8 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
       </div>
       <div class="faq glass">
         <!--nb-off-->
-        <details id="pytanie-1"><summary>Dla kogo jest opieka medyczna w BeautyPolisa?</summary><p>Dla salonów i firm z branży beauty, które chcą zapewnić zespołowi abonament medyczny ENEL-MED albo LUX MED. Cennik programu obejmuje zespoły od 3 do 50 osób, a dla 51 i więcej osób doradca przygotowuje wycenę indywidualną. W zakresie Partner albo Rodzina abonament obejmuje także bliskich pracownika.</p></details>
-        <details id="pytanie-2"><summary>Ile kosztuje abonament medyczny?</summary><p>Stawka miesięczna zależy od sieci, liczby osób w zespole i zakresu. Według cennika programu pakiet ENEL-MED Standard kosztuje 194–216 zł w zakresie Singiel (za pracownika), 212–237 zł w zakresie Partner i 420–478 zł w zakresie Rodzina, a pakiet LUX MED Standard – 120–131 zł (Singiel), 212–234 zł (Partner) i 314–347 zł (Rodzina) miesięcznie. Im większy zespół, tym niższa stawka. Od 51 osób – wycena indywidualna. Cennik pochodzi z dotychczasowej strony programu – jego aktualność potwierdzi doradca.</p></details>
+        <details id="pytanie-1"><summary>Dla kogo jest opieka medyczna w BeautyPolisa?</summary><p>Dla salonów i firm z branży beauty, które chcą zapewnić zespołowi abonament medyczny ENEL-MED albo LUX MED. W zakresie Partner albo Rodzina abonament obejmuje także bliskich pracownika. Ofertę dla Twojego zespołu przygotuje doradca po zapytaniu.</p></details>
+        <details id="pytanie-2"><summary>Ile kosztuje abonament medyczny?</summary><p>Cenę przygotuje doradca po zapytaniu; cennik programu jest w przygotowaniu.</p></details>
         <details id="pytanie-3"><summary>Czym różnią się pakiety ENEL-MED i LUX MED?</summary><p>Pakiety różnią się listą lekarzy specjalistów, zakresem badań laboratoryjnych i diagnostyki obrazowej, prowadzeniem ciąży oraz zabiegami ambulatoryjnymi. Zestawienie czterech pakietów – ENEL-MED Basic i Standard oraz LUX MED Podstawowa i Standard – znajdziesz w <a href="#porownanie">porównaniu pakietów</a>.</p></details>
         <details id="pytanie-4"><summary>Jak sprawdzić, czy pakiet obejmuje danego specjalistę?</summary><p>Wpisz nazwę specjalizacji lub zabiegu w <a href="#specjalizacje">wyszukiwarce specjalizacji</a>, np. kardiolog, dermatolog albo biopsja. Wynik pokaże, w których pakietach ENEL-MED i LUX MED ją znajdziesz. Ostateczny zakres określa oferta i dokumenty operatora.</p></details>
         <details id="pytanie-5"><summary>Jak zamówić opiekę medyczną dla zespołu?</summary><p>Wypełnij <a href="#zapytanie">formularz zapytania</a>: podaj NIP firmy, dane kontaktowe, wybraną sieć, liczbę osób i zakres. Doradca Aura Expert skontaktuje się z Tobą i przygotuje ofertę. Możesz też zadzwonić pod numer <a href="tel:+48504400901">+48 504 400 901</a>. Abonamentu nie kupuje się w koszyku na stronie.</p></details>
@@ -1859,13 +1861,13 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
   <symbol id="lux-kosmetolog" viewBox="0 0 96 96"><title>Kosmetolog</title><path d="M43 32V23C43 15 53 15 53 23V32" /><path d="M39 32H57V43H39ZM42 43V48C34 51 33 54 33 60V75C33 78 35 79 38 79H58C61 79 63 78 63 75V60C63 54 62 51 54 48V43" /><path d="M44 35V40M48 35V40M52 35V40M48 48V61" /><path d="M48 65C46 68 44 70 44 72C44 77 52 77 52 72C52 70 50 68 48 65Z" /></symbol>
 </svg>
 <!-- gen:pasek-akcji -->
-<!-- Pasek akcji na telefonie (< 768 px): pokazuje go skrypt gen:wspolne-js po przewinięciu poza pierwszy ekran;
+<!-- Pasek akcji na telefonie (< 768 px, wysokość okna > 500 px): pokazuje go skrypt gen:wspolne-js po przewinięciu poza pierwszy ekran;
      chowa się przy polu formularza / klawiaturze, przy widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu,
-     karcie końcowej i stopce. Bez JS zostaje ukryty (te same akcje są w treści). -->
-<div class="pasek-akcji" id="pasek-akcji" hidden>
+     karcie końcowej i&nbsp;stopce. Bez JS zostaje ukryty (te same akcje są w&nbsp;treści). -->
+<aside class="pasek-akcji" id="pasek-akcji" aria-label="Szybkie akcje" hidden>
   <a class="pa-glowny" href="#zapytanie">Zapytaj doradcę<span class="sr-only"> o&nbsp;opiekę medyczną</span></a>
   <a class="pa-tel" href="tel:+48504400901"><svg class="pa-ikona" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5 9 3l1.7 4.3-2.2 1.5a11.5 11.5 0 0 0 6.7 6.7l1.5-2.2L21 15l-.5 2.4A2.5 2.5 0 0 1 18 19.5 15.5 15.5 0 0 1 4.5 6 2.5 2.5 0 0 1 6.6 3.5Z"/></svg><span class="pa-tel-txt">Zadzwoń<span class="pa-nr"><span class="sr-only">: </span>+48&nbsp;504&nbsp;400&nbsp;901</span></span></a>
-</div>
+</aside>
 <!-- /gen:pasek-akcji -->
 <script type="application/json" id="med-data">{"prices":{"3-10":{"enel":[216,237,478],"lux":[131,234,347]},"11-20":{"enel":[202,220,450],"lux":[124,220,327]},"21-50":{"enel":[194,212,420],"lux":[120,212,314]}},"teams":{"3-10":"3–10","11-20":"11–20","21-50":"21–50","51+":"od 51","1-2":"mniej niż 3"},"scopeUnits":{"singiel":"za pracownika","partner":"za pracownika z partnerem","rodzina":"za pracownika z rodziną"},"scopes":["singiel","partner","rodzina"],"scopeLabels":{"singiel":"Singiel","partner":"Partner","rodzina":"Rodzina"},"ops":{"enel":{"brand":"ENEL-MED","pkg":"ENEL-MED Standard"},"lux":{"brand":"LUX MED","pkg":"LUX MED Standard"}},"pkgs":{"enel-basic":["Chirurg","Ginekolog","Internista","Kardiolog","Laryngolog","Neurolog","Okulista","Pediatra","Urolog","Lekarz Rodzinny"],"enel-std":["Chirurg","Ginekolog","Internista","Kardiolog","Laryngolog","Neurolog","Okulista","Pediatra","Urolog","Lekarz Rodzinny","Alergolog","Chirurg Onkolog","Dermatolog","Diabetolog","Endokrynolog","Gastrolog","Hematolog","Nefrolog","Ortopeda","Reumatolog"],"lux-basic":["Internista","Pediatra","Lekarz Rodzinny","Ginekolog","Okulista","Chirurg","Dermatolog"],"lux-std":["Internista","Pediatra","Lekarz Rodzinny","Ginekolog","Okulista","Chirurg","Dermatolog","Kardiolog","Laryngolog","Neurolog","Ortopeda","Urolog","Pulmonolog","Hematolog","Lekarz Dyżurny"]},"pkgNames":{"enel-basic":"ENEL-MED Basic","enel-std":"ENEL-MED Standard","lux-basic":"LUX MED Podstawowa","lux-std":"LUX MED Standard"}}</script>
 <script>
@@ -1971,7 +1973,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 /* ===== Opieka medyczna: dane (te same co tabele statyczne – generowane z medical.html) ===== */
 var MED=(function(){try{return JSON.parse(document.getElementById('med-data').textContent)}catch(e){return null}})();
 
-/* Cennik: przełącznik zespołu i zakresu → liczba nad tabelą, wyróżnienie wiersza/kolumny, komunikat dla czytników */
+/* Przykładowe stawki: przełącznik zespołu i zakresu → liczba nad tabelą, wyróżnienie wiersza/kolumny, komunikat dla czytników */
 var MedPrices=(function(){
   var sec=document.getElementById('ceny'); if(!sec||!MED) return null;
   var ctl=document.getElementById('ceny-wybor'), live=document.getElementById('ceny-status');
@@ -1988,14 +1990,14 @@ var MedPrices=(function(){
       [].forEach.call(card.querySelectorAll('tr[data-team]'),function(tr){tr.classList.toggle('is-sel',tr.getAttribute('data-team')===team)});
       [].forEach.call(card.querySelectorAll('[data-scope]'),function(c){c.classList.toggle('is-col',team!=='51+'&&c.getAttribute('data-scope')===scope)});
     });
-    if(announce) live.textContent='Zespół '+tl+' osób, zakres '+sl+': '+parts.join(', ')+(team==='51+'?'.':' miesięcznie '+MED.scopeUnits[scope]+'.');
+    if(announce) live.textContent='Przykładowe stawki (cennik w przygotowaniu) – zespół '+tl+' osób, zakres '+sl+': '+parts.join(', ')+(team==='51+'?'.':' miesięcznie '+MED.scopeUnits[scope]+'.');
   }
   sec.addEventListener('change',function(e){if(e.target.name==='ceny-zespol'||e.target.name==='ceny-zakres')render(true)});
   render(false);
   return {team:function(){return val('ceny-zespol')},scope:function(){return val('ceny-zakres')},setScope:function(v){set('ceny-zakres',v)}};
 })();
 
-/* „Zobacz ceny w zakresie Rodzina”: ustawia zakres w cenniku przed przewinięciem */
+/* „Zobacz przykładowe stawki w zakresie Rodzina”: ustawia zakres przed przewinięciem */
 document.addEventListener('click',function(e){
   var a=e.target.closest('[data-set-scope]'); if(a&&MedPrices) MedPrices.setScope(a.getAttribute('data-set-scope'));
 });
@@ -2012,7 +2014,7 @@ var MedForm=(function(){
     if(team&&check('medTeam',team))ok.push('zespół: '+MED.teams[team]+(team==='1-2'?' osoby':' osób'));
     if(scope&&check('medScope',scope))ok.push('zakres: '+MED.scopeLabels[scope]);
     if(!ok.length) return;
-    pick.textContent=(fromPrices?'Wybrano w cenniku – ':'Wstępnie wybrano – ')+ok.join(', ')+'. Możesz to zmienić poniżej.';
+    pick.textContent=(fromPrices?'Wybrano przy przykładowych stawkach – ':'Wstępnie wybrano – ')+ok.join(', ')+'. Możesz to zmienić poniżej.';
     pick.hidden=false;
   }
   document.addEventListener('click',function(e){
@@ -2208,7 +2210,7 @@ var MedForm=(function(){
 <script>
 /* Wspólne komponenty (gen_wspolne.py – nie edytuj ręcznie) */
 /* Menu „Ubezpieczenia”: link -> przycisk disclosure (aria-expanded + aria-controls, bez role=menu).
-   Zamykanie: Esc (fokus wraca na przycisk), klik poza, Tab poza panel, schowanie nagłówka. Najechanie otwiera z opóźnieniem tylko jako dodatek. */
+   Zamykanie: Esc (fokus wraca na przycisk), klik poza, Tab poza panel, schowanie nagłówka, przewinięcie o > 120 px. Najechanie otwiera z opóźnieniem tylko jako dodatek. */
 (function(){
   var li=document.querySelector('.nav-produkty'), panel=document.getElementById('menu-produkty');
   if(!li||!panel) return;
@@ -2217,9 +2219,9 @@ var MedForm=(function(){
   btn.type='button';btn.className='nav-produkty-btn';btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-controls','menu-produkty');
   btn.innerHTML='Ubezpieczenia<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5 5 7l3.5-3.5"/></svg>';
   link.parentNode.replaceChild(btn,link);
-  var via=null, tOpen=0, tClose=0, mqHover=window.matchMedia('(hover:hover) and (pointer:fine)');
+  var via=null, tOpen=0, tClose=0, y0=0, mqHover=window.matchMedia('(hover:hover) and (pointer:fine)');
   function isOpen(){return !panel.hidden}
-  function open(how){clearTimeout(tClose);if(isOpen()){if(how==='click')via='click';return}panel.hidden=false;btn.setAttribute('aria-expanded','true');via=how}
+  function open(how){clearTimeout(tClose);if(isOpen()){if(how==='click')via='click';return}panel.hidden=false;btn.setAttribute('aria-expanded','true');via=how;y0=window.scrollY}
   function close(focus){clearTimeout(tOpen);clearTimeout(tClose);if(!isOpen())return;panel.hidden=true;btn.setAttribute('aria-expanded','false');via=null;if(focus)btn.focus()}
   btn.addEventListener('click',function(){if(isOpen()&&via!=='hover')close(false);else open('click')});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&isOpen()){var inside=li.contains(document.activeElement);close(inside)}});
@@ -2228,7 +2230,13 @@ var MedForm=(function(){
   panel.addEventListener('click',function(e){if(e.target.closest('a[href]'))close(false)});
   li.addEventListener('pointerenter',function(e){if(e.pointerType!=='mouse'||!mqHover.matches)return;clearTimeout(tClose);if(!isOpen())tOpen=setTimeout(function(){open('hover')},180)});
   li.addEventListener('pointerleave',function(e){if(e.pointerType!=='mouse')return;clearTimeout(tOpen);if(isOpen()&&via==='hover'&&!li.contains(document.activeElement))tClose=setTimeout(function(){close(false)},320)});
-  window.addEventListener('scroll',function(){if(isOpen()&&hdr&&hdr.dataset.hidden==='1')close(false)},{passive:true});
+  /* przewinięcie: zamyka przy schowanym nagłówku, a panel otwarty klikiem/klawiaturą także po 120 px od otwarcia
+     (fokus na przycisku blokuje chowanie nagłówka); fokus w samym panelu – panel zostaje, fokus nie jest przenoszony */
+  window.addEventListener('scroll',function(){
+    if(!isOpen())return;
+    if(hdr&&hdr.dataset.hidden==='1'){close(false);return}
+    if(via!=='hover'&&!panel.contains(document.activeElement)&&Math.abs(window.scrollY-y0)>120)close(false);
+  },{passive:true});
   var mqWide=window.matchMedia('(min-width:1200px)');
   function onWide(){if(!mqWide.matches)close(false)}
   if(mqWide.addEventListener)mqWide.addEventListener('change',onWide);else if(mqWide.addListener)mqWide.addListener(onWide);
@@ -2238,17 +2246,29 @@ var MedForm=(function(){
    otwartej szufladzie menu, widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu, karcie końcowej, akcjach otwarcia i stopce */
 (function(){
   var bar=document.getElementById('pasek-akcji'); if(!bar||!('IntersectionObserver' in window)) return;
-  var root=document.documentElement, mq=window.matchMedia('(max-width:767px)'), menu=document.querySelector('details.menu');
+  /* niskie okno (telefon w poziomie, ≤ 500 px – jak nagłówek): bez paska */
+  var root=document.documentElement, mq=window.matchMedia('(max-width:767px) and (min-height:501px)'), menu=document.querySelector('details.menu');
   var FIELD='input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]):not([type=reset]):not([type=range]):not([type=file]):not([type=image]),textarea,select,[contenteditable="true"]';
   var targets=[].slice.call(document.querySelectorAll('.calc-peek,.lead-form,.end-card,.hero-actions,.tariff-actions,.site-footer'));
   var seen=new Set(), io=null, ticking=false;
   function typing(){var a=document.activeElement;return !!(a&&a.matches&&a.matches(FIELD))}
   function keyboard(){var v=window.visualViewport;return !!(v&&v.height<window.innerHeight*0.72)}
+  /* widoczność wymusza tylko fokus z klawiatury (po tapnięciu fokus jest zdejmowany – tel:, nowa karta, bfcache) */
+  function kbdFocus(){try{return !!bar.querySelector(':focus-visible')}catch(e){return false}}
+  /* fokus z klawiatury w pasku, a pasek ma zniknąć: fokus na początek bieżącej sekcji, dopiero potem inert */
+  function focusSekcja(){
+    var el=document.elementFromPoint(window.innerWidth/2,Math.round(window.innerHeight*0.4));
+    var s=(el&&!bar.contains(el)&&el.closest('section,footer,article'))||document.querySelector('main')||document.body;
+    var t=s.querySelector('h1,h2,h3')||s;
+    if(!t.hasAttribute('tabindex')){t.setAttribute('tabindex','-1');t.addEventListener('blur',function(){t.removeAttribute('tabindex')},{once:true})}
+    t.focus({preventScroll:true});
+  }
   function update(){
     ticking=false;if(!io)return;
     var past=window.scrollY>window.innerHeight*0.9;
-    var on=past&&seen.size===0&&!typing()&&!keyboard()&&!(menu&&menu.open);
-    if(!on&&bar.contains(document.activeElement)&&!typing())on=true;
+    var hide=!past||seen.size>0||!!(menu&&menu.open);
+    var on=!hide&&!typing()&&!keyboard();
+    if(!on&&kbdFocus()){if(hide)focusSekcja();else on=true}
     bar.dataset.on=on?'1':'0';bar.inert=!on;
   }
   function req(){if(!ticking){ticking=true;requestAnimationFrame(update)}}
@@ -2262,6 +2282,8 @@ var MedForm=(function(){
   }
   function stop(){if(io){io.disconnect();io=null}seen.clear();bar.hidden=true;bar.dataset.on='0';root.classList.remove('has-pasek')}
   function sync(){if(mq.matches){if(!io)start()}else stop()}
+  bar.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(a&&e.detail)setTimeout(function(){a.blur();req()},0)});
+  window.addEventListener('pageshow',function(){var a=document.activeElement;if(a&&bar.contains(a)&&!kbdFocus())a.blur();req()});
   window.addEventListener('scroll',req,{passive:true});
   window.addEventListener('resize',req);
   if(window.visualViewport)window.visualViewport.addEventListener('resize',req);
