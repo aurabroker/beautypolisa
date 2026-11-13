@@ -246,7 +246,7 @@
       "id": "paste",
       "typ": "textarea rows=12",
       "etykieta": "Wklej dane (jedna osoba w wierszu) — PESEL, data urodzenia + płeć albo sam rocznik + płeć",
-      "placeholder": "85031255515\n99113012345\n2001-05-15 K\n1978 M\n…",
+      "placeholder": "[PESEL]\n[PESEL]\n2001-05-15 K\n1978 M\n…",
       "przyciski": [
         "Przelicz strukturę",
         "Wklej dane demo"
@@ -260,7 +260,8 @@
           15,
           70
         ]
-      }
+      },
+      "placeholder_uwaga": "w oryginale (Krok4Struktura.svelte:131) 2 przykładowe numery PESEL – pominięte"
     },
     {
       "krok": 4,
@@ -6478,7 +6479,7 @@
         "kontakt": "imie 3–120; stanowisko ≤120; email z.string().email() ≤200; telefon 9–20 znaków (cyfr nie liczy); start ≤10 znaków (bez walidacji daty)",
         "zgody": "rekord kod→{wersja ≤20}; wymagana obecność z1–z5; wersja i nieznane kody niesprawdzane",
         "skladka_klienta": "{min,max,szacunek}; porównanie min/max z tolerancją 0,01",
-        "zrodlo_wizyty": "(990b947+) obiekt strict, 11 pól ≤200 | null",
+        "zrodlo_wizyty": "(990b947+) obiekt .strict().nullish(): 10 pól ≤200 (utm_source, utm_medium, utm_campaign, utm_content, utm_term, gclid, fbclid, msclkid, wejscie, skad) + ts ≤40, wszystkie opcjonalne; null albo brak pola (+server.ts:63-78)",
         "pesel": "zawieraPesel (src/lib/domena/rodo.ts:26-31): /\\d{11}/ w JSON.stringify ładunku poza kontakt.telefon i zrodlo_wizyty → 422 'Payload zawiera ciąg wyglądający jak PESEL — odrzucono'; PESEL z separatorami przechodzi; fałszywe trafienie dla 14-cyfrowego REGON-u lub e-maila z 11 cyframi"
       },
       "skladka": {
@@ -6594,9 +6595,10 @@
       "statusy_uwaga": "domyślnie nowy; żaden kod nie zmienia statusu",
       "zgody_w_bazie": "{ \"z1\": { \"wersja\": \"2026-07-a\", \"ts\": \"<ISO, czas serwera>\" }, … } — tylko zaznaczone",
       "zdarzenia_typy": {
-        "wyslano": "{wniosek, branza, zrodlo}",
-        "atrybucja_pominieta": "{wniosek} — brak kolumny zrodlo_wizyty (PGRST204/42703), zapis ponowiony bez niej",
-        "mail_blad": "{wniosek, adresat, blad} — jeden na nieudany mail"
+        "wyslano": "{wniosek, branza, zrodlo} (990b947+); na produkcji 3c5086f: {wniosek, branza} (src/routes/api/wnioski/+server.ts:214)",
+        "atrybucja_pominieta": "(tylko 990b947+, nie na produkcji) {wniosek} — brak kolumny zrodlo_wizyty (PGRST204/42703), zapis ponowiony bez niej (+server.ts:248-250)",
+        "mail_blad": "{wniosek, adresat, blad} — jeden na nieudany mail",
+        "produkcja_3c5086f": "tylko wyslano i mail_blad (src/routes/api/wnioski/+server.ts:213-217)"
       },
       "seed": "scripts/seed-cennika.mjs: POST /rest/v1/ezb_cenniki?on_conflict=wersja, merge-duplicates; wersja 'branze-2607', dane = cały dane/produkty.json",
       "aktualizacja_cennika": "nowy produkty.json + nowa wersja w seedzie + zmiana stałej CENNIK_WERSJA + redeploy; kod nie wymusza zgodności; brak blokady po 31.12.2026"
@@ -6615,7 +6617,7 @@
       "mapowanie": {
         "nazwa": "Nazwa",
         "regon": "Regon",
-        "adres": "\"{Ulica} {NrNieruchomosci}/{NrLokalu}, {KodPocztowy} {Miejscowosc}\" (bez lokalu bez /…)",
+        "adres": "\"{Ulica} {NrNieruchomosci}/{NrLokalu}, {KodPocztowy} {Miejscowosc}\" (bez lokalu bez /…); bez ulicy: \"{NrNieruchomosci}[/{NrLokalu}], {KodPocztowy} {Miejscowosc}\"; przy braku wszystkich części pole adres pominięte (gus.ts:90-100)",
         "data_zawieszenia": "DataZawieszeniaDzialalnosci z wyniku wyszukiwania — do weryfikacji, czy BIR 1.1 zwraca to pole w wyszukiwaniu (great-noether czyta je z raportu pełnego)",
         "pkd_kod/pkd_opis": "wiersz z _pkd_Przewazajace=1, inaczej pierwszy; LP/LF dostają niewłaściwy raport"
       },
@@ -6800,7 +6802,7 @@
           "Wiek",
           "Sklejenie"
         ],
-        "uwagi": "Wiek = YEAR(NOW())-rocznik; 67 wierszy z wartością 2026"
+        "uwagi": "Wiek = YEAR(NOW())-rocznik; 67 pustych wierszy z formułami (kolumna Rocznik A2:A68 pusta); przy pustym roczniku Wiek daje 2026, Sklejenie '2026' (wartości zapisane w pliku)"
       }
     ],
     "problemy": [
@@ -7047,15 +7049,18 @@
         "scenariusze": [
           {
             "kod": "tu_w_pracy",
-            "tytul": "Uraz dłoni przy pracy"
+            "tytul": "Uraz dłoni przy pracy",
+            "opis": "Skaleczenie nożyczkami, brzytwą albo frezarką kończy się szyciem i przerwą w pracy. Świadczenie liczone jest za każdy procent trwałego uszczerbku powstałego w pracy."
           },
           {
             "kod": "pz_max",
-            "tytul": "Poważne zachorowanie"
+            "tytul": "Poważne zachorowanie",
+            "opis": "Katalog obejmuje ponad sto jednostek chorobowych. Wypłata jest jednorazowa i niezależna od zwolnienia lekarskiego czy zasiłku z ZUS."
           },
           {
             "kod": "operacja",
-            "tytul": "Operacja chirurgiczna"
+            "tytul": "Operacja chirurgiczna",
+            "opis": "Zabieg rozliczany jest w pięciu podgrupach zależnie od jego rozległości. Kwota poniżej dotyczy podgrupy najwyższej."
           }
         ],
         "seo_tytul": "Ubezpieczenie grupowe dla salonu beauty — składka od {od}",
