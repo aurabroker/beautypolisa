@@ -1,5 +1,189 @@
 # Przeniesienie trzech formularzy do BeautyPolisy: co mamy, czego brakuje
 
+## Aktualizacja 13.11.2026 – kod z repozytoriów GitHub
+
+Po pierwszej wersji tego pliku (kod kliencki pobrany z działających stron) przeczytano kod źródłowy z publicznych repozytoriów zleceniodawcy: płytkie klony, tylko odczyt, bez uruchamiania. Ta sekcja **zastępuje** werdykt, statusy braków i listę blokujących z dalszej części pliku. Decyzje W1–W9 (rozdz. 2) nadal obowiązują jako pytania; W1 ma teraz rekomendację (niżej). Szczegóły i odnośniki `repo/ścieżka:linia` są w plikach wskazanych w kolumnie „Gdzie”.
+
+### A. Skąd co wzięto
+
+| Repozytorium | Stan | Produkt / rola | Gdzie opisane |
+|---|---|---|---|
+| `gohestia` | `e186f2a`, 12.07.2026 | **ER** – ERGO Razem – Grupa Otwarta (`ergo.beautypolisa.eu`): Next.js na Cloudflare Workers, kroki 1–6, ankieta, wykluczenia, `/api/turnstile`, `/api/oferta` (Resend) | `ergo-razem-grupa-otwarta.md` § 9 i „Zamknięcie braków…”; `.json` |
+| `ud` | `793a158`, 12.10.2026 | **UD** – utrata dochodu: portal Astro, funkcje `form-submit`, `wniosek-szkic`, `wniosek-przypomnienie`, `send-confirmation-email`, `contact-submit`, panel agentów | `utratadochodu-wniosek.md` §9–§10; `.json` |
+| `taxbp` | `d693a7c`, 18.08.2026 | **Tax Protect** – wnioski online (`tax.beautypolisa.eu`): Next.js, funkcje `tax-wniosek`, `tax-potwierdz`, `tax-wycena` (3 kolejne – `tax-warianty`, `tax-gus`, `tax-admin` – poza repozytorium) | `tax-protect-wniosek.md`; `.json` |
+| `branzowe`, gałąź `claude/cool-hypatia-ndksid` (lokalnie `ezb-najnowsza`) | `8dc9a90`, 24.09.2026 | **EZB** – ERGO Życie w Biznesie (`ergo.auraexpert.pl`): SvelteKit na Workers, `/api/wnioski`, `/api/gus`, Resend, tabele `ezb_*`. `main` ma tylko README. **Produkcja = gałąź PR #1 (`3c5086f`)**, nie najnowsza | `ergo-zycie-w-biznesie.md` §9–§12; `.json` |
+| `crmaura` | `e01fbfb`, 11.11.2026 | **CRM** Aura Expert („aurabroker”, `portal.beautypolisa.eu`): punkty przyjęcia zgłoszeń, przekaz UD → CRM, ścieżka OC `/w/` → `/odnowienie` | `../14-integracja-wnioskow-z-crm.md` |
+| wszystkie powyższe + `AnkietaBPEH.pdf` z repozytorium portalu + `utratadochodu.pl/owu/` | 13.11.2026 | **Dokumenty przedumowne** (OWU, karty produktu, informacja o dystrybutorze): 24 pliki, sha256 zgodne ze źródłem | `dokumenty-produktowe.md`; `../snippets/dokumenty-produktowe.json`; `../design/v3/dokumenty/` |
+
+### B. Werdykt: czy mamy wszystko? (stan po repozytoriach)
+
+**Wiedzy o kodzie – prawie tak. Do uruchomienia na produkcji – nie.** Wszystkie cztery formularze da się odtworzyć w makiecie w całości. Na produkcję brakuje decyzji (W1, W4, W5), zatwierdzonych tekstów prawnych i kilku dokumentów, a nie kodu.
+
+| | Front (kroki, pola, walidacje, teksty) | Taryfy i wyliczenia | Wysyłka i backend | Teksty prawne | Dokumenty | Gotowość |
+|---|---|---|---|---|---|---|
+| **EZB** | kompletny (6 kroków) | kompletne: cennik `branze-2607` (01.07–31.12.2026), przeliczany też na serwerze; brak ceny wariantów MediPlanu i cennika 2027 | znany w całości: Zod, odrzucanie PESEL, `409` przy rozjeździe składki, numer `EZB-RRRR-NNNNNN`, zapis do `ezb_wnioski`, 2 e-maile + XLSX + 2 PDF. **Wnioski nie trafiają do CRM**; brak Turnstile, limitu i idempotencji | 7 zgód (wersja `2026-07-a`); administrator z kodu = Aura Expert, z3 do zastąpienia; `rodo.pdf` do korekty; akceptacja prawnika otwarta | komplet (3 OWU, 3 karty, informacja o dystrybutorze, nota RODO, szablon XLSX) | **makieta – tak; produkcja – po W1 (P1 w CRM) i tekstach prawnych** |
+| **ER** | kompletny (6 kroków + 2 ekrany wykluczeń) | kompletne oprócz ceny Global Doctors; **błąd: podwójne liczenie dodatków w kroku „Oferta”** | znany: tylko 2 e-maile Resend (klient, agent), bez bazy i CRM; `/api/oferta` bez Turnstile i limitu; ankieta zostaje w przeglądarce | 14 zgód i oświadczeń dosłownie, nigdzie niezapisywanych i niewersjonowanych; `/rodo`, polityka, regulamin znane | WU ER 01/25 (komplet GO/WU002/2504) jest; **brak WU GD 02/24 i pełnomocnictwa ERGO Hestii dla Aura Expert** | **makieta – tak (całość); produkcja – nie** (R6, R8, R11, pełnomocnictwo, W1, W5) |
+| **UD** | kompletny (5 kroków + 2 ankiety) | wniosek nie liczy składki; kalibracja symulacji znana (w repo 17.09, na żywo 14.10.2026) | znany: `form-submit` → `ud_clients` → wyzwalacze → klient, lead i zgłoszenie w CRM (bez danych medycznych); szkic, przypomnienia, e-maile, SMS; CORS `*`, brak deduplikacji i limitu | klauzula informacyjna jest; **zgody art. 9 i zgody marketingowej brak w formularzu, choć klauzula i polityka je zakładają**; potwierdzenia nieegzekwowane na serwerze | komplet (4 OWU + 4 karty, wersje aktywne) | **makieta – tak; produkcja – nie** (U5, P1-5 w CRM, W1) |
+| **Tax** | kompletny (1 ekran, 3 sekcje + modal wyceny) | brak kwot w kodzie: składka to wiersz `tax_warianty` z bazy; taryfa znana z D26; **wzoru polisy (limity, podlimity, karencja) brak** | częściowy: 3 z 6 funkcji, schemat tabel odtworzony z zapytań; double opt-in linkiem GET; wniosek idzie e-mailem do Colonnade; Turnstile fail-open | wniosek: 3 wymagane (2 oświadczenia i zgoda `rodo`) i 2 dobrowolne, modal wyceny: 3 – dosłownie; **nota RODO pusta**, brak klauzuli art. 13 i wersji zgód | OWU (25.01.2023) i karta produktu są; **karta niezgodna z OWU** (T8) | **makieta kalkulatora i zapytania – tak; wniosek w portalu – nie przed etapem 2** (`/w/XXXXXXXXXX`, T3–T8) |
+
+### C. Status braków
+
+Legenda: **zamknięty** – brak wiedzy o kodzie usunięty (nie znaczy, że można uruchomić – decydują W1–W5); **częściowo** – wiedza jest, brakuje akceptacji, decyzji albo fragmentu; **otwarty** – nadal brak.
+
+**EZB** (szczegóły: `ergo-zycie-w-biznesie.md` §10)
+
+| # | Status | Krótko |
+|---|---|---|
+| E1 | zamknięty | kod `/api/wnioski` znany (§9.1); brak Turnstile, limitu i idempotencji – do portalu, nie do przeniesienia |
+| E2 | zamknięty | `/api/gus` (BIR 1.1, cache 24 h) znany (§9.2); **zostaje klucz GUS** (od zleceniodawcy albo własny) |
+| E3 | zamknięty | szablony e-maili, XLSX i PDF są (§9.3, `dokumenty-produktowe.md` §3.2); kto wysyła – W4 |
+| E4 | zamknięty | 3 OWU + 3 karty w `../design/v3/dokumenty/ergo-zycie-w-biznesie/` |
+| E5 | częściowo | sprzeczność rozstrzygnięta na korzyść Aura Expert (z3 do zastąpienia); akceptacja prawnika i korekta `rodo.pdf` otwarte (§9.4) |
+| E6 | częściowo | wersja `branze-2607` znana; brak taryfy wariantów MediPlanu i cennika 2027 (§9.8) |
+| E7 | otwarty | listy PKD beauty nie ma w żadnym repozytorium (§9.8) |
+| E8 | zamknięty | katalogi zakresu ochrony w repozytorium (§9.6) |
+| E9 | otwarty | brak procesu deklaracji pracowników; arkusz odsyłany odpowiedzią na e-mail (§9.8) |
+| E10 | częściowo | banery w repozytorium, zdjęcia branż z zewnętrznego hostingu; w portalu i tak własne (§9.7) |
+
+**ER** (szczegóły: `ergo-razem-grupa-otwarta.md`, „Zamknięcie braków po analizie repozytorium gohestia”)
+
+| # | Status | Krótko |
+|---|---|---|
+| R1 | zamknięty | kroki 2–6 i oba ekrany wykluczeń (§ 9.2–9.8) |
+| R2 | częściowo | pytania i reguły dosłownie (każde „TAK” wyklucza); brak akceptacji ERGO Hestii dla brzmienia w portalu i pytań o współubezpieczonych (§ 9.3) |
+| R3 | zamknięty | krok „Weryfikacja” = sam Turnstile, wynik tylko w przeglądarce (§ 9.4) |
+| R4 | zamknięty | układ kroku „Oferta”, brak wariantu domyślnego, GD > 63 r.ż. wyłączony; błąd podwójnego liczenia dodatków (§ 9.5) |
+| R5 | zamknięty | pola, walidacje i komunikaty formularza (§ 9.6) |
+| R6 | częściowo | 14 zgód i strony prawne znane; administrator, zakres zgód w „zapytaniu” (W5), wersjonowanie i akceptacja CPOP – otwarte (§ 9.6, 9.10) |
+| R7 | zamknięty | tylko 2 e-maile Resend, bez bazy i CRM (§ 9.9) |
+| R8 | otwarty | ceny Global Doctors nie ma ani w kodzie, ani w OWU; strona GD obiecuje kwotę |
+| R9 | zamknięty | definicje i flagi 57 zachorowań; spoza KOMFORT tylko lp 1 |
+| R10 | częściowo | część wyjaśniona z WU (errata, MAKSYMALNY/KOMFORT, wiek); „od 57 zł”, „56 chorób”, „120/50 zł” (interpretacja), „Zgon rodziców i teściów” – do ERGO Hestii |
+| R11 | częściowo | WU ER 01/25 jest; brak WU GD 02/24, informacji o dystrybutorze dla ER (jest ogólna z lipca 2026) i potwierdzenia aktualności (`dokumenty-produktowe.md` §3.1) |
+
+**UD** (szczegóły: `utratadochodu-wniosek.md` §10)
+
+| # | Status | Krótko |
+|---|---|---|
+| U1 | zamknięty | `form-submit` znany (§9.1); zostaje pełne DDL `ud_clients` i stan GetResponse na produkcji |
+| U2 | zamknięty | `wniosek-szkic`, schemat, HMAC `sig` i `ip_hash`, retencja (§9.2); sekret poza dokumentem |
+| U3 | zamknięty | przypomnienia: cron, warunki, treść, nadawca (§9.2) |
+| U4 | zamknięty | e-mail potwierdzający przez wyzwalacz na `ud_clients`, SMS do doradcy; definicja wyzwalacza tylko w panelu Supabase (§9.3) |
+| U5 | częściowo | klauzula jest, ale **brak zgody art. 9 i zgody marketingowej w formularzu**; potwierdzenia nieegzekwowane na serwerze (§9.4) |
+| U6 | otwarty | oryginalne pytania z okresami referencyjnymi albo akceptacja skróconych pytań przez underwritera |
+| U7 | częściowo | proces kalibracji znany, odświeżanie poza repozytorium; decyzja o symulacji po wniosku otwarta |
+| U8 | otwarty | decyzja o polach dochodu i okresu wypłaty |
+| U9 | otwarty | `/kup-online` nie ma w repozytorium z 12.10.2026 |
+| U10 | częściowo | mechanizm zgód i analityki znany; decyzja, czyje tagi w portalu |
+
+**Tax Protect** – braki T1–T15 są nowe (pełna tabela: `tax-protect-wniosek.md` §11)
+
+| # | Status | Krótko |
+|---|---|---|
+| T1 | otwarty (warunkowo) | kod `tax-warianty`, `tax-gus`, `tax-admin` i migracje tabel; blokuje tylko, gdyby portal nadal zapisywał do `tax_wnioski` (poza W1 A–C) |
+| T2 | częściowo | taryfa z D26 znana; brak dokumentu taryfy od Colonnade z wersją i wartości `podlimit_grzywny` |
+| T3 | otwarty | wzór polisy programu (pkt 4–8: limity sporów, podlimity 30% i 75%, Data Ciągłości, karencja 21 dni) |
+| T4 | otwarty | nota RODO (pusta), klauzula art. 13 z przekazaniem danych Colonnade, podstawa prawna, wersje zgód |
+| T5 | otwarty | analiza potrzeb (art. 8 UDU) – etap 2 `/w/XXXXXXXXXX`, decyzja W5 |
+| T6 | otwarty | proces od wniosku do polisy (oferta, akceptacja, płatność, numer polisy do CRM) |
+| T7 | częściowo | 6 szablonów e-maili dosłownie; kto wysyła i do kogo – W4 |
+| T8 | częściowo | OWU i karta są; brak potwierdzenia aktualności i poprawionej karty (2 świadczenia spoza OWU) |
+| T9 | częściowo | wzór `tax-gus` w `apiregon.md`; brak wdrożonego kodu, klucza i pola `pkd` |
+| T10 | otwarty | Turnstile dla domeny portalu, bez fail-open, z `hostname` i `action` (W2) |
+| T11 | otwarty | zasady wyceny indywidualnej (przychód > 3 mln zł, liczba sporów, sumy > 100 000 zł) |
+| T12 | otwarty | kod i autoryzacja `tax-admin` (ryzyko bezpieczeństwa, nie blokuje portalu) |
+| T13 | otwarty | źródła twierdzeń marketingowych (rating, pokrycie retroaktywne, PIP) |
+| T14 | otwarty | los `tax.beautypolisa.eu` i 1 wiersza `tax_wnioski` (W9) |
+| T15 | otwarty | potwierdzenie e-maila w portalu; usunięcie imiennego adresu z publicznego repozytorium |
+
+**Nowe braki dokumentów** (`dokumenty-produktowe.md` §5): pełnomocnictwo ERGO Hestii dla Aura Expert (wymagane przez oświadczenie 3 w ER), WU GD 02/24, informacja o dystrybutorze UD z panelu (do porównania), dokumenty opieki medycznej, a poza trzema formularzami – OWU, karta produktu (IPID) i program WA50/003353/24/A z Aneksem nr 5 dla OC beauty.
+
+### D. Braki blokujące (do wysłania zleceniodawcy) – stan po repozytoriach
+
+Tylko to, czego nadal brakuje. Lista z rozdz. 3 jest nieaktualna.
+
+1. **Akceptacja W1 i zmiany w CRM przed startem przekazu.** Zatwierdzenie rekomendacji z `../14-integracja-wnioskow-z-crm.md` (wariant C, niżej) i wykonanie P1-1–P1-9 przez zespół CRM. Do tego odpowiedzi na pytania C1–C11, w tym minimum bezpieczeństwa ścieżki OC (K1–K4, K6, K9). Bez tego formularze w portalu nie mają dokąd wysyłać wniosków. [W1; E1, R7, U1 – przekaz]
+2. **Teksty prawne zatwierdzone przez prawnika:**
+   - administrator danych w każdym formularzu (EZB: z3 → klauzula Aura Expert, korekta `rodo.pdf`; ER: Aura Expert, CPOP czy ERGO Hestia);
+   - **zgoda art. 9 na dane o zdrowiu i zgoda marketingowa dla UD**;
+   - które z 14 zgód ER należą do zapytania, a które do deklaracji przystąpienia; akceptacja CPOP dla zgód 9 i 10;
+   - nota RODO i klauzula art. 13 dla Tax Protect (z przekazaniem danych Colonnade);
+   - regulamin portalu i wersjonowanie zgód (W3, P1-7).
+
+   [E5, R6, U5, T4, W3]
+3. **Decyzja IDD (W5):** zapytanie czy wniosek i kto robi analizę potrzeb. Dla Tax Protect: do etapu 2 tylko kalkulator i zapytanie. [W5, T5]
+4. **Dokumenty:**
+   - pełnomocnictwo ERGO Hestii dla Aura Expert (bez niego oświadczenie 3 w ER jest nieprawdziwe);
+   - WU Global Doctors GD 02/24 i cena GD według wieku albo decyzja „cena przy kontakcie”;
+   - od Colonnade: potwierdzenie aktualności OWU i karty Tax Protect, poprawiona karta oraz wzór polisy programu (pkt 4–8) przed publikacją liczb 30%, 75%, 21 dni i „1 spór”.
+
+   [R8, R11, T3, T8]
+5. **E-maile (W4):** kto wysyła (portal czy CRM), nadawca, `reply-to`, odbiorcy, czy Colonnade dostaje powiadomienie. Szablony EZB, ER, UD i Tax już znamy. Przy zapisie do `ud_clients` trzeba wyłączyć albo sparametryzować e-mail z marką UD. [E3, U4, T7]
+6. **Turnstile dla domeny portalu** (site key i sekret na koncie Cloudflare zleceniodawcy). Według dok. 14 token weryfikuje Worker portalu, a CRM ufa mu po podpisie HMAC. [W2, T10]
+7. **Klucz GUS (BIR 1.1)** od zleceniodawcy albo własny. Częściowo blokujące, bo tryb ręczny działa. [E2, T9]
+8. **ER: akceptacja ankiety przez ERGO Hestię**, jeśli portal zmienia brzmienie pytań (przy przeniesieniu 1:1 – nie blokuje). [R2]
+9. **Zgoda partnerów na markę i warunki w portalu:** ERGO Hestia, Lloyd’s/Leadenhall, CEU, Colonnade. [W8]
+10. **Tax Protect – proces po wniosku** (oferta, akceptacja, płatność, polisa) – blokuje dopiero wniosek w etapie 2. [T6]
+
+**Nieblokujące:**
+- ER: niespójności treści (R10), błąd podwójnego liczenia dodatków (do poprawy u zleceniodawcy, portal liczy jedną funkcją na serwerze).
+- EZB: lista PKD (E7), taryfa MediPlanu i cennik 2027 (E6; cennik 2027 blokuje sprzedaż od 1.01.2027), deklaracje pracowników (E9), grafiki (E10).
+- UD: pytania z okresami (U6, ryzyko underwritingowe), symulacja (U7), dochód i okres (U8), `/kup-online` (U9), analityka (U10).
+- Tax: T1 (przy W1 A–C), T2, T9, T11–T15.
+- Dokumenty: informacja o dystrybutorze dla ER i UD (jest ogólna z lipca 2026), czyszczenie metadanych PDF/XLSX przed publikacją.
+
+**Do zgłoszenia zleceniodawcy jako błędy działających aplikacji** (niezależnie od portalu):
+- ER: podwójne liczenie dodatków; OWU najpewniej nie dochodzi w e-mailu (`owu.pdf` zamiast `OWU.pdf`); brak pliku informacji o dystrybutorze; „XIII Wydział” KRS; e-mail w adresie strony sukcesu; `/api/oferta` bez ochrony.
+- EZB: produkcja z niescalonej gałęzi PR #1; e-mail z marką ERGO na dowolny adres bez Turnstile i limitu; brak escapowania HTML w szablonach.
+- UD: zgoda art. 9 opisana w klauzuli, ale nieistniejąca w formularzu; GetResponse bez zgody marketingowej; PESEL jawnym tekstem; pełny rekord w logu przy braku e-maila.
+- Tax: Turnstile fail-open; brak escapowania w e-mailach do brokera i Colonnade; `tax-wycena` jako przekaźnik e-maili; imienny adres pracownika partnera w publicznym repozytorium (usunąć z historii).
+- CRM: patrz K1–K12 w `../14-integracja-wnioskow-z-crm.md` rozdz. 3.
+
+### E. W1 – rekomendacja (streszczenie `../14-integracja-wnioskow-z-crm.md` rozdz. 4)
+
+- **Tak, do CRM, automatycznie** trafiają: OC (kalkulator i lead), Tax Protect, EZB, ER, UD, opieka medyczna, „Zapytaj doradcę” przy NNW i kontakt ogólny. **Nie** trafiają: szkolenia, „Dam pracę”/„Szukam pracy”, newsletter. Ankieta oceny ryzyka grupy 4 nie jest formularzem portalu – zostaje w osobistym linku do APK i wniosku w CRM.
+- **Wariant C (hybryda) jako jeden punkt przyjęcia w CRM.** Worker portalu po walidacji i Turnstile wysyła ładunek do `POST /api/integracje/portal/v1/zgloszenia`, podpisany HMAC sekretem `CRM_LEAD_INTAKE_KEY` (czas, nonce, skrót treści), z idempotencją po `zgloszenie_id`. Odpowiedź `202` ma jeden kształt i nie zdradza, czy firma jest klientem. CORS nie jest potrzebny.
+- **Portal trzyma tylko kopertę:** numer, produkt, zgody z wersją i skrótem treści, `crm_ref`, etap. **PESEL i dane o zdrowiu z UD przechodzą bez zapisu** do `ud_clients`, skąd istniejące wyzwalacze przenoszą wniosek do CRM.
+- **Odrzucone:** wariant A (wołanie `/api/wnioski`, `form-submit` i arkusza – trzy kontrakty, jednorazowy token Turnstile z cudzej witryny, stałe klucze) i wariant B (PESEL i zdrowie w bazie portalu). Dwa jawne odstępstwa od `12` 3.2 pkt 4 wariant B: dopasowanie do istniejącego klienta z zadaniem dla doradcy (O-1) i `crm_ref` w odpowiedzi (O-2).
+- **Warunek startu:** P1 z dok. 14 rozdz. 4.7, w tym minimum bezpieczeństwa ścieżki OC (K1–K4, K6, K9). Kolejność: najpierw OC, Tax, EZB i ER; UD (P1-5: funkcja do `ud_clients` ze zgodą art. 9) może dołączyć później, a do tego czasu UD zostaje na utratadochodu.pl (D33). Proponowany zapis W1 do rejestru decyzji: dok. 14 rozdz. 4.9 – wymaga akceptacji zleceniodawcy.
+
+Dok. 14 wykazał też rozbieżności z dotychczasowymi ustaleniami (rozdz. 1.4). Po pierwsze, e-mail z CRM zawiera pełny link `/odnowienie/…`, a `/w/XXXXXXXXXX` to tylko krótki alias do SMS-a (D-1). Po drugie, `konsultacja-agent` pobiera z CRM pełny link do wniosku, co przeczy D32 lit. f (D-2). Po trzecie, punkt przyjęcia leadów w CRM już istnieje i jest zasilany z arkusza Google, który ma drugiego odbiorcę – Aura HUB (D-6, P1-9).
+
+### F. Czego nie sprawdzono (krytyk kompletności)
+
+- **Repozytoria spoza analizy:**
+  - `udapp` (20.10.2026, nowszy od `ud`): panel ofert UD z `/offer/[token]` i `/dystrybutor`; może zawierać informację o dystrybutorze UD i ścieżkę zakupu (U9);
+  - `APK` (formularz analizy potrzeb, art. 8 UDU): istotne dla W5 i T5;
+  - `hub` (Aura HUB, `lead-import`): drugi odbiorca arkusza, P1-9 i C11;
+  - `beauty-crm`, `grupowe`, `ac`, `expert`, `life`, `catalog`, `katalogbeauty` – nie czytane; `medaura` i `medicalaura` – tylko pod kątem dokumentów opieki medycznej.
+- **Produkcja a repozytorium:**
+  - ER: produkcji nie porównano z `e186f2a` (sprawdzone tylko `OWU.pdf` i 404 na `owu.pdf`);
+  - Tax: nie wiadomo, czy wdrożone funkcje = repozytorium (T1);
+  - UD: produkcja jest nowsza od repozytorium (kalibracja z 14.10, `/kup-online`);
+  - EZB: produkcja = PR #1 (ustalone z kodu klienckiego);
+  - nieznany stan bazy (migracje `zrodlo_wizyty` EZB i `supabase/pending` CRM, DDL `ud_clients`, tabele `tax_*`, RLS).
+- **Trasy nieprzejrzane w całości:**
+  - CRM: starszy formularz APK `/form` i konta `/portal` – tylko w zakresie bezpieczeństwa;
+  - Tax: `/admin` bez kodu `tax-admin`;
+  - UD: polityka cookies, panel agentów poza przydziałem opiekuna;
+  - EZB: landingi `/branza/[slug]` nie są na produkcji.
+- **E-maile:** żadnego nie wysłano ani nie oglądano w skrzynce; treści pochodzą z kodu. Nie sprawdzono:
+  - definicji wyzwalacza UD (tylko w panelu Supabase);
+  - plików załączanych przez `tax-potwierdz` (magazyn albo adresy z sekretów);
+  - czy ER faktycznie pomija załącznik;
+  - czy w Resend włączone jest śledzenie kliknięć (C8);
+  - wiadomości SMS (tylko kod).
+- **Dokumenty:**
+  - `pliki.auraexpert.pl`, `colonnade.pl` i `ergohestia.pl` były niedostępne (proxy 403);
+  - informacji o dystrybutorze UD nie pobrano;
+  - metadane PDF/XLSX wymagają czyszczenia przed publikacją.
+- **Bez weryfikacji na żywo:** zachowania endpointów (CORS, odpowiedzi Turnstile, limity Cloudflare/WAF) wyprowadzono z kodu, bez wywołań. Żadnego tekstu prawnego nie ocenił prawnik.
+
+---
+
+> **Poniżej: stan sprzed analizy repozytoriów** (kod kliencki z działających stron, 13.11.2026 rano). Werdykt, statusy w rozdz. 1 i lista w rozdz. 3 są nieaktualne – obowiązuje sekcja „Aktualizacja 13.11.2026” powyżej. Rozdział 2 (W1–W9) pozostaje rejestrem pytań; W1 ma rekomendację w części E.
+
+
 Stan na 2026-11-13, po przeglądzie krytyka kompletności. Dotyczy trzech aplikacji, które portal ma przestać linkować i odtworzyć u siebie w stylistyce „old money glass” (makiety `docs/koncepcja/design/v3`):
 
 | Skrót | Aplikacja | Specyfikacja | Dane do makiety |
@@ -8,7 +192,7 @@ Stan na 2026-11-13, po przeglądzie krytyka kompletności. Dotyczy trzech aplika
 | **ER** | ERGO Razem – Grupa Otwarta, kalkulator i zgłoszenie (`ergo.beautypolisa.eu`) | `ergo-razem-grupa-otwarta.md` | `ergo-razem-grupa-otwarta.json` |
 | **UD** | Utrata dochodu, wniosek 5 kroków (`utratadochodu.pl/wniosek/`) | `utratadochodu-wniosek.md` | `utratadochodu-wniosek.json` |
 
-## Werdykt: czy mamy wszystko?
+## Werdykt: czy mamy wszystko? (stan z kodu klienckiego – nieaktualny, zob. „Aktualizacja”, część B)
 
 **Nie.** Kod kliencki pozwala odtworzyć wygląd i zachowanie formularzy EZB i UD w całości. W ER mamy tylko krok 1 z 6.
 
@@ -26,6 +210,8 @@ Weryfikacja specyfikacji: w każdej sprawdzono 8–12 twierdzeń w kodzie źród
 ---
 
 ## 1. Tabela braków: co mamy / czego brakuje / od kogo / czy blokuje
+
+> Statusy w tej tabeli są sprzed repozytoriów. Aktualne – „Aktualizacja”, część C; braki Tax Protect T1–T15 – `tax-protect-wniosek.md` §11.
 
 Legenda kolumny „Blokuje”: **TAK** – bez tego nie da się uruchomić formularza na produkcji; **makieta** – blokuje już makietę; **nie** – można uruchomić, a uzupełnić później.
 
@@ -91,6 +277,8 @@ Prośba zleceniodawcy („nie rób przekierowań, przenieś logikę do portalu�
 
 Bez tej decyzji nie da się zamknąć pozycji E1, E3, R7, U1, U2 i U4.
 
+> **Rekomendacja (13.11.2026):** wariant C jako jeden punkt przyjęcia w CRM – streszczenie w „Aktualizacji”, część E; pełny kontrakt w `../14-integracja-wnioskow-z-crm.md` rozdz. 4. Wiedza o kodzie dla E1, R7, U1, U2 i U4 jest już zamknięta.
+
 ### W2. Turnstile i ochrona formularzy
 - Wszystkie trzy formularze przechodzą na **jeden standard portalu** (02 §2.2): honeypot → idempotencja → rate limit → Zod → Turnstile (`siteverify` w Workerze, sprawdzenie `hostname` i `action`).
 - EZB dziś nie ma Turnstile ani honeypota. UD ma dwa widżety (niewidoczny w kroku 1 dla szkicu, widoczny w kroku 5). ER ma tylko flagę w store.
@@ -139,7 +327,7 @@ Bez tej decyzji nie da się zamknąć pozycji E1, E3, R7, U1, U2 i U4.
 
 ---
 
-## 3. Braki blokujące (lista do wysłania zleceniodawcy)
+## 3. Braki blokujące (lista do wysłania zleceniodawcy) – nieaktualna, zob. „Aktualizacja”, część D
 
 1. **ER: kod lub specyfikacja kroków 2–6** (ankieta medyczna z regułami kwalifikacji, krok Oferta, formularz kontaktowy, ekran Gotowe, `/wykluczenie/wiek`) oraz sposób wysyłki. Najprościej: dostęp do repozytorium aplikacji `ergo.beautypolisa.eu` (Worker `gohestia`). [R1, R2, R5, R7]
 2. **Decyzja W1** (gdzie zapisujemy wnioski). Przy zapisie do CRM: kod lub kontrakt i utwardzenie `/api/wnioski` (EZB), `form-submit` i `wniosek-szkic` (UD), sekret serwer–serwer i CORS. [E1, U1, U2]
@@ -163,6 +351,7 @@ Bez tej decyzji nie da się zamknąć pozycji E1, E3, R7, U1, U2 i U4.
 ## 4. Co można zrobić od razu, bez odpowiedzi zleceniodawcy
 
 - Makiety EZB i UD w stylistyce v3 z danych JSON (wszystkie kroki, pola, komunikaty, taryfy, zgody w obecnym brzmieniu oznaczone „do zatwierdzenia”).
-- Makieta ER: krok „Wiek”, kalkulator składki (taryfy A1/A2/B, dodatki) i tabela świadczeń. Kroki 2–6 jako szkielety z oznaczeniem „brak treści od zleceniodawcy”.
+- Makieta ER: krok „Wiek”, kalkulator składki (taryfy A1/A2/B, dodatki) i tabela świadczeń. Kroki 2–6 jako szkielety z oznaczeniem „brak treści od zleceniodawcy”. [Aktualizacja 13.11.2026: kroki 2–6, ankieta i wykluczenia są znane z `gohestia` – makieta ER może być pełna, bez podwójnego liczenia dodatków.]
+- [Aktualizacja 13.11.2026] Makieta Tax Protect: kalkulator i zapytanie (bez wniosku do etapu 2), dane z `tax-protect-wniosek.json`; dokumenty do linkowania z `../design/v3/dokumenty/` według `../snippets/dokumenty-produktowe.json`.
 - Schematy Zod i kontrakty API portalu dla trzech formularzy (niezależne od W1).
 - Rejestr zgód z obecnymi treściami i wersjami, gotowy do podmiany na zatwierdzone.
