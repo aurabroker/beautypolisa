@@ -35,7 +35,7 @@ Legenda: **zamknięty** – brak wiedzy o kodzie usunięty (nie znaczy, że moż
 | # | Status | Krótko |
 |---|---|---|
 | E1 | zamknięty | kod `/api/wnioski` znany (§9.1); brak Turnstile, limitu i idempotencji – do portalu, nie do przeniesienia |
-| E2 | zamknięty | `/api/gus` (BIR 1.1, cache 24 h) znany (§9.2); **zostaje klucz GUS** (od zleceniodawcy albo własny) |
+| E2 | zamknięty | `/api/gus` (BIR 1.1, cache 24 h) znany (§9.2); **zostaje klucz GUS** (od zleceniodawcy albo własny). [przegląd repo 13.11] Plan proxy w Workerze portalu: (1) BIR z PKD i datą zawieszenia według `branzowe/src/lib/serwer/gus.ts:59-121` (PKD informacyjne, jego błąd nie blokuje – `:121`); (2) bez klucza albo przy awarii – wykaz podatników VAT MF według `katalogbeauty/src/routes/api/regon/+server.ts:68-100` (nazwa, REGON, adres; bez PKD i daty zawieszenia); (3) tryb ręczny. Klucz potrzebny już tylko do PKD i daty zawieszenia |
 | E3 | zamknięty | szablony e-maili, XLSX i PDF są (§9.3, `dokumenty-produktowe.md` §3.2); kto wysyła – W4 |
 | E4 | zamknięty | 3 OWU + 3 karty w `../design/v3/dokumenty/ergo-zycie-w-biznesie/` |
 | E5 | częściowo | sprzeczność rozstrzygnięta na korzyść Aura Expert (z3 do zastąpienia); akceptacja prawnika i korekta `rodo.pdf` otwarte (§9.4) |
@@ -73,8 +73,8 @@ Legenda: **zamknięty** – brak wiedzy o kodzie usunięty (nie znaczy, że moż
 | U6 | otwarty | oryginalne pytania z okresami referencyjnymi albo akceptacja skróconych pytań przez underwritera |
 | U7 | częściowo | proces kalibracji znany, odświeżanie poza repozytorium; decyzja o symulacji po wniosku otwarta |
 | U8 | otwarty | decyzja o polach dochodu i okresu wypłaty |
-| U9 | otwarty | `/kup-online` nie ma w repozytorium z 12.10.2026 |
-| U10 | częściowo | mechanizm zgód i analityki znany; decyzja, czyje tagi w portalu |
+| U9 | otwarty | `/kup-online` nie ma w repozytorium z 12.10.2026. [przegląd repo 13.11] Nie ma go też w `udapp` (20.10.2026): to panel ofert, w którym klient tylko wybiera wariant przygotowany przez agenta (`udapp/app/src/routes/offer/[token]/choice/+server.js:20-61`). Adres i parametry – nadal od zleceniodawcy |
+| U10 | częściowo | mechanizm zgód i analityki znany; decyzja, czyje tagi w portalu. [przegląd repo 13.11] Konwersję można przypisać po stronie serwera webhookiem HUB `utm-attribution` (część G), bez tagów reklamowych w przeglądarce; decyzja nadal otwarta |
 
 **Tax Protect** – braki T1–T15 są nowe (pełna tabela: `tax-protect-wniosek.md` §11)
 
@@ -88,15 +88,15 @@ Legenda: **zamknięty** – brak wiedzy o kodzie usunięty (nie znaczy, że moż
 | T6 | otwarty | proces od wniosku do polisy (oferta, akceptacja, płatność, numer polisy do CRM) |
 | T7 | częściowo | 6 szablonów e-maili dosłownie; kto wysyła i do kogo – W4 |
 | T8 | częściowo | OWU i karta są; brak potwierdzenia aktualności i poprawionej karty (2 świadczenia spoza OWU) |
-| T9 | częściowo | wzór `tax-gus` w `apiregon.md`; brak wdrożonego kodu, klucza i pola `pkd` |
-| T10 | otwarty | Turnstile dla domeny portalu, bez fail-open, z `hostname` i `action` (W2) |
+| T9 | częściowo | wzór `tax-gus` w `apiregon.md`; brak wdrożonego kodu, klucza i pola `pkd`. [przegląd repo 13.11] Pobieranie PKD jest w `branzowe/src/lib/serwer/gus.ts:104-121`, tryb bez klucza w `katalogbeauty` – jeden proxy dla EZB i Tax jak w E2; zostaje klucz, a kod wdrożonego `tax-gus` nadal nieznany |
+| T10 | otwarty | Turnstile dla domeny portalu, bez fail-open, z `hostname` i `action` (W2). [przegląd repo 13.11] Wzorzec kodu: `ac/functions/api/kontakt.js` (rozdz. 2, W2); brakuje tylko kluczy dla domeny portalu |
 | T11 | otwarty | zasady wyceny indywidualnej (przychód > 3 mln zł, liczba sporów, sumy > 100 000 zł) |
 | T12 | otwarty | kod i autoryzacja `tax-admin` (ryzyko bezpieczeństwa, nie blokuje portalu) |
 | T13 | otwarty | źródła twierdzeń marketingowych (rating, pokrycie retroaktywne, PIP) |
 | T14 | otwarty | los `tax.beautypolisa.eu` i 1 wiersza `tax_wnioski` (W9) |
 | T15 | otwarty | potwierdzenie e-maila w portalu; usunięcie imiennego adresu z publicznego repozytorium |
 
-**Nowe braki dokumentów** (`dokumenty-produktowe.md` §5): pełnomocnictwo ERGO Hestii dla Aura Expert (wymagane przez oświadczenie 3 w ER), WU GD 02/24, informacja o dystrybutorze UD z panelu (do porównania), dokumenty opieki medycznej, a poza trzema formularzami – OWU, karta produktu (IPID) i program WA50/003353/24/A z Aneksem nr 5 dla OC beauty.
+**Nowe braki dokumentów** (`dokumenty-produktowe.md` §5): pełnomocnictwo ERGO Hestii dla Aura Expert (wymagane przez oświadczenie 3 w ER), WU GD 02/24, informacja o dystrybutorze UD z panelu (do porównania), dokumenty opieki medycznej, a poza trzema formularzami – OWU, karta produktu (IPID) i program WA50/003353/24/A z Aneksem nr 5 dla OC beauty. [przegląd repo 13.11] `udapp` serwuje informację o dystrybutorze UD z magazynu (`udapp/app/src/routes/dystrybutor/+server.js:9-14`), ale pliku w repo nie ma; `medaura` i `medicalaura` nie mają ani dokumentów, ani cennika opieki medycznej.
 
 ### D. Braki blokujące (do wysłania zleceniodawcy) – stan po repozytoriach
 
@@ -111,7 +111,7 @@ Tylko to, czego nadal brakuje. Lista z rozdz. 3 jest nieaktualna.
    - regulamin portalu i wersjonowanie zgód (W3, P1-7).
 
    [E5, R6, U5, T4, W3]
-3. **Decyzja IDD (W5):** zapytanie czy wniosek i kto robi analizę potrzeb. Dla Tax Protect: do etapu 2 tylko kalkulator i zapytanie. [W5, T5]
+3. **Decyzja IDD (W5):** zapytanie czy wniosek i kto robi analizę potrzeb. Dla Tax Protect: do etapu 2 tylko kalkulator i zapytanie. [przegląd repo 13.11] Repo `APK` nie zastąpi treści od compliance Aura Expert (rozdz. 2, W5). [W5, T5]
 4. **Dokumenty:**
    - pełnomocnictwo ERGO Hestii dla Aura Expert (bez niego oświadczenie 3 w ER jest nieprawdziwe);
    - WU Global Doctors GD 02/24 i cena GD według wieku albo decyzja „cena przy kontakcie”;
@@ -120,7 +120,7 @@ Tylko to, czego nadal brakuje. Lista z rozdz. 3 jest nieaktualna.
    [R8, R11, T3, T8]
 5. **E-maile (W4):** kto wysyła (portal czy CRM), nadawca, `reply-to`, odbiorcy, czy Colonnade dostaje powiadomienie. Szablony EZB, ER, UD i Tax już znamy. Przy zapisie do `ud_clients` trzeba wyłączyć albo sparametryzować e-mail z marką UD. [E3, U4, T7]
 6. **Turnstile dla domeny portalu** (site key i sekret na koncie Cloudflare zleceniodawcy). Według dok. 14 token weryfikuje Worker portalu, a CRM ufa mu po podpisie HMAC. [W2, T10]
-7. **Klucz GUS (BIR 1.1)** od zleceniodawcy albo własny. Częściowo blokujące, bo tryb ręczny działa. [E2, T9]
+7. **Klucz GUS (BIR 1.1)** od zleceniodawcy albo własny. Częściowo blokujące, bo tryb ręczny działa. [przegląd repo 13.11] Bez klucza nazwę, REGON i adres da się pobrać z wykazu podatników VAT MF (wzorzec `katalogbeauty`); klucz potrzebny do PKD i daty zawieszenia (część C, E2). [E2, T9]
 8. **ER: akceptacja ankiety przez ERGO Hestię**, jeśli portal zmienia brzmienie pytań (przy przeniesieniu 1:1 – nie blokuje). [R2]
 9. **Zgoda partnerów na markę i warunki w portalu:** ERGO Hestia, Lloyd’s/Leadenhall, CEU, Colonnade. [W8]
 10. **Tax Protect – proces po wniosku** (oferta, akceptacja, płatność, polisa) – blokuje dopiero wniosek w etapie 2. [T6]
@@ -139,6 +139,15 @@ Tylko to, czego nadal brakuje. Lista z rozdz. 3 jest nieaktualna.
 - Tax: Turnstile fail-open; brak escapowania w e-mailach do brokera i Colonnade; `tax-wycena` jako przekaźnik e-maili; imienny adres pracownika partnera w publicznym repozytorium (usunąć z historii).
 - CRM: patrz K1–K12 w `../14-integracja-wnioskow-z-crm.md` rozdz. 3.
 
+**Bezpieczeństwo w repozytoriach zleceniodawcy – do zgłoszenia (nie blokuje portalu)** [przegląd repo 13.11]. Wartości kluczy pominięto; definicji RLS nie ma w repozytoriach, więc skutki zależne od polityk są do potwierdzenia w projektach Supabase.
+- **`beauty-crm` – pilne:** stały sekret nagłówka `x-api-key` funkcji `lead-import` (BEAUTY) jest w kodzie wysyłanym do przeglądarki, ta sama wartość w trzech miejscach (`src/components/LeadForm.tsx:44`, `src/store/useCRMStore.ts:278`, `src/components/Dashboard.tsx:117`). Każdy, kto otworzy `/formularz`, może dopisywać leady do CRM BEAUTY i GetResponse. Do zrobienia: rotacja sekretu, przeniesienie wywołania na serwer i podmiana klucza w skrypcie arkusza (`crmaura/docs/integracje/arkusz-zgloszen.gs:15`).
+- **`beauty-crm` – wniosek majątkowy:** komentarz w `public/mienie-formularz.html:10` mówi o RLS z INSERT, SELECT, UPDATE i DELETE dla `anon`. Strona czyta też `crm_companies` po `form_token` kluczem anon (`:776`), więc tabela CRM musi mieć politykę odczytu dla anon. Jedyną ochroną jest nieodgadnialność tokenu (UUID z dopiskiem `-ID<id firmy>`, `src/store/useCRMStore.ts:378-387`). Jeśli polityka na `mienie_wnioski` nie filtruje po tokenie, klucz anon z tej strony wystarcza do odczytu wszystkich wniosków – do sprawdzenia.
+- **`beauty-crm` – cały CRM:** `crm_companies`, `crm_policies`, `crm_users`, `crm_settings` i reszta są obsługiwane z przeglądarki kluczem anon po logowaniu (`src/store/useCRMStore.ts:110-270`); bezpieczeństwo zależy wyłącznie od RLS.
+- **`APK`:** klucz anon projektu aurabroker w kodzie klienta (`lib/supabase.js:4-10`); według `README.md:70` anon może INSERT i UPDATE w `apk_forms`. Panel doradcy czyta `apk_forms` bez logowania (`src/app.jx:64`), czyli działa tylko wtedy, gdy anon ma też SELECT – do sprawdzenia. Token linku z `Math.random` (`lib/formState.js:17-22`), nigdzie nieweryfikowany. Zob. też K6 w dok. 14 (niezastosowana migracja dla `apk_form_by_token`).
+- **`catalog`:** `.env` śledzony w git (adres projektu, klucz anon, site key Turnstile – wartości publiczne z założenia, ale plik w repo zachęca do dopisania sekretów). `contact_consent: true` zapisywane bez pobrania zgody (`src/routes/api/lead/+server.ts:39`) – zgoda nierozliczalna (art. 7 ust. 1 RODO).
+- **Zgody marketingowe:** `beauty-crm` wysyła każdy lead z `/formularz` do GetResponse (`send_to_gr: true`, `src/components/LeadForm.tsx:45`) przy zgodzie tylko na przedstawienie oferty; `hub` liczy puste pole `rodo` jako zgodę i wyklucza tylko wyraźny sprzeciw – „nie wyrażam zgody” też przechodzi (`src/lib/categories.ts:69-80`, `README.md:484`). Do oceny prawnika razem z C11.
+- **Mniejsze:** `udapp/app/src/lib/server/clientAuth.js:10` – przy braku `PIN_COOKIE_SECRET` podpis ciasteczka używa klucza `service_role` albo stałego napisu (ten sam wzorzec co K4 w CRM); `hub/src/lib/server/turnstile.ts:8-20` nie sprawdza `action` ani `hostname` (dziś nieużywany – nie kopiować); `udapp/app/DEPLOY.md` i komentarze migracji `katalogbeauty` ujawniają identyfikatory projektów Supabase, a migracje `katalogbeauty` wskazują dwa różne projekty (`20260622_katalog_admin_and_paid_jobs.sql:8` – aurabroker, `20260716_velora_applications_cv_saved.sql:4` – BEAUTY, którego używa kod).
+
 ### E. W1 – rekomendacja (streszczenie `../14-integracja-wnioskow-z-crm.md` rozdz. 4)
 
 - **Tak, do CRM, automatycznie** trafiają: OC (kalkulator i lead), Tax Protect, EZB, ER, UD, opieka medyczna, „Zapytaj doradcę” przy NNW i kontakt ogólny. **Nie** trafiają: szkolenia, „Dam pracę”/„Szukam pracy”, newsletter. Ankieta oceny ryzyka grupy 4 nie jest formularzem portalu – zostaje w osobistym linku do APK i wniosku w CRM.
@@ -147,15 +156,18 @@ Tylko to, czego nadal brakuje. Lista z rozdz. 3 jest nieaktualna.
 - **Odrzucone:** wariant A (wołanie `/api/wnioski`, `form-submit` i arkusza – trzy kontrakty, jednorazowy token Turnstile z cudzej witryny, stałe klucze) i wariant B (PESEL i zdrowie w bazie portalu). Dwa jawne odstępstwa od `12` 3.2 pkt 4 wariant B: dopasowanie do istniejącego klienta z zadaniem dla doradcy (O-1) i `crm_ref` w odpowiedzi (O-2).
 - **Warunek startu:** P1 z dok. 14 rozdz. 4.7, w tym minimum bezpieczeństwa ścieżki OC (K1–K4, K6, K9). Kolejność: najpierw OC, Tax, EZB i ER; UD (P1-5: funkcja do `ud_clients` ze zgodą art. 9) może dołączyć później, a do tego czasu UD zostaje na utratadochodu.pl (D33). Proponowany zapis W1 do rejestru decyzji: dok. 14 rozdz. 4.9 – wymaga akceptacji zleceniodawcy.
 
-Dok. 14 wykazał też rozbieżności z dotychczasowymi ustaleniami (rozdz. 1.4). Po pierwsze, e-mail z CRM zawiera pełny link `/odnowienie/…`, a `/w/XXXXXXXXXX` to tylko krótki alias do SMS-a (D-1). Po drugie, `konsultacja-agent` pobiera z CRM pełny link do wniosku, co przeczy D32 lit. f (D-2). Po trzecie, punkt przyjęcia leadów w CRM już istnieje i jest zasilany z arkusza Google, który ma drugiego odbiorcę – Aura HUB (D-6, P1-9).
+Dok. 14 wykazał też rozbieżności z dotychczasowymi ustaleniami (rozdz. 1.4). Po pierwsze, e-mail z CRM zawiera pełny link `/odnowienie/…`, a `/w/XXXXXXXXXX` to tylko krótki alias do SMS-a (D-1). Po drugie, `konsultacja-agent` pobiera z CRM pełny link do wniosku, co przeczy D32 lit. f (D-2). Po trzecie, punkt przyjęcia leadów w CRM już istnieje i jest zasilany z arkusza Google, który ma drugiego odbiorcę – Aura HUB (D-6, P1-9). [przegląd repo 13.11] Precyzyjniej: drugim odbiorcą jest funkcja `lead-import` CRM w projekcie BEAUTY (`beauty-crm`), a Aura HUB wysyła maile z jego `crm_companies` – część G.
 
 ### F. Czego nie sprawdzono (krytyk kompletności)
 
-- **Repozytoria spoza analizy:**
-  - `udapp` (20.10.2026, nowszy od `ud`): panel ofert UD z `/offer/[token]` i `/dystrybutor`; może zawierać informację o dystrybutorze UD i ścieżkę zakupu (U9);
-  - `APK` (formularz analizy potrzeb, art. 8 UDU): istotne dla W5 i T5;
-  - `hub` (Aura HUB, `lead-import`): drugi odbiorca arkusza, P1-9 i C11;
-  - `beauty-crm`, `grupowe`, `ac`, `expert`, `life`, `catalog`, `katalogbeauty` – nie czytane; `medaura` i `medicalaura` – tylko pod kątem dokumentów opieki medycznej.
+- **Pozostałe repozytoria** [przegląd repo 13.11]: `udapp`, `APK`, `hub`, `beauty-crm`, `grupowe`, `ac`, `expert`, `life`, `catalog`, `katalogbeauty`, `medaura` i `medicalaura` przejrzano w trybie tylko do odczytu, bez uruchamiania kodu. Wyniki i wpływ na braki – część G. Przegląd **nie** sprawdził:
+  - zawartości baz `medaura`/`medicalaura`: czy `pakiet_skladki_historia` albo `pakiety` mają ceny ENEL-MED i LUX MED i z jaką `data_wejscia` (czytany był tylko kod);
+  - definicji tabel `crm_lead_intake`, pełnego `crm_companies`, `apk_*`, `ud_clients` ani polityk RLS – są w projektach Supabase, nie w repozytoriach;
+  - kodu Edge Function `lead-import` (BEAUTY) – nie ma go w żadnym klonie; co robi z leadem (CRM, GetResponse, pole zgody) – do potwierdzenia;
+  - kto ma być operatorem tablicy ogłoszeń w portalu (regulamin `katalogbeauty` ma szablon „Aura Consulting [pełna forma prawna]”) i czy „Zatrudnię” ma być płatne – decyzja zleceniodawcy;
+  - treści analizy potrzeb dla EZB, ER i UD – repo `APK` jej nie zawiera, musi ją dostarczyć compliance Aura Expert;
+  - aktualności danych KRS i RPU ze stopki `udapp` względem PDF „Informacja o dystrybutorze” z lipca 2026;
+  - pobierania PKD przez BIR na żywo: kod jest w `branzowe` (`src/lib/serwer/gus.ts:104-121`), proxy `katalogbeauty` PKD nie zwraca, a bez klucza GUS nic nie testowano.
 - **Produkcja a repozytorium:**
   - ER: produkcji nie porównano z `e186f2a` (sprawdzone tylko `OWU.pdf` i 404 na `owu.pdf`);
   - Tax: nie wiadomo, czy wdrożone funkcje = repozytorium (T1);
@@ -178,6 +190,23 @@ Dok. 14 wykazał też rozbieżności z dotychczasowymi ustaleniami (rozdz. 1.4).
   - informacji o dystrybutorze UD nie pobrano;
   - metadane PDF/XLSX wymagają czyszczenia przed publikacją.
 - **Bez weryfikacji na żywo:** zachowania endpointów (CORS, odpowiedzi Turnstile, limity Cloudflare/WAF) wyprowadzono z kodu, bez wywołań. Żadnego tekstu prawnego nie ocenił prawnik.
+
+### G. Przegląd pozostałych repozytoriów – co zmienia [przegląd repo 13.11]
+
+Klony tylko do odczytu, bez uruchamiania kodu. Wartości sekretów, adresy projektów Supabase i adresy e-mail pominięto. Nazwy „BEAUTY” i „aurabroker” to dwa projekty Supabase rozpoznane po kodzie (BEAUTY: `crm_*`, `mienie_*`, katalog; aurabroker: `ud_*`, `apk_*`, `pakiety*`). Żadne z tych repozytoriów nie czyta ani nie zasila tabel `ezb_*`.
+
+| Repozytorium (stan) | Co zawiera | Wpływ na braki i decyzje |
+|---|---|---|
+| `udapp` (`36ae901`, 20.10.2026; aurabroker) | Panel ofert UD (SvelteKit). Agent porównuje oferty Leadenhall i CEU. Klient dostaje e-mail z linkiem `/offer/[token]` i osobno 4-cyfrowe hasło SMS (`app/src/lib/server/templates.js:15-58`, `app/DEPLOY.md:43`), potem wybiera albo odrzuca wariant, a agent dostaje e-mail (`app/src/routes/offer/[token]/choice/+server.js:20-61`). OWU dopasowywane po symbolu (`app/src/lib/server/owuMatch.js:1-4`). `/dystrybutor` serwuje PDF z magazynu według `ud_settings.distributor_pdf_path` (`app/src/routes/dystrybutor/+server.js:5-24`). Stopka spółki z KRS, wydziałem i numerem RPU (`app/src/lib/server/offerConditions.js:83`, `app/src/lib/server/pdf/conditionsDoc.js:76-79`) | **U9 bez zmian:** `/kup-online` nie ma i tutaj; po wniosku jest oferta agenta i wybór wariantu, bez zakupu i płatności. **Informacja o dystrybutorze UD:** mechanizm znany, pliku w repo nie ma (leży w magazynie), więc brak dokumentu bez zmian. **XII Wydział (D38):** stopka potwierdza „XII”. **W4:** wzorzec e-maila – neutralne „Dzień dobry,” (`templates.js:16-18`), HTML i wersja tekstowa, escapowanie (`templates.js:6-8`), hasło osobnym kanałem. Błąd do zgłoszenia: stary `index.html:466` podpisuje Aura Expert numerami KRS i KNF Aura Consulting |
+| `APK` (`1c519f4`, 19.04.2026; aurabroker) | Formularz analizy potrzeb brokera Aura Consulting, 6 kroków (`components/steps/*`): dane, osoba fizyczna, firma (progi 6,2 i 12,8 mln EUR, `Step3Firma.jsx:42,48`), 12 koszyków ryzyk Lloyd's, historia ubezpieczeń, podsumowanie z akceptacją (`Step6Podsumowanie.jsx:117-120`). `form_data` w JSONB i status draft/submitted (`lib/formState.js:48-94`), autozapis co 5 s (`hooks/useAutosave.js:7`), tabele `apk_forms`, `apk_tokens`, `apk_audit` (`README.md:66-70`) | **W5, T5:** nie przenosić – werdykt i wzorzec koperty w rozdz. 2, W5. Bezpieczeństwo – część D |
+| `hub` (`e2f6824`, 26.10.2026; BEAUTY) | Aura HUB: mailingi do kontaktów `crm_companies`, po wysyłce wpis w `crm_history` (`README.md:17-21`, `src/lib/server/sender.ts:587`). Słownik zainteresowań `email_normalize_interest`: oc, konsultacja, tax, utrata_dochodu, zdrowie, grupowe (`supabase/migrations/20260708120000_aura_hub_email_module.sql:9-31`). Webhook `POST /api/webhooks/utm-attribution`: nagłówek `x-utm-secret`, świadomie bez CORS, dopina lead po `company_id` albo e-mailu (`src/routes/api/webhooks/utm-attribution/+server.ts:11-15,43-47,69-83`). Bramka RODO: puste pole `rodo` liczy się jako zgoda, wykluczany jest tylko wyraźny sprzeciw (`src/lib/categories.ts:69-80`, `README.md:479-484`). `src/lib/server/turnstile.ts` – nieużywany | **P1-9, C11:** HUB nie ma kodu przyjmowania leadów (`lead-import` w repo nie występuje). Nowy kontakt w `crm_companies` może dostać kampanię i automatyczne powitanie sekcji (`README.md:61`), jeśli w polu `rodo` nie ma wyraźnego sprzeciwu. To wzmacnia P1-9: do HUB tylko leady ze zgodą marketingową e-mail. **U10:** gotowy kanał atrybucji po stronie serwera (UTM, `gclid`, `fbclid`) bez tagów w przeglądarce. Czy dopnie leady z CRM „aurabroker” (wariant C) – do potwierdzenia, bo szuka w `crm_companies` BEAUTY. Etykiety produktów w przekazie do HUB zgodne ze słownikiem. **W2:** nie kopiować `turnstile.ts`. Błąd: `docs/email-footer.html:21,28` podpisuje stopkę „Aura Consulting” przy linkach do auraexpert.pl |
+| `beauty-crm` (`40ebfaa`, 18.06.2026; BEAUTY) | CRM w przeglądarce (React): klucz anon i logowanie Supabase Auth, CRUD `crm_*` (`src/store/useCRMStore.ts:110-270`). Publiczny `/formularz` (`src/App.tsx:32,48`) zapisuje `crm_lead_intake` i woła `lead-import` z `send_to_gr: true` (`src/components/LeadForm.tsx:35-46`), choć zgoda dotyczy tylko „przedstawienia oferty” (`LeadForm.tsx:139-142`). Osobisty link `mienie-formularz.html?token=` (UUID z dopiskiem `-ID<id firmy>`, `useCRMStore.ts:378-387`) otwiera wniosek majątkowy (`public/mienie-formularz.html:771-811`) | **D-6, P1-9:** „drugi odbiorca” arkusza to funkcja `lead-import` tego CRM (według komentarza: CRM i GetResponse, `LeadForm.tsx:41`), a Aura HUB wysyła maile z jego `crm_companies`. Lead z `/formularz` trafia do GetResponse bez zgody marketingowej – ten sam błąd co w UD. **W1:** nie wzorować się (anon z przeglądarki, stały sekret w kodzie – część D). Link z tokenem to precedens dla `/w/XXXXXXXXXX`, ale w portalu token bez id firmy i dostęp przez Worker, nie przez RLS dla anon |
+| `katalogbeauty` (`cab57b5`, 16.07.2026; BEAUTY) | Katalog salonów VELORA (SvelteKit). Tablica `job_listings`: typ `hiring`/`looking`, miasto, województwo, widełki, forma zatrudnienia, status, `payment_status`, `expires_at` (`src/lib/database.types.ts:12-15`, `src/lib/utils.ts:52-57`). RLS: publicznie tylko aktywne i nieprzeterminowane, aktywacja tylko opłaconych (`supabase/migrations/20260622_katalog_admin_and_paid_jobs.sql:46-72`). Regulamin §6 (`src/routes/regulamin/+page.svelte:82-93`), CV i aplikacje (`supabase/migrations/20260716_velora_applications_cv_saved.sql:8-45`), JSON-LD `JobPosting` (`src/routes/jobs/[id]/+page.svelte:108-124`). Proxy `GET /api/regon`: BIR 1.1 z kluczem, awaryjnie wykaz podatników VAT MF bez klucza, walidacja NIP (`src/routes/api/regon/+server.ts:27-32,58-100`) | **„Dam pracę”:** gotowy model, RLS i szkic regulaminu – przejąć bez CV i aplikacji; według części E ogłoszenia nie idą do CRM. Do decyzji: operator (regulamin ma szablon „Aura Consulting [pełna forma prawna]”, `regulamin/+page.svelte:30`), płatność za „Zatrudnię” oraz telefon i e-mail – dziś obowiązkowe i publiczne (`regulamin/+page.svelte:90,128`) – czy formularz pośredniczący. **E2, T9:** proxy nie zwraca PKD ani daty zawieszenia, ale daje tryb bez klucza (część C) |
+| `catalog` (`8a01c03`, 15.06.2026; BEAUTY) | Wcześniejszy katalog salonów; lead do salonu `POST /api/lead` → `contact_leads` (`src/routes/api/lead/+server.ts:30-41`); bez modułu pracy | **W3:** antywzorzec – `contact_consent: true` zapisywane bez pola zgody (`:39`). W portalu zgoda tylko z pola formularza, z wersją i hashem treści |
+| `ac` (`b5f59c0`, 13.11.2026) | Serwis Aura Consulting (Astro, Pages Functions). `functions/api/kontakt.js`: Turnstile z `action`, `hostname` i `idempotency_key`, pole-pułapka, minimalny czas, Origin, limit na IP, działanie bez JS. Zgoda kontaktowa (`src/components/ContactForm.astro:74`), strona `src/content/pages/informacje-o-brokerze.mdx` | **W2, T10:** wzorzec referencyjny – szczegóły i dwie zmiany w rozdz. 2, W2. **Informacja o agencie (art. 22 UDU):** można wziąć układ strony, ale nie treść (broker, nie agent) |
+| `grupowe` (`f1e9f2e`, 12.11.2026) | grupowe.pro (Astro + Worker): formularz → Resend, tylko pole-pułapka (`worker/index.ts:68-78`), odbiorca w sekrecie `MAIL_TO` (`:9`) | Nic do przejęcia; bez Turnstile i limitu |
+| `medaura` (`48899a7`, 08.03.2026), `medicalaura` (`6cd0593`, 15.03.2026; aurabroker) | Narzędzia B2B Aura Consulting do porównania pakietów medycznych (`medaura/index.html:227,604`). Składki tylko w bazie: `pakiet_skladki_historia` z `data_wejscia`, `cena_ind_mies`, `cena_grup_mies`, `cena_rodzina` (`medaura/index.html:1055-1063,1088-1089`). `medicalaura/index2.html:725-773` czyta `dostawcy`, `pakiety`, `placowki_medyczne`, `pakiety_pelne` | **Opieka medyczna:** cennika ENEL-MED / LUX MED w kodzie nie ma, ostatnie zmiany sprzed 8 miesięcy – potwierdza „cena w ofercie”. Gdy cennik powstanie: wersjonowany JSON według modelu `pakiet_skladki_historia`. Brak dokumentów opieki medycznej bez zmian |
+| `life` (`c2e1f59`, 14.04.2026), `expert` (`1bce0eb`, 22.04.2026) | `life`: porównywarki B2B (LIFEAURA, AuraBenefits) i strona Warta Szkoła z dopiskiem „Agent: Aura Expert sp. z o.o.” (`life/warta.html:94`); `expert`: statyczna strona Aura Expert bez formularza | Bez wpływu |
 
 ---
 
@@ -284,6 +313,7 @@ Bez tej decyzji nie da się zamknąć pozycji E1, E3, R7, U1, U2 i U4.
 - EZB dziś nie ma Turnstile ani honeypota. UD ma dwa widżety (niewidoczny w kroku 1 dla szkicu, widoczny w kroku 5). ER ma tylko flagę w store.
 - Do ustalenia: nowy sitekey i secret dla domeny portalu (konto Cloudflare zleceniodawcy). Przy wariancie A trzeba też ustalić, czy funkcje CRM nadal wymagają `cf-turnstile-response`. Wtedy weryfikacja musiałaby iść tam, a nie w Workerze, bo token jest jednorazowy. Alternatywa: CRM ufa Workerowi po sekrecie.
 - Poprawić znaną usterkę UD: zgoda bez tokenu nie może wysyłać `zgoda:false`.
+- [przegląd repo 13.11] **Wzorzec kodu:** `ac/functions/api/kontakt.js` – `siteverify` z `idempotency_key` i sprawdzeniem `action` i `hostname` (`:63-79`), pole-pułapka `website` i minimalny czas 3 s (`:123-126`), Origin/Referer (`:102-106`), limit 1 wysyłki na 20 s z IP (`:158-163`, `:221`), bez JS odpowiedź 303 z kotwicą (`:98`), awaria Turnstile → 503, zły token → 403 (`:148-156`). Przy przenoszeniu do Workera portalu dwie zmiany: brak sekretu ma blokować wysyłkę (w `ac` warunek `if (env.TURNSTILE_SECRET_KEY)` pomija wtedy weryfikację, `:148`), a lista hostów ma zawierać tylko domenę portalu (w `ac` także `*.pages.dev`, `:16`). Limit w Cache API działa w obrębie jednego centrum danych, więc w portalu lepiej Rate Limiting albo KV. Nie kopiować `hub/src/lib/server/turnstile.ts` (bez `action` i `hostname`, `:8-20`).
 
 ### W3. Zgody i ich wersjonowanie
 - Jeden rejestr treści zgód w repozytorium (`packages/content/legal/*.json`, wzór `snippets/legal-consents.json`): kod, wersja, pełna treść, wymagana/dobrowolna, produkt.
@@ -306,7 +336,13 @@ Bez tej decyzji nie da się zamknąć pozycji E1, E3, R7, U1, U2 i U4.
   - (a) formularze w portalu to **zapytanie lub wniosek o ofertę**, a APK robi CRM pod osobistym linkiem `portal.beautypolisa.eu/w/` przed zawarciem umowy. Wymaga to rozszerzenia D32 poza OC, a zleceniodawca 12.11.2026 ograniczył tę ścieżkę do OC i Tax Protect;
   - (b) portal dokłada w formularzu krótką analizę potrzeb (pytania i zapis wyniku), której treść musi dostarczyć zleceniodawca (compliance);
   - (c) zleceniodawca potwierdza na piśmie, że APK odbywa się w kontakcie opiekuna lub agenta przed wystawieniem polisy.
-- Niezależnie od wariantu: przy każdym formularzu informacje o agencie (art. 22 UDU) z `legal-distributor.json` z wersją. Uwaga: `ergo.beautypolisa.eu/informacja-o-agencie` podaje „XIII Wydział”, a portal używa „XII” (D38).
+- Niezależnie od wariantu: przy każdym formularzu informacje o agencie (art. 22 UDU) z `legal-distributor.json` z wersją. Uwaga: `ergo.beautypolisa.eu/informacja-o-agencie` podaje „XIII Wydział”, a portal używa „XII” (D38). [przegląd repo 13.11] „XII” potwierdza stopka `udapp/app/src/lib/server/offerConditions.js:83`.
+- [przegląd repo 13.11] **Werdykt o repo `APK`: nie przenosić.**
+  - Podmiot: to APK brokera Aura Consulting – akceptacja „wyrażam zgodę na ich przetwarzanie przez Aura Consulting Sp. z o.o.” (`APK/components/steps/Step6Podsumowanie.jsx:117-120`), nagłówek i PDF (`APK/src/app.jx:30`, `APK/lib/pdf.js:126`). Portal działa jako agent Aura Expert, a UDU nie pozwala łączyć czynności brokerskich i agencyjnych (tak też `ac/src/content/pages/informacje-o-brokerze.mdx:25`).
+  - Treść: pytania ogólne i korporacyjne (progi 6,2 i 12,8 mln EUR, 12 koszyków ryzyk Lloyd's), bez potrzeb właściwych dla EZB, ER i UD.
+  - Kod niedokończony: link `?apk_token=` jest generowany (`APK/components/steps/Step1Dane.jsx:91`), ale nigdzie nieodczytywany; `APK/src/main.jsx:4` importuje `./App.jsx`, a plik to `src/app.jx`; w repo nie ma migracji; panel doradcy bez logowania (`APK/src/app.jx:64`).
+  - **Przejąć wzorzec koperty APK:** numer referencyjny (`APK-<base36>`, `APK/lib/formState.js:8`), status draft/submitted ze znacznikami czasu (`APK/lib/formState.js:80-92`), log zdarzeń `created`, `autosaved`, `submitted`, `pdf_exported`, `viewed` (`APK/README.md:68`, `APK/lib/supabase.js:42-49`), krok podsumowania z akceptacją i PDF do archiwum, blok historii ubezpieczeń (krok 5). Wersji formularza APK nie ma – `form_version` jest dopiero w planach (`APK/README.md:119`); w portalu wersja i hash treści od pierwszego dnia.
+  - Rekomendacja bez zmian: wariant (b) albo (c). Pytania i tekst akceptacji (podmiot: Aura Expert) musi dostarczyć compliance; do tego czasu (c).
 
 ### W6. Taryfy i dane produktowe
 - Cenniki EZB i ER oraz kalibracja UD są dziś na stałe w kodzie klienta. W portalu: JSON w repozytorium z wersją i datą obowiązywania (02, rozdział o treści). Serwer zawsze przelicza składkę i zapisuje wersję cennika.

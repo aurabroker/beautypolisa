@@ -20,6 +20,8 @@ Dane strukturalne do makiety są w `specs/utratadochodu-wniosek.json`: kroki, ws
 - Repozytorium jest **starsze od produkcji**. Żywa strona z 13.11 ma box „Zakup online” i inny tekst „Co dostajesz”, a `ud/apps/portal/src/pages/wniosek/index.astro:84-90` jeszcze nie.
 - Według projektu funkcja brzegowa w repozytorium „bywa starsza niż wdrożona” (`ud/CLAUDE.md:1100-1118`). Dla `form-submit` CLAUDE.md podaje, że produkcyjna v25 to treść z repozytorium (`ud/CLAUDE.md:1023-1028`).
 
+**[przegląd repo 13.11]** Trzecim źródłem jest klon `aurabroker/udapp` (`36ae901`, 20.10.2026; czytany, nieuruchamiany). To **panel ofert, który klient widzi po wniosku, a nie formularz**. Opis i wpływ na U9 i U10: **§11**.
+
 ---
 
 ## 1. Przegląd i kroki
@@ -837,8 +839,8 @@ Stan na 13.11.2026, źródło `aurabroker/ud` @ `793a158`. „Zamknięty” znac
 | U6 | Oryginalne pytania ankiety z okresami referencyjnymi / akceptacja underwritera | **otwarty** | Repozytorium ma te same skrócone pytania (`packages/wniosek/src/schemat.js:43-51`, `ankieta.js:14-48`). Okres pojawia się tylko w jednym pytaniu („w ciągu ostatniego roku”, `ankieta.js:18`). Komentarz w `form-submit/index.ts:236` („medical events last 2 years”) sugeruje dwuletni okres zdarzeń medycznych, ale treść pytań go nie podaje |
 | U7 | Symulacja po wniosku; odświeżanie `kalibracja.json` | **częściowo** | Proces: liczby w `apps/portal/src/lib/kalibracja.json` liczone maszynowo z wystawionych ofert (dół/góra = najtańsza/najdroższa obserwowana stawka, środek = mediana), metoda w `apps/portal/MODEL-SKLADKI.md`, planowany worker `ud-kalibrator`; mnożnik HIV/WZW 1,07 w `symulacja.ts` (`ud/CLAUDE.md:872-922`). W repozytorium kalibracja z 17.09.2026 (góra 0,0244), na żywej stronie z 14.10.2026 (góra 0,0322), czyli odświeżanie działa poza repozytorium. **Decyzja o symulacji po wniosku – otwarta** |
 | U8 | Pola dochodu i okresu wypłaty | **otwarty** (decyzja) | Repozytorium potwierdza rozjazd. `KROKI[].opis` wymienia „wysokość dochodu” i „okres wypłaty świadczenia” (`schemat.js:202-213`), a ten tekst trafia do klauzuli informacyjnej (§9.4). `form-submit` nie ma kolumn na te pola |
-| U9 | `/kup-online` – adres docelowy, link afiliacyjny | **otwarty** | Repozytorium (12.10.2026) nie ma `/kup-online` ani boxu „Zakup online” (brak w `apps/portal/src`, `functions`, `public/_redirects`). Funkcja doszła na produkcji później. Potrzebny nowszy kod albo informacja od zleceniodawcy |
-| U10 | Analityka: tagi portalu czy UD, etykiety konwersji | **częściowo** | Mechanizm potwierdzony: `zgody.js` (basic, WERSJA 2), `analityka.ts:28` (ścieżki bez Pixela), konwersja `SUBMIT_LEAD_FORM` ze znacznikiem i `transaction_id` (`ud/CLAUDE.md:576-625`); identyfikatory w `analityka.ts` (poza dokumentem). Decyzja, czyje tagi w portalu – otwarta |
+| U9 | `/kup-online` – adres docelowy, link afiliacyjny | **otwarty** | Repozytorium (12.10.2026) nie ma `/kup-online` ani boxu „Zakup online” (brak w `apps/portal/src`, `functions`, `public/_redirects`). Funkcja doszła na produkcji później. Potrzebny nowszy kod albo informacja od zleceniodawcy. [przegląd repo 13.11] `udapp` (20.10.2026) też nie ma `/kup-online`. To panel ofert po wniosku, a zakup i płatność są poza nim (§11.4) |
+| U10 | Analityka: tagi portalu czy UD, etykiety konwersji | **częściowo** | Mechanizm potwierdzony: `zgody.js` (basic, WERSJA 2), `analityka.ts:28` (ścieżki bez Pixela), konwersja `SUBMIT_LEAD_FORM` ze znacznikiem i `transaction_id` (`ud/CLAUDE.md:576-625`); identyfikatory w `analityka.ts` (poza dokumentem). Decyzja, czyje tagi w portalu – otwarta. [przegląd repo 13.11] `udapp` nie ma tagów. Otwarcie oferty i wybór wariantu zapisuje tylko jako statusy w `ud_offers` (§11.4) |
 
 **Nowe ustalenia, które warto dopisać do `00-braki-i-decyzje.md`** (ten plik edytują inne workflow, więc tu tylko lista):
 - (a) sprzeczność klauzuli z formularzem w sprawie zgody art. 9 i zgody marketingowej;
@@ -869,6 +871,68 @@ Stan na 13.11.2026, źródło `aurabroker/ud` @ `793a158`. „Zamknięty” znac
   - §9.1: doprecyzowano kolejność nazw pól w `form-submit` (`med_*` najpierw snake_case; część pól ma jedną nazwę). Dopisano rozjazd `ud/CLAUDE.md:1678-1679` z kodem przydziału opiekuna.
   - §9.4: niespójność statystyki opisana jako wewnętrzna w polityce prywatności (l. 45 wobec l. 54); klauzula (l. 93–101) jest spójna. Dopisano regulamin i szybki kontakt (`contact-submit`).
   - §7: stan punktów 5–11 zgodny z §10 (7 i 11 częściowo).
+
+---
+
+## 11. Panel ofert po wniosku – repozytorium `udapp` [przegląd repo 13.11]
+
+Źródło: płytki klon `aurabroker/udapp` (jeden commit `36ae901`, 20.10.2026), czytany, nieuruchamiany. SvelteKit na Cloudflare Pages. Baza i pliki są w projekcie Supabase „aurabroker” (tabele `ud_*`), SMS-y idą przez SMSAPI, e-maile przez Resend (`udapp/app/README.md:1-11`, `udapp/app/DEPLOY.md:1-43`). Adres projektu i klucze z `DEPLOY.md` celowo pominięte. Ścieżki w tabelach są względne do `udapp/app/`.
+
+**To nie jest formularz.** `udapp` zaczyna się tam, gdzie wniosek się kończy. Agent wgrywa PDF-y ofert Leadenhall i CEU, aplikacja czyta z nich warianty, a klient dostaje link do porównania. Formularz, który ma trafić do portalu, opisują §1–§10. Ta sama aplikacja, w innej wersji, jest w monorepo jako `ud/apps/panel` (§11.2).
+
+### 11.1 Przepływ oferty
+
+| Etap | Co się dzieje | Dowód |
+|---|---|---|
+| Utworzenie | `ud_offers` z `share_token` (24 znaki z `crypto.getRandomValues`) i `access_code`; warianty w `ud_offer_documents`, pliki w `ud_offer_files` | `src/lib/server/offers.js:79-101`; `src/lib/server/crypto.js:8-15` |
+| Kod dostępu | hasło PDF ubezpieczyciela, jeśli ma co najmniej 4 cyfry, inaczej losowy 4-cyfrowy PIN. Przy wysyłce hash PBKDF2-SHA256 (100 000 iteracji) trafia do `ud_offer_pins` z `expires_at` = teraz + `PIN_TTL_HOURS` (domyślnie 48 h) | `offers.js:83-85, 527-542`; `crypto.js:17-40`; `DEPLOY.md:43` |
+| Wysyłka | e-mail z linkiem `/offer/[token]` (temat „Twoja oferta ubezpieczenia utraty dochodu — nr …”) i SMS z hasłem **oraz linkiem**. Każda próba trafia do `ud_send_log`. Status `sent` tylko wtedy, gdy cokolwiek wyszło | `offers.js:544-599` |
+| Bramka | bez weryfikacji strona dostaje tylko token, imię i nazwisko klienta oraz nazwę oferty. `POST …/unlock` przyjmuje 4 cyfry, sprawdza wygaśnięcie i licznik `attempts`/`max_attempts`, potem ustawia ciasteczko httpOnly podpisane HMAC na ścieżce oferty | `src/routes/offer/[token]/+page.server.js:7-27`; `…/unlock/+server.js:6-66`; `src/lib/server/clientAuth.js:17-34` |
+| Podgląd | po weryfikacji status `sent` → `viewed` (`viewed_at`); warianty, pliki, warunki oferty, link do „Informacji o dystrybutorze” | `+page.server.js:29-58` |
+| Decyzja | `POST …/choice`: wybór wariantu (`chosen`) albo rezygnacja (`rejected`), obie z potwierdzeniem; zapis `client_choice` i `decided_at`, e-mail do agenta. Klient widzi: „Dziękujemy! Twój wybór został zapisany. Agent skontaktuje się z Tobą.” | `…/choice/+server.js:20-62`; `src/lib/components/OfferView.svelte:158, 169, 193-204` |
+| Pytania | „Masz pytanie?”: 3–2000 znaków → `ud_offer_questions` i e-mail do agenta z `Reply-To` klienta (pola escapowane) | `…/question/+server.js:7-47`; `src/lib/server/templates.js:65-88` |
+| OWU | aktywne pozycje `ud_owu_library` danego ubezpieczyciela, dopasowanie po symbolu: baza LW044/LW046/LW047, warunki HIV/WZW (LW048/LW049) tylko przy LW046/LW047; CEU – jedno dopasowanie | `offers.js:163-190`; `src/lib/server/owuMatch.js:47-80`; `DEPLOY.md:64-67` |
+| Dystrybutor | `GET /dystrybutor` strumieniuje PDF z kubełka `ud-public` według `ud_settings.distributor_pdf_path` (`inline`, `no-store`); bez ustawienia 404 | `src/routes/dystrybutor/+server.js:5-24`; `src/lib/server/settings.js:6-17` |
+| Stopka | „Aura Expert spółka z ograniczoną odpowiedzialnością … XII Wydział Gospodarczy Krajowego Rejestru Sądowego … pod numerem 11229690/A” w warunkach oferty, w PDF i w e-mailu | `src/lib/server/offerConditions.js:83`; `src/lib/server/pdf/conditionsDoc.js:75-79`; `templates.js:4, 19` |
+
+Zakupu ani płatności w `udapp` nie ma: w `app/src` nie występuje status `bought` ani obsługa płatności. Status `bought` i etap „Wygrany” prowadzi `ud` (§9.6). E-mail do klienta zaczyna się neutralnym „Dzień dobry,” i ma wersję tekstową (`templates.js:16-18, 45-56`).
+
+### 11.2 `udapp` a `ud/apps/panel` – dwie wersje panelu
+
+Bramka `unlock`, ciasteczko i `/dystrybutor` są w obu repozytoriach identyczne (porównanie plików). Różnią się kodem dostępu i SMS-em. **Która wersja działa na produkcji – do potwierdzenia u zleceniodawcy.** `udapp` ma nowszy commit, a `ud` nowszy model kodu dostępu.
+
+| | `udapp` (`36ae901`, 20.10.2026) | `ud/apps/panel` (`793a158`, 12.10.2026) |
+|---|---|---|
+| Kod dostępu | hasło PDF albo losowy PIN (`offers.js:83-85`) | 4 ostatnie cyfry PESEL z `ud_clients` (według komentarza to też hasło PDF); bez PESEL-u wysyłka jest blokowana (`ud/apps/panel/src/lib/server/offers.js:570-592`) |
+| SMS | hasło i link (`offers.js:567`) | samo zawiadomienie, bez linku i kodu – decyzja z 12.10.2026 (`ud/apps/panel/src/lib/server/smsOferta.js:1-24`) |
+| Zapowiedź w e-mailu | „4-cyfrowym hasłem, które wysłaliśmy osobno SMS-em” (`templates.js:39`) | „Hasłem dostępu są 4 ostatnie cyfry Pani/Pana numeru PESEL” (`ud/apps/panel/src/lib/server/templates.js:39`) |
+| Wersja oferty | brak | numer wersji przy każdej kolejnej wysyłce (`ud/apps/panel/src/lib/server/offers.js:597`) |
+| Wersje OWU | dopasowanie przez zawieranie się symbolu, bez strażnika wersji (`owuMatch.js:33-40`) | strażnik `bezInnychWersji` (`ud/apps/panel/src/lib/server/owuMatch.js:84`; §9.5) |
+
+### 11.3 Uwagi bezpieczeństwa (dla wzorca w portalu)
+
+- **TTL nie zamyka dostępu.** Gdy PIN wygaśnie, a oferta ma 4-cyfrowy `access_code`, `unlock` zakłada nowy PIN na 30 dni z nowym licznikiem prób (`…/unlock/+server.js:28-41`). E-mail obiecuje ważność `PIN_TTL_HOURS`. Domyślne `max_attempts` jest w schemacie tabeli, którego nie ma w repozytorium – do potwierdzenia.
+- **Kod jawnym tekstem.** `access_code` leży w `ud_offers` obok hasha w `ud_offer_pins` (`offers.js:101, 536-542`), więc hash niczego nie chroni.
+- **„Osobny kanał” tylko w treści e-maila.** W `udapp` SMS niesie hasło i link (`offers.js:567`), więc sam SMS otwiera ofertę.
+- **Dane przed weryfikacją.** Bramka zwraca pełne `client_name`, choć pokazuje tylko imię (`+page.server.js:20-26`; `src/routes/offer/[token]/+page.svelte:41`).
+- **Sekret ciasteczka** ma wartości zapasowe: klucz `service_role` albo stały napis deweloperski (`clientAuth.js:9-11`). Podpis nie zawiera czasu ważności, pilnuje go tylko `maxAge` (`clientAuth.js:18-26`).
+- **Kod z PESEL (`ud`)** to fragment danej osobowej, którą znają też osoby bliskie, i najwyżej 10 000 kombinacji. Jedyną ochroną jest limit prób.
+
+### 11.4 Wpływ na braki i portal
+
+- **U9 – bez zmian (otwarty).** `udapp` nie zawiera `/kup-online` ani linku afiliacyjnego. Przeszukałem wszystkie klony w `aurabroker/` – zero trafień. `udapp` opisuje drugą ścieżkę: wniosek → oferta agenta → porównanie → wybór → kontakt agenta. Niewiadomą pozostaje tylko box „Zakup online”. Strona portalu po wysłaniu wniosku UD może już zapowiedzieć e-mail z linkiem do porównania. Sposób odblokowania zależy od wersji panelu (§11.2).
+- **U10 – częściowo, decyzja bez zmian.** W `udapp/app/src` nie ma tagów: wyszukanie `gtag`, `googletagmanager` i `fbq` nie daje trafień poza osadzonymi danymi fontów. Otwarcie oferty, wybór i rezygnacja istnieją tylko jako status i znaczniki czasu w `ud_offers` (`viewed_at`, `decided_at`, `client_choice`). Jeśli portal ma mierzyć coś więcej niż wysłanie wniosku, to tylko po stronie serwera, np. webhookiem HUB `utm-attribution` (`00-braki-i-decyzje.md`, część G).
+- **W4.** Klient, którego wniosek z portalu trafi do `ud_clients` (wariant A), dostanie ofertę z marką UtrataDochodu (`templates.js:22-24`; `+page.svelte:28-31`). Nadawcą będzie domyślny adres z domeny UD, jeśli nie ustawiono `RESEND_FROM` (`src/lib/server/email.js:8, 20`). Strona podziękowania w portalu musi to zapowiadać.
+- **D38 (XII Wydział):** stopka `udapp` potwierdza „XII”.
+- **Wzorce do przejęcia** (oferty i linki `/w/`):
+  - token z CSPRNG o wysokiej entropii;
+  - kod jako drugi czynnik: z limitem prób i twardym TTL (bez cichego odnawiania), przechowywany tylko jako hash, niebędący fragmentem PESEL;
+  - SMS bez linku (jak w `ud`);
+  - log wysyłek z numerem wersji oferty (jak w `ud`);
+  - „Informacja o dystrybutorze” serwowana z własnej domeny (`/dystrybutor`);
+  - OWU dopasowywane po symbolu ze strażnikiem wersji (jak w `ud`);
+  - neutralne „Dzień dobry,” i wersja tekstowa e-maila.
+- **Ochrona formularza (W2):** wzorzec `ac/functions/api/kontakt.js` opisują `ergo-zycie-w-biznesie.md` §13.2 i `tax-protect-wniosek.md` §13.2.
 
 ---
 
