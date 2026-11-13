@@ -9,7 +9,25 @@
       "ext/src/ud/zgody.js, awaria.js, __vitals.js"
     ],
     "uwaga": "Klucze (anon/Turnstile/tagi) celowo pominięte; patrz raport §8.",
-    "weryfikacja_2026_11_13": "Krytyk kompletności: potwierdzono walidacje kroków 1–3, PESEL, limity, klauzule NW, ge()/he(), wysyłkę, szkic, wersję zgody. Dodano uwagi o datach PESEL i akcji kontakt bez tokenu."
+    "weryfikacja_2026_11_13": "Krytyk kompletności: potwierdzono walidacje kroków 1–3, PESEL, limity, klauzule NW, ge()/he(), wysyłkę, szkic, wersję zgody. Dodano uwagi o datach PESEL i akcji kontakt bez tokenu.",
+    "repozytorium": {
+      "repo": "aurabroker/ud (płytki klon, tylko odczyt)",
+      "commit": "793a158",
+      "data_commita": "2026-10-12",
+      "analiza": "2026-11-13",
+      "odwolania": "ud/<ścieżka>:<linia>",
+      "zastrzezenia": [
+        "Repozytorium jest starsze od produkcji: brak boxu 'Zakup online' i /kup-online, kalibracja z 2026-09-17 zamiast 2026-10-14.",
+        "Według ud/CLAUDE.md:1100-1118 funkcja w repo bywa starsza niż wdrożona; dla form-submit produkcja v25 = treść z repo (ud/CLAUDE.md:1023-1028).",
+        "Sekrety, adres projektu Supabase, klucze Turnstile, ID tagów i adresy odbiorców pominięte celowo."
+      ]
+    },
+    "poprawki_2026_11_13": [
+      "kroki[].opis_rodo nie jest martwym kodem: KROKI[].opis zasila listę kategorii danych w klauzuli informacyjnej (ud/apps/portal/src/pages/klauzula-informacyjna/index.astro:104-108).",
+      "wysylka.szkic.tabela: schemat z migracji zamiast opisu z zadania.",
+      "wysylka.szkic.akcje[wycofaj]: odpowiedź HTTP 2xx z {status:'success'}.",
+      "Raport .md §5: usunięto fragment identyfikatora projektu Supabase."
+    ]
   },
   "kroki": [
     {
@@ -17,32 +35,37 @@
       "id": "kontakt",
       "tytul": "Kontakt",
       "opis_rodo": "imię i nazwisko, adres e-mail, numer telefonu oraz — jeśli ją zaznaczysz — zgoda na kontakt w sprawie wniosku",
-      "wstep": "Zaczynamy od kontaktu — na ten adres e-mail i numer telefonu odezwiemy się z ofertą."
+      "wstep": "Zaczynamy od kontaktu — na ten adres e-mail i numer telefonu odezwiemy się z ofertą.",
+      "opis_rodo_uzycie": "wyświetlany w /klauzula-informacyjna/ (art. 13), nie w kreatorze"
     },
     {
       "nr": 2,
       "id": "dane",
       "tytul": "Dane podstawowe",
-      "opis_rodo": "PESEL, zawód, forma zatrudnienia i opodatkowania, wysokość dochodu"
+      "opis_rodo": "PESEL, zawód, forma zatrudnienia i opodatkowania, wysokość dochodu",
+      "opis_rodo_uzycie": "wyświetlany w /klauzula-informacyjna/ (art. 13), nie w kreatorze"
     },
     {
       "nr": 3,
       "id": "zakres",
       "tytul": "Zakres ochrony",
-      "opis_rodo": "wybrane ryzyka, sumy ubezpieczenia i okres wypłaty świadczenia"
+      "opis_rodo": "wybrane ryzyka, sumy ubezpieczenia i okres wypłaty świadczenia",
+      "opis_rodo_uzycie": "wyświetlany w /klauzula-informacyjna/ (art. 13), nie w kreatorze"
     },
     {
       "nr": 4,
       "id": "zdrowie",
       "tytul": "Stan zdrowia",
       "opis_rodo": "ankieta medyczna — dane szczególnej kategorii, przetwarzane wyłącznie za wyraźną zgodą",
-      "wstep": "Odpowiadaj szczerze. Zatajenie choroby nie oszczędza składki — pozwala ubezpieczycielowi odmówić wypłaty w momencie, w którym będzie potrzebna najbardziej."
+      "wstep": "Odpowiadaj szczerze. Zatajenie choroby nie oszczędza składki — pozwala ubezpieczycielowi odmówić wypłaty w momencie, w którym będzie potrzebna najbardziej.",
+      "opis_rodo_uzycie": "wyświetlany w /klauzula-informacyjna/ (art. 13), nie w kreatorze"
     },
     {
       "nr": 5,
       "id": "zgody",
       "tytul": "Zgody",
-      "opis_rodo": "zaznaczone zgody i potwierdzenia"
+      "opis_rodo": "zaznaczone zgody i potwierdzenia",
+      "opis_rodo_uzycie": "wyświetlany w /klauzula-informacyjna/ (art. 13), nie w kreatorze"
     }
   ],
   "nawigacja": {
@@ -1455,7 +1478,75 @@
         "/wniosek/",
         "/podziekowanie/",
         "/wycofaj-zgode/"
+      ],
+      "zrodlo_repo": "ud/apps/portal/public/zgody.js:24-26, 190-215; bezPixela: ud/apps/portal/src/lib/analityka.ts:28"
+    },
+    "rejestr": [
+      {
+        "kod": "zgodaKontakt",
+        "wersja": "v1-2026-10",
+        "wymagana": false,
+        "zapis": "ud_wnioski_szkice: zgoda_wersja, zgoda_tresc (z mapy serwera), zgoda_at; nie trafia do form-submit",
+        "akceptacja_prawnika": "2026-10-01 (ud/packages/wniosek/src/schemat.js:228-249)"
+      },
+      {
+        "kod": "exclusions_accepted",
+        "wersja": null,
+        "wymagana": "tylko w kreatorze",
+        "zapis": "ud_clients.exclusions_accepted (bool), bez treści/wersji",
+        "egzekwowana_przez_serwer": false
+      },
+      {
+        "kod": "informedAccepted",
+        "wersja": null,
+        "wymagana": "tylko w kreatorze",
+        "zapis": "ud_clients.informed_accepted (bool), bez treści/wersji",
+        "egzekwowana_przez_serwer": false
+      },
+      {
+        "kod": "art9_dane_o_zdrowiu",
+        "istnieje": false,
+        "uwaga": "klauzula informacyjna twierdzi, że jest zaznaczana w ostatnim kroku"
+      },
+      {
+        "kod": "marketing",
+        "istnieje": false,
+        "uwaga": "klauzula wspomina 'gdy zaznaczysz odpowiednie pole'; form-submit może synchronizować z GetResponse"
+      }
+    ],
+    "brak_zgody_art9_potwierdzony_w_repo": true,
+    "klauzula_informacyjna": {
+      "url": "https://utratadochodu.pl/klauzula-informacyjna/",
+      "plik": "ud/apps/portal/src/pages/klauzula-informacyjna/index.astro",
+      "zaktualizowano": "2026-10-01",
+      "akceptacja": "według ud/CLAUDE.md:1253-1256 zaakceptowana przez prawnika razem z polityką prywatności",
+      "administrator": "Aura Expert spółka z ograniczoną odpowiedzialnością (dane z ud/apps/portal/src/lib/firma.ts)",
+      "cele": [
+        "Przygotowanie oferty i obsługa wniosku — art. 6 ust. 1 lit. b",
+        "Przekazanie wniosku ubezpieczycielowi — art. 6 ust. 1 lit. b",
+        "Dane o stanie zdrowia z ankiety medycznej — art. 9 ust. 2 lit. a",
+        "Obowiązki agenta ubezpieczeniowego — art. 6 ust. 1 lit. c",
+        "Kontakt marketingowy — art. 6 ust. 1 lit. f albo zgoda",
+        "Kontakt w sprawie niedokończonego wniosku — art. 6 ust. 1 lit. a",
+        "Statystyka porzuconych wniosków — art. 6 ust. 1 lit. f"
+      ],
+      "art9_tekst": "Art. 9 ust. 2 lit. a RODO — Twoja wyraźna zgoda, zaznaczana w ostatnim kroku wniosku. Zgodę możesz cofnąć w każdej chwili; cofnięcie nie wpływa na zgodność z prawem przetwarzania, które nastąpiło wcześniej.",
+      "odbiorcy": [
+        "Ubezpieczycielom, w imieniu których działamy: Leadenhall Insurance S.A. oraz CEU sp. z o.o.",
+        "Dostawcom usług informatycznych utrzymującym bazę danych i pocztę.",
+        "Podmiotom świadczącym nam obsługę prawną i księgową.",
+        "Organom uprawnionym na podstawie przepisów prawa."
+      ],
+      "sprzecznosci_z_kodem": [
+        "zgoda art. 9 opisana jako zaznaczana w ostatnim kroku — w kreatorze jej nie ma (Wniosek.svelte:740-764)",
+        "kontakt marketingowy 'gdy zaznaczysz odpowiednie pole' — pola brak",
+        "kategorie danych z KROKI[].opis: 'wysokość dochodu', 'okres wypłaty świadczenia' — formularz ich nie zbiera"
       ]
+    },
+    "wycofanie": {
+      "kontakt": "link z e-maila /wycofaj-zgode/#id&sig (POST akcja wycofaj), one-click List-Unsubscribe-Post, e-mail lub telefon",
+      "art9": "brak mechanizmu (zgoda nie jest zbierana)",
+      "cookies": "UDCookies.otworz()"
     }
   },
   "wysylka": {
@@ -1525,7 +1616,8 @@
             "phone": "tylko gdy zgoda"
           },
           "odpowiedz": {
-            "id": "uuid szkicu"
+            "id": "uuid szkicu",
+            "status": "success"
           }
         },
         {
@@ -1572,10 +1664,11 @@
             "akcja": "wycofaj",
             "id": "id",
             "sig": "podpis z serwera"
-          }
+          },
+          "odpowiedz": "HTTP 200 {status:'success'} przy poprawnym podpisie (także gdy szkicu już nie ma); 403 przy złym podpisie; strona sprawdza res.ok"
         }
       ],
-      "tabela": "ud_wnioski_szkice (id, ostatni_krok, ukonczony_at, client_id, zgoda_kontakt, zgoda_wersja, zgoda_tresc, zgoda_at, zgoda_wycofana_at, imie, email, phone, przypomnienie_wyslane_at, obsluzony_at, ip_hash) — z opisu zadania, nie z kodu klienckiego"
+      "tabela": "ud_wnioski_szkice — schemat z migracji, patrz backend.wniosek_szkic.schemat"
     },
     "turnstile": {
       "krok1": "appearance: 'interaction-only', tylko gdy jest urlSzkicu; token do szkicu",
@@ -1738,5 +1831,658 @@
       "ukryte_gdy": "?agent=",
       "link": "/kup-online?z=wniosek"
     }
-  }
+  },
+  "backend": {
+    "form_submit": {
+      "plik": "ud/supabase/functions/form-submit/index.ts",
+      "uwierzytelnianie": "brak (verify_jwt=false, ud/CLAUDE.md:381-397); zapis kluczem service_role",
+      "cors": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+        "metody": "brak filtra; OPTIONS -> 200 'ok'; GET bez ciała -> 500"
+      },
+      "limit_zadan": null,
+      "deduplikacja": null,
+      "turnstile": {
+        "endpoint": "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+        "pola": [
+          "secret=TURNSTILE_SECRET_KEY",
+          "response=cf-turnstile-response",
+          "remoteip=CF-Connecting-IP"
+        ],
+        "warunek": "data.success === true",
+        "sprawdza_hostname_action": false,
+        "brak_sekretu": "503 + ud_errors",
+        "sekret_powiazany_z_widzetem": "sekret musi pochodzić z widżetu, którego sitekey stoi na stronie (ud/CLAUDE.md:414-428)",
+        "linie": "135-178"
+      },
+      "kolejnosc": [
+        "parse JSON",
+        "sekret Turnstile",
+        "token",
+        "PESEL",
+        "mapowanie",
+        "ryzyko podstawowe",
+        "zerowanie sum niewybranych ryzyk",
+        "granice",
+        "zbiórka hs_*",
+        "bramka ankiety",
+        "pierwszeństwo ankiety",
+        "form_data",
+        "usunięcie pustych",
+        "INSERT ud_clients",
+        "GetResponse",
+        "200"
+      ],
+      "walidacje": [
+        {
+          "warunek": "pesel /^\\d{11}$/ (bez sumy kontrolnej i wieku)",
+          "http": 400,
+          "komunikat": "Nieprawidłowy PESEL.",
+          "linie": "181-187"
+        },
+        {
+          "warunek": "risk_temp_incapacity === true i temp_incapacity_sum > 0",
+          "http": 400,
+          "komunikat": "Polisy nie da się zawrzeć bez „Okresowej niezdolności do pracy\" — to ryzyko podstawowe. Zaznacz je i wpisz kwotę miesięczną.",
+          "linie": "285-293"
+        },
+        {
+          "warunek": "weight 30–200 (puste OK)",
+          "http": 400,
+          "komunikat": "Waga musi mieścić się między 30 a 200 kg.",
+          "linie": "88-91"
+        },
+        {
+          "warunek": "height 100–250 (puste OK)",
+          "http": 400,
+          "komunikat": "Wzrost musi mieścić się między 100 a 250 cm.",
+          "linie": "88-91"
+        },
+        {
+          "warunek": "temp_incapacity_sum ≤ 50 000 (gdy ryzyko wybrane)",
+          "http": 400,
+          "komunikat": "Świadczenie miesięczne z okresowej niezdolności może wynosić najwyżej 50 000 zł.",
+          "linie": "80-87"
+        },
+        {
+          "warunek": "perm_incapacity_sum ≤ 10 000 000",
+          "http": 400,
+          "komunikat": "Suma trwałej niezdolności do pracy może wynosić najwyżej 10 000 000 zł.",
+          "linie": "80-87"
+        },
+        {
+          "warunek": "nw_death_sum ≤ 10 000 000",
+          "http": 400,
+          "komunikat": "Suma na wypadek śmierci / inwalidztwa (NW) może wynosić najwyżej 10 000 000 zł.",
+          "linie": "80-87"
+        },
+        {
+          "warunek": "risk_perm_incapacity i suma > 1 000 000 => co najmniej jedno hs_* = tak|nie",
+          "http": 400,
+          "komunikat": "Przy sumie trwałej niezdolności powyżej 1 000 000 zł wymagana jest pełna ankieta medyczna. Odśwież formularz i wypełnij wszystkie pytania.",
+          "linie": "328-342"
+        }
+      ],
+      "nie_sprawdza": [
+        "fullName",
+        "format email",
+        "format phone",
+        "suma kontrolna i wiek z PESEL",
+        "profession",
+        "kwoty klauzul NW",
+        "pola B2B",
+        "długość tekstów",
+        "komplet 20 odpowiedzi ankiety",
+        "exclusions_accepted",
+        "informedAccepted"
+      ],
+      "odpowiedzi": [
+        {
+          "http": 200,
+          "cialo": {
+            "status": "success",
+            "supabase": "ok",
+            "getresponse": "bool"
+          }
+        },
+        {
+          "http": 400,
+          "cialo": {
+            "status": "error",
+            "message": "Weryfikacja bezpieczeństwa nie powiodła się. Odśwież stronę i spróbuj ponownie."
+          }
+        },
+        {
+          "http": 400,
+          "cialo": {
+            "status": "error",
+            "message": "<komunikat walidacji>"
+          }
+        },
+        {
+          "http": 503,
+          "cialo": {
+            "status": "error",
+            "message": "Formularz jest chwilowo niedostępny. Zadzwoń: 504 400 901 albo napisz na info@utratadochodu.pl."
+          }
+        },
+        {
+          "http": 500,
+          "cialo": {
+            "status": "error",
+            "message": "Błąd zapisu. Spróbuj ponownie."
+          }
+        },
+        {
+          "http": 500,
+          "cialo": {
+            "status": "error",
+            "message": "Nieoczekiwany błąd serwera."
+          }
+        }
+      ],
+      "tabela": "ud_clients (pełne DDL poza repozytorium; atrapa: ud/supabase/tests/stub.sql:39-58)",
+      "mapowanie": {
+        "fullName": "full_name",
+        "email": "email",
+        "phone": "phone",
+        "pesel": "pesel (jawny tekst; PESEL_ENCRYPTION_KEY z .env.example nieużywany)",
+        "employmentType": "employment_type",
+        "profession": "profession",
+        "source": "source (domyślnie 'form', bez listy dozwolonych)",
+        "affiliateCode": "affiliate_code_used (bez walidacji serwerowej)",
+        "weight": "weight (liczba)",
+        "height": "height (liczba)",
+        "handedness": "handedness",
+        "taxForm": "tax_form",
+        "employsPeople": "employs_people (bool)",
+        "emp_startDate": "b2b_start_date",
+        "emp_industry": "b2b_industry",
+        "emp_character": "b2b_character (kreator nie wysyła)",
+        "emp_area": "b2b_area (kreator nie wysyła)",
+        "emp_count_2024": "b2b_employees_2024",
+        "emp_count_current": "b2b_employees_2025",
+        "emp_contribution": "b2b_own_contribution",
+        "emp_description": "b2b_description",
+        "med_heart|med_diabetes|med_bones|med_stomach|med_neuro|med_surgery|med_aids": "te same kolumny (bool, yesNo)",
+        "hs_weight_change|hs_takes_meds|hs_pending_diagnosis|hs_disability_congenital|hs_smoker|hs_event_hospitalization|hs_event_sick_leave_30|hs_event_further_diagnosis|hs_med_heart|hs_med_neuro|hs_med_stomach|hs_med_diabetes": "kolumny o tej samej nazwie bez 'hs_' (bool, pierwszeństwo nad ankietą podstawową)",
+        "hs_med_locomotor": "med_bones",
+        "risk_* (15)": "te same kolumny (bool)",
+        "riskDeathInvalidity|riskTempIncapacity|riskPermIncapacity": "risk_death_invalidity|risk_temp_incapacity|risk_perm_incapacity",
+        "tempIncapacitySum|permIncapacitySum|nwDeathSum": "temp_incapacity_sum|perm_incapacity_sum|nw_death_sum (null przy niewybranym ryzyku)",
+        "nwFuneral|nwAdaptation|nwHospitalDaily|nwMedicalCosts|nwUnconsciousWeekly": "nw_funeral|nw_adaptation|nw_hospital_daily|nw_medical_costs|nw_unconscious_weekly",
+        "nwPermanentDamage": "nw_permanent_damage (bool; z kreatora zawsze 'No')",
+        "exclusions_accepted|informedAccepted": "exclusions_accepted|informed_accepted (bool, bez wersji i treści)",
+        "<całe ciało bez tokenu>": "form_data jsonb + form_data.health_survey {<key>:{answer:'tak'|'nie', details}} (tu 7 pozycji bez kolumn)"
+      },
+      "skutki_uboczne": {
+        "getresponse": "przy ustawionych GETRESPONSE_API_KEY/GETRESPONSE_LIST_ID imię, nazwisko i e-mail każdego wnioskodawcy trafiają na listę GetResponse bez zgody marketingowej (linie 11-34, 380-383); stan produkcji nieznany",
+        "ud_errors": "logi błędów z surowym IP (ud/supabase/functions/_shared/logger.ts:14-20)",
+        "monitor": "sondy kontraktowe i 'sonda ciszy' liczą zgłoszenia w ud_clients (ud/apps/monitor/README.md:14-25)"
+      }
+    },
+    "wniosek_szkic": {
+      "plik": "ud/supabase/functions/wniosek-szkic/index.ts",
+      "metody": "tylko POST (inne -> 405 'Niedozwolona metoda.'); JSON lub x-www-form-urlencoded (RFC 8058) scalone z query",
+      "czytane_pola": [
+        "akcja",
+        "id",
+        "zgoda",
+        "zgoda_wersja",
+        "imie",
+        "email",
+        "phone",
+        "krok",
+        "sig",
+        "cf-turnstile-response"
+      ],
+      "walidacja_kontaktu": {
+        "imie": "trim, niepuste, ≤100",
+        "email": "≤150, lower, /^[^@\\s]+@[^@\\s]+\\.[^@\\s]{2,}$/",
+        "phone": "≤30, ≥9 cyfr"
+      },
+      "mapa_zgod_serwera": {
+        "v1-2026-10": "Zgadzam się na kontakt e-mailowy i telefoniczny ze strony Aura Expert sp. z o.o. w sprawie mojego wniosku — także wtedy, gdy go nie dokończę. Zgodę mogę wycofać w każdej chwili."
+      },
+      "akcje": {
+        "start": {
+          "bramki": [
+            "Turnstile (503/400)",
+            "SZKIC_HMAC_SECRET (503)",
+            "zgoda => znana wersja i poprawny kontakt (400 'Nieprawidłowe dane kontaktowe.')",
+            "limit 10 szkiców / h / ip_hash (429 'Zbyt wiele prób. Spróbuj później.')"
+          ],
+          "zapis": "INSERT ostatni_krok='kontakt', ip_hash, zgoda_kontakt (+ zgoda_wersja, zgoda_tresc, zgoda_at, imie, email, phone przy zgodzie)",
+          "odpowiedz": {
+            "status": "success",
+            "id": "uuid"
+          }
+        },
+        "kontakt": {
+          "bramki": [
+            "przy zgoda:true jak start (bez limitu)"
+          ],
+          "zapis": "zgoda: dane+wersja+treść+zgoda_at; brak zgody: zgoda_kontakt=false, imie/email/phone=null; tylko gdy ukonczony_at is null"
+        },
+        "krok": {
+          "dozwolone": [
+            "dane",
+            "zakres",
+            "zdrowie"
+          ],
+          "blad": "400 'Nieznany krok.'",
+          "zapis": "ostatni_krok tylko do przodu"
+        },
+        "ukoncz": {
+          "zapis": "rpc ud_wnioski_szkic_ukoncz: ukonczony_at, ostatni_krok='zgody', client_id po e-mailu (klient utworzony po szkicu), czyszczenie kontaktu"
+        },
+        "wycofaj": {
+          "bramki": [
+            "SZKIC_HMAC_SECRET (503)",
+            "sig (403 'Nieprawidłowy lub wygasły link.')"
+          ],
+          "zapis": "zgoda_kontakt=false, zgoda_wycofana_at, czyszczenie kontaktu",
+          "odpowiedz": {
+            "status": "success"
+          }
+        }
+      },
+      "bledy_wspolne": {
+        "nieznana_akcja": "400 'Nieznana akcja.'",
+        "zle_id": "400 'Nieprawidłowy identyfikator.'",
+        "format": "400 'Nieprawidłowy format danych.'",
+        "wyjatek": "500 'Nieoczekiwany błąd.' (ud_errors: tylko akcja i komunikat)"
+      },
+      "schemat": {
+        "zrodlo": "ud/supabase/migrations/20261001101112_wnioski_szkice.sql:22-62",
+        "kolumny": {
+          "id": "uuid PK default gen_random_uuid()",
+          "created_at": "timestamptz not null default now()",
+          "updated_at": "timestamptz not null default now() (ustawiane przez funkcję, bez wyzwalacza)",
+          "ostatni_krok": "text not null default 'kontakt' check in (kontakt,dane,zakres,zdrowie,zgody)",
+          "ukonczony_at": "timestamptz",
+          "client_id": "uuid -> ud_clients(id) on delete set null",
+          "zgoda_kontakt": "boolean not null default false",
+          "zgoda_wersja": "text",
+          "zgoda_tresc": "text",
+          "zgoda_at": "timestamptz",
+          "zgoda_wycofana_at": "timestamptz",
+          "imie": "text ≤100",
+          "email": "text ≤150",
+          "phone": "text ≤30",
+          "przypomnienie_wyslane_at": "timestamptz",
+          "obsluzony_at": "timestamptz",
+          "ip_hash": "text"
+        },
+        "ograniczenia": {
+          "szkic_kontakt_tylko_za_zgoda": "zgoda_kontakt or (imie, email, phone is null)",
+          "szkic_zgoda_udokumentowana": "not zgoda_kontakt or (zgoda_wersja, zgoda_tresc, zgoda_at not null)",
+          "szkic_ukonczony_to_ostatni_krok": "ukonczony_at is null or ostatni_krok='zgody'"
+        },
+        "dostep": "RLS bez polityk; revoke all od anon/authenticated; tylko service_role",
+        "dodatkowe": [
+          "ud_lejek_wniosku_archiwum (tydzien, ostatni_krok, szkicow)",
+          "widok ud_lejek_wniosku (security_invoker)"
+        ]
+      },
+      "ip_hash": {
+        "algorytm": "HMAC-SHA256(klucz=SZKIC_HMAC_SECRET, 'ip:'+CF-Connecting-IP), hex, pierwsze 32 znaki",
+        "sol": "brak osobnej; wspólny sekret z podpisem, rozdzielenie przedrostkiem",
+        "cel": "limit 10 szkiców/h",
+        "retencja": "zerowany po 1 dniu od created_at",
+        "zrodlo": "ud/supabase/functions/_shared/szkic-podpis.ts:36-40"
+      },
+      "podpis_sig": {
+        "algorytm": "hex(HMAC-SHA256(klucz=SZKIC_HMAC_SECRET, 'wycofaj:'+id)) — 64 znaki",
+        "weryfikacja": "dekodowanie hex (32 bajty) + crypto.subtle.verify (stały czas)",
+        "wygasanie": "brak (mimo komunikatu o 'wygasłym' linku)",
+        "klucz": "sekret funkcji — wartość w konfiguracji, nie w dokumencie",
+        "zrodlo": "ud/supabase/functions/_shared/szkic-podpis.ts:24-34"
+      },
+      "retencja": {
+        "funkcja": "ud_wnioski_szkice_retencja()",
+        "cron": "wnioski-szkice-retencja '20 2 * * *' (UTC)",
+        "ip_hash": "null po 1 dniu",
+        "szkic": "usuwany po 30 dniach od updated_at, liczby do ud_lejek_wniosku_archiwum",
+        "kontakt": "czyszczony od razu przy ukoncz"
+      }
+    },
+    "wniosek_przypomnienie": {
+      "plik": "ud/supabase/functions/wniosek-przypomnienie/index.ts",
+      "cron": "wnioski-przypomnienia '10 * * * *' (UTC) -> ud_wnioski_przypomnienia() -> net.http_post z x-cron-token z Vaulta; włączone od 2026-10-01 (ud/CLAUDE.md:1234-1250)",
+      "bramka": "tylko POST; x-cron-token sprawdzany edge_cron_token_matches przed odczytem (401 bez/zły)",
+      "kandydaci": {
+        "funkcja": "ud_wnioski_do_przypomnienia('3 hours', 50)",
+        "warunki": [
+          "zgoda_kontakt",
+          "ukonczony_at is null",
+          "obsluzony_at is null",
+          "przypomnienie_wyslane_at is null",
+          "email is not null",
+          "updated_at < now() - 3 h",
+          "created_at > now() - 7 dni",
+          "brak przypomnienia na ten adres w 30 dni",
+          "distinct po lower(email)",
+          "max 50"
+        ],
+        "bezpiecznik": "zamyka szkice, których e-mail jest już w ud_clients po dacie szkicu"
+      },
+      "wysylka": "zajęcie szkicu warunkowym UPDATE przed wysyłką; Resend (RESEND_API_KEY lub RESEND2_API_KEY); porażka -> zwolnienie, ud_errors, przerwanie (502)",
+      "nadawca": "UtrataDochodu <info@utratadochodu.pl>",
+      "naglowki": {
+        "List-Unsubscribe": "<{SUPABASE_URL}/functions/v1/wniosek-szkic?akcja=wycofaj&id=…&sig=…>, <mailto:{reply-to}?subject=Wycofanie%20zgody>",
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click"
+      },
+      "link_wycofania": "https://utratadochodu.pl/wycofaj-zgode/#id=<id>&sig=<sig>",
+      "temat": "Pomożemy dokończyć wniosek o ubezpieczenie utraty dochodu",
+      "tresc_tekst": [
+        "Dzień dobry,",
+        "",
+        "wniosek o ubezpieczenie utraty dochodu na UtrataDochodu.pl nie został dokończony. Jeśli coś się po drodze zacięło — wątpliwość, pytanie o zakres ochrony, brakująca informacja — chętnie pomożemy.",
+        "",
+        "Zadzwoń: 504 400 901 — przejdziemy przez wniosek razem. Możesz też odpowiedzieć na tę wiadomość.",
+        "",
+        "Jeśli wolisz wrócić do wniosku sam(a): https://utratadochodu.pl/wniosek/?utm_source=przypomnienie&utm_medium=email&utm_campaign=niedokonczony-wniosek",
+        "Wniosek wypełnia się od nowa — zajmuje około pięciu minut.",
+        "",
+        "—",
+        "Dostajesz tę wiadomość, ponieważ na UtrataDochodu.pl udzielono zgody na kontakt w sprawie wniosku z tego adresu e-mail. Piszemy jednorazowo i nie częściej niż raz na 30 dni.",
+        "Wycofaj zgodę jednym kliknięciem: {link wycofania}",
+        "",
+        "Aura Expert spółka z ograniczoną odpowiedzialnością z siedzibą w Warszawie przy ul. Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, kapitał zakładowy 5.000 zł. Spółka wpisana jest do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A. ul. Bolkowska 2A/28, 01-466 Warszawa | REGON 363673048 | NIP 5242793544"
+      ],
+      "html_dodatkowo": {
+        "przycisk": "Wróć do wniosku",
+        "link_wycofania": "Wycofaj zgodę jednym kliknięciem."
+      },
+      "czego_nie_ma": [
+        "imienia z formularza",
+        "informacji, na którym kroku przerwano"
+      ],
+      "sms": "brak SMS dla szkiców; lista 'Niedokończone' w panelu do ręcznego kontaktu",
+      "sms_ofert_panel": {
+        "po_wysylce_oferty": "UtrataDochodu: Wlasnie wyslalismy do Ciebie oferte. Sprawdz maila (takze folder Spam). Pytania: 504 400 901",
+        "przypomnienie_oferty": "UtrataDochodu: Kilka dni temu wyslalismy Ci oferte ubezpieczenia na e-mail. Masz pytania? Chetnie pomozemy: 504 400 901",
+        "zrodlo": "ud/apps/panel/src/lib/server/smsOferta.js:23-24, 55-56",
+        "harmonogram_przypomnienia": "cron oferty-przypomnienia-sms '25 * * * *', 3–30 dni po wysyłce, dni robocze 9:00–18:59, 1 SMS na numer na 7 dni"
+      }
+    },
+    "emaile_po_wniosku": {
+      "form_submit_wysyla": false,
+      "klient": {
+        "mechanizm": "Database Webhook 'send-confirmation-email-full' (INSERT ud_clients; definicja tylko w panelu Supabase) -> funkcja send-confirmation-email",
+        "plik": "ud/supabase/functions/send-confirmation-email/index.ts:163-239",
+        "nadawca": "UtrataDochodu.pl <noreply@utratadochodu.com>",
+        "reply_to": "[e-mail biura Aura Expert]",
+        "temat": "UtrataDochodu.pl - Twoje prywatne L4",
+        "tytul_html": "Wniosek przyjęty",
+        "naglowek": [
+          "utratadochodu.pl",
+          "Aura Expert Sp. z o.o."
+        ],
+        "tresc": [
+          "Cześć {pierwszy wyraz full_name},",
+          "Twój kompletny wniosek ubezpieczeniowy dotarł. Przekazaliśmy go do weryfikacji przez naszych partnerów — CEU sp. z o.o. i Leadenhall Insurance SA.",
+          "1 Weryfikacja wniosku: 1–2 dni robocze",
+          "2 Oferta na Twój email z porównaniem obu produktów",
+          "3 Jeśli będziemy potrzebować uzupełnienia — skontaktujemy się telefonicznie",
+          "Masz pytania?",
+          "Napisz: [e-mail biura Aura Expert] | Zadzwoń: +48 504 400 901"
+        ],
+        "stopka": [
+          "Aura Expert Sp. z o.o. · agent ubezpieczeniowy wpisany do rejestru KNF",
+          "Ubezpieczyciele: CEU sp. z o.o. oraz Leadenhall Insurance SA",
+          "utratadochodu.pl"
+        ],
+        "zalaczniki": null,
+        "uwagi": [
+          "imię wstawiane bez escapowania HTML",
+          "termin 1–2 dni robocze vs '24 godzin roboczych' na /podziekowanie/",
+          "marka UD — wiersz z portalu w ud_clients wywoła ten sam e-mail"
+        ]
+      },
+      "doradca_sms": {
+        "kanal": "SMSAPI, numer z ADVISOR_PHONE (domyślnie infolinia), ASCII",
+        "tresc": "UtrataDochodu: nowy wniosek. {full_name}, tel {phone}, {email}, zawod: {profession}",
+        "plik": "ud/supabase/functions/send-confirmation-email/index.ts:292-297"
+      },
+      "raport_biuro": {
+        "funkcja": "send-digest-email",
+        "cron": "digest-email-2h (przez ud_send_digest_email() z x-cron-token)",
+        "odbiorca": "skrzynka biura (adres w kodzie, nie w dokumencie)",
+        "temat": "[{N} zgłoszeń] Raport UtrataDochodu.pl — {data}",
+        "zawartosc": "tabela imię/telefon/e-mail/zawód/godzina z ostatnich 2 h, przycisk 'Otwórz bazę danych →'"
+      },
+      "opiekun_agent": "brak e-maila; lead w panelu po synchronizacji",
+      "apps_portal_public_email": "tylko obrazki newslettera i logo (ud/CLAUDE.md:2047-2062), brak szablonów transakcyjnych"
+    }
+  },
+  "dokumenty": {
+    "zrodlo": "ud/apps/portal/src/dane/dokumenty.json (pobrano 2026-09-24 z ud_owu_library active=true)",
+    "lista_dla_klienta": "https://utratadochodu.pl/dokumenty/",
+    "kubelek": "ud-owu (prywatny, Supabase Storage); pliki PDF nie są w repozytorium",
+    "adres_publiczny": "https://utratadochodu.pl/owu/<slug>.pdf (strumieniowany przez ud/apps/portal/functions/owu/[plik].js)",
+    "stary_adres": "/pobierz/<id> -> 301 /owu/<slug>.pdf",
+    "logika_zawsze_obowiazujace": [
+      "slug z tytułu, nie z symbolu — adres przeżywa nową wersję (ud/apps/portal/src/lib/owu.ts:14-45)",
+      "dwie aktywne wersje tego samego tytułu wywalają build (ud/apps/portal/src/pages/owu-adresy.json.ts:60-75)",
+      "active sprawdzane na żywo w ud_owu_library (active=is.true), cache public max-age=300 s-maxage=600",
+      "oferty w panelu trzymają wskaźnik na konkretny plik; wersje wycofuje się przełącznikiem active, nie usuwaniem (ud/CLAUDE.md:1484-1525)",
+      "dopasowanie po bazie symbolu (np. LW044) z filtrem bezInnychWersji — test ud/apps/panel/scripts/test-owu.mjs:28-82",
+      "OWU i karta produktu tej samej wersji mają identyczny symbol"
+    ],
+    "pozycje": [
+      {
+        "ubezpieczyciel": "ceu",
+        "rodzaj": "ipid",
+        "tytul": "Karta produktu — CEU LOI Premium",
+        "symbol": "Karta Produktu - OWU LOI PREMIUM 2026 _v_1_2 CEU",
+        "plik": "Karta Produktu LOI PREMIUM 2026.pdf",
+        "bajty": 291908,
+        "url": "https://utratadochodu.pl/owu/karta-produktu-ceu-loi-premium.pdf"
+      },
+      {
+        "ubezpieczyciel": "ceu",
+        "rodzaj": "ipid",
+        "tytul": "Karta produktu — CEU Utrata Dochodu",
+        "symbol": "Karta Produktu - Utrata Dochodu 2026 _v_9_8 CEU",
+        "plik": "Karta Produktu Utrata dochodu 2026.pdf",
+        "bajty": 300155,
+        "url": "https://utratadochodu.pl/owu/karta-produktu-ceu-utrata-dochodu.pdf"
+      },
+      {
+        "ubezpieczyciel": "ceu",
+        "rodzaj": "ipid",
+        "tytul": "Karta produktu — CEU Utrata Dochodu dla zatrudniających",
+        "symbol": "Karta Produktu - Utrata Dochodu dla zatrudniających 2026 _v_2_6",
+        "plik": "Karta Produktu Utrata dochodu dla zatrudniajacych 2026.pdf",
+        "bajty": 302999,
+        "url": "https://utratadochodu.pl/owu/karta-produktu-ceu-utrata-dochodu-dla-zatrudniajacych.pdf"
+      },
+      {
+        "ubezpieczyciel": "leadenhall",
+        "rodzaj": "ipid",
+        "tytul": "Karta produktu — Leadenhall Utrata Dochodu",
+        "symbol": "LW044/AD_D_TTD_PTD/PL/5",
+        "plik": "Karta_Produktu_LW_044_AD_D_TTD_PTD_PL_5.pdf",
+        "bajty": 238564,
+        "url": "https://utratadochodu.pl/owu/karta-produktu-leadenhall-utrata-dochodu.pdf"
+      },
+      {
+        "ubezpieczyciel": "leadenhall",
+        "rodzaj": "owu",
+        "tytul": "Leadenhall Utrata Dochodu",
+        "symbol": "LW044/AD_D_TTD_PTD/PL/5",
+        "plik": "LW_044_AD_D_TTD_PTD_PL_5.pdf",
+        "bajty": 332657,
+        "url": "https://utratadochodu.pl/owu/leadenhall-utrata-dochodu.pdf"
+      },
+      {
+        "ubezpieczyciel": "leadenhall",
+        "rodzaj": "owu",
+        "tytul": "Leadenhall MEDICA",
+        "symbol": "LW046/MEDICA/PL/4",
+        "plik": "LW_046_MEDICA_PL_4.pdf",
+        "bajty": 275430,
+        "url": "https://utratadochodu.pl/owu/leadenhall-medica.pdf"
+      },
+      {
+        "ubezpieczyciel": "leadenhall",
+        "rodzaj": "ipid",
+        "tytul": "Karta produktu — Leadenhall MEDICA",
+        "symbol": "LW046/MEDICA/PL/4",
+        "plik": "Karta_produktu_LH_Medica_LW_046_v4.pdf",
+        "bajty": 326879,
+        "url": "https://utratadochodu.pl/owu/karta-produktu-leadenhall-medica.pdf"
+      },
+      {
+        "ubezpieczyciel": "leadenhall",
+        "rodzaj": "owu",
+        "tytul": "Leadenhall MEDICARE",
+        "symbol": "LW047/MEDICARE/PL/4",
+        "plik": "LW_047_MEDICARE_PL_4.pdf",
+        "bajty": 272698,
+        "url": "https://utratadochodu.pl/owu/leadenhall-medicare.pdf"
+      },
+      {
+        "ubezpieczyciel": "leadenhall",
+        "rodzaj": "ipid",
+        "tytul": "Karta produktu — Leadenhall MEDICARE",
+        "symbol": "LW047/MEDICARE/PL/4",
+        "plik": "Karta_produktu_LH_Medicare_LW_047_v4.pdf",
+        "bajty": 327318,
+        "url": "https://utratadochodu.pl/owu/karta-produktu-leadenhall-medicare.pdf"
+      },
+      {
+        "ubezpieczyciel": "leadenhall",
+        "rodzaj": "warunki-szczegolne",
+        "tytul": "Leadenhall MEDICA — warunki szczególne HIV/WZW",
+        "symbol": "LW048/NS_MEDICA/PL/2",
+        "plik": "LW_048_NS_MEDICA_PL_2.pdf",
+        "bajty": 196271,
+        "url": "https://utratadochodu.pl/owu/leadenhall-medica-warunki-szczegolne-hiv-wzw.pdf"
+      },
+      {
+        "ubezpieczyciel": "leadenhall",
+        "rodzaj": "warunki-szczegolne",
+        "tytul": "Leadenhall MEDICARE — warunki szczególne HIV/WZW",
+        "symbol": "LW049/NS_MEDICARE/PL/2",
+        "plik": "LW_049_NS_MEDICARE_PL_2.pdf",
+        "bajty": 196903,
+        "url": "https://utratadochodu.pl/owu/leadenhall-medicare-warunki-szczegolne-hiv-wzw.pdf"
+      },
+      {
+        "ubezpieczyciel": "ceu",
+        "rodzaj": "owu",
+        "tytul": "CEU LOI Premium",
+        "symbol": "OWU LOI PREMIUM 2026 _v_1_2",
+        "plik": "OWU LOI PREMIUM 2026_v_1_2.pdf",
+        "bajty": 662533,
+        "url": "https://utratadochodu.pl/owu/ceu-loi-premium.pdf"
+      },
+      {
+        "ubezpieczyciel": "ceu",
+        "rodzaj": "owu",
+        "tytul": "CEU Utrata Dochodu",
+        "symbol": "OWU Utrata Dochodu 2026 _v_9_8",
+        "plik": "OWU Utrata Dochodu 2026 _v_9_8.pdf",
+        "bajty": 829972,
+        "url": "https://utratadochodu.pl/owu/ceu-utrata-dochodu.pdf"
+      },
+      {
+        "ubezpieczyciel": "ceu",
+        "rodzaj": "owu",
+        "tytul": "CEU Utrata Dochodu dla zatrudniających",
+        "symbol": "OWU Utrata Dochodu dla zatrudniających 2026 _v_2_6",
+        "plik": "OWU Utrata dochodu dla zatrudniających 2026_v_2_6.pdf",
+        "bajty": 696350,
+        "url": "https://utratadochodu.pl/owu/ceu-utrata-dochodu-dla-zatrudniajacych.pdf"
+      }
+    ]
+  },
+  "leady_panel": {
+    "lead": "klient z ud_clients (wniosek albo klient z panelu); szkice nie są leadami (constraint lead_tylko_klient)",
+    "powstawanie": "ud_leady_synchronizuj() przy otwarciu tablicy; brak wyzwalacza na ud_clients (ud/CLAUDE.md:1893-1900; migracja 20261004200000_leady_kanban_5_prowizja_polisy.sql:431)",
+    "etapy": [
+      "Nowy",
+      "Oferta",
+      "Decyzja klienta",
+      "Wygrany (wymaga składki rocznej)",
+      "Przegrany (wymaga powodu)"
+    ],
+    "etap_wylaczony": "Kontakt (od 2026-10-02)",
+    "etap_startowy_z_ofert": {
+      "bought": "Wygrany",
+      "chosen": "Decyzja klienta",
+      "sent|viewed": "Oferta",
+      "rejected": "Przegrany",
+      "draft|brak": "Nowy"
+    },
+    "statusy_oferty": [
+      "draft",
+      "sent",
+      "viewed",
+      "chosen",
+      "bought",
+      "rejected"
+    ],
+    "opiekun": "referred_by -> ud_user_profiles.affiliate_code = affiliate_code_used (aktywny) -> autor oferty; inaczej bez opiekuna",
+    "link_agenta": "https://utratadochodu.pl/wniosek/?agent=<kod>",
+    "prowizja": "składka roczna × ud_user_profiles.prowizja_procent (migawka w ud_leady.prowizja_procent); opłata dystrybucyjna nie jest prowizją",
+    "dostep": "RLS bez polityk, service_role; agent widzi tylko swoje leady",
+    "crm_clients": "ud nie zapisuje wniosków do crm_clients; te zasila tylko sync-beauty-companies"
+  },
+  "braki_U_po_analizie_repo": [
+    {
+      "kod": "U1",
+      "status": "zamknięty",
+      "zostaje": "pełne DDL ud_clients poza repo; stan GetResponse na produkcji; Turnstile/source/wyzwalacz przy integracji"
+    },
+    {
+      "kod": "U2",
+      "status": "zamknięty",
+      "zostaje": "klucz HMAC — własny lub uzgodniony"
+    },
+    {
+      "kod": "U3",
+      "status": "zamknięty",
+      "zostaje": "brak SMS dla szkiców (decyzja portalu)"
+    },
+    {
+      "kod": "U4",
+      "status": "zamknięty",
+      "zostaje": "definicja wyzwalacza tylko w panelu Supabase; e-mail z marką UD przy zapisie do ud_clients"
+    },
+    {
+      "kod": "U5",
+      "status": "częściowo",
+      "zostaje": "zgoda art. 9 nadal brak, a klauzula twierdzi, że jest; zgoda marketingowa; własne teksty portalu"
+    },
+    {
+      "kod": "U6",
+      "status": "otwarty",
+      "zostaje": "okresy referencyjne i akceptacja underwritera"
+    },
+    {
+      "kod": "U7",
+      "status": "częściowo",
+      "zostaje": "decyzja o symulacji po wniosku; proces kalibracji opisany (ud/CLAUDE.md:872-922)"
+    },
+    {
+      "kod": "U8",
+      "status": "otwarty",
+      "zostaje": "decyzja o polach dochodu i okresu wypłaty"
+    },
+    {
+      "kod": "U9",
+      "status": "otwarty",
+      "zostaje": "/kup-online nie ma w repo (12.10.2026)"
+    },
+    {
+      "kod": "U10",
+      "status": "częściowo",
+      "zostaje": "decyzja, czyje tagi w portalu"
+    }
+  ]
 }
