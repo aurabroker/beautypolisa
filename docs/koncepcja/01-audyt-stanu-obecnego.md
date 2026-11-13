@@ -22,7 +22,7 @@ Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeń
 ## 2. Marka i podmioty
 
 - Marka: **BeautyPolisa** („BeautyPolisa created by Aura Expert”).
-- Partner branżowy: **Beauty Razem** (od 2024 Fundacja Beauty Razem, założyciel Michał Łenczyński) – logo na ankiecie ERGO Hestii (`AnkietaBPEH.pdf`). Członkostwo w Fundacji Beauty Razem nie jest wymagane do OC dla branży beauty (ustalenie zleceniodawcy 12–13.11.2026; 00, D39).
+- Partner branżowy: **Beauty Razem** (od 2024 Fundacja Beauty Razem) – logo na ankiecie ERGO Hestii (`AnkietaBPEH.pdf`). Członkostwo w Fundacji Beauty Razem nie jest wymagane do OC dla branży beauty (ustalenie zleceniodawcy 12–13.11.2026; 00, D39).
 - Administrator danych dla abonamentów medycznych: Aura Expert sp. z o.o. (iod@auraexpert.pl).
 - **Decyzja zleceniodawcy 12.11.2026 – jeden podmiot:** Aura Expert sp. z o.o., ul. Bolkowska 2A/28, 01-466 Warszawa, KRS 0000599840, NIP 5242793544, REGON 363673048 (dane podane przez zleceniodawcę). Aura Expert jest operatorem portalu, administratorem danych portalu i Strefy Klienta, podmiotem wskazywanym w zgodach marketingowych i dystrybutorem ubezpieczeń w informacjach IDD.
 - **Fakty potwierdzone przez zleceniodawcę 12.11.2026 – status i pełne dane:**
@@ -102,6 +102,7 @@ Wymagania niefunkcjonalne wg zlecenia, w kolejności priorytetów: **bezpieczeń
 - Agent nie ma akcji ani udziałów żadnego zakładu ubezpieczeń dających co najmniej 10% głosów; żaden zakład nie ma takich udziałów w agencie.
 - Reklamacje na działalność agenta w zakresie niezwiązanym z udzielaną ochroną: pisemnie – osobiście albo pocztą na ul. Bolkowska 2A/28, 01-466 Warszawa; ustnie – telefonicznie pod +48 504 400 901 albo osobiście do protokołu; e-mailem – reklamacje@auraexpert.pl. Poza reklamacjami – skargi. Pozasądowe rozwiązywanie sporów – Rzecznik Finansowy (www.rf.gov.pl); udział agenta jest obowiązkowy.
 - Kontakt agenta: zarzad@auraexpert.pl, +48 504 400 901. IOD bez zmian: iod@auraexpert.pl.
+- Nazwy zakładów: ujawnienie podaje pełne formy prawne, a treści produktowe i schematy – skrócone; to te same podmioty. „Lloyd's Insurance Company SA/NV” = „Lloyd’s Insurance Company S.A.” (ubezpieczyciel utraty dochodu; Leadenhall Insurance S.A. jest coverholderem Lloyd’s, a nie zakładem ubezpieczeń – 00, D33). „Colonnade Insurance Société Anonyme Oddział w Polsce” = „Colonnade Insurance S.A. Oddział w Polsce” (Tax Protect, NNW dzieci – 00, D35). Przy liście zakładów (nota agenta) używamy form z ujawnienia, przy produktach – skróconych.
 - Ta strona podaje „XIII Wydział Gospodarczy KRS” – to błąd po jej stronie; prawidłowa jest formuła z „XII Wydział” (pkt 2; 00, D38).
 
 ## 4. Repozytorium `aurabroker/beautypolisa` – stan
@@ -155,7 +156,7 @@ Ustalenia z przeglądu kodu (szczegóły w `03-code-review-obecnego-kodu.md`):
 
 ## 8. Założenia przyjęte w koncepcji (do potwierdzenia przez zleceniodawcę)
 
-1. Portal jest **informacyjno-leadowy**, nie sprzedaje polis w koszyku (brak płatności, brak zawierania umów na stronie); sprzedaż domyka zespół Aura Expert, a tam, gdzie istnieje zakup online u ubezpieczyciela (NNW dzieci – Colonnade, utrata dochodu – Leadenhall), portal go wskazuje (00, D35, D40).
+1. Portal jest **informacyjno-leadowy**, nie sprzedaje polis w koszyku (brak płatności, brak zawierania umów na stronie); sprzedaż domyka zespół Aura Expert, a tam, gdzie istnieje zakup online (NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A., coverholdera Lloyd’s), portal go wskazuje (00, D33, D35, D40).
 2. Jeden język (PL), jeden rynek (PL); domena kanoniczna `https://beautypolisa.eu` (bez `www`).
 3. Istniejące subdomeny (`tax.`, `app.`, `crm.`, `portal.`, `ergo.`, `konsultacja.`) pozostają; portal na apexie linkuje do nich i docelowo przejmuje treści `tax.`.
 4. Dane portalu trafiają do **oddzielnego projektu Supabase** (lub dedykowanego schematu w projekcie „BEAUTY”), nigdy do współdzielonego „aurabroker”.

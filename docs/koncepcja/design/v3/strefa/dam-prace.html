@@ -44,6 +44,8 @@ html[data-ctx="public"] .app{grid-template-columns:minmax(0,1fr)}
 html:not(.js) .pub-header{position:relative}
 /* bez JS widać menu wszystkich trzech kont w pasku strefy – zawijają się zamiast poszerzać stronę */
 html:not(.js) .topbar-inner{flex-wrap:wrap;justify-content:flex-end}
+/* …a rozwinięty panel konta przypina się do prawej krawędzi paska, nie przycisku – nie wychodzi poza lewą krawędź ekranu */
+@media (max-width:767px){html:not(.js) .topbar-inner{position:relative}html:not(.js) .topbar-inner > .account{position:static}}
 html:not(.js) .pub-bar.glass{background:rgba(247,243,236,.95);-webkit-backdrop-filter:none;backdrop-filter:none}
 span.nowrap.nowrap{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.8125rem;overflow-wrap:anywhere;color:var(--color-ink)}
@@ -70,7 +72,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 .pub-menu-panel .btn{margin-top:18px}
 @media (max-width:1099px){.pub-nav,.pub-client,.pub-cta{display:none}.pub-menu{display:block}}
 @media (max-width:767px){.pub-header{padding-top:8px}.pub-bar{padding:8px 8px 8px 16px;min-height:60px}.pub-bar.glass{background:rgba(247,243,236,.94);-webkit-backdrop-filter:none;backdrop-filter:none}}
-@media (max-width:359px){.pub-brand small{letter-spacing:.06em}}
+@media (max-width:359px){.pub-brand small{letter-spacing:.06em}.pub-bar{gap:10px}.pub-menu > summary{padding:0 10px;gap:8px;letter-spacing:.08em}}
 
 /* ---------- nagłówek listy: jak działa tablica, wezwania do działania ---------- */
 .howto{counter-reset:h;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 28px;list-style:none;margin:4px 0 0;padding:18px 0 0;border-top:1px solid var(--bp-line-gold-soft)}
@@ -1880,7 +1882,7 @@ fieldset.group > legend{padding:0;margin-bottom:4px;font:600 var(--text-serif-sm
         <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie S.A.</li><li>Lloyd’s Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA S.A.</li><li>Colonnade Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
         <p><strong>Wynagrodzenie.</strong> Agent otrzymuje od zakładu ubezpieczeń prowizję, która jest uwzględniona w&nbsp;składce. Może też otrzymywać od zakładu ubezpieczeń inny rodzaj wynagrodzenia.</p>
         <p><strong>Powiązania kapitałowe.</strong> Agent nie ma akcji ani udziałów zakładu ubezpieczeń dających co najmniej 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie ma udziałów agenta dających co najmniej 10% głosów na zgromadzeniu wspólników.</p>
-        <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
+        <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
         <p><strong>Kontakt z&nbsp;agentem:</strong> <a href="mailto:zarzad@auraexpert.pl">zarzad@auraexpert.pl</a>, <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>. Wpis agenta (numer 11229690/A) sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>.</p>
       </div>
     </details>

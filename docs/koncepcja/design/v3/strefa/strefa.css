@@ -537,6 +537,11 @@ html.drawer-lock,html:has(.drawer:target){overflow:hidden}
 .choice-grid .shortcut small{font-size:var(--text-xs);line-height:1.55;color:var(--color-taupe)}
 /* długie statusy w wierszach klucz–wartość łamią się zamiast poszerzać stronę */
 .kv dd .badge{white-space:normal}
+/* wąskie ekrany (320 px): znaczki w karcie logowania i w nagłówku strony łamią się zamiast poszerzać stronę */
+.auth{grid-template-columns:minmax(0,1fr)}
+.auth > *,.auth-screens > *{min-width:0;max-width:100%}
+.auth-who .badge,.page-head-row .badge{white-space:normal;max-width:100%}
+.page-head-row .badges{min-width:0;max-width:100%}
 /* klauzula informacyjna rozwijana pod formularzem rejestracji */
 .disclose-lite > summary{list-style:none;cursor:pointer}
 .disclose-lite > summary::-webkit-details-marker{display:none}

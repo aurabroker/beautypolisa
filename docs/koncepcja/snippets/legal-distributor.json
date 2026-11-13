@@ -59,6 +59,7 @@
     "Colonnade Insurance Société Anonyme Oddział w Polsce"
   ],
   "insurersConfirmed": true,
+  "insurersNameNote": "Pełne formy prawne wg ujawnienia agenta; w treściach produktowych i schematach te same podmioty mają formę skróconą: „Lloyd's Insurance Company SA/NV” = „Lloyd’s Insurance Company S.A.” (ubezpieczyciel utraty dochodu; Leadenhall Insurance S.A. i CEU sp. z o.o. to coverholderzy Lloyd’s, nie zakłady ubezpieczeń – 00, D33); „Colonnade Insurance Société Anonyme Oddział w Polsce” = „Colonnade Insurance S.A. Oddział w Polsce” (Tax Protect, NNW dzieci – 00, D35). W nocie agenta (lista zakładów) – formy z tej listy; przy produktach – skrócone. 01 §3.6.",
   "insurersStatus": "potwierdzone 13.11.2026 (00, D37) – lista 10 zakładów ubezpieczeń, na rzecz których działa agent, wg ujawnienia Aura Expert (source.url); agent działa na rzecz wielu zakładów (actsFor: many)",
   "complaintsProcedure": {
     "$comment": "Wg ujawnienia Aura Expert (00, D37). Dotyczy reklamacji na działalność agenta w zakresie niezwiązanym z udzielaną ochroną ubezpieczeniową. Termin odpowiedzi nie jest podany w ujawnieniu – do potwierdzenia (responseTimeDays). Jak klient składa reklamację dotyczącą samej ochrony ubezpieczeniowej (do zakładu ubezpieczeń) – brzmienie do potwierdzenia z prawnikiem.",

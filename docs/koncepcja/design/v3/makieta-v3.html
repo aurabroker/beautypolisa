@@ -89,7 +89,7 @@
    "@id": "https://beautypolisa.eu/#agency",
    "name": "BeautyPolisa",
    "alternateName": "BeautyPolisa created by Aura Expert",
-   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty, który nie sprzedaje polis w koszyku: przy OC doradca wysyła osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu, NNW dla dzieci kupisz online na platformie Colonnade, utratę dochodu – wnioskiem na utratadochodu.pl lub online u Leadenhall, a pozostałe ubezpieczenia – przez doradcę Aura Expert.",
+   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
    "url": "https://beautypolisa.eu/",
    "logo": {
     "@type": "ImageObject",
@@ -693,12 +693,15 @@ html:has(.klauzula[open]){overflow:hidden}
 .promo-price dt{font-size:var(--text-sm);color:var(--color-parchment)}
 .promo-price dd{margin:0;font:600 1.6rem/1.1 var(--font-serif);color:var(--color-gold-light);white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
 .promo-price dd span{font:400 var(--text-xs)/1 var(--font-sans);letter-spacing:.06em;color:var(--color-parchment)}
+/* najwęższe ekrany: kwota i „netto” mieszczą się w kolumnie (bez dotykania ozdobnej ramki) */
+@media (max-width:379px){.promo-price div{flex-wrap:wrap;gap:2px 12px}.promo-price dd{font-size:1.4rem}}
 .promo-foot{display:grid;gap:16px;padding-top:22px;border-top:1px solid var(--bp-line-gold-on-dark)}
 .promo-foot p{font-size:var(--text-sm);color:var(--color-parchment);max-width:58rem}
 .promo-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px}
 .promo .eyebrow{color:var(--color-gold-light)}
 .promo .link-lux{line-height:1.5}
 .promo .mock-note{color:var(--color-gold-light);border-color:rgba(217,192,137,.6);white-space:normal}
+#strefa-klienta .lead .mock-note{margin-left:0;white-space:normal}
 @media (max-width:1023px){.promo-grid{grid-template-columns:minmax(0,1fr)}.promo-grid > li,.promo-grid > li:first-child{padding:20px 0 4px;border-left:0;border-top:1px solid var(--bp-line-gold-on-dark-soft)}}
 
 /* ---------- VII · szkoda i pytania: pasek zgłoszenia, siatka 4/7, jedna tafla ---------- */
@@ -1084,6 +1087,8 @@ html:has(.klauzula[open]){overflow:hidden}
           <div><dt>Taryfa programu</dt><dd>stała</dd></div>
         </dl>
       </div>
+      <!-- Lista partnerów i zgody na użycie nazw/logotypów – do potwierdzenia (00, rozdz. 13). Lista pomija Lloyd’s Insurance Company S.A.
+           (ubezpieczyciel utraty dochodu; w informacji o agencie: Lloyd’s Insurance Company SA/NV) – czy dodać, decyduje zleceniodawca. -->
       <div class="partners glass glass--tint">
         <p>Ubezpieczyciele i&nbsp;partnerzy</p>
         <ul><li>ERGO Hestia</li><li>Colonnade</li><li>ENEL-MED</li><li>LUX MED</li><li>Fundacja Beauty Razem</li></ul>
@@ -1138,9 +1143,9 @@ html:has(.klauzula[open]){overflow:hidden}
       </div>
       <div class="ledger ledger--light glass glass--strong">
         <article class="product rv-rise" id="oc-beauty"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="tag">ERGO Hestia</span></div><h3>OC dla branży beauty</h3><p>Odpowiedzialność cywilna za szkody wyrządzone klientom podczas zabiegów – w&nbsp;programie z&nbsp;ERGO Hestią. Składka zależy od grupy ryzyka i&nbsp;sumy gwarancyjnej, a&nbsp;zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p><div class="product-actions"><a class="link-lux" href="#kalkulator" data-calc="oc">Oblicz składkę<span class="sr-only"> OC</span></a><a class="link-quiet" href="oc-beauty.html">Poznaj ubezpieczenie<span class="sr-only">: OC dla branży beauty</span></a></div></article>
-        <article class="product rv-rise" id="tax-protect"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="tag">Colonnade</span></div><h3>Tax Protect</h3><p>Ochrona karnoskarbowa dla właściciela i&nbsp;ochrona podatkowa dla salonu – jeden pełny spór podatkowy w&nbsp;roku, zgodnie z&nbsp;OWU. Stała taryfa: od 1&nbsp;532&nbsp;zł rocznie, zależnie od przychodów i&nbsp;sumy gwarancyjnej.</p><div class="product-actions"><a class="link-lux" href="#kalkulator-tax">Oblicz składkę<span class="sr-only"> Tax Protect</span></a><a class="link-quiet" href="tax-protect.html">Poznaj ubezpieczenie<span class="sr-only">: Tax Protect</span></a></div></article>
+        <article class="product rv-rise" id="tax-protect"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="tag">Colonnade</span></div><h3>Tax Protect</h3><p>Ochrona karnoskarbowa dla właściciela i&nbsp;ochrona podatkowa dla salonu – jeden pełny spór podatkowy w&nbsp;roku, zgodnie z&nbsp;OWU. Stała taryfa: od 1&nbsp;532&nbsp;zł rocznie, zależnie od przychodów i&nbsp;sumy ubezpieczenia.</p><div class="product-actions"><a class="link-lux" href="#kalkulator-tax">Oblicz składkę<span class="sr-only"> Tax Protect</span></a><a class="link-quiet" href="tax-protect.html">Poznaj ubezpieczenie<span class="sr-only">: Tax Protect</span></a></div></article>
         <article class="product rv-rise" id="utrata-dochodu"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="tag">Oferta indywidualna</span></div><h3>Utrata dochodu</h3><p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią pracę. Składkę wylicza ubezpieczyciel po ocenie ryzyka – wniosek złożysz na utratadochodu.pl albo z&nbsp;doradcą Aura Expert.</p><div class="product-actions"><a class="link-lux" href="utrata-dochodu.html">Poznaj ubezpieczenie<span class="sr-only">: utrata dochodu</span></a><a class="link-quiet" href="#kontakt" data-produkt="utrata-dochodu">Zapytaj doradcę<span class="sr-only"> o&nbsp;ubezpieczenie utraty dochodu</span></a></div></article>
-        <article class="product rv-rise" id="nnw-dzieci"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="tag">Colonnade</span></div><h3>NNW dzieci</h3><p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków – 24&nbsp;godziny na dobę, na całym świecie. Trzy warianty, od 40&nbsp;zł rocznie za dziecko. Polisę kupujesz online na platformie Colonnade, w&nbsp;kilku krokach.</p><div class="product-actions"><a class="link-lux" href="nnw-dzieci.html">Poznaj ubezpieczenie<span class="sr-only">: NNW dzieci</span></a><a class="link-quiet" href="https://bit.ly/szkolneNNW2026" target="_blank" rel="noopener">Kup online u&nbsp;Colonnade<span class="sr-only"> – NNW dzieci, strona ubezpieczyciela otworzy się w&nbsp;nowej karcie</span></a></div></article>
+        <article class="product rv-rise" id="nnw-dzieci"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="tag">Colonnade</span></div><h3>NNW dzieci</h3><p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków – 24&nbsp;godziny na dobę, na całym świecie. Jedna składka za rok – 40, 94 albo 175&nbsp;zł za osobę. Polisę kupujesz online na platformie Colonnade, w&nbsp;kilku krokach.</p><div class="product-actions"><a class="link-lux" href="nnw-dzieci.html">Poznaj ubezpieczenie<span class="sr-only">: NNW dzieci</span></a><a class="link-quiet" href="https://bit.ly/szkolneNNW2026" target="_blank" rel="noopener">Kup online u&nbsp;Colonnade<span class="sr-only"> – NNW dzieci, strona ubezpieczyciela otworzy się w&nbsp;nowej karcie</span></a></div></article>
         <article class="product rv-rise" id="grupowe-ergo"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="tag">ERGO Hestia</span></div><h3>Grupowe ERGO dla beauty</h3><p>Ubezpieczenie na życie w&nbsp;ERGO Hestii – dwie drogi. Dla salonu z&nbsp;zespołem: ERGO Życie w&nbsp;Biznesie, od 58&nbsp;zł za osobę miesięcznie. Dla Ciebie i&nbsp;rodziny: ERGO Razem, od 57&nbsp;zł miesięcznie.</p><div class="product-actions"><a class="link-lux" href="grupowe-ergo.html">Poznaj ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a><a class="link-quiet" href="#kontakt" data-produkt="grupowe-ergo">Zapytaj doradcę<span class="sr-only"> o&nbsp;grupowe ERGO</span></a></div></article>
         <article class="product rv-rise" id="opieka-medyczna"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="tag">ENEL-MED · LUX&nbsp;MED</span></div><h3>Opieka medyczna</h3><p>Abonamenty ENEL-MED lub LUX MED dla pracowników, partnerów i&nbsp;rodzin – według cennika programu, zależnie od sieci, zakresu i&nbsp;liczby osób.</p><div class="product-actions"><a class="link-lux" href="/ubezpieczenia/opieka-medyczna">Poznaj ubezpieczenie<span class="sr-only">: opieka medyczna</span></a><a class="link-quiet" href="#kontakt" data-produkt="opieka-medyczna">Zapytaj doradcę<span class="sr-only"> o&nbsp;opiekę medyczną</span></a></div></article>
       </div>
@@ -1276,7 +1281,7 @@ html:has(.klauzula[open]){overflow:hidden}
             </div>
           </fieldset>
           <fieldset>
-            <legend>Suma gwarancyjna</legend>
+            <legend>Suma ubezpieczenia</legend>
             <div class="opt-grid opt-grid--2">
               <div class="opt opt--center"><input type="radio" id="t-s1" name="sumaTax" value="t50" checked><label for="t-s1">50&nbsp;000&nbsp;zł</label></div>
               <div class="opt opt--center"><input type="radio" id="t-s2" name="sumaTax" value="t100"><label for="t-s2">100&nbsp;000&nbsp;zł</label></div>
@@ -1293,7 +1298,7 @@ html:has(.klauzula[open]){overflow:hidden}
         </div>
         <div class="result" id="tax-wynik" data-state="price">
           <p class="label">Wariant taryfy</p>
-          <p class="tariff" id="tax-taryfa">Przychody do 250&nbsp;tys.&nbsp;zł <small>suma gwarancyjna 50&nbsp;000&nbsp;zł · 1&nbsp;spór w&nbsp;roku</small></p>
+          <p class="tariff" id="tax-taryfa">Przychody do 250&nbsp;tys.&nbsp;zł <small>suma ubezpieczenia 50&nbsp;000&nbsp;zł · 1&nbsp;spór w&nbsp;roku</small></p>
           <hr class="rule">
           <p class="label">Składka roczna</p>
           <p class="price"><strong id="tax-cena">1&nbsp;532&nbsp;zł</strong><span id="tax-cena-dop">rocznie</span></p>
@@ -1413,9 +1418,12 @@ html:has(.klauzula[open]){overflow:hidden}
          · „Doradca Aura Expert prześle Ci e-mail z osobistym linkiem do analizy potrzeb (APK) i wniosku w serwisie portal.beautypolisa.eu.”
          · „Pod linkiem wypełniasz analizę potrzeb i wniosek, a potem je podpisujesz.”
          · „Link zawsze prowadzi do portal.beautypolisa.eu, jest osobisty i ma datę ważności – nie przekazuj go innym.”
-         · „Polisę i dokumenty masz też w Strefie Klienta.”  ·  „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa”
-       Tax Protect, grupowe ERGO, opieka medyczna, NNW dzieci: „Doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek.”
+         · „Polisę i dokumenty masz też w Strefie Klienta.”  ·  „Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa” (+ „Członkostwo w Beauty Razem nie jest wymagane.”)
+       Tax Protect, opieka medyczna, NNW dzieci, grupowe ERGO: „Doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek.”
        NNW dzieci (13.11.2026): także zakup online na platformie Colonnade (https://bit.ly/szkolneNNW2026 → market.colonnade.pl).
+       Grupowe ERGO (12–13.11.2026): także wniosek dla salonu ERGO Życie w Biznesie (https://ergo.auraexpert.pl/wniosek?branza=beauty)
+         albo kalkulator ERGO Razem – grupa otwarta, indywidualnie (https://ergo.beautypolisa.eu/; po kalkulatorze agent oddzwania):
+         „Grupowe ERGO: wniosek dla salonu na ergo.auraexpert.pl albo kalkulator ERGO Razem na ergo.beautypolisa.eu.”
        Utrata dochodu: wniosek na utratadochodu.pl, zakup online u Leadenhall albo kontakt z doradcą („Doradca Aura Expert skontaktuje się z Tobą”).
        Nigdy nie publikujemy linku z kodem; formularz nie przekierowuje na /w/<kod> – kod idzie wyłącznie e-mailem na adres z CRM. -->
   <section class="scene scene--silk scene--pos-lt section dark" id="jak-to-dziala" aria-labelledby="how-title">
@@ -1429,7 +1437,7 @@ html:has(.klauzula[open]){overflow:hidden}
         <span class="how-line" aria-hidden="true"></span>
         <ol class="steps">
           <li class="step rv-rise"><span class="numeral" aria-hidden="true">1</span><h3>Policz składkę</h3><p>Wybierz ubezpieczenie: OC – grupy ryzyka, zespół i&nbsp;sumę gwarancyjną, Tax Protect – przychody i&nbsp;sumę. Składkę z&nbsp;taryfy widzisz od razu, bez logowania.</p></li>
-          <li class="step rv-rise"><span class="numeral" aria-hidden="true">2</span><h3>Zostaw kontakt</h3><p>Wynik kalkulatora dołączymy do zgłoszenia. Przy OC doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu. Przy utracie dochodu doradca Aura Expert skontaktuje się z&nbsp;Tobą. NNW dla dzieci kupisz także online na platformie Colonnade. Przy pozostałych ubezpieczeniach doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p></li>
+          <li class="step rv-rise"><span class="numeral" aria-hidden="true">2</span><h3>Zostaw kontakt</h3><p>Wynik kalkulatora dołączymy do zgłoszenia. Przy OC doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu. Przy utracie dochodu doradca Aura Expert skontaktuje się z&nbsp;Tobą. NNW dla dzieci kupisz także online na platformie Colonnade. Grupowe ERGO: wniosek dla salonu na ergo.auraexpert.pl albo kalkulator ERGO Razem na ergo.beautypolisa.eu. Przy pozostałych ubezpieczeniach doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p></li>
           <li class="step rv-rise"><span class="numeral" aria-hidden="true">3</span><h3>Podpisz i&nbsp;odbierz polisę</h3><p>Przy OC pod linkiem wypełniasz analizę potrzeb i&nbsp;wniosek, a&nbsp;potem je podpisujesz. Link zawsze prowadzi do portal.beautypolisa.eu, jest osobisty i&nbsp;ma datę ważności – nie przekazuj go innym. Z&nbsp;polisą masz konto w&nbsp;Strefie Klienta&nbsp;– polisy i&nbsp;dokumenty, „Dam&nbsp;pracę” i&nbsp;Szkolenia w&nbsp;jednym miejscu.</p></li>
         </ol>
         <div class="feats">
@@ -1465,7 +1473,7 @@ html:has(.klauzula[open]){overflow:hidden}
           <span class="chapter-no" aria-hidden="true">VI</span>
           <p class="eyebrow"><span class="no" aria-hidden="true">VI</span>Strefa Klienta</p>
           <h2 id="sk-title" class="rv-curtain">Polisa otwiera <em>Strefę Klienta</em></h2>
-          <p class="lead">Każdy salon, który zawrze ubezpieczenie przez BeautyPolisa&nbsp;– OC, Tax Protect, grupowe, opiekę medyczną czy inne z&nbsp;programu&nbsp;– ma własne konto: polisy i&nbsp;dokumenty w&nbsp;jednym miejscu oraz dostęp do „Dam&nbsp;pracę” i&nbsp;Szkoleń.</p>
+          <p class="lead">Każdy salon, który zawrze ubezpieczenie przez BeautyPolisa&nbsp;– OC, Tax Protect, grupowe, opiekę medyczną czy inne z&nbsp;programu&nbsp;– ma własne konto: polisy i&nbsp;dokumenty w&nbsp;jednym miejscu oraz dostęp do „Dam&nbsp;pracę” i&nbsp;Szkoleń. <small class="mock-note">Założenie – do decyzji zleceniodawcy</small> <small class="mock-note">Czy do Strefy trafiają polisy kupione bezpośrednio u&nbsp;ubezpieczyciela (NNW dzieci na platformie Colonnade, utrata dochodu online u&nbsp;Leadenhall) – do potwierdzenia</small></p>
         </div>
         <figure class="member-card rv-float">
           <p class="mc-label">Strefa Klienta</p>
@@ -1598,7 +1606,7 @@ html:has(.klauzula[open]){overflow:hidden}
           <button class="btn btn-navy" type="submit"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Wyślij zgłoszenie</button>
           <!-- notka „co dalej” zależna od tematu (skrypt podmienia tekst wg wzorca z sekcji Jak to działa); bez JS – obie wersje.
                Po wysłaniu NIGDY nie przekierowujemy na /w/<kod> – osobisty link wysyła wyłącznie CRM e-mailem na adres ze sprawy. -->
-          <p class="lead-next" id="lead-next">Przy OC doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu. Przy utracie dochodu doradca Aura Expert skontaktuje się z&nbsp;Tobą. Przy pozostałych ubezpieczeniach doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p>
+          <p class="lead-next" id="lead-next">Przy OC doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu. Przy utracie dochodu doradca Aura Expert skontaktuje się z&nbsp;Tobą. NNW dla dzieci kupisz także online na platformie Colonnade. Grupowe ERGO: wniosek dla salonu na ergo.auraexpert.pl albo kalkulator ERGO Razem na ergo.beautypolisa.eu. Przy pozostałych ubezpieczeniach doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p>
           <p class="lead-notice">Administratorem danych jest Aura Expert sp.&nbsp;z&nbsp;o.o. Dane z&nbsp;formularza przetwarzamy, aby odpowiedzieć na Twoje zapytanie (art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;b RODO). Kontakt z&nbsp;inspektorem ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Pełna informacja: <a href="/rodo">polityka prywatności</a>; informacje o&nbsp;agencie ubezpieczeniowym: <a href="/dokumenty">dokumenty</a>.</p>
         </form>
         <p class="lead-status" id="lead-status" role="status" tabindex="-1"></p>
@@ -1624,7 +1632,7 @@ html:has(.klauzula[open]){overflow:hidden}
           <!-- „Zgłoś szkodę”: w makiecie #jak-zglosic-szkode, produkcyjnie /szkoda; „Polityka prywatności”: /rodo -->
           <div class="rv-rise"><h2 class="footer-title">BeautyPolisa</h2><ul><li><a href="/o-nas">O&nbsp;nas</a></li><li><a href="/dokumenty">Dokumenty i&nbsp;OWU</a></li><li><a href="#jak-zglosic-szkode">Zgłoś szkodę</a></li><li><a href="/rodo">Polityka prywatności</a></li><li><a href="#kontakt">Kontakt</a></li></ul></div>
           <!-- produkcyjnie /strefa-klienta/logowanie, /dam-prace, /strefa-klienta/rejestracja/szukam-pracy, /szkolenia, /szkolenia#dla-organizatorow -->
-          <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="https://beautyrazem.pl/polisa">Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę – ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy – dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="https://beautyrazem.pl/polisa">Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa (członkostwo w&nbsp;Beauty Razem nie jest wymagane)</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę – ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy – dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
         </nav>
       </div>
       <div class="legal">
@@ -1641,7 +1649,7 @@ html:has(.klauzula[open]){overflow:hidden}
             <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie S.A.</li><li>Lloyd’s Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA S.A.</li><li>Colonnade Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
             <p><strong>Wynagrodzenie.</strong> Agent otrzymuje od zakładu ubezpieczeń prowizję, która jest uwzględniona w&nbsp;składce. Może też otrzymywać od zakładu ubezpieczeń inny rodzaj wynagrodzenia.</p>
             <p><strong>Powiązania kapitałowe.</strong> Agent nie ma akcji ani udziałów zakładu ubezpieczeń dających co najmniej 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie ma udziałów agenta dających co najmniej 10% głosów na zgromadzeniu wspólników.</p>
-            <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
+            <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
             <p><strong>Kontakt z&nbsp;agentem:</strong> <a href="mailto:zarzad@auraexpert.pl">zarzad@auraexpert.pl</a>, <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>. Wpis agenta (numer 11229690/A) sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>.</p>
           </div>
         </details>
@@ -1890,7 +1898,7 @@ html:has(.klauzula[open]){overflow:hidden}
   licz(true);
 })();
 
-/* Kalkulator Tax Protect – stała taryfa: 4 progi przychodów × 2 sumy gwarancyjne (8 wariantów), składka roczna za 1 spór w roku */
+/* Kalkulator Tax Protect – stała taryfa: 4 progi przychodów × 2 sumy ubezpieczenia (8 wariantów), składka roczna za 1 spór w roku */
 (function(){
   var form=document.getElementById('calc-tax'); if(!form) return;
   var NB=' ', EASE='cubic-bezier(.2,.7,.1,1)';
@@ -1905,7 +1913,7 @@ html:has(.klauzula[open]){overflow:hidden}
   var w=el('tax-wynik'), cta=el('tax-cta'), status=el('tax-status'), peekEl=form.querySelector('.calc-peek'), timer, prev=null;
   function say(msg){clearTimeout(timer);timer=setTimeout(function(){status.textContent=msg},450)}
   function state(){var rev=val('przychody','r250'),suma=val('sumaTax','t50'),spory=val('spory','1');return {rev:rev,suma:suma,spory:spory,ind:rev==='ind'||spory!=='1'}}
-  function describe(s){return 'przychody '+REV_TXT[s.rev]+', suma gwarancyjna '+SUMA_TXT[s.suma]+', '+SPORY_TXT[s.spory]}
+  function describe(s){return 'przychody '+REV_TXT[s.rev]+', suma ubezpieczenia '+SUMA_TXT[s.suma]+', '+SPORY_TXT[s.spory]}
   function tick(){
     var c=el('tax-cena');
     if(!c.animate||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -1917,7 +1925,7 @@ html:has(.klauzula[open]){overflow:hidden}
   function licz(silent){
     var s=state(), t=el('tax-taryfa'), sub=document.createElement('small');
     t.textContent='Przychody '+REV_TXT[s.rev]+' ';
-    sub.textContent='suma gwarancyjna '+SUMA_TXT[s.suma]+' · '+SPORY_TXT[s.spory];t.appendChild(sub);
+    sub.textContent='suma ubezpieczenia '+SUMA_TXT[s.suma]+' · '+SPORY_TXT[s.spory];t.appendChild(sub);
     if(s.ind){
       w.dataset.state='individual';el('tax-cena').textContent='Wycena indywidualna';el('tax-cena-dop').textContent='';
       cta.textContent='Poproś o wycenę indywidualną';
@@ -2145,7 +2153,9 @@ html:has(.klauzula[open]){overflow:hidden}
   var NEXT_OC='Doradca Aura Expert prześle Ci e-mail z osobistym linkiem do analizy potrzeb (APK) i wniosku w serwisie portal.beautypolisa.eu.';
   var NEXT_UD='Doradca Aura Expert skontaktuje się z Tobą.';
   var NEXT_INNE='Doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek.';
-  function nextFor(v){return v==='oc-beauty'?NEXT_OC:v==='utrata-dochodu'?NEXT_UD:NEXT_INNE}
+  var NEXT_GR=NEXT_INNE+' Wniosek dla salonu złożysz też na ergo.auraexpert.pl, a ERGO Razem policzysz w kalkulatorze na ergo.beautypolisa.eu.';
+  var NEXT_NNW=NEXT_INNE+' NNW dla dzieci kupisz też online na platformie Colonnade.';
+  function nextFor(v){return v==='oc-beauty'?NEXT_OC:v==='utrata-dochodu'?NEXT_UD:v==='grupowe-ergo'?NEXT_GR:v==='nnw-dzieci'?NEXT_NNW:NEXT_INNE}
   /* pola kalkulatora wysyłane tylko z produktem, którego dotyczą; zdanie z wynikiem widoczne tylko przy tym produkcie */
   function syncCalc(){
     Object.keys(calcFields).forEach(function(prod){calcFields[prod].forEach(function(n){form.elements[n].disabled=sel.value!==prod})});

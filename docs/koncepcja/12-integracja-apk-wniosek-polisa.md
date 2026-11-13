@@ -40,7 +40,7 @@ Ustalić jedną, prawdziwą i bezpieczną drogę od zainteresowania produktem na
 | Mapa ścieżek per produkt i treść, którą o nich mówią strony publiczne | Zmiany w CRM Aura Expert i w serwisie `portal.beautypolisa.eu` (tu tylko wymagania) |
 | Przepływ lead → CRM → link `/w/<kod>` → polisa → Strefa Klienta | Treść APK, wniosku i ankiety (należą do CRM i ubezpieczyciela) |
 | Wymagania bezpieczeństwa wobec linku, CRM i portalu | Naprawa starszego formularza APK z tokenem i linków ofert UD (osobne zadanie utwardzenia, 4.6) |
-| Sprawy w toku i polisy z CRM w Strefie Klienta | Płatności online w portalu, sprzedaż bez doradcy w portalu; zakup online u ubezpieczyciela (NNW dzieci – Colonnade, utrata dochodu – Leadenhall) odbywa się poza portalem i poza tą ścieżką (00, D35, D40) |
+| Sprawy w toku i polisy z CRM w Strefie Klienta | Płatności online w portalu, sprzedaż bez doradcy w portalu; zakup online (NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A., coverholdera Lloyd’s) odbywa się poza portalem i poza tą ścieżką (00, D33, D35, D40) |
 | UTM i pomiar bez danych osobowych i kodów | Moduł `konsultacja.beautypolisa.eu` – **nie jest APK ani wnioskiem** i nie należy do ścieżki zakupu (1.4) |
 
 ### 1.3 Słownik
