@@ -860,9 +860,9 @@
 
             <fieldset class="field consents">
               <legend>Zgody i&nbsp;informacje</legend>
-              <label class="check-row" for="zg-reg"><input type="checkbox" id="zg-reg" name="regulamin" value="1.2" required aria-describedby="zg-reg-err">Akceptuję regulamin szkoleń organizatora Organizator przykładowy (wersja 1.2), w&nbsp;tym zasady rezygnacji i&nbsp;zwrotów.</label>
+              <label class="check-row" for="zg-reg"><input type="checkbox" id="zg-reg" name="regulamin" value="1.2" required>Akceptuję regulamin szkoleń organizatora Organizator przykładowy (wersja 1.2), w&nbsp;tym zasady rezygnacji i&nbsp;zwrotów.</label>
               <p class="field-error" id="zg-reg-err" hidden></p>
-              <label class="check-row" for="zg-sprz"><input type="checkbox" id="zg-sprz" name="sprzedawca" value="tak" required aria-describedby="zg-sprz-err">Wiem, że sprzedawcą jest organizator: to on wystawia fakturę i&nbsp;odpowiada za szkolenie, a&nbsp;BeautyPolisa (Aura Expert) nie pobiera prowizji w&nbsp;okresie promocji na otwarcie portalu.</label>
+              <label class="check-row" for="zg-sprz"><input type="checkbox" id="zg-sprz" name="sprzedawca" value="tak" required>Wiem, że sprzedawcą jest organizator: to on wystawia fakturę i&nbsp;odpowiada za szkolenie, a&nbsp;BeautyPolisa (Aura Expert) nie pobiera prowizji w&nbsp;okresie promocji na otwarcie portalu.</label>
               <p class="field-error" id="zg-sprz-err" hidden></p>
             </fieldset>
             <div class="notice-box">
@@ -902,9 +902,9 @@
               <fieldset class="field">
                 <legend>Metoda płatności</legend>
                 <div class="radio-cards method">
-                  <div class="radio-card"><input type="radio" id="m-blik" name="metoda" value="blik" aria-describedby="m-err"><label for="m-blik"><span><strong>BLIK</strong><small>kod z&nbsp;aplikacji banku wpiszesz u&nbsp;operatora</small></span></label></div>
-                  <div class="radio-card"><input type="radio" id="m-karta" name="metoda" value="karta" aria-describedby="m-err"><label for="m-karta"><span><strong>Karta płatnicza</strong><small>dane karty podasz tylko u&nbsp;operatora</small></span></label></div>
-                  <div class="radio-card"><input type="radio" id="m-przelew" name="metoda" value="przelew" aria-describedby="m-err"><label for="m-przelew"><span><strong>Szybki przelew</strong><small>wybierzesz bank u&nbsp;operatora</small></span></label></div>
+                  <div class="radio-card"><input type="radio" id="m-blik" name="metoda" value="blik"><label for="m-blik"><span><strong>BLIK</strong><small>kod z&nbsp;aplikacji banku wpiszesz u&nbsp;operatora</small></span></label></div>
+                  <div class="radio-card"><input type="radio" id="m-karta" name="metoda" value="karta"><label for="m-karta"><span><strong>Karta płatnicza</strong><small>dane karty podasz tylko u&nbsp;operatora</small></span></label></div>
+                  <div class="radio-card"><input type="radio" id="m-przelew" name="metoda" value="przelew"><label for="m-przelew"><span><strong>Szybki przelew</strong><small>wybierzesz bank u&nbsp;operatora</small></span></label></div>
                 </div>
                 <p class="field-error" id="m-err" hidden></p>
               </fieldset>
@@ -1311,7 +1311,7 @@
                       <summary class="btn btn-danger btn-sm">Odwołaj i&nbsp;zwróć wpłaty</summary>
                       <form class="mini-body js-cancel-paid" action="#organizator" method="post" novalidate>
                         <p class="small">Zapisane osoby (5) dostaną <span class="nowrap">e-mail</span> o&nbsp;odwołaniu i&nbsp;pełny zwrot: 5&nbsp;×&nbsp;390,00&nbsp;zł. Zwroty zlecimy u&nbsp;operatora z&nbsp;Twojego konta; rezerwacje w&nbsp;toku wygasną. Odwołania nie można cofnąć.</p>
-                        <label class="check-row" for="odw-1"><input type="checkbox" id="odw-1" name="potwierdzam" value="tak" aria-describedby="odw-1-err">Potwierdzam odwołanie i&nbsp;pełne zwroty</label>
+                        <label class="check-row" for="odw-1"><input type="checkbox" id="odw-1" name="potwierdzam" value="tak">Potwierdzam odwołanie i&nbsp;pełne zwroty</label>
                         <p class="field-error" id="odw-1-err" hidden></p>
                         <button class="btn btn-danger btn-sm" type="submit">Odwołuję szkolenie</button>
                         <p class="small" role="status" hidden>Szkolenie odwołane. Zwroty zlecone: 5&nbsp;– postęp zobaczysz w&nbsp;„Sprzedaż i&nbsp;wypłaty”.</p>
@@ -1482,6 +1482,194 @@
           </section>
         </div>
       </div>
+    </section>
+
+    <!-- ================================================================
+         4b · ORGANIZATOR: sprzedaż i wypłaty (decyzja 13.11.2026). Konto organizatora u operatora (subkonto / connected account,
+              KYC/KYB po stronie operatora): niepodłączone / weryfikacja / aktywne / wstrzymane. Zamówienia jego szkoleń –
+              minimum danych (bez e-maila, metody płatności i danych kart; bez rezerwacji w toku i nieudanych płatności).
+              Zwrot zleca organizator, wykonuje operator. Prowizja platformy – parametr (0% w promocji).
+         ================================================================ -->
+    <section class="view" id="wyplaty" aria-labelledby="t-wyp" data-role-view="organizer">
+      <header class="page-head glass glass--strong frame">
+        <ol class="crumbs" aria-label="Ścieżka"><li><a href="#organizator">Moje szkolenia</a></li><li aria-current="page">Sprzedaż i&nbsp;wypłaty</li></ol>
+        <p class="eyebrow">Organizator szkoleń</p>
+        <h1 id="t-wyp">Sprzedaż <em>i&nbsp;wypłaty</em></h1>
+        <p class="lead">Przy szkoleniach płatnych jesteś sprzedawcą. Uczestnicy płacą u&nbsp;operatora płatności, a&nbsp;pieniądze trafiają na Twoje konto u&nbsp;operatora&nbsp;– BeautyPolisa ich nie przyjmuje ani nie przekazuje.</p>
+        <div class="badges"><span class="badge badge--ok">Konto u&nbsp;operatora: aktywne</span><span class="badge badge--role">Prowizja BeautyPolisa: 0% (promocja)</span></div>
+      </header>
+
+      <div class="grid grid-2">
+        <section class="card surface frame" id="konto-operatora" aria-labelledby="t-konto-op" tabindex="-1">
+          <div class="card-head">
+            <div><h2 class="card-title" id="t-konto-op">Konto u&nbsp;operatora płatności</h2><p class="card-sub">Weryfikację firmy i&nbsp;rachunku prowadzi operator</p></div>
+            <span class="badge badge--ok">Aktywne</span>
+          </div>
+          <ol class="track" aria-label="Stan konta u operatora">
+            <li class="done">Podłączone</li>
+            <li class="done">Weryfikacja</li>
+            <li aria-current="step">Aktywne</li>
+          </ol>
+          <dl class="kv kv--rows">
+            <div><dt>Płatności</dt><dd>przyjmujesz BLIK, karty i&nbsp;szybkie przelewy</dd></div>
+            <div><dt>Wypłaty</dt><dd>na rachunek firmy potwierdzony przez operatora, według harmonogramu operatora</dd></div>
+            <div><dt>Ostatnia wypłata</dt><dd><time datetime="2026-11-10">10.11.2026</time>&nbsp;– zrealizowana (przykład)</dd></div>
+            <div><dt>Weryfikacja firmy</dt><dd>zakończona u&nbsp;operatora <time datetime="2026-10-22">22.10.2026</time> (przykład)</dd></div>
+          </dl>
+          <a class="link-lux" href="#konto-operatora">Otwórz panel operatora</a>
+          <p class="xsmall muted">Saldo, historię wypłat i&nbsp;dokumenty rozliczeniowe operatora sprawdzisz w&nbsp;jego panelu. BeautyPolisa nie zna danych Twojego rachunku. <span class="mock-note">Operator nie jest wybrany</span></p>
+
+          <div class="case-variants">
+            <div class="variant">
+              <span class="mock-note">Wariant: niepodłączone</span>
+              <div class="alert alert--info">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+                <strong class="alert-title">Podłącz konto, żeby sprzedawać szkolenia płatne</strong>
+                <p class="small">Przejdziesz do operatora płatności: założysz konto firmy i&nbsp;potwierdzisz dane (weryfikacja KYC/KYB). Do tego czasu możesz publikować szkolenia bezpłatne.</p>
+                <div class="actions"><a class="btn btn-navy btn-sm" href="#konto-operatora">Podłącz konto u&nbsp;operatora</a></div>
+              </div>
+            </div>
+            <div class="variant">
+              <span class="mock-note">Wariant: weryfikacja</span>
+              <div class="alert alert--info">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <strong class="alert-title">Operator sprawdza dane Twojej firmy</strong>
+                <p class="small">Szkolenia płatne jeszcze nie przyjmują zapisów. Jeśli operator poprosi o&nbsp;dokumenty, uzupełnisz je u&nbsp;niego.</p>
+                <div class="actions"><a class="btn btn-ghost btn-sm" href="#konto-operatora">Uzupełnij dane u&nbsp;operatora</a></div>
+              </div>
+            </div>
+            <div class="variant">
+              <span class="mock-note">Wariant: wstrzymane</span>
+              <div class="alert alert--warn">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>
+                <strong class="alert-title">Operator wstrzymał płatności lub wypłaty</strong>
+                <p class="small">Powód: operator prosi o&nbsp;aktualny dokument rejestrowy (przykład). Szkolenia płatne nie przyjmują nowych zapisów; zapisani zachowują miejsca, a&nbsp;zwroty obsługuje operator według swoich zasad.</p>
+                <div class="actions"><a class="btn btn-navy btn-sm" href="#konto-operatora">Wyjaśnij u&nbsp;operatora</a></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card surface plans" aria-labelledby="t-prow">
+          <div class="card-head">
+            <div><p class="label-caps">Promocja na otwarcie portalu</p><h2 class="card-title" id="t-prow">Prowizja BeautyPolisa</h2></div>
+          </div>
+          <p class="premium"><strong>0%</strong><span>od sprzedaży szkoleń w&nbsp;okresie promocji</span></p>
+          <ul class="plan-facts">
+            <li>Cała kwota zamówienia trafia na Twoje konto u&nbsp;operatora; opłaty operatora za transakcje&nbsp;– według Twojej umowy z&nbsp;operatorem. <span class="mock-note">Do ustalenia przy wyborze operatora</span></li>
+            <li>Po promocji prowizja może się pojawić&nbsp;– zapowiemy ją z&nbsp;wyprzedzeniem; nie obejmie zamówień już opłaconych. <span class="mock-note">Q16</span></li>
+            <li>Plan organizatora rozliczasz z&nbsp;Aura Expert osobno, fakturą poza portalem.</li>
+            <li>Fakturę za szkolenie wystawiasz Ty&nbsp;– dokumenty księgowe przechowujesz według swoich obowiązków.</li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="card surface" aria-labelledby="t-zam-org">
+        <div class="card-head">
+          <div><h2 class="card-title" id="t-zam-org">Zamówienia Twoich szkoleń</h2><p class="card-sub">Opłacone zamówienia i&nbsp;zwroty. Uczestnik, dane do faktury, kwota i&nbsp;status&nbsp;– bez danych płatności.</p></div>
+        </div>
+        <div class="alert alert--info js-live" role="status" tabindex="-1" hidden>
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+          <p class="small">–</p>
+        </div>
+        <div class="table-wrap">
+          <table class="data stack org-table" id="tab-zamowienia">
+            <caption>Stylizacja brwi henną&nbsp;– warsztat (przykład), <time datetime="2027-01-15">15.01.2027</time></caption>
+            <thead><tr><th scope="col">Zamówienie</th><th scope="col">Uczestnik i&nbsp;faktura</th><th scope="col">Kwota</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Akcje</span></th></tr></thead>
+            <tbody>
+              <tr>
+                <th scope="row" data-label="Zamówienie">BP-SZK-2026-000141<br><span class="muted small">opłacone <time datetime="2026-11-12">12.11.2026</time></span></th>
+                <td data-label="Uczestnik i faktura"><div><strong>Joanna Przykładowa</strong><br><span class="small">firma: Instytut Przykładowy, NIP 000-000-00-00, Kraków (przykład)</span></div></td>
+                <td data-label="Kwota" class="money">390,00&nbsp;zł</td>
+                <td data-label="Status"><div><span class="badge badge--ok" data-status>Opłacone</span><br><span class="muted small" data-fv>faktura: do dodania</span></div></td>
+                <td class="cell-actions">
+                  <div class="actions">
+                    <details class="mini">
+                      <summary class="btn btn-ghost btn-sm">Dodaj fakturę<span class="sr-only">: BP-SZK-2026-000141</span></summary>
+                      <form class="mini-body js-invoice" action="#wyplaty" method="post" enctype="multipart/form-data" novalidate>
+                        <div class="field">
+                          <label for="fv-plik-1">Plik faktury (PDF)</label>
+                          <input type="file" id="fv-plik-1" name="faktura" accept="application/pdf" aria-describedby="fv-plik-1-hint">
+                          <p class="hint" id="fv-plik-1-hint">Do 2&nbsp;MB. Uczestnik zobaczy plik w&nbsp;„Moich szkoleniach”. <span class="mock-note">Założenie</span></p>
+                          <p class="field-error" id="fv-plik-1-err" hidden></p>
+                        </div>
+                        <button class="btn btn-navy btn-sm" type="submit">Dodaj fakturę</button>
+                        <p class="small" role="status" hidden></p>
+                      </form>
+                    </details>
+                    <details class="mini">
+                      <summary class="btn btn-quiet btn-sm">Zwrot<span class="sr-only">: BP-SZK-2026-000141</span></summary>
+                      <form class="mini-body js-refund" action="#wyplaty" method="post" novalidate data-max="390.00">
+                        <div class="field">
+                          <label for="zw-kw-1">Kwota zwrotu w&nbsp;zł</label>
+                          <input type="text" id="zw-kw-1" name="kwota" inputmode="decimal" value="390,00" aria-describedby="zw-kw-1-hint">
+                          <p class="hint" id="zw-kw-1-hint">Najwyżej 390,00&nbsp;zł&nbsp;– według Twojego regulaminu.</p>
+                          <p class="field-error" id="zw-kw-1-err" hidden></p>
+                        </div>
+                        <div class="field">
+                          <label for="zw-pw-1">Powód</label>
+                          <select id="zw-pw-1" name="powod">
+                            <option>Rezygnacja według regulaminu</option>
+                            <option>Reklamacja</option>
+                            <option>Inny powód</option>
+                          </select>
+                        </div>
+                        <button class="btn btn-danger btn-sm" type="submit">Zleć zwrot u&nbsp;operatora</button>
+                        <p class="small" role="status" hidden></p>
+                      </form>
+                    </details>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Zamówienie">BP-SZK-2026-000142<br><span class="muted small">opłacone <time datetime="2026-11-12">12.11.2026</time></span></th>
+                <td data-label="Uczestnik i faktura"><div><strong>Marta Przykładowa</strong><br><span class="small">osoba prywatna, Warszawa (przykład)</span></div></td>
+                <td data-label="Kwota" class="money">390,00&nbsp;zł</td>
+                <td data-label="Status"><div><span class="badge badge--ok" data-status>Opłacone</span><br><span class="muted small">faktura dodana <time datetime="2026-11-13">13.11.2026</time></span></div></td>
+                <td class="cell-actions">
+                  <details class="mini">
+                    <summary class="btn btn-quiet btn-sm">Zwrot<span class="sr-only">: BP-SZK-2026-000142</span></summary>
+                    <form class="mini-body js-refund" action="#wyplaty" method="post" novalidate data-max="390.00">
+                      <div class="field">
+                        <label for="zw-kw-2">Kwota zwrotu w&nbsp;zł</label>
+                        <input type="text" id="zw-kw-2" name="kwota" inputmode="decimal" value="390,00" aria-describedby="zw-kw-2-hint">
+                        <p class="hint" id="zw-kw-2-hint">Najwyżej 390,00&nbsp;zł&nbsp;– według Twojego regulaminu.</p>
+                        <p class="field-error" id="zw-kw-2-err" hidden></p>
+                      </div>
+                      <div class="field">
+                        <label for="zw-pw-2">Powód</label>
+                        <select id="zw-pw-2" name="powod">
+                          <option>Rezygnacja według regulaminu</option>
+                          <option>Reklamacja</option>
+                          <option>Inny powód</option>
+                        </select>
+                      </div>
+                      <button class="btn btn-danger btn-sm" type="submit">Zleć zwrot u&nbsp;operatora</button>
+                      <p class="small" role="status" hidden></p>
+                    </form>
+                  </details>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Zamówienie">BP-SZK-2026-000139<br><span class="muted small">opłacone <time datetime="2026-11-08">8.11.2026</time></span></th>
+                <td data-label="Uczestnik i faktura"><div><strong>Kamil Przykładowy</strong><br><span class="small">firma: Instytut Przykładowy, NIP 000-000-00-00 (przykład)</span></div></td>
+                <td data-label="Kwota" class="money">390,00&nbsp;zł</td>
+                <td data-label="Status"><div><span class="badge badge--info">Zwrot w&nbsp;toku</span><br><span class="muted small">rezygnacja, pełny zwrot zlecony <time datetime="2026-11-12">12.11.2026</time></span></div></td>
+                <td class="cell-actions"><span class="xsmall muted">Czeka na operatora</span></td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Zamówienie">BP-SZK-2026-000137<br><span class="muted small">opłacone <time datetime="2026-11-05">5.11.2026</time></span></th>
+                <td data-label="Uczestnik i faktura"><div><strong>Ola Przykładowa</strong><br><span class="small">osoba prywatna, Poznań (przykład)</span></div></td>
+                <td data-label="Kwota" class="money">390,00&nbsp;zł</td>
+                <td data-label="Status"><div><span class="badge badge--off">Zwrócono 195,00&nbsp;zł</span><br><span class="muted small">zwrot częściowy wg regulaminu, <time datetime="2026-11-09">9.11.2026</time></span></div></td>
+                <td class="cell-actions"><span class="xsmall muted">Brak działań</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="xsmall muted">Nie widzisz rezerwacji w&nbsp;toku ani nieudanych płatności&nbsp;– zamówienie pojawia się po potwierdzeniu płatności przez operatora. Dane uczestników usuwamy z&nbsp;platformy 30&nbsp;dni po szkoleniu; dane zamówień potrzebne do rozliczeń i&nbsp;sporów przechowujemy dłużej&nbsp;– okres do ustalenia z&nbsp;prawnikiem i&nbsp;księgowością. Każdy zwrot i&nbsp;zmiana statusu trafiają do historii. <span class="mock-note">Założenie</span></p>
+        <p class="xsmall muted">Odwołanie szkolenia z&nbsp;pełnymi zwrotami dla wszystkich&nbsp;– w&nbsp;<a class="link-quiet" href="#organizator">Moich szkoleniach</a>, przy szkoleniu.</p>
+      </section>
     </section>
 
     <!-- ================================================================
@@ -1753,7 +1941,11 @@
         <li><strong>Założenie <span class="nowrap">Z-6</span>:</strong> katalog jest publiczny, zapis tylko z&nbsp;konta salonu (gość widzi „Zaloguj się, aby się zapisać”). Czy katalog ma być publiczny&nbsp;– pytanie Q10.</li>
         <li><strong>Decyzja <span class="nowrap">D-D</span>:</strong> szkolenia dodają salony i&nbsp;firmy szkoleniowe. Organizator nie potrzebuje polisy; konto dostaje z&nbsp;zaproszenia po weryfikacji przez Aura Expert (<strong>Założenie Z-16</strong>). Salon-organizator ma osobny profil i&nbsp;przełącza się w&nbsp;menu konta&nbsp;– ten sam widok ma firma szkoleniowa, np. „Organizator przykładowy”.</li>
         <li>RODO: organizator jest administratorem danych uczestników swoich szkoleń; rola Aura Expert (odrębny administrator albo podmiot przetwarzający)&nbsp;– do decyzji prawnika i&nbsp;IOD (Q1). Organizator widzi tylko imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status, nazwę salonu tylko przy szkoleniu płatnym; dane usuwane 30&nbsp;dni po szkoleniu (<strong>Założenie Z-17</strong>).</li>
-        <li><strong>Założenia <span class="nowrap">Z-5</span> i&nbsp;<span class="nowrap">Z-11</span>:</strong> szkolenie płatne pokazuje cenę brutto, fakturę wystawia organizator, bez płatności online w&nbsp;MVP; limit 3&nbsp;miejsc na salon. Ceny i&nbsp;tematy są przykładowe.</li>
+        <li><strong>Decyzja zleceniodawcy 13.11.2026 (szkolenia płatne):</strong> płatność z&nbsp;poziomu panelu; sprzedawcą jest organizator; BeautyPolisa bez prowizji w&nbsp;okresie promocji (prowizja to parametr&nbsp;– później możliwa, Q16). Model: marketplace z&nbsp;płatnościami dzielonymi u&nbsp;licencjonowanego operatora (np. Przelewy24, PayU, Tpay albo Stripe Connect&nbsp;– <strong>operator nie jest wybrany</strong>): pieniądze płyną od uczestnika na konto organizatora u&nbsp;operatora, Aura Expert nie przyjmuje ani nie przekazuje cudzych środków, weryfikację KYC/KYB organizatora prowadzi operator. Kwalifikację prawną (usługi płatnicze, zezwolenie KNF) potwierdza prawnik.</li>
+        <li><strong>Ekrany płatności:</strong> karta szkolenia płatnego z&nbsp;danymi sprzedawcy (<code>#szkolenie-platne</code>; DSA art.&nbsp;30&nbsp;– dane z&nbsp;weryfikacji organizatora, 12.1), zamówienie (<code>#zamowienie</code>: dane uczestnika i&nbsp;faktury, zgody, rezerwacja 15&nbsp;min, metoda u&nbsp;operatora; stany <code>#zam-w-toku</code>, <code>#zam-oplacone</code>, <code>#zam-nieudane</code>, <code>#zam-wygasla</code>), zakładka „Zamówienia i&nbsp;faktury” w&nbsp;„Moich szkoleniach” (to są „Moje zapisy”), „Sprzedaż i&nbsp;wypłaty” organizatora (<code>#wyplaty</code>: konto u&nbsp;operatora&nbsp;– niepodłączone, weryfikacja, aktywne, wstrzymane; zamówienia, faktura, zwrot) i&nbsp;odwołanie szkolenia płatnego z&nbsp;pełnymi zwrotami w&nbsp;„Moich szkoleniach” organizatora. <strong>Płatność w&nbsp;makiecie to symulacja</strong>&nbsp;– w&nbsp;produkcji ekran operatora.</li>
+        <li><strong>Bezpieczeństwo (produkcja):</strong> kwota i&nbsp;waluta wyłącznie z&nbsp;bazy, nigdy z&nbsp;przeglądarki; klucz idempotencji zamówienia; status zmienia tylko webhook po weryfikacji podpisu oraz zgodności zamówienia, kwoty i&nbsp;waluty (powrót przeglądarki pokazuje najwyżej „w&nbsp;toku”); odporność na powtórzenia i&nbsp;kolejność zdarzeń; rezerwacja miejsca atomowo, bez nadsprzedaży; bez danych kart i&nbsp;kodów BLIK w&nbsp;portalu (PCI DSS SAQ A); sekrety operatora w&nbsp;Workers secrets; RLS: uczestnik&nbsp;– swoje zamówienia, organizator&nbsp;– zamówienia swoich szkoleń bez e-maila i&nbsp;danych płatności, personel&nbsp;– odczyt i&nbsp;dziennik; każda zmiana statusu, faktura i&nbsp;zwrot w&nbsp;dzienniku; limity zamówień i&nbsp;zwrotów.</li>
+        <li><strong>Do weryfikacji prawnej:</strong> prawo odstąpienia (14&nbsp;dni i&nbsp;wyjątek dla usług z&nbsp;oznaczonym terminem), informacje przed zawarciem umowy i&nbsp;brzmienie przycisku zamówienia, rola Aura Expert wobec danych (Q1), okres przechowywania danych zamówień w&nbsp;portalu (faktury przechowuje organizator według swoich obowiązków księgowych). Rezerwacja 15&nbsp;min z&nbsp;przedłużaniem do 60&nbsp;min łącznie&nbsp;– do sprawdzenia w&nbsp;audycie WCAG 2.2.1. Lista rezerwowa przy szkoleniu płatnym (link do płatności ważny 24&nbsp;h) i&nbsp;utrzymanie miejsca do odpowiedzi operatora (30&nbsp;min)&nbsp;– <strong>Założenia</strong>. Specyfikacja 11 §12.2 i&nbsp;§12.4 nadal opisuje brak płatności online&nbsp;– do aktualizacji osobno.</li>
+        <li><strong>Założenia <span class="nowrap">Z-5</span> i&nbsp;<span class="nowrap">Z-11</span>:</strong> szkolenie płatne pokazuje cenę brutto, fakturę wystawia organizator (sprzedawca); założenie „bez płatności online w&nbsp;MVP” zastąpiła decyzja z&nbsp;13.11.2026; limit 3&nbsp;miejsc na salon. Ceny, numery zamówień, NIP-y i&nbsp;tematy są przykładowe.</li>
         <li>Filtr „Temat” to zamknięta lista kategorii (<strong>Założenie</strong>)&nbsp;– wymaga kolumny <code>topic</code> w&nbsp;tabeli <code>trainings</code> (do dopisania w&nbsp;11 §7.1 i&nbsp;<code>strefa-klienta.sql</code>). Kolejność wyników wyłącznie według terminu.</li>
         <li>Makieta ma jedną stronę szkolenia („Higiena i&nbsp;bezpieczeństwo zabiegów (przykład)”); „Pierwsza pomoc w&nbsp;salonie beauty (przykład)” prowadzi do wariantu z&nbsp;listą rezerwową.</li>
         <li>Zaświadczenia PDF (S6)&nbsp;– późniejszy etap Z3, po decyzji o&nbsp;wzorze i&nbsp;wystawcy.</li>
@@ -1858,6 +2050,8 @@
     /* kroki zapisu na stronie szkolenia */
     var step = (id === 'zapis' || id === 'zapisano' || id === 'rezerwowa') ? id : 'start';
     steps.forEach(function (s) { s.classList.toggle('is-on', s.getAttribute('data-step') === step); });
+    /* zamówienie szkolenia płatnego: krok albo stan z adresu (#zamowienie, #zam-platnosc, #zam-oplacone…) */
+    if (view.id === 'zamowienie') { showPay(el && el.getAttribute('data-pay') ? el.getAttribute('data-pay') : 'dane'); }
     /* panel zakładki z adresu (np. #p-zespol) */
     if (el && el.getAttribute('role') === 'tabpanel') {
       var tab = document.getElementById(el.getAttribute('aria-labelledby'));
@@ -1932,7 +2126,7 @@
     b.addEventListener('click', function () {
       var item = b.closest('[data-reg]');
       var badge = item ? item.querySelector('[data-status]') : null;
-      if (badge) { badge.className = 'badge badge--off'; badge.textContent = 'Zrezygnowano'; }
+      if (badge) { badge.className = 'badge badge--off'; badge.textContent = b.getAttribute('data-badge') || 'Zrezygnowano'; }
       if (item) { all('.js-private, .private', item).forEach(function (x) { x.hidden = true; }); }
       var scope = b.closest('.reg-step') || b.closest('.card');
       var live = scope.querySelector('.js-live');
@@ -2039,6 +2233,147 @@
     location.hash = 'org-wyslane';
   });
   document.getElementById('d-szkic').addEventListener('click', function () { document.getElementById('d-szkic-ok').hidden = false; });
+
+  /* ---------- szkolenie płatne: zamówienie, rezerwacja 15 min, symulacja operatora (makieta) ----------
+     Produkcja: rezerwację tworzy i przedłuża serwer (blokada wiersza szkolenia, bez nadsprzedaży), kwotę bierze z bazy,
+     status zmienia wyłącznie podpisany webhook operatora; ten licznik tylko pokazuje czas z odpowiedzi serwera. */
+  var paySteps = all('.pay-step');
+  var payStepper = all('#zam-stepper li');
+  var holdLeft = all('.js-hold-left');
+  var holdLive = document.getElementById('hold-live');
+  var extendBtn = document.querySelector('.js-extend');
+  var sim = document.getElementById('sim-operator');
+  var HOLD = 15 * 60 * 1000, HOLD_MAX = 60 * 60 * 1000;
+  var holdStart = 0, holdEnd = 0, holdTick = null, holdSaid = {};
+  function mmss(ms) { var t = Math.ceil(ms / 1000), m = Math.floor(t / 60), r = t % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function holdStop() { clearInterval(holdTick); holdTick = null; holdStart = 0; holdEnd = 0; holdSaid = {}; }
+  function holdUpdate() {
+    var left = Math.max(0, holdEnd - Date.now());
+    holdLeft.forEach(function (x) { x.textContent = mmss(left); });
+    [5, 1].forEach(function (min) {
+      if (left <= min * 60000 && !holdSaid[min]) { holdSaid[min] = true; holdLive.textContent = 'Rezerwacja miejsca wygaśnie za ' + min + NB + (min === 1 ? 'minutę' : 'minut') + '. Możesz ją przedłużyć.'; }
+    });
+    if (left === 0) { holdStop(); location.hash = 'zam-wygasla'; }
+  }
+  function holdBegin() {
+    holdStart = Date.now(); holdEnd = holdStart + HOLD; holdSaid = { 5: false, 1: false };
+    extendBtn.removeAttribute('aria-disabled'); holdUpdate(); holdTick = setInterval(holdUpdate, 1000);
+  }
+  function showPay(state) {
+    paySteps.forEach(function (s) { s.classList.toggle('is-on', s.getAttribute('data-pay') === state); });
+    var n = state === 'dane' ? 0 : (state === 'oplacone' ? 2 : 1);
+    payStepper.forEach(function (li, i) {
+      li.classList.toggle('done', i < n);
+      if (i === n) { li.setAttribute('aria-current', 'step'); } else { li.removeAttribute('aria-current'); }
+    });
+    if ((state === 'platnosc' || state === 'nieudane' || state === 'w-toku') && !holdEnd) { holdBegin(); }
+    if (state === 'oplacone' || state === 'wygasla') { holdStop(); }
+    if (state === 'platnosc') { sim.hidden = true; }
+  }
+  sim.hidden = true;
+  extendBtn.addEventListener('click', function () {
+    if (!holdEnd) { return; }
+    if (extendBtn.getAttribute('aria-disabled') === 'true') { holdLive.textContent = 'Rezerwacji nie można już przedłużyć' + NB + '– to najdłuższy możliwy czas (60' + NB + 'minut).'; return; }
+    holdEnd = Math.min(holdEnd + HOLD, holdStart + HOLD_MAX); holdSaid = { 5: false, 1: false }; holdUpdate();
+    var capped = holdEnd >= holdStart + HOLD_MAX;
+    if (capped) { extendBtn.setAttribute('aria-disabled', 'true'); }
+    holdLive.textContent = 'Rezerwację przedłużono. Zostało ' + mmss(holdEnd - Date.now()) + NB + 'min.' + (capped ? ' To najdłuższy możliwy czas rezerwacji.' : '');
+  });
+
+  var fz = document.getElementById('zam-dane');
+  function syncFv() {
+    var mode = document.getElementById('fv-firma').checked ? 'firma' : 'osoba';
+    all('.fv-group', fz).forEach(function (g) {
+      var on = g.getAttribute('data-fv') === mode;
+      g.hidden = !on; all('input', g).forEach(function (i) { i.disabled = !on; });
+    });
+  }
+  all('input[name="faktura"]', fz).forEach(function (r) { r.addEventListener('change', syncFv); });
+  syncFv();
+  function nipOk(v) {
+    var d = v.replace(/[\s-]/g, '');
+    if (!/^\d{10}$/.test(d)) { return false; }
+    var w = [6, 5, 7, 2, 3, 4, 5, 6, 7], sum = 0;
+    for (var i = 0; i < 9; i++) { sum += w[i] * Number(d[i]); }
+    return sum % 11 === Number(d[9]);
+  }
+  fz.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var byId = function (id) { return document.getElementById(id); };
+    var bad = [], firma = byId('fv-firma').checked;
+    function need(id, msg) { var i = byId(id); if (!setErr(i, id + '-err', i.value.trim() ? '' : msg)) { bad.push(i); } }
+    if (firma) {
+      need('fv-nazwa', 'Wpisz nazwę firmy.');
+      var nip = byId('fv-nip');
+      if (!setErr(nip, 'fv-nip-err', nipOk(nip.value) ? '' : 'Wpisz poprawny NIP: 10' + NB + 'cyfr, bez liter.')) { bad.push(nip); }
+    } else { need('fv-imie', 'Wpisz imię i' + NB + 'nazwisko.'); }
+    need('fv-ulica', 'Wpisz ulicę i' + NB + 'numer.');
+    var kod = byId('fv-kod');
+    if (!setErr(kod, 'fv-kod-err', /^\d{2}-\d{3}$/.test(kod.value.trim()) ? '' : 'Wpisz kod pocztowy w' + NB + 'formacie 00-000.')) { bad.push(kod); }
+    need('fv-miasto', 'Wpisz miejscowość.');
+    [['zg-reg', 'Zaakceptuj regulamin organizatora, żeby złożyć zamówienie.'], ['zg-sprz', 'Potwierdź, że wiesz, kto jest sprzedawcą.']].forEach(function (z) {
+      var c = byId(z[0]); if (!setErr(c, z[0] + '-err', c.checked ? '' : z[1])) { bad.push(c); }
+    });
+    var box = byId('zam-err');
+    if (bad.length) { box.hidden = false; bad[0].focus(); return; }
+    box.hidden = true;
+    byId('sum-fv').textContent = firma ? 'firmę: ' + byId('fv-nazwa').value.trim() + ', NIP ' + byId('fv-nip').value.replace(/[\s-]/g, '') : 'osobę prywatną: ' + byId('fv-imie').value.trim();
+    location.hash = 'zam-platnosc';
+  });
+
+  var fm = document.getElementById('f-metoda');
+  fm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var chosen = fm.querySelector('input[name="metoda"]:checked');
+    var err = document.getElementById('m-err'), fs = fm.querySelector('fieldset');
+    if (!chosen) {
+      err.textContent = 'Wybierz metodę płatności.'; err.hidden = false; fs.setAttribute('aria-describedby', 'm-err');
+      fm.querySelector('input[name="metoda"]').focus(); return;
+    }
+    err.hidden = true; fs.removeAttribute('aria-describedby');
+    sim.hidden = false; sim.focus();
+  });
+
+  /* ---------- organizator: faktura, zwrot, odwołanie szkolenia płatnego ---------- */
+  function done(f, text) {
+    var msg = f.querySelector('[role="status"]');
+    if (text) { msg.textContent = text; }
+    msg.hidden = false; msg.tabIndex = -1; msg.focus();
+  }
+  all('.js-invoice').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var input = f.querySelector('input[type="file"]'), file = input.files && input.files[0];
+      var em = !file ? 'Wybierz plik PDF z' + NB + 'fakturą.' : (file.type !== 'application/pdf' ? 'Dodaj plik w' + NB + 'formacie PDF.' : (file.size > 2 * 1024 * 1024 ? 'Plik jest większy niż 2' + NB + 'MB.' : ''));
+      if (!setErr(input, input.id + '-err', em)) { input.focus(); return; }
+      var fv = f.closest('tr').querySelector('[data-fv]'); if (fv) { fv.textContent = 'faktura dodana'; }
+      done(f, 'Faktura dodana. Uczestnik zobaczy ją w' + NB + '„Moich szkoleniach” i' + NB + 'dostanie e-mail.');
+    });
+  });
+  all('.js-refund').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var input = f.querySelector('input[name="kwota"]');
+      var v = input.value.trim().replace(/\s/g, '').replace(',', '.'), max = parseFloat(f.getAttribute('data-max'));
+      var ok = /^\d+(\.\d{1,2})?$/.test(v) && Number(v) > 0 && Number(v) <= max;
+      if (!setErr(input, input.id + '-err', ok ? '' : 'Podaj kwotę od 0,01 do ' + max.toFixed(2).replace('.', ',') + NB + 'zł.')) { input.focus(); return; }
+      var badge = f.closest('tr').querySelector('[data-status]');
+      if (badge) { badge.className = 'badge badge--info'; badge.textContent = 'Zwrot w' + NB + 'toku'; }
+      f.querySelector('button[type="submit"]').hidden = true;
+      done(f, 'Zwrot ' + Number(v).toFixed(2).replace('.', ',') + NB + 'zł zlecony u' + NB + 'operatora. Uczestnik dostanie e-mail; status zmieni się po potwierdzeniu operatora.');
+    });
+  });
+  all('.js-cancel-paid').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var c = f.querySelector('input[type="checkbox"]');
+      if (!setErr(c, c.id + '-err', c.checked ? '' : 'Zaznacz potwierdzenie, żeby odwołać szkolenie.')) { c.focus(); return; }
+      var badge = f.closest('tr').querySelector('[data-status]');
+      if (badge) { badge.className = 'badge badge--off'; badge.textContent = 'Odwołane'; }
+      f.querySelector('button[type="submit"]').hidden = true; c.closest('label').hidden = true;
+      done(f);
+    });
+  });
 
   /* ---------- menu boczne strefy jako szuflada na telefonach (reszta strony dostaje inert) ---------- */
   function closeNav(restore) {

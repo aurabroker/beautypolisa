@@ -34,6 +34,14 @@
 --       (0–30 identyfikatorów z snippets/zabiegi-oc-beauty.json, funkcja zabiegi_ids() generowana z pliku)
 --       i filtr LUB na tablicy (zabiegi && …, indeks GIN); kolejność bez zmian – od najnowszej publikacji,
 --       bez dopasowywania (dok. 11 §11.10).
+--   00, D42 (decyzja zleceniodawcy 13.11.2026): płatność za szkolenie z poziomu Strefy Klienta; SPRZEDAWCĄ
+--       jest ORGANIZATOR; portal BEZ PROWIZJI w okresie promocji (prowizja = parametr platform_fee_settings).
+--       Model: marketplace z płatnościami dzielonymi u licencjonowanego operatora (operator do wyboru) –
+--       środki płyną od kupującego na subkonto / konto połączone organizatora; Aura Expert nie przyjmuje
+--       ani nie przekazuje cudzych środków [kwalifikację potwierdza prawnik]. W bazie: zamówienia z kwotą
+--       wyłącznie z bazy, rezerwacja miejsca na 15 minut bez nadsprzedaży (seats_held + blokada wiersza),
+--       idempotentna obsługa podpisanych webhooków (podpis sprawdza Worker – sekret nie trafia do bazy),
+--       zwroty inicjowane przez organizatora, audyt zmian statusów, retencja (dok. 11 §12a).
 --
 -- Konwencje (jak w schema.sql / rls-policies.sql):
 --  * domyślne granty odebrane w schema.sql (ALTER DEFAULT PRIVILEGES … FROM public, anon, authenticated);
@@ -279,6 +287,10 @@ create table app_settings (
   -- oferty) i pozostałe
   contact_new_account_per_day smallint not null default 3  check (contact_new_account_per_day between 1 and 50),
   contact_per_account_day     smallint not null default 20 check (contact_per_account_day between 1 and 100),
+  -- 00, D42: płatności za szkolenia – czas rezerwacji miejsca i limity przeciw blokowaniu miejsc
+  order_reservation_minutes   smallint not null default 15 check (order_reservation_minutes between 10 and 30),
+  orders_per_user_hour        smallint not null default 10 check (orders_per_user_hour between 1 and 50),
+  active_reservations_per_user smallint not null default 3 check (active_reservations_per_user between 1 and 10),
   changed_by          uuid references auth.users(id) on delete set null,
   changed_at           timestamptz not null default now()
 );
@@ -776,10 +788,13 @@ create table trainings (
   seats_registered       integer not null default 0 check (seats_registered >= 0), -- licznik prowadzony przez funkcje zapisu
   per_account_limit      smallint not null default 3 check (per_account_limit > 0),
   audience               text not null default 'all_members' check (audience in ('all_members','owners')),
-  -- płatności online poza MVP: przy szkoleniu płatnym strona pokazuje cenę brutto,
-  -- a fakturę wystawia organizator bezpośrednio uczestnikowi/salonowi [Założenie]
+  -- przy szkoleniu płatnym strona pokazuje cenę brutto, a fakturę wystawia organizator (sprzedawca).
+  -- 00, D42: payment_mode = 'online' – zapłata w Strefie Klienta u operatora płatności na konto organizatora
+  -- (zamówienie training_orders, rezerwacja miejsca); 'poza_portalem' – rozliczenie bez portalu (jak dotąd)
   price_kind             text not null default 'bezplatne' check (price_kind in ('bezplatne','platne')),
   price_gross_pln        numeric(10,2) check (price_gross_pln > 0),
+  payment_mode           text not null default 'poza_portalem' check (payment_mode in ('poza_portalem','online')),
+  seats_held             integer not null default 0 check (seats_held >= 0), -- miejsca w rezerwacjach (zamówienia 'reserved')
   submitted_at           timestamptz,
   published_at           timestamptz,
   moderated_by           uuid references auth.users(id) on delete set null,
@@ -793,9 +808,11 @@ create table trainings (
   created_at             timestamptz not null default now(),
   updated_at             timestamptz not null default now(),
   check (ends_at > starts_at),
-  check (capacity is null or seats_registered <= capacity),
+  -- ostatnia linia obrony przed nadsprzedażą: zapisani + miejsca w rezerwacjach (00, D42) ≤ limit
+  check (capacity is null or seats_registered + seats_held <= capacity),
   check (format = 'online' or city is not null),
   check ((price_kind = 'platne') = (price_gross_pln is not null)),
+  check (payment_mode = 'poza_portalem' or price_kind = 'platne'),
   check (status <> 'published' or published_at is not null),
   check (concat_ws(' ', title, summary, description, venue_name, city) !~ '[<>]'),
   check (concat_ws(' ', title, summary, description, venue_name, city) !~* '(https?://|www\.)')
@@ -874,6 +891,268 @@ create index training_participant_contacts_idx on training_participant_contacts 
 
 
 -- -----------------------------------------------------------------------------------------------------
+-- 4a. PŁATNOŚCI ZA SZKOLENIA (00, D42 – decyzja zleceniodawcy 13.11.2026; dok. 11 §12a)
+-- -----------------------------------------------------------------------------------------------------
+-- Sprzedawcą jest ORGANIZATOR. Płatność obsługuje licencjonowany operator (marketplace z płatnościami
+-- dzielonymi – operator do wyboru, adapter PaymentProvider w Workerze): kupujący płaci na stronie operatora
+-- (BLIK, karta, przelew), środki trafiają na subkonto / konto połączone organizatora, Aura Expert ich nie
+-- przyjmuje ani nie przekazuje [kwalifikację prawną potwierdza prawnik]. Baza portalu: zamówienie z kwotą
+-- wyłącznie z bazy (migawka ceny szkolenia), rezerwacja miejsca z wygaśnięciem, stany płatności z podpisanych
+-- webhooków (podpis i – gdzie operator tego wymaga – potwierdzenie transakcji w API sprawdza Worker; sekrety
+-- operatora tylko w sekretach Workera), zwroty, audyt i retencja. Bez danych kart i numerów rachunków.
+-- Kwoty w groszach (integer). Wszystkie zapisy – wyłącznie funkcjami service_role (backend_only_guard).
+
+-- Prowizja platformy (application fee) jako parametr z historią. Decyzja 00, D42: w okresie promocji 0 %.
+-- Zmienia wyłącznie admin z odwołaniem do decyzji zleceniodawcy (app_set_platform_fee); zamówienie
+-- przechowuje migawkę stawki i kwoty – zmiana stawki nie działa wstecz.
+create table platform_fee_settings (
+  id               uuid primary key default gen_random_uuid(),
+  valid_from       timestamptz not null unique,
+  fee_bps          smallint not null check (fee_bps between 0 and 3000),          -- punkty bazowe: 100 = 1 %
+  fee_fixed_grosze integer  not null default 0 check (fee_fixed_grosze between 0 and 10000),
+  decision_ref     text not null check (char_length(decision_ref) between 5 and 200),
+  set_by           uuid references auth.users(id) on delete set null,
+  created_at       timestamptz not null default now()
+);
+insert into platform_fee_settings (valid_from, fee_bps, fee_fixed_grosze, decision_ref)
+values ('2026-11-13 00:00:00+01', 0, 0, 'decyzja zleceniodawcy 00, D42 z 13.11.2026 – bez prowizji w okresie promocji');
+
+-- Konto organizatora u operatora („Wypłaty”): subkonto / konto połączone zakłada i weryfikuje (KYC/KYB)
+-- OPERATOR na swojej stronie (link z createOnboardingLink). Portal przechowuje tylko identyfikator konta
+-- u operatora i stan zdolności do przyjmowania płatności i wypłat – bez numeru rachunku, dokumentów
+-- i danych osób reprezentujących. Stan ustawia wyłącznie operator (webhook albo odpytanie getPayoutStatus);
+-- personel nie może „włączyć” płatności ręcznie.
+create table organizer_payout_accounts (
+  id                   uuid primary key default gen_random_uuid(),
+  organizer_id         uuid not null references training_organizers(id) on delete restrict,
+  provider             text not null check (provider in ('p24','payu','tpay','stripe')),
+  provider_account_ref text not null check (provider_account_ref ~ '^[A-Za-z0-9_.:-]{3,100}$'), -- bez grantu
+  status               text not null default 'onboarding'
+                         check (status in ('onboarding','active','restricted','disabled')),
+  charges_enabled      boolean not null default false,
+  payouts_enabled      boolean not null default false,
+  requirements_due     boolean not null default true,
+  status_checked_at    timestamptz,
+  activated_at         timestamptz,
+  created_by           uuid references auth.users(id) on delete set null,
+  created_at           timestamptz not null default now(),
+  updated_at           timestamptz not null default now(),
+  unique (provider, provider_account_ref),
+  check (status <> 'active' or (charges_enabled and not requirements_due and activated_at is not null))
+);
+create unique index organizer_payout_accounts_one_uq on organizer_payout_accounts (organizer_id)
+  where status <> 'disabled';
+
+-- Warunki sprzedaży organizatora (regulamin organizatora + informacje przedkontraktowe sprzedawcy):
+-- dane sprzedawcy (DSA art. 30 – identyfikowalność przedsiębiorców; NIP zgodny ze zweryfikowanym profilem),
+-- zasady rezygnacji i zwrotów, informacja o prawie odstąpienia, reklamacje, pełna treść. Organizator
+-- składa nową wersję, personel sprawdza ją z profilem organizatora; jedna aktywna wersja. Kupujący
+-- akceptuje konkretną wersję (training_orders.sales_terms_id). Tekst zwykły jak treści szkoleń.
+create table organizer_sales_terms (
+  id                 uuid primary key default gen_random_uuid(),
+  organizer_id       uuid not null references training_organizers(id) on delete restrict,
+  version            integer not null check (version > 0),
+  status             text not null default 'pending_review'
+                       check (status in ('pending_review','active','rejected','retired')),
+  seller_legal_name  text not null check (char_length(seller_legal_name) between 2 and 200),
+  seller_address     text not null check (char_length(seller_address) between 5 and 200),
+  seller_nip         text not null check (seller_nip ~ '^[0-9]{10}$'),
+  seller_register    text check (char_length(seller_register) <= 120),          -- KRS albo CEIDG
+  seller_email       text not null check (char_length(seller_email) <= 254 and seller_email ~ '^[^@[:space:]<>]+@[^@[:space:]<>]+\.[a-z]{2,}$'),
+  seller_phone       text check (seller_phone ~ '^\+?[0-9 ]{9,16}$'),
+  cancellation_rules text not null check (char_length(cancellation_rules) between 50 and 4000),
+  withdrawal_info    text not null check (char_length(withdrawal_info) between 50 and 4000),
+  complaint_info     text not null check (char_length(complaint_info) between 30 and 2000),
+  terms_body         text not null check (char_length(terms_body) between 200 and 20000),
+  submitted_by       uuid references auth.users(id) on delete set null,
+  submitted_at       timestamptz not null default now(),
+  reviewed_by        uuid references auth.users(id) on delete set null,
+  reviewed_at        timestamptz,
+  rejection_reason   text check (char_length(rejection_reason) <= 500),
+  unique (organizer_id, version),
+  check (concat_ws(' ', seller_legal_name, seller_address, seller_register, cancellation_rules, withdrawal_info,
+                   complaint_info, terms_body) !~ '[<>]'),
+  check (concat_ws(' ', cancellation_rules, withdrawal_info, complaint_info, terms_body) !~* '(https?://|www\.)'),
+  check (status not in ('active','retired','rejected') or (reviewed_by is not null and reviewed_at is not null))
+);
+create unique index organizer_sales_terms_active_uq on organizer_sales_terms (organizer_id) where status = 'active';
+create unique index organizer_sales_terms_pending_uq on organizer_sales_terms (organizer_id) where status = 'pending_review';
+
+-- Zamówienie miejsca na płatnym szkoleniu (jedno zamówienie = jedno miejsce dla zalogowanego uczestnika).
+-- Kwota = migawka ceny szkolenia z bazy (nigdy z przeglądarki), prowizja = migawka z platform_fee_settings.
+-- Stany (dok. 11 §12a.4): reserved → paid | expired | cancelled; paid → refund_pending → partially_refunded |
+-- refunded; expired/cancelled → paid (spóźniona płatność przy wolnym miejscu) albo refund_pending (bez
+-- miejsca – zwrot automatyczny). Zmiany statusów zapisuje wyzwalacz audytu (training_orders_status_audit).
+-- Bez danych osobowych poza identyfikatorami – dane kupującego i do faktury w training_order_buyer_data.
+create table training_orders (
+  id                  uuid primary key default gen_random_uuid(),
+  order_ref           text not null unique check (order_ref ~ '^SZ-[0-9]{4}-[0-9A-F]{8}$'), -- numer dla ludzi
+  idempotency_key     uuid not null,                     -- z formularza (nadany przez serwer przy renderze)
+  training_id         uuid not null references trainings(id) on delete restrict,
+  organizer_id        uuid not null references training_organizers(id) on delete restrict,
+  account_id          uuid references client_accounts(id) on delete set null,
+  user_id             uuid references auth.users(id) on delete set null,
+  registration_id     uuid references training_registrations(id) on delete set null,
+  sales_terms_id      uuid not null references organizer_sales_terms(id) on delete restrict,
+  payout_account_id   uuid not null references organizer_payout_accounts(id) on delete restrict,
+  provider            text not null check (provider in ('p24','payu','tpay','stripe')),
+  buyer_kind          text not null check (buyer_kind in ('osoba','firma')),
+  status              text not null default 'reserved'
+                        check (status in ('reserved','expired','cancelled','paid','refund_pending',
+                                          'partially_refunded','refunded')),
+  amount_grosze       integer not null check (amount_grosze between 100 and 10000000),
+  currency            text not null default 'PLN' check (currency = 'PLN'),
+  platform_fee_bps    smallint not null check (platform_fee_bps between 0 and 3000),
+  platform_fee_grosze integer not null check (platform_fee_grosze >= 0),
+  refunded_grosze     integer not null default 0 check (refunded_grosze >= 0),
+  reserved_until      timestamptz not null,
+  paid_at             timestamptz,
+  expired_at          timestamptz,
+  cancelled_at        timestamptz,
+  cancel_requested_at timestamptz,                       -- kupujący prosi o rezygnację; decyzja i zwrot – organizator
+  disputed_at         timestamptz,                       -- spór / obciążenie zwrotne u operatora
+  refund_reason       text check (refund_reason in ('rezygnacja','odwolanie','spozniona-platnosc','podwojna-platnosc','inne')),
+  invoice_number      text check (char_length(invoice_number) between 1 and 60 and invoice_number !~ '[<>]'),
+  invoice_storage_path text check (invoice_storage_path ~ '^[0-9a-f-]{36}/[0-9a-f-]{36}/[0-9a-f-]{36}\.pdf$'),
+  invoice_sha256      text check (invoice_sha256 ~ '^[0-9a-f]{64}$'),
+  invoice_added_at    timestamptz,
+  notice_version      text not null check (char_length(notice_version) between 1 and 40), -- informacja o sprzedawcy i danych
+  anonymized_at       timestamptz,
+  created_at          timestamptz not null default now(),
+  updated_at          timestamptz not null default now(),
+  unique (user_id, idempotency_key),
+  check (platform_fee_grosze < amount_grosze),
+  check (refunded_grosze <= amount_grosze),
+  check (status not in ('paid','partially_refunded','refunded') or paid_at is not null),
+  check (status <> 'refunded' or refunded_grosze = amount_grosze),
+  check (status <> 'partially_refunded' or refunded_grosze between 1 and amount_grosze - 1),
+  check ((invoice_storage_path is null) = (invoice_sha256 is null))
+);
+-- jedna aktywna rezerwacja i jedno opłacone miejsce na osobę i szkolenie
+create unique index training_orders_reserved_uq on training_orders (training_id, user_id) where status = 'reserved';
+create unique index training_orders_paid_uq on training_orders (training_id, user_id)
+  where status in ('paid','partially_refunded');
+create index training_orders_expiry_idx   on training_orders (reserved_until) where status = 'reserved';
+create index training_orders_training_idx on training_orders (training_id, status);
+create index training_orders_user_idx     on training_orders (user_id, created_at desc);
+
+-- Dane kupującego: uczestnik (z profilu zweryfikowanego użytkownika) i dane do faktury, którą wystawia
+-- ORGANIZATOR (portal faktur nie wystawia). Organizator czyta je wyłącznie funkcją z wpisem w dzienniku
+-- (app_organizer_invoice_data); personel – brak polityki (minimalizacja). Usuwane 90 dni po zakończeniu
+-- szkolenia [Założenie] – organizator przenosi je do swojej księgowości.
+create table training_order_buyer_data (
+  order_id          uuid primary key references training_orders(id) on delete cascade,
+  buyer_kind        text not null check (buyer_kind in ('osoba','firma')),
+  buyer_name        text not null check (char_length(buyer_name) between 2 and 200),
+  nip               text check (nip ~ '^[0-9]{10}$'),
+  street            text check (char_length(street) between 3 and 200),
+  postal_code       text check (postal_code ~ '^[0-9]{2}-[0-9]{3}$'),
+  city              text check (char_length(city) between 2 and 80),
+  invoice_email     text not null check (char_length(invoice_email) <= 254),
+  participant_name  text not null check (char_length(participant_name) between 2 and 120),
+  participant_email text not null check (char_length(participant_email) <= 254),
+  created_at        timestamptz not null default now(),
+  check ((buyer_kind = 'firma') = (nip is not null)),
+  check (buyer_kind = 'osoba' or (street is not null and postal_code is not null and city is not null)),
+  check (concat_ws(' ', buyer_name, street, city, participant_name) !~ '[<>@]')
+);
+
+-- Płatności (sesje płatności u operatora). Jedno zamówienie może mieć kilka prób (np. odrzucony BLIK);
+-- stan zmienia wyłącznie app_payment_webhook() według tabeli dozwolonych przejść (zdarzenia spóźnione
+-- albo w złej kolejności są zapisywane i pomijane).
+create table training_payments (
+  id                   uuid primary key default gen_random_uuid(),
+  order_id             uuid not null references training_orders(id) on delete restrict,
+  provider             text not null check (provider in ('p24','payu','tpay','stripe')),
+  provider_payment_ref text not null check (provider_payment_ref ~ '^[A-Za-z0-9_.:-]{3,200}$'),
+  attempt              smallint not null check (attempt between 1 and 5),
+  status               text not null default 'pending'
+                         check (status in ('pending','succeeded','failed','cancelled','expired',
+                                           'partially_refunded','refunded','disputed')),
+  amount_grosze        integer not null check (amount_grosze > 0),
+  currency             text not null default 'PLN' check (currency = 'PLN'),
+  method               text check (method in ('blik','karta','przelew','inna')),
+  checkout_expires_at  timestamptz,
+  succeeded_at         timestamptz,
+  last_event_at        timestamptz,
+  created_at           timestamptz not null default now(),
+  updated_at           timestamptz not null default now(),
+  unique (provider, provider_payment_ref),
+  unique (order_id, attempt)
+);
+
+-- Zwroty: inicjuje organizator (rezygnacja wg jego regulaminu, kwota ≤ pozostałej) albo system
+-- (odwołanie szkolenia, spóźniona płatność bez miejsca, podwójna płatność); wykonuje operator.
+-- id zwrotu = klucz idempotencji w API operatora. Zwrot wykonany poza portalem (w panelu operatora)
+-- zapisuje webhook jako requested_by = 'system:operator'.
+create table training_refunds (
+  id                  uuid primary key default gen_random_uuid(),
+  order_id            uuid not null references training_orders(id) on delete restrict,
+  payment_id          uuid not null references training_payments(id) on delete restrict,
+  amount_grosze       integer not null check (amount_grosze > 0),
+  reason              text not null check (reason in ('rezygnacja','odwolanie','spozniona-platnosc','podwojna-platnosc','inne')),
+  status              text not null default 'requested' check (status in ('requested','submitted','succeeded','failed')),
+  provider_refund_ref text unique check (provider_refund_ref ~ '^[A-Za-z0-9_.:-]{3,200}$'),
+  requested_by        text not null check (requested_by ~ '^(system(:[a-z0-9_.:-]{1,60})?|user:[0-9a-f-]{36})$'),
+  failure_code        text check (char_length(failure_code) <= 60 and failure_code ~ '^[A-Za-z0-9_.:-]*$'),
+  created_at          timestamptz not null default now(),
+  submitted_at        timestamptz,
+  succeeded_at        timestamptz,
+  failed_at           timestamptz,
+  updated_at          timestamptz not null default now()
+);
+create index training_refunds_order_idx on training_refunds (order_id);
+create unique index training_refunds_active_uq on training_refunds (order_id) where status in ('requested','submitted');
+
+-- Dziennik zdarzeń od operatora (deduplikacja i ślad). Zapisujemy wyłącznie zdarzenia z poprawnym podpisem
+-- (sprawdza Worker przed wywołaniem bazy) i tylko pola znormalizowane + skrót treści – bez surowego JSON
+-- (może zawierać e-mail, końcówkę karty). Unikalność (provider, event_id) daje idempotencję także przy
+-- równoległych doręczeniach tego samego zdarzenia.
+create table payment_webhook_events (
+  id             bigint generated always as identity primary key,
+  provider       text not null check (provider in ('p24','payu','tpay','stripe')),
+  event_id       text not null check (event_id ~ '^[A-Za-z0-9_.:-]{1,200}$'),
+  event_type     text not null check (event_type in ('payment.succeeded','payment.failed','payment.cancelled',
+                   'payment.expired','refund.succeeded','refund.failed','dispute.opened','dispute.closed')),
+  provider_ref   text check (provider_ref ~ '^[A-Za-z0-9_.:-]{1,200}$'),
+  order_id       uuid,                                   -- z metadanych zdarzenia – do kontroli krzyżowej
+  amount_grosze  integer,
+  currency       text check (currency ~ '^[A-Z]{3}$'),
+  payload_sha256 text not null check (payload_sha256 ~ '^[0-9a-f]{64}$'),
+  source         text not null default 'webhook' check (source in ('webhook','reconciliation')),
+  occurred_at    timestamptz,
+  received_at    timestamptz not null default now(),
+  status         text not null default 'received'
+                   check (status in ('received','processed','ignored_stale','rejected_mismatch','unknown_ref')),
+  result         text check (char_length(result) <= 60),
+  processed_at   timestamptz,
+  unique (provider, event_id)
+);
+create index payment_webhook_events_received_idx on payment_webhook_events (received_at);
+
+-- Rozbieżności do wyjaśnienia (uzgadnianie z raportami operatora, kontrole spójności, zdarzenia odrzucone).
+-- details bez danych osobowych (≤ 2 KB). Jedna otwarta pozycja danego rodzaju na zamówienie albo referencję.
+create table payment_discrepancies (
+  id           bigint generated always as identity primary key,
+  kind         text not null check (kind in ('amount_mismatch','currency_mismatch','order_mismatch',
+                 'unknown_payment','paid_not_confirmed','confirmed_not_paid','double_payment',
+                 'late_payment_no_seat','refund_failed','refund_stuck','external_refund','seat_counter',
+                 'reservation_stuck','cancel_request_stale','dispute')),
+  provider     text check (provider in ('p24','payu','tpay','stripe')),
+  provider_ref text check (provider_ref ~ '^[A-Za-z0-9_.:-]{1,200}$'),
+  order_id     uuid references training_orders(id) on delete set null,
+  details      jsonb not null default '{}'::jsonb check (pg_column_size(details) <= 2048),
+  detected_at  timestamptz not null default now(),
+  resolved_at  timestamptz,
+  resolved_by  uuid references auth.users(id) on delete set null,
+  resolution   text check (char_length(resolution) <= 500 and resolution !~ '[<>]'),
+  check ((resolved_at is null) = (resolution is null))
+);
+create unique index payment_discrepancies_open_uq
+  on payment_discrepancies (kind, coalesce(order_id::text, provider_ref, '')) where resolved_at is null;
+
+
+-- -----------------------------------------------------------------------------------------------------
 -- 5. ZGŁOSZENIA NADUŻYĆ – mechanizm zgłaszania i działania (art. 16 DSA [do weryfikacji zakresu]):
 --    „Zgłoś nadużycie” przy ogłoszeniu, w e-mailu z formularza, przy szkoleniu, przy ogłoszeniu
 --    „Szukam pracy”, w e-mailu z wiadomością pracodawcy i przy profilu pracodawcy (podszywanie się).
@@ -947,11 +1226,19 @@ create table client_audit_log (
                   'organizer_plan_set','organizer_plan_cancelled',
                   -- 1.4 (przegląd red team)
                   'account_identity_changed','employer_trusted','employer_trust_revoked','employer_nip_conflict',
-                  'job_seeker_suspended','reply_address_verified','organizer_plan_invoice_set')),
+                  'job_seeker_suspended','reply_address_verified','organizer_plan_invoice_set',
+                  -- 00, D42 (płatności za szkolenia)
+                  'training_order_created','training_order_status_changed','training_order_cancel_requested',
+                  'training_refund_requested','training_refund_status_changed','payment_event_rejected',
+                  'payout_account_created','payout_account_status_changed','sales_terms_submitted',
+                  'sales_terms_approved','sales_terms_rejected','platform_fee_changed','organizer_orders_viewed',
+                  'organizer_invoice_data_viewed','training_invoice_attached','payment_discrepancy_resolved')),
   entity        text not null check (entity in ('account','member','invitation','policy','document','claim',
                   'job_offer','training','training_registration','organizer','organizer_member',
                   'feature_flag','candidate_ad','job_seeker','phone','promotion','organizer_plan',
-                  'reply_address')),
+                  'reply_address',
+                  -- 00, D42
+                  'training_order','training_refund','payment','payout_account','sales_terms','platform_fee')),
   entity_id     uuid,
   payload       jsonb not null default '{}'::jsonb check (pg_column_size(payload) <= 2048), -- np. {"from":"draft","to":"pending_review"}
   request_id    text check (char_length(request_id) <= 64),
@@ -1113,6 +1400,53 @@ create trigger candidate_blocks_guard
 create trigger candidate_ad_views_daily_guard
   before insert or update or delete on candidate_ad_views_daily
   for each row execute function public.backend_only_guard();
+-- 00, D42: tabele płatności – zapis wyłącznie funkcjami service_role
+create trigger platform_fee_settings_guard
+  before insert or update or delete on platform_fee_settings
+  for each row execute function public.backend_only_guard();
+create trigger organizer_payout_accounts_guard
+  before insert or update or delete on organizer_payout_accounts
+  for each row execute function public.backend_only_guard();
+create trigger organizer_sales_terms_guard
+  before insert or update or delete on organizer_sales_terms
+  for each row execute function public.backend_only_guard();
+create trigger training_orders_guard
+  before insert or update or delete on training_orders
+  for each row execute function public.backend_only_guard();
+create trigger training_order_buyer_data_guard
+  before insert or update or delete on training_order_buyer_data
+  for each row execute function public.backend_only_guard();
+create trigger training_payments_guard
+  before insert or update or delete on training_payments
+  for each row execute function public.backend_only_guard();
+create trigger training_refunds_guard
+  before insert or update or delete on training_refunds
+  for each row execute function public.backend_only_guard();
+create trigger payment_webhook_events_guard
+  before insert or update or delete on payment_webhook_events
+  for each row execute function public.backend_only_guard();
+create trigger payment_discrepancies_guard
+  before insert or update or delete on payment_discrepancies
+  for each row execute function public.backend_only_guard();
+
+-- 00, D42: każda zmiana statusu zamówienia trafia do dziennika (kto: app.audit_actor ustawiany przez funkcje
+-- – user:/staff:/system:webhook:<operator>/system:cron), bez danych osobowych w payload.
+create or replace function public.training_orders_status_audit() returns trigger
+language plpgsql set search_path = '' as $$
+begin
+  if new.status is distinct from old.status then
+    insert into public.client_audit_log (account_id, organizer_id, actor, action, entity, entity_id, payload)
+    values (new.account_id, new.organizer_id,
+            coalesce(nullif(current_setting('app.audit_actor', true), ''), 'system:payments'),
+            'training_order_status_changed', 'training_order', new.id,
+            jsonb_build_object('from', old.status, 'to', new.status, 'reason', new.refund_reason));
+  end if;
+  return null;
+end $$;
+revoke all on function public.training_orders_status_audit() from public, anon, authenticated;
+create trigger training_orders_status_audit
+  after update of status on training_orders
+  for each row execute function public.training_orders_status_audit();
 
 -- SEC-16: tożsamość konta. Zmiana NIP (także przez personel w /panel) zeruje weryfikację GUS i poziom 2
 -- zaufania – weryfikacja nie „przechodzi” na inny NIP; serwer wymusza nowe sprawdzenie w GUS. U pracodawcy
@@ -1339,6 +1673,7 @@ begin
     new.slug := trim(both '-' from left(v_base, 80)) || '-' || substr(md5(gen_random_uuid()::text), 1, 8);
     new.content_version  := 1;
     new.seats_registered := 0;
+    new.seats_held       := 0;
     new.published_at     := null;
     new.created_by       := (select auth.uid());
     new.submitted_at     := case when new.status = 'pending_review' then now() end;
@@ -1354,11 +1689,22 @@ begin
   end if;
   v_changed := (new.title, new.summary, new.description, new.format, new.city, new.venue_name, new.starts_at,
                 new.ends_at, new.registration_closes_at, new.audience, new.per_account_limit, new.price_kind,
-                new.price_gross_pln)
+                new.price_gross_pln, new.payment_mode)
                is distinct from
                (old.title, old.summary, old.description, old.format, old.city, old.venue_name, old.starts_at,
                 old.ends_at, old.registration_closes_at, old.audience, old.per_account_limit, old.price_kind,
-                old.price_gross_pln);
+                old.price_gross_pln, old.payment_mode);
+  -- 00, D42: ceny i sposobu płatności nie zmienia się przy otwartych rezerwacjach (seats_held), a sposobu
+  -- płatności szkolenia „online” – także przy zapisanych (opłacone zamówienia; zmiana trybu odcięłaby zwroty).
+  -- Liczniki z wiersza szkolenia, nie z training_orders: guard działa z uprawnieniami organizatora,
+  -- a organizator nie ma polityki odczytu zamówień (RLS zwróciłby 0 wierszy).
+  if (new.price_kind, new.price_gross_pln, new.payment_mode) is distinct from
+     (old.price_kind, old.price_gross_pln, old.payment_mode)
+     and (old.seats_held > 0
+          or (old.payment_mode = 'online' and new.payment_mode is distinct from old.payment_mode
+              and old.seats_registered > 0)) then
+    raise exception 'trainings: szkolenie ma rezerwacje albo opłacone zamówienia – zmiana ceny lub sposobu płatności niemożliwa';
+  end if;
   if v_changed and old.status = 'pending_review' then
     raise exception 'trainings: szkolenie jest w moderacji – wycofaj je do szkicu, aby zmienić treść';
   end if;
@@ -1535,6 +1881,16 @@ alter table employer_reply_addresses      enable row level security;
 alter table candidate_ad_hidden_nips      enable row level security;
 alter table candidate_blocks              enable row level security;  -- bez polityk: service_role_only
 alter table candidate_ad_views_daily      enable row level security;  -- bez polityk: service_role_only
+-- 00, D42: płatności za szkolenia
+alter table platform_fee_settings         enable row level security;
+alter table organizer_payout_accounts     enable row level security;
+alter table organizer_sales_terms         enable row level security;
+alter table training_orders               enable row level security;
+alter table training_order_buyer_data     enable row level security;
+alter table training_payments             enable row level security;
+alter table training_refunds              enable row level security;
+alter table payment_webhook_events        enable row level security;
+alter table payment_discrepancies         enable row level security;
 
 alter table client_members                force row level security;
 alter table client_invitations            force row level security;
@@ -1555,6 +1911,12 @@ alter table sms_send_log                  force row level security;
 alter table employer_reply_addresses      force row level security;
 alter table candidate_ad_hidden_nips      force row level security;
 alter table candidate_blocks              force row level security;
+alter table organizer_payout_accounts     force row level security;
+alter table training_orders               force row level security;
+alter table training_order_buyer_data     force row level security;
+alter table training_payments             force row level security;
+alter table training_refunds              force row level security;
+alter table payment_webhook_events        force row level security;
 
 revoke all on client_accounts, client_members, client_invitations, client_policies, client_policy_notes,
               client_policy_documents, client_policy_reminders, job_offers, job_offer_contacts,
@@ -1563,7 +1925,10 @@ revoke all on client_accounts, client_members, client_invitations, client_polici
               client_audit_log, app_feature_flags, candidate_ads, candidate_ad_contact_log,
               user_phones, phone_verifications, employer_verifications, job_seekers, app_settings,
               app_promotions, organizer_plans, sms_send_log, employer_reply_addresses,
-              candidate_ad_hidden_nips, candidate_blocks, candidate_ad_views_daily
+              candidate_ad_hidden_nips, candidate_blocks, candidate_ad_views_daily,
+              platform_fee_settings, organizer_payout_accounts, organizer_sales_terms, training_orders,
+              training_order_buyer_data, training_payments, training_refunds, payment_webhook_events,
+              payment_discrepancies
   from public, anon, authenticated;
 
 -- SEC-01 (Data API): klucz publishable nie jest sekretem, a token z ciasteczka sesji użytkownik może
@@ -1854,17 +2219,18 @@ create policy organizer_plans_staff_read on organizer_plans
 
 -- 8.6 Szkolenia -----------------------------------------------------------------------------------------
 grant select (id, organizer_id, slug, status, title, summary, description, format, city, venue_name, starts_at,
-              ends_at, registration_closes_at, capacity, seats_registered, audience, price_kind, price_gross_pln,
-              published_at, cancelled_at)
-  on trainings to anon, authenticated;
+              ends_at, registration_closes_at, capacity, seats_registered, seats_held, audience, price_kind,
+              price_gross_pln, payment_mode, published_at, cancelled_at)
+  on trainings to anon, authenticated;          -- wolne miejsca = capacity − seats_registered − seats_held
 grant select (per_account_limit, content_version, submitted_at, rejection_reason, created_at, updated_at)
   on trainings to authenticated;                -- bez moderation_note, moderated_by, created_by
 -- status w grancie, ale guard dopuszcza tylko draft ↔ pending_review (i published → pending_review);
--- published_at, capacity (po utworzeniu), seats_registered, slug i kolumny moderacji – bez grantu
+-- published_at, capacity (po utworzeniu), seats_registered, seats_held, slug i kolumny moderacji – bez grantu
 grant insert (organizer_id, status, title, summary, description, format, city, venue_name, starts_at, ends_at,
-              registration_closes_at, capacity, per_account_limit, audience, price_kind, price_gross_pln),
+              registration_closes_at, capacity, per_account_limit, audience, price_kind, price_gross_pln,
+              payment_mode),
       update (status, title, summary, description, format, city, venue_name, starts_at, ends_at,
-              registration_closes_at, per_account_limit, audience, price_kind, price_gross_pln)
+              registration_closes_at, per_account_limit, audience, price_kind, price_gross_pln, payment_mode)
   on trainings to authenticated;
 
 -- Katalog: tylko opublikowane (i odwołane – informacja dla zapisanych) szkolenia organizatorów z aktywnym
