@@ -477,6 +477,10 @@ create table job_offers (
   description      text not null check (char_length(description) between 200 and 5000),
   requirements     text check (char_length(requirements) <= 2000),
   benefits         text check (char_length(benefits) <= 2000),
+  -- zabiegi wybrane przez pracodawcę (00, D41): opcjonalnie 0–30 identyfikatorów z listy (zabiegi_ids());
+  -- guard dla właściciela usuwa powtórzenia, sortuje i odrzuca nowo dodane pozycje wycofane (BP422)
+  zabiegi          text[] not null default '{}'
+                     check (cardinality(zabiegi) <= 30 and zabiegi <@ public.zabiegi_ids()),
   employer_name    text not null,             -- migawka client_accounts.display_name (ustawia trigger)
   submitted_at     timestamptz,
   published_at     timestamptz,
@@ -502,6 +506,8 @@ create table job_offers (
 create index job_offers_public_idx  on job_offers (status, expires_at desc);
 create index job_offers_account_idx on job_offers (account_id, status);
 create index job_offers_filter_idx  on job_offers (profession, voivodeship) where status = 'published';
+-- filtr „Zabiegi” (00, D41): zabiegi && $1 (ogłoszenie zawiera którykolwiek z wybranych) – GIN tylko dla opublikowanych
+create index job_offers_zabiegi_idx on job_offers using gin (zabiegi) where status = 'published';
 
 -- Sposób kontaktu wybrany przez salon. Osobna tabela BEZ grantu dla anon: dane kontaktowe nie trafiają
 -- do listy, JSON-LD ani sitemap; serwer pokazuje je tylko na stronie pojedynczego ogłoszenia po kliknięciu
@@ -607,6 +613,10 @@ create table candidate_ads (
   experience         text not null check (experience in ('do-1-roku','1-3-lata','3-5-lat','powyzej-5-lat')),
   available_from     date not null,
   description        text check (char_length(description) <= 500),
+  -- zabiegi wybrane przez autora (00, D41): opcjonalnie 0–30 identyfikatorów z listy; zapis tylko przez
+  -- app_candidate_ad_save() (walidacja BP422 bez wartości, bez powtórzeń, nowo dodane – tylko aktywne)
+  zabiegi            text[] not null default '{}'
+                       check (cardinality(zabiegi) <= 30 and zabiegi <@ public.zabiegi_ids()),
   notice_version     text not null check (char_length(notice_version) <= 40), -- wersja regulaminu i klauzuli informacyjnej
   submitted_at       timestamptz,
   published_at       timestamptz,
@@ -627,6 +637,7 @@ create table candidate_ads (
 );
 create index candidate_ads_public_idx on candidate_ads (status, published_at desc, ad_ref desc);
 create index candidate_ads_filter_idx on candidate_ads (profession, voivodeship) where status = 'published';
+create index candidate_ads_zabiegi_idx on candidate_ads using gin (zabiegi) where status = 'published';  -- 00, D41
 
 -- „Ukryj moje ogłoszenie przed firmami o NIP …” (PRIV-07): obecny albo poprzedni pracodawca autora nie
 -- zobaczy jego karty ani nie napisze do niego (sprawdza app_candidate_ads_page i app_candidate_contact).
@@ -1158,9 +1169,24 @@ language plpgsql set search_path = '' as $$
 declare
   v_changed boolean;
   v_city    text;
+  v_old_zab text[] := case when tg_op = 'UPDATE' then old.zabiegi else '{}'::text[] end;
 begin
   if current_user in ('service_role', 'postgres', 'supabase_admin') then
     return new;
+  end if;
+
+  -- Zabiegi (00, D41): tylko identyfikatory z listy, bez pustych i powtórzeń, najwyżej 30; nowo dodane – tylko
+  -- aktywne (wycofana pozycja zostaje w ogłoszeniu, które już ją ma). Błąd BP422 z nazwą pola, bez wartości
+  -- (zanim CHECK zwróci w DETAIL cały wiersz). Zapis znormalizowany: posortowane identyfikatory.
+  if new.zabiegi is distinct from v_old_zab then
+    if new.zabiegi is null or array_position(new.zabiegi, null) is not null
+       or not (new.zabiegi <@ public.zabiegi_ids())
+       or exists (select 1 from unnest(new.zabiegi) z
+                   where z <> all (v_old_zab) and z <> all (public.zabiegi_ids(true)))
+       or (select count(distinct z) from unnest(new.zabiegi) z) > 30 then
+      raise exception 'job_offers: nieprawidłowe pole zabiegi' using errcode = 'BP422';
+    end if;
+    new.zabiegi := array(select distinct z from unnest(new.zabiegi) z order by z);
   end if;
 
   -- SEC-18: limit szkiców liczony pod blokadą konta – równoległe żądania nie przekroczą limitu
@@ -1200,11 +1226,11 @@ begin
   end if;
   v_changed := (new.title, new.profession, new.employment_type, new.working_time, new.city, new.voivodeship,
                 new.postal_code, new.salary_min, new.salary_max, new.salary_unit, new.salary_basis,
-                new.description, new.requirements, new.benefits)
+                new.description, new.requirements, new.benefits, new.zabiegi)
                is distinct from
                (old.title, old.profession, old.employment_type, old.working_time, old.city, old.voivodeship,
                 old.postal_code, old.salary_min, old.salary_max, old.salary_unit, old.salary_basis,
-                old.description, old.requirements, old.benefits);
+                old.description, old.requirements, old.benefits, old.zabiegi);   -- zabiegi = treść (00, D41)
   if v_changed and old.status = 'pending_review' then
     raise exception 'job_offers: ogłoszenie jest w moderacji – wycofaj je do szkicu, aby zmienić treść';
   end if;
@@ -1644,7 +1670,7 @@ create policy claims_owner_select on claims_reports
 -- (W „BEAUTY” anon czyta z job_listings także phone, email i owner_id ogłoszeniodawcy – tu celowo nie.)
 grant select (id, slug, status, title, profession, employment_type, working_time, city, voivodeship,
               postal_code, salary_min, salary_max, salary_unit, salary_basis, description, requirements,
-              benefits, employer_name, published_at, expires_at)
+              benefits, zabiegi, employer_name, published_at, expires_at)
   on job_offers to anon;
 create policy job_offers_public_read on job_offers
   for select to anon
@@ -1652,13 +1678,14 @@ create policy job_offers_public_read on job_offers
 
 grant select (id, account_id, slug, status, content_version, title, profession, employment_type, working_time,
               city, voivodeship, postal_code, salary_min, salary_max, salary_unit, salary_basis, description,
-              requirements, benefits, employer_name, submitted_at, published_at, expires_at,
+              requirements, benefits, zabiegi, employer_name, submitted_at, published_at, expires_at,
               rejection_reason, closed_at, created_at, updated_at)
   on job_offers to authenticated;               -- bez moderation_note, moderated_by i created_by
 grant insert (account_id, status, title, profession, employment_type, working_time, city, voivodeship,
-              postal_code, salary_min, salary_max, salary_unit, salary_basis, description, requirements, benefits),
+              postal_code, salary_min, salary_max, salary_unit, salary_basis, description, requirements, benefits,
+              zabiegi),
       update (status, title, profession, employment_type, working_time, city, voivodeship, postal_code,
-              salary_min, salary_max, salary_unit, salary_basis, description, requirements, benefits)
+              salary_min, salary_max, salary_unit, salary_basis, description, requirements, benefits, zabiegi)
   on job_offers to authenticated;               -- slug i content_version ustawia guard
 
 create policy job_offers_public_read_auth on job_offers   -- zalogowani widzą tablicę jak wszyscy
@@ -1712,7 +1739,8 @@ create policy app_feature_flags_read on app_feature_flags
 -- Pracodawcy – BRAK polityki (SEC-01): karty zwraca tylko app_candidate_ads_page() (service_role) –
 -- 20 na stronę, od najnowszej publikacji, z dzienną kwotą i alertem, bez rankingu i dopasowywania (D-C).
 grant select (id, status, content_version, first_name, profession, city, voivodeship, cooperation_forms,
-              experience, available_from, description, submitted_at, published_at, expires_at, rejection_reason)
+              experience, available_from, description, zabiegi, submitted_at, published_at, expires_at,
+              rejection_reason)
   on candidate_ads to authenticated;
 create policy candidate_ads_author_read on candidate_ads
   for select to authenticated
@@ -2385,6 +2413,66 @@ begin
     delete from public.job_offer_relay_log where created_at < now() - interval '30 days';
   end if;
   return v_count;
+end $$;
+
+-- 10.9a Filtr „Zabiegi” (00, D41) – wspólna walidacja parametru {"zabiegi":[…]} list ofert i „Szukam pracy”.
+-- NULL = brak filtra (klucz pominięty albo pusta tablica). Tylko identyfikatory z listy (także wycofane – stare
+-- adresy z filtrem nadal działają), bez powtórzeń; inaczej BP422 bez wartości. Serwer najpierw normalizuje
+-- adres (?zabieg=…: pomija nieznane i powtórzone identyfikatory i mówi o tym na stronie), więc BP422 oznacza
+-- wywołanie z pominięciem aplikacji. Górna granica = długość listy (117) – zapytanie pozostaje ograniczone.
+create or replace function public.zabiegi_filter(p_filters jsonb)
+returns text[]
+language plpgsql immutable set search_path = '' as $$
+declare
+  v_zab text[];
+begin
+  if p_filters is null or not (p_filters ? 'zabiegi') or p_filters -> 'zabiegi' = '[]'::jsonb then
+    return null;
+  end if;
+  if jsonb_typeof(p_filters -> 'zabiegi') <> 'array'
+     or exists (select 1 from jsonb_array_elements(p_filters -> 'zabiegi') e where jsonb_typeof(e) <> 'string') then
+    raise exception 'filtr: nieprawidłowe pole zabiegi' using errcode = 'BP422';
+  end if;
+  v_zab := array(select distinct e from jsonb_array_elements_text(p_filters -> 'zabiegi') e order by e);
+  if not (v_zab <@ public.zabiegi_ids()) then
+    raise exception 'filtr: nieprawidłowe pole zabiegi' using errcode = 'BP422';
+  end if;
+  return v_zab;
+end $$;
+
+-- 10.9b Publiczna lista ofert „Dam pracę” (00, D41) dla danych w cache bez sesji (16): serwer woła ją kluczem
+-- serwisowym (brak EXECUTE dla anon/authenticated – 9.6 pkt 1). Zwraca to samo co polityka anon
+-- job_offers_public_read (opublikowane, nieprzeterminowane, tylko kolumny z grantu anon) – nie poszerza
+-- dostępu. Zasada tablicy (D-C): kolejność WYŁĄCZNIE od najnowszej publikacji (published_at, id), bez rankingu,
+-- bez „najlepiej dopasowanych” i bez liczby wspólnych zabiegów; filtry tylko po polach wybranych przez
+-- pracodawcę: zawód, województwo, rodzaj umowy, zabiegi (LUB – oferta z co najmniej jednym z wybranych).
+-- 20 ofert na stronę, kursor {"published_at","id"} zamiast numerów stron. Bez limitu dziennego – oferty są
+-- publiczne (limity na IP w WAF, 02 §4.13). To samo zapytanie przez Data API jako anon (RLS):
+--   GET /rest/v1/job_offers?select=…&zabiegi=ov.{g1-03,g2-12}&order=published_at.desc,id.desc&limit=20
+-- (pod RLS operator && nie jest leakproof, więc indeks GIN użyje dopiero funkcja service_role – 16).
+create or replace function public.app_job_offers_page(p_filters jsonb default '{}'::jsonb, p_cursor jsonb default null)
+returns table (id uuid, slug text, title text, profession text, employment_type text, working_time text,
+               city text, voivodeship text, salary_min numeric, salary_max numeric, salary_unit text,
+               salary_basis text, zabiegi text[], employer_name text, published_at timestamptz,
+               expires_at timestamptz)
+language plpgsql stable set search_path = '' as $$
+declare
+  v_zab text[] := public.zabiegi_filter(p_filters);
+begin
+  return query
+  select o.id, o.slug, o.title, o.profession, o.employment_type, o.working_time, o.city, o.voivodeship,
+         o.salary_min, o.salary_max, o.salary_unit, o.salary_basis, o.zabiegi, o.employer_name,
+         o.published_at, o.expires_at
+    from public.job_offers o
+   where o.status = 'published' and o.expires_at > now()
+     and (p_filters ->> 'profession' is null or o.profession = p_filters ->> 'profession')
+     and (p_filters ->> 'voivodeship' is null or o.voivodeship = p_filters ->> 'voivodeship')
+     and (p_filters ->> 'employment_type' is null or o.employment_type = p_filters ->> 'employment_type')
+     and (v_zab is null or o.zabiegi && v_zab)                    -- LUB: co najmniej jeden z wybranych
+     and (p_cursor is null
+          or (o.published_at, o.id) < ((p_cursor ->> 'published_at')::timestamptz, (p_cursor ->> 'id')::uuid))
+   order by o.published_at desc, o.id desc
+   limit 20;
 end $$;
 
 -- 10.10 Wygaszanie ogłoszeń (cron, codziennie) i usuwanie kontaktów 30 dni po zakończeniu ogłoszenia
@@ -3594,6 +3682,13 @@ begin
     when coalesce(p_payload ->> 'available_from', '') !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' then 'available_from'
     when char_length(v_desc) > 500 or v_desc ~ '[<>@]' or v_desc ~* '(https?://|www\.)'
          or v_desc ~ '[0-9][0-9 ()./-]{6,}[0-9]' then 'description'
+    -- zabiegi (00, D41): opcjonalne; tablica identyfikatorów z listy (aktywne albo wycofane – to, czy nowo
+    -- dodane są aktywne, sprawdza app_candidate_ad_save() względem zapisanego ogłoszenia), najwyżej 30 różnych
+    when p_payload ? 'zabiegi' and (
+         jsonb_typeof(p_payload -> 'zabiegi') is distinct from 'array'
+         or exists (select 1 from jsonb_array_elements(p_payload -> 'zabiegi') e where jsonb_typeof(e) <> 'string')
+         or not (array(select jsonb_array_elements_text(p_payload -> 'zabiegi')) <@ public.zabiegi_ids())
+         or (select count(distinct e) from jsonb_array_elements_text(p_payload -> 'zabiegi') e) > 30) then 'zabiegi'
   end;
   if v_field is null and (p_payload ->> 'available_from')::date > current_date + 365 then
     v_field := 'available_from';
@@ -3611,8 +3706,9 @@ create or replace function public.app_candidate_ad_save(p_actor uuid, p_payload 
 returns uuid
 language plpgsql set search_path = '' as $$
 declare
-  v_ad public.candidate_ads%rowtype;
-  v_id uuid;
+  v_ad  public.candidate_ads%rowtype;
+  v_id  uuid;
+  v_zab text[];
 begin
   perform public.app_require_feature('szukam_pracy');
   if not exists (select 1 from public.job_seekers s where s.user_id = p_actor and s.status = 'active')
@@ -3621,15 +3717,23 @@ begin
   end if;
   perform public.candidate_ad_check_payload(p_payload);
   select * into v_ad from public.candidate_ads where seeker_id = p_actor for update;
-  if not found then
+  -- zabiegi (00, D41): bez powtórzeń, posortowane; nowo dodane – tylko aktywne (wycofana pozycja zostaje
+  -- wyłącznie w ogłoszeniu, które już ją ma)
+  v_zab := array(select distinct e from jsonb_array_elements_text(coalesce(p_payload -> 'zabiegi', '[]'::jsonb)) e
+                  order by e);
+  if exists (select 1 from unnest(v_zab) z
+              where z <> all (coalesce(v_ad.zabiegi, '{}'::text[])) and z <> all (public.zabiegi_ids(true))) then
+    raise exception 'szukam-pracy: nieprawidłowe pole zabiegi' using errcode = 'BP422';
+  end if;
+  if v_ad.id is null then
     insert into public.candidate_ads
       (seeker_id, first_name, profession, city, voivodeship, cooperation_forms, experience, available_from,
-       description, notice_version, submitted_at)
+       description, zabiegi, notice_version, submitted_at)
     values (p_actor, trim(p_payload ->> 'first_name'), p_payload ->> 'profession', nullif(trim(p_payload ->> 'city'), ''),
             p_payload ->> 'voivodeship',
             array(select jsonb_array_elements_text(p_payload -> 'cooperation_forms')),
             p_payload ->> 'experience', (p_payload ->> 'available_from')::date,
-            nullif(trim(p_payload ->> 'description'), ''), p_notice_version, now())
+            nullif(trim(p_payload ->> 'description'), ''), v_zab, p_notice_version, now())
     returning id into v_id;
   else
     if v_ad.status = 'removed' then
@@ -3640,7 +3744,8 @@ begin
            city = nullif(trim(p_payload ->> 'city'), ''), voivodeship = p_payload ->> 'voivodeship',
            cooperation_forms = array(select jsonb_array_elements_text(p_payload -> 'cooperation_forms')),
            experience = p_payload ->> 'experience', available_from = (p_payload ->> 'available_from')::date,
-           description = nullif(trim(p_payload ->> 'description'), ''), notice_version = p_notice_version,
+           description = nullif(trim(p_payload ->> 'description'), ''), zabiegi = v_zab,
+           notice_version = p_notice_version,
            content_version = content_version + 1, status = 'pending_review', submitted_at = now(),
            published_at = null, expires_at = null, rejection_reason = null, updated_at = now()
      where id = v_ad.id
@@ -3754,7 +3859,9 @@ end $$;
 -- Warunki: włączony przełącznik; employer_trusted_actor() (właściciel aktywnego konta, GUS ≤ 120 dni,
 -- telefon, poziom 2 zaufania – SEC-02; aal2 sprawdza serwer). Zwraca najwyżej 20 kart od najnowszej
 -- publikacji (stronicowanie kursorem {"published_at","ad_ref"}), filtry wyłącznie z pól autora: zawód,
--- województwo, forma współpracy (D-C: bez wyszukiwania, rankingu i dopasowywania). Pomija ogłoszenia
+-- województwo, forma współpracy i zabiegi (00, D41: {"zabiegi":[…]} – karta, której autor wybrał CO NAJMNIEJ
+-- JEDEN z podanych zabiegów; bez liczenia zgodności i bez zmiany kolejności; nieznany identyfikator → BP422
+-- przed naliczeniem kwoty) (D-C: bez wyszukiwania, rankingu i dopasowywania). Pomija ogłoszenia
 -- autorów, którzy ukryli NIP tej firmy (PRIV-07) albo zablokowali to konto (SEC-06). Każda zwrócona karta
 -- zwiększa dzienny licznik konta (candidate_ad_views_daily); po przekroczeniu progu – jednorazowy alert do
 -- zespołu, po wyczerpaniu kwoty – BP429 do końca doby (Założenie: 150 / 200 kart). Zwraca ad_ref, nigdy id.
@@ -3762,7 +3869,7 @@ create or replace function public.app_candidate_ads_page(
   p_actor uuid, p_account uuid, p_cursor jsonb default null, p_filters jsonb default '{}'::jsonb)
 returns table (ad_ref uuid, first_name text, profession text, city text, voivodeship text,
                cooperation_forms text[], experience text, available_from date, description text,
-               published_at timestamptz)
+               published_at timestamptz, zabiegi text[])
 language plpgsql set search_path = '' as $$
 declare
   s        public.app_settings%rowtype;
@@ -3770,11 +3877,13 @@ declare
   v_used   integer;
   v_limit  integer;
   v_rows   integer;
+  v_zab    text[];
 begin
   perform public.app_require_feature('szukam_pracy');
   if not public.employer_trusted_actor(p_account, p_actor) then
     raise exception 'szukam-pracy: brak uprawnień';
   end if;
+  v_zab := public.zabiegi_filter(p_filters);
   select * into s from public.app_settings;
   select a.nip into v_nip from public.client_accounts a where a.id = p_account;
   perform pg_advisory_xact_lock(hashtext('cv:' || p_account::text));
@@ -3787,13 +3896,14 @@ begin
 
   return query
   select c.ad_ref, c.first_name, c.profession, c.city, c.voivodeship, c.cooperation_forms, c.experience,
-         c.available_from, c.description, c.published_at
+         c.available_from, c.description, c.published_at, c.zabiegi
     from public.candidate_ads c
     join public.job_seekers j on j.user_id = c.seeker_id and j.status = 'active'
    where c.status = 'published' and c.expires_at > now()
      and (p_filters ->> 'profession' is null or c.profession = p_filters ->> 'profession')
      and (p_filters ->> 'voivodeship' is null or c.voivodeship = p_filters ->> 'voivodeship')
      and (p_filters ->> 'cooperation_form' is null or (p_filters ->> 'cooperation_form') = any (c.cooperation_forms))
+     and (v_zab is null or c.zabiegi && v_zab)                    -- LUB: co najmniej jeden z wybranych (00, D41)
      and (p_cursor is null
           or (c.published_at, c.ad_ref) < ((p_cursor ->> 'published_at')::timestamptz, (p_cursor ->> 'ad_ref')::uuid))
      and not exists (select 1 from public.candidate_ad_hidden_nips h where h.seeker_id = c.seeker_id and h.nip = v_nip)
@@ -4439,7 +4549,10 @@ revoke execute on function
   public.abuse_report_check(text, text, text, boolean, text),
   public.app_set_organizer_plan_invoice(uuid, uuid, text),
   public.app_purge_inactive_accounts(),
-  public.app_purge_verification_data()
+  public.app_purge_verification_data(),
+  -- 00, D41 (zabiegi); public.zabiegi_ids(boolean) – granty przy definicji (authenticated i service_role)
+  public.zabiegi_filter(jsonb),
+  public.app_job_offers_page(jsonb, jsonb)
   from public, anon, authenticated;
 grant execute on function
   public.app_activate_client_account(uuid, uuid, text, text),
@@ -4510,7 +4623,10 @@ grant execute on function
   public.abuse_report_check(text, text, text, boolean, text),
   public.app_set_organizer_plan_invoice(uuid, uuid, text),
   public.app_purge_inactive_accounts(),
-  public.app_purge_verification_data()
+  public.app_purge_verification_data(),
+  -- 00, D41 (zabiegi)
+  public.zabiegi_filter(jsonb),
+  public.app_job_offers_page(jsonb, jsonb)
   to service_role;
 
 -- Test w CI (rozszerzenie packages/db/tests/privileges.test.sql) – pełna lista w pkt 9.6 dokumentu 11.
@@ -4520,7 +4636,7 @@ grant execute on function
 -- atrybuty (BYPASSRLS albo polityki, które go obejmują) – od tego zależy działanie na tabelach z FORCE RLS
 -- [do weryfikacji w Supabase].
 --  (1) żadna funkcja w public nie ma EXECUTE dla anon ani PUBLIC; dla authenticated tylko app_is_staff,
---      client_account_ids, organizer_ids i employer_account_ids;
+--      client_account_ids, organizer_ids, employer_account_ids i zabiegi_ids (CHECK w job_offers – 00, D41);
 --  (2) client_policy_reminders, job_offer_relay_log, candidate_ad_contact_log, phone_verifications,
 --      sms_send_log, candidate_blocks, candidate_ad_views_daily i training_participant_contacts na liście
 --      service_role_only;
@@ -4557,4 +4673,11 @@ grant execute on function
 --  (17) równoległe żądania (dwie sesje): limit szkiców, wiadomości pracodawcy i kont na numer nie są
 --       przekraczane (SEC-18);
 --  (18) retencja: zgłoszenia anonimizowane po 12 miesiącach, ogłoszenia w moderacji 30 dni, oferty
---       12 miesięcy po zakończeniu, wyniki GUS zamkniętych kont, konta nieużywane (ostrzeżenie → zamknięcie).
+--       12 miesięcy po zakończeniu, wyniki GUS zamkniętych kont, konta nieużywane (ostrzeżenie → zamknięcie);
+--  (19) zabiegi (00, D41): identyfikator spoza listy, null w tablicy, 31 różnych zabiegów → BP422 w guardzie
+--       i w app_candidate_ad_save(), a z pominięciem guardu – naruszenie CHECK; powtórzenia usunięte, zapis
+--       posortowany; zmiana zabiegów w opublikowanej ofercie → ponowna moderacja; wycofana pozycja zostaje
+--       w ogłoszeniu, które ją ma, ale nie da się jej dodać; filtr LUB (zabiegi && …) w app_job_offers_page()
+--       i app_candidate_ads_page() bez zmiany kolejności (od najnowszej); nieznany identyfikator w filtrze
+--       → BP422 bez naliczenia kwoty; anon: kolumna zabiegi czytelna, RLS i kwoty bez zmian;
+--       gen_zabiegi_sql.py --check zgodny z snippets/zabiegi-oc-beauty.json.

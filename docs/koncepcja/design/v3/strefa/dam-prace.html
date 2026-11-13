@@ -2841,45 +2841,231 @@ html:has(.zab-sheet[open]){overflow:hidden}
     return (d >= 2 && d <= 4 && (t < 12 || t > 14)) ? few : many;
   }
 
+  /* ---------- zabiegi: wybór z listy programu OC (filtry i formularze ogłoszeń) ----------
+     Bez JS: checkboxy w <details> per grupa (zwykły formularz). Z JS: przycisk otwiera modalny <dialog> z wyszukiwarką
+     (bez wielkości liter i polskich znaków), grupami, licznikiem, „Wyczyść” i „Pokaż ogłoszenia (N)” / „Gotowe”;
+     wybrane jako usuwalne chipy. Filtr: ogłoszenie zawiera którykolwiek z wybranych (LUB) – tylko zabiegi wybrane przez autora. */
+  var ZAB = null;
+  try { ZAB = JSON.parse(byId('zabiegi-data').textContent); } catch (e) { ZAB = null; }
+  var ZNAME = {};
+  if (ZAB) { ZAB.zabiegi.forEach(function (z) { ZNAME[z.id] = z.nazwa; }); }
+  function norm(s) { return String(s).toLowerCase().replace(/ł/g, 'l').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim(); }
+  var X_ICON = '<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  function zabCount(n) { return n + NBSP + plural(n, 'zabieg', 'zabiegi', 'zabiegów'); }
+  function moreLabel(k) { return 'i ' + k + ' ' + plural(k, 'inny', 'inne', 'innych'); }
+  /* chipy zabiegów na karcie – jak w generatorze (do 3 + „i N innych”) */
+  function renderTags(box, ids) {
+    box.setAttribute('data-ids', ids.join(' '));
+    var ul = document.createElement('ul'); ul.setAttribute('aria-label', 'Zabiegi w ogłoszeniu');
+    ids.slice(0, 3).forEach(function (id) { var li = document.createElement('li'); li.textContent = ZNAME[id] || id; ul.appendChild(li); });
+    if (ids.length > 3) { var m = document.createElement('li'); m.className = 'zab-tags-more'; m.textContent = moreLabel(ids.length - 3); ul.appendChild(m); }
+    box.textContent = ''; if (ids.length) { box.appendChild(ul); }
+  }
+  function cardZab(card) { var t = card.querySelector('.zab-tags'); return t ? t.getAttribute('data-ids').split(' ').filter(Boolean) : []; }
+  var urlZab = new URLSearchParams(location.search).getAll('zabieg');
+
+  function zabPicker(fs) {
+    var mode = fs.getAttribute('data-zab'), max = +fs.getAttribute('data-zab-max') || 0, base = fs.id;
+    var groupsBox = fs.querySelector('.zab-groups');
+    var boxes = Array.prototype.slice.call(groupsBox.querySelectorAll('input[name="zabieg"]'));
+    var grps = Array.prototype.slice.call(groupsBox.querySelectorAll('.zab-grp'));
+    var hint = fs.querySelector('.hint');
+    var api = { boxes: boxes, selected: function () { return boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; }); }, setResult: function () {} };
+    if (!ZAB || typeof HTMLDialogElement !== 'function') { return api; } /* bez danych lub bez <dialog>: zostają zwykłe checkboxy */
+    boxes.forEach(function (b) { b._n = norm(ZNAME[b.value] || b.parentNode.textContent); });
+    if (mode === 'filter' && urlZab.length) { boxes.forEach(function (b) { if (urlZab.indexOf(b.value) > -1) { b.checked = true; } }); }
+
+    /* przycisk i chipy w formularzu */
+    var row = document.createElement('div'); row.className = 'zab-row';
+    var open = document.createElement('button');
+    open.type = 'button'; open.className = 'btn btn-ghost btn-sm zab-open';
+    open.setAttribute('aria-haspopup', 'dialog'); open.setAttribute('aria-controls', base + '-dlg');
+    if (hint) { open.setAttribute('aria-describedby', hint.id); }
+    open.innerHTML = '<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span></span>';
+    row.appendChild(open);
+    var chips = document.createElement('ul'); chips.className = 'zab-chips'; chips.setAttribute('aria-label', 'Wybrane zabiegi');
+    var limitNote = document.createElement('p'); limitNote.className = 'zab-limit'; limitNote.hidden = true;
+    fs.insertBefore(row, groupsBox); fs.insertBefore(chips, groupsBox); fs.insertBefore(limitNote, groupsBox);
+
+    /* okno wyboru (w formularzu – checkboxy dalej się wysyłają) */
+    var dlg = document.createElement('dialog');
+    dlg.className = 'zab-sheet'; dlg.id = base + '-dlg'; dlg.setAttribute('aria-labelledby', base + '-dlg-t');
+    var lead = mode === 'filter' ? 'Pokazujemy ogłoszenia z co najmniej jednym z wybranych zabiegów. Kolejność bez zmian: od najnowszych.'
+      : 'Wybierz najwyżej ' + max + ' zabiegów z listy programu OC dla branży beauty. Zabiegi są opcjonalne.';
+    dlg.innerHTML =
+      '<div class="zab-sheet-head"><h2 id="' + base + '-dlg-t" tabindex="-1">Zabiegi</h2><p></p>' +
+      '<button class="drawer-close" type="button" aria-label="Zamknij okno zabiegów">' + X_ICON + '</button></div>' +
+      '<div class="zab-sheet-search field"><label for="' + base + '-q">Szukaj zabiegu</label>' +
+      '<input type="search" id="' + base + '-q" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" aria-describedby="' + base + '-q-hint">' +
+      '<p class="hint" id="' + base + '-q-hint">Wpisz część nazwy, np. „mezo” albo „rzesy”. Wielkość liter i polskie znaki nie mają znaczenia.</p>' +
+      '<p class="sr-only" role="status" id="' + base + '-q-st"></p></div>' +
+      '<div class="zab-sheet-body"><p class="zab-none" hidden></p></div>' +
+      '<div class="zab-sheet-foot"><p class="zab-count" role="status"></p>' +
+      '<button class="btn btn-quiet btn-sm zab-clear" type="button">Wyczyść</button>' +
+      '<button class="btn btn-navy btn-sm zab-done" type="button"></button></div>';
+    dlg.querySelector('.zab-sheet-head p').textContent = lead;
+    var body = dlg.querySelector('.zab-sheet-body'), none = dlg.querySelector('.zab-none');
+    body.insertBefore(groupsBox, none);
+    fs.appendChild(dlg);
+    var q = byId(base + '-q'), qst = byId(base + '-q-st'), count = dlg.querySelector('.zab-count');
+    var done = dlg.querySelector('.zab-done'), clear = dlg.querySelector('.zab-clear'), title = byId(base + '-dlg-t');
+    var resultN = null;
+
+    function sync() {
+      var sel = boxes.filter(function (b) { return b.checked; }), n = sel.length;
+      open.querySelector('span').textContent = n ? 'Zabiegi: wybrano ' + n : 'Wybierz zabiegi';
+      count.textContent = n ? 'Wybrano: ' + zabCount(n) + (max ? ' z ' + max : '') : (mode === 'filter' ? 'Nie wybrano zabiegów' : 'Nie wybrano zabiegów (opcjonalne)');
+      clear.disabled = !n;
+      done.textContent = mode === 'filter' ? 'Pokaż ogłoszenia' + (resultN === null ? '' : ' (' + resultN + ')') : 'Gotowe';
+      grps.forEach(function (g) {
+        var k = g.querySelectorAll('input:checked').length;
+        g.querySelector('.zab-grp-sel').textContent = k ? 'wybrano ' + k : '';
+      });
+      if (max) {
+        var full = n >= max;
+        boxes.forEach(function (b) { b.disabled = full && !b.checked; });
+        limitNote.hidden = !full;
+        limitNote.textContent = full ? 'Wybrano ' + max + ' z ' + max + ' – usuń któryś zabieg, żeby dodać inny.' : '';
+      }
+      /* chipy: przebudowa tylko przy zmianie wyboru */
+      var key = sel.map(function (b) { return b.value; }).join(' ');
+      if (chips.getAttribute('data-key') !== key) {
+        chips.setAttribute('data-key', key);
+        chips.textContent = '';
+        sel.forEach(function (b) {
+          var li = document.createElement('li'), c = document.createElement('button'), s = document.createElement('span');
+          c.type = 'button'; c.className = 'zab-chip'; c.setAttribute('data-id', b.value);
+          s.textContent = ZNAME[b.value]; c.appendChild(s); c.insertAdjacentHTML('beforeend', X_ICON);
+          c.setAttribute('aria-label', 'Usuń zabieg: ' + ZNAME[b.value]);
+          li.appendChild(c); chips.appendChild(li);
+        });
+      }
+    }
+    function fire(b) { b.dispatchEvent(new Event('change', { bubbles: true })); }
+    chips.addEventListener('click', function (e) {
+      var c = e.target.closest('.zab-chip'); if (!c) { return; }
+      var all = Array.prototype.slice.call(chips.querySelectorAll('.zab-chip')), i = all.indexOf(c);
+      var b = boxes.filter(function (x) { return x.value === c.getAttribute('data-id'); })[0];
+      b.checked = false; fire(b);
+      var next = chips.querySelectorAll('.zab-chip')[Math.min(i, all.length - 2)];
+      (next || open).focus();
+    });
+    fs.addEventListener('change', function (e) { if (e.target.name === 'zabieg') { sync(); } });
+
+    /* wyszukiwarka w oknie: filtruje listę checkboxów; grupy z wynikami otwarte, bez wyników – ukryte */
+    var saved = null, stTimer = 0;
+    function search() {
+      var t = norm(q.value), hits = 0;
+      if (t && !saved) { saved = grps.map(function (g) { return g.open; }); }
+      boxes.forEach(function (b) { var ok = !t || b._n.indexOf(t) > -1; b.parentNode.hidden = !ok; if (ok) { hits++; } });
+      grps.forEach(function (g, i) {
+        var any = !!g.querySelector('label:not([hidden])');
+        g.hidden = !any;
+        if (t) { g.open = any; } else if (saved) { g.open = saved[i]; }
+      });
+      if (!t) { saved = null; }
+      none.hidden = hits > 0;
+      none.textContent = hits ? '' : 'Brak zabiegu, którego nazwa zawiera „' + q.value.trim() + '”. Sprawdź pisownię albo przejrzyj grupy.';
+      clearTimeout(stTimer);
+      stTimer = setTimeout(function () { qst.textContent = t ? (hits ? 'Pasujące zabiegi: ' + hits : 'Brak pasujących zabiegów') : ''; }, 450);
+    }
+    q.addEventListener('input', search);
+    q.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); } });
+
+    function show() {
+      if (api.onopen) { api.onopen(); }
+      sync();
+      dlg.showModal();
+      open.setAttribute('aria-expanded', 'true');
+      if (window.matchMedia('(pointer:fine)').matches) { q.focus(); } else { title.focus(); } /* na dotyku bez wysuwania klawiatury */
+    }
+    function hide() { dlg.close(); }
+    open.setAttribute('aria-expanded', 'false');
+    open.addEventListener('click', show);
+    dlg.querySelector('.drawer-close').addEventListener('click', hide);
+    var toResults = false;
+    done.addEventListener('click', function () { toResults = mode === 'filter'; hide(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) { hide(); } }); /* kliknięcie w tło */
+    dlg.addEventListener('close', function () {
+      open.setAttribute('aria-expanded', 'false');
+      if (q.value) { q.value = ''; search(); }
+      var t = toResults && api.results ? byId(api.results) : null; toResults = false;
+      if (t) { t.setAttribute('tabindex', '-1'); t.focus(); } else { open.focus(); } /* „Pokaż ogłoszenia” → wyniki; Esc i „Zamknij” → przycisk */
+      if (api.onclose) { api.onclose(); }
+    });
+    clear.addEventListener('click', function () {
+      var changed = boxes.filter(function (b) { return b.checked; });
+      changed.forEach(function (b) { b.checked = false; });
+      if (changed.length) { fire(changed[0]); }
+      q.focus();
+    });
+    var form = fs.form || fs.closest('form');
+    if (form) { form.addEventListener('reset', function () { setTimeout(sync, 0); }); }
+    api.setResult = function (n) { resultN = n; sync(); };
+    api.sync = sync;
+    sync();
+    return api;
+  }
+  var pickers = {};
+  each('[data-zab]', function (fs) { pickers[fs.id] = zabPicker(fs); });
+  function anyOf(card, sel) { if (!sel.length) { return true; } var ids = cardZab(card); return sel.some(function (id) { return ids.indexOf(id) > -1; }); }
+
   /* ---------- filtry listy ofert (dane makiety) ---------- */
   var ff = byId('f-filtry');
   var offers = Array.prototype.slice.call(document.querySelectorAll('#lista-ofert > .offer'));
   function applyFilters() {
     var z = (ff.querySelector('input[name="zawod"]:checked') || { value: '' }).value;
-    var w = ff.elements.wojewodztwo.value, u = ff.elements.umowa.value, n = 0;
+    var w = ff.elements.wojewodztwo.value, u = ff.elements.umowa.value, zb = pickers['zab-oferty'].selected(), n = 0;
     offers.forEach(function (o) {
-      var ok = (!z || o.getAttribute('data-zawod') === z) && (!w || o.getAttribute('data-woj') === w) && (!u || o.getAttribute('data-umowa') === u);
+      var ok = (!z || o.getAttribute('data-zawod') === z) && (!w || o.getAttribute('data-woj') === w) && (!u || o.getAttribute('data-umowa') === u) && anyOf(o, zb);
       o.hidden = !ok; if (ok) { n++; }
     });
     byId('ofert-liczba').textContent = n ? n + NBSP + plural(n, 'ogłoszenie', 'ogłoszenia', 'ogłoszeń') : 'Brak ogłoszeń';
-    var active = (z ? 1 : 0) + (w ? 1 : 0) + (u ? 1 : 0);
+    var active = (z ? 1 : 0) + (w ? 1 : 0) + (u ? 1 : 0) + (zb.length ? 1 : 0);
     byId('filtry-aktywne').textContent = active ? 'aktywne: ' + active : '';
     byId('lista-ofert').hidden = n === 0;
     byId('ofert-pusto').classList.toggle('is-pending', n !== 0);
+    var onlyZab = zb.length && !z && !w && !u;
+    byId('ofert-pusto-t').textContent = zb.length ? 'Brak ogłoszeń z wybranymi zabiegami' : 'Brak ogłoszeń dla wybranych filtrów';
+    byId('ofert-pusto-p').textContent = zb.length
+      ? 'Zabiegi wskazuje pracodawca – nie każde ogłoszenie je zawiera. ' + (onlyZab ? 'Wybierz inne zabiegi albo wyczyść filtry.' : 'Zmień zabiegi lub pozostałe filtry albo wyczyść filtry.') + ' Nowe ogłoszenia pojawiają się po sprawdzeniu treści.'
+      : 'Zmień zawód lub województwo albo wyczyść filtry. Nowe ogłoszenia pojawiają się po sprawdzeniu treści.';
+    pickers['zab-oferty'].setResult(n);
+    return n;
   }
   ff.addEventListener('change', applyFilters);
   ff.addEventListener('submit', function (e) { e.preventDefault(); applyFilters(); byId('t-lista').focus(); });
   ff.addEventListener('reset', function () { setTimeout(applyFilters, 0); });
   byId('t-lista').setAttribute('tabindex', '-1');
   if (window.matchMedia('(max-width: 1023px)').matches) { byId('filtry-panel').open = false; }
+  pickers['zab-oferty'].onopen = applyFilters; pickers['zab-oferty'].results = 't-lista';
+  if (pickers['zab-oferty'].selected().length) { applyFilters(); } /* ?zabieg=… z formularza GET */
   byId('wyczysc').addEventListener('click', function () { ff.reset(); setTimeout(function () { applyFilters(); ff.querySelector('input[name="zawod"]').focus(); }, 0); });
 
   /* ---------- filtry „Szukam pracy” (tylko pola wybrane przez autorów; kolejność bez zmian) ---------- */
   var sf = byId('f-sp-filtry');
   var cands = Array.prototype.slice.call(document.querySelectorAll('#sp-lista > .cand'));
   function applyCand() {
-    var z = sf.elements.zawod.value, w = sf.elements.wojewodztwo.value, f = sf.elements.forma.value, n = 0;
+    var z = sf.elements.zawod.value, w = sf.elements.wojewodztwo.value, f = sf.elements.forma.value, zb = pickers['zab-sp'].selected(), n = 0;
     cands.forEach(function (c) {
-      var ok = (!z || c.getAttribute('data-zawod') === z) && (!w || c.getAttribute('data-woj') === w) && (!f || (' ' + c.getAttribute('data-forma') + ' ').indexOf(' ' + f + ' ') > -1);
+      var ok = (!z || c.getAttribute('data-zawod') === z) && (!w || c.getAttribute('data-woj') === w) && (!f || (' ' + c.getAttribute('data-forma') + ' ').indexOf(' ' + f + ' ') > -1) && anyOf(c, zb);
       c.hidden = !ok; if (ok) { n++; }
     });
     byId('sp-liczba').textContent = n ? n + NBSP + plural(n, 'ogłoszenie', 'ogłoszenia', 'ogłoszeń') : 'Brak ogłoszeń';
     byId('sp-lista').hidden = n === 0;
     byId('sp-pusto').classList.toggle('is-pending', n !== 0);
+    byId('sp-pusto-t').textContent = zb.length ? 'Brak ogłoszeń z wybranymi zabiegami' : 'Brak ogłoszeń dla wybranych filtrów';
+    byId('sp-pusto-p').textContent = zb.length
+      ? 'Zabiegi wskazuje autor ogłoszenia – nie każde ogłoszenie je zawiera. Zmień zabiegi lub pozostałe filtry. Nie wysyłamy powiadomień o nowych ogłoszeniach.'
+      : 'Zmień zawód, województwo lub formę współpracy. Nie wysyłamy powiadomień o nowych ogłoszeniach.';
+    pickers['zab-sp'].setResult(n);
+    return n;
   }
   sf.addEventListener('change', applyCand);
   sf.addEventListener('submit', function (e) { e.preventDefault(); applyCand(); byId('t-sp-lista').setAttribute('tabindex', '-1'); byId('t-sp-lista').focus(); });
   sf.addEventListener('reset', function () { setTimeout(applyCand, 0); });
+  pickers['zab-sp'].onopen = applyCand; pickers['zab-sp'].results = 't-sp-lista';
+  if (pickers['zab-sp'].selected().length) { applyCand(); }
   each('.js-write', function (a) { a.addEventListener('click', function () { byId('sp-do').textContent = a.getAttribute('data-to'); }); });
 
   /* ---------- „Pokaż kontakt” (w produkcji: Turnstile + limit na IP, osobne wywołanie dynamiczne) ---------- */
@@ -2988,6 +3174,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
     var basis = (fn.querySelector('input[name="podstawa"]:checked') || { value: 'brutto' }).value;
     var per = (fn.querySelector('input[name="okres"]:checked') || { value: 'MONTH' }).value;
     byId('pv-placa-opis').textContent = basis + (per === 'HOUR' ? ' za godzinę' : ' miesięcznie');
+    renderTags(byId('pv-zab'), pickers['zab-nowe'].selected());
   }
   byId('n-podglad').addEventListener('click', function () {
     var bad = validateOffer();
