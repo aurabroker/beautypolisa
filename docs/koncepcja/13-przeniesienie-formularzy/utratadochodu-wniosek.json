@@ -1704,7 +1704,7 @@
         "tekst": "Dokumenty podpiszesz elektronicznie, składkę opłacisz przelewem. Bez wychodzenia z domu."
       }
     ],
-    "kontakt": "Masz pytania? Zadzwoń pod 504 400 901 albo napisz na biuro@utratadochodu.com .",
+    "kontakt": "Masz pytania? Zadzwoń pod 504 400 901 albo napisz na [e-mail biura Aura Expert] .",
     "konwersja": "UDCookies.konwersja(etykieta, {transaction_id: sessionStorage['ud:wniosek']}) tylko przy zgodzie marketingowej"
   },
   "komunikaty": {

@@ -111,7 +111,7 @@ Strona główna (dosłownie z `go.md`, potwierdzone w `0vqvpp9_0rpw6.js`):
 
 Karty produktów: tytuł, opis i cechy dosłownie w JSON (`produkty`).
 
-Global Doctors (`go_global-doctors.md`): „Dostęp do konsultacji z lekarzami specjalistami na świecie, gdy diagnoza wymaga drugiej opinii. Dostępne dla Ubezpieczonych do 63. roku życia.”, „Dodatek dostępny jest dla Ubezpieczonych w wieku do 63 lat w dniu przystąpienia.”, „Wysokość składki ustalana jest indywidualnie w zależności od wieku — orientacyjną kwotę zobaczysz przy konfigurowaniu oferty w kalkulatorze.”. Organizator: „Centrum Pomocy Osobom Poszkodowanym sp. z o.o. w Gdańsku”. Zgłoszenia: „801 107 107 lub (58) 555 55 55”, „zgloszenieroszczenia.ergohestia.pl”. Kontakt: „biuro@utratadochodu.com”. Cały tekst jest w `go_global-doctors.md`.
+Global Doctors (`go_global-doctors.md`): „Dostęp do konsultacji z lekarzami specjalistami na świecie, gdy diagnoza wymaga drugiej opinii. Dostępne dla Ubezpieczonych do 63. roku życia.”, „Dodatek dostępny jest dla Ubezpieczonych w wieku do 63 lat w dniu przystąpienia.”, „Wysokość składki ustalana jest indywidualnie w zależności od wieku — orientacyjną kwotę zobaczysz przy konfigurowaniu oferty w kalkulatorze.”. Organizator: „Centrum Pomocy Osobom Poszkodowanym sp. z o.o. w Gdańsku”. Zgłoszenia: „801 107 107 lub (58) 555 55 55”, „zgloszenieroszczenia.ergohestia.pl”. Kontakt: „[e-mail biura Aura Expert]”. Cały tekst jest w `go_global-doctors.md`.
 
 Informacja o agencie (art. 22 UDU): pełny tekst jest w `ergo/go_informacja-o-agencie.md` (do przeniesienia 1:1; wspólny dla portalu).
 
@@ -270,7 +270,7 @@ Legenda: ★ = wiersz wyróżniony (`highlight`, tło `bg-yellow-50`); „—”
 - Zdarzenia: wyłącznie nawigacja `router.push` (krok 1 → `/kalkulator/ankieta` lub `/wykluczenie/wiek`). Na stronie głównej zwijanie i rozwijanie kart produktów oraz FAQ (`useState`).
 - localStorage / sessionStorage: **brak** w kodzie aplikacji. Stan (w tym `birthDate` jako `Date`) jest tylko w pamięci (Zustand), co zgadza się z „Nie przechowujemy Twojej daty urodzenia po zamknięciu strony.”.
 - Przekierowania: `/wykluczenie/wiek` (wiek poza zakresem). Brak strażników kroków w dostępnym kodzie, więc nie wiadomo, czy wejście bezpośrednio na `/kalkulator/produkt` bez wieku jest blokowane (to sprawdzają niepobrane strony).
-- Linki zewnętrzne w treści: `zgloszenieroszczenia.ergohestia.pl`, `mailto:biuro@utratadochodu.com`, `https://rpu.knf.gov.pl`, `www.rf.gov.pl`.
+- Linki zewnętrzne w treści: `zgloszenieroszczenia.ergohestia.pl`, `mailto:[e-mail biura Aura Expert]`, `https://rpu.knf.gov.pl`, `www.rf.gov.pl`.
 - Zasoby graficzne: `/ergo-hestia-logo.jpg`, `/girl.jpg`, `/para.jpg`, `/family.jpg` (do zastąpienia w portalu; logo ERGO Hestia wymaga zgody na użycie znaku).
 - Kolorystyka źródła: czerwień ERGO `#E4002B` / `#c00025` (hover). W portalu zastępuje ją styl „old money glass” (makiety v3).
 

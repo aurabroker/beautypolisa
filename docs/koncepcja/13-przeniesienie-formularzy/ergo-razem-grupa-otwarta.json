@@ -10,55 +10,128 @@
     "katalog_i_dodatki_obowiazuja_od": "13.02.2026",
     "kolor_marki_zrodla": "#E4002B",
     "uwaga": "Dane wyekstrahowane wyłącznie z kodu klienckiego dostępnego w pobranych chunkach. Kroki 2–6 kalkulatora (ankieta, weryfikacja, oferta, podsumowanie, sukces) NIE były w pobranych plikach – ich pola, treści i wysyłka są nieznane (patrz 'braki').",
-    "weryfikacja_2026_11_13": "Krytyk kompletności: potwierdzono PREMIUMS, ADDONS, getAgeGroup, calcMonthlyPremium, listy wariantów strony głównej, wybrane wiersze tabeli świadczeń. Kroki 2–6 nadal brak w kodzie."
+    "weryfikacja_2026_11_13": "Krytyk kompletności: potwierdzono PREMIUMS, ADDONS, getAgeGroup, calcMonthlyPremium, listy wariantów strony głównej, wybrane wiersze tabeli świadczeń. Kroki 2–6 nadal brak w kodzie.",
+    "zrodlo_kod": "repozytorium gohestia (klon tylko do odczytu, commit e186f2a z 2026-07-12) – kod źródłowy aplikacji ergo.beautypolisa.eu",
+    "technologia_z_repo": "Next.js 16.2.9 (App Router), React 19.2.4, OpenNext → Cloudflare Workers (Worker „gohestia”, nodejs_compat), Zustand 5 bez persist, react-hook-form 7 + Zod 4, Resend 6 + @react-email/components, @marsidev/react-turnstile; brak Supabase i jakiejkolwiek bazy (gohestia/package.json:13-27, gohestia/wrangler.jsonc:1-11)",
+    "wdrozenie": "GitHub Actions: push do main → npm ci → opennextjs-cloudflare build && deploy (gohestia/.github/workflows/deploy.yml:5-60). Sekrety runtime po stronie Cloudflare: RESEND_API_KEY, AGENT_EMAIL, TURNSTILE_SECRET_KEY, FROM_EMAIL (+ opcjonalnie SITE_URL, NEXT_PUBLIC_TURNSTILE_SITE_KEY) – wartości w konfiguracji, nie w dokumencie",
+    "uwaga_aktualizacja_2026_11_13": "Po analizie repozytorium gohestia znane są WSZYSTKIE kroki (1–6), ankieta, zgody, wysyłka i Turnstile. Pole „uwaga” powyżej opisuje stan sprzed dostępu do repozytorium i jest nieaktualne w części o krokach 2–6. Szczegóły i status braków R1–R11: sekcja „Zamknięcie braków po analizie repozytorium gohestia” w pliku .md oraz klucz zamkniecie_brakow."
   },
   "kroki": [
     {
       "nr": 1,
       "etykieta": "Wiek",
       "sciezka": "/kalkulator/wiek",
-      "dostepny_w_kodzie": true
+      "dostepny_w_kodzie": true,
+      "plik": "gohestia/app/kalkulator/wiek/page.tsx",
+      "straz": "brak (krok startowy)"
     },
     {
       "nr": 2,
       "etykieta": "Ankieta",
       "sciezka": "/kalkulator/ankieta",
-      "dostepny_w_kodzie": false,
-      "co_wiadomo": "Store: questionnaireComplete (bool). Wg treści: ankieta przetwarzana wyłącznie w przeglądarce, niewysyłana."
+      "dostepny_w_kodzie": true,
+      "co_wiadomo": "5 bloków oświadczeń, odpowiedzi NIE/TAK; TAK → modal wykluczenia; „Przejdź dalej →” aktywny tylko gdy wszystkie 5 = NIE; ustawia questionnaireComplete=true i przechodzi do /kalkulator/weryfikacja (components/questionnaire/index.tsx:55-69). Odpowiedzi tylko w useState komponentu – nie trafiają do store ani na serwer.",
+      "plik": "gohestia/app/kalkulator/ankieta/page.tsx + components/questionnaire/index.tsx",
+      "straz": "brak ageGroup → /kalkulator/wiek (ankieta/page.tsx:11-13)",
+      "naglowek": "Ankieta medyczna",
+      "podtytul": "Odpowiedz na 5 pytań — są one wymagane do oceny możliwości przystąpienia do Grupy Otwartej."
     },
     {
       "nr": 3,
       "etykieta": "Weryfikacja",
       "sciezka": "/kalkulator/weryfikacja",
-      "dostepny_w_kodzie": false,
-      "co_wiadomo": "Store: turnstileVerified (bool) – krok najpewniej z Cloudflare Turnstile; sitekey i weryfikacja serwerowa nieznane."
+      "dostepny_w_kodzie": true,
+      "co_wiadomo": "Widżet Cloudflare Turnstile (@marsidev/react-turnstile); onSuccess → POST /api/turnstile {token}; 200 → turnstileVerified=true i /kalkulator/produkt; inaczej reset widżetu i komunikat błędu (weryfikacja/page.tsx:21-43). Weryfikacja NIE jest powiązana z późniejszą wysyłką /api/oferta.",
+      "plik": "gohestia/app/kalkulator/weryfikacja/page.tsx",
+      "straz": "brak ageGroup → /kalkulator/wiek; brak questionnaireComplete → /kalkulator/ankieta (weryfikacja/page.tsx:14-17)",
+      "teksty": {
+        "instrukcja": "Potwierdź, że nie jesteś robotem, aby przejść dalej.",
+        "w_toku": "Weryfikacja…",
+        "blad": "Weryfikacja nie powiodła się. Spróbuj ponownie."
+      }
     },
     {
       "nr": 4,
       "etykieta": "Oferta",
       "sciezka": "/kalkulator/produkt",
-      "dostepny_w_kodzie": false,
-      "co_wiadomo": "Store: selectedProduct, selectedVariant, addons{mediplan,medicalAssistance,globalDoctors}; funkcja calcMonthlyPremium dostępna."
+      "dostepny_w_kodzie": true,
+      "co_wiadomo": "Wybór produktu (3 kafle), wariantu (karty z PREMIUMS danej grupy – także A2 Podstawowy), rozwijana tabela świadczeń, dodatki (3 przełączniki), podsumowanie składki, przycisk do podsumowania. Szczegóły w krok_oferta.",
+      "plik": "gohestia/app/kalkulator/produkt/page.tsx",
+      "straz": "brak ageGroup/questionnaireComplete/turnstileVerified → odpowiedni wcześniejszy krok (produkt/page.tsx:29-33)"
     },
     {
       "nr": 5,
       "etykieta": "Podsumowanie",
       "sciezka": "/kalkulator/podsumowanie",
-      "dostepny_w_kodzie": false,
-      "co_wiadomo": "Wg FAQ/strony głównej: dane kontaktowe, po których agent oddzwania w 1–2 dni robocze. Pola i zgody nieznane."
+      "dostepny_w_kodzie": true,
+      "co_wiadomo": "Podsumowanie oferty z pełną tabelą świadczeń, formularz kontaktowy (imię, nazwisko, e-mail, telefon, region), 7 zgód obowiązkowych, 4 oświadczenia obowiązkowe, 3 zgody dobrowolne; wysyłka POST /api/oferta. Szczegóły w formularz_kontaktowy, zgody, wysylka.",
+      "plik": "gohestia/app/kalkulator/podsumowanie/page.tsx",
+      "straz": "jak krok 4 + brak produktu/wariantu → /kalkulator/produkt (podsumowanie/page.tsx:109-114)"
     },
     {
       "nr": 6,
       "etykieta": "Gotowe",
       "sciezka": "/kalkulator/sukces",
-      "dostepny_w_kodzie": false
+      "dostepny_w_kodzie": true,
+      "plik": "gohestia/app/kalkulator/sukces/page.tsx",
+      "straz": "brak (strona publiczna; e-mail z parametru ?email=)",
+      "co_wiadomo": "Reset store przy wejściu (sukces/page.tsx:15-17). Treści w krok_sukces."
     }
   ],
   "trasy_wykluczen": [
     {
       "sciezka": "/wykluczenie/wiek",
-      "kiedy": "getAgeGroup(dataUrodzenia) === null (wiek <18 lub >=66)",
-      "tresc": "nieznana – brak chunka"
+      "kiedy": "getAgeGroup(dataUrodzenia) === null (wiek <18 lub >=66) – gohestia/app/kalkulator/wiek/page.tsx:20-23",
+      "tresc": {
+        "naglowek": "Niestety, Twój wiek nie spełnia warunków",
+        "akapit_1": "Grupowe ubezpieczenie ERGO Razem w trybie Grupy Otwartej jest dostępne dla osób w wieku od 18 do 65 lat.",
+        "akapit_1_pogrubienie": "18 do 65 lat",
+        "akapit_2": "Jeśli masz inne pytania lub szukasz innego rodzaju ochrony, skontaktuj się z agentem ERGO Hestia.",
+        "przyciski": [
+          {
+            "tekst": "Skontaktuj się z agentem →",
+            "href": "https://www.ergohestia.pl/kontakt/"
+          },
+          {
+            "tekst": "Sprawdź ponownie",
+            "href": "/kalkulator/wiek"
+          }
+        ]
+      },
+      "zrodlo": "gohestia/app/wykluczenie/wiek/page.tsx:9-32",
+      "uwaga": "Strona poza layoutem kalkulatora (bez Steppera). „Skontaktuj się z agentem” prowadzi do ogólnego kontaktu ERGO Hestii, nie do Aura Expert."
+    },
+    {
+      "sciezka": "/wykluczenie/zdrowie",
+      "kiedy": "przycisk „Sprawdź polisę indywidualną →” w modalu wykluczenia ankiety (components/questionnaire/index.tsx:30-35)",
+      "tresc": {
+        "naglowek": "Niestety nie możesz przystąpić do Grupy Otwartej",
+        "akapit": "Na podstawie udzielonych odpowiedzi nie spełniasz warunków przystąpienia do ubezpieczenia ERGO Razem w trybie Grupy Otwartej.",
+        "ramka_tytul": "Polisa indywidualna ERGO Hestia",
+        "ramka_wstep": "Możesz ubiegać się o indywidualną polisę na życie. Polisa indywidualna może:",
+        "ramka_lista": [
+          "wymagać wypełnienia szczegółowej ankiety medycznej,",
+          "lub poddania się badaniom lekarskim na koszt ubezpieczyciela."
+        ],
+        "ramka_przypis": "Zakres ochrony i składka ustalane są indywidualnie.",
+        "przyciski": [
+          {
+            "tekst": "Wycen polisę indywidualną →",
+            "href": "https://www.ergohestia.pl/ubezpieczenie-na-zycie/",
+            "target": "_blank"
+          },
+          {
+            "tekst": "Skontaktuj się z agentem →",
+            "href": "https://www.ergohestia.pl/kontakt/"
+          },
+          {
+            "tekst": "← Wróć do ankiety",
+            "href": "/kalkulator/ankieta"
+          }
+        ]
+      },
+      "zrodlo": "gohestia/app/wykluczenie/zdrowie/page.tsx:9-59",
+      "uwaga": "„← Wróć do ankiety” (Link Next.js) zachowuje store (wiek), ale odpowiedzi ankiety trzymane w useState są tracone – użytkownik odpowiada od nowa."
     }
   ],
   "krok_wiek": {
@@ -116,7 +189,8 @@
       "blad": "Ubezpieczenie dostępne dla osób w wieku 18–65 lat.",
       "plakietka": "Grupa {A1|A2|B} · {etykieta}",
       "domyslna_grupa_gdy_brak_wieku": "A1"
-    }
+    },
+    "zgodnosc_z_wu": "OWU.pdf s. 3 (karta produktu) i § 5 WU ER 01/25 (s. 24 pliku): przystąpić może osoba, która „w dniu podpisania certyfikatu uczestnictwa ukończyła 18 lat i nie ukończyła 66. roku życia” – granice zgodne z getAgeGroup; różnica tylko w dniu odniesienia (kod: dziś; WU: dzień podpisania certyfikatu)."
   },
   "produkty": [
     {
@@ -434,7 +508,10 @@
       "regula": "isGlobalDoctorsEligible: differenceInYears(dziś,dataUrodzenia) < 64",
       "notka": "Składka zależna od wieku — podana przy wycenie",
       "w_kalkulatorze_dodaje": 0,
-      "klucz_w_store": "globalDoctors"
+      "klucz_w_store": "globalDoctors",
+      "w_kroku_oferta": "przełącznik „wycena wg wieku”, wyłączony dla wieku ≥ 64; w podsumowaniu „+ Global Doctors: wycena indywidualna”; do e-maila trafia tylko etykieta „Global Doctors”",
+      "cena_w_repozytorium": "BRAK – ani w kodzie, ani w OWU.pdf (WU GD 02/24 nie są dołączone)",
+      "zgodnosc_z_wu": "WU ER 01/25 (OWU.pdf s. 5) wymieniają GD 02/24 jako część umowy; maks. wiek 63 tylko z treści aplikacji"
     }
   },
   "wzor_skladki": "skladka = PREMIUMS[grupa][produkt].find(wariant).monthly (0 gdy brak) + (mediplan ? 9 : 0) + (medicalAssistance ? 6 : 0) + (globalDoctors && wiek<64 ? 0 : 0)",
@@ -2535,7 +2612,7 @@
       "Sortuj: LP (domyślnie)",
       "Sortuj: Alfabetycznie"
     ],
-    "uwaga": "Definicje (rozwijane ▾) są w chunku 03amb72-bgjst.js, którego nie pobrano. Nie wiadomo, której 1 z 57 pozycji brak w zakresie KOMFORT.",
+    "uwaga": "Uzupełnione 2026-11-13 z gohestia/app/katalog-zachorowan/katalog.tsx:7-575 (tablica illnesses): dla każdej pozycji pole komfort i definicja (dosłownie). Jedyna pozycja spoza zakresu KOMFORT: lp 1 „Bakteryjne zapalenie opon mózgowych” (tylko Dziecko). Flagi MAX/KOMFORT/MŁŻ/DZI zgodne z tabelą w § 40 ust. 9 WU ER 01/25 (OWU.pdf s. 42–44 pliku, strony WU 35–37). Definicje w aplikacji to skróty redakcyjne z podpisem „Źródło: WU ER 01/25, Załącznik 1 – Definicje poważnych zachorowań, poz. {lp}” – pełne definicje są w WU (OWU.pdf).",
     "pozycje": [
       {
         "lp": 1,
@@ -2543,7 +2620,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": false,
+        "definicja": "Ostra choroba zakaźna wywołana przez bakterie, rozpoznana na podstawie badania płynu mózgowo-rdzeniowego oraz dodatniego posiewu tego płynu, wymagająca leczenia szpitalnego.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 2,
@@ -2551,7 +2631,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Choroba zakaźna spowodowana przez tasiemca bąblowcowego z zajęciem mózgu, wymagająca chirurgicznego usunięcia zmian powstałych w mózgu.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 3,
@@ -2559,7 +2642,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Choroba wywołana przez przecinkowce cholery (Vibrio cholerae), potwierdzona charakterystycznym obrazem klinicznym oraz pozytywnym wynikiem badania mikrobiologicznego lub immunologicznego.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 4,
@@ -2567,7 +2653,10 @@
         "kategoria": "Neurologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Postępująca choroba zwyrodnieniowa mózgu z rozlanymi zmianami zanikowymi kory mózgowej. Odpowiedzialność istnieje, gdy: potwierdzone jest trwałe i nieodwracalne uszkodzenie funkcji mózgu, obniżona jest sprawność umysłowa i funkcje poznawcze, a Ubezpieczony wymaga stałego nadzoru osób trzecich.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 5,
@@ -2575,7 +2664,10 @@
         "kategoria": "Neurologiczne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Encefalopatia gąbczasta z objawami dysfunkcji mózgu, ciężką postępującą demencją, niekontrolowanymi skurczami mięśni, drżeniem i atetozą. Rozpoznanie potwierdzone przez neurologa.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 6,
@@ -2583,7 +2675,10 @@
         "kategoria": "Gastroenterologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Przewlekłe nieswoiste zapalenie ziarninujące jelita. Odpowiedzialność dotyczy wyłącznie postaci powikłanej licznymi przetokami, niedrożnością lub perforacją jelita. Rozpoznanie potwierdzone badaniem histologicznym.",
+        "kategoria_klucz": "gastroenterologiczne"
       },
       {
         "lp": 7,
@@ -2591,7 +2686,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Zakażenie wirusem polio prowadzące do porażenia mięśni kończyn lub dróg oddechowych, utrzymującego się przez co najmniej 3 miesiące. Rozpoznanie potwierdzone przez neurologa.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 8,
@@ -2599,7 +2697,10 @@
         "kategoria": "Neurologiczne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Postępująca choroba genetyczna OUN z niekontrolowanymi ruchami i postępującym otępieniem. Musi powodować co najmniej jeden z objawów: zaburzenia motoryczne, zaburzenia nastroju lub zaburzenia poznawcze.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 9,
@@ -2607,7 +2708,10 @@
         "kategoria": "Neurologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Postępujące zwyrodnienie dróg korowo-rdzeniowych (SMA, PBP, ALS, PLS). Świadczenie należne, gdy choroba powoduje trwałą i nieodwracalną niezdolność do samodzielnego poruszania się lub spożywania posiłków.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 10,
@@ -2615,7 +2719,10 @@
         "kategoria": "Neurologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Powoli postępująca choroba zwyrodnieniowa OUN. Warunki: nie poddaje się leczeniu farmakologicznemu, ma charakter postępujący i powoduje trwałą niezdolność do samodzielnego poruszania się między pomieszczeniami.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 11,
@@ -2623,7 +2730,10 @@
         "kategoria": "Urazowe",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Martwica tkanki mózgowej w wyniku urazu, powodująca trwałą i nieodwracalną niezdolność do wykonywania co najmniej jednej z 6 Czynności Dnia Codziennego. Potwierdzone MRI lub CT, ocena po min. 3 miesiącach od urazu.",
+        "kategoria_klucz": "urazowe"
       },
       {
         "lp": 12,
@@ -2631,7 +2741,10 @@
         "kategoria": "Metaboliczne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Przewlekłe zaburzenie metabolizmu wynikające z niedoboru insuliny. Potwierdzone przez diabetologa z dowodem konieczności przyjmowania insuliny egzogennej przez co najmniej 3 miesiące.",
+        "kategoria_klucz": "metaboliczne"
       },
       {
         "lp": 13,
@@ -2639,7 +2752,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Wywoływany przez Salmonella typhi. Potwierdzony charakterystycznymi objawami i wynikami badań bakteriologicznych, histopatologicznych lub immunologicznych. Wyłączone bezobjawowe nosicielstwo.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 14,
@@ -2647,7 +2763,10 @@
         "kategoria": "Genetyczne",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Genetycznie uwarunkowane miopatie zwyrodnieniowe z osłabieniem i zanikiem mięśni. Świadczenie należne, gdy powoduje trwałą niezdolność do samodzielnego poruszania się między pomieszczeniami.",
+        "kategoria_klucz": "genetyczne"
       },
       {
         "lp": 15,
@@ -2655,7 +2774,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Choroba wywołana wirusem dengi z wysoką gorączką, bólami głowy, mięśni, stawów, wysypką i krwotokami. Rozpoznanie potwierdzone izolacją wirusa, PCR, wykryciem antygenów lub 4-krotnym wzrostem miana przeciwciał IgM/IgG.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 16,
@@ -2663,7 +2785,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Wywołana wirusem zachodniego Nilu, przebiegająca z wysoką gorączką, nudnościami, wymiotami, trudnościami w połykaniu. Rozpoznanie potwierdzone charakterystycznym obrazem klinicznym i poziomem przeciwciał klasy IgM.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 17,
@@ -2671,7 +2796,10 @@
         "kategoria": "Kardiologiczne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Wyłącznie pierwotna postać choroby serca. Warunki: klasa IV NYHA i frakcja wyrzutowa lewej komory (EF) poniżej 30% przez co najmniej 3 miesiące. Wyłączone wtórne uszkodzenie serca (nadciśnienie, choroba wieńcowa, wady zastawek).",
+        "kategoria_klucz": "kardiologiczne"
       },
       {
         "lp": 18,
@@ -2679,7 +2807,10 @@
         "kategoria": "Onkologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Zagrażający życiu niezłośliwy guz mózgu z objawami wzmożonego ciśnienia śródczaszkowego (obrzęk tarczy nerwu wzrokowego, napady padaczkowe lub ubytki neurologiczne). Wyłączone: torbiele, wady naczyniowe, krwiaki, guzy przysadki.",
+        "kategoria_klucz": "onkologiczne"
       },
       {
         "lp": 19,
@@ -2687,7 +2818,10 @@
         "kategoria": "Onkologiczne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Niezłośliwy, ale zagrażający życiu nowotwór rdzenia kręgowego. Warunki: potwierdzony MRI/CT, poważne objawy motoryczne lub sensoryczne, wymagający operacji, chemioterapii/radioterapii lub jedynie opieki paliatywnej. Wyłączone naczyniaki.",
+        "kategoria_klucz": "onkologiczne"
       },
       {
         "lp": 20,
@@ -2695,7 +2829,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Wywołana przez pierwotniaka z gatunku Plasmodium. Rozpoznana na podstawie charakterystycznych objawów klinicznych, potwierdzona pozytywnymi wynikami badań mikrobiologicznych, mikroskopowych i immunologicznych.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 21,
@@ -2703,7 +2840,10 @@
         "kategoria": "Neurologiczne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Nabyte autoimmunologiczne zaburzenie przewodnictwa nerwowomięśniowego. Warunki: osłabienie mięśni co najmniej Grupy III wg klinicznego podziału miastenii, potwierdzone przez neurologa.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 22,
@@ -2711,7 +2851,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Bakteryjna choroba zakaźna przenoszona przez kleszcze. Warunki: konieczność leczenia szpitalnego, trwała i nieodwracalna niezdolność do min. jednej z 6 Czynności Dnia Codziennego. Rozpoznanie potwierdzone przez specjalistę chorób zakaźnych.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 23,
@@ -2719,7 +2862,10 @@
         "kategoria": "Hematologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Nieodwracalne uszkodzenie szpiku kostnego (niedokrwistość, neutropenia, trombocytopenia). Potwierdzone badaniem szpiku kostnego z co najmniej 2 z 3 warunków: neutrofile ≤500/mm³, retikulocyty ≤20 000/mm³, płytki ≤20 000/mm³.",
+        "kategoria_klucz": "hematologiczne"
       },
       {
         "lp": 24,
@@ -2727,7 +2873,10 @@
         "kategoria": "Nefrologiczne",
         "max": true,
         "malzonek": true,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Końcowe stadium niewydolności nerek – nieodwracalne upośledzenie czynności obu nerek wymagające stałego stosowania dializ lub zabiegu przeszczepienia nerki.",
+        "kategoria_klucz": "nefrologiczne"
       },
       {
         "lp": 25,
@@ -2735,7 +2884,10 @@
         "kategoria": "Onkologiczne",
         "max": true,
         "malzonek": true,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Każda choroba złośliwa z niekontrolowanym wzrostem komórek. Wyłączone: nowotwory in situ, raki skóry inne niż czerniak naciekający, rak prostaty <T2N0M0, rak brodawkowaty tarczycy <T2N0M0, chłoniak Hodgkina/nieziarniczy <Stopień 2 (Ann Arbor), białaczka bez istotnej niedokrwistości.",
+        "kategoria_klucz": "onkologiczne"
       },
       {
         "lp": 26,
@@ -2743,7 +2895,10 @@
         "kategoria": "Kardiologiczne",
         "max": true,
         "malzonek": true,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Leczenie operacyjne choroby aorty piersiowej lub brzusznej polegające na wycięciu i chirurgicznej wymianie zmienionego chorobowo odcinka z użyciem przeszczepu. Wyłączone urazowe uszkodzenie aorty.",
+        "kategoria_klucz": "kardiologiczne"
       },
       {
         "lp": 27,
@@ -2751,7 +2906,10 @@
         "kategoria": "Neurologiczne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Operacja mózgu metodą kraniotomii lub laparoskopową w celu leczenia ciężkiej choroby lub następstw urazu, wykonana przez neurochirurga. Wyłączone operacje niewymagające chirurgicznego nacięcia czaszki.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 28,
@@ -2759,7 +2917,10 @@
         "kategoria": "Kardiologiczne",
         "max": true,
         "malzonek": true,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Zabieg kardiochirurgiczny polegający na wytworzeniu pomostów naczyniowych w celu ominięcia zwężonej lub całkowicie zamkniętej co najmniej jednej tętnicy wieńcowej. Wyłączone inne zabiegi na naczyniach wieńcowych, w tym angioplastyka.",
+        "kategoria_klucz": "kardiologiczne"
       },
       {
         "lp": 29,
@@ -2767,7 +2928,10 @@
         "kategoria": "Neurologiczne",
         "max": true,
         "malzonek": true,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Całkowita i nieodwracalna utrata władzy w co najmniej dwóch kończynach, w wyniku porażenia spowodowanego wypadkiem lub chorobą. Potwierdzone dokumentacją medyczną z co najmniej 3 miesięcy przed zgłoszeniem.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 30,
@@ -2775,7 +2939,10 @@
         "kategoria": "Kardiologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Choroba ze wzrostem ciśnienia w tętnicy płucnej na tle pierwotnych zmian naczyniowych, powikłana istotnym powiększeniem prawej komory serca i niewydolnością krążenia klasy IV wg NYHA.",
+        "kategoria_klucz": "kardiologiczne"
       },
       {
         "lp": 31,
@@ -2783,7 +2950,10 @@
         "kategoria": "Gastroenterologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Martwica wątroby spowodowana zakażeniem wirusem zapalenia wątroby. Warunki: encefalopatia wątrobowa i żółtaczka, albumina ≤3,5 g/dl, INR >2,2. Potwierdzone wynikiem badania serologicznego.",
+        "kategoria_klucz": "gastroenterologiczne"
       },
       {
         "lp": 32,
@@ -2791,7 +2961,10 @@
         "kategoria": "Urazowe",
         "max": true,
         "malzonek": true,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Oparzenie III stopnia obejmujące co najmniej 15% powierzchni ciała. Klasyfikacja wg tablicy Lunda i Browdera (dzieci do 15 lat) lub Reguły dziewiątek (powyżej 15 lat). Wymagana karta z leczenia szpitalnego.",
+        "kategoria_klucz": "urazowe"
       },
       {
         "lp": 33,
@@ -2799,7 +2972,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Uogólnione zakażenie dwoinką zapalenia opon mózgowo-rdzeniowych (meningokok) lub zakażenie paciorkowcem zapalenia płuc (pneumokok), przebiegające z niewydolnością wielonarządową (co najmniej 2 narządy).",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 34,
@@ -2807,7 +2983,10 @@
         "kategoria": "Reumatologiczne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Ogólnoustrojowa choroba naczyń kolagenowych z postępującym włóknieniem skóry, naczyń i narządów trzewnych. Musi zajmować serce, płuco lub nerkę. Wyłączone: twardzina miejscowa, zapalenie powięzi eozynofilowe, zespół CREST.",
+        "kategoria_klucz": "reumatologiczne"
       },
       {
         "lp": 35,
@@ -2815,7 +2994,10 @@
         "kategoria": "Operacje/Przeszczepy",
         "max": true,
         "malzonek": true,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Przeszczepienie jednego lub kilku z następujących narządów/tkanek: serce, płuco, wątroba, trzustka, nerka, jelito cienkie lub szpik kostny. Zabieg wykonany w Polsce lub za granicą na podstawie decyzji uprawnionej instytucji.",
+        "kategoria_klucz": "operacje"
       },
       {
         "lp": 36,
@@ -2823,7 +3005,10 @@
         "kategoria": "Kardiologiczne",
         "max": true,
         "malzonek": true,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Chirurgiczna wymiana jednej lub więcej zastawek serca (aortalna, mitralna, płucna lub trójdzielna). Wyłączone: walwuloplastyka, walwulotomia, komisurotomia.",
+        "kategoria_klucz": "kardiologiczne"
       },
       {
         "lp": 37,
@@ -2831,7 +3016,10 @@
         "kategoria": "Pulmonologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Trwała i nieodwracalna utrata czynności płuc. Warunki przez min. 3 miesiące: terapia tlenowa ≥15 godz./dobę, ciśnienie parcjalne tlenu we krwi <55 mmHg/7,33 kPa. Potwierdzone przez pulmonologa.",
+        "kategoria_klucz": "pulmonologiczne"
       },
       {
         "lp": 38,
@@ -2839,7 +3027,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Wywoływana przez przywry krwi z rodzaju Schistosoma z objawami zapalenia płuc, wątroby lub choroby nerek. Potwierdzona wynikiem badania parazytologicznego, serologicznego, immunologicznego lub histopatologicznego.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 39,
@@ -2847,7 +3038,10 @@
         "kategoria": "Gastroenterologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Trwała i nieodwracalna utrata funkcji wątroby. Warunki: wodobrzusze, albumina ≤3,5 g/dl, INR >2,2. Wyłączone: niewydolność wskutek nadużywania alkoholu lub narkotyków.",
+        "kategoria_klucz": "gastroenterologiczne"
       },
       {
         "lp": 40,
@@ -2855,7 +3049,10 @@
         "kategoria": "Neurologiczne",
         "max": true,
         "malzonek": true,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Rozpoznane przez neurologa z typowymi objawami demielinizacyjnymi i zmianami w MRI. Odpowiedzialność istnieje gdy: zaburzenia neurologiczne nieprzerwanie przez ≥6 miesięcy, lub ≥2 hospitalizacje, lub ≥1 hospitalizacja ze specyficznymi zmianami w PMR i MRI.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 41,
@@ -2863,7 +3060,10 @@
         "kategoria": "Neurologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Stan głębokiej utraty świadomości bez reakcji na bodźce, utrzymujący się nieprzerwanie przez co najmniej 96 godzin, wymagający sprzętu podtrzymującego funkcje życiowe. Lub śpiączka bez sprzętu trwająca co najmniej 2 miesiące.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 42,
@@ -2871,7 +3071,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Wywołany neurotoksyną Clostridium tetani, przebiegający w postaci uogólnionej, wymagający leczenia szpitalnego.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 43,
@@ -2879,7 +3082,10 @@
         "kategoria": "Nefrologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Zapalenie nerek będące następstwem tocznia rumieniowatego układowego. Warunki: postać proliferacyjna (≥klasa III wg ISN/RPS), eGFR <60 ml/min, rozpoznanie potwierdzone przez nefrologa.",
+        "kategoria_klucz": "nefrologiczne"
       },
       {
         "lp": 44,
@@ -2887,7 +3093,10 @@
         "kategoria": "Neurologiczne",
         "max": true,
         "malzonek": true,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Martwica mózgu spowodowana ostrym nieurazowym krwotokiem lub niedokrwieniem z trwałym ubytkiem neurologicznym. Potwierdzone MRI lub CT. Wyłączone: TIA, udar bez określonej daty, oparty tylko na biomarkerach, z objawami wyłącznie węchowymi/przedsionkowymi/wzrokowymi.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 45,
@@ -2895,7 +3104,10 @@
         "kategoria": "Urazowe",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Równoczesne obrażenia różnych części ciała, gdzie co najmniej jedno zagraża życiu. Warunki: wskaźnik ISS ≥16 punktów i co najmniej 2 obszary anatomiczne wg klasyfikacji ISS.",
+        "kategoria_klucz": "urazowe"
       },
       {
         "lp": 46,
@@ -2903,7 +3115,10 @@
         "kategoria": "Pulmonologiczne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Całkowite chirurgiczne usunięcie całego prawego lub całego lewego płuca w wyniku choroby lub wypadku. Wyłączone usunięcie części płuca.",
+        "kategoria_klucz": "pulmonologiczne"
       },
       {
         "lp": 47,
@@ -2911,7 +3126,10 @@
         "kategoria": "Urazowe",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Całkowita i trwała utrata funkcji lub całkowita fizyczna utrata dwóch lub więcej kończyn powyżej nadgarstka lub stawu skokowego w wyniku wypadku lub choroby.",
+        "kategoria_klucz": "urazowe"
       },
       {
         "lp": 48,
@@ -2919,7 +3137,10 @@
         "kategoria": "Neurologiczne",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Całkowita i nieodwracalna utrata mowy wskutek choroby lub wypadku, trwająca nieprzerwanie przez co najmniej 12 miesięcy. Świadczenie nie przysługuje, jeśli jakiekolwiek leczenie lub wszczep może przywrócić mowę.",
+        "kategoria_klucz": "neurologiczne"
       },
       {
         "lp": 49,
@@ -2927,7 +3148,10 @@
         "kategoria": "Inne",
         "max": true,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Stan zdrowia (choroba lub wypadek), gdzie Ubezpieczony przez co najmniej 6 miesięcy nie jest zdolny do wykonania 3 z 6 Czynności Dnia Codziennego. Stan musi mieć charakter trwały.",
+        "kategoria_klucz": "inne"
       },
       {
         "lp": 50,
@@ -2935,7 +3159,10 @@
         "kategoria": "Inne",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Nieodwracalna utrata słuchu w obu uszach (próg słyszalności powyżej 90 decybeli) w wyniku choroby lub wypadku. Świadczenie nie przysługuje, jeśli jakakolwiek pomoc lub wszczep może przywrócić słuch.",
+        "kategoria_klucz": "inne"
       },
       {
         "lp": 51,
@@ -2943,7 +3170,10 @@
         "kategoria": "Inne",
         "max": true,
         "malzonek": true,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Potwierdzone klinicznie nieodwracalne zaburzenie widzenia w obu oczach, gdzie skorygowana ostrość wzroku lepszego oka jest mniejsza niż 6/60 lub pole widzenia ograniczone do mniej niż 20° w każdym oku.",
+        "kategoria_klucz": "inne"
       },
       {
         "lp": 52,
@@ -2951,7 +3181,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Wywołana wirusem Lyssavirus rabies, przebiegająca jako ostre zapalenie mózgu i rdzenia. Rozpoznana na podstawie objawów klinicznych i wykrycia wirusa lub przeciwciał. Wymagane leczenie szpitalne.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 53,
@@ -2959,7 +3192,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Zakażenie HIV wyłącznie w wyniku uzasadnionego medycznie przetaczania krwi po objęciu ochroną. Wyłączone: zakażenia przez aktywność seksualną, dożylne użycie narkotyków, hemofilia lub choroby wymagające cyklicznego przetaczania krwi.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 54,
@@ -2967,7 +3203,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": true,
         "malzonek": false,
-        "dziecko": true
+        "dziecko": true,
+        "komfort": true,
+        "definicja": "Ostre zapalenie mózgu wywołane przez bakterie lub wirusy z trwałą i nieodwracalną niezdolnością do co najmniej jednej z 6 Czynności Dnia Codziennego lub komunikacji werbalnej, lub wynik testu MMSE ≤15 pkt.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 55,
@@ -2975,7 +3214,10 @@
         "kategoria": "Kardiologiczne",
         "max": true,
         "malzonek": true,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Martwica mięśnia sercowego z powodu niedrożności tętnic wieńcowych. Potwierdzone wzrostem troponiny T/I lub CK-MB oraz co najmniej jednym z: typowe objawy, nowe zmiany EKG, zaburzenia ruchomości ściany, zakrzep w angiografii. Wyłączone: podwyższenie biomarkerów po angiografii/angioplastyce.",
+        "kategoria_klucz": "kardiologiczne"
       },
       {
         "lp": 56,
@@ -2983,7 +3225,10 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Ciężkie zakażenie przyranne bakteriami z rodzaju Clostridium (C. perfringens, C. novyi, C. septicum i in.) z wytwarzaniem gazu w tkankach, obrzękiem, martwicą tkanek i objawami toksemii. Wymagane leczenie szpitalne.",
+        "kategoria_klucz": "infekcyjne"
       },
       {
         "lp": 57,
@@ -2991,9 +3236,19 @@
         "kategoria": "Choroby infekcyjne",
         "max": false,
         "malzonek": false,
-        "dziecko": false
+        "dziecko": false,
+        "komfort": true,
+        "definicja": "Wywołana wirusem z rodziny Flaviviridae. Rozpoznanie na podstawie pobytu w regionie endemicznym, charakterystycznych objawów klinicznych i potwierdzenia wynikami badań wirusologicznych lub immunologicznych.",
+        "kategoria_klucz": "infekcyjne"
       }
-    ]
+    ],
+    "etykieta_definicji": "Definicja ubezpieczeniowa",
+    "podpis_zrodla": "Źródło: WU ER 01/25, Załącznik 1 – Definicje poważnych zachorowań, poz. {lp}",
+    "stopka": "Warunki Grupowego Ubezpieczenia na Życie ERGO Razem · kod ER 01/25 · ERGO Hestia S.A.",
+    "wyszukiwarka_placeholder": "🔍  Szukaj zachorowania lub słów kluczowych...",
+    "brak_wynikow": "Nie znaleziono zachorowań pasujących do kryteriów wyszukiwania.",
+    "licznik": "Wyświetlono {n} z {57} zachorowań",
+    "niezgodnosci_flag_z_poprzednia_wersja": []
   },
   "ubezpieczenia_dodatkowe_szczegoly": {
     "MediPlan": {
@@ -3476,7 +3731,7 @@
       "telefonicznie pod numerem 801 107 107 lub (58) 555 55 55 ,",
       "przez formularz na stronie zgloszenieroszczenia.ergohestia.pl ."
     ],
-    "kontakt_agenta": "biuro@utratadochodu.com"
+    "kontakt_agenta": "[e-mail biura Aura Expert]"
   },
   "faq": [
     {
@@ -3589,22 +3844,921 @@
         },
         {
           "q": "Jak się z Wami skontaktować?",
-          "a": "Napisz na [biuro@utratadochodu.com](mailto:biuro@utratadochodu.com) lub zostaw dane kontaktowe w [kalkulatorze](/kalkulator/wiek) — agent oddzwoni w ciągu 1–2 dni roboczych."
+          "a": "Napisz na [[e-mail biura Aura Expert]](mailto:[e-mail biura Aura Expert]) lub zostaw dane kontaktowe w [kalkulatorze](/kalkulator/wiek) — agent oddzwoni w ciągu 1–2 dni roboczych."
         }
       ]
     }
   ],
   "zgody": {
-    "w_kodzie": [],
-    "uwaga": "Brak treści zgód/klauzul w dostępnych chunkach – były w krokach Podsumowanie/Sukces lub na stronach /rodo, /polityka-prywatnosci, /regulamin (niepobrane). FAQ potwierdza istnienie 'zgody na przetwarzanie danych'."
+    "w_kodzie": [
+      {
+        "kod": "zgoda_1",
+        "wymagana": true,
+        "etykieta": "Zgoda na objęcie grupowym ubezpieczeniem na życie",
+        "pelna_tresc": "Wyrażam zgodę na objęcie mnie grupowym ubezpieczeniem na życie, zawartym przez wskazanego w niniejszym dokumencie Ubezpieczającego z Sopockim Towarzystwem Ubezpieczeń na Życie ERGO Hestia SA, zgodnie z treścią tej umowy i Warunkami Ubezpieczenia, które będą mnie obowiązywały jako Ubezpieczonego. Od wyrażenia zgody na powyższe uzależnia się objęcie ochroną ubezpieczeniową.",
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:270"
+      },
+      {
+        "kod": "zgoda_2",
+        "wymagana": true,
+        "etykieta": "Upoważnienie do uzyskania informacji od NFZ",
+        "pelna_tresc": "Upoważniam ERGO Hestię do uzyskiwania, na podstawie art. 38 ust. 8 ustawy z dnia 11 września 2015 r. o działalności ubezpieczeniowej i reasekuracyjnej, od Narodowego Funduszu Zdrowia danych o nazwach i adresach świadczeniodawców, którzy udzielili mi świadczeń opieki zdrowotnej w związku z oceną ryzyka ubezpieczeniowego i weryfikacją podanych przeze mnie danych o moim stanie zdrowia, jak również w związku z wypadkiem lub zdarzeniem losowym, będącym podstawą ustalenia odpowiedzialności oraz wysokości odszkodowania lub świadczenia. Z uwagi na niezbędność niniejszego upoważnienia dla celów należytego wykonania umowy ubezpieczenia, tj. do ustalania odpowiedzialności ERGO Hestii i wypłaty świadczeń należnych z umowy ubezpieczenia powyższe upoważnienie jest nieodwołalne w okresie trwania ochrony ubezpieczeniowej oraz przez 3 lata od daty jej zakończenia i obowiązuje również po mojej śmierci. Od udzielenia niniejszego upoważnienia uzależnia się objęcie ochroną ubezpieczeniową.",
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:279"
+      },
+      {
+        "kod": "zgoda_3",
+        "wymagana": true,
+        "etykieta": "Upoważnienie do uzyskania informacji od podmiotów wykonujących działalność leczniczą",
+        "pelna_tresc": "Upoważniam ERGO Hestię na podstawie art. 38 ust. 6 ustawy z dnia 11 września 2015 r. o działalności ubezpieczeniowej i reasekuracyjnej, do uzyskiwania, również po mojej śmierci, od każdego z podmiotów wykonujących działalność leczniczą, które udzielały mi świadczeń zdrowotnych, informacji o okolicznościach związanych z oceną ryzyka ubezpieczeniowego i weryfikacją podanych przeze mnie danych o moim stanie zdrowia, a w przypadku objęcia ochroną ubezpieczeniową, również ustaleniem mojego prawa do świadczenia z zawartej umowy ubezpieczenia i wysokością tego świadczenia. Zakres informacji obejmuje, z wyłączeniem wyników badań genetycznych, informacje o: przyczynach hospitalizacji, wykonywanych w jej trakcie badaniach diagnostycznych i ich wynikach, innych udzielonych świadczeniach zdrowotnych, wynikach leczenia oraz o wynikach sekcji zwłok, jeżeli zostanie przeprowadzona; przyczynach leczenia ambulatoryjnego, wykonywanych w jego trakcie badaniach diagnostycznych i ich wynikach, innych udzielonych świadczeniach zdrowotnych oraz wynikach leczenia; wynikach przeprowadzonych konsultacji; przyczynie śmierci. Z uwagi na niezbędność niniejszego upoważnienia dla celów należytego wykonania umowy ubezpieczenia, tj. do ustalania odpowiedzialności ERGO Hestii i wypłaty świadczeń należnych z umowy ubezpieczenia, powyższe upoważnienie jest nieodwołalne w okresie trwania ochrony ubezpieczeniowej oraz w ciągu 3 lat od daty jej zakończenia i obowiązuje również po mojej śmierci. Od udzielenia niniejszego upoważnienia uzależnia się objęcie ochroną ubezpieczeniową.",
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:288"
+      },
+      {
+        "kod": "zgoda_4",
+        "wymagana": true,
+        "etykieta": "Wniosek o komunikację za pomocą środków porozumiewania się na odległość",
+        "pelna_tresc": "Wnioskuję o przesyłanie przez Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestię SA korespondencji związanej z wykonywaniem czynności ubezpieczeniowych, w tym doręczenia certyfikatu uczestnictwa, za pomocą środków porozumiewania się na odległość w tym środków komunikacji elektronicznej (telefon, e-mail) na podane przeze mnie dane kontaktowe, a odpowiedzi na złożone reklamacje na wskazany w danych adres e-mail. Od wyrażenia zgody na powyższe uzależnia się objęcie ochroną ubezpieczeniową. Zobowiązuję się do aktualizacji danych.",
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:297"
+      },
+      {
+        "kod": "zgoda_5",
+        "wymagana": true,
+        "etykieta": "Zgoda na udostępnianie przez ERGO Hestię danych osobowych każdemu innemu zakładowi ubezpieczeń",
+        "pelna_tresc": "Wyrażam zgodę na udostępnianie przez ERGO Hestię przetwarzanych przez ERGO Hestię moich danych osobowych każdemu innemu zakładowi ubezpieczeń, w zakresie potrzebnym do oceny ryzyka ubezpieczeniowego i weryfikacji podawanych przeze mnie danych, ustalenia mojego prawa do świadczenia z umowy ubezpieczenia i wysokości tego świadczenia, a także do udzielenia posiadanych przez ERGO Hestię informacji o przyczynie mojej śmierci lub informacji niezbędnych do ustalenia mojego prawa do świadczenia i jego wysokości. Od wyrażenia zgody na powyższe uzależnia się objęcie ochroną ubezpieczeniową.",
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:306"
+      },
+      {
+        "kod": "zgoda_6",
+        "wymagana": true,
+        "etykieta": "Zgoda na udostępnianie danych osobowych ERGO Hestii przez każdy inny zakład ubezpieczeń",
+        "pelna_tresc": "Wyrażam zgodę na udostępnianie ERGO Hestii moich danych osobowych przetwarzanych przez każdy inny zakład ubezpieczeń, w którym jestem, byłem(am) lub będę ubezpieczony(a) bądź występowałem(am), występuję lub będę występował/a o ubezpieczenie w zakresie potrzebnym do oceny ryzyka ubezpieczeniowego i weryfikacji podawanych przeze mnie danych, ustalenia mojego prawa do świadczenia z umowy ubezpieczenia i wysokości tego świadczenia, a także do udzielenia ERGO Hestii posiadanych przez każdy inny zakład ubezpieczeń informacji o przyczynie mojej śmierci lub informacji niezbędnych do ustalenia mojego prawa do świadczenia i jego wysokości. Od wyrażenia zgody na powyższe uzależnia się objęcie ochroną ubezpieczeniową.",
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:315"
+      },
+      {
+        "kod": "zgoda_9",
+        "wymagana": true,
+        "etykieta": "Zgoda na finansowanie składki przez CPOP — Deklaracja przystąpienia do Grupy Otwartej ERGO Razem",
+        "pelna_tresc": "DEKLARACJA FINANSOWANIA SKŁADKI UBEZPIECZENIOWEJ W GRUPIE OTWARTEJ ERGO RAZEM\n\n1. MISJA CENTRUM POMOCY OSOBOM POSZKODOWANYM SP. Z O.O.\nCelem społecznej misji Centrum Pomocy Osobom Poszkodowanym Sp. z o.o. z siedzibą w Gdańsku przy ul. Jelitkowskiej 49 (dalej: CPOP) jest kompleksowe wsparcie osób poszkodowanych w wypadkach w procesie rehabilitacji medycznej, społecznej i zawodowej. Spółka zdecydowała się zawrzeć z Sopockim Towarzystwem Ubezpieczeń na Życie ERGO Hestia S.A. umowę grupowego ubezpieczenia na życie ERGO Razem, aby ułatwić uzyskanie ochrony ubezpieczeniowej.\n\n2. CZYM JEST GRUPA OTWARTA ERGO RAZEM\nGrupa Otwarta ERGO Razem to Umowa grupowego ubezpieczenia na życie ERGO Razem zawarta w dniu 01.12.2023 r. przez CPOP jako Ubezpieczającym z ERGO Hestią.\n\n3. CO JEST KONIECZNE, ABY ZOSTAĆ OBJĘTYM OCHRONĄ\nAby zostać Ubezpieczonym objętym ochroną w Grupie Otwartej ERGO Razem konieczne jest, oprócz zgody na objęcie ochroną przez ERGO Hestię, również wyrażenie CPOP zgody na finansowanie składki za udzielaną ochronę ubezpieczeniową.\n\n4. DEKLARACJA\nZobowiązuję się wobec Centrum Pomocy Osobom Poszkodowanym Sp. z o.o. z siedzibą w Gdańsku do finansowania składki ubezpieczeniowej za udzielaną mi przez ERGO Hestię ochronę w Grupie Otwartej ERGO Razem, tj. do:\n(1) wpłaty pierwszej składki do daty wskazanej w Certyfikacie Uczestnictwa oraz\n(2) terminowego wpłacenia drugiej i następnych składek najpóźniej do 15 dnia miesiąca za kolejny miesiąc, na rachunek bankowy podany w Certyfikacie Uczestnictwa.\n\n5. CO SIĘ STANIE W PRZYPADKU NIEOPŁACENIA SKŁADKI\nW przypadku nieopłacenia składki w terminie zostanie Pan/Pani poinformowany o braku płatności i obowiązku zapłaty w dodatkowym terminie 7 dni pod rygorem uznania umowy za wypowiedzianą przez CPOP.\n\n6. CZY UBEZPIECZAJĄCY OTRZYMUJE WYNAGRODZENIE\nCPOP ani osoby działające na jej rzecz nie otrzymują wynagrodzenia ani innych korzyści w związku z oferowaniem możliwości skorzystania z ochrony.\n\nINFORMACJA O PRZETWARZANIU DANYCH PRZEZ CPOP\nAdministratorem danych jest Centrum Pomocy Osobom Poszkodowanym Sp. z o.o., 80-342 Gdańsk, ul. Jelitkowska 49, email: ergorazem@cpop.pl. Inspektor Ochrony Danych: iod@cpop.pl. Dane przetwarzane są w celu objęcia ochroną ubezpieczeniową, dochodzenia roszczeń oraz (po wyrażeniu zgody) marketingu bezpośredniego. Masz prawo dostępu, sprostowania, usunięcia danych oraz wniesienia skargi do PUODO. Od wyrażenia zgody na finansowanie składki uzależnia się objęcie ochroną w Grupie Otwartej ERGO Razem.",
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:324"
+      },
+      {
+        "kod": "oswiadczenie_1",
+        "wymagana": true,
+        "etykieta": "Oświadczam, że przed przystąpieniem do umowy ubezpieczenia otrzymałem/am Warunki Ubezpieczenia, zapoznałem/am się z ich treścią i w pełni je akceptuję.",
+        "pelna_tresc": null,
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:360"
+      },
+      {
+        "kod": "oswiadczenie_2",
+        "wymagana": true,
+        "etykieta": "Oświadczam, że przed przystąpieniem do umowy ubezpieczenia nastąpiło zbadanie i określenie moich wymagań oraz potrzeb ubezpieczeniowych.",
+        "pelna_tresc": null,
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:368"
+      },
+      {
+        "kod": "oswiadczenie_3",
+        "wymagana": true,
+        "etykieta": "Oświadczam, że przed przystąpieniem do umowy ubezpieczenia nastąpiło udostępnienie dokumentu pełnomocnictwa udzielonego dystrybutorowi przez ubezpieczyciela oraz przekazanie wymaganych ustawą o dystrybucji informacji o dystrybutorze.",
+        "pelna_tresc": null,
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:376"
+      },
+      {
+        "kod": "oswiadczenie_4",
+        "wymagana": true,
+        "etykieta": "Oświadczam, że przed przystąpieniem do umowy ubezpieczenia nastąpiło przekazanie mi w zrozumiałej formie wymaganych ustawowo obiektywnych informacji o proponowanym produkcie ubezpieczeniowym.",
+        "pelna_tresc": null,
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:384"
+      },
+      {
+        "kod": "zgoda_7",
+        "wymagana": false,
+        "etykieta": "Zgoda na otrzymywanie informacji handlowej drogą elektroniczną (niezbędna do wysłania elektronicznej oferty na e-mail)",
+        "pelna_tresc": "Zgadzam się na otrzymywanie drogą elektroniczną informacji handlowej od Sopockiego Towarzystwa Ubezpieczeń na Życie ERGO Hestia SA w Sopocie, z wykorzystaniem środków porozumiewania się na odległość (telefon, e-mail) przy użyciu podanych przeze mnie danych kontaktowych. Zobowiązuję się do aktualizacji danych. Od wyrażenia zgody na powyższe nie uzależnia się objęcia ochroną ubezpieczeniową.",
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:399"
+      },
+      {
+        "kod": "zgoda_8",
+        "wymagana": false,
+        "etykieta": "Zgoda na prowadzenie działań marketingowych przez STU ERGO Hestia S.A.",
+        "pelna_tresc": "Wyrażam zgodę na przetwarzanie moich danych osobowych w celach marketingowych, w tym określenia preferencji i potrzeb ubezpieczeniowych, oraz na przesyłanie informacji handlowych przez Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A. w Sopocie z wykorzystaniem:\n• środków komunikacji elektronicznej (w szczególności na podany adres e-mail);\n• telekomunikacyjnych urządzeń końcowych i automatycznych systemów wywołujących (w szczególności na podany numer telefonu).\n\nTwoją zgodę przekażemy do Sopockiego Towarzystwa Ubezpieczeń ERGO Hestia S.A. w Sopocie. Od wyrażenia zgody nie uzależnia się objęcia ochroną ubezpieczeniową.",
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:406"
+      },
+      {
+        "kod": "zgoda_10",
+        "wymagana": false,
+        "etykieta": "Zgoda dla CPOP na przekazywanie informacji handlowej (dobrowolna)",
+        "pelna_tresc": "Wyrażam zgodę na przekazywanie mi przez Centrum Pomocy Osobom Poszkodowanym sp. z o.o. z siedzibą w Gdańsku na podany przeze mnie adres email informacji handlowej o nowych wariantach ubezpieczenia w Grupie Otwartej ERGO Razem oferowanych przez ERGO Hestię, na podstawie której będę mógł/mogła dokonać zmiany warunków ochrony ubezpieczeniowej. Wyrażoną zgodę mogę cofnąć w każdym czasie i bez podawania przyczyny przesyłając oświadczenie na adres: iod@cpop.pl. Wycofanie zgody nie będzie mieć wpływu na zgodność z prawem przetwarzania przed jej cofnięciem. Zgoda jest dobrowolna — jej brak nie uzależnia objęcia ochroną.",
+        "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:417"
+      }
+    ],
+    "kolejnosc_na_ekranie": [
+      "zgoda_1",
+      "zgoda_2",
+      "zgoda_3",
+      "zgoda_4",
+      "zgoda_5",
+      "zgoda_6",
+      "zgoda_9",
+      "oswiadczenie_1",
+      "oswiadczenie_2",
+      "oswiadczenie_3",
+      "oswiadczenie_4",
+      "zgoda_7",
+      "zgoda_8",
+      "zgoda_10"
+    ],
+    "walidacja": "obowiązkowe: z.literal(true, {message:\"Wymagana zgoda\"}); dobrowolne: z.boolean().optional() – tylko po stronie klienta (podsumowanie/page.tsx:15-39)",
+    "domyslnie": "wszystkie niezaznaczone (brak defaultValues)",
+    "wersjonowanie": "BRAK – brak kodu wersji, hasha treści, znacznika czasu",
+    "wysylka": "BRAK – żadna zgoda ani oświadczenie nie trafia do /api/oferta ani do e-maili (podsumowanie/page.tsx:139-151; app/api/oferta/route.ts:40-52). Agent nie wie, które zgody dobrowolne zaznaczono; brak dowodu zgody (art. 7 ust. 1 RODO).",
+    "brakujace_numery": "zgoda_11+ nie istnieją; numeracja 1–10 bez luki, ale zgoda_9 wyświetlana przed oświadczeniami, zgody 7, 8, 10 w sekcji dobrowolnej",
+    "uwagi": [
+      "Zgody 1–6, 9 i oświadczenia 1–4 to treści deklaracji przystąpienia/certyfikatu (ERGO Hestia, CPOP). Zbieranie ich w formularzu „zapytania do agenta”, który niczego nie zawiera, jest niespójne z FAQ („Formularz służy wyłącznie do przedstawienia oferty”) i z §4 regulaminu.",
+      "oswiadczenie_1 („otrzymałem/am Warunki Ubezpieczenia”) – przed wysyłką żadna strona nie linkuje do WU/OWU; PDF trafia dopiero do e-maila po wysyłce (i najpewniej nie trafia – patrz dokumenty).",
+      "oswiadczenie_2 („nastąpiło zbadanie i określenie moich wymagań oraz potrzeb”) – kalkulator nie ma kroku analizy potrzeb (W5).",
+      "zgoda_7 ma etykietę „(niezbędna do wysłania elektronicznej oferty na e-mail)”, ale jest dobrowolna, a e-mail z ofertą wysyłany jest niezależnie od niej.",
+      "zgoda_8 mówi o „Sopockim Towarzystwie Ubezpieczeń ERGO Hestia S.A.” (spółka majątkowa), pozostałe o STU na Życie ERGO Hestia – do potwierdzenia.",
+      "Brak zgody art. 9 RODO – zgodnie z deklaracją, że ankieta nie opuszcza przeglądarki.",
+      "Administrator danych: /rodo i /polityka-prywatnosci wskazują Aura Expert; treść zgoda_9 zawiera klauzulę CPOP jako administratora; WU (OWU.pdf s. 13) – klauzulę ERGO Hestii jako administratora. Trzy role (agent, ubezpieczający, ubezpieczyciel) do opisania w jednej warstwowej klauzuli portalu (W3)."
+    ]
   },
   "ankieta": {
-    "pytania": [],
-    "reguly": [],
-    "uwaga": "Brak w dostępnych chunkach. W store tylko flaga questionnaireComplete."
+    "naglowek": "Ankieta medyczna",
+    "podtytul": "Odpowiedz na 5 pytań — są one wymagane do oceny możliwości przystąpienia do Grupy Otwartej.",
+    "informacja_prywatnosci": "Odpowiedzi na pytania dotyczące stanu zdrowia są przetwarzane wyłącznie lokalnie w Twojej przeglądarce i nie są nigdzie wysyłane ani zapisywane.",
+    "informacja_prywatnosci_pogrubienie": "wyłącznie lokalnie w Twojej przeglądarce",
+    "informacja_prywatnosci_zrodlo": "gohestia/components/privacy-notice.tsx:11-15",
+    "etykieta_bloku": "Pytanie {n} z 5",
+    "przycisk_wyjatki": "Wyjątki od tej reguły",
+    "odpowiedzi": {
+      "typ": "dwa przyciski na blok (wartość logiczna)",
+      "nie": {
+        "tekst": "NIE (spełniam warunek)",
+        "wartosc": false
+      },
+      "tak": {
+        "tekst": "TAK",
+        "wartosc": true
+      },
+      "zrodlo": "gohestia/components/questionnaire/question-block.tsx:66-92"
+    },
+    "przycisk_dalej": "Przejdź dalej →",
+    "pytania": [
+      {
+        "id": "q1",
+        "tytul": "Choroby z ostatnich 5 lat",
+        "deklaracja": "Oświadczam, że w okresie ostatnich 5 lat nie rozpoznano u mnie, nie byłem(am) leczony(a) ani nie przebywałem(am) pod stałą opieką lekarską z powodu następujących schorzeń:",
+        "warunki": [
+          "choroby niedokrwiennej serca, zawału serca, wady serca, zaburzeń rytmu serca, kardiomiopatii, miażdżycy, tętniaka",
+          "cukrzycy (z wyjątkiem podwyższonego poziomu glukozy we krwi w okresie ciąży)",
+          "nowotworu złośliwego, choroby krwi (niedokrwistości aplastycznej, białaczki, chłoniaka, szpiczaka, zespołu mielodysplastycznego, niedokrwistości sierpowatokrwinkowej, talasemii, hemofilii lub trombofilii), nowotworu łagodnego mózgu lub rdzenia kręgowego",
+          "udaru mózgu, krwotoku śródmózgowego, porażenia (paraliżu), przewlekłej niewydolności oddechowej, niewydolności nerek, marskości wątroby, choroby alkoholowej lub uzależnienia od narkotyków, stwardnienia rozsianego, choroby Parkinsona, choroby Alzheimera, AIDS, zakażenia wirusem HIV lub innej choroby, w zakresie której zalecenie lekarskie obejmowało lub obejmuje wykonanie przeszczepu narządu"
+        ],
+        "zrodlo": "gohestia/lib/data/questionnaire.ts:11"
+      },
+      {
+        "id": "q2",
+        "tytul": "Stan obecny",
+        "deklaracja": "Oświadczam, że obecnie:",
+        "warunki": [
+          "nie zamierzam zasięgać porady lekarskiej, nie oczekuję na wykonanie badań diagnostycznych, nie oczekuję na wyniki takich badań, ani nie zamierzam poddać się leczeniu, w tym leczeniu szpitalnemu z powodu chorób wymienionych w punkcie 1",
+          "nie przebywam w szpitalu, hospicjum, domu pomocy społecznej, sanatorium ani na zwolnieniu lekarskim",
+          "nie jestem uznany(a) za niezdolnego(ą) do pracy lub służby orzeczeniem właściwego organu, według przepisów o ubezpieczeniu społecznym lub zaopatrzeniu społecznym (nie dotyczy kategorii zdolności do odbywania lub pełnienia czynnej służby określanej podczas kwalifikacji wojskowej oraz orzeczenia WKL w procesie ubiegania się o powołanie do WOT)"
+        ],
+        "zrodlo": "gohestia/lib/data/questionnaire.ts:22"
+      },
+      {
+        "id": "q3",
+        "tytul": "Ostatnie 12 miesięcy",
+        "deklaracja": "Oświadczam, że w ciągu ostatnich 12 miesięcy:",
+        "warunki": [
+          "nie byłem(am) hospitalizowany(a) przez okres dłuższy niż 30 dni",
+          "nie przebywałem(am) na zwolnieniu lekarskim przez okres dłuższy niż 30 dni"
+        ],
+        "wyjatki": [
+          "złamań / zwichnięć / skręceń / stłuczenia kończyn",
+          "usunięcia wyrostka robaczkowego",
+          "usunięcia migdałków podniebiennych",
+          "usunięcia woreczka żółciowego (o ile powodem była kamica)",
+          "ciąży (o ile w trakcie nie wystąpiły schorzenia leczone w dniu objęcia ochroną)",
+          "porodu",
+          "opieki nad osobą trzecią (zasiłek opiekuńczy, zwolnienie np. na dziecko/małżonka)",
+          "przeprowadzenia artroskopii",
+          "operacji: przepukliny brzusznej/pachwinowej, hemoroidów, zaćmy, przegrody nosa"
+        ],
+        "zrodlo": "gohestia/lib/data/questionnaire.ts:32"
+      },
+      {
+        "id": "q4",
+        "tytul": "Wykluczony zawód",
+        "deklaracja": "Oświadczam, że obecnie nie wykonuję żadnego z wymienionych zawodów:",
+        "warunki": [
+          "górnika",
+          "kaskadera",
+          "konwojenta wartości pieniężnych",
+          "członka personelu statku powietrznego (nie dotyczy personelu licencjonowanych linii lotniczych)",
+          "policjanta",
+          "ratownika górskiego",
+          "ratownika wodnego",
+          "robotnika rozbiórki budowli",
+          "sportowca zawodowego",
+          "strażaka zawodowego (nie dotyczy strażaka OSP)",
+          "żołnierza zawodowego (nie dotyczy żołnierza WOT niebędącego żołnierzem zawodowym)"
+        ],
+        "zrodlo": "gohestia/lib/data/questionnaire.ts:52"
+      },
+      {
+        "id": "q5",
+        "tytul": "Czynności niebezpieczne",
+        "deklaracja": "Oświadczam, że obecnie wykonywany zawód nie jest związany z podejmowaniem czynności uznawanych za niebezpieczne:",
+        "warunki": [
+          "praca pod ziemią",
+          "praca pod wodą",
+          "praca na wysokości powyżej 10 metrów",
+          "praca z bronią palną",
+          "praca z materiałami wybuchowymi lub radioaktywnymi bądź ich wytwarzanie",
+          "praca na platformach wydobywczych lub przy ich obsłudze",
+          "praca w służbach specjalnych",
+          "wspinaczka wysokogórska",
+          "udział w wyścigach/rajdach samochodowych lub motocyklowych"
+        ],
+        "zrodlo": "gohestia/lib/data/questionnaire.ts:70"
+      }
+    ],
+    "reguly": [
+      "Każdy blok to jedno pytanie zbiorcze; brak odpowiedzi cząstkowych na poszczególne schorzenia/zawody (questionnaire.ts:1-7).",
+      "Odpowiedź TAK w dowolnym bloku natychmiast otwiera modal wykluczenia (components/questionnaire/index.tsx:55-62).",
+      "Przejście dalej tylko gdy wszystkie 5 odpowiedzi = NIE (answers.every(a => a === false)); przycisk wyłączony w innym przypadku (index.tsx:64, 90-96).",
+      "Po „Wróć do ankiety” w modalu można zmienić odpowiedź na NIE – brak blokady ani zapisu wcześniejszej odpowiedzi TAK.",
+      "Wyjątki w bloku q3 są tylko informacyjne (rozwijana lista); kod nie ma osobnej logiki dla wyjątków – ocenę robi użytkownik.",
+      "Brak ścieżki „do agenta”: każde TAK = wykluczenie z Grupy Otwartej i odesłanie do polisy indywidualnej ERGO Hestii.",
+      "Ankieta dotyczy tylko osoby przystępującej; brak pytań o małżonka/partnera i dzieci (także w produktach Dla Nas / Dla Rodziny)."
+    ],
+    "modal_wykluczenia": {
+      "naglowek": "Niestety nie możesz przystąpić do Grupy Otwartej",
+      "akapit_1": "Na podstawie udzielonej odpowiedzi nie spełniasz warunków przystąpienia do grupowego ubezpieczenia ERGO Razem w trybie Grupy Otwartej.",
+      "akapit_2": "Możesz jednak ubiegać się o indywidualną polisę na życie — może ona wymagać wypełnienia szczegółowej ankiety medycznej lub poddania się badaniom na koszt ubezpieczyciela.",
+      "przycisk_glowny": {
+        "tekst": "Sprawdź polisę indywidualną →",
+        "cel": "/wykluczenie/zdrowie"
+      },
+      "przycisk_drugi": {
+        "tekst": "Wróć do ankiety",
+        "akcja": "zamyka modal"
+      },
+      "zrodlo": "gohestia/components/questionnaire/index.tsx:13-45"
+    },
+    "czy_opuszcza_przegladarke": "NIE. Odpowiedzi są w useState komponentu QuestionnaireComponent (index.tsx:48-50); do store trafia tylko questionnaireComplete=true (index.tsx:66-69); ładunek /api/oferta nie zawiera ankiety (podsumowanie/page.tsx:139-151); store bez persist (store/calculator-store.ts:27).",
+    "uwaga_ux": "Deklaracje są sformułowane przecząco („Oświadczam, że … nie …”), a odpowiedź „TAK” oznacza wykluczenie. Etykieta „NIE (spełniam warunek)” częściowo to wyjaśnia, ale ryzyko pomyłki jest wysokie (podwójne przeczenie). W portalu przeformułować na pytania wprost („Czy w ciągu ostatnich 5 lat…?”) po akceptacji ERGO Hestii.",
+    "uwaga": "Źródło pytań: lib/data/questionnaire.ts. Treść jest bliska oświadczeniom o stanie zdrowia z WU ER 01/25 (osoba „przekazała ERGO Hestii informacje o stanie zdrowia i wykonywanym zawodzie”, OWU.pdf s. 3; § 5 WU), ale wymaga potwierdzenia przez ERGO Hestię, że to aktualna, pełna wersja."
   },
   "wysylka": {
     "server_actions": [],
-    "uwaga": "Brak identyfikatorów akcji w pobranych chunkach (createServerReference wyłącznie w runtime Next.js). Endpoint/kształt danych nieznany."
-  }
+    "route_handlers": [
+      {
+        "metoda": "POST",
+        "sciezka": "/api/turnstile",
+        "plik": "gohestia/app/api/turnstile/route.ts",
+        "zadanie": {
+          "token": "string"
+        },
+        "dzialanie": "siteverify (challenges.cloudflare.com) z TURNSTILE_SECRET_KEY; bez sprawdzania hostname/action/remoteip",
+        "odpowiedzi": {
+          "200": "{ok:true}",
+          "400": "{error:\"Nieprawidłowe dane\"} | {error:\"Brak tokenu\"}",
+          "403": "{error:\"Weryfikacja nieudana\"}",
+          "500": "{error:\"Konfiguracja Turnstile\"}"
+        }
+      },
+      {
+        "metoda": "POST",
+        "sciezka": "/api/oferta",
+        "plik": "gohestia/app/api/oferta/route.ts",
+        "zadanie": {
+          "imie": "string min 1",
+          "nazwisko": "string min 1",
+          "email": "email",
+          "telefon": "string",
+          "oferta": {
+            "ageGroup": "A1|A2|B",
+            "product": "dla_mnie|dla_nas|dla_rodziny",
+            "variant": "string (dowolny)",
+            "addons": "string[] – etykiety, np. \"MediPlan\"",
+            "monthlyPremium": "number (wyliczony w przeglądarce)"
+          }
+        },
+        "przyklad_ladunku": {
+          "imie": "…",
+          "nazwisko": "…",
+          "email": "…",
+          "telefon": "…",
+          "oferta": {
+            "ageGroup": "A1",
+            "product": "dla_mnie",
+            "variant": "komfort",
+            "addons": [
+              "MediPlan"
+            ],
+            "monthlyPremium": 84
+          }
+        },
+        "dzialanie": "Zod safeParse → sprawdzenie RESEND_API_KEY i AGENT_EMAIL → render 2 szablonów + pobranie PDF z public/ → 2 równoległe resend.emails.send (klient z załącznikami, agent bez) (route.ts:61-135)",
+        "odpowiedzi": {
+          "200": "{ok:true}",
+          "400": "{error:\"Nieprawidłowe dane\"} (zły JSON) | {error:\"Bad Request\"} (Zod)",
+          "500": "{error:\"Email configuration missing\",detail:{hasApiKey,hasAgentEmail}} | {error:\"Email error\",detail:<błąd Resend lub message>,from:<adres nadawcy>}"
+        }
+      }
+    ],
+    "dokad_trafiaja_dane": "WYŁĄCZNIE e-mail przez Resend: (1) do klienta na podany adres, (2) na adres agenta z sekretu AGENT_EMAIL. Brak bazy danych, brak Supabase, brak CRM „aurabroker” (brak zależności i odwołań w kodzie; w pozostałych repozytoriach brak tabel/funkcji dla ER).",
+    "email_klient": {
+      "nadawca": "„ERGO Razem Kalkulator <FROM_EMAIL>” (domyślny nadawca w domenie beautypolisa.eu – wartość w kodzie/konfiguracji)",
+      "odbiorca": "e-mail z formularza",
+      "temat": "Twoja oferta ERGO Razem — podsumowanie",
+      "zalaczniki": "OFFER_DOCUMENTS (lib/data/documents.ts)",
+      "tresc": [
+        "[nagłówek] ERGO Razem — Twoja oferta",
+        "Szanowny(a) Panie/Pani {imie} {nazwisko},",
+        "Dziękujemy za skorzystanie z kalkulatora grupowego ubezpieczenia na życie ERGO Razem.",
+        "[ramka] Podsumowanie wybranej oferty",
+        "Produkt | {PRODUCT_LABELS}",
+        "Wariant | {VARIANT_LABELS albo surowy variant}",
+        "Dodatki | {addons, gdy niepuste}",
+        "Składka miesięczna | {monthlyPremium} zł / mies.",
+        "Agent ERGO Hestia skontaktuje się z Tobą w ciągu 1–2 dni roboczych, aby omówić szczegóły oferty.",
+        "[stopka] Szczegóły w OWU (kod ER 01/25). Obowiązuje od 2.06.2025 r."
+      ],
+      "zrodlo": "gohestia/components/email/oferta-template.tsx:12-62; app/api/oferta/route.ts:106-112"
+    },
+    "email_agent": {
+      "nadawca": "jak wyżej",
+      "odbiorca": "sekret AGENT_EMAIL (wartość w konfiguracji, nie w dokumencie)",
+      "temat": "Nowe zapytanie: {imie} {nazwisko} — {product} {variant} (surowe klucze, np. „dla_mnie komfort”)",
+      "zalaczniki": "brak",
+      "tresc": [
+        "[nagłówek] Nowe zapytanie — ERGO Razem Kalkulator",
+        "Dane kontaktowe klienta",
+        "Imię i nazwisko | {imie} {nazwisko}",
+        "Email | {email} (link mailto)",
+        "Telefon | {telefon}",
+        "Wybrana konfiguracja",
+        "Grupa wiekowa | {ageGroup}",
+        "Produkt | {PRODUCT_LABELS}",
+        "Wariant | {VARIANT_LABELS albo surowy variant}",
+        "Dodatki | {addons, gdy niepuste}",
+        "Składka | {monthlyPremium} zł / mies."
+      ],
+      "brak_w_tresci": "region, zgody i oświadczenia, znacznik czasu, numer zgłoszenia",
+      "zrodlo": "gohestia/components/email/agent-template.tsx:14-72; app/api/oferta/route.ts:113-118"
+    },
+    "obsluga_bledow": "Błąd Resend w którejkolwiek z 2 wiadomości → 500 (jedna mogła już wyjść – brak transakcyjności/outboxu). Brak ponowień. Klient widzi alert.",
+    "rate_limit": "BRAK (ani w kodzie, ani w wrangler.jsonc)",
+    "turnstile": {
+      "mechanizm": "Widżet w kroku 3 → token → POST /api/turnstile → siteverify → flaga turnstileVerified w store (tylko klient). /api/oferta NIE wymaga tokenu.",
+      "site_key": "publiczny, zapisany na stałe w lib/turnstile-config.ts:7-8 z możliwością nadpisania NEXT_PUBLIC_TURNSTILE_SITE_KEY (wartość pominięta)",
+      "secret": "TURNSTILE_SECRET_KEY (sekret Cloudflare, wartość w konfiguracji, nie w dokumencie)",
+      "martwy_kod": "lib/turnstile.ts (verifyTurnstileToken) nieużywane",
+      "csp": "next.config.ts:14-21 dopuszcza challenges.cloudflare.com w script-src, frame-src, connect-src"
+    },
+    "dane_wyliczane_po_stronie_klienta": "monthlyPremium, addons (etykiety), variant – serwer ich nie przelicza ani nie waliduje względem PREMIUMS",
+    "uwaga": "Poprzednia wersja tego pliku zakładała server action; aplikacja używa route handlerów /api/turnstile i /api/oferta (fetch JSON)."
+  },
+  "krok_oferta": {
+    "sekcja_produkt": {
+      "naglowek": "Wybierz zakres ochrony",
+      "podtytul": "Kogo chcesz objąć ubezpieczeniem?",
+      "kafle": [
+        {
+          "typ": "dla_mnie",
+          "etykieta": "Dla Mnie",
+          "opis": "Ubezpieczenie indywidualne (Ty)",
+          "ikona": "👤"
+        },
+        {
+          "typ": "dla_nas",
+          "etykieta": "Dla Nas",
+          "opis": "Ty + małżonek / partner",
+          "ikona": "👫"
+        },
+        {
+          "typ": "dla_rodziny",
+          "etykieta": "Dla Rodziny",
+          "opis": "Ty + partner + dzieci + rodzice",
+          "ikona": "👨‍👩‍👧‍👦"
+        }
+      ],
+      "zrodlo": "gohestia/app/kalkulator/produkt/page.tsx:14-18,47-67",
+      "zachowanie": "setProduct zeruje wybrany wariant (store/calculator-store.ts:41)"
+    },
+    "sekcja_wariant": {
+      "naglowek": "Wybierz wariant",
+      "podtytul": "Dla grupy wiekowej {A1|A2|B} dostępne warianty:",
+      "zrodlo_wariantow": "getVariants(ageGroup, produkt) = PREMIUMS[grupa][produkt] (lib/calculator.ts:13-15) – w kalkulatorze są WSZYSTKIE warianty z PREMIUMS, także A2 Dla Mnie Podstawowy 50 zł i A2 Dla Nas Podstawowy 70 zł, których nie pokazuje tabela na stronie głównej",
+      "karta": {
+        "etykieta": "VARIANT_LABELS",
+        "cena": "{monthly} zł/mies.",
+        "znacznik_wybrany": "Wybrany",
+        "lista": "pierwsze 4 pozycje COVERAGE[wariant].name (components/product-card.tsx:23)"
+      },
+      "uwaga": "COVERAGE (lib/data/coverage.ts) to dane zastępcze niezgodne z tabelą świadczeń (np. „20/25/30/35/40 chorób”, „Renta miesięczna”, „Zwrot kosztów”); na kartach widać tylko nazwy 4 pierwszych pozycji, identyczne dla wszystkich wariantów: „Śmierć ubezpieczonego”, „Śmierć w wyniku NW”, „Trwała niezdolność do pracy”, „Poważne zachorowanie”. WAITING_PERIODS nieużywane. NIE przenosić do portalu."
+    },
+    "tabela_swiadczen": {
+      "przycisk": "Zobacz pełny zakres świadczeń",
+      "kolumny": [
+        "Świadczenie",
+        "Kwota",
+        "Karencja"
+      ],
+      "naglowki_kategorii": {
+        "ubezpieczony": "Pakiet ubezpieczonego",
+        "malzonek": "Pakiet małżonek/partner",
+        "dziecko": "Pakiet dziecko"
+      },
+      "zrodlo": "gohestia/components/benefits-table.tsx:8-12,26-28"
+    },
+    "sekcja_dodatki": {
+      "naglowek": "Dodatki",
+      "podtytul": "Rozszerz ochronę o pakiety medyczne:",
+      "przelaczniki": [
+        {
+          "etykieta": "MediPlan",
+          "cena": "+9 zł/mies.",
+          "opis": "Dostęp do lekarzy specjalistów, badań i rehabilitacji"
+        },
+        {
+          "etykieta": "Medical Assistance",
+          "cena": "+6 zł/mies.",
+          "opis": "Pomoc medyczna 24/7, transport medyczny, wizyty domowe"
+        },
+        {
+          "etykieta": "Global Doctors",
+          "cena": "wycena wg wieku",
+          "opis_gdy_dostepny": "Dostęp do lekarzy na całym świecie (do 63 r.ż.)",
+          "opis_gdy_niedostepny": "Niedostępne dla osób powyżej 63 r.ż.",
+          "wylaczony_gdy": "!isGlobalDoctorsEligible(birthDate) (wiek ≥ 64)"
+        }
+      ],
+      "zrodlo": "gohestia/app/kalkulator/produkt/page.tsx:110-140"
+    },
+    "podsumowanie_skladki": {
+      "etykieta": "Łączna składka miesięczna",
+      "jednostka": "zł",
+      "podpis": "/ miesiąc",
+      "global_doctors": "+ Global Doctors: wycena indywidualna",
+      "zrodlo": "gohestia/components/premium-calculator.tsx:18-33"
+    },
+    "przycisk": "Przejdź do podsumowania →",
+    "BLAD_podwojne_liczenie_dodatkow": "produkt/page.tsx:40-42 liczy monthly = calcMonthlyPremium(...) (już z dodatkami 9/6 zł), a PremiumCalculator dodaje 9 i 6 zł drugi raz (premium-calculator.tsx:18-20). Przykład: A1 Dla Mnie Rozszerzony + MediPlan → krok Oferta pokazuje 75 zł, Podsumowanie i e-mail 66 zł. W portalu: jedna funkcja wyceny, wynik tylko wyświetlany."
+  },
+  "formularz_kontaktowy": {
+    "naglowek_oferty": "Twoja oferta",
+    "etykiety_oferty": [
+      "Produkt",
+      "Wariant",
+      "Dodatki",
+      "Składka miesięczna"
+    ],
+    "podpis_ceny": "{monthly} zł/mies.",
+    "naglowek_tabeli": "Pełny zakres świadczeń",
+    "stopka_oferty": "Szczegóły w OWU (kod ER 01/25). Obowiązuje od 2.06.2025 r.",
+    "naglowek": "Dane kontaktowe",
+    "wstep": "Dane kontaktowe i wybrana konfiguracja oferty zostaną przekazane agentowi ubezpieczeniowemu. Nie przekazujemy danych medycznych.",
+    "wstep_pogrubienie": "Nie przekazujemy danych medycznych.",
+    "pola": [
+      {
+        "nazwa": "imie",
+        "etykieta": "Imię *",
+        "typ": "text",
+        "wymagane": true,
+        "walidacja_klient": "z.string().min(2).max(50)",
+        "komunikat": "Min. 2 znaki",
+        "walidacja_serwer": "z.string().min(1)"
+      },
+      {
+        "nazwa": "nazwisko",
+        "etykieta": "Nazwisko *",
+        "typ": "text",
+        "wymagane": true,
+        "walidacja_klient": "z.string().min(2).max(50)",
+        "komunikat": "Min. 2 znaki",
+        "walidacja_serwer": "z.string().min(1)"
+      },
+      {
+        "nazwa": "email",
+        "etykieta": "Email *",
+        "typ": "email",
+        "wymagane": true,
+        "walidacja_klient": "z.string().email()",
+        "komunikat": "Nieprawidłowy adres email",
+        "walidacja_serwer": "z.string().email()"
+      },
+      {
+        "nazwa": "telefon",
+        "etykieta": "Telefon *",
+        "typ": "tel",
+        "placeholder": "+48 500 600 700",
+        "wymagane": true,
+        "walidacja_klient": "regex /^\\+?[0-9\\s\\-]{9,15}$/",
+        "komunikat": "Nieprawidłowy numer telefonu",
+        "walidacja_serwer": "z.string() (bez reguły)"
+      },
+      {
+        "nazwa": "agent_region",
+        "etykieta": "Region (opcjonalnie)",
+        "typ": "text",
+        "placeholder": "np. Warszawa, Kraków...",
+        "wymagane": false,
+        "walidacja_klient": "z.string().optional()",
+        "uwaga": "NIE jest wysyłane do serwera (brak w ładunku, podsumowanie/page.tsx:139-151), choć /rodo i polityka prywatności wymieniają region"
+      }
+    ],
+    "komunikat_zgody_wymaganej": "Wymagana zgoda",
+    "naglowek_zgod_obowiazkowych": "Zgody obowiązkowe — wymagane do objęcia ochroną",
+    "naglowek_oswiadczen": "Oświadczenia",
+    "naglowek_zgod_dobrowolnych": "Zgody dobrowolne",
+    "rozwijanie_tresci": {
+      "otworz": "czytaj całość",
+      "zwin": "zwiń"
+    },
+    "przypis": "* Pola i zgody obowiązkowe wymagane do objęcia ochroną ubezpieczeniową.",
+    "przycisk": "Wyślij zapytanie do agenta →",
+    "przycisk_w_trakcie": "Wysyłanie...",
+    "blad_wysylki": {
+      "typ": "window.alert",
+      "tresc": "Nie udało się wysłać zapytania. Spróbuj ponownie za chwilę.",
+      "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:155-164"
+    },
+    "po_sukcesie": "router.push(/kalkulator/sukces?email=<e-mail>) – adres e-mail w URL (podsumowanie/page.tsx:153-154)",
+    "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:15-39,170-433"
+  },
+  "krok_sukces": {
+    "ikona": "✅",
+    "naglowek": "Zapytanie wysłane!",
+    "akapit": "Twoje dane kontaktowe i wybrana oferta zostały wysłane do agenta ERGO Hestia, który skontaktuje się z Tobą w ciągu 1–2 dni roboczych.",
+    "akapit_pogrubienie": "1–2 dni roboczych",
+    "kopia_gdy_email": "Kopię podsumowania oferty wysłaliśmy na adres {email}.",
+    "przyciski": [
+      {
+        "tekst": "Wróć na stronę główną",
+        "href": "/"
+      },
+      {
+        "tekst": "Oblicz nową ofertę",
+        "href": "/kalkulator/wiek"
+      }
+    ],
+    "zrodlo": "gohestia/app/kalkulator/sukces/page.tsx:7-53",
+    "uwaga": "E-mail pochodzi z parametru URL (każdy może wyświetlić dowolny tekst; dane osobowe w historii przeglądarki i logach). W portalu nie przekazywać e-maila w URL (W4)."
+  },
+  "dokumenty": {
+    "konfiguracja": [
+      {
+        "plik": "public/dokumenty/owu.pdf",
+        "nazwa_w_mailu": "OWU_ERGO_Razem_ER_01-25.pdf"
+      },
+      {
+        "plik": "public/dokumenty/informacja-o-dystrybutorze.pdf",
+        "nazwa_w_mailu": "Informacja_o_dystrybutorze_Aura_Expert.pdf"
+      },
+      {
+        "plik": "public/dokumenty/ipid.pdf",
+        "nazwa_w_mailu": "IPID_ERGO_Razem.pdf",
+        "status": "zakomentowane"
+      }
+    ],
+    "zrodlo": "gohestia/lib/data/documents.ts:19-34",
+    "w_repozytorium": [
+      "public/dokumenty/OWU.pdf (929 675 B, 148 stron)",
+      "public/dokumenty/README.md"
+    ],
+    "BLAD_wielkosc_liter": "Konfiguracja wskazuje dokumenty/owu.pdf, a plik nazywa się OWU.pdf. Serwowanie zasobów jest wrażliwe na wielkość liter, więc pobranie zwróci 404 i załącznik zostanie pominięty z ostrzeżeniem (route.ts:24-28). informacja-o-dystrybutorze.pdf nie istnieje. Wniosek: e-mail do klienta najpewniej wychodzi BEZ załączników.",
+    "zawartosc_OWU_pdf": {
+      "tytul": "Wszystko o ubezpieczeniu na życie – Grupa Otwarta ERGO Razem",
+      "oznaczenie": "GO/WU002/2504",
+      "czesci": [
+        "s. 2–4: Dokument zawierający informacje o produkcie ubezpieczeniowym (art. 8 ust. 1 UDU) – karta produktu",
+        "s. 5–7: Informacje dla konsumenta przystępującego do umowy grupowego ubezpieczenia na życie ERGO Razem na odległość",
+        "s. 8–147: Warunki Grupowego Ubezpieczenia na Życie dla ubezpieczonych w Grupie Otwartej ERGO Razem (KOD: ER 01/25), w tym klauzula informacyjna ERGO Hestii jako administratora danych (s. 13), tabela poważnych zachorowań MAKSYMALNY/KOMFORT/małżonek ROZSZERZONY/dziecko, MediPlan i Medical Assistance (wariant maksymalny), Załącznik 4 – procedury medyczne",
+        "s. 148: ERRATA ER/EHZ01/2602 (reklamacje), obowiązuje od 13.02.2026 r."
+      ],
+      "brak": [
+        "Warunki Dodatkowego Ubezpieczenia Global Doctors (kod GD 02/24) – wymienione na s. 5, treści brak",
+        "Zakres ubezpieczenia (załącznik do umowy z sumami i składkami)",
+        "Informacja o dystrybutorze (Aura Expert)",
+        "Osobna karta produktu dla Global Doctors"
+      ]
+    }
+  },
+  "strony_tresci": {
+    "rodo": {
+      "tytul_meta": "Klauzula RODO — Aura Expert sp. z o.o.",
+      "eyebrow": "Aura Expert sp. z o.o.",
+      "tytul": "Klauzula Informacyjna RODO",
+      "opis": "Zgodnie z art. 13 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 (RODO).",
+      "sekcje": [
+        {
+          "n": "1. Administrator danych",
+          "tresc": "Administratorem Twoich danych osobowych jest:\nAura Expert sp. z o.o.\nAgent ubezpieczeniowy działający w imieniu\nSopockie TU na Życie ERGO Hestia S.A., ul. Hestii 1, 81-731 Sopot\nKontakt: [e-mail biura Aura Expert]"
+        },
+        {
+          "n": "2. Cel przetwarzania",
+          "tresc": "Twoje dane osobowe (imię, nazwisko, e-mail, telefon, opcjonalnie region) są przetwarzane w celu:",
+          "lista": [
+            "przedstawienia indywidualnej oferty grupowego ubezpieczenia na życie ERGO Razem,",
+            "nawiązania kontaktu przez agenta ubezpieczeniowego w celu omówienia oferty,",
+            "przesyłania informacji marketingowych — wyłącznie po wyrażeniu odrębnej zgody."
+          ]
+        },
+        {
+          "n": "3. Podstawa prawna",
+          "lista": [
+            "Art. 6 ust. 1 lit. a RODO — Twoja zgoda wyrażona w formularzu."
+          ]
+        },
+        {
+          "n": "4. Co NIE jest przetwarzane",
+          "tresc": "Dane wrażliwe z ankiety medycznej nie są przesyłane na żaden serwer. Odpowiedzi na pytania ankiety przetwarzane są wyłącznie lokalnie w Twojej przeglądarce i nie opuszczają Twojego urządzenia. Administratorowi przekazywana jest jedynie konfiguracja wybranej oferty (produkt, wariant, składka) — bez żadnych informacji o stanie zdrowia."
+        },
+        {
+          "n": "5. Odbiorcy danych",
+          "tresc": "Dane mogą być przekazywane:",
+          "lista": [
+            "agentowi ubezpieczeniowemu Aura Expert sp. z o.o.,",
+            "dostawcy poczty e-mail Resend Inc. (transfer na podstawie SCC),",
+            "Cloudflare Inc. — infrastruktura hostingowa i CDN (transfer na podstawie SCC)."
+          ]
+        },
+        {
+          "n": "6. Okres przechowywania",
+          "tresc": "Dane przechowywane są przez czas niezbędny do realizacji celu, tj. do zakończenia procesu przedstawienia oferty i nawiązania kontaktu — nie dłużej niż 3 lata od daty wysłania formularza lub do cofnięcia zgody."
+        },
+        {
+          "n": "7. Twoje prawa",
+          "tresc": "Masz prawo do:",
+          "lista": [
+            "dostępu do swoich danych (art. 15),",
+            "sprostowania danych (art. 16),",
+            "usunięcia danych (art. 17),",
+            "ograniczenia przetwarzania (art. 18),",
+            "przenoszenia danych (art. 20),",
+            "sprzeciwu (art. 21),",
+            "cofnięcia zgody w dowolnym momencie bez wpływu na zgodność z prawem przetwarzania przed cofnięciem,",
+            "wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa, www.uodo.gov.pl)."
+          ]
+        },
+        {
+          "n": "8. Dobrowolność podania danych",
+          "tresc": "Podanie danych jest dobrowolne, jednak niezbędne do przedstawienia oferty ubezpieczeniowej i kontaktu przez agenta. Brak podania danych uniemożliwia realizację ww. celów."
+        },
+        {
+          "n": "9. Zautomatyzowane podejmowanie decyzji",
+          "tresc": "Dane nie są wykorzystywane do zautomatyzowanego podejmowania decyzji ani profilowania w rozumieniu art. 22 RODO."
+        }
+      ],
+      "zrodlo": "gohestia/app/rodo/page.tsx:15-95",
+      "uwagi": [
+        "„Agent … działający w imieniu Sopockie TU…” – agent wielozakładowy; administratorem w portalu jest Aura Expert (legal-distributor.json), kontakt IOD portalu inny niż tutaj.",
+        "Jedyna podstawa: zgoda (art. 6 ust. 1 lit. a); dla kontaktu na żądanie właściwsza jest lit. b (działania przed zawarciem umowy) – do prawnika.",
+        "Brak daty/wersji dokumentu."
+      ]
+    },
+    "polityka_prywatnosci": {
+      "tytul": "Polityka Prywatności",
+      "opis": "Jak przetwarzamy dane osobowe w serwisie i jakie prawa Ci przysługują.",
+      "ostatnia_aktualizacja": "Ostatnia aktualizacja: 1 czerwca 2025 r.",
+      "kluczowe_cytaty": [
+        "Administratorem danych osobowych zbieranych za pośrednictwem niniejszego serwisu jest: Aura Expert sp. z o.o. Agent ubezpieczeniowy ERGO Hestia e-mail: [e-mail biura Aura Expert]",
+        "Odpowiedzi na pytania ankiety medycznej są przetwarzane wyłącznie lokalnie w przeglądarce użytkownika (JavaScript po stronie klienta). Żadne odpowiedzi z ankiety nie są przesyłane na serwer, zapisywane w bazie danych ani logowane. Do naszych serwerów trafia jedynie: dane kontaktowe, wybrana konfiguracja oferty (produkt, wariant, dodatki, składka) oraz token weryfikacji Cloudflare Turnstile.",
+        "Dane kontaktowe przesłane przez formularz są przekazywane agentowi w formie wiadomości e-mail i nie są przechowywane przez serwis w żadnej bazie danych. Kopie e-maili mogą być przechowywane przez agenta przez czas niezbędny do realizacji celu kontaktu, nie dłużej niż 3 lata lub do odwołania zgody.",
+        "Serwis korzysta z Cloudflare Web Analytics — narzędzia privacy-first, które nie używa plików cookie ani nie śledzi użytkowników między stronami. Nie stosujemy plików cookie do celów marketingowych ani profilowania.",
+        "Dane mogą być przekazywane do Resend Inc. i Cloudflare Inc. z siedzibą w USA. Transfer odbywa się na podstawie standardowych klauzul umownych (SCC) zatwierdzonych przez Komisję Europejską."
+      ],
+      "sekcje": [
+        "1. Administrator danych osobowych",
+        "2. Cele i podstawy prawne przetwarzania danych",
+        "3. Dane medyczne — przetwarzanie wyłącznie lokalnie",
+        "4. Odbiorcy danych",
+        "5. Okres przechowywania danych",
+        "6. Prawa osoby, której dane dotyczą",
+        "7. Pliki cookie i analityka",
+        "8. Przekazywanie danych poza EOG",
+        "9. Zmiany polityki"
+      ],
+      "zrodlo": "gohestia/app/polityka-prywatnosci/page.tsx:15-118",
+      "niezgodnosci_z_kodem": [
+        "„token weryfikacji Cloudflare Turnstile” nie trafia razem z danymi kontaktowymi (/api/oferta go nie przyjmuje).",
+        "„preferowany region” nie jest wysyłany.",
+        "Cloudflare Web Analytics – brak w kodzie; CSP (next.config.ts:16-21) zablokowałby skrypt beacona spoza self/challenges."
+      ]
+    },
+    "regulamin": {
+      "tytul": "Regulamin serwisu",
+      "opis": "Zasady korzystania z serwisu prezentującego ofertę grupowego ubezpieczenia ERGO Razem.",
+      "ostatnia_aktualizacja": "Ostatnia aktualizacja: 1 czerwca 2025 r.",
+      "sekcje": [
+        "§1. Postanowienia ogólne",
+        "§2. Charakter informacji",
+        "§3. Kalkulator i ankieta medyczna",
+        "§4. Formularz kontaktowy",
+        "§5. Odpowiedzialność",
+        "§6. Własność intelektualna",
+        "§7. Postanowienia końcowe"
+      ],
+      "kluczowe_cytaty": [
+        "Przedstawione kwoty świadczeń i składek nie stanowią oferty w rozumieniu Kodeksu Cywilnego. Wiążąca oferta przedstawiana jest przez agenta ubezpieczeniowego.",
+        "Wynik ankiety medycznej nie stanowi oceny ryzyka ubezpieczeniowego. Ostateczna decyzja o przyjęciu do ubezpieczenia należy do Towarzystwa Ubezpieczeniowego.",
+        "Po wysłaniu formularza dane przekazywane są agentowi ubezpieczeniowemu Aura Expert sp. z o.o., który skontaktuje się z użytkownikiem w terminie do 2 dni roboczych.",
+        "Przesłanie formularza nie jest równoznaczne z zawarciem umowy ubezpieczenia.",
+        "Wszelkie spory rozstrzygane będą przez sąd właściwy miejscowo dla siedziby Operatora."
+      ],
+      "zrodlo": "gohestia/app/regulamin/page.tsx:15-133",
+      "uwagi": [
+        "§1 ust. 2: produkt „dystrybuowany przez Sopockie TU na Życie ERGO Hestia S.A.” – ubezpieczyciel nie jest dystrybutorem w tym sensie; do korekty.",
+        "§7 ust. 3 (sąd właściwy dla siedziby Operatora) wobec konsumentów to klauzula niedozwolona – nie przenosić.",
+        "„Korzystanie z Serwisu oznacza akceptację niniejszego Regulaminu” – w portalu regulamin świadczenia usług drogą elektroniczną wg własnego wzoru."
+      ]
+    },
+    "zglos_roszczenie": {
+      "tytul_meta": "Zgłoś roszczenie — Grupa Otwarta ERGO Hestia",
+      "eyebrow": "Grupa Otwarta ERGO Razem",
+      "tytul": "Zgłoś roszczenie",
+      "opis": "Sprawdź, jak zgłosić zdarzenie objęte ochroną — zarówno w ramach podstawowego ubezpieczenia, jak i pakietów dodatkowych.",
+      "tresc": [
+        "Klient może zgłosić roszczenie w Grupie Otwartej:",
+        "za pomocą Platformy Zgłaszania Roszczeń,",
+        "podczas wizyty u agenta,",
+        "przesyłając dokumenty listem na adres: Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A., ul. Hestii 1, 81-731 Sopot,",
+        "przesyłając dokumenty listem elektronicznym na adres do doręczeń elektronicznych AE:PL-71115-41590-RJWRG-16.",
+        "Zgłoszenie roszczenia z dodatków",
+        "Global Doctors – pod numerem telefonu 801 107 107 lub (58) 555 55 55 lub przez formularz na stronie https://zgloszenieroszczenia.ergohestia.pl,",
+        "MediPlan i Medical Assistance – przez infolinię Centrum Alarmowego pod numerem 22 522 29 94."
+      ],
+      "zrodlo": "gohestia/app/zglos-roszczenie/page.tsx:15-58",
+      "uwaga": "„Platforma Zgłaszania Roszczeń” bez linku. OWU.pdf s. 4 podaje dla ERGO Razem formularz www.ergohestia.pl/zglos-zdarzenie/ i telefon 801 107 107 / 58 555 55 55 – do ujednolicenia."
+    },
+    "informacja_o_agencie": {
+      "zrodlo": "gohestia/app/informacja-o-agencie/page.tsx:37-153",
+      "zgodnosc": "Treść zgodna z dotychczasowym ergo/go_informacja-o-agencie.md (10 zakładów, wynagrodzenie, reklamacje, Rzecznik Finansowy).",
+      "BLAD_KRS": "page.tsx:59-62: „Sąd Rejonowy dla m.st. Warszawy w Warszawie, XIII Wydział Gospodarczy Krajowego Rejestru Sądowego” – portal używa XII (legal-distributor.json, D38). Nie kopiować XIII; zgłosić zleceniodawcy do poprawy w aplikacji.",
+      "inne": [
+        "Dane kontaktowe agenta (adres, telefon, e-maile zarządu i reklamacji) – jak w legal-distributor.json portalu; nie powielać w tym pliku.",
+        "Podstawa: „art. 22 ust. 1 pkt 2–6 oraz ust. 2–4 ustawy z dnia 15 grudnia 2017 r. o dystrybucji ubezpieczeń (Dz.U. z 2017 r., poz. 2486 ze zm.)” – stare oznaczenie Dz.U.; do aktualizacji tekstu jednolitego."
+      ]
+    },
+    "global_doctors": {
+      "tytul_meta": "Global Doctors — Ubezpieczenie Dodatkowe ERGO Razem",
+      "eyebrow": "Dodatkowe ubezpieczenie · kod GD 02/24",
+      "sekcje": [
+        {
+          "n": "Czym jest Global Doctors?",
+          "tresc": "Global Doctors to dodatkowe ubezpieczenie do umowy grupowego ubezpieczenia na życie ERGO Razem, oznaczone kodem GD 02/24. W przypadku poważnej diagnozy medycznej daje ono Ubezpieczonemu dostęp do konsultacji i drugiej opinii lekarzy specjalistów spoza Polski — pomagając potwierdzić rozpoznanie i zweryfikować proponowany sposób leczenia."
+        },
+        {
+          "n": "Dla kogo",
+          "lista": [
+            "Dodatek dostępny jest dla Ubezpieczonych w wieku do 63 lat w dniu przystąpienia.",
+            "Wysokość składki ustalana jest indywidualnie w zależności od wieku — orientacyjną kwotę zobaczysz przy konfigurowaniu oferty w kalkulatorze."
+          ]
+        },
+        {
+          "n": "Jak to działa",
+          "tresc": "Ubezpieczenie realizowane jest na podstawie umowy zawartej pomiędzy ERGO Hestią a podmiotem organizującym świadczenia — Centrum Pomocy Osobom Poszkodowanym sp. z o.o. w Gdańsku. Po zgłoszeniu przypadku organizator kompletuje dokumentację medyczną i organizuje kontakt z odpowiednim specjalistą za granicą."
+        },
+        {
+          "n": "Jak zgłosić skorzystanie z Global Doctors",
+          "lista": [
+            "telefonicznie pod numerem 801 107 107 lub (58) 555 55 55,",
+            "przez formularz na stronie zgloszenieroszczenia.ergohestia.pl."
+          ]
+        },
+        {
+          "n": "Pełne warunki ubezpieczenia",
+          "tresc": "Szczegółowy zakres świadczeń, wyłączenia i procedurę korzystania z Global Doctors określają Warunki Dodatkowego Ubezpieczenia Global Doctors (kod GD 02/24). Pełną treść dokumentu oraz odpowiedzi na dodatkowe pytania uzyskasz u swojego agenta ERGO Hestia — [e-mail biura Aura Expert]."
+        }
+      ],
+      "przycisk": "Dodaj Global Doctors do oferty →",
+      "zrodlo": "gohestia/app/global-doctors/page.tsx:17-90",
+      "niezgodnosc": "„orientacyjną kwotę zobaczysz przy konfigurowaniu oferty w kalkulatorze” – kalkulator pokazuje tylko „wycena wg wieku” / „wycena indywidualna” i dodaje 0 zł (lib/calculator.ts:28-31)."
+    },
+    "faq": {
+      "zgodnosc": "21 pytań i odpowiedzi w gohestia/app/faq/faq.tsx:19-188 identycznych z kluczem faq tego pliku (porównanie maszynowe 14 odpowiedzi tekstowych + 7 odpowiedzi z linkami sprawdzone ręcznie).",
+      "naglowek_hero_rzeczywisty": "eyebrow „Pytania i odpowiedzi”, tytuł „Najczęściej zadawane pytania”",
+      "cta_przycisk": "Złóż wniosek →"
+    },
+    "ubezpieczenia_dodatkowe": {
+      "zgodnosc": "Dane MediPlan/Medical Assistance w gohestia/app/ubezpieczenia-dodatkowe/ubezpieczenia.tsx (np. summary l. 62, procedure l. 128-137 i 220-227) zgodne z kluczem ubezpieczenia_dodatkowe_szczegoly (sprawdzone wyrywkowo, w tym literówka „pomniejsza pula” l. 72 i adres pmu.szkody@ l. 136)."
+    }
+  },
+  "skladki_weryfikacja_repo": "PREMIUMS (gohestia/lib/data/premiums.ts:3-55) i ADDONS (premiums.ts:57-62) identyczne z skladki_miesieczne_zl i dodatki; 66 wierszy tabel świadczeń A i B (gohestia/lib/data/benefits.ts:59-143) identycznych co do nazw, wartości, karencji i wyróżnień (porównanie maszynowe).",
+  "bezpieczenstwo_i_zgodnosc": [
+    {
+      "waga": "wysoka",
+      "problem": "/api/oferta bez Turnstile, rate limitu i powiązania z krokiem weryfikacji – każdy może wysłać POST i spowodować wysyłkę e-maila „ERGO Razem Kalkulator” z załącznikami na dowolny adres, z dowolnym imieniem/nazwiskiem (także w temacie do agenta) oraz dowolnym tekstem w variant/addons.",
+      "zrodlo": "gohestia/app/api/oferta/route.ts:40-52,61-119"
+    },
+    {
+      "waga": "wysoka",
+      "problem": "Zgody i oświadczenia nie są nigdzie zapisywane ani przekazywane – brak rozliczalności zgód (art. 7 ust. 1 RODO), agent nie wie o zgodach marketingowych.",
+      "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:139-151"
+    },
+    {
+      "waga": "średnia",
+      "problem": "Składka i dodatki liczone w przeglądarce i przyjmowane bez weryfikacji; e-mail może pokazać dowolną kwotę.",
+      "zrodlo": "gohestia/app/api/oferta/route.ts:45-51"
+    },
+    {
+      "waga": "średnia",
+      "problem": "Odpowiedzi 500 ujawniają szczegóły błędu Resend, adres nadawcy i stan konfiguracji sekretów.",
+      "zrodlo": "gohestia/app/api/oferta/route.ts:81-84,124,128-132"
+    },
+    {
+      "waga": "średnia",
+      "problem": "Adres e-mail w URL strony sukcesu (historia, logi, Referer).",
+      "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:154"
+    },
+    {
+      "waga": "średnia",
+      "problem": "Załączniki najpewniej nie wychodzą (owu.pdf vs OWU.pdf; brak informacji o dystrybutorze) – brak dowodu doręczenia dokumentów przedumownych, mimo oświadczenia 1 i 3.",
+      "zrodlo": "gohestia/lib/data/documents.ts:21-26"
+    },
+    {
+      "waga": "niska",
+      "problem": "Rozbieżna walidacja klient/serwer (imię min 2 vs min 1, telefon bez reguły po stronie serwera, brak limitów długości).",
+      "zrodlo": "gohestia/app/api/oferta/route.ts:40-44"
+    },
+    {
+      "waga": "niska",
+      "problem": "Weryfikacja Turnstile bez sprawdzenia hostname i action; martwy lib/turnstile.ts.",
+      "zrodlo": "gohestia/app/api/turnstile/route.ts:18-31"
+    },
+    {
+      "waga": "informacyjna",
+      "problem": "Nagłówki bezpieczeństwa i CSP ustawione dla wszystkich ścieżek (X-Frame-Options DENY, nosniff, Referrer-Policy, Permissions-Policy, CSP z unsafe-inline dla skryptów).",
+      "zrodlo": "gohestia/next.config.ts:4-25"
+    }
+  ],
+  "zamkniecie_brakow": [
+    {
+      "kod": "R1",
+      "status": "zamknięty",
+      "dowod": "Kod wszystkich kroków 2–6 i /wykluczenie/wiek, /wykluczenie/zdrowie w repozytorium (app/kalkulator/*, app/wykluczenie/*)."
+    },
+    {
+      "kod": "R2",
+      "status": "zamknięty (treść) / częściowo (akceptacja)",
+      "dowod": "lib/data/questionnaire.ts – 5 bloków dosłownie; reguła: każde TAK = wykluczenie; ekrany wykluczenia dosłownie.",
+      "dalej": "Potwierdzenie ERGO Hestii (underwriting), że pytania są aktualne i kompletne oraz zgoda na przeformułowanie w portalu; pytania o współubezpieczonych – czy potrzebne."
+    },
+    {
+      "kod": "R3",
+      "status": "zamknięty",
+      "dowod": "Krok Weryfikacja = sam Turnstile (app/kalkulator/weryfikacja/page.tsx, app/api/turnstile/route.ts); bez powiązania z wysyłką."
+    },
+    {
+      "kod": "R4",
+      "status": "zamknięty",
+      "dowod": "app/kalkulator/produkt/page.tsx – układ, brak wariantu domyślnego, komunikat GD „Niedostępne dla osób powyżej 63 r.ż.”; wykryty błąd podwójnego liczenia dodatków."
+    },
+    {
+      "kod": "R5",
+      "status": "zamknięty",
+      "dowod": "app/kalkulator/podsumowanie/page.tsx:15-39,216-261 – pola, walidacje, komunikaty.",
+      "dalej": "Decyzja W1/W4: czy portal używa tych pól, czy wspólnego formularza leada."
+    },
+    {
+      "kod": "R6",
+      "status": "częściowo",
+      "dowod": "14 zgód/oświadczeń dosłownie; /rodo, /polityka-prywatnosci, /regulamin w repozytorium.",
+      "dalej": "Zatwierdzenie przez prawnika: rola administratora (Aura Expert / CPOP / ERGO Hestia), czy zgody certyfikatowe mają być w zapytaniu, wersjonowanie, korekta zgoda_7 i polityki (Turnstile, region, Web Analytics), usunięcie klauzuli o sądzie. Od: zleceniodawca + prawnik, CPOP (zgoda_9, zgoda_10)."
+    },
+    {
+      "kod": "R7",
+      "status": "zamknięty",
+      "dowod": "app/api/oferta/route.ts – tylko 2 e-maile Resend (klient, AGENT_EMAIL); brak bazy i CRM; szablony i tematy dosłownie.",
+      "dalej": "Decyzja W1: czy w portalu zgłoszenia ER mają trafiać do CRM „aurabroker” (dziś nie trafiają)."
+    },
+    {
+      "kod": "R8",
+      "status": "nadal otwarty",
+      "dowod": "Brak ceny GD w kodzie (premiums.ts:60-61, calculator.ts:28-31) i w OWU.pdf (brak WU GD 02/24).",
+      "dalej": "Tabela składek GD wg wieku lub decyzja „cena przy kontakcie” + WU GD 02/24. Od: zleceniodawca / ERGO Hestia."
+    },
+    {
+      "kod": "R9",
+      "status": "zamknięty",
+      "dowod": "app/katalog-zachorowan/katalog.tsx – definicje 57 pozycji i flaga komfort; spoza KOMFORT tylko lp 1; zgodne z tabelą § 40 ust. 9 WU (OWU.pdf s. 42–44).",
+      "dalej": "Opcjonalnie: pełne definicje z Załącznika 1 WU zamiast skrótów aplikacji."
+    },
+    {
+      "kod": "R10",
+      "status": "częściowo",
+      "dowod": "Data 13.02.2026 = errata ER/EHZ01/2602 (OWU.pdf s. 148); MAKSYMALNY (34) to węższy zakres niż KOMFORT (56) – zgodnie z WU; wiek wg WU liczony w dniu podpisania certyfikatu.",
+      "dalej": "„od 57 zł” vs 50 zł (A2), „56 chorób” w treściach marketingowych, znaczenie „120/50 zł”, który wariant korzysta z zakresu MAKSYMALNY/KOMFORT (tabele A i B), zgon rodziców/teściów w „Dla Nas”. Od: zleceniodawca."
+    },
+    {
+      "kod": "R11",
+      "status": "częściowo",
+      "dowod": "public/dokumenty/OWU.pdf = pakiet GO/WU002/2504: karta produktu (art. 8 UDU), informacje dla konsumenta na odległość, WU ER 01/25, errata.",
+      "dalej": "WU GD 02/24, informacja o dystrybutorze (PDF), ewentualnie IPID; potwierdzenie aktualności pakietu 2504 i zgoda na publikację w portalu. Od: zleceniodawca / ERGO Hestia."
+    }
+  ]
 }
