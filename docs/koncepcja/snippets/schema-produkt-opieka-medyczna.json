@@ -6,7 +6,7 @@
   "alternateName": "Program abonamentów medycznych dla salonów beauty",
   "serviceType": "Abonament medyczny (prywatna opieka medyczna) dla pracowników i ich bliskich",
   "category": "Benefity dla firm – opieka medyczna",
-  "description": "Abonamenty medyczne ENEL-MED Standard i LUX MED Standard dla zespołów salonów beauty w zakresie Singiel, Partner albo Rodzina. Stawki miesięczne z cennika programu zależą od liczby osób w zespole (3–10, 11–20, 21–50): ENEL-MED Standard 194–216 zł (Singiel), 212–237 zł (Partner), 420–478 zł (Rodzina); LUX MED Standard 120–131 zł (Singiel), 212–234 zł (Partner), 314–347 zł (Rodzina). Od 51 osób – wycena indywidualna. Zamówienie przez zapytanie do doradcy Aura Expert.",
+  "description": "Abonamenty medyczne ENEL-MED Standard i LUX MED Standard dla zespołów salonów beauty w zakresie Singiel, Partner albo Rodzina. Stawki miesięczne z cennika programu zależą od liczby osób w zespole (3–10, 11–20, 21–50): ENEL-MED Standard 194–216 zł (Singiel), 212–237 zł (Partner), 420–478 zł (Rodzina); LUX MED Standard 120–131 zł (Singiel), 212–234 zł (Partner), 314–347 zł (Rodzina). Od 51 osób – wycena indywidualna. Cennik z dotychczasowej strony programu – aktualność do potwierdzenia. Zamówienie przez zapytanie do doradcy Aura Expert.",
   "url": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna",
   "provider": [
     {
@@ -50,7 +50,7 @@
     "highPrice": 478,
     "url": "https://beautypolisa.eu/ubezpieczenia/opieka-medyczna#ceny",
     "eligibleRegion": "PL",
-    "description": "Stawki miesięczne według cennika programu, zależne od sieci (ENEL-MED Standard, LUX MED Standard), zakresu (Singiel, Partner, Rodzina) i liczby osób w zespole (3–10, 11–20, 21–50). Od 51 osób – wycena indywidualna.",
+    "description": "Stawki miesięczne według cennika programu, zależne od sieci (ENEL-MED Standard, LUX MED Standard), zakresu (Singiel – za pracownika, Partner, Rodzina) i liczby osób w zespole (3–10, 11–20, 21–50). Od 51 osób – wycena indywidualna. Aktualność cennika do potwierdzenia.",
     "priceSpecification": {
       "@type": "UnitPriceSpecification",
       "priceCurrency": "PLN",
