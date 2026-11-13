@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ubezpieczenia dla branży beauty | BeautyPolisa</title>
-<meta name="description" content="Ubezpieczenia dla salonów beauty: OC zawodowe ERGO Hestia, Tax Protect, utrata dochodu, NNW dzieci, grupowe, opieka medyczna. Zamów kontakt z doradcą.">
+<meta name="description" content="Ubezpieczenia dla salonów beauty: OC zawodowe ERGO Hestia, Tax Protect, utrata dochodu, NNW dla dzieci, grupowe, opieka medyczna. Zamów kontakt z doradcą.">
 <link rel="canonical" href="https://beautypolisa.eu/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:site_name" content="BeautyPolisa">
 <meta property="og:url" content="https://beautypolisa.eu/">
 <meta property="og:title" content="Ubezpieczenia dla branży beauty | BeautyPolisa">
-<meta property="og:description" content="Ubezpieczenia dla salonów beauty: OC zawodowe ERGO Hestia, Tax Protect, utrata dochodu, NNW dzieci, grupowe, opieka medyczna. Zamów kontakt z doradcą.">
+<meta property="og:description" content="Ubezpieczenia dla salonów beauty: OC zawodowe ERGO Hestia, Tax Protect, utrata dochodu, NNW dla dzieci, grupowe, opieka medyczna. Zamów kontakt z doradcą.">
 <meta name="theme-color" content="#141C33">
 <meta name="color-scheme" content="only light">
 <!-- JSON-LD strony głównej = snippets/schema-home.json (Organization, InsuranceAgency, WebSite, WebPage); w produkcji wstrzykuje go serwer.
@@ -89,7 +89,7 @@
    "@id": "https://beautypolisa.eu/#agency",
    "name": "BeautyPolisa",
    "alternateName": "BeautyPolisa created by Aura Expert",
-   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
+   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dla dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
    "url": "https://beautypolisa.eu/",
    "logo": {
     "@type": "ImageObject",
@@ -202,7 +202,7 @@
    "@id": "https://beautypolisa.eu/#website",
    "url": "https://beautypolisa.eu/",
    "name": "BeautyPolisa",
-   "description": "Ubezpieczenia dla branży beauty: OC zawodowe, Tax Protect, utrata dochodu, NNW dzieci, grupowe i opieka medyczna.",
+   "description": "Ubezpieczenia dla branży beauty: OC zawodowe, Tax Protect, utrata dochodu, NNW dla dzieci, grupowe i opieka medyczna.",
    "inLanguage": "pl-PL",
    "publisher": {
     "@id": "https://beautypolisa.eu/#organization"
@@ -508,6 +508,9 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
 .ledger--light .product .product-price{color:var(--color-ink)}
 .pp-pre,.pp-unit{font:400 var(--text-sm)/1.4 var(--font-sans);color:var(--color-taupe)}
 .product-price--text .pp-unit{flex-basis:100%}
+.product-price .pp-dop{flex-basis:100%;margin-top:2px}
+/* „strona zewnętrzna” (↗) przy akcji NNW – ten sam znak co w pasku akcji */
+.pa-zewn-k{display:inline-block;width:.85em;height:.85em;margin-left:.35em;vertical-align:-.05em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .product-link:focus-visible{outline-offset:4px}
 @supports selector(:has(*)){
   .product:has(.product-link:focus-visible){outline:2px solid var(--color-navy);outline-offset:-6px;background-color:rgba(255,255,255,.55)}
@@ -1068,7 +1071,8 @@ html:has(.klauzula[open]){overflow:hidden}
 .mega-name{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font:500 1.3rem/1.15 var(--font-serif);color:var(--color-navy)}
 .mega-tu{font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
 .mega-desc{font:400 var(--text-sm)/1.45 var(--font-sans);color:var(--color-taupe)}
-.mega-price{font:500 var(--text-sm)/1.4 var(--font-sans);color:var(--color-ink);font-variant-numeric:lining-nums tabular-nums}
+.mega-price{display:grid;gap:2px;margin-top:2px;font:500 var(--text-sm)/1.4 var(--font-sans);color:var(--color-ink);font-variant-numeric:lining-nums tabular-nums}
+.mega-dop{font-weight:400;color:var(--color-taupe)}
 .mega-foot{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:12px;margin-top:14px;padding-top:16px;border-top:1px solid var(--bp-line-gold-soft)}
 .main-nav .mega .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 24px;font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;text-decoration:none;white-space:nowrap}
 .main-nav .mega .btn-navy,.main-nav .mega .btn-navy:hover{color:var(--color-ivory)}
@@ -1083,17 +1087,19 @@ html:has(.klauzula[open]){overflow:hidden}
 .menu-panel .mm-produkty a[aria-current="page"]{margin-inline:-10px;padding-inline:10px;background:var(--color-parchment);box-shadow:inset 2px 0 0 var(--color-gold)}
 .mm-text{display:grid;gap:1px;min-width:0}
 @media (min-width:600px){.mm-text{display:flex;align-items:baseline;justify-content:space-between;gap:16px}}
-.mm-price{font:400 var(--text-sm)/1.35 var(--font-sans);color:var(--color-taupe);white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
+.mm-price{font:400 var(--text-sm)/1.35 var(--font-sans);color:var(--color-taupe);font-variant-numeric:lining-nums tabular-nums}
+@media (min-width:600px){.mm-price{flex:none;max-width:55%;text-align:right}}
 /* --- pasek akcji na telefonie: jedno nieprzezroczyste tło midnight (bez backdrop-filter), safe-area --- */
 .pasek-akcji{display:none}
 @media (max-width:767px){
   html.has-pasek{scroll-padding-bottom:calc(92px + env(safe-area-inset-bottom))}
-  html.has-pasek .pasek-akcji{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:var(--bp-z-sticky);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;padding:6px;background:var(--color-midnight);border:1px solid rgba(217,192,137,.5);border-radius:var(--radius-card);box-shadow:0 14px 30px -12px rgba(20,28,51,.75);transform:translateY(calc(100% + 24px + env(safe-area-inset-bottom)));visibility:hidden;transition:transform var(--bp-dur-3) var(--ease-lux),visibility 0s linear var(--bp-dur-3)}
+  html.has-pasek .pasek-akcji{position:fixed;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(10px + env(safe-area-inset-bottom));z-index:var(--bp-z-sticky);display:flex;flex-wrap:wrap;gap:6px;padding:6px;background:var(--color-midnight);border:1px solid rgba(217,192,137,.5);border-radius:var(--radius-card);box-shadow:0 14px 30px -12px rgba(20,28,51,.75);transform:translateY(calc(100% + 24px + env(safe-area-inset-bottom)));visibility:hidden;transition:transform var(--bp-dur-3) var(--ease-lux),visibility 0s linear var(--bp-dur-3)}
   html.has-pasek .pasek-akcji[data-on="1"]{transform:none;visibility:visible;transition:transform var(--bp-dur-3) var(--ease-lux),visibility 0s}
   .pasek-akcji a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:6px 12px;border-radius:var(--radius-btn);border:1px solid transparent;font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase;text-align:center;text-decoration:none}
-  .pasek-akcji .pa-glowny{background:var(--color-ivory);color:var(--color-navy);border-color:var(--color-ivory)}
+  /* przy powiększonym tekście (WCAG 1.4.4) przyciski przechodzą do dwóch wierszy zamiast obcinać etykietę */
+  .pasek-akcji .pa-glowny{flex:1 1 8rem;min-width:0;background:var(--color-ivory);color:var(--color-navy);border-color:var(--color-ivory)}
   .pasek-akcji .pa-glowny:hover{background:var(--color-parchment)}
-  .pasek-akcji .pa-tel{color:var(--color-ivory);border-color:rgba(217,192,137,.6);padding-inline:10px}
+  .pasek-akcji .pa-tel{flex:1 0 auto;max-width:100%;color:var(--color-ivory);border-color:rgba(217,192,137,.6);padding-inline:10px}
   .pasek-akcji .pa-tel:hover{border-color:var(--color-gold-light)}
   .pasek-akcji :focus-visible{outline:2px solid var(--color-gold-light);outline-offset:2px}
   .pa-ikona{width:18px;height:18px;flex:none;fill:none;stroke:var(--color-gold-light);stroke-width:1.5;stroke-linejoin:round}
@@ -1127,14 +1133,14 @@ html:has(.klauzula[open]){overflow:hidden}
             <div class="mega" id="menu-produkty" hidden>
               <div class="mega-head"><p class="mega-title">Ubezpieczenia dla branży beauty</p><a class="mega-all" href="#ubezpieczenia">Wszystkie ubezpieczenia</a></div>
               <ul class="mega-grid">
-                <li><a class="mega-item" href="oc-beauty.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name">OC dla branży beauty</span><span class="mega-desc">OC za szkody wyrządzone klientom podczas zabiegów – składka ze stałej taryfy ERGO Hestia.</span><span class="mega-price">od 400&nbsp;zł rocznie</span></span></a></li>
-                <li><a class="mega-item" href="tax-protect.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name">Tax Protect</span><span class="mega-desc">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (Colonnade).</span><span class="mega-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
-                <li><a class="mega-item" href="utrata-dochodu.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name">Utrata dochodu</span><span class="mega-desc">Prywatne L4 dla samozatrudnionych – Lloyd’s przez Leadenhall i&nbsp;CEU.</span><span class="mega-price">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></a></li>
-                <li><a class="mega-item" href="nnw-dzieci.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name">NNW dla dzieci</span><span class="mega-desc">Ochrona dziecka od następstw nieszczęśliwych wypadków – całą dobę (Colonnade).</span><span class="mega-price">od 40&nbsp;zł rocznie za dziecko · zakup online u&nbsp;Colonnade</span></span></a></li>
-                <li><a class="mega-item" href="grupowe-ergo.html"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name">Grupowe ERGO dla beauty</span><span class="mega-desc">Ubezpieczenie na życie dla zespołu (2–&#8288;100 osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</span><span class="mega-price">od 58&nbsp;zł za osobę miesięcznie · rodzina od 57&nbsp;zł miesięcznie</span></span></a></li>
-                <li><a class="mega-item" href="#kontakt" data-produkt="opieka-medyczna"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name">Opieka medyczna</span><span class="mega-desc">Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price">Według cennika programu</span></span></a></li>
+                <li><a class="mega-item" href="oc-beauty.html" aria-labelledby="mp-oc-beauty-n" aria-describedby="mp-oc-beauty-d mp-oc-beauty-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name" id="mp-oc-beauty-n">OC dla branży beauty</span><span class="mega-desc" id="mp-oc-beauty-d">OC za szkody wyrządzone klientom podczas zabiegów – składka ze stałej taryfy ERGO Hestia.</span><span class="mega-price" id="mp-oc-beauty-c"><span class="mega-cena">od 400&nbsp;zł rocznie</span></span></span></a></li>
+                <li><a class="mega-item" href="tax-protect.html" aria-labelledby="mp-tax-protect-n" aria-describedby="mp-tax-protect-d mp-tax-protect-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name" id="mp-tax-protect-n">Tax Protect</span><span class="mega-desc" id="mp-tax-protect-d">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (Colonnade).</span><span class="mega-price" id="mp-tax-protect-c"><span class="mega-cena">od 1&nbsp;532&nbsp;zł rocznie</span></span></span></a></li>
+                <li><a class="mega-item" href="utrata-dochodu.html" aria-labelledby="mp-utrata-dochodu-n" aria-describedby="mp-utrata-dochodu-d mp-utrata-dochodu-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name" id="mp-utrata-dochodu-n">Utrata dochodu</span><span class="mega-desc" id="mp-utrata-dochodu-d">Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy – Lloyd’s przez Leadenhall i&nbsp;CEU.</span><span class="mega-price" id="mp-utrata-dochodu-c"><span class="mega-cena">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></span></a></li>
+                <li><a class="mega-item" href="nnw-dzieci.html" aria-labelledby="mp-nnw-dzieci-n" aria-describedby="mp-nnw-dzieci-d mp-nnw-dzieci-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name" id="mp-nnw-dzieci-n">NNW dla dzieci</span><span class="mega-desc" id="mp-nnw-dzieci-d">Ochrona dziecka od następstw nieszczęśliwych wypadków – całą dobę (Colonnade).</span><span class="mega-price" id="mp-nnw-dzieci-c"><span class="mega-cena">od 40&nbsp;zł rocznie za dziecko</span><span class="mega-dop">Zakup online u&nbsp;Colonnade</span></span></span></a></li>
+                <li><a class="mega-item" href="grupowe-ergo.html" aria-labelledby="mp-grupowe-ergo-n" aria-describedby="mp-grupowe-ergo-d mp-grupowe-ergo-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name" id="mp-grupowe-ergo-n">Grupowe ERGO dla beauty</span><span class="mega-desc" id="mp-grupowe-ergo-d">Ubezpieczenie na życie dla zespołu (2–&#8288;100 osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</span><span class="mega-price" id="mp-grupowe-ergo-c"><span class="mega-cena">Zespół: od 58&nbsp;zł za osobę / mies.</span><span class="mega-cena">ERGO Razem: od 57&nbsp;zł / mies.</span></span></span></a></li>
+                <li><a class="mega-item" href="#kontakt" data-produkt="opieka-medyczna" aria-labelledby="mp-opieka-medyczna-n" aria-describedby="mp-opieka-medyczna-d mp-opieka-medyczna-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name" id="mp-opieka-medyczna-n">Opieka medyczna</span><span class="mega-desc" id="mp-opieka-medyczna-d">Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price" id="mp-opieka-medyczna-c"><span class="mega-cena">Według cennika programu</span></span></span></a></li>
               </ul>
-              <div class="mega-foot"><a class="btn btn-navy" href="#kalkulator">Oblicz składkę OC</a><a class="btn btn-ghost" href="#kalkulator-tax">Porównaj w&nbsp;kalkulatorze Tax Protect</a></div>
+              <div class="mega-foot"><a class="btn btn-navy" href="#kalkulator">Oblicz składkę OC</a><a class="btn btn-ghost" href="#kalkulator-tax">Oblicz składkę Tax Protect</a></div>
             </div>
           </li>
           <!-- /gen:menu-produkty -->
@@ -1155,10 +1161,10 @@ html:has(.klauzula[open]){overflow:hidden}
           <ul class="mm-produkty" aria-labelledby="mm-produkty-t">
             <li><a href="oc-beauty.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mm-text"><span class="mm-name">OC dla branży beauty</span><span class="mm-price">od 400&nbsp;zł rocznie</span></span></a></li>
             <li><a href="tax-protect.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mm-text"><span class="mm-name">Tax Protect</span><span class="mm-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
-            <li><a href="utrata-dochodu.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mm-text"><span class="mm-name">Utrata dochodu</span><span class="mm-price">składka po ocenie ryzyka</span></span></a></li>
-            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie</span></span></a></li>
-            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 57&nbsp;zł miesięcznie</span></span></a></li>
-            <li><a href="#kontakt" data-produkt="opieka-medyczna"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mm-text"><span class="mm-name">Opieka medyczna</span><span class="mm-price">według cennika</span></span></a></li>
+            <li><a href="utrata-dochodu.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mm-text"><span class="mm-name">Utrata dochodu</span><span class="mm-price">składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></a></li>
+            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie za dziecko</span></span></a></li>
+            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 58&nbsp;zł za osobę / mies.</span></span></a></li>
+            <li><a href="#kontakt" data-produkt="opieka-medyczna"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mm-text"><span class="mm-name">Opieka medyczna</span><span class="mm-price">według cennika programu</span></span></a></li>
           </ul>
           <!-- /gen:menu-mobilne -->
           <a href="#kalkulator"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kalkulator"/></svg>Kalkulator</a>
@@ -1231,7 +1237,7 @@ html:has(.klauzula[open]){overflow:hidden}
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="13:30">13:30</time><span class="clue-risk">Właścicielka skręca nadgarstek i&nbsp;przez kilka tygodni nie może przyjmować klientek.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
           <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><div><h3>Utrata dochodu</h3><p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią pracę. Składkę wylicza ubezpieczyciel po ocenie ryzyka – wniosek złożysz na utratadochodu.pl albo z&nbsp;doradcą Aura Expert.</p><a class="link-lux" href="#utrata-dochodu">Zobacz ubezpieczenie<span class="sr-only">: utrata dochodu</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="15:05">15:05</time><span class="clue-risk">Dzwoni szkoła: syn przewrócił się na lekcji wychowania fizycznego.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
-          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><div><h3>NNW dzieci</h3><p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków w&nbsp;Colonnade – działa 24&nbsp;godziny na dobę, także na treningach i&nbsp;zawodach sportowych. Polisę kupujesz online. Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#nnw-dzieci">Zobacz ubezpieczenie<span class="sr-only">: NNW dzieci</span></a></div></div></details></li>
+          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><div><h3>NNW dla dzieci</h3><p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków w&nbsp;Colonnade – działa 24&nbsp;godziny na dobę, także na treningach i&nbsp;zawodach sportowych. Polisę kupujesz online. Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#nnw-dzieci">Zobacz ubezpieczenie<span class="sr-only">: NNW dla dzieci</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="17:20">17:20</time><span class="clue-risk">Najlepsza stylistka pyta, jakie benefity salon daje zespołowi.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
           <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><div><h3>Grupowe ERGO dla beauty</h3><p>Grupowe ubezpieczenie na życie w&nbsp;ERGO Hestii dla zespołu salonu – ERGO Życie w&nbsp;Biznesie, dla firm od 2 do 100 osób, ze stałą składką za osobę. Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#grupowe-ergo">Zobacz ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="20:00">20:00</time><span class="clue-risk">Po zamknięciu plecy po całym dniu przy fotelu dają o&nbsp;sobie znać.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
@@ -1241,8 +1247,8 @@ html:has(.klauzula[open]){overflow:hidden}
   </section>
 
   <!-- Kafelek = „stretched link”: nazwa produktu (h3 > a.product-link) prowadzi do strony produktu, a jej ::after kryje cały kafelek;
-       w makiecie pliki *.html stron produktowych (produkcyjnie /ubezpieczenia/* z mapy URL – 04); opieka medyczna nie ma jeszcze
-       makiety – zostaje ścieżka produkcyjna. Druga akcja (.product-actions) leży nad warstwą linku i jest osobnym celem:
+       w makiecie pliki *.html stron produktowych (produkcyjnie /ubezpieczenia/* z mapy URL – 04); opieka medyczna nie ma podstrony
+       w nawigacji – w makiecie #kontakt z data-produkt (jak menu i szuflada), produkcyjnie /ubezpieczenia/opieka-medyczna. Druga akcja (.product-actions) leży nad warstwą linku i jest osobnym celem:
        „Oblicz składkę” → kalkulator (data-calc), „Kup online u Colonnade” → strona ubezpieczyciela (nowa karta),
        „Zapytaj doradcę” → #kontakt (data-produkt ustawia temat w formularzu). Linia ceny (.product-price) – składki stałe z taryf programów. -->
   <section class="section section--flush-top" id="ubezpieczenia" aria-labelledby="prod-title">
@@ -1256,10 +1262,10 @@ html:has(.klauzula[open]){overflow:hidden}
       <div class="ledger ledger--light glass glass--strong">
         <article class="product rv-rise" id="oc-beauty"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="tag">ERGO Hestia</span></div><h3><a class="product-link" href="oc-beauty.html">OC dla branży beauty<span class="product-go" aria-hidden="true"></span></a></h3><p>OC za szkody wyrządzone klientom podczas zabiegów. Składka ze stałej taryfy – według grupy ryzyka i&nbsp;sumy.</p><p class="product-price"><span class="pp-pre">od</span> <strong>400</strong> <span class="pp-unit">zł rocznie</span></p><div class="product-actions"><a class="link-lux" href="#kalkulator" data-calc="oc">Oblicz składkę<span class="sr-only"> OC</span></a></div></article>
         <article class="product rv-rise" id="tax-protect"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="tag">Colonnade</span></div><h3><a class="product-link" href="tax-protect.html">Tax Protect<span class="product-go" aria-hidden="true"></span></a></h3><p>Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu – jeden pełny spór podatkowy w&nbsp;roku.</p><p class="product-price"><span class="pp-pre">od</span> <strong>1&nbsp;532</strong> <span class="pp-unit">zł rocznie</span></p><div class="product-actions"><a class="link-lux" href="#kalkulator-tax" data-calc="tax">Oblicz składkę<span class="sr-only"> Tax Protect</span></a></div></article>
-        <article class="product rv-rise" id="utrata-dochodu"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="tag">Oferta indywidualna</span></div><h3><a class="product-link" href="utrata-dochodu.html">Utrata dochodu<span class="product-go" aria-hidden="true"></span></a></h3><p>Prywatne L4 dla samozatrudnionych: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy.</p><p class="product-price product-price--text"><strong>Składkę wylicza ubezpieczyciel</strong> <span class="pp-unit">po ocenie ryzyka</span></p><div class="product-actions"><a class="link-lux" href="#kontakt" data-produkt="utrata-dochodu">Zapytaj doradcę<span class="sr-only"> o&nbsp;ubezpieczenie utraty dochodu</span></a></div></article>
-        <article class="product rv-rise" id="nnw-dzieci"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="tag">Colonnade</span></div><h3><a class="product-link" href="nnw-dzieci.html">NNW dzieci<span class="product-go" aria-hidden="true"></span></a></h3><p>Ochrona dziecka od następstw nieszczęśliwych wypadków – przez całą dobę, na całym świecie.</p><p class="product-price"><span class="pp-pre">od</span> <strong>40</strong> <span class="pp-unit">zł rocznie za dziecko</span></p><div class="product-actions"><a class="link-lux" href="https://bit.ly/szkolneNNW2026" target="_blank" rel="noopener">Kup online u&nbsp;Colonnade<span class="sr-only"> – NNW dzieci, strona ubezpieczyciela otworzy się w&nbsp;nowej karcie</span></a></div></article>
-        <article class="product rv-rise" id="grupowe-ergo"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="tag">ERGO Hestia</span></div><h3><a class="product-link" href="grupowe-ergo.html">Grupowe ERGO dla beauty<span class="product-go" aria-hidden="true"></span></a></h3><p>Ubezpieczenie na życie dla zespołu (2–&#8288;100&nbsp;osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny – od 57&nbsp;zł miesięcznie.</p><p class="product-price"><span class="pp-pre">od</span> <strong>58</strong> <span class="pp-unit">zł za osobę / mies.</span></p><div class="product-actions"><a class="link-lux" href="#kontakt" data-produkt="grupowe-ergo">Zapytaj doradcę<span class="sr-only"> o&nbsp;grupowe ERGO</span></a></div></article>
-        <article class="product rv-rise" id="opieka-medyczna"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="tag">ENEL-MED · LUX&nbsp;MED</span></div><h3><a class="product-link" href="/ubezpieczenia/opieka-medyczna">Opieka medyczna<span class="product-go" aria-hidden="true"></span></a></h3><p>Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin – zakres zależy od sieci i&nbsp;pakietu.</p><p class="product-price product-price--text"><strong>Według cennika programu</strong> <span class="pp-unit">zależnie od liczby osób</span></p><div class="product-actions"><a class="link-lux" href="#kontakt" data-produkt="opieka-medyczna">Zapytaj doradcę<span class="sr-only"> o&nbsp;opiekę medyczną</span></a></div></article>
+        <article class="product rv-rise" id="utrata-dochodu"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="tag">Oferta indywidualna</span></div><h3><a class="product-link" href="utrata-dochodu.html">Utrata dochodu<span class="product-go" aria-hidden="true"></span></a></h3><p>Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy – przy działalności, B2B i&nbsp;na etacie.</p><p class="product-price product-price--text"><strong>Składkę wylicza ubezpieczyciel</strong> <span class="pp-unit">po ocenie ryzyka</span></p><div class="product-actions"><a class="link-lux" href="#kontakt" data-produkt="utrata-dochodu">Zapytaj doradcę<span class="sr-only"> o&nbsp;ubezpieczenie utraty dochodu</span></a></div></article>
+        <article class="product rv-rise" id="nnw-dzieci"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="tag">Colonnade</span></div><h3><a class="product-link" href="nnw-dzieci.html">NNW dla dzieci<span class="product-go" aria-hidden="true"></span></a></h3><p>Ochrona dziecka od następstw nieszczęśliwych wypadków – przez całą dobę, na całym świecie.</p><p class="product-price"><span class="pp-pre">od</span> <strong>40</strong> <span class="pp-unit">zł rocznie za dziecko</span></p><div class="product-actions"><a class="link-lux" href="https://bit.ly/szkolneNNW2026" target="_blank" rel="noopener">Kup online u&nbsp;Colonnade<svg class="pa-zewn-k" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h10v10M19 5 6 18"/></svg><span class="sr-only"> – NNW dla dzieci, strona ubezpieczyciela otworzy się w&nbsp;nowej karcie</span></a></div></article>
+        <article class="product rv-rise" id="grupowe-ergo"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="tag">ERGO Hestia</span></div><h3><a class="product-link" href="grupowe-ergo.html">Grupowe ERGO dla beauty<span class="product-go" aria-hidden="true"></span></a></h3><p>Ubezpieczenie na życie dla zespołu (2–&#8288;100&nbsp;osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</p><p class="product-price"><span class="pp-pre">od</span> <strong>58</strong> <span class="pp-unit">zł za osobę / mies.</span><span class="pp-unit pp-dop">ERGO Razem: od&nbsp;57&nbsp;zł / mies.</span></p><div class="product-actions"><a class="link-lux" href="#kontakt" data-produkt="grupowe-ergo">Zapytaj doradcę<span class="sr-only"> o&nbsp;grupowe ERGO</span></a></div></article>
+        <article class="product rv-rise" id="opieka-medyczna"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="tag">ENEL-MED · LUX&nbsp;MED</span></div><h3><a class="product-link" href="#kontakt" data-produkt="opieka-medyczna">Opieka medyczna<span class="product-go" aria-hidden="true"></span></a></h3><p>Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin – zakres zależy od sieci i&nbsp;pakietu.</p><p class="product-price product-price--text"><strong>Według cennika programu</strong> <span class="pp-unit">zależnie od liczby osób</span></p><div class="product-actions"><a class="link-lux" href="#kontakt" data-produkt="opieka-medyczna">Zapytaj doradcę<span class="sr-only"> o&nbsp;opiekę medyczną</span></a></div></article>
       </div>
     </div>
   </section>
@@ -1689,7 +1695,7 @@ html:has(.klauzula[open]){overflow:hidden}
               <option value="oc-beauty">OC dla branży beauty</option>
               <option value="tax-protect">Tax Protect</option>
               <option value="utrata-dochodu">Utrata dochodu</option>
-              <option value="nnw-dzieci">NNW dzieci</option>
+              <option value="nnw-dzieci">NNW dla dzieci</option>
               <option value="grupowe-ergo">Grupowe ERGO dla beauty</option>
               <option value="opieka-medyczna">Opieka medyczna</option>
             </select>
@@ -1739,7 +1745,7 @@ html:has(.klauzula[open]){overflow:hidden}
           <p>Program ubezpieczeń dla branży beauty prowadzony przez Aura Expert sp.&nbsp;z&nbsp;o.o. – agenta ubezpieczeniowego.</p>
         </div>
         <nav class="footer-nav" aria-label="Stopka">
-          <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html">OC dla branży beauty</a></li><li><a href="tax-protect.html">Tax Protect</a></li><li><a href="utrata-dochodu.html">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO</a></li><li><a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html">OC dla branży beauty</a></li><li><a href="tax-protect.html">Tax Protect</a></li><li><a href="utrata-dochodu.html">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dla dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO dla beauty</a></li><li><a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a></li></ul></div>
           <div class="rv-rise"><h2 class="footer-title">Dla kogo</h2><ul><li><a href="/dla-kogo/kosmetolog">Kosmetolog</a></li><li><a href="/dla-kogo/fryzjer">Fryzjer i&nbsp;barber</a></li><li><a href="/dla-kogo/podolog">Podolog</a></li><li><a href="/dla-kogo/linergistka">Linergistka</a></li><li><a href="/dla-kogo/stylistka-paznokci">Stylistka paznokci</a></li><li><a href="/dla-kogo/tatuazysta">Tatuażysta</a></li></ul></div>
           <!-- „Zgłoś szkodę”: w makiecie #jak-zglosic-szkode, produkcyjnie /szkoda; „Polityka prywatności”: /rodo -->
           <div class="rv-rise"><h2 class="footer-title">BeautyPolisa</h2><ul><li><a href="/o-nas">O&nbsp;nas</a></li><li><a href="/dokumenty">Dokumenty i&nbsp;OWU</a></li><li><a href="#jak-zglosic-szkode">Zgłoś szkodę</a></li><li><a href="/rodo">Polityka prywatności</a></li><li><a href="#kontakt">Kontakt</a></li></ul></div>
@@ -1796,13 +1802,13 @@ html:has(.klauzula[open]){overflow:hidden}
   <symbol id="lux-serce" viewBox="0 0 96 96"><title>Serce BeautyPolisa</title><path d="M48 77C41 69 18 53 18 37C18 17 41 15 48 33C55 15 78 17 78 37C78 53 55 69 48 77Z" /></symbol>
 </svg>
 <!-- gen:pasek-akcji -->
-<!-- Pasek akcji na telefonie (< 768 px): pokazuje go skrypt gen:wspolne-js po przewinięciu poza pierwszy ekran;
+<!-- Pasek akcji na telefonie (< 768 px, wysokość okna > 500 px): pokazuje go skrypt gen:wspolne-js po przewinięciu poza pierwszy ekran;
      chowa się przy polu formularza / klawiaturze, przy widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu,
      karcie końcowej i stopce. Bez JS zostaje ukryty (te same akcje są w treści). -->
-<div class="pasek-akcji" id="pasek-akcji" hidden>
+<aside class="pasek-akcji" id="pasek-akcji" aria-label="Szybkie akcje" hidden>
   <a class="pa-glowny" href="#kalkulator">Oblicz składkę<span class="sr-only"> OC</span></a>
   <a class="pa-tel" href="tel:+48504400901"><svg class="pa-ikona" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5 9 3l1.7 4.3-2.2 1.5a11.5 11.5 0 0 0 6.7 6.7l1.5-2.2L21 15l-.5 2.4A2.5 2.5 0 0 1 18 19.5 15.5 15.5 0 0 1 4.5 6 2.5 2.5 0 0 1 6.6 3.5Z"/></svg><span class="pa-tel-txt">Zadzwoń<span class="pa-nr"><span class="sr-only">: </span>+48&nbsp;504&nbsp;400&nbsp;901</span></span></a>
-</div>
+</aside>
 <!-- /gen:pasek-akcji -->
 <script>
 /* Kalkulator OC – reguły 1:1 z bp-app.js, stała taryfa programu */
@@ -2451,7 +2457,7 @@ html:has(.klauzula[open]){overflow:hidden}
 <script>
 /* Wspólne komponenty (gen_wspolne.py – nie edytuj ręcznie) */
 /* Menu „Ubezpieczenia”: link -> przycisk disclosure (aria-expanded + aria-controls, bez role=menu).
-   Zamykanie: Esc (fokus wraca na przycisk), klik poza, Tab poza panel, schowanie nagłówka. Najechanie otwiera z opóźnieniem tylko jako dodatek. */
+   Zamykanie: Esc (fokus wraca na przycisk), klik poza, Tab poza panel, schowanie nagłówka, przewinięcie o > 120 px. Najechanie otwiera z opóźnieniem tylko jako dodatek. */
 (function(){
   var li=document.querySelector('.nav-produkty'), panel=document.getElementById('menu-produkty');
   if(!li||!panel) return;
@@ -2460,9 +2466,9 @@ html:has(.klauzula[open]){overflow:hidden}
   btn.type='button';btn.className='nav-produkty-btn';btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-controls','menu-produkty');
   btn.innerHTML='Ubezpieczenia<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5 5 7l3.5-3.5"/></svg>';
   link.parentNode.replaceChild(btn,link);
-  var via=null, tOpen=0, tClose=0, mqHover=window.matchMedia('(hover:hover) and (pointer:fine)');
+  var via=null, tOpen=0, tClose=0, y0=0, mqHover=window.matchMedia('(hover:hover) and (pointer:fine)');
   function isOpen(){return !panel.hidden}
-  function open(how){clearTimeout(tClose);if(isOpen()){if(how==='click')via='click';return}panel.hidden=false;btn.setAttribute('aria-expanded','true');via=how}
+  function open(how){clearTimeout(tClose);if(isOpen()){if(how==='click')via='click';return}panel.hidden=false;btn.setAttribute('aria-expanded','true');via=how;y0=window.scrollY}
   function close(focus){clearTimeout(tOpen);clearTimeout(tClose);if(!isOpen())return;panel.hidden=true;btn.setAttribute('aria-expanded','false');via=null;if(focus)btn.focus()}
   btn.addEventListener('click',function(){if(isOpen()&&via!=='hover')close(false);else open('click')});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&isOpen()){var inside=li.contains(document.activeElement);close(inside)}});
@@ -2471,7 +2477,13 @@ html:has(.klauzula[open]){overflow:hidden}
   panel.addEventListener('click',function(e){if(e.target.closest('a[href]'))close(false)});
   li.addEventListener('pointerenter',function(e){if(e.pointerType!=='mouse'||!mqHover.matches)return;clearTimeout(tClose);if(!isOpen())tOpen=setTimeout(function(){open('hover')},180)});
   li.addEventListener('pointerleave',function(e){if(e.pointerType!=='mouse')return;clearTimeout(tOpen);if(isOpen()&&via==='hover'&&!li.contains(document.activeElement))tClose=setTimeout(function(){close(false)},320)});
-  window.addEventListener('scroll',function(){if(isOpen()&&hdr&&hdr.dataset.hidden==='1')close(false)},{passive:true});
+  /* przewinięcie: zamyka przy schowanym nagłówku, a panel otwarty klikiem/klawiaturą także po 120 px od otwarcia
+     (fokus na przycisku blokuje chowanie nagłówka); fokus w samym panelu – panel zostaje, fokus nie jest przenoszony */
+  window.addEventListener('scroll',function(){
+    if(!isOpen())return;
+    if(hdr&&hdr.dataset.hidden==='1'){close(false);return}
+    if(via!=='hover'&&!panel.contains(document.activeElement)&&Math.abs(window.scrollY-y0)>120)close(false);
+  },{passive:true});
   var mqWide=window.matchMedia('(min-width:1200px)');
   function onWide(){if(!mqWide.matches)close(false)}
   if(mqWide.addEventListener)mqWide.addEventListener('change',onWide);else if(mqWide.addListener)mqWide.addListener(onWide);
@@ -2481,17 +2493,29 @@ html:has(.klauzula[open]){overflow:hidden}
    otwartej szufladzie menu, widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu, karcie końcowej, akcjach otwarcia i stopce */
 (function(){
   var bar=document.getElementById('pasek-akcji'); if(!bar||!('IntersectionObserver' in window)) return;
-  var root=document.documentElement, mq=window.matchMedia('(max-width:767px)'), menu=document.querySelector('details.menu');
+  /* niskie okno (telefon w poziomie, ≤ 500 px – jak nagłówek): bez paska */
+  var root=document.documentElement, mq=window.matchMedia('(max-width:767px) and (min-height:501px)'), menu=document.querySelector('details.menu');
   var FIELD='input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]):not([type=reset]):not([type=range]):not([type=file]):not([type=image]),textarea,select,[contenteditable="true"]';
   var targets=[].slice.call(document.querySelectorAll('.calc-peek,.lead-form,.end-card,.hero-actions,.tariff-actions,.site-footer'));
   var seen=new Set(), io=null, ticking=false;
   function typing(){var a=document.activeElement;return !!(a&&a.matches&&a.matches(FIELD))}
   function keyboard(){var v=window.visualViewport;return !!(v&&v.height<window.innerHeight*0.72)}
+  /* widoczność wymusza tylko fokus z klawiatury (po tapnięciu fokus jest zdejmowany – tel:, nowa karta, bfcache) */
+  function kbdFocus(){try{return !!bar.querySelector(':focus-visible')}catch(e){return false}}
+  /* fokus z klawiatury w pasku, a pasek ma zniknąć: fokus na początek bieżącej sekcji, dopiero potem inert */
+  function focusSekcja(){
+    var el=document.elementFromPoint(window.innerWidth/2,Math.round(window.innerHeight*0.4));
+    var s=(el&&!bar.contains(el)&&el.closest('section,footer,article'))||document.querySelector('main')||document.body;
+    var t=s.querySelector('h1,h2,h3')||s;
+    if(!t.hasAttribute('tabindex')){t.setAttribute('tabindex','-1');t.addEventListener('blur',function(){t.removeAttribute('tabindex')},{once:true})}
+    t.focus({preventScroll:true});
+  }
   function update(){
     ticking=false;if(!io)return;
     var past=window.scrollY>window.innerHeight*0.9;
-    var on=past&&seen.size===0&&!typing()&&!keyboard()&&!(menu&&menu.open);
-    if(!on&&bar.contains(document.activeElement)&&!typing())on=true;
+    var hide=!past||seen.size>0||!!(menu&&menu.open);
+    var on=!hide&&!typing()&&!keyboard();
+    if(!on&&kbdFocus()){if(hide)focusSekcja();else on=true}
     bar.dataset.on=on?'1':'0';bar.inert=!on;
   }
   function req(){if(!ticking){ticking=true;requestAnimationFrame(update)}}
@@ -2505,6 +2529,8 @@ html:has(.klauzula[open]){overflow:hidden}
   }
   function stop(){if(io){io.disconnect();io=null}seen.clear();bar.hidden=true;bar.dataset.on='0';root.classList.remove('has-pasek')}
   function sync(){if(mq.matches){if(!io)start()}else stop()}
+  bar.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(a&&e.detail)setTimeout(function(){a.blur();req()},0)});
+  window.addEventListener('pageshow',function(){var a=document.activeElement;if(a&&bar.contains(a)&&!kbdFocus())a.blur();req()});
   window.addEventListener('scroll',req,{passive:true});
   window.addEventListener('resize',req);
   if(window.visualViewport)window.visualViewport.addEventListener('resize',req);
