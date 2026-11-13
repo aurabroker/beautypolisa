@@ -503,9 +503,11 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 .full-table .row-note td{text-align:left;white-space:normal;color:var(--color-navy);padding-left:0}
 .full-table tfoot th[scope="row"]{font-weight:500;color:var(--color-navy)}
 /* telefon: węższa kolumna zakresu, żeby od razu było widać kwoty co najmniej Wariantu I */
-@media (max-width:479px){.full-table{min-width:26rem}.full-table th[scope="rowgroup"]{width:3rem;padding-right:6px}.full-table th[scope="row"]{min-width:10rem;width:10rem}}
-/* lead bezpośrednio na zdjęciu jedwabiu: ciemna poświata pod literami (jasne fałdy pod przyklejonym tłem na telefonie) */
-.scene--silk .section-head .lead{text-shadow:0 1px 14px rgba(20,28,51,.95),0 0 2px rgba(20,28,51,.9)}
+@media (max-width:479px){.full-table{min-width:26rem}.full-table th[scope="rowgroup"]{width:3rem;padding-right:6px}.full-table th[scope="row"]{min-width:10rem;width:10rem}.plan-table.full-table thead th{white-space:nowrap}}
+.full-table thead th:nth-child(2){text-align:left}
+/* lead bezpośrednio na zdjęciu jedwabiu: ciemna poświata pod literami (jasne fałdy pod przyklejonym tłem na telefonie);
+   pomiar przy przewijaniu co 40 px: najgorsza linia 4,95:1 (360 px), 4,69:1 (390 px), 7,03:1 (1440 px) */
+.scene--silk .section-head .lead{text-shadow:0 0 2px rgba(20,28,51,.95),0 1px 8px rgba(20,28,51,.95),0 1px 18px rgba(20,28,51,.9)}
 
 /* ---------- NNW · III · jak kupić: zewnętrzny link w kroku ---------- */
 .step .mock-note{white-space:normal;margin-left:0;justify-self:start}

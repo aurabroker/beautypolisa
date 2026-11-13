@@ -15,7 +15,7 @@
 <meta name="theme-color" content="#141C33">
 <meta name="color-scheme" content="only light">
 <!-- Makieta strony produktu: docelowy adres https://beautypolisa.eu/ubezpieczenia/grupowe-ergo (04, mapa URL).
-     Dwie drogi: A) ERGO Życie w Biznesie – grupowe dla firm z branży beauty (źródło: cennik branżowy public.ezb_cenniki id 1, wersja branze-2607);
+     Dwie drogi: A) ERGO Życie w Biznesie – grupowe dla firm z branży beauty (źródło: cennik branżowy ERGO Hestii dla branży beauty, kod ulotki EH-UL-EZB-F-2607);
      B) ERGO Razem – grupa otwarta (źródło: strony kalkulatora ERGO Razem: główna, wiek, FAQ, ubezpieczenia dodatkowe, Global Doctors, katalog zachorowań).
      Blokadę indeksowania (meta robots) dokłada tylko podgląd makiet – nie ten plik. Tag Google: jak na stronie głównej (decyzja G1) – dopiero po zgodzie, tu go nie ma. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -250,6 +250,13 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 
 /* ---------- IV · jak kupić: jedwab, jedna ciemna tafla z czterema krokami (jak na stronie Tax Protect) ---------- */
 .dark .chapter-no{color:rgba(217,192,137,.14)}
+/* nagłówek sekcji na jedwabiu (poza taflą): miękka plama midnight pod tekstem, żeby jasny refleks tkaniny nie obniżał kontrastu (WCAG 1.4.3);
+   wnętrze kryje w 74%, brzegi wygaszone maską; poziomo nie dalej niż margines kontenera (bez przewijania w poziomie) */
+.scene--silk .section-head::after{content:"";position:absolute;z-index:-1;inset:-28px calc(-1 * min(32px,var(--bp-gutter)));background:rgba(20,28,51,.74);border-radius:var(--radius-card);pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 min(32px,var(--bp-gutter)),#000 calc(100% - min(32px,var(--bp-gutter))),transparent),linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 28px),transparent);
+  -webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 min(32px,var(--bp-gutter)),#000 calc(100% - min(32px,var(--bp-gutter))),transparent),linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 28px),transparent);mask-composite:intersect}
+@media (prefers-contrast:more),(prefers-reduced-transparency:reduce){.scene--silk .section-head::after{background:var(--color-midnight)}}
+@media (forced-colors:active){.scene--silk .section-head::after{display:none}}
 .how{overflow:hidden;overflow:clip}
 .steps{display:grid;grid-template-columns:minmax(0,1fr);list-style:none;margin:0;padding:0}
 .step{display:grid;gap:12px;align-content:start;padding:32px 28px 30px;box-shadow:1px 0 0 var(--bp-line-gold-on-dark-soft),0 1px 0 var(--bp-line-gold-on-dark-soft)}
@@ -506,7 +513,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 
 .panel{position:relative;display:grid;gap:16px;align-content:start;padding:clamp(22px,3vw,34px);border:1px solid var(--bp-line-gold);border-radius:var(--radius-card);background:var(--color-ivory)}
 .panel h3,.panel h4{font-family:var(--font-serif);font-weight:600;color:var(--color-navy);margin:0}
-.panel h3{font-size:clamp(1.45rem,1.3rem + .5vw,1.7rem)}
+.panel h3,.panel h4{font-size:clamp(1.45rem,1.3rem + .5vw,1.7rem);line-height:1.15;letter-spacing:-.005em;font-variant-numeric:lining-nums}
 .panel-label{font:500 var(--text-xs)/1.5 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-taupe)}
 .panel-text,.panel li{font-size:var(--text-body);color:var(--color-ink)}
 .panel ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
@@ -539,7 +546,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .vcards{display:grid;gap:clamp(18px,3vw,28px);list-style:none;margin:0;padding:0}
 @media (min-width:900px){.vcards{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .vcard{display:grid;gap:14px;align-content:start;padding:clamp(22px,3vw,32px);border:1px solid var(--bp-line-gold);border-radius:var(--radius-card);background:var(--color-ivory)}
-.vcard h3{font-size:clamp(1.5rem,1.3rem + .6vw,1.8rem)}
+.vcard h4{font-family:var(--font-serif);font-weight:600;margin:0;color:var(--color-navy);letter-spacing:-.005em;line-height:1.15;font-variant-numeric:lining-nums;font-size:clamp(1.5rem,1.3rem + .6vw,1.8rem)}
 .vcard p{font-size:var(--text-body);color:var(--color-ink)}
 .ticks{display:grid;gap:8px;margin:0;padding:0;list-style:none}
 .ticks li{position:relative;padding-left:22px;font-size:var(--text-body);line-height:1.5;color:var(--color-ink)}
@@ -569,7 +576,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 /* adnotacje makiety w treści mogą być długie – zawijają się zamiast rozpychać układ */
 .mock-note{white-space:normal;max-width:100%}
 .panel-grid > *,.vcards > *,.related > *,.panel > *{min-width:0}
-.cmp-table .vtable td{overflow-wrap:anywhere}
+.cmp-table .vtable td{overflow-wrap:break-word}
 @media (max-width:767px){
   .vtable th,.vtable td{padding:9px 5px}
   .vtable th[scope="row"]{min-width:8.5rem}
@@ -723,7 +730,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       "unitCode": "MON"
      }
     },
-    "description": "Składka miesięczna za osobę według cennika branżowego ERGO Hestii dla branży beauty (wersja branze-2607): wariant 1 – 58 zł, wariant 2 – 68 zł, wariant 3 – 76 zł; obowiązuje od 1.07.2026 do 31.12.2026 dla nowych klientów.",
+    "description": "Składka miesięczna za osobę według cennika branżowego ERGO Hestii dla branży beauty (kod ulotki EH-UL-EZB-F-2607): wariant 1 – 58 zł, wariant 2 – 68 zł, wariant 3 – 76 zł; obowiązuje od 1.07.2026 do 31.12.2026 dla nowych klientów.",
     "offeredBy": {
      "@id": "https://beautypolisa.eu/#agency"
     }
@@ -812,7 +819,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    "@id": "https://beautypolisa.eu/#agency",
    "name": "BeautyPolisa",
    "alternateName": "BeautyPolisa created by Aura Expert",
-   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; nie sprzedaje polis online.",
+   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu; nie ma zakupu polisy w koszyku.",
    "url": "https://beautypolisa.eu/",
    "address": {
     "@type": "PostalAddress",
@@ -914,7 +921,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       </nav>
       <!-- Strefa Klienta: w makiecie strefa/logowanie.html, produkcyjnie /strefa-klienta/logowanie -->
       <a class="client-link" href="strefa/logowanie.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Strefa Klienta</a>
-      <div class="header-cta"><a class="btn btn-ghost" href="makieta-v3.html#kontakt">Zapytaj doradcę</a></div>
+      <div class="header-cta"><a class="btn btn-ghost" href="makieta-v3.html?produkt=grupowe-ergo#kontakt">Zapytaj doradcę</a></div>
       <details class="menu">
         <summary><span class="menu-label">Menu</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></summary>
         <nav class="menu-panel" aria-label="Menu główne">
@@ -927,8 +934,9 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           <hr class="rule">
           <a href="strefa/logowanie.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Strefa Klienta</a>
           <a href="strefa/dam-prace.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Dam&nbsp;pracę</a>
+          <a href="strefa/logowanie.html#s-rs-email"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Szukam pracy</a>
           <a href="strefa/szkolenia.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Szkolenia</a>
-          <a class="btn btn-navy" href="makieta-v3.html#kontakt">Zapytaj doradcę</a>
+          <a class="btn btn-navy" href="makieta-v3.html?produkt=grupowe-ergo#kontakt">Zapytaj doradcę</a>
         </nav>
       </details>
     </div>
@@ -970,7 +978,8 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     </div>
   </section>
 
-  <!-- I · DROGA A: ERGO Życie w Biznesie – dane 1:1 z cennika branżowego (public.ezb_cenniki id 1, wersja branze-2607, branża „beauty”).
+  <!-- I · DROGA A: ERGO Życie w Biznesie – dane 1:1 z cennika branżowego (kod ulotki EH-UL-EZB-F-2607, branża „beauty”).
+       Global Doctors: pozycje zgon_ubezpieczonego (10000, bez jednostki) i ograniczenie_nw („90 dni”, bez opisu) pokazane z adnotacją „do potwierdzenia”.
        Produkcyjnie: render statyczny z aktywnej wersji cennika (jedno źródło prawdy z wnioskiem na ergo.auraexpert.pl). -->
   <section class="section" id="dla-salonu" aria-labelledby="a-title">
     <div class="container">
@@ -978,7 +987,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
         <span class="chapter-no" aria-hidden="true">I</span>
         <p class="eyebrow">Dla salonu z&nbsp;zespołem</p>
         <h2 id="a-title" class="rv-curtain">ERGO Życie w&nbsp;Biznesie <em>dla branży beauty</em></h2>
-        <p class="lead">Grupowe ubezpieczenie na życie dla firm z&nbsp;branży beauty: Salony fryzjerskie, kosmetyczne, SPA, studia paznokci. Trzy warianty ze stałą składką za osobę według cennika branżowego ERGO Hestii.</p>
+        <p class="lead">Grupowe ubezpieczenie na życie dla firm z&nbsp;branży beauty: salony fryzjerskie, kosmetyczne, SPA i&nbsp;studia paznokci. Trzy warianty ze stałą składką za osobę według cennika branżowego ERGO Hestii.</p>
       </div>
 
       <dl class="path-facts">
@@ -1015,18 +1024,32 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           <div class="table-scroll" role="region" tabindex="0" aria-labelledby="gr-malzonek"><table class="vtable vtable--full"><caption id="gr-malzonek">Pakiet świadczeń dotyczący małżonka albo partnera</caption><thead><tr><th scope="col">Świadczenie</th><th scope="col">Wariant 1</th><th scope="col">Wariant 2</th><th scope="col">Wariant 3</th></tr></thead><tbody><tr><th scope="row">Zgon małżonka albo partnera<small>karencja: 6 miesięcy</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>15&nbsp;000</td><td>15&nbsp;000</td></tr><tr><th scope="row">Zgon małżonka albo partnera w wyniku NW</th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>30&nbsp;000</td><td>30&nbsp;000</td></tr><tr><th scope="row">Zgon małżonka albo partnera w wyniku wypadku komunikacyjnego</th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>40&nbsp;000</td><td>40&nbsp;000</td></tr><tr><th scope="row">Poważne zachorowanie małżonka — zakres maksymalny<small>kwota maks. · karencja: 3 miesiące</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>4&nbsp;500</td><td>4&nbsp;500</td></tr><tr><th scope="row">Poważne zachorowanie małżonka na nowotwór in situ<small>kwota maks. · karencja: 3 miesiące</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>1&nbsp;000</td><td>1&nbsp;000</td></tr><tr><th scope="row">Leczenie specjalistyczne małżonka<small>kwota maks. · karencja: 3 miesiące</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>1&nbsp;500</td><td>1&nbsp;500</td></tr><tr><th scope="row">Operacja chirurgiczna małżonka — 5 podgrup<small>karencja: 6 miesięcy</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>2&nbsp;000</td></tr><tr><th scope="row">Powikłania pooperacyjne małżonka<small>karencja: 6 miesięcy</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>1&nbsp;000</td></tr></tbody></table></div>
           <div class="table-scroll" role="region" tabindex="0" aria-labelledby="gr-dziecko"><table class="vtable vtable--full"><caption id="gr-dziecko">Pakiet świadczeń dotyczący dziecka</caption><thead><tr><th scope="col">Świadczenie</th><th scope="col">Wariant 1</th><th scope="col">Wariant 2</th><th scope="col">Wariant 3</th></tr></thead><tbody><tr><th scope="row">Zgon dziecka<small>karencja: 6 miesięcy</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>5&nbsp;000</td></tr><tr><th scope="row">Zgon dziecka w wyniku NW</th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>10&nbsp;000</td></tr><tr><th scope="row">Zgon dziecka w wyniku wypadku komunikacyjnego</th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>15&nbsp;000</td></tr><tr><th scope="row">Poważne zachorowanie dziecka<small>kwota maks. · karencja: 3 miesiące</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>5&nbsp;000</td></tr><tr><th scope="row">Poważne zachorowanie dziecka na chorobę nowotworową<small>kwota maks. · karencja: 3 miesiące</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>2&nbsp;000</td></tr><tr><th scope="row">Leczenie specjalistyczne dziecka<small>kwota maks. · karencja: 3 miesiące</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>2&nbsp;000</td></tr><tr><th scope="row">Leczenie specjalistyczne onkologiczne dziecka<small>kwota maks. · karencja: 3 miesiące</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>1&nbsp;500</td></tr><tr><th scope="row">Urodzenie się dziecka<small>karencja: 9 miesięcy</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>1&nbsp;500</td></tr><tr><th scope="row">Urodzenie martwego noworodka<small>karencja: 9 miesięcy</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>3&nbsp;000</td></tr><tr><th scope="row">Osierocenie dziecka w wyniku zgonu ubezpieczonego<small>karencja: 6 miesięcy</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>4&nbsp;000</td></tr><tr><th scope="row">Osierocenie dziecka wskutek zgonu obojga rodziców w wyniku NW</th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>10&nbsp;000</td></tr></tbody></table></div>
           <div class="table-scroll" role="region" tabindex="0" aria-labelledby="gr-rodzic"><table class="vtable vtable--full"><caption id="gr-rodzic">Pakiet świadczeń dotyczący rodzica</caption><thead><tr><th scope="col">Świadczenie</th><th scope="col">Wariant 1</th><th scope="col">Wariant 2</th><th scope="col">Wariant 3</th></tr></thead><tbody><tr><th scope="row">Zgon rodzica ubezpieczonego<small>karencja: 6 miesięcy</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>1&nbsp;800</td><td>1&nbsp;800</td></tr><tr><th scope="row">Zgon rodzica ubezpieczonego w wyniku NW</th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>3&nbsp;800</td><td>3&nbsp;800</td></tr><tr><th scope="row">Zgon rodzica ubezpieczonego w wyniku wypadku komunikacyjnego</th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>5&nbsp;000</td><td>5&nbsp;000</td></tr><tr><th scope="row">Zgon rodzica małżonka albo partnera<small>karencja: 6 miesięcy</small></th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>1&nbsp;800</td><td>1&nbsp;800</td></tr><tr><th scope="row">Zgon rodzica małżonka albo partnera w wyniku NW</th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>3&nbsp;800</td><td>3&nbsp;800</td></tr><tr><th scope="row">Zgon rodzica małżonka albo partnera w wyniku wypadku komunikacyjnego</th><td><span aria-hidden="true">—</span><span class="sr-only">nie obejmuje</span></td><td>5&nbsp;000</td><td>5&nbsp;000</td></tr></tbody></table></div>
-          <p class="notes">Kwoty w&nbsp;złotych; świadczenia szpitalne – za dzień (w&nbsp;nawiasie okres, za który przysługuje), trwały uszczerbek – za 1% uszczerbku. Karencja – czas od początku ochrony, po którym świadczenie przysługuje.</p>
+          <p class="notes">Kwoty w&nbsp;złotych. Świadczenia wypłacane za dzień oznaczono „zł za dzień” (w&nbsp;nawiasie okres, za który przysługują); pozostałe kwoty są jednorazowe. Trwały uszczerbek – za 1% uszczerbku. Karencja – czas od początku ochrony, po którym świadczenie przysługuje.</p>
           </div>
         </div>
       </details>
 
       <div class="sub-head">
         <h3 id="pakiety">Pakiety dodatkowe</h3>
-        <p>Pakiety rozszerzają wariant o&nbsp;dodatkowe świadczenia. Składka pakietu zależy od wariantu (1, 2 albo 3). Stawki obowiązują do 31.12.2026. <span class="mock-note">Okres składki pakietów i&nbsp;dodatków (miesięcznie za osobę) – do potwierdzenia</span></p>
+        <p>Pakiety dodają kolejne świadczenia do ubezpieczenia. Każdy pakiet ma trzy warianty (1, 2, 3), które różnią się wysokością świadczeń i&nbsp;składką. Stawki obowiązują do 31.12.2026. <span class="mock-note">Czy wariant pakietu jest powiązany z&nbsp;wariantem głównym – do potwierdzenia</span> <span class="mock-note">Okres składki pakietów i&nbsp;dodatków (miesięcznie za osobę) – do potwierdzenia</span></p>
       </div>
       <div class="tariff-table glass glass--tint">
-        <div class="table-scroll" role="region" tabindex="0" aria-labelledby="pk-cap"><table class="vtable vtable--pk"><caption id="pk-cap">Pakiety dodatkowe – składka miesięcznie za osobę w złotych, osobno dla każdego wariantu</caption><thead><tr><th scope="col">Pakiet</th><th scope="col">Wariant 1</th><th scope="col">Wariant 2</th><th scope="col">Wariant 3</th></tr></thead><tbody><tr><th scope="row">Pakiet Życie<small>Zgon, zgon w wyniku NW, zgon w wyniku wypadku w pracy, zgon w wyniku wypadku komunikacyjnego, zgon w wyniku wypadku komunikacyjnego w pracy. Dla kogo według cennika: osoby z zobowiązaniami finansowymi, wychowujące dzieci, główni żywiciele rodziny, zawody o podwyższonym ryzyku.</small></th><td>12</td><td>15</td><td>20</td></tr><tr><th scope="row">Pakiet Zdrowie (3 podgrupy operacji)<small>Poważne zachorowanie, operacja chirurgiczna, leczenie specjalistyczne, leczenie szpitalne z powodu choroby, assistance chorobowy. Podział operacji na 3 podgrupy.</small></th><td>18</td><td>28</td><td>40</td></tr><tr><th scope="row">Pakiet Zdrowie (5 podgrup operacji)<small>Poważne zachorowanie, operacja chirurgiczna, leczenie specjalistyczne, leczenie szpitalne z powodu choroby, assistance chorobowy. Podział operacji na 5 podgrup – jak w pakiecie głównym.</small></th><td>17</td><td>27</td><td>39</td></tr><tr><th scope="row">Pakiet Wypadek (3 podgrupy operacji)<small>Trwały uszczerbek w wyniku NW, operacja w wyniku NW, powikłania pooperacyjne, leczenie szpitalne po NW, całkowita trwała niezdolność do pracy w wyniku NW, trwały uszczerbek w wyniku wypadku komunikacyjnego. Podział operacji na 3 podgrupy.</small></th><td>12</td><td>16</td><td>20</td></tr><tr><th scope="row">Pakiet Wypadek (5 podgrup operacji)<small>Trwały uszczerbek w wyniku NW, operacja w wyniku NW, powikłania pooperacyjne, leczenie szpitalne po NW, całkowita trwała niezdolność do pracy w wyniku NW, trwały uszczerbek w wyniku wypadku komunikacyjnego. Podział operacji na 5 podgrup – jak w pakiecie głównym.</small></th><td>11</td><td>15</td><td>19</td></tr><tr><th scope="row">Pakiet Onkologiczny<small>Nowotwór in situ, poważne zachorowanie na chorobę nowotworową, leczenie specjalistyczne onkologiczne, leczenie szpitalne z powodu nowotworu, assistance onkologiczny.</small></th><td>12</td><td>16</td><td>22</td></tr><tr><th scope="row">Pakiet Kardiologiczny<small>Trwały uszczerbek w wyniku zawału lub udaru, zgon w wyniku zawału lub udaru, poważne zachorowanie na chorobę układu krążenia, leczenie specjalistyczne kardiologiczne, leczenie szpitalne po zawale lub udarze, teleopieka kardiologiczna.</small></th><td>10</td><td>14</td><td>18</td></tr><tr><th scope="row">Pakiet Dziecko NW (3 podgrupy operacji)<small>Trwały uszczerbek dziecka w wyniku NW, zgon dziecka w wyniku NW, operacja dziecka w wyniku NW, leczenie szpitalne dziecka po NW, trwały uszczerbek dziecka w wyniku wypadku komunikacyjnego. Podział operacji na 3 podgrupy. Jedna składka obejmuje wszystkie dzieci ubezpieczonego do 25. roku życia.</small></th><td>6</td><td>8</td><td>12</td></tr><tr><th scope="row">Pakiet Dziecko NW (5 podgrup operacji)<small>Trwały uszczerbek dziecka w wyniku NW, zgon dziecka w wyniku NW, operacja dziecka w wyniku NW, leczenie szpitalne dziecka po NW, trwały uszczerbek dziecka w wyniku wypadku komunikacyjnego. Podział operacji na 5 podgrup – jak w pakiecie głównym. Jedna składka obejmuje wszystkie dzieci ubezpieczonego do 25. roku życia.</small></th><td>5</td><td>7</td><td>11</td></tr><tr><th scope="row">Pakiet Małżonek NW (3 podgrupy operacji)<small>Trwały uszczerbek małżonka w wyniku NW, zgon małżonka w wyniku NW, operacja małżonka w wyniku NW, powikłania pooperacyjne małżonka, leczenie szpitalne małżonka po NW, trwały uszczerbek małżonka w wyniku wypadku komunikacyjnego. Podział operacji na 3 podgrupy.</small></th><td>6</td><td>8</td><td>12</td></tr><tr><th scope="row">Pakiet Małżonek NW (5 podgrup operacji)<small>Trwały uszczerbek małżonka w wyniku NW, zgon małżonka w wyniku NW, operacja małżonka w wyniku NW, powikłania pooperacyjne małżonka, leczenie szpitalne małżonka po NW, trwały uszczerbek małżonka w wyniku wypadku komunikacyjnego. Podział operacji na 5 podgrup – jak w pakiecie głównym.</small></th><td>5</td><td>7</td><td>11</td></tr></tbody></table></div>
+        <div class="table-scroll" role="region" tabindex="0" aria-labelledby="pk-cap"><table class="vtable vtable--pk"><caption id="pk-cap">Pakiety dodatkowe – składka za osobę w złotych w trzech wariantach pakietu</caption><thead><tr><th scope="col">Pakiet</th><th scope="col">Wariant 1</th><th scope="col">Wariant 2</th><th scope="col">Wariant 3</th></tr></thead><tbody><tr><th scope="row">Pakiet Życie<small>Zgon, zgon w wyniku NW, zgon w wyniku wypadku w pracy, zgon w wyniku wypadku komunikacyjnego, zgon w wyniku wypadku komunikacyjnego w pracy. Dla kogo według cennika: osoby z zobowiązaniami finansowymi, wychowujące dzieci, główni żywiciele rodziny, zawody o podwyższonym ryzyku.</small></th><td>12</td><td>15</td><td>20</td></tr><tr><th scope="row">Pakiet Zdrowie (3 podgrupy operacji)<small>Poważne zachorowanie, operacja chirurgiczna, leczenie specjalistyczne, leczenie szpitalne z powodu choroby, assistance chorobowy. Podział operacji na 3 podgrupy.</small></th><td>18</td><td>28</td><td>40</td></tr><tr><th scope="row">Pakiet Zdrowie (5 podgrup operacji)<small>Poważne zachorowanie, operacja chirurgiczna, leczenie specjalistyczne, leczenie szpitalne z powodu choroby, assistance chorobowy. Podział operacji na 5 podgrup – jak w pakiecie głównym.</small></th><td>17</td><td>27</td><td>39</td></tr><tr><th scope="row">Pakiet Wypadek (3 podgrupy operacji)<small>Trwały uszczerbek w wyniku NW, operacja w wyniku NW, powikłania pooperacyjne, leczenie szpitalne po NW, całkowita trwała niezdolność do pracy w wyniku NW, trwały uszczerbek w wyniku wypadku komunikacyjnego. Podział operacji na 3 podgrupy.</small></th><td>12</td><td>16</td><td>20</td></tr><tr><th scope="row">Pakiet Wypadek (5 podgrup operacji)<small>Trwały uszczerbek w wyniku NW, operacja w wyniku NW, powikłania pooperacyjne, leczenie szpitalne po NW, całkowita trwała niezdolność do pracy w wyniku NW, trwały uszczerbek w wyniku wypadku komunikacyjnego. Podział operacji na 5 podgrup – jak w pakiecie głównym.</small></th><td>11</td><td>15</td><td>19</td></tr><tr><th scope="row">Pakiet Onkologiczny<small>Nowotwór in situ, poważne zachorowanie na chorobę nowotworową, leczenie specjalistyczne onkologiczne, leczenie szpitalne z powodu nowotworu, assistance onkologiczny.</small></th><td>12</td><td>16</td><td>22</td></tr><tr><th scope="row">Pakiet Kardiologiczny<small>Trwały uszczerbek w wyniku zawału lub udaru, zgon w wyniku zawału lub udaru, poważne zachorowanie na chorobę układu krążenia, leczenie specjalistyczne kardiologiczne, leczenie szpitalne po zawale lub udarze, teleopieka kardiologiczna.</small></th><td>10</td><td>14</td><td>18</td></tr><tr><th scope="row">Pakiet Dziecko NW (3 podgrupy operacji)<small>Trwały uszczerbek dziecka w wyniku NW, zgon dziecka w wyniku NW, operacja dziecka w wyniku NW, leczenie szpitalne dziecka po NW, trwały uszczerbek dziecka w wyniku wypadku komunikacyjnego. Podział operacji na 3 podgrupy. Jedna składka obejmuje wszystkie dzieci ubezpieczonego do 25. roku życia.</small></th><td>6</td><td>8</td><td>12</td></tr><tr><th scope="row">Pakiet Dziecko NW (5 podgrup operacji)<small>Trwały uszczerbek dziecka w wyniku NW, zgon dziecka w wyniku NW, operacja dziecka w wyniku NW, leczenie szpitalne dziecka po NW, trwały uszczerbek dziecka w wyniku wypadku komunikacyjnego. Podział operacji na 5 podgrup – jak w pakiecie głównym. Jedna składka obejmuje wszystkie dzieci ubezpieczonego do 25. roku życia.</small></th><td>5</td><td>7</td><td>11</td></tr><tr><th scope="row">Pakiet Małżonek NW (3 podgrupy operacji)<small>Trwały uszczerbek małżonka w wyniku NW, zgon małżonka w wyniku NW, operacja małżonka w wyniku NW, powikłania pooperacyjne małżonka, leczenie szpitalne małżonka po NW, trwały uszczerbek małżonka w wyniku wypadku komunikacyjnego. Podział operacji na 3 podgrupy.</small></th><td>6</td><td>8</td><td>12</td></tr><tr><th scope="row">Pakiet Małżonek NW (5 podgrup operacji)<small>Trwały uszczerbek małżonka w wyniku NW, zgon małżonka w wyniku NW, operacja małżonka w wyniku NW, powikłania pooperacyjne małżonka, leczenie szpitalne małżonka po NW, trwały uszczerbek małżonka w wyniku wypadku komunikacyjnego. Podział operacji na 5 podgrup – jak w pakiecie głównym.</small></th><td>5</td><td>7</td><td>11</td></tr></tbody></table></div>
       </div>
+
+      <details class="full-list" id="pakiety-swiadczenia">
+        <summary>Kwoty świadczeń w&nbsp;pakietach dodatkowych</summary>
+        <div class="full-list-body">
+          <div class="tariff-table glass glass--tint">
+          <div class="table-scroll" role="region" tabindex="0" aria-labelledby="pks-cap"><table class="vtable vtable--full"><caption id="pks-cap">Świadczenia w pakietach dodatkowych – kwoty w złotych w trzech wariantach pakietu</caption><thead><tr><th scope="col">Świadczenie</th><th scope="col">Wariant 1</th><th scope="col">Wariant 2</th><th scope="col">Wariant 3</th></tr></thead><tbody><tr class="row-sub"><th scope="rowgroup" colspan="4">Pakiet Życie</th></tr><tr><th scope="row">Zgon ubezpieczonego</th><td>25&nbsp;000</td><td>35&nbsp;000</td><td>45&nbsp;000</td></tr><tr><th scope="row">Zgon ubezpieczonego w wyniku nieszczęśliwego wypadku</th><td>45&nbsp;000</td><td>65&nbsp;000</td><td>85&nbsp;000</td></tr><tr><th scope="row">Zgon ubezpieczonego w wyniku wypadku w pracy</th><td>65&nbsp;000</td><td>95&nbsp;000</td><td>125&nbsp;000</td></tr><tr><th scope="row">Zgon ubezpieczonego w wyniku wypadku komunikacyjnego</th><td>65&nbsp;000</td><td>95&nbsp;000</td><td>125&nbsp;000</td></tr><tr><th scope="row">Zgon ubezpieczonego w wyniku wypadku komunikacyjnego w pracy</th><td>85&nbsp;000</td><td>125&nbsp;000</td><td>165&nbsp;000</td></tr></tbody><tbody><tr class="row-sub"><th scope="rowgroup" colspan="4">Pakiet Zdrowie (3 i 5 podgrup operacji)</th></tr><tr><th scope="row">Poważne zachorowanie — zakres maksymalny<small>kwota maks.</small></th><td>7&nbsp;000</td><td>12&nbsp;000</td><td>20&nbsp;000</td></tr><tr><th scope="row">Operacja chirurgiczna</th><td>1&nbsp;500</td><td>2&nbsp;500</td><td>3&nbsp;500</td></tr><tr><th scope="row">Leczenie specjalistyczne<small>kwota maks.</small></th><td>2&nbsp;000</td><td>2&nbsp;500</td><td>3&nbsp;500</td></tr><tr><th scope="row">Leczenie szpitalne z powodu choroby<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>40</td><td>60</td><td>100</td></tr><tr><th scope="row">Assistance chorobowy</th><td>tak</td><td>tak</td><td>tak</td></tr></tbody><tbody><tr class="row-sub"><th scope="rowgroup" colspan="4">Pakiet Wypadek (3 i 5 podgrup operacji)</th></tr><tr><th scope="row">Trwały uszczerbek w wyniku nieszczęśliwego wypadku<small>zł za&nbsp;1% uszczerbku</small></th><td>300</td><td>350</td><td>450</td></tr><tr><th scope="row">Operacja w wyniku NW<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>2&nbsp;000</td><td>3&nbsp;000</td><td>4&nbsp;000</td></tr><tr><th scope="row">Powikłania pooperacyjne<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>1&nbsp;000</td><td>1&nbsp;500</td><td>2&nbsp;000</td></tr><tr><th scope="row">Leczenie szpitalne po NW<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>100</td><td>150</td><td>200</td></tr><tr><th scope="row">Całkowita trwała niezdolność do pracy w wyniku NW</th><td>15&nbsp;000</td><td>20&nbsp;000</td><td>25&nbsp;000</td></tr><tr><th scope="row">Trwały uszczerbek w wyniku wypadku komunikacyjnego<small>zł za&nbsp;1% uszczerbku</small></th><td>500</td><td>650</td><td>850</td></tr></tbody><tbody><tr class="row-sub"><th scope="rowgroup" colspan="4">Pakiet Onkologiczny</th></tr><tr><th scope="row">Poważne zachorowanie na nowotwór in situ<small>kwota maks.</small></th><td>1&nbsp;000</td><td>2&nbsp;000</td><td>3&nbsp;000</td></tr><tr><th scope="row">Poważne zachorowanie na chorobę nowotworową<small>kwota maks.</small></th><td>20&nbsp;000</td><td>25&nbsp;000</td><td>35&nbsp;000</td></tr><tr><th scope="row">Leczenie specjalistyczne onkologiczne<small>kwota maks.</small></th><td>1&nbsp;500</td><td>2&nbsp;000</td><td>2&nbsp;500</td></tr><tr><th scope="row">Leczenie szpitalne z powodu nowotworu<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>55</td><td>65</td><td>75</td></tr><tr><th scope="row">Assistance onkologiczny</th><td>tak</td><td>tak</td><td>tak</td></tr></tbody><tbody><tr class="row-sub"><th scope="rowgroup" colspan="4">Pakiet Kardiologiczny</th></tr><tr><th scope="row">Trwały uszczerbek w wyniku zawału serca lub udaru mózgu<small>zł za&nbsp;1% uszczerbku</small></th><td>150</td><td>200</td><td>250</td></tr><tr><th scope="row">Zgon ubezpieczonego w wyniku zawału mięśnia sercowego lub udaru mózgu</th><td>20&nbsp;000</td><td>30&nbsp;000</td><td>40&nbsp;000</td></tr><tr><th scope="row">Poważne zachorowanie na chorobę układu krążenia<small>kwota maks.</small></th><td>10&nbsp;000</td><td>15&nbsp;000</td><td>20&nbsp;000</td></tr><tr><th scope="row">Leczenie specjalistyczne kardiologiczne<small>kwota maks.</small></th><td>1&nbsp;500</td><td>2&nbsp;000</td><td>2&nbsp;500</td></tr><tr><th scope="row">Leczenie szpitalne po zawale lub udarze<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>50</td><td>75</td><td>100</td></tr><tr><th scope="row">Teleopieka kardiologiczna</th><td>tak</td><td>tak</td><td>tak</td></tr></tbody><tbody><tr class="row-sub"><th scope="rowgroup" colspan="4">Pakiet Dziecko NW (3 i 5 podgrup operacji)</th></tr><tr><th scope="row">Trwały uszczerbek dziecka w wyniku NW<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>100</td><td>150</td><td>200</td></tr><tr><th scope="row">Zgon dziecka w wyniku NW</th><td>3&nbsp;000</td><td>5&nbsp;000</td><td>7&nbsp;000</td></tr><tr><th scope="row">Operacja dziecka w wyniku NW</th><td>1&nbsp;500</td><td>2&nbsp;000</td><td>2&nbsp;500</td></tr><tr><th scope="row">Leczenie szpitalne dziecka po NW<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>120</td><td>160</td><td>200</td></tr><tr><th scope="row">Trwały uszczerbek dziecka w wyniku wypadku komunikacyjnego<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>250</td><td>350</td><td>450</td></tr></tbody><tbody><tr class="row-sub"><th scope="rowgroup" colspan="4">Pakiet Małżonek NW (3 i 5 podgrup operacji)</th></tr><tr><th scope="row">Trwały uszczerbek małżonka w wyniku NW<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>150</td><td>200</td><td>250</td></tr><tr><th scope="row">Zgon małżonka albo partnera w wyniku NW</th><td>10&nbsp;000</td><td>15&nbsp;000</td><td>20&nbsp;000</td></tr><tr><th scope="row">Operacja małżonka w wyniku NW<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>1&nbsp;500</td><td>2&nbsp;000</td><td>2&nbsp;500</td></tr><tr><th scope="row">Powikłania pooperacyjne małżonka<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>1&nbsp;000</td><td>1&nbsp;500</td><td>2&nbsp;000</td></tr><tr><th scope="row">Leczenie szpitalne małżonka po NW<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>120</td><td>160</td><td>200</td></tr><tr><th scope="row">Trwały uszczerbek małżonka w wyniku wypadku komunikacyjnego<small><span class="mock-note">jednostka – do potwierdzenia</span></small></th><td>350</td><td>500</td><td>650</td></tr></tbody></table></div>
+          <ul class="notes">
+            <li>Pakiety w&nbsp;wersji z&nbsp;3 i&nbsp;z&nbsp;5 podgrupami operacji mają w&nbsp;cenniku te same kwoty świadczeń – różnią się podziałem operacji na podgrupy i&nbsp;składką.</li>
+            <li>„Tak” – usługa wchodzi w&nbsp;skład pakietu we wszystkich trzech wariantach; jej zakres opisuje tabela MediOpieka poniżej. „Kwota maks.” i&nbsp;„zł za 1% uszczerbku” – jak w&nbsp;tabeli wariantów powyżej.</li>
+            <li><span class="mock-note">Jak kwoty pakietu łączą się z&nbsp;kwotami wariantu głównego – do potwierdzenia</span></li>
+          </ul>
+          </div>
+        </div>
+      </details>
 
       <div class="sub-head">
         <h3 id="mediopieka">MediOpieka i&nbsp;Global Doctors</h3>
@@ -1038,7 +1061,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       <div class="panel-grid">
         <div class="panel">
           <p class="panel-label">MediOpieka · MA&nbsp;01/25</p>
-          <h3>Assistance medyczny</h3>
+          <h4>Assistance medyczny</h4>
           <p class="panel-text">Pomoc przy nagłym zachorowaniu, nieszczęśliwym wypadku albo urodzeniu dziecka. Limit 10&nbsp;000&nbsp;zł na rok polisowy łącznie na wszystkie usługi.</p>
           <details class="inner-details">
             <summary>Usługi i&nbsp;limity</summary>
@@ -1047,26 +1070,28 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           <details class="inner-details">
             <summary>Warianty MediPlanu</summary>
             <p class="panel-text">Pracodawca wybiera jeden z&nbsp;3 wariantów.</p>
-            <ul class="mp-list"><li><strong>Podstawowy</strong><span>limit świadczeń: 10 · USG: nie · tomografia i&nbsp;rezonans: nie · rehabilitacja: nie</span></li><li><strong>Rozszerzony</strong><span>limit świadczeń: 15 · USG: tak · tomografia i&nbsp;rezonans: nie · rehabilitacja: 1 świadczenie, maks. 20 zabiegów</span></li><li><strong>Maksymalny</strong><span>limit świadczeń: 20 · USG: tak · tomografia i&nbsp;rezonans: tak · rehabilitacja: 1 świadczenie, maks. 40 zabiegów</span></li></ul>
+            <ul class="mp-list"><li><strong>Podstawowy</strong><span>limit świadczeń: 10 · USG: nie · tomografia i&nbsp;rezonans: nie · rehabilitacja: <span aria-hidden="true">—</span><span class="sr-only">brak wartości w cenniku</span> <span class="mock-note">cennik nie podaje wartości – do potwierdzenia</span></span></li><li><strong>Rozszerzony</strong><span>limit świadczeń: 15 · USG: tak · tomografia i&nbsp;rezonans: nie · rehabilitacja: 1 świadczenie, maks. 20 zabiegów</span></li><li><strong>Maksymalny</strong><span>limit świadczeń: 20 · USG: tak · tomografia i&nbsp;rezonans: tak · rehabilitacja: 1 świadczenie, maks. 40 zabiegów</span></li></ul>
             <p class="panel-text">Zakres MediPlanu: chirurg, okulista, otolaryngolog, ortopeda, kardiolog, neurolog, pulmonolog, lekarz rehabilitacji, neurochirurg, psycholog, zabiegi ambulatoryjne, badania laboratoryjne, badania radiologiczne, badania USG (od wariantu rozszerzonego).</p>
           </details>
         </div>
         <div class="panel">
           <p class="panel-label">Global Doctors · GD-GZ&nbsp;01/25</p>
-          <h3>Global Doctors</h3>
+          <h4>Global Doctors</h4>
           <dl class="kv">
             <div><dt>Składka</dt><dd>135&nbsp;zł <span class="mock-note">okres składki – do potwierdzenia</span></dd></div>
-            <div><dt>Wiek</dt><dd>18–64 lat</dd></div>
+            <div><dt>Wiek</dt><dd>18–64 lata</dd></div>
             <div><dt>Suma ubezpieczenia</dt><dd>2 000 000 € na całe życie ubezpieczonego</dd></div>
             <div><dt>Okres świadczeniowy</dt><dd>36 miesięcy</dd></div>
             <div><dt>Świadczenie szpitalne</dt><dd>100 € / dzień, maks. 60 dni na moduł</dd></div>
+            <div><dt>Zgon ubezpieczonego</dt><dd>10&nbsp;000 <span class="mock-note">jednostka – do potwierdzenia</span></dd></div>
+            <div><dt>Ograniczenie NW</dt><dd>90 dni <span class="mock-note">znaczenie – do potwierdzenia</span></dd></div>
             <div><dt>Leki po leczeniu</dt><dd>50 000 € na całe życie</dd></div>
             <div><dt>Dieta – badania kliniczne</dt><dd>100 € / dzień, maks. 60 dni na roszczenie</dd></div>
             <div><dt>Konsultacje psychologiczne</dt><dd>4 wideokonsultacje na moduł (poza ciężką dysplazją)</dd></div>
           </dl>
           <p class="panel-text">Moduły:</p>
           <ul><li>nowotwór złośliwy (w tym in situ i ciężka dysplazja przednowotworowa)</li><li>wymiana lub naprawa zastawek serca</li><li>operacja pomostowania tętnic wieńcowych</li><li>operacja neurochirurgiczna</li><li>przeszczep narządu od żywego dawcy lub szpiku kostnego</li></ul>
-          <p class="panel-text">Medycyna precyzyjna: profilowanie molekularne, testy rodzinne (germinalne), przewodnik pacjenta w badaniach klinicznych. Warunek: Zamieszkanie na stałe w Polsce + min. 183 dni pobytu w kraju w ciągu 12 miesięcy przed objęciem ochroną.</p>
+          <p class="panel-text">Medycyna precyzyjna: profilowanie molekularne, testy rodzinne (germinalne), przewodnik pacjenta w badaniach klinicznych. Warunek: stałe zamieszkanie w&nbsp;Polsce i&nbsp;co najmniej 183 dni pobytu w&nbsp;kraju w&nbsp;ciągu 12 miesięcy przed objęciem ochroną.</p>
         </div>
       </div>
 
@@ -1081,7 +1106,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
         </ul>
         <div class="apply-actions">
           <a class="btn btn-navy" href="https://ergo.auraexpert.pl/wniosek?branza=beauty" target="_blank" rel="noopener">Złóż wniosek dla salonu<span class="sr-only"> (otwiera się w nowej karcie)</span></a>
-          <a class="link-lux" href="makieta-v3.html#kontakt">Zapytaj doradcę</a>
+          <a class="link-lux" href="makieta-v3.html?produkt=grupowe-ergo#kontakt">Zapytaj doradcę</a>
         </div>
         <p class="ext-note">Wniosek prowadzi na stronę Aura Expert (ergo.auraexpert.pl) i&nbsp;otwiera się w&nbsp;nowej karcie.</p>
         <p class="disclaimer">Zakres ochrony, wyłączenia i&nbsp;ograniczenia odpowiedzialności określają OWU ERGO Życie w&nbsp;Biznesie (EZwB&nbsp;01/25) oraz warunki MediOpieka (MA&nbsp;01/25) i&nbsp;Global Doctors (GD-GZ&nbsp;01/25). Informacje na stronie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego.</p>
@@ -1119,7 +1144,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       </div>
       <ul class="vcards">
         <li class="vcard rv-rise">
-          <h3>Dla Mnie</h3>
+          <h4>Dla Mnie</h4>
           <p>Ubezpieczenie indywidualne – kompleksowa ochrona tylko dla Ciebie.</p>
           <ul class="ticks">
             <li>Zgon z&nbsp;każdej przyczyny</li>
@@ -1131,7 +1156,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           </ul>
         </li>
         <li class="vcard rv-rise">
-          <h3>Dla Nas</h3>
+          <h4>Dla Nas</h4>
           <p>Ty i&nbsp;Twój małżonek lub partner życiowy – ochrona dla dwojga.</p>
           <ul class="ticks">
             <li>Wszystko z&nbsp;pakietu „Dla Mnie”</li>
@@ -1142,7 +1167,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           </ul>
         </li>
         <li class="vcard rv-rise">
-          <h3>Dla Rodziny</h3>
+          <h4>Dla Rodziny</h4>
           <p>Ty, partner, dzieci i&nbsp;rodzice – ochrona całej rodziny.</p>
           <ul class="ticks">
             <li>Wszystko z&nbsp;pakietu „Dla Nas”</li>
@@ -1162,7 +1187,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
       <div class="panel-grid panel-grid--3">
         <div class="panel">
           <p class="panel-label">§&nbsp;62–66 WU ER&nbsp;01/25</p>
-          <h3>MediPlan</h3>
+          <h4>MediPlan</h4>
           <p class="panel-text">Organizacja i&nbsp;pokrycie kosztów specjalistycznej pomocy medycznej po nieszczęśliwym wypadku na terytorium Polski – konsultacje specjalistów, zabiegi, badania diagnostyczne (RTG, USG, tomografia, rezonans), rehabilitacja.</p>
           <dl class="kv">
             <div><dt>Suma ubezpieczenia</dt><dd>10&nbsp;000&nbsp;zł</dd></div>
@@ -1171,7 +1196,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
         </div>
         <div class="panel">
           <p class="panel-label">§&nbsp;67–71 WU ER&nbsp;01/25</p>
-          <h3>Medical Assistance</h3>
+          <h4>Medical Assistance</h4>
           <p class="panel-text">Pomoc opiekuńczo-medyczna po nieszczęśliwym wypadku lub nagłym zachorowaniu na terytorium Polski – m.in. wizyta lekarza, pielęgniarka, transport medyczny, opieka nad dziećmi i&nbsp;zwierzętami, dostawa artykułów.</p>
           <dl class="kv">
             <div><dt>Limit</dt><dd>3&nbsp;000&nbsp;zł / rok</dd></div>
@@ -1180,7 +1205,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
         </div>
         <div class="panel">
           <p class="panel-label">Kod GD&nbsp;02/24</p>
-          <h3>Global Doctors</h3>
+          <h4>Global Doctors</h4>
           <p class="panel-text">Dostęp do konsultacji i&nbsp;drugiej opinii lekarzy specjalistów spoza Polski, gdy poważna diagnoza wymaga potwierdzenia rozpoznania i&nbsp;sposobu leczenia.</p>
           <dl class="kv">
             <div><dt>Wiek</dt><dd>do 63 lat w&nbsp;dniu przystąpienia</dd></div>
@@ -1252,12 +1277,12 @@ h1,h2,h3{font-variant-numeric:lining-nums}
           <thead><tr><th scope="col">Kryterium</th><th scope="col">Dla salonu z&nbsp;zespołem</th><th scope="col">Dla Ciebie i&nbsp;rodziny</th></tr></thead>
           <tbody>
             <tr><th scope="row">Produkt</th><td>ERGO Życie w&nbsp;Biznesie</td><td>ERGO Razem – grupa otwarta</td></tr>
-            <tr><th scope="row">Kto przystępuje</th><td>Firma z&nbsp;branży beauty, od 2 do 100 zatrudnionych</td><td>Osoba indywidualnie, sama albo z&nbsp;bliskimi</td></tr>
+            <tr><th scope="row">Kto zawiera umowę i&nbsp;kto przystępuje</th><td>Umowę zawiera firma z&nbsp;branży beauty (2–100 zatrudnionych); przystępują pracownicy w&nbsp;wieku 15–70 lat</td><td>Osoba indywidualnie, sama albo z&nbsp;bliskimi</td></tr>
             <tr><th scope="row">Wiek</th><td>Pracownik 15–70 lat</td><td>18–65 lat w&nbsp;dniu objęcia ochroną</td></tr>
             <tr><th scope="row">Składka</th><td>Stała za osobę: 58, 68 albo 76&nbsp;zł miesięcznie (wariant 1, 2, 3)</td><td>Od 57&nbsp;zł miesięcznie – zależy od wieku</td></tr>
             <tr><th scope="row">Bliscy</th><td>Małżonek, partner, pełnoletnie dziecko</td><td>Warianty Dla Nas i&nbsp;Dla Rodziny: partner, dzieci, rodzice i&nbsp;teściowie</td></tr>
             <tr><th scope="row">Warunki</th><td>OWU EZwB&nbsp;01/25</td><td>OWU kod ER&nbsp;01/25</td></tr>
-            <tr><th scope="row">Jak zacząć</th><td>Wniosek na ergo.auraexpert.pl</td><td>Kalkulator na ergo.beautypolisa.eu</td></tr>
+            <tr><th scope="row">Jak zacząć</th><td>Wniosek na ergo.<wbr>auraexpert.pl</td><td>Kalkulator na ergo.<wbr>beautypolisa.eu</td></tr>
           </tbody>
         </table>
         </div>
@@ -1289,7 +1314,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     </div>
   </section>
 
-  <!-- Inne ubezpieczenia: kryjące karty (bez tafli szkła); opisy jak w kartach powiązanych na tax-protect.html i utrata-dochodu.html -->
+  <!-- Inne ubezpieczenia: kryjące karty (bez tafli szkła); opisy jak w kartach powiązanych na tax-protect.html i utrata-dochodu.html, NNW dzieci – fakty ze strony nnw-dzieci.html -->
   <section class="section section--flush-top" id="powiazane" aria-labelledby="pow-title">
     <div class="container">
       <div class="related-head">
@@ -1314,7 +1339,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
         </article>
         <article class="rel-card rv-rise" aria-labelledby="rel-nnw">
           <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><h3 id="rel-nnw">NNW dzieci</h3></div>
-          <p>Ubezpieczenie następstw nieszczęśliwych wypadków dla dzieci. <span class="mock-note">opis – do uzupełnienia ze strony NNW dzieci</span></p>
+          <p>Ubezpieczenie następstw nieszczęśliwych wypadków dla dzieci w&nbsp;programie z&nbsp;Colonnade: ochrona 24&nbsp;godziny na dobę na całym świecie, jedna składka za rok – 40, 94 albo 175&nbsp;zł za osobę. Polisę kupujesz online na platformie ubezpieczyciela Colonnade.</p>
           <div class="rel-links"><a class="link-lux" href="nnw-dzieci.html">Poznaj NNW dzieci</a></div>
         </article>
       </div>
@@ -1331,7 +1356,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
         <div class="end-actions">
           <a class="btn btn-ivory" href="https://ergo.auraexpert.pl/wniosek?branza=beauty" target="_blank" rel="noopener">Złóż wniosek dla salonu<span class="sr-only"> (otwiera się w nowej karcie)</span></a>
           <a class="btn btn-ivory" href="https://ergo.beautypolisa.eu/" target="_blank" rel="noopener">Sprawdź składkę dla swojego wieku<span class="sr-only"> (otwiera się w nowej karcie)</span></a>
-          <a class="btn btn-ghost-dark" href="makieta-v3.html#kontakt">Zapytaj doradcę</a>
+          <a class="btn btn-ghost-dark" href="makieta-v3.html?produkt=grupowe-ergo#kontakt">Zapytaj doradcę</a>
         </div>
         <p class="end-legal">Informacje na stronie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego. Zakres ochrony, wyłączenia i&nbsp;ograniczenia odpowiedzialności określają: OWU EZwB&nbsp;01/25, MA&nbsp;01/25 i&nbsp;GD-GZ&nbsp;01/25 (ubezpieczenie dla salonu) oraz OWU kod ER&nbsp;01/25 i&nbsp;GD&nbsp;02/24 (ERGO Razem).</p>
       </div>
@@ -1361,7 +1386,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
         <!-- L1 (12.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy; informacje IDD agenta. Lista zakładów – do potwierdzenia;
              procedura reklamacyjna i charakter wynagrodzenia – do uzupełnienia (bez zgadywania). -->
         <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
-        <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń: Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A., Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. oraz Colonnade Insurance S.A. Oddział w&nbsp;Polsce <span class="mock-note">Lista – do potwierdzenia</span>. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A). Procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta – [do uzupełnienia przed publikacją].</p>
+        <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń: Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A., Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. oraz Colonnade Insurance S.A. Oddział w&nbsp;Polsce <span class="mock-note">Lista – do potwierdzenia (w&nbsp;tym Lloyd’s)</span>. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A). Procedura reklamacyjna i&nbsp;charakter wynagrodzenia agenta – [do uzupełnienia przed publikacją].</p>
         <p>Inspektor ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Informacje na stronie nie stanowią oferty w&nbsp;rozumieniu art.&nbsp;66 Kodeksu cywilnego. Zakres ochrony określają ogólne warunki ubezpieczenia.</p>
       </div>
     </div>
@@ -1380,6 +1405,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   <symbol id="lux-serce" viewBox="0 0 96 96"><title>Serce BeautyPolisa</title><path d="M48 77C41 69 18 53 18 37C18 17 41 15 48 33C55 15 78 17 78 37C78 53 55 69 48 77Z" /></symbol>
   <symbol id="lux-tax-protect" viewBox="0 0 96 96"><title>Tax Protect – ochrona karnoskarbowa</title><path d="M48 24V72M43 72H53L61 78H35Z" /><circle cx="48" cy="20" r="3" /><path d="M22 30C30 34 36 23 44 28M52 28C60 23 66 34 74 30" /><path d="M22 30L12 57H32ZM74 30L64 57H84" transform="translate(4 0) scale(.916667 1)" /><path d="M16 57H36C34 63 30 66 26 66C22 66 18 63 16 57ZM60 57H80C78 63 74 66 70 66C66 66 62 63 60 57" /></symbol>
   <symbol id="lux-utrata-dochodu" viewBox="0 0 96 96"><title>Utrata dochodu</title><circle cx="51" cy="31" r="13" /><path d="M45 24C48 21 54 21 57 24M17 61L29 51C33 48 37 47 42 49L49 52H58C64 52 64 59 58 60H45" /><path d="M61 54L72 45C76 42 81 46 77 50L66 61C63 64 59 66 55 67L45 70C40 72 34 67 29 70L21 77" /></symbol>
+  <symbol id="lux-kosmetolog" viewBox="0 0 96 96"><title>Kosmetolog</title><path d="M43 32V23C43 15 53 15 53 23V32" /><path d="M39 32H57V43H39ZM42 43V48C34 51 33 54 33 60V75C33 78 35 79 38 79H58C61 79 63 78 63 75V60C63 54 62 51 54 48V43" /><path d="M44 35V40M48 35V40M52 35V40M48 48V61" /><path d="M48 65C46 68 44 70 44 72C44 77 52 77 52 72C52 70 50 68 48 65Z" /></symbol>
   <symbol id="lux-nnw-dzieci" viewBox="0 0 96 96"><title>NNW dzieci</title><path d="M18 69Q48 91 78 69M22 65Q48 84 74 65" /><path d="M30 52L25 68M37 52L34 72M58 51L65 71M64 47L72 67" /><path d="M28 52C28 44 32 38 38 38H51C52 30 55 24 62 22L68 17L69 25L76 38C76 41 71 43 69 39L64 35C61 40 61 47 64 51C53 57 40 57 28 52Z" /><path d="M38 38V44C38 51 51 52 53 44L54 37M54 32C57 25 60 24 64 24" /><path d="M30 41C25 34 20 38 20 46C20 51 18 54 16 55" /></symbol>
 </svg>
 <script>
@@ -1397,6 +1423,16 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     var a=e.target.closest('a[href^="#"]');if(!a)return;
     try{open(decodeURIComponent(a.getAttribute('href').slice(1)))}catch(err){}
   });
+})();
+
+/* Regiony tabel: tabindex=0 w HTML (bez JS zawsze dostępne z klawiatury); skrypt zostawia przystanek Tab tylko tam, gdzie tabela faktycznie się przewija (np. 320 px) */
+(function(){
+  var regs=[].slice.call(document.querySelectorAll('.table-scroll[role="region"]'));if(!regs.length)return;
+  function check(r){if(!r.clientWidth)return;if(r.scrollWidth>r.clientWidth+1)r.setAttribute('tabindex','0');else if(document.activeElement!==r)r.removeAttribute('tabindex')}
+  function all(){regs.forEach(check)}
+  if('ResizeObserver' in window){var ro=new ResizeObserver(function(es){es.forEach(function(e){check(e.target)})});regs.forEach(function(r){ro.observe(r)})}
+  else{var t;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(all,150)});document.addEventListener('toggle',all,true)}
+  all();
 })();
 
 /* Menu mobilne: zamyka się po wyborze, Esc, kliknięciu obok i wyjściu fokusu */
