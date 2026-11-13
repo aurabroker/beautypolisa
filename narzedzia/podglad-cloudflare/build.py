@@ -10,7 +10,7 @@ if OUT.exists(): shutil.rmtree(OUT)
 for p in (V3 / 'img').glob('*.webp'): shutil.copy(p, OUT / 'img' / p.name)
 shutil.copy(REPO / 'BeautyPolisa_logo_podstawowe_poziome.png', OUT / 'logo.png')
 shutil.copy(V3 / 'strefa/strefa.css', OUT / 'strefa/strefa.css')
-PRODUKTY = ['oc-beauty', 'tax-protect', 'utrata-dochodu']
+PRODUKTY = ['oc-beauty', 'tax-protect', 'utrata-dochodu', 'nnw-dzieci', 'grupowe-ergo']
 
 def map_products(html, prefix):
     for name in PRODUKTY:
