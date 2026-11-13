@@ -1564,7 +1564,14 @@
     ],
     "pominiete": "klucze, site key Turnstile, adresy odbiorców",
     "gus_T9": {
-      "kontrakt_tax_gus_jak_crmaura": "{found, nazwa, regon, adres, data_zawieszenia}; bez klucza {available:false, reason:'no_key'}; błąd {found:false, error:'gus_error'} (apiregon.md:171-175, 222-235; crmaura/src/routes/api/regon/lookup/+server.ts:47-49, 104-114); żaden nie zwraca PKD; czy wdrożony tax-gus odpowiada wzorowi – do potwierdzenia",
+      "kontrakt_tax_gus_jak_crmaura": "{found, nazwa, regon, adres, data_zawieszenia}; bez klucza {available:false, reason:'no_key'}; błąd {found:false, error:'gus_error'} (apiregon.md:171-175, 222-235; crmaura/src/routes/api/regon/lookup/+server.ts:47-49, 104-114); żaden nie zwraca PKD; czy wdrożony tax-gus odpowiada wzorowi – do potwierdzenia. Zgodność w większości, nie pełna – patrz roznice_tax_gus_crmaura",
+      "roznice_tax_gus_crmaura": [
+        "crmaura dodatkowo zwraca nip (crmaura/src/routes/api/regon/lookup/+server.ts:107)",
+        "przy gus_error crmaura odpowiada HTTP 200 (l. 114), wzór tax-gus 500 (apiregon.md:231-232); klient taxbp czyta tylko found (components/WniosekForm.tsx:112-124)",
+        "crmaura wymaga logowania (l. 44); tax-gus publiczny – wzór nie sprawdza uprawnień, klient bez Authorization (§5.1, §6.1)",
+        "crmaura szuka też po REGON i sprawdza sumę kontrolną NIP (l. 30-41, 55-62); wzór tax-gus tylko NIP, sprawdza długość (apiregon.md:162-169)",
+        "crmaura dokleja numer lokalu do adresu (l. 95, 100); wzór tax-gus nie (apiregon.md:209-215)"
+      ],
       "klient_czyta_pkd": "components/WniosekForm.tsx:117 (data.pkd) → tax-wniosek numer_pkd (supabase/functions/tax-wniosek/index.ts:134); pola 'pkd' nie zwraca żadne z przejrzanych proxy",
       "pkd_zrodlo": "tylko branzowe: DanePobierzPelnyRaport z raportem *Pkd → pkd_kod, pkd_opis (branzowe/src/lib/serwer/gus.ts:104-122); katalogbeauty /api/regon PKD nie zwraca",
       "bez_klucza": "tax-gus → tryb ręczny; katalogbeauty → wykaz podatników VAT MF: nazwa, REGON, adres, bez PKD i daty zawieszenia (katalogbeauty/src/routes/api/regon/+server.ts:68-101)",
@@ -1597,7 +1604,7 @@
         },
         {
           "taxbp": "widżet bez action, appearance, language (WniosekForm.tsx:81-99)",
-          "ac": "render=explicit, managed + interaction-only, ładowanie przy pierwszym fokusie (src/lib/turnstile.ts:1-15)",
+          "ac": "render=explicit, managed + interaction-only, ładowanie przy pierwszym fokusie (kod: src/scripts/contact-form.ts:134-137, src/components/ContactForm.astro:105-109, src/lib/turnstile.ts:14-15; komentarz turnstile.ts:1-12)",
           "portal": "widżet z action, renderowany przy każdym zamontowaniu kontenera (§10)"
         },
         {

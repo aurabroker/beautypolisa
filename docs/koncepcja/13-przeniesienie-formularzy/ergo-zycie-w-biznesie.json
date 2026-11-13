@@ -7388,13 +7388,13 @@
         "odpowiedź z MF bez PKD i daty zawieszenia – osobne źródło (np. zrodlo 'mf'; schemat EZB zna dziś tylko 'gus' | 'recznie', §9.1); opiekun sprawdza PKD i status jak w trybie ręcznym",
         "limity zapytań wykazu MF przy ruchu z portalu – do potwierdzenia",
         "nie przejmować: 404 przy awarii, braku timeoutu, cache i limitu na IP, walidacji REGON bez sumy",
-        "nazwa sekretu we wszystkich trzech repo: GUS_API_KEY (wartość od zleceniodawcy)"
+        "nazwa sekretu GUS_API_KEY we wszystkich przejrzanych implementacjach: katalogbeauty (src/routes/api/regon/+server.ts:59), branzowe (src/routes/api/gus/+server.ts:11) z gałęzią great-noether (gus-regon-verification.json:169), crmaura (src/routes/api/regon/lookup/+server.ts:46), taxbp (apiregon.md:171); wartość od zleceniodawcy"
       ]
     },
     "turnstile_wzorzec_ac": {
       "md": "§13.2",
       "zrodlo": "aurabroker/ac @ b5f59c0 (2026-11-13), functions/api/kontakt.js (227 linii); klient src/components/ContactForm.astro, src/scripts/contact-form.ts, src/lib/turnstile.ts; site key i adresy odbiorców pominięte",
-      "zgodnosc": "zgodny ze standardem portalu 02-architektura-i-bezpieczenstwo.md §2.2",
+      "zgodnosc": "w większości zgodny ze standardem portalu 02-architektura-i-bezpieczenstwo.md §2.2; sześć różnic w nie_kopiowac",
       "warstwy": [
         {
           "warstwa": "Origin",
@@ -7429,12 +7429,12 @@
         {
           "warstwa": "bez JS",
           "opis": "POST formularza i 303 na #formularz-wyslano / #formularz-blad; przy włączonym Turnstile wysyłka bez JS odrzucana, <noscript> podaje telefon",
-          "dowod": "kontakt.js:11, 88-99; ContactForm.astro:5-10, 80-83"
+          "dowod": "kod: kontakt.js:88-99, 148-156; ContactForm.astro:36, 81-83; komentarze: kontakt.js:11; ContactForm.astro:5-10"
         },
         {
           "warstwa": "klient",
           "opis": "render=explicit, managed + interaction-only, ładowanie przy pierwszym fokusie, reset tokenu po próbie, CSP w public/_headers",
-          "dowod": "src/lib/turnstile.ts:1-15; contact-form.ts:6-7"
+          "dowod": "kod: src/scripts/contact-form.ts:134-137 (render z action i appearance 'interaction-only'), 194 (reset tokenu); ContactForm.astro:105-109 (ładowanie przy focusin); src/lib/turnstile.ts:14-15 (action, render=explicit); public/_headers:8 (CSP); komentarze: turnstile.ts:1-12; contact-form.ts:6-7"
         }
       ],
       "nie_kopiowac": [

@@ -616,7 +616,7 @@ Stan na 13.11.2026, źródło `aurabroker/branzowe` @ `8dc9a90` (produkcja = `3c
 | # | Brak (z `00-braki-i-decyzje.md`) | Status | Dowód / co zostaje |
 |---|---|---|---|
 | E1 | Kod `/api/wnioski`: walidacje (PESEL), przeliczenie składki, `nr_wniosku`, statusy, `ezb_wnioski`, `cennik_wersja`, `ezb_zdarzenia`, rate limit | **zamknięty** | §9.1: kolejność i walidacje (`+server.ts:19-157`), PESEL (`rodo.ts:26-31`), składka i 409 (l. 159–180), `cennik_wersja` = stała `branze-2607` (l. 14), numer `EZB-RRRR-NNNNNN` (`init.sql:18-19`), statusy bez obsługi w kodzie (l. 33–34), zdarzenia `wyslano`/`atrybucja_pominieta` (tylko `990b947`+, nie na produkcji)/`mail_blad` (l. 243–253). **Rate limitu, Turnstile, honeypota i idempotencji nie ma** |
-| E2 | `/api/gus`: dostęp BIR1, mapowanie adresu i PKD, cache | **zamknięty** (klucz celowo poza dokumentem) | §9.2: BIR 1.1 SOAP, nowa sesja na każde zapytanie bez `Wyloguj` (`gus.ts:59-73`), adres (l. 90–100), PKD z raportów `*Pkd` (l. 104–122), cache 24 h (`api/gus/+server.ts:6-27`), kody 400/404/502/503/500. **Zostaje:** klucz GUS od zleceniodawcy albo własny; weryfikacja na żywym API, czy `DataZawieszeniaDzialalnosci` jest w wyniku wyszukiwania; wariant `great-noether` jako baza implementacji portalu. [przegląd repo 13.11] PKD w EZB już jest. `katalogbeauty` daje tylko zapasowe źródło MF bez klucza, bez PKD i bez daty zawieszenia (§13.1) |
+| E2 | `/api/gus`: dostęp BIR1, mapowanie adresu i PKD, cache | **zamknięty** (klucz celowo poza dokumentem) | §9.2: BIR 1.1 SOAP, nowa sesja na każde zapytanie bez `Wyloguj` (`gus.ts:59-73`), adres (l. 90–100), PKD z raportów `*Pkd` (l. 104–122), cache 24 h (`api/gus/+server.ts:6-27`), kody 400/404/502/503/500. **Zostaje:** klucz GUS od zleceniodawcy albo własny; weryfikacja na żywym API, czy `DataZawieszeniaDzialalnosci` jest w wyniku wyszukiwania; wariant `great-noether` jako baza implementacji portalu. [przegląd repo 13.11] PKD w EZB już jest. `katalogbeauty` daje zapasowe źródło MF bez klucza oraz wyszukiwanie po REGON; bez PKD i daty zawieszenia (§13.1) |
 | E3 | Szablony e-maili, nadawca, szablon XLSX, PDF „Informacja o dystrybutorze” | **zamknięty** | §9.3: tematy i treści dosłownie (`resend.ts:53-92`), nadawca i odbiorcy z sekretów, 3 załączniki, kolumny arkusza; pliki w `static/dokumenty/`. **Zostaje (W4):** kto wysyła z portalu i czy treść ma zostać (rozbieżności: „kopia oferty”, „dane osób przystępujących”, arkusz 18–69 lat, PESEL w arkuszu) |
 | E4 | PDF OWU i karty produktu | **zamknięty** | §9.5: 6 plików + `rodo.pdf` + `informacja-o-dystrybutorze.pdf` w repozytorium, kody EZwB 01/25, MA 01/25, GD-GZ 01/25, wejście w życie 22.12.2025, errata ER/EHZ01/2602 od 13.02.2026. Kopiowanie robi zadanie „docs” |
 | E5 | Zatwierdzona klauzula art. 13; sprzeczność z3 a `/rodo` | **częściowo** (sprzeczność rozstrzygnięta na podstawie kodu; akceptacja prawnika – otwarta) | §9.4: `/rodo`, `rodo.pdf` (załącznik każdego potwierdzenia), regulamin i przepływ danych wskazują **Aura Expert**; z3 to robocza treść z prototypu (`zgody.ts:4`). Do prawnika: rola agenta (administrator czy podmiot przetwarzający), błędy w `rodo.pdf` („czynności brokerskie”, XII/XIII Wydział), transfer poza UE (Resend, Cloudflare) |
@@ -745,11 +745,11 @@ Pozytywne (zachować w portalu):
 - Odpowiedź z MF nie ma PKD ani daty zawieszenia. Portal musi ją oznaczyć osobnym źródłem (np. `zrodlo: 'mf'`), bo schemat EZB zna dziś tylko `'gus' | 'recznie'` (§9.1). Karta kroku 5 pokaże wtedy brak PKD, a opiekun sprawdzi PKD i status przed wystawieniem polisy, jak w trybie ręcznym.
 - Limity zapytań wykazu MF przy ruchu z portalu – do potwierdzenia.
 - Nie przejmować: zamiany awarii na 404, braku limitu czasu, cache i limitu na IP oraz walidacji REGON bez sumy kontrolnej.
-- Wszystkie trzy repozytoria używają tej samej nazwy sekretu: `GUS_API_KEY`. Wartość pochodzi od zleceniodawcy.
+- Ta sama nazwa sekretu, `GUS_API_KEY`, jest we wszystkich przejrzanych implementacjach: `katalogbeauty` (`src/routes/api/regon/+server.ts:59`), `branzowe` (`src/routes/api/gus/+server.ts:11`) z gałęzią `great-noether` (`gus-regon-verification.json:169`), `crmaura` (`src/routes/api/regon/lookup/+server.ts:46`) i `taxbp` (`apiregon.md:171`). Wartość pochodzi od zleceniodawcy.
 
 ### 13.2 Ochrona formularza: wzorzec `ac/functions/api/kontakt.js` (W2; B1, B5)
 
-Formularz kontaktowy serwisu Aura Consulting to Cloudflare Pages Function `POST /api/kontakt` (227 linii). Klient: `src/components/ContactForm.astro`, `src/scripts/contact-form.ts`, `src/lib/turnstile.ts`. To najpełniejsza ochrona formularza w repozytoriach zleceniodawcy i jest zgodna ze standardem portalu (`02-architektura-i-bezpieczenstwo.md` §2.2).
+Formularz kontaktowy serwisu Aura Consulting to Cloudflare Pages Function `POST /api/kontakt` (227 linii). Klient: `src/components/ContactForm.astro`, `src/scripts/contact-form.ts`, `src/lib/turnstile.ts`. To najpełniejsza ochrona formularza w repozytoriach zleceniodawcy i jest w większości zgodna ze standardem portalu (`02-architektura-i-bezpieczenstwo.md` §2.2). Sześć różnic opisuje lista „Czego nie kopiować 1:1” pod tabelą.
 
 | Warstwa | Jak działa w `ac` | Dowód |
 |---|---|---|
@@ -759,8 +759,8 @@ Formularz kontaktowy serwisu Aura Consulting to Cloudflare Pages Function `POST 
 | Turnstile | gdy jest sekret `TURNSTILE_SECRET_KEY`: token najwyżej 2048 znaków, `siteverify` z `remoteip` i `idempotency_key`, timeout 10 s. Wymaga `success`, `action` = `kontakt` i `hostname` z listy. Brak odpowiedzi → 503 z numerem telefonu, odrzucenie → 403 | `kontakt.js:62-79, 146-156` |
 | Limit | 1 wysyłka na 20 s z adresu IP (`cf-connecting-ip`), licznik w `caches.default` | `kontakt.js:18, 158-163, 221` |
 | E-mail | usunięte znaki sterujące, pola jednowierszowe, escapowany HTML, `reply_to` = adres klienta, wersja tekstowa obok HTML | `kontakt.js:48-50, 175-213` |
-| Bez JS | zwykły POST i odpowiedź 303 na `#formularz-wyslano` albo `#formularz-blad`. Przy włączonym Turnstile wysyłka bez JS jest odrzucana, a `<noscript>` podaje telefon | `kontakt.js:11, 88-99`; `ContactForm.astro:5-10, 80-83` |
-| Klient | widżet `render=explicit`, tryb managed z `interaction-only`, ładowany przy pierwszym fokusie; token resetowany po każdej próbie; CSP w `public/_headers` | `src/lib/turnstile.ts:1-15`; `contact-form.ts:6-7` |
+| Bez JS | zwykły POST i odpowiedź 303 na `#formularz-wyslano` albo `#formularz-blad`. Przy włączonym Turnstile wysyłka bez JS jest odrzucana, a `<noscript>` podaje telefon | kod: `kontakt.js:88-99, 148-156`; `ContactForm.astro:36, 81-83`; komentarze: `kontakt.js:11`, `ContactForm.astro:5-10` |
+| Klient | widżet `render=explicit`, tryb managed z `interaction-only`, ładowany przy pierwszym fokusie; token resetowany po każdej próbie; CSP w `public/_headers` | kod: `src/scripts/contact-form.ts:134-137` (`render` z `action` i `appearance: 'interaction-only'`), l. 194 (reset tokenu); `ContactForm.astro:105-109` (ładowanie przy `focusin`); `src/lib/turnstile.ts:14-15` (`action`, `render=explicit`); `public/_headers:8` (CSP); komentarze: `turnstile.ts:1-12`, `contact-form.ts:6-7` |
 
 Czego nie kopiować 1:1:
 - **Bez sekretu Turnstile jest pomijany** (`kontakt.js:148`). W portalu brak sekretu ma blokować wysyłkę.
@@ -781,6 +781,8 @@ Stan w repozytoriach formularzy:
 | `ac` | pełna weryfikacja (tabela wyżej) | Origin, pułapka, czas, limit, escapowanie |
 
 **Rekomendacja (W2).** Middleware Workera portalu według 02 §2.2, uzupełniony o elementy z `ac`: timeout `siteverify` i 503 z innym kanałem kontaktu, limit długości tokenu, minimalny czas wypełnienia liczony od znacznika wydanego przez serwer (a nie od pola z przeglądarki), escapowanie i pola jednowierszowe w e-mailach (B3), sprawdzenie Origin lub Referer. Proxy GUS portalu (E2) za Turnstile albo tokenem sesji formularza i z limitem (B5).
+
+[przegląd repo 13.11] **Korekty po weryfikacji:** „zgodna ze standardem” zmienione na „w większości zgodna” (różnice są na liście wyżej); dowody warstw „Bez JS” i „Klient” wskazują teraz kod, a komentarze są uzupełnieniem; wiersz E2 wymienia obie korzyści z `katalogbeauty` (MF i wyszukiwanie po REGON); nazwa sekretu `GUS_API_KEY` ma odnośniki do każdej implementacji, a `great-noether` jest opisany jako gałąź `branzowe`.
 
 ---
 

@@ -634,7 +634,13 @@ Numery linii makiety podaję według stanu z commita `a82d8b1` (ta sama wersja p
 
 ### 13.1 GUS / REGON (T9)
 
-- **Kontrakt `tax-gus` ma ten sam kształt co `crmaura`.** Oba zwracają `{found, nazwa, regon, adres, data_zawieszenia}`, bez klucza `{available:false, reason:"no_key"}`, a przy błędzie `{found:false, error:"gus_error"}` (`apiregon.md:171-175, 222-235`; `crmaura/src/routes/api/regon/lookup/+server.ts:47-49, 104-114`). Żaden nie zwraca PKD. Czy wdrożony `tax-gus` odpowiada temu wzorowi – do potwierdzenia (T9).
+- **Kontrakt `tax-gus` ma w większości ten sam kształt co `crmaura`.** Oba zwracają `{found, nazwa, regon, adres, data_zawieszenia}`, bez klucza `{available:false, reason:"no_key"}`, a przy błędzie `{found:false, error:"gus_error"}` (`apiregon.md:171-175, 222-235`; `crmaura/src/routes/api/regon/lookup/+server.ts:47-49, 104-114`). Żaden nie zwraca PKD. Czy wdrożony `tax-gus` odpowiada temu wzorowi – do potwierdzenia (T9).
+  - [przegląd repo 13.11] Różnice (ścieżki `crmaura` jak wyżej):
+    - `crmaura` dodatkowo zwraca `nip` (l. 107);
+    - przy `gus_error` `crmaura` odpowiada HTTP 200 (l. 114), a wzór `tax-gus` 500 (`apiregon.md:231-232`). Klient `taxbp` i tak czyta tylko `found` (`WniosekForm.tsx:112-124`);
+    - `crmaura` wymaga logowania (l. 44), a `tax-gus` jest publiczny: wzór nie sprawdza uprawnień, a klient woła go bez `Authorization` (§5.1, §6.1);
+    - `crmaura` szuka też po REGON i sprawdza sumę kontrolną NIP (l. 30-41, 55-62). Wzór `tax-gus` przyjmuje tylko NIP i sprawdza jego długość (`apiregon.md:162-169`);
+    - `crmaura` dokleja numer lokalu do adresu (l. 95, 100), wzór `tax-gus` nie (`apiregon.md:209-215`).
 - **Klient czyta `data.pkd`** (`components/WniosekForm.tsx:117`), a `tax-wniosek` zapisuje go jako `numer_pkd` (`supabase/functions/tax-wniosek/index.ts:134`). Pola o nazwie `pkd` nie zwraca żadne z przejrzanych proxy.
 - **PKD pobiera tylko `branzowe`:** `DanePobierzPelnyRaport` z raportem `*Pkd`, wynik w `pkd_kod` i `pkd_opis` (`branzowe/src/lib/serwer/gus.ts:104-122`). `katalogbeauty` `/api/regon` PKD nie zwraca.
 - **Bez klucza** `tax-gus` przełącza klienta w tryb ręczny (`available:false`). `katalogbeauty` w tej sytuacji pobiera nazwę, REGON i adres z wykazu podatników VAT MF (`katalogbeauty/src/routes/api/regon/+server.ts:68-101`), bez PKD i bez daty zawieszenia.
@@ -655,7 +661,7 @@ Wzorzec `ac/functions/api/kontakt.js` z dowodami i ograniczeniami opisuje `ergo-
 | bez sekretu `verifyTurnstile` zwraca `true` (fail-open) | bez sekretu Turnstile jest pomijany – też fail-open, tylko wynika jawnie z konfiguracji (`kontakt.js:148`) | brak sekretu blokuje wysyłkę |
 | sprawdza tylko `success` | `success`, `action` i `hostname` (`kontakt.js:74-75`) | `action` = `lead`, produkt w `cData`, `hostname` portalu (02 §2.2) |
 | błąd sieci przy `siteverify` to nieobsłużony wyjątek (500 platformy) | timeout 10 s; brak odpowiedzi → 503 z telefonem (`kontakt.js:66-78, 150-152`) | 503 z innym kanałem kontaktu |
-| widżet bez `action`, `appearance` i `language` (`WniosekForm.tsx:81-99`) | `render=explicit`, managed z `interaction-only`, ładowany przy pierwszym fokusie (`src/lib/turnstile.ts:1-15`) | widżet z `action`, renderowany przy każdym zamontowaniu kontenera (§10) |
+| widżet bez `action`, `appearance` i `language` (`WniosekForm.tsx:81-99`) | `render=explicit`, managed z `interaction-only`, ładowany przy pierwszym fokusie (kod: `src/scripts/contact-form.ts:134-137`, `src/components/ContactForm.astro:105-109`, `src/lib/turnstile.ts:14-15`; opis w komentarzu `turnstile.ts:1-12`) | widżet z `action`, renderowany przy każdym zamontowaniu kontenera (§10) |
 | brak pułapki, minimalnego czasu, limitu i sprawdzenia Origin; `CORS *` | pułapka, 3 s, 1 wysyłka na 20 s z IP, Origin lub Referer (`kontakt.js:102-106, 123-127, 158-163`) | warstwy według 02 §2.2 |
 | `tax-wycena` wysyła treść użytkownika na dowolny adres z pola e-mail (§9) | e-mail tylko do skrzynki serwisu, `reply_to` = klient, escapowanie (`kontakt.js:48-50, 199-213`) | bez e-maila z treścią użytkownika do niezweryfikowanego adresu; escapowanie |
 

@@ -2638,16 +2638,19 @@
     ],
     "uzupelnienia_weryfikacji": [
       {
-        "ustalenie": "Hasło PDF dłuższe niż 4 cyfry zostaje kodem dostępu i idzie SMS-em, ale bramka, odnowienie PIN-u i pole przyjmują dokładnie 4 cyfry – klient takiej oferty nie otworzy. Czy hasła PDF Leadenhall mają zawsze 4 cyfry – do potwierdzenia",
-        "dowod": "offers.js:85, 527-542, 567; unlock/+server.js:8, 31; offer/[token]/+page.svelte:47-48"
+        "ustalenie": "Hasło PDF dłuższe niż 4 cyfry zostaje kodem dostępu i idzie SMS-em, ale bramka, odnowienie PIN-u i pole przyjmują dokładnie 4 cyfry – klient takiej oferty nie otworzy. Druga droga do tej samej usterki: agent może w edycji oferty wpisać dowolny access_code bez sprawdzania formatu, a wysyłka użyje go bez zmian. Czy hasła PDF Leadenhall mają zawsze 4 cyfry – do potwierdzenia; według komentarza w ud hasło PDF to 4 ostatnie cyfry PESEL, a panel przy zaszyfrowanym pliku bez hasła prosi o '4-cyfrowe hasło', więc usterka dotyczy głównie kodów wpisanych ręcznie. Czy szyfrowane bywają PDF-y CEU i jakim hasłem – do potwierdzenia",
+        "dowod": "offers.js:85, 126, 527-542, 567; unlock/+server.js:8, 31; offer/[token]/+page.svelte:47-48; panel/offer/[id]/+page.server.js:60; panel/offer/[id]/+page.svelte:122; ud/apps/panel/src/lib/server/offers.js:570",
+        "korekta": "przegląd repo 13.11: dopisana ręczna edycja kodu i wskazówka z komentarza w ud"
       },
       {
-        "ustalenie": "Akceptacja wyłączeń ('Zapoznałem/am się z wyłączeniami i akceptuję warunki.') tylko w przeglądarce; serwer dostaje {action, documentId} i jej nie zapisuje",
-        "dowod": "OfferView.svelte:68, 80, 197, 203; choice/+server.js:7-9, 33-39"
+        "ustalenie": "Akceptacja wyłączeń ('Zapoznałem/am się z wyłączeniami i akceptuję warunki.') tylko w przeglądarce; serwer dostaje {action, documentId} i jej nie zapisuje. Brak dowodu akceptacji wyłączeń tej oferty przy wyborze wariantu; wniosek ma tylko ogólne exclusions_accepted w ud_clients, bez wersji i treści (§9.1), powiązane z ofertą tylko przez opcjonalne client_id",
+        "dowod": "OfferView.svelte:68, 80, 197, 203; choice/+server.js:7-9, 33-39; ud/supabase/functions/form-submit/index.ts:275",
+        "korekta": "przegląd repo 13.11: zawężone z 'brak dowodu, że klient poznał wyłączenia' do wyłączeń konkretnej oferty"
       },
       {
-        "ustalenie": "Każdy POST …/choice nadpisuje client_choice, status i decided_at i wysyła kolejny e-mail do agenta (bez escapowania; dane z panelu i PDF)",
-        "dowod": "choice/+server.js:45-61"
+        "ustalenie": "Każdy POST …/choice nadpisuje client_choice, status i decided_at i wysyła kolejny e-mail do agenta. Serwer nie blokuje ponownego POST, choć interfejs po decyzji ukrywa wybór (choice z client_choice, selectable={!choice}, sekcja 'Twoja decyzja' znika); nadpisanie możliwe z drugiej karty albo ręcznym żądaniem. E-mail nie jest escapowany: client_name i nazwa oferty domyślnie pochodzą z ud_clients.full_name, czyli z wniosku klienta (kreator wymaga tylko niepustego pola, serwer nie sprawdza znaków), więc klient może wstrzyknąć HTML do e-maila agenta; w wariancie A trafią tam dane z formularza portalu. Ten sam kod w ud/apps/panel",
+        "dowod": "choice/+server.js:45-61; OfferView.svelte:44, 149, 166; panel/new/+page.svelte:16; panel/new/+page.server.js:49, 70; ud/packages/wniosek/src/schemat.js:318; ud/supabase/functions/form-submit/index.ts:192; ud/apps/panel/src/routes/offer/[token]/choice/+server.js:53-60",
+        "korekta": "przegląd repo 13.11: błędne było 'bez escapowania; dane z panelu i PDF' – dane pochodzą od klienta"
       },
       {
         "ustalenie": "Powiązanie oferty z ud_clients (client_id) jest opcjonalne, ustawia je agent",
@@ -2668,7 +2671,7 @@
         "ocena": "Brak tagów w udapp; viewed/chosen/rejected tylko jako statusy i znaczniki czasu w ud_offers. Pomiar poza wysłaniem wniosku tylko po stronie serwera (np. webhook HUB utm-attribution). Konwersję 'wybór oferty' można przypisać wnioskowi tylko przy client_id; liczy się ostatni decided_at."
       },
       "W4": "wniosek z portalu w ud_clients (wariant A) skutkuje ofertą z marką UtrataDochodu; domyślny nadawca z domeny UD, gdy brak RESEND_FROM (src/lib/server/email.js:8, 20)",
-      "D38": "stopka udapp potwierdza 'XII Wydział'"
+      "D38": "stopka udapp (app/) potwierdza 'XII Wydział'; ale stara statyczna wersja udapp/index.html:466 podpisuje Aura Expert numerami KRS i KNF Aura Consulting (ac/src/lib/site.ts:35, 38), bez wydziału – dane spółki brać z odpisu KRS i rejestru KNF, nie z udapp (do potwierdzenia); numerów celowo nie przepisano"
     },
     "dwie_wersje_panelu": "udapp: kod = hasło PDF lub losowy PIN, SMS z hasłem i linkiem; ud/apps/panel: kod = 4 ostatnie cyfry PESEL, SMS bez linku i kodu, wersja oferty, strażnik wersji OWU. Która działa na produkcji – do potwierdzenia (§11.2)",
     "wzorce_dla_portalu": [
@@ -2679,7 +2682,8 @@
       "akceptacja warunków i wyłączeń zapisywana na serwerze (treść z wersją, czas, wariant); decyzja jednorazowa albo z historią",
       "Informacja o dystrybutorze z własnej domeny, z wersją w adresie lub nazwie i hashem w kopercie wniosku",
       "OWU dopasowywane po symbolu ze strażnikiem wersji",
-      "neutralne 'Dzień dobry,' i wersja tekstowa e-maila"
+      "neutralne 'Dzień dobry,' i wersja tekstowa e-maila",
+      "escapowanie wszystkich pól w e-mailach wewnętrznych (agent, opiekun, biuro), także pól czytanych z bazy, bo pochodzą z formularza klienta"
     ]
   }
 }
