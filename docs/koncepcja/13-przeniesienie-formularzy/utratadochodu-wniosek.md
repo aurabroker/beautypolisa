@@ -395,8 +395,8 @@ Skrypt `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&on
 
 > **Stan po analizie repozytorium `ud` (13.11.2026):**
 > - zamknięte: punkty 1, 2, 3 i 4 (kod funkcji, szkic, przypomnienia, e-maile);
-> - częściowo zamknięte: punkty 5 i 6 (proces w panelu oraz klauzula informacyjna; regulamin i polityki są w `ud/apps/portal/src/pages/*`);
-> - otwarte: punkty 7–11.
+> - częściowo: punkty 5, 6, 7 i 11 (5 – proces w panelu, §9.6; 6 – klauzula, polityka prywatności i regulamin, §9.4; 7 – proces kalibracji opisany, decyzja o symulacji otwarta, §10 U7; 11 – CORS i Turnstile opisane w §9.1, decyzja integracyjna otwarta);
+> - otwarte: punkty 8–10.
 >
 > Szczegóły w §9 i §10. Lista poniżej zostaje w pierwotnym brzmieniu.
 
@@ -442,7 +442,7 @@ Skrypt `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&on
 
 ## 9. Backend i portal – analiza repozytorium `ud` (13.11.2026)
 
-Źródło: `aurabroker/ud`, commit `793a158` (12.10.2026). Kod tylko czytany, bez uruchamiania. Wartości sekretów, identyfikatory projektu Supabase, klucze Turnstile, ID tagów i adresy odbiorców są w konfiguracji, nie w dokumencie.
+Źródło: `aurabroker/ud`, commit `793a158` (12.10.2026). Kod tylko czytany, bez uruchamiania. Wartości sekretów, identyfikatory projektu Supabase, klucze Turnstile, ID tagów i adresy odbiorców są w konfiguracji, nie w dokumencie. Projekt szkiców i przypomnień (uzasadnienie prawne, decyzje właściciela z 01.10.2026, kryteria odbioru) opisuje `ud/PLAN-NIEDOKONCZONE-WNIOSKI.md`; kod jest z nim zgodny w punktach sprawdzonych w §9.2.
 
 ### 9.1 `form-submit` – przyjęcie wniosku
 
@@ -480,7 +480,7 @@ Skrypt `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&on
 - komplet 20 odpowiedzi ankiety;
 - **oba potwierdzenia z kroku 5 (`exclusions_accepted`, `informedAccepted`).** Funkcja tylko je mapuje. Wniosek z `"No"` albo bez nich zostanie zapisany.
 
-**Mapowanie pól na kolumny `ud_clients`** (l. 190–277). Przy każdym polu funkcja czyta najpierw nazwę camelCase, potem snake_case (`body.a ?? body.b`):
+**Mapowanie pól na kolumny `ud_clients`** (l. 190–277). Część pól ma dwie nazwy (`body.a ?? body.b`), zwykle camelCase przed snake_case (np. `body.fullName ?? body.full_name`, l. 192). Pola `med_*` odwrotnie: najpierw snake_case (`body.med_heart ?? body.medHeart`, l. 221–227). Pozostałe pola mają tylko jedną nazwę: `email`, `phone`, `profession`, `source`, `weight`, `height`, `handedness`, `emp_*`, `smoker` i 15 sportowych `risk_*` (l. 193–218, 234, 242–256):
 
 | Ładunek | Kolumna | Uwagi |
 |---|---|---|
@@ -505,7 +505,7 @@ Pola z wartością `null`, `undefined` albo `''` są wycinane przed zapisem, wi�
 
 **Deduplikacja: brak.** Każde udane wywołanie tworzy nowy wiersz `ud_clients`. Funkcja nie sprawdza PESEL-u, e-maila ani klucza idempotencji. Wiązanie z szkicem robi SQL po e-mailu, dla klienta utworzonego po szkicu (`ud/supabase/migrations/20261001101112_wnioski_szkice.sql:131-149`). Duplikat PESEL-u wykrywa tylko panelowe „Dodaj polisę” (`klient_istnieje`, `ud/CLAUDE.md:1707-1712`).
 
-**`affiliateCode` i agent.** Kod zapisuje się w `affiliate_code_used`. Opiekuna leada ustala `ud_leady_synchronizuj()` w tej kolejności: `referred_by`, potem aktywny profil z `ud_user_profiles.affiliate_code` równym kodowi, potem autor oferty (`ud/supabase/migrations/20261004200000_leady_kanban_5_prowizja_polisy.sql:494-505`). Nieaktywny albo nieznany kod daje lead bez opiekuna. Link agenta ma postać `https://utratadochodu.pl/wniosek/?agent=<kod>`, a kod nadaje `ud_agent_kod()` (`ud/CLAUDE.md:1670-1680`).
+**`affiliateCode` i agent.** Kod zapisuje się w `affiliate_code_used`. Opiekuna leada ustala `ud_leady_synchronizuj()`: pierwsza niepusta wartość z `referred_by`, profilu z `ud_user_profiles.affiliate_code` równym kodowi (po `btrim`) i autora oferty, a dopiero potem filtr „konto aktywne” (`ud/supabase/migrations/20261004200000_leady_kanban_5_prowizja_polisy.sql:494-505`). Skutki: nieznany kod przechodzi dalej, do autora oferty (jeśli jest); kod **nieaktywnego** agenta daje lead bez opiekuna, który czeka na przydział administratora (bez przejścia do autora oferty). *Poprawka 13.11: wcześniej napisano, że nieznany kod też daje lead bez opiekuna.* Link agenta ma postać `https://utratadochodu.pl/wniosek/?agent=<kod>`, a kod nadaje `ud_agent_kod()` (`ud/CLAUDE.md:1670-1680`). **Rozjazd dokumentacji z kodem:** `ud/CLAUDE.md:1678-1679` zakłada, że nieznany kod też daje lead bez opiekuna („nieaktywny albo nieznany kod — lead bez opiekuna, czeka na przydział”); kod robi inaczej (komentarz i zapytanie w `…_kanban_5_…sql:494-505`). Do potwierdzenia u zleceniodawcy, które zachowanie jest zamierzone. Ma to znaczenie, jeśli portal przekazuje `affiliateCode`: literówka w kodzie albo kod spoza panelu UD przypisze lead autorowi oferty, a nie zostawi go administratorowi.
 
 **Odpowiedzi** (wszystkie `application/json` z CORS):
 
@@ -535,18 +535,18 @@ Kreator pokazuje `message` w boksie błędu (`ud/apps/portal/src/components/Wnio
 
 #### `wniosek-szkic` (`ud/supabase/functions/wniosek-szkic/index.ts`)
 
-**Wejście:** tylko `POST`. Inna metoda daje 405 „Niedozwolona metoda.” (l. 156–159), więc skaner linków nie wycofa zgody za klienta. Ciało JSON albo `application/x-www-form-urlencoded` (RFC 8058, one-click z nagłówka `List-Unsubscribe-Post`), scalone z parametrami adresu (l. 137–153). Niepoprawne ciało daje 400 „Nieprawidłowy format danych.”. Funkcja czyta **wyłącznie** pola `akcja`, `id`, `zgoda`, `zgoda_wersja`, `imie`, `email`, `phone`, `krok`, `sig` i `cf-turnstile-response`. PESEL i ankieta nie mają dokąd trafić (l. 55–59). CORS jak w `form-submit` (l. 75–78). `verify_jwt = false`.
+**Wejście:** tylko `POST`. Inna metoda daje 405 „Niedozwolona metoda.” (l. 115–119), więc skaner linków nie wycofa zgody za klienta. Ciało JSON albo `application/x-www-form-urlencoded` (RFC 8058, one-click z nagłówka `List-Unsubscribe-Post`), scalone z parametrami adresu (`parsujWejscie`, l. 97–113). Niepoprawne ciało daje 400 „Nieprawidłowy format danych.”. Funkcja czyta **wyłącznie** pola `akcja`, `id`, `zgoda`, `zgoda_wersja`, `imie`, `email`, `phone`, `krok`, `sig` i `cf-turnstile-response`. PESEL i ankieta nie mają dokąd trafić (komentarz l. 15–19). CORS jak w `form-submit` (l. 35–38). `verify_jwt = false`.
 
-**Walidacja kontaktu** `sprawdzKontakt` (l. 127–135): imię po trim, niepuste, do 100 znaków; e-mail do 150 znaków, zamieniony na małe litery, `/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/`; telefon do 30 znaków i co najmniej 9 cyfr.
+**Walidacja kontaktu** `sprawdzKontakt` (l. 86–95): imię po trim, niepuste, do 100 znaków; e-mail do 150 znaków, zamieniony na małe litery, `/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/`; telefon do 30 znaków i co najmniej 9 cyfr.
 
 | Akcja | Bramki | Działanie | Odpowiedź |
 |---|---|---|---|
-| (wspólne) | `akcja` z listy; `id` jako UUID dla wszystkich poza `start` | — | 400 „Nieznana akcja.” / „Nieprawidłowy identyfikator.”; wyjątek: 500 „Nieoczekiwany błąd.” (w `ud_errors` tylko nazwa akcji i komunikat, bez ciała) |
-| `start` | Turnstile (503 bez sekretu, 400 „Weryfikacja bezpieczeństwa nie powiodła się.”), sekret HMAC (503); przy zgodzie: znana wersja i poprawny kontakt, inaczej 400 „Nieprawidłowe dane kontaktowe.”; limit **10 szkiców na godzinę na `ip_hash`**, inaczej 429 „Zbyt wiele prób. Spróbuj później.” | `INSERT` z `ostatni_krok='kontakt'`, `ip_hash`, `zgoda_kontakt`. Przy zgodzie dodatkowo `zgoda_wersja`, **`zgoda_tresc` z mapy serwera `ZGODY`**, `zgoda_at` i kontakt (l. 209–262) | 200 `{status:"success", id}` |
-| `kontakt` | przy `zgoda:true` jak `start` (bez limitu); przy `false` – nic | zgoda: kontakt + wersja + treść + `zgoda_at`; brak zgody: `zgoda_kontakt=false` i wyczyszczenie imienia, e-maila i telefonu; tylko gdy `ukonczony_at is null` (l. 265–299) | 200 `{status:"success"}` |
-| `krok` | `krok` ∈ {`dane`,`zakres`,`zdrowie`}, inaczej 400 „Nieznany krok.” | przesunięcie `ostatni_krok` **tylko do przodu** (l. 302–317) | 200 |
-| `ukoncz` | — | RPC `ud_wnioski_szkic_ukoncz(p_id)`: `ukonczony_at`, `ostatni_krok='zgody'`, `client_id` po e-mailu, wyczyszczenie kontaktu (migracja l. 131–149) | 200 |
-| `wycofaj` | sekret (503); podpis `sig`, inaczej 403 „Nieprawidłowy lub wygasły link.” | `zgoda_kontakt=false`, `zgoda_wycofana_at`, wyczyszczenie kontaktu (l. 327–343) | 200 `{status:"success"}`, także gdy szkicu już nie ma |
+| (wspólne) | `akcja` z listy; `id` jako UUID dla wszystkich poza `start` (l. 156–161) | — | 400 „Nieznana akcja.” / „Nieprawidłowy identyfikator.”; wyjątek: 500 „Nieoczekiwany błąd.” (w `ud_errors` tylko nazwa akcji i komunikat, bez ciała) |
+| `start` | Turnstile (503 bez sekretu, 400 „Weryfikacja bezpieczeństwa nie powiodła się.”), sekret HMAC (503); przy zgodzie: znana wersja i poprawny kontakt, inaczej 400 „Nieprawidłowe dane kontaktowe.”; limit **10 szkiców na godzinę na `ip_hash`**, inaczej 429 „Zbyt wiele prób. Spróbuj później.” | `INSERT` z `ostatni_krok='kontakt'`, `ip_hash`, `zgoda_kontakt`. Przy zgodzie dodatkowo `zgoda_wersja`, **`zgoda_tresc` z mapy serwera `ZGODY`** (l. 51–55), `zgoda_at` i kontakt (l. 169–222) | 200 `{status:"success", id}` |
+| `kontakt` | przy `zgoda:true` jak `start` (bez limitu); przy `false` – nic | zgoda: kontakt + wersja + treść + `zgoda_at`; brak zgody: `zgoda_kontakt=false` i wyczyszczenie imienia, e-maila i telefonu; tylko gdy `ukonczony_at is null` (l. 225–259) | 200 `{status:"success"}` |
+| `krok` | `krok` ∈ {`dane`,`zakres`,`zdrowie`}, inaczej 400 „Nieznany krok.” | przesunięcie `ostatni_krok` **tylko do przodu** (l. 262–277) | 200 |
+| `ukoncz` | — | RPC `ud_wnioski_szkic_ukoncz(p_id)`: `ukonczony_at`, `ostatni_krok='zgody'`, `client_id` po e-mailu, wyczyszczenie kontaktu (l. 280–284; migracja l. 131–149) | 200 |
+| `wycofaj` | sekret (503); podpis `sig`, inaczej 403 „Nieprawidłowy lub wygasły link.” | `zgoda_kontakt=false`, `zgoda_wycofana_at`, wyczyszczenie kontaktu (l. 286–303) | 200 `{status:"success"}`, także gdy szkicu już nie ma |
 
 **Schemat `ud_wnioski_szkice`** (`ud/supabase/migrations/20261001101112_wnioski_szkice.sql:22-62`):
 
@@ -568,7 +568,7 @@ Kreator pokazuje `message` w boksie błędu (`ud/apps/portal/src/components/Wnio
 - RLS włączone **bez polityk**; `revoke all` od `anon` i `authenticated` (l. 77–80).
 - Obok: `ud_lejek_wniosku_archiwum` (tydzień × krok × liczba) i widok `ud_lejek_wniosku` (`security_invoker`) (l. 84–124).
 
-**`ip_hash` – mechanizm** (`ud/supabase/functions/_shared/szkic-podpis.ts:36-40`): HMAC-SHA256 z kluczem `SZKIC_HMAC_SECRET` nad napisem `ip:<adres>`. Adres pochodzi z `CF-Connecting-IP`. Wynik w hex, obcięty do pierwszych 32 znaków (128 bitów). Osobnej soli nie ma: klucz jest wspólny z podpisem linku, a rozdzielają je przedrostki `ip:` i `wycofaj:` (l. 1–8). Bez nagłówka IP limit nie działa (l. 222–236). Retencja zeruje `ip_hash` dobę po `created_at`.
+**`ip_hash` – mechanizm** (`ud/supabase/functions/_shared/szkic-podpis.ts:36-40`): HMAC-SHA256 z kluczem `SZKIC_HMAC_SECRET` nad napisem `ip:<adres>`. Adres pochodzi z `CF-Connecting-IP`. Wynik w hex, obcięty do pierwszych 32 znaków (128 bitów). Osobnej soli nie ma: klucz jest wspólny z podpisem linku, a rozdzielają je przedrostki `ip:` i `wycofaj:` (l. 1–8). Bez nagłówka IP limit nie działa (`wniosek-szkic/index.ts:182-196`). Retencja zeruje `ip_hash` dobę po `created_at`.
 
 **Podpis `sig` linku wycofania – algorytm** (`szkic-podpis.ts:24-34`):
 - `sig = hex(HMAC-SHA256(klucz = SZKIC_HMAC_SECRET, wiadomość = "wycofaj:" + id))`, czyli 64 znaki hex.
@@ -657,7 +657,7 @@ SMS-y istnieją tylko w obsłudze **oferty** (panel, SMSAPI, bez linku i bez pol
 
 > **Temat:** UtrataDochodu.pl - Twoje prywatne L4
 >
-> [nagłówek] utratadochodu.pl / AURA EXPERT SP. Z O.O.
+> [nagłówek] utratadochodu.pl / Aura Expert Sp. z o.o. (wersalikami tylko przez CSS `text-transform:uppercase`, l. 178–179)
 >
 > Cześć {pierwszy wyraz full_name},
 >
@@ -680,22 +680,29 @@ Tytuł dokumentu HTML: „Wniosek przyjęty”. Ta sama funkcja ma drugi szablon
 - Szablon wstawia imię, a w szybkim kontakcie także telefon i zawód, **bez escapowania HTML** (l. 96–102, 123–125, 182). Raport (`send-digest-email`) i przypomnienie escapują. W portalu (W4) trzeba escapować wszystko.
 - Rozjazd terminów: e-mail mówi „Weryfikacja wniosku: 1–2 dni robocze”, a `/podziekowanie/` mówi „w ciągu 24 godzin roboczych” (§3.6).
 - Domeny nadawców są różne: potwierdzenie wychodzi z `utratadochodu.com`, przypomnienie z `utratadochodu.pl`.
+- Logi funkcji: każde wysłanie zapisuje w logu adres odbiorcy (`console.log`, l. 290), a rekord bez e-maila trafia do logu **w całości** (`console.error(… JSON.stringify(record))`, l. 262), czyli z PESEL-em i odpowiedziami zdrowotnymi z `form_data`. W portalu do logów nie wolno pisać treści wniosku (W7).
 - **Wiersz zapisany w `ud_clients` automatycznie uruchamia e-mail z marką UtrataDochodu.pl i SMS do doradcy.** Jeżeli portal BeautyPolisa ma zapisywać wnioski przez `form-submit` (W1 wariant A), klient dostanie list UD, chyba że zleceniodawca zmieni wyzwalacz (np. warunek na `source`).
 
 ### 9.4 Zgody, klauzula informacyjna, wycofanie
 
 | Zgoda / potwierdzenie | Treść (dosłownie) | Wersja | Gdzie zapisywana | Wymagana |
 |---|---|---|---|---|
-| Kontakt w sprawie wniosku (krok 1) | „Zgadzam się na kontakt e-mailowy i telefoniczny ze strony Aura Expert sp. z o.o. w sprawie mojego wniosku — także wtedy, gdy go nie dokończę. Zgodę mogę wycofać w każdej chwili.” + dopisek „Zgoda jest dobrowolna — wniosek możesz złożyć bez niej.” | `v1-2026-10`; treść zaakceptowana przez prawnika bez zmian 01.10.2026 (`ud/packages/wniosek/src/schemat.js:228-249`) | **tylko w szkicu**: `zgoda_wersja`, `zgoda_tresc` (z mapy serwera `ZGODY`, `wniosek-szkic/index.ts:91-95`), `zgoda_at`. Do `form-submit` nie idzie (`doWysylki` usuwa `zgodaKontakt`, `schemat.js:461-466`) | nie |
+| Kontakt w sprawie wniosku (krok 1) | „Zgadzam się na kontakt e-mailowy i telefoniczny ze strony Aura Expert sp. z o.o. w sprawie mojego wniosku — także wtedy, gdy go nie dokończę. Zgodę mogę wycofać w każdej chwili.” + dopisek „Zgoda jest dobrowolna — wniosek możesz złożyć bez niej.” | `v1-2026-10`; treść zaakceptowana przez prawnika bez zmian 01.10.2026 (`ud/packages/wniosek/src/schemat.js:228-249`) | **tylko w szkicu**: `zgoda_wersja`, `zgoda_tresc` (z mapy serwera `ZGODY`, `wniosek-szkic/index.ts:51-55`), `zgoda_at`. Do `form-submit` nie idzie (`doWysylki` usuwa `zgodaKontakt`, `schemat.js:461-466`) | nie |
 | Wyłączenia (krok 5) | „Zapoznałem/am się z głównymi wyłączeniami odpowiedzialności.” (link `/wylaczenia/`) | brak | kolumna bool `exclusions_accepted` (bez treści, wersji i czasu poza `created_at`) | tak, ale tylko w kreatorze (`schemat.js:391-398`); serwer nie egzekwuje (§9.1) |
 | Klauzula, regulamin, polityka (krok 5) | „Zapoznałem/am się z klauzulą informacyjną, regulaminem i polityką prywatności.” | brak | kolumna bool `informed_accepted` | j.w. |
 | **Dane o zdrowiu (art. 9 ust. 2 lit. a RODO)** | **brak checkboxa w kreatorze** (`ud/apps/portal/src/components/Wniosek.svelte:740-764`) | — | — | — |
 | Marketing | brak pola | — | — | — |
 
-**Sprzeczność do rozstrzygnięcia przez prawnika (wzmacnia U5).** Opublikowana klauzula informacyjna (`ud/apps/portal/src/pages/klauzula-informacyjna/index.astro`, „zaktualizowano 2026-10-01”, według projektu zaakceptowana przez prawnika razem z polityką prywatności, `ud/CLAUDE.md:1253-1256`) twierdzi dosłownie:
+**Sprzeczność do rozstrzygnięcia przez prawnika (wzmacnia U5).** Opublikowana klauzula informacyjna (`ud/apps/portal/src/pages/klauzula-informacyjna/index.astro`, „zaktualizowano 2026-10-01”, według projektu zaakceptowana przez prawnika razem z polityką prywatności, `ud/CLAUDE.md:1245-1248`) twierdzi dosłownie:
 - l. 63–68 – „**Dane o stanie zdrowia z ankiety medycznej** — Art. 9 ust. 2 lit. a RODO — Twoja wyraźna zgoda, zaznaczana w ostatnim kroku wniosku. Zgodę możesz cofnąć w każdej chwili; cofnięcie nie wpływa na zgodność z prawem przetwarzania, które nastąpiło wcześniej.” **W ostatnim kroku takiej zgody nie ma.** Są tylko dwa potwierdzenia „zapoznałem/am się”, więc nie ma też czego wycofać.
 - l. 76–81 – „**Kontakt marketingowy** — Art. 6 ust. 1 lit. f RODO albo Twoja zgoda — wyłącznie wtedy, gdy zaznaczysz odpowiednie pole. […]” Takiego pola nie ma, a `form-submit` może synchronizować adres z GetResponse bez zgody (§9.1).
 - l. 104–108 – lista kategorii danych z `KROKI[].opis` obejmuje „wysokość dochodu” oraz „okres wypłaty świadczenia”, których formularz nie zbiera (§1). Krok „zdrowie” jest tam opisany jako „przetwarzane wyłącznie za wyraźną zgodą”.
+- Tę samą zgodę zakładają jeszcze trzy miejsca w repozytorium, więc to nie jest pojedynczy błąd w tekście klauzuli, tylko niewdrożony element projektu:
+  - polityka prywatności, `ud/apps/portal/src/pages/polityka-prywatnosci/index.astro:56` – „Dane dotyczące zdrowia — art. 9 ust. 2 lit. a RODO (wyraźna zgoda udzielona przed złożeniem wniosku).”;
+  - komentarz funkcji szkicu, `ud/supabase/functions/wniosek-szkic/index.ts:15-19` – „zgoda z art. 9 RODO pada dopiero w ostatnim kroku”;
+  - plan projektu, `ud/PLAN-NIEDOKONCZONE-WNIOSKI.md:199-200` – „Ankieta medyczna to dane szczególnej kategorii; zgoda na ich przetwarzanie pada na końcu — dlatego szkic nigdy ich nie zawiera.”
+- Polityka prywatności opiera „Marketing własny” na art. 6 ust. 1 lit. f RODO „albo zgodzie” (`polityka-prywatnosci/index.astro:52`). To jedyna podstawa, na którą dałoby się powołać przy synchronizacji z GetResponse. E-mail marketingowy wymaga jednak uprzedniej zgody (art. 398 Prawa komunikacji elektronicznej), co sam projekt przyjmuje dla przypomnień (`ud/PLAN-NIEDOKONCZONE-WNIOSKI.md:188-191`). Do oceny prawnika.
+- Niespójność wewnątrz polityki prywatności: cel „Statystyka kroków wniosku, bez danych osobowych (numer kroku i data)” (`polityka-prywatnosci/index.astro:54`) wobec kategorii „Dane techniczne”, która sama podaje: „Przy zakładaniu szkicu wniosku przechowujemy przez dobę wyłącznie skrót adresu IP, żeby ograniczyć nadużycia.” (l. 45). Skrót IP może być daną osobową, więc sformułowanie z l. 54 trzeba uściślić. Cel „Statystyka porzuconych wniosków” w klauzuli (l. 93–101) opisuje skrót IP przez dobę i jest z kodem spójny.
 - Pozostałe cele (nazwy dosłownie, l. 51–101), wszystkie zgodne z kodem:
   - „Przygotowanie oferty i obsługa wniosku” (art. 6 ust. 1 lit. b);
   - „Przekazanie wniosku ubezpieczycielowi” (art. 6 ust. 1 lit. b);
@@ -705,6 +712,20 @@ Tytuł dokumentu HTML: „Wniosek przyjęty”. Ta sama funkcja ma drugi szablon
 - Administrator to Aura Expert sp. z o.o. (dane z `ud/apps/portal/src/lib/firma.ts:5-29`).
 - Odbiorcy (l. 121–127) – „Ubezpieczycielom, w imieniu których działamy: Leadenhall Insurance S.A. oraz CEU sp. z o.o.”, „Dostawcom usług informatycznych utrzymującym bazę danych i pocztę.”, „Podmiotom świadczącym nam obsługę prawną i księgową.”, „Organom uprawnionym na podstawie przepisów prawa.”. **Informacja o przekazaniu danych Leadenhall i CEU jest więc w klauzuli**, ale nie w samym formularzu.
 - Retencja (l. 133–143) obejmuje m.in. szkic: kontakt „najdłużej 30 dni od ostatniej aktywności”.
+
+**Regulamin** (`ud/apps/portal/src/pages/regulamin/index.astro`, „Regulamin świadczenia usług drogą elektroniczną”, „zaktualizowano 2026-08-27”, l. 15). Potwierdzenie `informedAccepted` z kroku 5 deklaruje zapoznanie się z nim. O wniosku mówi tylko tyle:
+- § 1 ust. 2 (l. 27–30): „Strona umożliwia zapoznanie się z ofertą ubezpieczeń utraty dochodu oraz przesłanie wniosku o przygotowanie indywidualnej oferty.”;
+- § 2 (l. 39–55): „Kalkulator składki dostępny na stronie ma charakter wyłącznie poglądowy i edukacyjny. Wyniki symulacji nie stanowią oferty w rozumieniu przepisów Kodeksu cywilnego.”, „Ostateczna wysokość składki ubezpieczeniowej zależy od indywidualnej oceny ryzyka (underwritingu) dokonywanej przez towarzystwo ubezpieczeniowe na podstawie pełnego wniosku.”, „Złożenie wniosku przez formularz nie jest równoznaczne z zawarciem umowy ubezpieczenia ani ze złożeniem oferty jej zawarcia przez ubezpieczyciela.”;
+- reszta to wymagania techniczne, wyłączenie odpowiedzialności, reklamacje (14 dni, adres reklamacyjny Aura Expert w l. 72–82, poza dokumentem) i zmiany regulaminu. Regulamin nie zawiera zgód, danych osobowych ani terminów obsługi wniosku.
+
+Polityka cookies (`…/polityka-cookies/index.astro`, „zaktualizowano 2026-08-27”, l. 34) powtarza zasady banera z §3.8 i odsyła do polityki prywatności. Szczegółowo jej nie analizowano: portal ma własny baner i własną politykę. **Wniosek dla portalu:** treść regulaminu UD przenosi się tylko jako wzór trzech zdań z § 2. Portal potrzebuje własnego regulaminu (usługa drogą elektroniczną dla wszystkich formularzy portalu), a potwierdzenie w kroku 5 ma linkować do niego, nie do `/regulamin/` UD.
+
+**Szybki kontakt (`contact-submit`, tabela `udochodu_contacts`) – drugi kanał leadów UD obok wniosku.**
+- Funkcja `ud/supabase/functions/contact-submit/index.ts`: Turnstile serwerowo (bez sekretu – 503 i wpis w `ud_errors`, l. 74–81), pola `name`, `email`, `phone` przycięte i sprawdzone (l. 83–96), zapis `{name, email, phone, rodo_consent}` (l. 103–107). `rodo_consent` zapisuje się jako `body.rodo_consent === true`, ale serwer go nie wymaga. CORS `*` (l. 16–19). Brak deduplikacji i limitu, jak w `form-submit`.
+- Ten sam webhook INSERT uruchamia `send-confirmation-email` z drugim szablonem (`isQuick`, `send-confirmation-email/index.ts:104-162, 257-258`) i SMS „UtrataDochodu: nowy kontakt. …” do doradcy (l. 294–297). Kontakty trafiają też do raportu co 2 h (`send-digest-email/index.ts:136-140`).
+- Kto z niej korzysta: szybki formularz starego serwisu statycznego (`ud/app.js:171-197`, `ud/index.html:486`; tabela formularzy w `ud/CLAUDE.md:283-287`). W portalu Astro komponent `SzybkiKontakt.svelte` (pole wymagane w przeglądarce: „Zgadzam się na kontakt telefoniczny i e-mailowy w sprawie oferty ubezpieczenia. Zapoznałem się z klauzulą informacyjną RODO.”, link do `/klauzula-informacyjna/`, l. 122–127) jest użyty tylko na `/pracuj-z-nami/` i wysyła do funkcji Pages `/wspolpraca` (e-mail na skrzynkę serwisu, bez zapisu do tabeli; `pracuj-z-nami/index.astro:21, 135`; `apps/portal/functions/wspolpraca.js:1-9`). Strona `/kontakt/` portalu UD ma tylko telefon i e-mail, bez formularza.
+- `udochodu_contacts` nie zasila tablicy leadów (§9.6: lead to wiersz `ud_clients`).
+- **Propozycja:** szybkiego kontaktu UD nie przenosimy jako osobnego formularza. Portal ma jeden własny formularz „oddzwonimy” dla wszystkich produktów, a to, czy kontakt w sprawie UD trafia do `udochodu_contacts` (z e-mailem marki UD) czy do CRM portalu, rozstrzyga się razem z W1 (dokąd idą leady) i W4 (e-maile po zgłoszeniu).
 
 **Wycofanie zgody:**
 - *kontakt w sprawie wniosku* – link z e-maila (`/wycofaj-zgode/`, §3.7, §9.2), one-click w kliencie poczty albo e-mail lub telefon (klauzula l. 89–90). Treść strony `/wycofaj-zgode/` w repozytorium jest zgodna z §3.7 (`ud/apps/portal/src/pages/wycofaj-zgode/index.astro`).
@@ -747,7 +768,7 @@ Adresy policzono algorytmem `slugDokumentu` z `ud/apps/portal/src/lib/owu.ts:30-
 
 **Logika „zawsze obowiązujące”:**
 - **Slug pochodzi z tytułu, nie z symbolu.** Symbol niesie numer wersji (`…/PL/5`), więc adres przeżywa podmianę wersji i zawsze podaje warunki obowiązujące (`owu.ts:14-22`; `ud/CLAUDE.md:699-723`).
-- **Dwie aktywne wersje tego samego tytułu wywalają build** (`ud/apps/portal/src/pages/owu-adresy.json.ts:60-75`). To celowa kontrola przed wdrożeniem.
+- **Dwie aktywne wersje tego samego tytułu wywalają build** (`ud/apps/portal/src/pages/owu-adresy.json.ts:18-29`, wyjątek w l. 21–28). To celowa kontrola przed wdrożeniem.
 - **Aktywność sprawdzana na żywo.** Funkcja `/owu/[plik].js` czyta mapę slug → id z builda (`/owu-adresy.json`), a potem odpytuje `ud_owu_library` z filtrem `active=is.true`. Wycofany dokument daje 404 od razu, bez czekania na nowy build (l. 57–77). Bufor `public, max-age=300, s-maxage=600` (l. 30), nagłówek `Content-Disposition: inline` (l. 87–93).
 - **Stary adres** `/pobierz/<id>` odpowiada **301** na `/owu/<slug>.pdf` (`ud/apps/portal/functions/pobierz/[id].js:21-40`).
 - **Oferty w panelu trzymają wskaźnik na konkretny plik.**
@@ -766,7 +787,7 @@ Adresy policzono algorytmem `slugDokumentu` z `ud/apps/portal/src/lib/owu.ts:30-
 - Etap startowy wynika z najlepszej oferty klienta: `bought` → Wygrany, `chosen` → Decyzja klienta, `sent`/`viewed` → Oferta, `rejected` → Przegrany, oferta robocza albo jej brak → Nowy.
 
 **Etapy i statusy:**
-- Pipeline „Sprzedaż”: **Nowy → Oferta → Decyzja klienta → Wygrany / Przegrany**. Etap „Kontakt” jest wyłączony od 02.10.2026 (`ud/supabase/migrations/20261001151739_leady_kanban_1_tabele.sql:62-74`).
+- Pipeline „Sprzedaż”: **Nowy → Oferta → Decyzja klienta → Wygrany / Przegrany**. Etapy zakłada `ud/supabase/migrations/20261001151739_leady_kanban_1_tabele.sql:62-74`. Etap „Kontakt” jest wyłączony od 02.10.2026 (`aktywny = false`, `ud/supabase/migrations/20261002120000_leady_kanban_3_sprzedaz.sql:56`).
 - Wygrany wymaga składki rocznej, Przegrany – powodu utraty.
 - Statusy oferty: `draft → sent → viewed → chosen → bought / rejected` (`ud/CLAUDE.md:1458-1482`).
 
@@ -809,10 +830,10 @@ Stan na 13.11.2026, źródło `aurabroker/ud` @ `793a158`. „Zamknięty” znac
 | # | Brak (z `00-braki-i-decyzje.md`) | Status | Dowód / co zostaje |
 |---|---|---|---|
 | U1 | Kod `form-submit`: Turnstile, walidacje, mapowanie, deduplikacja, `affiliateCode` | **zamknięty** | §9.1: mechanizm `siteverify` bez `hostname`/`action` (`form-submit/index.ts:135-178`), walidacje (l. 181–342), pełne mapowanie na `ud_clients` (l. 190–277), `form_data.health_survey`, brak deduplikacji i limitu, `affiliate_code_used` → opiekun (`…_kanban_5_…sql:494-505`), kody odpowiedzi, CORS `*`, brak JWT. **Zostaje:** pełne DDL `ud_clients` nie jest w repozytorium (tylko atrapa `supabase/tests/stub.sql:39-58`); trzeba potwierdzić, czy GetResponse jest aktywny na produkcji; dla integracji nowe ustalenia: widżet Turnstile, `source`, wyzwalacz e-maila |
-| U2 | `wniosek-szkic`: kod, schemat, sól `ip_hash`, algorytm i klucz `sig`, retencja | **zamknięty** (klucz celowo poza dokumentem) | §9.2: akcje i odpowiedzi (`wniosek-szkic/index.ts:155-349`), schemat `ud_wnioski_szkice` (migracja `20261001101112`, l. 22–62), `ip_hash` = HMAC-SHA256(`SZKIC_HMAC_SECRET`, `ip:<IP>`) obcięty do 32 hex, bez osobnej soli (`szkic-podpis.ts:36-40`), `sig` = HMAC-SHA256(`SZKIC_HMAC_SECRET`, `wycofaj:<id>`), 64 hex, bez wygasania (l. 24–34), retencja 1 dzień dla IP i 30 dni dla szkiców (l. 156–194). Portal musi mieć własny sekret albo wspólny, uzgodniony ze zleceniodawcą |
+| U2 | `wniosek-szkic`: kod, schemat, sól `ip_hash`, algorytm i klucz `sig`, retencja | **zamknięty** (klucz celowo poza dokumentem) | §9.2: akcje i odpowiedzi (`wniosek-szkic/index.ts:115-310`), schemat `ud_wnioski_szkice` (migracja `20261001101112`, l. 22–62), `ip_hash` = HMAC-SHA256(`SZKIC_HMAC_SECRET`, `ip:<IP>`) obcięty do 32 hex, bez osobnej soli (`szkic-podpis.ts:36-40`), `sig` = HMAC-SHA256(`SZKIC_HMAC_SECRET`, `wycofaj:<id>`), 64 hex, bez wygasania (l. 24–34), retencja 1 dzień dla IP i 30 dni dla szkiców (l. 156–194). Portal musi mieć własny sekret albo wspólny, uzgodniony ze zleceniodawcą |
 | U3 | Przypomnienia: harmonogram, warunki, szablon, nadawca | **zamknięty** | §9.2: cron `10 * * * *`, włączony od 01.10.2026, 3 h po aktywności, szkice do 7 dni, 1 mail na adres na 30 dni, do 50 na uruchomienie (`migracja:215-291`; `wniosek-przypomnienie/index.ts:36-38`), treść dosłownie (l. 72–140), nadawca `UtrataDochodu <info@utratadochodu.pl>`, nagłówki RFC 8058. **SMS do szkiców nie ma**, jest ręczna lista „Niedokończone” w panelu |
 | U4 | E-maile po złożeniu wniosku (klient, agent) | **zamknięty** (treść i mechanizm); definicja wyzwalacza poza repozytorium | §9.3: wyzwalacz `send-confirmation-email-full` (INSERT `ud_clients`) → `send-confirmation-email` (szablon dosłownie, `index.ts:163-239`), SMS do doradcy (l. 292–297), raport co 2 h na skrzynkę biura (`send-digest-email`). Opiekun nie dostaje e-maila. Wyzwalacz istnieje tylko w panelu Supabase (`ud/CLAUDE.md:409-412, 1719-1724`). Zapis do `ud_clients` z portalu wyśle list z marką UD (W4) |
-| U5 | Klauzula informacyjna, zgoda art. 9, informacja o przekazaniu danych Leadenhall/CEU | **częściowo – i pilniejszy niż sądziliśmy** | Klauzula informacyjna jest w repozytorium (`apps/portal/src/pages/klauzula-informacyjna/index.astro`, zaktualizowana 01.10.2026, według projektu zaakceptowana przez prawnika). Odbiorców (Leadenhall, CEU) wymienia (l. 121–127). **Zgody art. 9 nadal nie ma w formularzu, a klauzula twierdzi, że jest „zaznaczana w ostatnim kroku wniosku” (l. 63–68)**; podobnie „Kontakt marketingowy … gdy zaznaczysz odpowiednie pole” (l. 76–81). Potwierdzenia z kroku 5 nie są egzekwowane na serwerze. Regulamin, polityka prywatności i cookies są w `apps/portal/src/pages/{regulamin,polityka-prywatnosci,polityka-cookies}/index.astro` (nie analizowano szczegółowo). Dla portalu nadal potrzebne własne teksty z prawidłowym administratorem i wyraźną zgodą art. 9 |
+| U5 | Klauzula informacyjna, zgoda art. 9, informacja o przekazaniu danych Leadenhall/CEU | **częściowo – i pilniejszy niż sądziliśmy** | Klauzula informacyjna jest w repozytorium (`apps/portal/src/pages/klauzula-informacyjna/index.astro`, zaktualizowana 01.10.2026, według projektu zaakceptowana przez prawnika). Odbiorców (Leadenhall, CEU) wymienia (l. 121–127). **Zgody art. 9 nadal nie ma w formularzu, a klauzula twierdzi, że jest „zaznaczana w ostatnim kroku wniosku” (l. 63–68)**; podobnie „Kontakt marketingowy … gdy zaznaczysz odpowiednie pole” (l. 76–81). Potwierdzenia z kroku 5 nie są egzekwowane na serwerze. Tę samą nieistniejącą zgodę zakłada polityka prywatności (`apps/portal/src/pages/polityka-prywatnosci/index.astro:56`: „wyraźna zgoda udzielona przed złożeniem wniosku”), komentarz `wniosek-szkic/index.ts:15-19` i `PLAN-NIEDOKONCZONE-WNIOSKI.md:199-200`, więc to niewdrożony element projektu, a nie pomyłka w jednym tekście. Regulamin (`apps/portal/src/pages/regulamin/index.astro`) o wniosku mówi tylko, że strona umożliwia jego przesłanie, kalkulator jest poglądowy, a złożenie wniosku nie jest zawarciem umowy (§ 1 ust. 2, § 2; §9.4); zgód i danych osobowych nie dotyczy. Polityki cookies nie analizowano szczegółowo (portal ma własną). Wewnątrz polityki prywatności jest niespójność: statystyka „bez danych osobowych” (l. 54) wobec skrótu IP przez dobę (l. 45). Szybki kontakt (`contact-submit` → `udochodu_contacts`) opisany w §9.4; propozycja: nie przenosić jako osobnego formularza, kierunek leadów w W1/W4. Dla portalu nadal potrzebne własne teksty z prawidłowym administratorem i wyraźną zgodą art. 9 |
 | U6 | Oryginalne pytania ankiety z okresami referencyjnymi / akceptacja underwritera | **otwarty** | Repozytorium ma te same skrócone pytania (`packages/wniosek/src/schemat.js:43-51`, `ankieta.js:14-48`). Okres pojawia się tylko w jednym pytaniu („w ciągu ostatniego roku”, `ankieta.js:18`). Komentarz w `form-submit/index.ts:236` („medical events last 2 years”) sugeruje dwuletni okres zdarzeń medycznych, ale treść pytań go nie podaje |
 | U7 | Symulacja po wniosku; odświeżanie `kalibracja.json` | **częściowo** | Proces: liczby w `apps/portal/src/lib/kalibracja.json` liczone maszynowo z wystawionych ofert (dół/góra = najtańsza/najdroższa obserwowana stawka, środek = mediana), metoda w `apps/portal/MODEL-SKLADKI.md`, planowany worker `ud-kalibrator`; mnożnik HIV/WZW 1,07 w `symulacja.ts` (`ud/CLAUDE.md:872-922`). W repozytorium kalibracja z 17.09.2026 (góra 0,0244), na żywej stronie z 14.10.2026 (góra 0,0322), czyli odświeżanie działa poza repozytorium. **Decyzja o symulacji po wniosku – otwarta** |
 | U8 | Pola dochodu i okresu wypłaty | **otwarty** (decyzja) | Repozytorium potwierdza rozjazd. `KROKI[].opis` wymienia „wysokość dochodu” i „okres wypłaty świadczenia” (`schemat.js:202-213`), a ten tekst trafia do klauzuli informacyjnej (§9.4). `form-submit` nie ma kolumn na te pola |
@@ -827,7 +848,10 @@ Stan na 13.11.2026, źródło `aurabroker/ud` @ `793a158`. „Zamknięty” znac
 - (e) PESEL jawnym tekstem w `ud_clients` mimo zadeklarowanego `PESEL_ENCRYPTION_KEY`;
 - (f) Turnstile bez sprawdzania `hostname`, sekret związany z widżetem UD;
 - (g) brak deduplikacji i limitu w `form-submit`;
-- (h) imię bez escapowania w szablonie potwierdzenia.
+- (h) imię bez escapowania w szablonie potwierdzenia;
+- (i) pełny rekord wniosku (PESEL, ankieta) w logu `send-confirmation-email`, gdy brak e-maila;
+- (j) przydział opiekuna: kod nieaktywnego agenta zostawia lead bez opiekuna, a nieznany kod przechodzi do autora oferty (ważne, jeśli portal przekazuje `affiliateCode`). `ud/CLAUDE.md:1678-1679` zakłada, że nieznany kod też daje lead bez opiekuna; kod robi inaczej (`…_kanban_5_…sql:494-505`) – do potwierdzenia u zleceniodawcy, które zachowanie jest zamierzone;
+- (k) szybki kontakt UD (`contact-submit`, `udochodu_contacts`, drugi szablon e-maila i SMS do doradcy) – osobny kanał leadów poza tablicą; decyzja, czy i dokąd portal go przenosi, w W1/W4 (§9.4).
 
 ### Poprawki naniesione w tym pliku 13.11.2026
 
@@ -835,6 +859,16 @@ Stan na 13.11.2026, źródło `aurabroker/ud` @ `793a158`. „Zamknięty” znac
 - §5: usunięto fragment identyfikatora projektu Supabase (zasada: identyfikatory infrastruktury poza dokumentem).
 - §5.2: odpowiedź akcji `wycofaj` to HTTP 2xx z `{status:"success"}`, a nie `ok`; algorytm `sig` potwierdzony.
 - §7, §8: dopisano stan po analizie repozytorium.
+- §9.1: poprawiono opis przydziału opiekuna. Nieznany kod przechodzi do autora oferty, a bez opiekuna zostaje tylko kod (albo `referred_by`) konta nieaktywnego.
+- §9.2: poprawiono numery linii `wniosek-szkic/index.ts` (były przesunięte o 40 względem klonu `793a158`): 405 → l. 115–119, `sprawdzKontakt` → l. 86–95, `ZGODY` → l. 51–55, akcje → l. 169–303.
+- §9.3: nagłówek e-maila potwierdzającego przepisany dosłownie („Aura Expert Sp. z o.o.”; wersaliki to tylko CSS). Dopisano uwagę o logach funkcji (pełny rekord w `console.error`).
+- §9.4: odwołanie do akceptacji prawnika poprawione na `ud/CLAUDE.md:1245-1248`. Dopisano trzy dalsze miejsca, które zakładają istnienie zgody art. 9 (polityka prywatności, komentarz `wniosek-szkic`, plan), oraz rozjazdy polityki prywatności z klauzulą.
+- §9.6: źródło wyłączenia etapu „Kontakt” to `…_kanban_3_sprzedaz.sql:56`, nie migracja 1.
+- Druga runda (13.11.2026):
+  - §9.5: odwołanie do kontroli kolizji slugów poprawione na `owu-adresy.json.ts:18-29` (plik ma 36 linii).
+  - §9.1: doprecyzowano kolejność nazw pól w `form-submit` (`med_*` najpierw snake_case; część pól ma jedną nazwę). Dopisano rozjazd `ud/CLAUDE.md:1678-1679` z kodem przydziału opiekuna.
+  - §9.4: niespójność statystyki opisana jako wewnętrzna w polityce prywatności (l. 45 wobec l. 54); klauzula (l. 93–101) jest spójna. Dopisano regulamin i szybki kontakt (`contact-submit`).
+  - §7: stan punktów 5–11 zgodny z §10 (7 i 11 częściowo).
 
 ---
 

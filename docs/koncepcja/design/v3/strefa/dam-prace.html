@@ -307,6 +307,40 @@ html:has(.zab-sheet[open]){overflow:hidden}
 @media print{.pub-header{display:none!important}}
 </style>
 <script>(function(d){d.classList.add('js');var h=location.hash.slice(1),e=/[?&]konto=pracodawca(&|$)/.test(location.search);d.setAttribute('data-ctx',/^(szukam-(dodaj|moje|konto)|sa-)/.test(h)?'seeker':(/^(pulpit-pracodawcy|konto-studio)$/.test(h)?'employer':(/^(moje-ogloszenia|ogloszenie-wyslane|nowe-ogloszenie|podglad|konto-pracodawcy|szukam-pracy|sp-|wlacz-)/.test(h)?(e?'employer':'zone'):'public')))})(document.documentElement)</script>
+<!-- gen:slownik-css -->
+<style>
+/* ===== Pojęcia ze słownika w treści + dymek z definicją (gen_terminy.py – nie edytuj ręcznie) ===== */
+/* bez JS: zwykły link do słownika z dyskretnym kropkowanym podkreśleniem (rozróżnienie nie tylko kolorem – WCAG 1.4.1) */
+a.bp-termin.bp-termin{display:inline;min-height:0;padding:0;margin:0;border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-decoration-color:rgba(42,59,104,.8);text-underline-offset:.24em;text-decoration-skip-ink:auto;cursor:pointer;border-radius:2px}
+a.bp-termin.bp-termin:hover{text-decoration-style:solid;text-decoration-color:var(--color-gold,#B8975A)}
+a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.3);text-decoration-style:solid}
+.dark a.bp-termin.bp-termin{text-decoration-color:var(--color-gold-light,#D9C089)}
+.dark a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
+a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
+.dark a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
+/* dymek: kryjące ivory (bez backdrop-filter – nie liczy się do limitu 3 tafli), złota linia, cień */
+.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
+.bp-dymek[hidden]{display:none}
+.bp-dymek:focus{outline:none}
+.bp-dymek:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
+.bp-dymek-t{margin:0 44px 6px 0;padding-bottom:8px;border-bottom:1px solid rgba(184,151,90,.45);font:600 1.4rem/1.2 var(--font-serif,Georgia,serif);color:var(--color-navy,#2A3B68);text-wrap:balance}
+.bp-dymek-d{margin:0;color:var(--color-ink,#1B2233);text-wrap:pretty}
+.bp-dymek-akcje{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;margin-top:6px}
+.bp-dymek a.bp-dymek-wiecej{display:inline-flex;align-items:center;min-height:44px;padding:0;font:500 var(--text-sm,.875rem)/1.3 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-transform:none;color:var(--color-navy,#2A3B68);text-decoration:underline;text-decoration-color:var(--color-gold,#B8975A);text-decoration-thickness:1px;text-underline-offset:5px}
+.bp-dymek a.bp-dymek-wiecej:hover{text-decoration-thickness:2px}
+.bp-dymek-x{position:absolute;top:6px;right:6px;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;margin:0;padding:0;background:none;border:0;border-radius:3px;color:var(--color-navy,#2A3B68);cursor:pointer}
+.bp-dymek-x:hover{background:var(--color-parchment,#EDE5D8)}
+.bp-dymek-x svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.bp-dymek :focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
+/* wąskie ekrany: panel u dołu okna (mieści się od 320 px), nad paskiem akcji */
+@media (max-width:599px){
+  .bp-dymek{position:fixed;top:auto!important;left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));width:auto;max-height:min(70vh,560px);overflow-y:auto;overscroll-behavior:contain;padding:14px 16px 10px}
+}
+@media (prefers-contrast:more){.bp-dymek{border-color:var(--color-navy,#2A3B68)}a.bp-termin.bp-termin{text-decoration-color:currentColor}}
+@media (forced-colors:active){.bp-dymek{border:2px solid CanvasText}a.bp-termin.bp-termin{text-decoration-color:LinkText}a.bp-termin.bp-termin[aria-expanded="true"]{background:none;outline:1px solid Highlight}}
+@media print{.bp-dymek{display:none!important}a.bp-termin.bp-termin{text-decoration:none}}
+</style>
+<!-- /gen:slownik-css -->
 </head>
 <body>
 <a class="skip" href="#tresc">Przejdź do treści</a>
@@ -793,7 +827,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
         <div class="board-side">
           <aside class="card surface" aria-labelledby="t-dla-prac">
             <h2 class="card-title" id="t-dla-prac">Dla pracodawców</h2>
-            <p class="small">Ofertę doda każdy pracodawca&nbsp;– salon, gabinet, studio czy sieć, także bez polisy. Załóż konto: <span class="nowrap">e-mail</span>, NIP (sprawdzimy go w&nbsp;rejestrze REGON GUS), telefon z&nbsp;kodem SMS i&nbsp;aplikacja uwierzytelniająca.</p>
+            <p class="small">Ofertę doda każdy pracodawca&nbsp;– salon, gabinet, studio czy sieć, także bez <a class="bp-termin" href="../slownik.html#haslo-polisa" data-termin="polisa">polisy</a>. Załóż konto: <span class="nowrap">e-mail</span>, NIP (sprawdzimy go w&nbsp;rejestrze REGON GUS), telefon z&nbsp;kodem SMS i&nbsp;<a class="bp-termin" href="../slownik.html#haslo-drugi-skladnik" data-termin="drugi-skladnik">aplikacja uwierzytelniająca</a>.</p>
             <p class="small">Salon z&nbsp;polisą kupioną przez BeautyPolisa loguje się na swoje konto klienta.</p>
             <div class="actions"><a class="link-lux" href="logowanie.html#s-rp-email">Załóż konto pracodawcy</a><a class="link-quiet" href="logowanie.html">Mam konto</a></div>
           </aside>
@@ -2557,7 +2591,7 @@ html:has(.zab-sheet[open]){overflow:hidden}
 <footer class="app-footer">
   <div class="app-footer-inner">
     <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html">Tax Protect</a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a></nav>
-    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
+    <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="../slownik.html">Słownik pojęć</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
     <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
     <!-- L1 (12–13.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy („XII Wydział” – prawidłowo; strona
          ergo.beautypolisa.eu/informacja-o-agencie podaje „XIII” – błąd po tamtej stronie, uwaga dla zleceniodawcy).
@@ -3278,5 +3312,91 @@ html:has(.zab-sheet[open]){overflow:hidden}
   render(false);
 })();
 </script>
+<!-- gen:slownik-js -->
+<script type="application/json" id="slownik-dymki">
+{
+ "polisa": {
+  "t": "Polisa",
+  "d": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę.",
+  "u": "../slownik.html#haslo-polisa"
+ },
+ "drugi-skladnik": {
+  "t": "Drugi składnik logowania (TOTP)",
+  "d": "Dodatkowe zabezpieczenie konta. Strefa nie ma haseł: najpierw podajesz sześciocyfrowy kod z e-maila, a potem – jako drugi składnik – kod z aplikacji uwierzytelniającej, który zmienia się co 30 sekund (TOTP – jednorazowy kod zależny od czasu); sam dostęp do skrzynki e-mail nie wystarczy więc, by ktoś wszedł na konto.",
+  "u": "../slownik.html#haslo-drugi-skladnik"
+ }
+}
+</script>
+<script>
+/* Dymek z definicją pojęcia (gen_terminy.py – nie edytuj ręcznie).
+   Bez JS oznaczenie jest linkiem do słownika. Z JS: link dostaje rolę przycisku (aria-haspopup="dialog", aria-expanded, aria-controls),
+   klik / Enter / Spacja otwiera niemodalny dialog (role="dialog" + aria-labelledby/aria-describedby – w środku link i przycisk, więc nie tooltip).
+   Fokus przechodzi do dialogu; Esc i „Zamknij” zamykają i oddają fokus pojęciu; Tab za ostatnim elementem i Shift+Tab przed pierwszym też wracają do pojęcia;
+   klik poza dymkiem zamyka. Najechanie myszą niczego nie otwiera ani nie zamyka (WCAG 1.4.13: dymek nie znika, gdy kursor jest nad nim).
+   Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Szerokie ekrany: dymek pod pojęciem (albo nad nim), w granicach okna;
+   poniżej 600 px: panel u dołu okna. */
+(function(){
+  var dane=document.getElementById('slownik-dymki'); if(!dane) return;
+  var D; try{D=JSON.parse(dane.textContent)}catch(e){return}
+  var pojecia=[].slice.call(document.querySelectorAll('a.bp-termin[data-termin]')); if(!pojecia.length) return;
+  var box=document.createElement('div');
+  box.className='bp-dymek';box.id='bp-dymek';box.hidden=true;box.tabIndex=-1;
+  box.setAttribute('role','dialog');box.setAttribute('aria-labelledby','bp-dymek-t');box.setAttribute('aria-describedby','bp-dymek-d');
+  box.innerHTML='<p class="bp-dymek-t" id="bp-dymek-t"></p><p class="bp-dymek-d" id="bp-dymek-d"></p>'+
+    '<div class="bp-dymek-akcje"><a class="bp-dymek-wiecej" href="#">Więcej w&nbsp;słowniku</a></div>'+
+    '<button type="button" class="bp-dymek-x" aria-label="Zamknij objaśnienie"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg></button>';
+  document.body.appendChild(box);
+  var tytul=box.querySelector('.bp-dymek-t'), opis=box.querySelector('.bp-dymek-d'), wiecej=box.querySelector('.bp-dymek-wiecej'), zamknij=box.querySelector('.bp-dymek-x');
+  var mqWaski=window.matchMedia('(max-width:599px)'), biezace=null;
+  pojecia.forEach(function(a){
+    if(!D[a.getAttribute('data-termin')])return;
+    a.setAttribute('role','button');a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
+  });
+  function pozycja(){
+    if(!biezace||box.hidden)return;
+    if(mqWaski.matches){box.style.top='';box.style.left='';return}
+    var r=biezace.getClientRects()[0]||biezace.getBoundingClientRect(), vw=document.documentElement.clientWidth, vh=window.innerHeight;
+    var w=box.offsetWidth, h=box.offsetHeight, x=Math.min(Math.max(16,r.left),vw-w-16), y=r.bottom+10;
+    if(y+h>vh-12&&r.top-h-10>76)y=r.top-h-10;
+    box.style.left=Math.round(x+window.scrollX)+'px';box.style.top=Math.round(y+window.scrollY)+'px';
+  }
+  function otworz(a){
+    var d=D[a.getAttribute('data-termin')]; if(!d)return;
+    if(biezace&&biezace!==a)biezace.setAttribute('aria-expanded','false');
+    biezace=a;tytul.textContent=d.t;opis.textContent=d.d;wiecej.href=d.u;
+    box.hidden=false;a.setAttribute('aria-expanded','true');pozycja();
+    try{box.focus({preventScroll:true})}catch(e){box.focus()}
+  }
+  function zamknijDymek(oddaj){
+    if(!biezace)return;var a=biezace;biezace=null;box.hidden=true;a.setAttribute('aria-expanded','false');
+    if(oddaj){try{a.focus({preventScroll:mqWaski.matches})}catch(e){a.focus()}}
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a.bp-termin[data-termin]');
+    if(a&&D[a.getAttribute('data-termin')]){
+      if(e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+      e.preventDefault();
+      if(biezace===a)zamknijDymek(true);else otworz(a);
+      return;
+    }
+    if(biezace&&!box.contains(e.target))zamknijDymek(false);
+  });
+  document.addEventListener('keydown',function(e){
+    var a=e.target.closest&&e.target.closest('a.bp-termin[data-termin]');
+    if(a&&(e.key===' '||e.key==='Spacebar')&&D[a.getAttribute('data-termin')]){e.preventDefault();if(biezace===a)zamknijDymek(true);else otworz(a);return}
+    if(!biezace)return;
+    if(e.key==='Escape'||e.key==='Esc'){e.preventDefault();zamknijDymek(true);return}
+    if(e.key==='Tab'&&box.contains(document.activeElement)){
+      var ost=document.activeElement===zamknij, pierw=document.activeElement===box||document.activeElement===wiecej;
+      if((!e.shiftKey&&ost)||(e.shiftKey&&pierw)){e.preventDefault();zamknijDymek(true)}
+    }
+  });
+  zamknij.addEventListener('click',function(){zamknijDymek(true)});
+  box.addEventListener('focusout',function(e){if(biezace&&e.relatedTarget&&!box.contains(e.relatedTarget)&&e.relatedTarget!==biezace)zamknijDymek(false)});
+  window.addEventListener('resize',pozycja);
+  if(mqWaski.addEventListener)mqWaski.addEventListener('change',pozycja);
+})();
+</script>
+<!-- /gen:slownik-js -->
 </body>
 </html>

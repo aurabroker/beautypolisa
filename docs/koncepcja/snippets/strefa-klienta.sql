@@ -291,6 +291,17 @@ create table app_settings (
   order_reservation_minutes   smallint not null default 15 check (order_reservation_minutes between 10 and 30),
   orders_per_user_hour        smallint not null default 10 check (orders_per_user_hour between 1 and 50),
   active_reservations_per_user smallint not null default 3 check (active_reservations_per_user between 1 and 10),
+  -- Przegląd red team płatności (13.11.2026): minimalny czas sesji płatności u operatora (Stripe Checkout:
+  -- 30 min – 24 h; pozostali – do weryfikacji) – rezerwacja = max(order_reservation_minutes, minimum operatora)
+  checkout_min_minutes        jsonb not null default '{"stripe": 30}'::jsonb
+                                check (jsonb_typeof(checkout_min_minutes) = 'object'),
+  -- karencja nowego albo zmienionego konta wypłat (przejęcie konta organizatora) i blokada „Wypłat” i zwrotów
+  -- po resecie drugiego składnika właściciela przez doradcę
+  payout_change_cooldown_hours smallint not null default 72 check (payout_change_cooldown_hours between 24 and 336),
+  -- limity sprzedaży dla nowych organizatorów (fałszywy organizator: sprzedaż, wypłata, zniknięcie)
+  new_organizer_days          smallint not null default 60 check (new_organizer_days between 0 and 365),
+  new_organizer_paid_orders   smallint not null default 30 check (new_organizer_paid_orders between 1 and 1000),
+  new_organizer_max_grosze    integer  not null default 2000000 check (new_organizer_max_grosze between 10000 and 100000000),
   changed_by          uuid references auth.users(id) on delete set null,
   changed_at           timestamptz not null default now()
 );
@@ -741,6 +752,9 @@ create table organizer_members (
   revoked_by     uuid references auth.users(id) on delete set null,
   revoked_at     timestamptz,
   last_seen_at   timestamptz,
+  -- reset drugiego składnika przez doradcę (00, D28): przez payout_change_cooldown_hours (72 h) właściciel
+  -- nie zleca zwrotów i nie zmienia „Wypłat” (przegląd red team płatności 13.11.2026)
+  mfa_reset_at   timestamptz,
   created_at     timestamptz not null default now(),
   primary key (organizer_id, user_id),
   check (status <> 'revoked' or revoked_at is not null)
@@ -934,11 +948,17 @@ create table organizer_payout_accounts (
   requirements_due     boolean not null default true,
   status_checked_at    timestamptz,
   activated_at         timestamptz,
+  -- karencja (przegląd red team 13.11.2026): zamówienia i publikacja dopiero od usable_from = aktywacja albo
+  -- zmiana rachunku wypłat u operatora + app_settings.payout_change_cooldown_hours (72 h)
+  usable_from          timestamptz,
+  payout_destination_changed_at timestamptz,          -- ostatnia zmiana rachunku wypłat zgłoszona przez operatora
+  kyb_tax_id_match     boolean,                       -- NIP z KYB operatora = NIP profilu; NULL – operator nie podaje
   created_by           uuid references auth.users(id) on delete set null,
   created_at           timestamptz not null default now(),
   updated_at           timestamptz not null default now(),
   unique (provider, provider_account_ref),
-  check (status <> 'active' or (charges_enabled and not requirements_due and activated_at is not null))
+  check (status <> 'active' or (charges_enabled and not requirements_due and activated_at is not null
+                                and usable_from is not null and kyb_tax_id_match is distinct from false))
 );
 create unique index organizer_payout_accounts_one_uq on organizer_payout_accounts (organizer_id)
   where status <> 'disabled';
@@ -1010,8 +1030,17 @@ create table training_orders (
   expired_at          timestamptz,
   cancelled_at        timestamptz,
   cancel_requested_at timestamptz,                       -- kupujący prosi o rezygnację; decyzja i zwrot – organizator
-  disputed_at         timestamptz,                       -- spór / obciążenie zwrotne u operatora
-  refund_reason       text check (refund_reason in ('rezygnacja','odwolanie','spozniona-platnosc','podwojna-platnosc','inne')),
+  -- prawa konsumenta (dok. 11 §12a.8) [do weryfikacji prawnej]: odstąpienie to jednostronne oświadczenie
+  -- kupującego (nie prośba); żądanie rozpoczęcia usługi przed upływem 14 dni – z wersją treści
+  withdrawal_declared_at     timestamptz,
+  withdrawal_notice_version  text check (char_length(withdrawal_notice_version) between 1 and 40),
+  early_start_requested_at   timestamptz,
+  early_start_notice_version text check (char_length(early_start_notice_version) between 1 and 40),
+  -- faktura na NIP konta salonu (NIP = client_accounts.nip); tylko wtedy zamówienie widzi właściciel salonu
+  bill_to_account     boolean not null default false,
+  disputed_at         timestamptz,                       -- otwarty spór / obciążenie zwrotne u operatora
+  refund_reason       text check (refund_reason in ('rezygnacja','odwolanie','spozniona-platnosc','podwojna-platnosc',
+                                                    'inne','odstapienie','chargeback','organizator-zawieszony')),
   invoice_number      text check (char_length(invoice_number) between 1 and 60 and invoice_number !~ '[<>]'),
   invoice_storage_path text check (invoice_storage_path ~ '^[0-9a-f-]{36}/[0-9a-f-]{36}/[0-9a-f-]{36}\.pdf$'),
   invoice_sha256      text check (invoice_sha256 ~ '^[0-9a-f]{64}$'),
@@ -1026,7 +1055,10 @@ create table training_orders (
   check (status not in ('paid','partially_refunded','refunded') or paid_at is not null),
   check (status <> 'refunded' or refunded_grosze = amount_grosze),
   check (status <> 'partially_refunded' or refunded_grosze between 1 and amount_grosze - 1),
-  check ((invoice_storage_path is null) = (invoice_sha256 is null))
+  check ((invoice_storage_path is null) = (invoice_sha256 is null)),
+  check (not bill_to_account or buyer_kind = 'firma'),
+  check ((withdrawal_declared_at is null) = (withdrawal_notice_version is null)),
+  check ((early_start_requested_at is null) = (early_start_notice_version is null))
 );
 -- jedna aktywna rezerwacja i jedno opłacone miejsce na osobę i szkolenie
 create unique index training_orders_reserved_uq on training_orders (training_id, user_id) where status = 'reserved';
@@ -1065,7 +1097,13 @@ create table training_payments (
   id                   uuid primary key default gen_random_uuid(),
   order_id             uuid not null references training_orders(id) on delete restrict,
   provider             text not null check (provider in ('p24','payu','tpay','stripe')),
-  provider_payment_ref text not null check (provider_payment_ref ~ '^[A-Za-z0-9_.:-]{3,200}$'),
+  -- NULL do czasu odpowiedzi createCheckout: wiersz (nasz UUID = id) powstaje PRZED wywołaniem operatora,
+  -- a UUID trafia do operatora w metadanych – awaria Workera między createCheckout a zapisem referencji
+  -- nie gubi płatności (przegląd red team 13.11.2026)
+  provider_payment_ref text check (provider_payment_ref ~ '^[A-Za-z0-9_.:-]{3,200}$'),
+  -- druga referencja operatora nadawana przy płatności (Stripe: PaymentIntent albo charge przy sesji Checkout;
+  -- P24: orderId przy naszym sessionId) – zwroty i spory przychodzą z nią
+  provider_charge_ref  text check (provider_charge_ref ~ '^[A-Za-z0-9_.:-]{3,200}$'),
   attempt              smallint not null check (attempt between 1 and 5),
   status               text not null default 'pending'
                          check (status in ('pending','succeeded','failed','cancelled','expired',
@@ -1074,12 +1112,15 @@ create table training_payments (
   currency             text not null default 'PLN' check (currency = 'PLN'),
   method               text check (method in ('blik','karta','przelew','inna')),
   checkout_expires_at  timestamptz,
+  checkout_cancel_requested_at timestamptz,          -- Worker wołał cancelCheckout (wygasła albo anulowana rezerwacja)
   succeeded_at         timestamptz,
   last_event_at        timestamptz,
   created_at           timestamptz not null default now(),
   updated_at           timestamptz not null default now(),
   unique (provider, provider_payment_ref),
-  unique (order_id, attempt)
+  unique (provider, provider_charge_ref),
+  unique (order_id, attempt),
+  check (status = 'pending' or provider_payment_ref is not null)
 );
 
 -- Zwroty: inicjuje organizator (rezygnacja wg jego regulaminu, kwota ≤ pozostałej) albo system
@@ -1091,7 +1132,8 @@ create table training_refunds (
   order_id            uuid not null references training_orders(id) on delete restrict,
   payment_id          uuid not null references training_payments(id) on delete restrict,
   amount_grosze       integer not null check (amount_grosze > 0),
-  reason              text not null check (reason in ('rezygnacja','odwolanie','spozniona-platnosc','podwojna-platnosc','inne')),
+  reason              text not null check (reason in ('rezygnacja','odwolanie','spozniona-platnosc','podwojna-platnosc',
+                                                       'inne','odstapienie','organizator-zawieszony')),
   status              text not null default 'requested' check (status in ('requested','submitted','succeeded','failed')),
   provider_refund_ref text unique check (provider_refund_ref ~ '^[A-Za-z0-9_.:-]{3,200}$'),
   requested_by        text not null check (requested_by ~ '^(system(:[a-z0-9_.:-]{1,60})?|user:[0-9a-f-]{36})$'),
@@ -1102,6 +1144,8 @@ create table training_refunds (
   failed_at           timestamptz,
   updated_at          timestamptz not null default now()
 );
+create index training_payments_order_idx on training_payments (order_id, attempt);
+create index training_payments_cancel_idx on training_payments (created_at) where status = 'pending';
 create index training_refunds_order_idx on training_refunds (order_id);
 create index training_refunds_active_idx on training_refunds (status, created_at) where status in ('requested','submitted');
 
@@ -1124,7 +1168,10 @@ create table payment_webhook_events (
   occurred_at    timestamptz,
   received_at    timestamptz not null default now(),
   status         text not null default 'received'
-                   check (status in ('received','processed','ignored_stale','rejected_mismatch','unknown_ref')),
+                   -- deferred_out_of_order: zwrot / spór przed potwierdzeniem płatności – Worker odpowiada 409,
+                   -- operator ponawia; unknown_ref – tak samo (przegląd red team 13.11.2026)
+                   check (status in ('received','processed','ignored_stale','rejected_mismatch','unknown_ref',
+                                     'deferred_out_of_order')),
   result         text check (char_length(result) <= 60),
   processed_at   timestamptz,
   unique (provider, event_id)
@@ -1138,7 +1185,8 @@ create table payment_discrepancies (
   kind         text not null check (kind in ('amount_mismatch','currency_mismatch','order_mismatch',
                  'unknown_payment','paid_not_confirmed','confirmed_not_paid','double_payment',
                  'late_payment_no_seat','refund_failed','refund_stuck','external_refund','seat_counter',
-                 'reservation_stuck','cancel_request_stale','dispute')),
+                 'reservation_stuck','cancel_request_stale','dispute','kyb_mismatch','withdrawal_overdue',
+                 'payout_destination_changed')),
   provider     text check (provider in ('p24','payu','tpay','stripe')),
   provider_ref text check (provider_ref ~ '^[A-Za-z0-9_.:-]{1,200}$'),
   order_id     uuid references training_orders(id) on delete set null,
@@ -1234,7 +1282,11 @@ create table client_audit_log (
                   'payout_account_created','payout_account_status_changed','sales_terms_submitted',
                   'sales_terms_approved','sales_terms_rejected','platform_fee_changed','organizer_orders_viewed',
                   'organizer_invoice_data_viewed','training_invoice_attached','payment_discrepancy_resolved',
-                  'training_orders_purged')),
+                  'training_orders_purged',
+                  -- przegląd red team płatności (13.11.2026)
+                  'payout_account_link_created','payout_destination_changed','payout_account_kyb_mismatch',
+                  'organizer_owner_mfa_reset','training_order_withdrawal_declared','training_dispute_closed',
+                  'organizer_suspended_orders_closed')),
   entity        text not null check (entity in ('account','member','invitation','policy','document','claim',
                   'job_offer','training','training_registration','organizer','organizer_member',
                   'feature_flag','candidate_ad','job_seeker','phone','promotion','organizer_plan',
@@ -2322,7 +2374,8 @@ create policy platform_fee_settings_staff_read on platform_fee_settings
   for select to authenticated using (app_is_staff());
 
 grant select (id, organizer_id, provider, status, charges_enabled, payouts_enabled, requirements_due,
-              status_checked_at, activated_at, created_at, updated_at)
+              status_checked_at, activated_at, usable_from, payout_destination_changed_at, kyb_tax_id_match,
+              created_at, updated_at)
   on organizer_payout_accounts to authenticated;  -- bez provider_account_ref
 create policy organizer_payout_accounts_org_read on organizer_payout_accounts
   for select to authenticated using (organizer_id in (select public.organizer_ids()));
@@ -2346,13 +2399,17 @@ create policy organizer_sales_terms_staff_read on organizer_sales_terms
 
 grant select (id, order_ref, training_id, organizer_id, account_id, buyer_kind, status, amount_grosze, currency,
               refunded_grosze, reserved_until, paid_at, expired_at, cancelled_at, cancel_requested_at, refund_reason,
+              withdrawal_declared_at, early_start_requested_at, bill_to_account, disputed_at,
               invoice_number, invoice_added_at, created_at, updated_at)
   on training_orders to authenticated;            -- bez user_id, idempotency_key, kont operatora i ścieżki pliku
 create policy training_orders_self_read on training_orders
   for select to authenticated using (user_id = (select auth.uid()));
-create policy training_orders_owner_read on training_orders   -- zamówienia opłacane przez salon (faktura na NIP)
+-- Właściciel salonu widzi tylko zamówienia z fakturą na NIP SALONU (bill_to_account; NIP = client_accounts.nip,
+-- ustawia app_training_order_create). Zakup pracownika na własną działalność (inny NIP) jest prywatny
+-- (przegląd red team 13.11.2026).
+create policy training_orders_owner_read on training_orders
   for select to authenticated
-  using (buyer_kind = 'firma' and account_id in (select public.client_account_ids('owner')));
+  using (bill_to_account and account_id in (select public.client_account_ids('owner')));
 create policy training_orders_staff_read on training_orders
   for select to authenticated using (app_is_staff());
 
@@ -2362,8 +2419,9 @@ grant select (order_id, buyer_kind, buyer_name, nip, street, postal_code, city, 
 create policy training_order_buyer_data_self_read on training_order_buyer_data
   for select to authenticated using (user_id = (select auth.uid()));
 
-grant select (id, order_id, provider, provider_payment_ref, attempt, status, amount_grosze, currency, method,
-              checkout_expires_at, succeeded_at, last_event_at, created_at, updated_at)
+grant select (id, order_id, provider, provider_payment_ref, provider_charge_ref, attempt, status, amount_grosze,
+              currency, method, checkout_expires_at, checkout_cancel_requested_at, succeeded_at, last_event_at,
+              created_at, updated_at)
   on training_payments to authenticated;
 create policy training_payments_staff_read on training_payments
   for select to authenticated using (app_is_staff());
@@ -2430,6 +2488,15 @@ create policy client_documents_owner_read on storage.objects
 create policy client_documents_staff_read on storage.objects
   for select to authenticated
   using (bucket_id = 'client-documents' and public.app_is_staff());
+
+-- 00, D42: faktury od organizatorów (opcjonalnie – portal faktur nie wystawia). Prywatny kubełek, tylko PDF,
+-- ścieżka {organizer_id}/{order_id}/{uuid}.pdf nadawana przez serwer. Bez polityk dla authenticated:
+-- wgrywa serwer po sprawdzeniu organizatora (app_training_order_invoice_attach), podpisany URL (60 s)
+-- serwer tworzy po app_training_invoice_path(). Plik usuwa serwer przy anonimizacji zamówienia (retencja).
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('training-invoices', 'training-invoices', false, 5242880, array['application/pdf'])
+on conflict (id) do update
+  set public = false, file_size_limit = excluded.file_size_limit, allowed_mime_types = excluded.allowed_mime_types;
 
 
 -- -----------------------------------------------------------------------------------------------------
@@ -3118,10 +3185,11 @@ begin
     if v_t.starts_at > v_until then
       raise exception 'moderate training: szkolenie zaczyna się po końcu planu organizatora';
     end if;
-    -- 00, D42: płatność online tylko u organizatora z aktywnymi „Wypłatami” i zatwierdzonymi warunkami sprzedaży
+    -- 00, D42: płatność online tylko u organizatora z aktywnymi „Wypłatami” po karencji (usable_from) i
+    -- zatwierdzonymi warunkami sprzedaży
     if v_t.payment_mode = 'online' and (
          not exists (select 1 from public.organizer_payout_accounts pa
-                      where pa.organizer_id = v_t.organizer_id and pa.status = 'active')
+                      where pa.organizer_id = v_t.organizer_id and pa.status = 'active' and pa.usable_from <= now())
       or not exists (select 1 from public.organizer_sales_terms st
                       where st.organizer_id = v_t.organizer_id and st.status = 'active')) then
       raise exception 'moderate training: płatność online wymaga aktywnych wypłat i warunków sprzedaży organizatora';
@@ -3139,6 +3207,22 @@ begin
            updated_at = now()
      where id = p_training;
   elsif p_decision = 'remove' and v_t.status in ('published','pending_review','rejected','draft') then
+    -- przegląd red team 13.11.2026: usunięcie szkolenia z opłaconymi zamówieniami (= zwroty wszystkim) – tryb
+    -- dwóch osób: agent zgłasza w /panel, zatwierdza i wykonuje admin z uzasadnieniem (≥ 20 znaków);
+    -- e-mail do wszystkich właścicieli organizatora
+    if exists (select 1 from public.training_orders o
+                where o.training_id = p_training and o.status in ('paid','partially_refunded','refund_pending')) then
+      if not exists (select 1 from public.admin_users u where u.user_id = p_actor and u.is_active and u.role = 'admin') then
+        raise exception 'moderate training: usunięcie szkolenia z opłaconymi zamówieniami zatwierdza admin';
+      end if;
+      if coalesce(char_length(trim(p_reason)), 0) not between 20 and 500 then
+        raise exception 'moderate training: usunięcie szkolenia z opłaconymi zamówieniami wymaga uzasadnienia';
+      end if;
+      insert into public.outbox_emails (template, recipient, payload)
+      select 'training_cancelled_by_staff', 'user:' || om.user_id::text, jsonb_build_object('training_id', p_training)
+        from public.organizer_members om
+       where om.organizer_id = v_t.organizer_id and om.role = 'owner' and om.status = 'active';
+    end if;
     update public.trainings
        set status = 'removed', moderated_by = p_actor, moderation_note = p_note, rejection_reason = p_reason,
            cancelled_at = now(), updated_at = now()
@@ -3220,7 +3304,11 @@ begin
   return v_moved;                       -- serwer wysyła training_promoted awansowanym
 end $$;
 
--- 10.14 Odwołanie szkolenia przez organizatora albo personel (zapisani dostają training_cancelled)
+-- 10.14 Odwołanie szkolenia przez organizatora albo personel (zapisani dostają training_cancelled).
+-- 00, D42 + przegląd red team 13.11.2026: odwołanie szkolenia z opłaconymi zamówieniami = zwroty wszystkim,
+-- więc tylko właściciel organizatora poza karencją po resecie TOTP (organizer_money_ok) albo admin
+-- z uzasadnieniem (≥ 20 znaków) i e-mailem do wszystkich właścicieli organizatora; członek zespołu
+-- organizatora i agent – tylko szkolenia bez opłaconych zamówień.
 create or replace function public.app_training_cancel_event(p_training uuid, p_actor uuid, p_reason text)
 returns void
 language plpgsql set search_path = '' as $$
@@ -3234,6 +3322,25 @@ begin
   select * into v_t from public.trainings where id = p_training for update;
   if v_t.status not in ('published','pending_review') then
     raise exception 'cancel event: szkolenia w statusie % nie można odwołać', v_t.status;
+  end if;
+  if exists (select 1 from public.training_orders o
+              where o.training_id = p_training and o.status in ('paid','partially_refunded','refund_pending')) then
+    if v_kind = 'user:' and not public.organizer_money_ok(v_t.organizer_id, p_actor) then
+      raise exception 'cancel event: szkolenie z opłaconymi zamówieniami odwołuje właściciel organizatora';
+    end if;
+    if v_kind = 'staff:' then
+      if not exists (select 1 from public.admin_users u where u.user_id = p_actor and u.is_active and u.role = 'admin') then
+        raise exception 'cancel event: szkolenie z opłaconymi zamówieniami – tylko admin';
+      end if;
+      if coalesce(char_length(trim(p_reason)), 0) not between 20 and 500 or p_reason ~ '[<>]' then
+        raise exception 'cancel event: nieprawidłowe pole reason' using errcode = 'BP422';
+      end if;
+      insert into public.outbox_emails (template, recipient, payload)
+      select 'training_cancelled_by_staff', 'user:' || om.user_id::text,
+             jsonb_build_object('training_id', p_training)
+        from public.organizer_members om
+       where om.organizer_id = v_t.organizer_id and om.role = 'owner' and om.status = 'active';
+    end if;
   end if;
   update public.trainings set status = 'cancelled', cancelled_at = now(), updated_at = now() where id = p_training;
   insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id, payload)
@@ -4950,6 +5057,1827 @@ begin
   return v_total;
 end $$;
 
+-- 10.27 Płatności za szkolenia (00, D42; dok. 11 §12a). Sprzedawcą jest organizator; operator płatności
+--       (adapter PaymentProvider w Workerze) przyjmuje środki na konto organizatora. Kolejność blokad we
+--       wszystkich funkcjach: blokada doradcza użytkownika → wiersz szkolenia → zamówienie → płatność/zwrot
+--       (bez zakleszczeń). Kody błędów: BP422 – dane (tylko nazwa pola), BP409 – stan nie pozwala,
+--       BP429 – limit; brak uprawnień – zwykły wyjątek. Wszystkie funkcje: EXECUTE tylko service_role.
+
+-- Stawka prowizji obowiązująca w chwili p_at (migawka do zamówienia)
+create or replace function public.platform_fee_current(p_at timestamptz default now())
+returns public.platform_fee_settings
+language sql stable set search_path = '' as $$
+  select f.* from public.platform_fee_settings f where f.valid_from <= p_at order by f.valid_from desc limit 1;
+$$;
+
+-- Zmiana prowizji: tylko admin, z odwołaniem do decyzji zleceniodawcy, bez działania wstecz. Decyzja 00, D42:
+-- w okresie promocji „otwarcie-portalu” prowizja wynosi 0 % (BP409 dla stawki > 0 przed końcem promocji).
+create or replace function public.app_set_platform_fee(
+  p_actor uuid, p_fee_bps integer, p_fee_fixed_grosze integer, p_valid_from timestamptz, p_decision_ref text)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_id uuid;
+begin
+  if not exists (select 1 from public.admin_users u where u.user_id = p_actor and u.is_active and u.role = 'admin') then
+    raise exception 'fee: brak uprawnień';
+  end if;
+  if p_fee_bps is null or p_fee_bps not between 0 and 3000 then
+    raise exception 'fee: nieprawidłowe pole fee_bps' using errcode = 'BP422';
+  elsif p_fee_fixed_grosze is null or p_fee_fixed_grosze not between 0 and 10000 then
+    raise exception 'fee: nieprawidłowe pole fee_fixed_grosze' using errcode = 'BP422';
+  elsif p_valid_from is null or p_valid_from < now() - interval '1 minute' then
+    raise exception 'fee: nieprawidłowe pole valid_from' using errcode = 'BP422';      -- bez działania wstecz
+  elsif coalesce(char_length(trim(p_decision_ref)), 0) not between 5 and 200 then
+    raise exception 'fee: nieprawidłowe pole decision_ref' using errcode = 'BP422';
+  end if;
+  if (p_fee_bps > 0 or p_fee_fixed_grosze > 0) and exists (
+       select 1 from public.app_promotions p
+        where p.key = 'otwarcie-portalu' and p.enabled and (p.ends_at is null or p.ends_at > p_valid_from)) then
+    raise exception 'fee: w okresie promocji prowizja wynosi 0 %% (00, D42)' using errcode = 'BP409';
+  end if;
+  insert into public.platform_fee_settings (valid_from, fee_bps, fee_fixed_grosze, decision_ref, set_by)
+  values (p_valid_from, p_fee_bps, p_fee_fixed_grosze, trim(p_decision_ref), p_actor)
+  returning id into v_id;
+  insert into public.client_audit_log (actor, action, entity, entity_id, payload)
+  values ('staff:' || p_actor::text, 'platform_fee_changed', 'platform_fee', v_id,
+          jsonb_build_object('fee_bps', p_fee_bps, 'fee_fixed_grosze', p_fee_fixed_grosze, 'valid_from', p_valid_from));
+  return v_id;
+end $$;
+
+-- Właściciel aktywnego, zweryfikowanego organizatora (decyzje o pieniądzach: „Wypłaty”, warunki sprzedaży, zwroty)
+create or replace function public.organizer_owner_ok(p_organizer uuid, p_actor uuid)
+returns boolean
+language sql stable set search_path = '' as $$
+  select exists (select 1 from public.organizer_members om
+                   join public.training_organizers o on o.id = om.organizer_id
+                  where om.organizer_id = p_organizer and om.user_id = p_actor and om.role = 'owner'
+                    and om.status = 'active' and o.status = 'active' and o.verified_at is not null);
+$$;
+
+-- Decyzje o pieniądzach organizatora (zwroty, „Wypłaty”, odwołanie szkolenia z opłaconymi zamówieniami):
+-- właściciel jak wyżej, ale NIE w karencji po resecie drugiego składnika przez doradcę (00, D28) –
+-- przejęcie konta przez fałszywe zgłoszenie utraty telefonu nie daje od razu dostępu do pieniędzy
+-- (przegląd red team płatności 13.11.2026).
+create or replace function public.organizer_money_ok(p_organizer uuid, p_actor uuid)
+returns boolean
+language sql stable set search_path = '' as $$
+  select public.organizer_owner_ok(p_organizer, p_actor)
+     and not exists (select 1 from public.organizer_members om cross join public.app_settings s
+                      where om.organizer_id = p_organizer and om.user_id = p_actor
+                        and om.mfa_reset_at > now() - make_interval(hours => s.payout_change_cooldown_hours));
+$$;
+
+-- Alert o zmianie „Wypłat” (nowe konto, link do formularza operatora dla konta aktywnego, zmiana rachunku
+-- u operatora, reset drugiego składnika właściciela, niezgodny NIP z KYB): e-mail do WSZYSTKICH właścicieli
+-- organizatora, na adres z weryfikacji organizatora (12.1 – serwer rozwiązuje 'organizer-verified:<id>'
+-- z rekordu weryfikacji, nie z profilu, którym może sterować napastnik) i do zespołu płatności, który
+-- przed końcem karencji dzwoni na numer z rejestru (telefon zwrotny jak przy weryfikacji – 12.1).
+create or replace function public.payout_alert(p_organizer uuid, p_kind text, p_payload jsonb default '{}'::jsonb)
+returns void
+language plpgsql set search_path = '' as $$
+declare
+  v_payload jsonb := jsonb_build_object('kind', p_kind, 'organizer_id', p_organizer) || coalesce(p_payload, '{}'::jsonb);
+begin
+  insert into public.outbox_emails (template, recipient, payload)
+  select 'payout_change_alert', 'user:' || om.user_id::text, v_payload
+    from public.organizer_members om
+   where om.organizer_id = p_organizer and om.role = 'owner' and om.status = 'active';
+  insert into public.outbox_emails (template, recipient, payload)
+  values ('payout_change_alert', 'organizer-verified:' || p_organizer::text, v_payload),
+         ('payout_change_alert_team', 'team:platnosci', v_payload);
+end $$;
+
+-- Reset drugiego składnika właściciela organizatora przez doradcę (00, D28; procedura – Q25). Serwer usuwa
+-- czynnik TOTP w Supabase Auth (Admin API) i w tej samej operacji woła tę funkcję: znacznik mfa_reset_at
+-- (72 h bez zwrotów i zmian „Wypłat” – organizer_money_ok), wpis w dzienniku i alert do wszystkich
+-- właścicieli, na adres z weryfikacji i do zespołu płatności. Zwraca liczbę profili organizatora.
+create or replace function public.app_organizer_owner_mfa_reset(p_user uuid, p_actor uuid)
+returns integer
+language plpgsql set search_path = '' as $$
+declare
+  v_n integer := 0;
+  r   record;
+begin
+  if not exists (select 1 from public.admin_users u
+                 where u.user_id = p_actor and u.is_active and u.role in ('admin','agent')) then
+    raise exception 'mfa reset: brak uprawnień';
+  end if;
+  for r in update public.organizer_members om set mfa_reset_at = now()
+            where om.user_id = p_user and om.role = 'owner' and om.status = 'active'
+           returning om.organizer_id loop
+    insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id)
+    values (r.organizer_id, 'staff:' || p_actor::text, 'organizer_owner_mfa_reset', 'organizer_member', p_user);
+    perform public.payout_alert(r.organizer_id, 'owner_mfa_reset');
+    v_n := v_n + 1;
+  end loop;
+  return v_n;
+end $$;
+
+-- „Wypłaty” – krok 0, przed KAŻDYM createOnboardingLink (nowe konto, dokończenie KYC/KYB, zmiana danych
+-- w formularzu operatora): właściciel poza karencją po resecie TOTP, świeża weryfikacja TOTP (≤ 5 min –
+-- serwer przekazuje czas ostatniego wyzwania MFA z sesji, baza sprawdza go jeszcze raz), ślad w dzienniku
+-- i alert, gdy link dotyczy konta, które już było aktywne (formularz operatora pozwala zmienić rachunek).
+create or replace function public.app_payout_link_issued(p_organizer uuid, p_actor uuid, p_mfa_verified_at timestamptz)
+returns void
+language plpgsql set search_path = '' as $$
+declare
+  v_a public.organizer_payout_accounts%rowtype;
+begin
+  if not public.organizer_money_ok(p_organizer, p_actor) then
+    raise exception 'payout link: brak uprawnień';
+  end if;
+  if p_mfa_verified_at is null or p_mfa_verified_at < now() - interval '5 minutes'
+     or p_mfa_verified_at > now() + interval '1 minute' then
+    raise exception 'payout link: wymagane ponowne podanie kodu z aplikacji' using errcode = 'BP409';
+  end if;
+  select * into v_a from public.organizer_payout_accounts a
+   where a.organizer_id = p_organizer and a.status <> 'disabled';
+  insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id, payload)
+  values (p_organizer, 'user:' || p_actor::text, 'payout_account_link_created', 'payout_account', v_a.id,
+          jsonb_build_object('account_status', coalesce(v_a.status, 'none')));
+  if v_a.activated_at is not null then
+    perform public.payout_alert(p_organizer, 'payout_link_for_active_account');
+  end if;
+end $$;
+
+-- „Wypłaty” – krok 1: serwer zakłada konto u operatora (adapter createOnboardingLink) i zapisuje tu jego
+-- identyfikator. Idempotentnie dla tej samej pary (operator, konto). Stan ustawia tylko operator.
+-- Nowe konto = alert (payout_alert) i – po aktywacji – karencja przed pierwszym zamówieniem (usable_from).
+create or replace function public.app_payout_account_register(
+  p_organizer uuid, p_actor uuid, p_provider text, p_account_ref text)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_id  uuid;
+  v_org uuid;
+begin
+  if not public.organizer_money_ok(p_organizer, p_actor) then
+    raise exception 'payout: brak uprawnień';
+  end if;
+  if p_provider is null or p_provider not in ('p24','payu','tpay','stripe') then
+    raise exception 'payout: nieprawidłowe pole provider' using errcode = 'BP422';
+  elsif coalesce(p_account_ref, '') !~ '^[A-Za-z0-9_.:-]{3,100}$' then
+    raise exception 'payout: nieprawidłowe pole provider_account_ref' using errcode = 'BP422';
+  end if;
+  select a.id, a.organizer_id into v_id, v_org from public.organizer_payout_accounts a
+   where a.provider = p_provider and a.provider_account_ref = p_account_ref;
+  if found then
+    if v_org <> p_organizer then
+      raise exception 'payout: konto operatora należy do innego organizatora';
+    end if;
+    return v_id;
+  end if;
+  if exists (select 1 from public.organizer_payout_accounts a
+              where a.organizer_id = p_organizer and a.status <> 'disabled') then
+    raise exception 'payout: organizator ma już konto u operatora' using errcode = 'BP409';
+  end if;
+  insert into public.organizer_payout_accounts (organizer_id, provider, provider_account_ref, created_by)
+  values (p_organizer, p_provider, p_account_ref, p_actor)
+  returning id into v_id;
+  insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id, payload)
+  values (p_organizer, 'user:' || p_actor::text, 'payout_account_created', 'payout_account', v_id,
+          jsonb_build_object('provider', p_provider));
+  perform public.payout_alert(p_organizer, 'payout_account_created', jsonb_build_object('provider', p_provider));
+  return v_id;
+end $$;
+
+-- „Wypłaty” – stan od operatora (webhook o koncie albo odpytanie getPayoutStatus). Jedyna droga do 'active'.
+-- Karencja (przegląd red team 13.11.2026): pierwsza aktywacja i każda zmiana rachunku wypłat zgłoszona przez
+-- operatora (p_destination_changed – zdarzenie operatora zmapowane na account.updated z flagą
+-- payoutDestinationChanged) ustawia usable_from = now() + payout_change_cooldown_hours; do tego czasu
+-- konto nie przyjmuje zamówień ani publikacji, a zespół dostaje alert do telefonu zwrotnego.
+-- p_entity_tax_id – NIP podmiotu z KYB operatora (jeśli operator go podaje; do weryfikacji): inny niż NIP
+-- zweryfikowanego profilu → stan 'restricted' i rozbieżność kyb_mismatch (konto „słupa” albo innej firmy).
+create or replace function public.app_payout_account_set_status(
+  p_provider text, p_account_ref text, p_charges_enabled boolean, p_payouts_enabled boolean,
+  p_requirements_due boolean, p_disabled boolean default false, p_destination_changed boolean default false,
+  p_entity_tax_id text default null)
+returns text
+language plpgsql set search_path = '' as $$
+declare
+  v_a      public.organizer_payout_accounts%rowtype;
+  v_new    text;
+  v_nip    text;
+  v_match  boolean;
+  v_cool   interval;
+  v_usable timestamptz;
+begin
+  if p_entity_tax_id is not null and p_entity_tax_id !~ '^[0-9]{10}$' then
+    raise exception 'payout: nieprawidłowe pole entity_tax_id' using errcode = 'BP422';
+  end if;
+  select * into v_a from public.organizer_payout_accounts a
+   where a.provider = p_provider and a.provider_account_ref = p_account_ref for update;
+  if not found then
+    raise exception 'payout: nieznane konto operatora';
+  end if;
+  select o.nip into v_nip from public.training_organizers o where o.id = v_a.organizer_id;
+  select make_interval(hours => s.payout_change_cooldown_hours) into v_cool from public.app_settings s;
+  v_match := case when p_entity_tax_id is null then v_a.kyb_tax_id_match else p_entity_tax_id = v_nip end;
+  v_new := case when coalesce(p_disabled, false) then 'disabled'
+                when v_match is false then 'restricted'
+                when coalesce(p_charges_enabled, false) and not coalesce(p_requirements_due, true) then 'active'
+                when v_a.activated_at is not null then 'restricted'
+                else 'onboarding' end;
+  v_usable := v_a.usable_from;
+  if v_new = 'active' and v_usable is null then
+    v_usable := now() + v_cool;                                -- pierwsza aktywacja
+  end if;
+  if coalesce(p_destination_changed, false) then
+    v_usable := now() + v_cool;                                -- nowy rachunek wypłat – karencja od nowa
+  end if;
+  update public.organizer_payout_accounts
+     set status = v_new, charges_enabled = coalesce(p_charges_enabled, false),
+         payouts_enabled = coalesce(p_payouts_enabled, false), requirements_due = coalesce(p_requirements_due, true),
+         status_checked_at = now(), kyb_tax_id_match = v_match, usable_from = v_usable,
+         payout_destination_changed_at = case when coalesce(p_destination_changed, false) then now()
+                                              else payout_destination_changed_at end,
+         activated_at = coalesce(v_a.activated_at, case when v_new = 'active' then now() end),
+         updated_at = now()
+   where id = v_a.id;
+  if v_new is distinct from v_a.status then
+    insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id, payload)
+    values (v_a.organizer_id, 'system:payments:' || p_provider, 'payout_account_status_changed', 'payout_account',
+            v_a.id, jsonb_build_object('from', v_a.status, 'to', v_new));
+    insert into public.outbox_emails (template, recipient, payload)
+    values ('payout_account_status', 'organizer:' || v_a.organizer_id::text, jsonb_build_object('status', v_new));
+  end if;
+  if coalesce(p_destination_changed, false) then
+    insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id, payload)
+    values (v_a.organizer_id, 'system:payments:' || p_provider, 'payout_destination_changed', 'payout_account',
+            v_a.id, jsonb_build_object('usable_from', v_usable));
+    perform public.payout_alert(v_a.organizer_id, 'payout_destination_changed');
+    perform public.payment_discrepancy_open('payout_destination_changed', p_provider, p_account_ref, null,
+                                            jsonb_build_object('organizer_id', v_a.organizer_id));
+  end if;
+  if v_match is false and v_a.kyb_tax_id_match is distinct from false then
+    insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id)
+    values (v_a.organizer_id, 'system:payments:' || p_provider, 'payout_account_kyb_mismatch', 'payout_account', v_a.id);
+    perform public.payout_alert(v_a.organizer_id, 'payout_account_kyb_mismatch');
+    perform public.payment_discrepancy_open('kyb_mismatch', p_provider, p_account_ref, null,
+                                            jsonb_build_object('organizer_id', v_a.organizer_id));
+  end if;
+  return v_new;
+end $$;
+
+-- Warunki sprzedaży organizatora (regulamin + dane sprzedawcy): nową wersję składa właściciel organizatora,
+-- zatwierdza personel. NIP sprzedawcy = NIP zweryfikowanego profilu (DSA art. 30 – identyfikowalność).
+create or replace function public.app_sales_terms_submit(p_organizer uuid, p_actor uuid, p_payload jsonb)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_field   text;
+  v_id      uuid;
+  v_version integer;
+  v_url     text := '(https?://|www\.)';
+begin
+  if not public.organizer_owner_ok(p_organizer, p_actor) then
+    raise exception 'sales terms: brak uprawnień';
+  end if;
+  v_field := case
+    when coalesce(p_payload ->> 'seller_nip', '') is distinct from
+         (select o.nip from public.training_organizers o where o.id = p_organizer) then 'seller_nip'
+    when coalesce(char_length(trim(p_payload ->> 'seller_legal_name')), 0) not between 2 and 200
+         or p_payload ->> 'seller_legal_name' ~ '[<>]' then 'seller_legal_name'
+    when coalesce(char_length(trim(p_payload ->> 'seller_address')), 0) not between 5 and 200
+         or p_payload ->> 'seller_address' ~ '[<>]' then 'seller_address'
+    when char_length(p_payload ->> 'seller_register') > 120 or p_payload ->> 'seller_register' ~ '[<>]' then 'seller_register'
+    when coalesce(p_payload ->> 'seller_email', '') !~ '^[^@[:space:]<>]+@[^@[:space:]<>]+\.[a-z]{2,}$'
+         or char_length(p_payload ->> 'seller_email') > 254 then 'seller_email'
+    when nullif(p_payload ->> 'seller_phone', '') is not null
+         and p_payload ->> 'seller_phone' !~ '^\+?[0-9 ]{9,16}$' then 'seller_phone'
+    when coalesce(char_length(p_payload ->> 'cancellation_rules'), 0) not between 50 and 4000
+         or p_payload ->> 'cancellation_rules' ~ '[<>]' or p_payload ->> 'cancellation_rules' ~* v_url then 'cancellation_rules'
+    when coalesce(char_length(p_payload ->> 'withdrawal_info'), 0) not between 50 and 4000
+         or p_payload ->> 'withdrawal_info' ~ '[<>]' or p_payload ->> 'withdrawal_info' ~* v_url then 'withdrawal_info'
+    when coalesce(char_length(p_payload ->> 'complaint_info'), 0) not between 30 and 2000
+         or p_payload ->> 'complaint_info' ~ '[<>]' or p_payload ->> 'complaint_info' ~* v_url then 'complaint_info'
+    when coalesce(char_length(p_payload ->> 'terms_body'), 0) not between 200 and 20000
+         or p_payload ->> 'terms_body' ~ '[<>]' or p_payload ->> 'terms_body' ~* v_url then 'terms_body'
+  end;
+  if v_field is not null then
+    raise exception 'sales terms: nieprawidłowe pole %', v_field using errcode = 'BP422';
+  end if;
+  if exists (select 1 from public.organizer_sales_terms st
+              where st.organizer_id = p_organizer and st.status = 'pending_review') then
+    raise exception 'sales terms: poprzednia wersja czeka na sprawdzenie' using errcode = 'BP409';
+  end if;
+  select coalesce(max(st.version), 0) + 1 into v_version from public.organizer_sales_terms st
+   where st.organizer_id = p_organizer;
+  insert into public.organizer_sales_terms
+    (organizer_id, version, seller_legal_name, seller_address, seller_nip, seller_register, seller_email,
+     seller_phone, cancellation_rules, withdrawal_info, complaint_info, terms_body, submitted_by)
+  values (p_organizer, v_version, trim(p_payload ->> 'seller_legal_name'), trim(p_payload ->> 'seller_address'),
+          p_payload ->> 'seller_nip', nullif(trim(p_payload ->> 'seller_register'), ''),
+          lower(trim(p_payload ->> 'seller_email')), nullif(trim(p_payload ->> 'seller_phone'), ''),
+          p_payload ->> 'cancellation_rules', p_payload ->> 'withdrawal_info', p_payload ->> 'complaint_info',
+          p_payload ->> 'terms_body', p_actor)
+  returning id into v_id;
+  insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id, payload)
+  values (p_organizer, 'user:' || p_actor::text, 'sales_terms_submitted', 'sales_terms', v_id,
+          jsonb_build_object('version', v_version));
+  insert into public.outbox_emails (template, recipient, payload)
+  values ('sales_terms_submitted_team', 'team:moderacja', jsonb_build_object('organizer_id', p_organizer, 'version', v_version));
+  return v_id;
+end $$;
+
+create or replace function public.app_sales_terms_moderate(
+  p_terms uuid, p_actor uuid, p_decision text, p_reason text default null)
+returns void
+language plpgsql set search_path = '' as $$
+declare
+  v_st public.organizer_sales_terms%rowtype;
+begin
+  if not exists (select 1 from public.admin_users u
+                 where u.user_id = p_actor and u.is_active and u.role in ('admin','agent')) then
+    raise exception 'sales terms: brak uprawnień';
+  end if;
+  select * into v_st from public.organizer_sales_terms st where st.id = p_terms for update;
+  if not found or v_st.status <> 'pending_review' then
+    raise exception 'sales terms: brak wersji do sprawdzenia' using errcode = 'BP409';
+  end if;
+  if p_decision = 'approve' then
+    update public.organizer_sales_terms set status = 'retired'
+     where organizer_id = v_st.organizer_id and status = 'active';
+    update public.organizer_sales_terms set status = 'active', reviewed_by = p_actor, reviewed_at = now()
+     where id = p_terms;
+  elsif p_decision = 'reject' and coalesce(char_length(trim(p_reason)), 0) between 5 and 500 then
+    update public.organizer_sales_terms
+       set status = 'rejected', reviewed_by = p_actor, reviewed_at = now(), rejection_reason = trim(p_reason)
+     where id = p_terms;
+  else
+    raise exception 'sales terms: niedozwolona decyzja albo brak uzasadnienia';
+  end if;
+  insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id, payload)
+  values (v_st.organizer_id, 'staff:' || p_actor::text,
+          case p_decision when 'approve' then 'sales_terms_approved' else 'sales_terms_rejected' end,
+          'sales_terms', p_terms, jsonb_build_object('version', v_st.version));
+end $$;
+
+-- Wygaszenie przeterminowanych rezerwacji jednego szkolenia. Wywołujący TRZYMA blokadę wiersza szkolenia.
+create or replace function public.training_orders_expire_for(p_training uuid)
+returns integer
+language plpgsql set search_path = '' as $$
+declare
+  v_n     integer;
+  v_actor text := current_setting('app.audit_actor', true);
+begin
+  perform set_config('app.audit_actor', 'system:reservation-expiry', true);
+  with exp as (
+    update public.training_orders o
+       set status = 'expired', expired_at = now(), updated_at = now()
+     where o.training_id = p_training and o.status = 'reserved' and o.reserved_until <= now()
+    returning 1)
+  select count(*) into v_n from exp;
+  if v_n > 0 then
+    update public.trainings t set seats_held = t.seats_held - v_n where t.id = p_training;
+  end if;
+  perform set_config('app.audit_actor', coalesce(v_actor, ''), true);
+  return v_n;
+end $$;
+
+-- Zamknięcie otwartych rezerwacji szkolenia (zawieszony organizator). Wywołujący TRZYMA blokadę wiersza szkolenia.
+create or replace function public.training_orders_close_reserved(p_training uuid, p_actor text)
+returns integer
+language plpgsql set search_path = '' as $$
+declare
+  v_n     integer;
+  v_actor text := current_setting('app.audit_actor', true);
+begin
+  perform set_config('app.audit_actor', p_actor, true);
+  with c as (
+    update public.training_orders o set status = 'cancelled', cancelled_at = now(), updated_at = now()
+     where o.training_id = p_training and o.status = 'reserved'
+    returning 1)
+  select count(*) into v_n from c;
+  if v_n > 0 then
+    update public.trainings t set seats_held = t.seats_held - v_n where t.id = p_training;
+  end if;
+  perform set_config('app.audit_actor', coalesce(v_actor, ''), true);
+  return v_n;
+end $$;
+
+-- Cron co 5 minut (istniejący wyzwalacz */5 Workera beautypolisa-jobs): zwalnia miejsca z wygasłych rezerwacji
+-- (czas rezerwacji – app_settings, z minimum operatora) i zamyka rezerwacje organizatorów, którzy nie są już
+-- aktywni (zawieszenie także bezpośrednią zmianą statusu w /panel). Rezerwacja i tak wygasa „leniwie” przy
+-- każdym nowym zamówieniu na to samo szkolenie. Po funkcji Worker woła app_checkouts_to_cancel() i dla każdej
+-- zwróconej sesji adapter.cancelCheckout() – strona operatora przestaje przyjmować płatność.
+create or replace function public.app_expire_training_orders()
+returns integer
+language plpgsql set search_path = '' as $$
+declare
+  v_total integer := 0;
+  r       record;
+begin
+  for r in select distinct o.training_id from public.training_orders o
+            where o.status = 'reserved' and o.reserved_until <= now() order by 1 loop
+    perform 1 from public.trainings t where t.id = r.training_id for update;
+    v_total := v_total + public.training_orders_expire_for(r.training_id);
+  end loop;
+  for r in select distinct o.training_id from public.training_orders o
+             join public.training_organizers g on g.id = o.organizer_id
+            where o.status = 'reserved' and g.status <> 'active' order by 1 loop
+    perform 1 from public.trainings t where t.id = r.training_id for update;
+    v_total := v_total + public.training_orders_close_reserved(r.training_id, 'system:organizer-suspended');
+  end loop;
+  return v_total;
+end $$;
+
+-- Zawieszenie organizatora przez personel (admin/agent, z uzasadnieniem): status 'suspended' (organizer_ids()
+-- od razu odcina dostęp), zamknięcie otwartych rezerwacji wszystkich jego szkoleń; serwer po wywołaniu woła
+-- app_checkouts_to_cancel() i cancelCheckout. Płatność, która mimo to przyjdzie, idzie do zwrotu automatycznego
+-- (app_payment_webhook – powód 'organizator-zawieszony'). Przegląd red team płatności 13.11.2026.
+create or replace function public.app_suspend_organizer(p_organizer uuid, p_actor uuid, p_reason text)
+returns integer
+language plpgsql set search_path = '' as $$
+declare
+  v_n integer := 0;
+  r   record;
+begin
+  if not exists (select 1 from public.admin_users u
+                 where u.user_id = p_actor and u.is_active and u.role in ('admin','agent')) then
+    raise exception 'suspend organizer: brak uprawnień';
+  end if;
+  if coalesce(char_length(trim(p_reason)), 0) not between 5 and 500 or p_reason ~ '[<>]' then
+    raise exception 'suspend organizer: nieprawidłowe pole reason' using errcode = 'BP422';
+  end if;
+  update public.training_organizers set status = 'suspended', updated_at = now()
+   where id = p_organizer and status = 'active';
+  if not found then
+    raise exception 'suspend organizer: organizator nie jest aktywny' using errcode = 'BP409';
+  end if;
+  for r in select distinct o.training_id from public.training_orders o
+            where o.organizer_id = p_organizer and o.status = 'reserved' order by 1 loop
+    perform 1 from public.trainings t where t.id = r.training_id for update;
+    v_n := v_n + public.training_orders_close_reserved(r.training_id, 'staff:' || p_actor::text);
+  end loop;
+  insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id, payload)
+  values (p_organizer, 'staff:' || p_actor::text, 'organizer_suspended_orders_closed', 'organizer', p_organizer,
+          jsonb_build_object('reservations_closed', v_n));
+  return v_n;
+end $$;
+
+-- Sesje płatności do unieważnienia u operatora (adapter.cancelCheckout, idempotentne): płatność 'pending'
+-- z referencją operatora, gdy zamówienie nie jest już rezerwacją (wygasło, anulowane, opłacone inną sesją,
+-- zamknięte przy zawieszeniu organizatora). Funkcja „rezerwuje” wiersze (checkout_cancel_requested_at),
+-- ponowienie po 15 minutach, jeśli sesja dalej jest 'pending'. Cron co 5 minut i od razu po
+-- app_training_order_abandon() / app_suspend_organizer().
+create or replace function public.app_checkouts_to_cancel(p_limit integer default 100)
+returns table (payment_id uuid, provider text, provider_payment_ref text)
+language plpgsql set search_path = '' as $$
+#variable_conflict use_column
+begin
+  return query
+    with c as (
+      select p.id from public.training_payments p
+        join public.training_orders o on o.id = p.order_id
+       where p.status = 'pending' and p.provider_payment_ref is not null
+         and (o.status <> 'reserved'
+              or exists (select 1 from public.training_payments q where q.order_id = p.order_id and q.attempt > p.attempt))
+         and p.created_at > now() - interval '48 hours'
+         and (p.checkout_cancel_requested_at is null or p.checkout_cancel_requested_at < now() - interval '15 minutes')
+       order by p.created_at
+       limit least(greatest(coalesce(p_limit, 100), 1), 500)
+       for update of p skip locked)
+    update public.training_payments x set checkout_cancel_requested_at = now(), updated_at = now()
+      from c where x.id = c.id
+    returning x.id, x.provider, x.provider_payment_ref;
+end $$;
+
+-- Płatności do sprawdzenia w API operatora (cron co 15 minut; adapter.getPayment): wciąż 'pending' po czasie
+-- sesji, także bez referencji operatora (Worker padł między createCheckout a zapisem referencji – szuka po
+-- naszym UUID w metadanych; możliwość wyszukiwania po metadanych – do weryfikacji u operatora). Wynik Worker
+-- przekazuje do app_payment_webhook() ze źródłem 'reconciliation' (event_id 'recon:<id>:<stan>').
+create or replace function public.app_payments_to_reconcile(p_limit integer default 100)
+returns table (payment_id uuid, order_id uuid, provider text, provider_payment_ref text, created_at timestamptz)
+language sql stable set search_path = '' as $$
+  select p.id, p.order_id, p.provider, p.provider_payment_ref, p.created_at
+    from public.training_payments p
+   where p.status = 'pending' and p.created_at between now() - interval '48 hours' and now() - interval '15 minutes'
+     and coalesce(p.checkout_expires_at, p.created_at) < now()
+   order by p.created_at
+   limit least(greatest(coalesce(p_limit, 100), 1), 500);
+$$;
+
+-- Zamówienie z rezerwacją miejsca (15 minut albo minimalny czas sesji operatora – Stripe: 30). Kwota i prowizja
+-- WYŁĄCZNIE z bazy (brak parametru kwoty).
+-- p_participant_name / p_participant_email – z profilu zweryfikowanego użytkownika (jak app_training_register);
+-- p_buyer – dane do faktury z formularza (osoba albo firma z NIP); p_sales_terms – wersja warunków sprzedaży,
+-- które kupujący widział i zaakceptował; p_notice_version – wersja informacji „sprzedawcą jest organizator,
+-- portal nie jest stroną umowy” i o przekazaniu danych organizatorowi; p_idempotency_key – nadany przez
+-- serwer przy renderze formularza (ponowne wysłanie = to samo zamówienie); p_early_start_notice – wersja treści
+-- żądania rozpoczęcia usługi przed upływem 14 dni na odstąpienie (checkbox; wymagane, gdy szkolenie zaczyna się
+-- wcześniej niż za 14 dni – dok. 11 §12a.8 [do weryfikacji prawnej]).
+-- Przegląd red team 13.11.2026: konto wypłat po karencji (usable_from), limity nowego organizatora,
+-- bill_to_account tylko dla NIP konta salonu (zakup na NIP salonu – wyłącznie właściciel).
+create or replace function public.app_training_order_create(
+  p_training uuid, p_user uuid, p_account uuid, p_idempotency_key uuid, p_sales_terms uuid,
+  p_participant_name text, p_participant_email text, p_buyer jsonb, p_notice_version text,
+  p_early_start_notice text default null)
+returns table (order_id uuid, order_ref text, status text, amount_grosze integer, platform_fee_grosze integer,
+               reserved_until timestamptz, provider text, provider_account_ref text, created boolean)
+language plpgsql set search_path = '' as $$
+#variable_conflict use_column
+declare
+  v_o      public.training_orders%rowtype;
+  v_t      public.trainings%rowtype;
+  v_set    public.app_settings%rowtype;
+  v_pa     public.organizer_payout_accounts%rowtype;
+  v_fee    public.platform_fee_settings%rowtype;
+  v_role   text;
+  v_terms  uuid;
+  v_field  text;
+  v_kind   text := p_buyer ->> 'buyer_kind';
+  v_nip    text := nullif(p_buyer ->> 'nip', '');
+  v_amount integer;
+  v_bps    integer;
+  v_fee_gr integer;
+  v_email  text := '^[^@[:space:]<>]+@[^@[:space:]<>]+\.[A-Za-z]{2,}$';
+  v_bill   boolean := false;
+  v_verif  timestamptz;
+  v_mins   integer;
+begin
+  -- 0. jedna operacja zamówienia naraz na użytkownika (SEC-18): idempotencja i limity bez wyścigów
+  perform pg_advisory_xact_lock(hashtextextended('training_order:user:' || coalesce(p_user::text, ''), 0));
+  -- 1. idempotencja: ten sam klucz tej samej osoby = to samo zamówienie, bez nowej rezerwacji
+  select * into v_o from public.training_orders o where o.user_id = p_user and o.idempotency_key = p_idempotency_key;
+  if found then
+    if v_o.training_id <> p_training then
+      raise exception 'order: klucz idempotencji użyty dla innego szkolenia' using errcode = 'BP409';
+    end if;
+    return query select v_o.id, v_o.order_ref, v_o.status, v_o.amount_grosze, v_o.platform_fee_grosze,
+                        v_o.reserved_until, v_o.provider, pa.provider_account_ref, false
+                   from public.organizer_payout_accounts pa where pa.id = v_o.payout_account_id;
+    return;
+  end if;
+  -- 2. członkostwo: aktywny członek aktywnego konta salonu (konta pracodawców – Q17; osoby szukające pracy – nie)
+  select m.role into v_role from public.client_members m
+    join public.client_accounts a on a.id = m.account_id and a.status = 'active' and a.kind = 'client'
+   where m.account_id = p_account and m.user_id = p_user and m.status = 'active';
+  if not found then
+    raise exception 'order: brak aktywnego członkostwa';
+  end if;
+  -- 3. walidacja (PRIV-12: tylko nazwa pola, bez wartości)
+  v_field := case
+    when coalesce(char_length(p_notice_version), 0) not between 1 and 40 then 'notice_version'
+    when p_idempotency_key is null then 'idempotency_key'
+    when coalesce(char_length(trim(p_participant_name)), 0) not between 2 and 120
+         or p_participant_name ~ '[<>@]' then 'participant_name'
+    when coalesce(p_participant_email, '') !~ v_email or char_length(p_participant_email) > 254 then 'participant_email'
+    when v_kind is null or v_kind not in ('osoba','firma') then 'buyer_kind'
+    when coalesce(char_length(trim(p_buyer ->> 'buyer_name')), 0) not between 2 and 200
+         or p_buyer ->> 'buyer_name' ~ '[<>@]' then 'buyer_name'
+    when v_kind = 'firma' and (v_nip is null or v_nip !~ '^[0-9]{10}$' or not public.nip_checksum_ok(v_nip)) then 'nip'
+    when v_kind = 'osoba' and v_nip is not null then 'nip'
+    when (v_kind = 'firma' or nullif(p_buyer ->> 'street', '') is not null)
+         and (coalesce(char_length(trim(p_buyer ->> 'street')), 0) not between 3 and 200
+              or p_buyer ->> 'street' ~ '[<>@]') then 'street'
+    when (v_kind = 'firma' or nullif(p_buyer ->> 'postal_code', '') is not null)
+         and coalesce(p_buyer ->> 'postal_code', '') !~ '^[0-9]{2}-[0-9]{3}$' then 'postal_code'
+    when (v_kind = 'firma' or nullif(p_buyer ->> 'city', '') is not null)
+         and (coalesce(char_length(trim(p_buyer ->> 'city')), 0) not between 2 and 80
+              or p_buyer ->> 'city' ~ '[<>@[:digit:]]') then 'city'
+    when coalesce(p_buyer ->> 'invoice_email', '') !~ v_email or char_length(p_buyer ->> 'invoice_email') > 254 then 'invoice_email'
+    when p_early_start_notice is not null and char_length(p_early_start_notice) not between 1 and 40 then 'early_start'
+  end;
+  if v_field is not null then
+    raise exception 'order: nieprawidłowe pole %', v_field using errcode = 'BP422';
+  end if;
+  -- 4. druga karta przeglądarki: aktywna rezerwacja tej osoby na to szkolenie = to samo zamówienie
+  select * into v_o from public.training_orders o
+   where o.training_id = p_training and o.user_id = p_user and o.status = 'reserved' and o.reserved_until > now();
+  if found then
+    return query select v_o.id, v_o.order_ref, v_o.status, v_o.amount_grosze, v_o.platform_fee_grosze,
+                        v_o.reserved_until, v_o.provider, pa.provider_account_ref, false
+                   from public.organizer_payout_accounts pa where pa.id = v_o.payout_account_id;
+    return;
+  end if;
+  -- 5. limity przeciw blokowaniu miejsc (rezerwacje bez zamiaru zapłaty)
+  select * into v_set from public.app_settings;
+  if (select count(*) from public.training_orders o
+       where o.user_id = p_user and o.created_at > now() - interval '1 hour') >= v_set.orders_per_user_hour
+     or (select count(*) from public.training_orders o
+          where o.user_id = p_user and o.status = 'reserved' and o.reserved_until > now())
+        >= v_set.active_reservations_per_user then
+    raise exception 'order: limit zamówień' using errcode = 'BP429';
+  end if;
+  -- 6. blokada wiersza szkolenia: wszystkie operacje na miejscach tego szkolenia po kolei
+  select * into v_t from public.trainings t where t.id = p_training for update;
+  if not found or v_t.status <> 'published' or v_t.published_at is null
+     or v_t.plan_valid_until is null or v_t.plan_valid_until <= now() or v_t.starts_at > v_t.plan_valid_until then
+    raise exception 'order: szkolenie niedostępne' using errcode = 'BP409';
+  end if;
+  if v_t.payment_mode <> 'online' or v_t.price_kind <> 'platne' then
+    raise exception 'order: szkolenie bez płatności online' using errcode = 'BP409';
+  end if;
+  if now() >= coalesce(v_t.registration_closes_at, v_t.starts_at) then
+    raise exception 'order: zapisy zamknięte' using errcode = 'BP409';
+  end if;
+  if v_t.audience = 'owners' and v_role <> 'owner' then
+    raise exception 'order: szkolenie dla właścicieli salonów' using errcode = 'BP409';
+  end if;
+  select o.verified_at into v_verif from public.training_organizers o
+   where o.id = v_t.organizer_id and o.status = 'active' and o.verified_at is not null;
+  if not found then
+    raise exception 'order: organizator niedostępny' using errcode = 'BP409';
+  end if;
+  select * into v_pa from public.organizer_payout_accounts pa
+   where pa.organizer_id = v_t.organizer_id and pa.status = 'active';
+  if not found then
+    raise exception 'order: organizator nie przyjmuje teraz płatności online' using errcode = 'BP409';
+  end if;
+  if v_pa.usable_from is null or v_pa.usable_from > now() then
+    raise exception 'order: konto wypłat organizatora w karencji' using errcode = 'BP409';
+  end if;
+  -- prawa konsumenta: szkolenie przed upływem 14 dni na odstąpienie – tylko z wyraźnym żądaniem kupującego
+  if v_t.starts_at < now() + interval '14 days' and p_early_start_notice is null then
+    raise exception 'order: nieprawidłowe pole early_start' using errcode = 'BP422';
+  end if;
+  -- faktura na NIP konta salonu: tylko właściciel (pracownik – przez właściciela); inny NIP = zakup prywatny
+  if v_kind = 'firma' and v_nip = (select a.nip from public.client_accounts a where a.id = p_account) then
+    if v_role <> 'owner' then
+      raise exception 'order: faktura na NIP salonu – zamawia właściciel salonu' using errcode = 'BP409';
+    end if;
+    v_bill := true;
+  end if;
+  select st.id into v_terms from public.organizer_sales_terms st
+   where st.organizer_id = v_t.organizer_id and st.status = 'active';
+  if v_terms is null or v_terms is distinct from p_sales_terms then
+    raise exception 'order: warunki sprzedaży organizatora zmieniły się – odśwież stronę' using errcode = 'BP409';
+  end if;
+  if exists (select 1 from public.training_registrations r
+              where r.training_id = p_training and r.user_id = p_user
+                and r.status in ('registered','attended','no_show')) then
+    raise exception 'order: już zapisano na to szkolenie' using errcode = 'BP409';
+  end if;
+  -- opłacone (także częściowo zwrócone albo w zwrocie) zamówienie tej osoby na to szkolenie – bez drugiego
+  -- (unikalny indeks training_orders_paid_uq i tak odrzuciłby drugie potwierdzenie)
+  if exists (select 1 from public.training_orders x
+              where x.training_id = p_training and x.user_id = p_user
+                and x.status in ('paid','partially_refunded','refund_pending')) then
+    raise exception 'order: szkolenie jest już opłacone' using errcode = 'BP409';
+  end if;
+  -- 7. wygaszenie przeterminowanych rezerwacji tego szkolenia (pod tą samą blokadą)
+  if public.training_orders_expire_for(p_training) > 0 then
+    select * into v_t from public.trainings t where t.id = p_training;
+  end if;
+  -- 8. limit miejsc na salon: zapisy + aktywne rezerwacje konta
+  if (select count(*) from public.training_registrations r
+       where r.training_id = p_training and r.account_id = p_account and r.status in ('registered','waitlisted'))
+     + (select count(*) from public.training_orders o
+         where o.training_id = p_training and o.account_id = p_account and o.status = 'reserved')
+     >= v_t.per_account_limit then
+    raise exception 'order: limit miejsc dla salonu' using errcode = 'BP409';
+  end if;
+  -- 9. brak nadsprzedaży: zapisani + zarezerwowani < limit (płatne online – bez listy rezerwowej w MVP)
+  if v_t.capacity is not null and v_t.seats_registered + v_t.seats_held >= v_t.capacity then
+    raise exception 'order: brak wolnych miejsc' using errcode = 'BP409';
+  end if;
+  -- 10. kwota wyłącznie z bazy (migawka ceny brutto) i prowizja z ustawień; w promocji zawsze 0 (00, D42)
+  v_amount := (v_t.price_gross_pln * 100)::integer;
+  v_fee := public.platform_fee_current();
+  v_bps := coalesce(v_fee.fee_bps, 0);
+  v_fee_gr := floor(v_amount::numeric * v_bps / 10000)::integer + coalesce(v_fee.fee_fixed_grosze, 0);
+  if exists (select 1 from public.app_promotions p
+              where p.key = 'otwarcie-portalu' and p.enabled and (p.ends_at is null or p.ends_at > now())) then
+    v_bps := 0;
+    v_fee_gr := 0;
+  end if;
+  if v_fee_gr >= v_amount then
+    raise exception 'order: prowizja nie może przekroczyć ceny' using errcode = 'BP409';
+  end if;
+  -- 11. nowy organizator (pierwsze new_organizer_days dni od weryfikacji): limit liczby i sumy zamówień
+  --     opłaconych i w rezerwacji – szkoda przy fałszywym organizatorze ograniczona do limitu
+  if v_verif > now() - make_interval(days => v_set.new_organizer_days) then
+    perform pg_advisory_xact_lock(hashtextextended('training_order:organizer:' || v_t.organizer_id::text, 0));
+    if (select count(*) from public.training_orders x
+         where x.organizer_id = v_t.organizer_id
+           and (x.status in ('paid','partially_refunded','refund_pending','refunded')
+                or (x.status = 'reserved' and x.reserved_until > now()))) >= v_set.new_organizer_paid_orders
+       or (select coalesce(sum(x.amount_grosze), 0) from public.training_orders x
+            where x.organizer_id = v_t.organizer_id
+              and (x.status in ('paid','partially_refunded','refund_pending','refunded')
+                   or (x.status = 'reserved' and x.reserved_until > now()))) + v_amount > v_set.new_organizer_max_grosze then
+      raise exception 'order: limit sprzedaży nowego organizatora' using errcode = 'BP409';
+    end if;
+  end if;
+  -- 12. czas rezerwacji = max(ustawienie, minimalny czas sesji operatora) – sesja u operatora nie może być
+  --     krótsza niż minimum operatora (Stripe Checkout: 30 min), a rezerwacja nie krótsza niż sesja
+  v_mins := greatest(v_set.order_reservation_minutes, coalesce((v_set.checkout_min_minutes ->> v_pa.provider)::integer, 0));
+  insert into public.training_orders
+    (order_ref, idempotency_key, training_id, organizer_id, account_id, user_id, sales_terms_id, payout_account_id,
+     provider, buyer_kind, bill_to_account, amount_grosze, platform_fee_bps, platform_fee_grosze, reserved_until,
+     notice_version, early_start_requested_at, early_start_notice_version)
+  values ('SZ-' || to_char(now(), 'YYMM') || '-' || upper(substr(md5(gen_random_uuid()::text), 1, 8)),
+          p_idempotency_key, p_training, v_t.organizer_id, p_account, p_user, v_terms, v_pa.id, v_pa.provider,
+          v_kind, v_bill, v_amount, v_bps, v_fee_gr, now() + make_interval(mins => v_mins),
+          p_notice_version, case when p_early_start_notice is not null then now() end, p_early_start_notice)
+  returning * into v_o;
+  insert into public.training_order_buyer_data
+    (order_id, user_id, buyer_kind, buyer_name, nip, street, postal_code, city, invoice_email, participant_name,
+     participant_email)
+  values (v_o.id, p_user, v_kind, trim(p_buyer ->> 'buyer_name'), v_nip, nullif(trim(p_buyer ->> 'street'), ''),
+          nullif(trim(p_buyer ->> 'postal_code'), ''), nullif(trim(p_buyer ->> 'city'), ''),
+          lower(trim(p_buyer ->> 'invoice_email')), trim(p_participant_name), lower(trim(p_participant_email)));
+  update public.trainings t set seats_held = t.seats_held + 1 where t.id = p_training;
+  insert into public.client_audit_log (account_id, organizer_id, actor, action, entity, entity_id, payload)
+  values (p_account, v_t.organizer_id, 'user:' || p_user::text, 'training_order_created', 'training_order', v_o.id,
+          jsonb_build_object('training', p_training, 'amount_grosze', v_amount, 'fee_bps', v_bps));
+  return query select v_o.id, v_o.order_ref, v_o.status, v_o.amount_grosze, v_o.platform_fee_grosze,
+                      v_o.reserved_until, v_o.provider, v_pa.provider_account_ref, true;
+end $$;
+
+-- Kupujący rezygnuje przed zapłatą („Anuluj zamówienie”) – miejsce wraca od razu. Idempotentnie. Serwer po
+-- wywołaniu unieważnia otwarte sesje operatora (app_checkouts_to_cancel → cancelCheckout).
+create or replace function public.app_training_order_abandon(p_order uuid, p_user uuid)
+returns void
+language plpgsql set search_path = '' as $$
+declare
+  v_training uuid;
+  v_status   text;
+begin
+  select o.training_id into v_training from public.training_orders o where o.id = p_order and o.user_id = p_user;
+  if not found then
+    raise exception 'order: brak zamówienia';
+  end if;
+  perform 1 from public.trainings t where t.id = v_training for update;
+  select o.status into v_status from public.training_orders o where o.id = p_order for update;
+  if v_status <> 'reserved' then
+    return;
+  end if;
+  perform set_config('app.audit_actor', 'user:' || p_user::text, true);
+  update public.training_orders set status = 'cancelled', cancelled_at = now(), updated_at = now() where id = p_order;
+  update public.trainings t set seats_held = t.seats_held - 1 where t.id = v_training;
+end $$;
+
+-- Czy zamówienie można teraz opłacić (nowa sesja u operatora). NULL = tak, inaczej krótki powód (BP409).
+-- Przegląd red team 13.11.2026: zawieszony organizator, konto wypłat nieaktywne albo w karencji, szkolenie
+-- zdjęte, odwołane albo rozpoczęte – bez nowych sesji płatności także dla istniejącej rezerwacji.
+create or replace function public.training_order_payable_error(p_order uuid)
+returns text
+language sql stable set search_path = '' as $$
+  select case
+    when o.status <> 'reserved' or o.reserved_until <= now() then 'rezerwacja wygasła'
+    when g.status <> 'active' or g.verified_at is null then 'organizator niedostępny'
+    when pa.status <> 'active' or pa.usable_from is null or pa.usable_from > now() then 'konto wypłat organizatora nieaktywne'
+    when t.status <> 'published' or now() >= t.starts_at then 'szkolenie niedostępne'
+  end
+    from public.training_orders o
+    join public.training_organizers g on g.id = o.organizer_id
+    join public.organizer_payout_accounts pa on pa.id = o.payout_account_id
+    join public.trainings t on t.id = o.training_id
+   where o.id = p_order;
+$$;
+
+-- Sesja płatności – krok 1, PRZED createCheckout: wiersz płatności z naszym UUID (status 'pending', bez
+-- referencji operatora). UUID trafia do operatora w metadanych sesji (ourPaymentId) – webhook i uzgadnianie
+-- znajdą płatność nawet wtedy, gdy Worker padnie między createCheckout a app_training_payment_attach.
+-- Tylko właściciel zamówienia, tylko przy ważnej rezerwacji i opłacalnym zamówieniu; najwyżej 5 prób.
+create or replace function public.app_training_payment_begin(p_order uuid, p_user uuid, p_provider text)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_o       public.training_orders%rowtype;
+  v_id      uuid;
+  v_attempt integer;
+  v_err     text;
+begin
+  select * into v_o from public.training_orders o where o.id = p_order and o.user_id = p_user for update;
+  if not found then
+    raise exception 'payment: brak zamówienia';
+  end if;
+  if p_provider is distinct from v_o.provider then
+    raise exception 'payment: inny operator niż w zamówieniu';
+  end if;
+  v_err := public.training_order_payable_error(p_order);
+  if v_err is not null then
+    raise exception 'payment: %', v_err using errcode = 'BP409';
+  end if;
+  select coalesce(max(p.attempt), 0) + 1 into v_attempt from public.training_payments p where p.order_id = p_order;
+  if v_attempt > 5 then
+    raise exception 'payment: limit prób płatności' using errcode = 'BP429';
+  end if;
+  insert into public.training_payments (order_id, provider, attempt, amount_grosze)
+  values (p_order, p_provider, v_attempt, v_o.amount_grosze)
+  returning id into v_id;
+  return v_id;
+end $$;
+
+-- Sesja płatności – krok 2, po createCheckout: referencja operatora do wiersza z kroku 1 (p_payment).
+-- Zapis referencji NIE zależy już od ważności rezerwacji: sesja istnieje u operatora, więc musi dać się ją
+-- unieważnić (cancelCheckout) i rozliczyć spóźnioną płatność. Idempotentnie dla tej samej referencji.
+-- Bez p_payment (zgodność wstecz) – jak dawniej: kontrola opłacalności i nowa próba w jednym kroku.
+create or replace function public.app_training_payment_attach(
+  p_order uuid, p_user uuid, p_provider text, p_provider_payment_ref text, p_checkout_expires_at timestamptz,
+  p_payment uuid default null)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_o       public.training_orders%rowtype;
+  v_p       public.training_payments%rowtype;
+  v_id      uuid;
+  v_oid     uuid;
+  v_attempt integer;
+  v_err     text;
+begin
+  if coalesce(p_provider_payment_ref, '') !~ '^[A-Za-z0-9_.:-]{3,200}$' then
+    raise exception 'payment: nieprawidłowe pole provider_payment_ref' using errcode = 'BP422';
+  end if;
+  select * into v_o from public.training_orders o where o.id = p_order and o.user_id = p_user for update;
+  if not found then
+    raise exception 'payment: brak zamówienia';
+  end if;
+  select p.id, p.order_id into v_id, v_oid from public.training_payments p
+   where p.provider = p_provider and p.provider_payment_ref = p_provider_payment_ref;
+  if found then                                  -- powtórzenie tego samego wywołania (idempotentnie)
+    if v_oid <> p_order then
+      raise exception 'payment: referencja operatora należy do innego zamówienia';
+    end if;
+    return v_id;
+  end if;
+  if p_provider is distinct from v_o.provider then
+    raise exception 'payment: inny operator niż w zamówieniu';
+  end if;
+  if p_payment is not null then
+    select * into v_p from public.training_payments p where p.id = p_payment and p.order_id = p_order for update;
+    if not found or v_p.provider_payment_ref is not null then
+      raise exception 'payment: brak sesji do uzupełnienia';
+    end if;
+    update public.training_payments
+       set provider_payment_ref = p_provider_payment_ref, checkout_expires_at = p_checkout_expires_at, updated_at = now()
+     where id = p_payment;
+    return p_payment;
+  end if;
+  v_err := public.training_order_payable_error(p_order);
+  if v_err is not null then
+    raise exception 'payment: %', v_err using errcode = 'BP409';
+  end if;
+  select coalesce(max(p.attempt), 0) + 1 into v_attempt from public.training_payments p where p.order_id = p_order;
+  if v_attempt > 5 then
+    raise exception 'payment: limit prób płatności' using errcode = 'BP429';
+  end if;
+  insert into public.training_payments (order_id, provider, provider_payment_ref, attempt, amount_grosze, checkout_expires_at)
+  values (p_order, p_provider, p_provider_payment_ref, v_attempt, v_o.amount_grosze, p_checkout_expires_at)
+  returning id into v_id;
+  return v_id;
+end $$;
+
+-- Dozwolone przejścia stanu płatności. Zdarzenia spóźnione i w złej kolejności (np. „failed” po
+-- „succeeded”) są zapisywane w payment_webhook_events jako 'ignored_stale' i nie zmieniają stanu.
+create or replace function public.payment_status_next_ok(p_from text, p_to text)
+returns boolean
+language sql immutable set search_path = '' as $$
+  select (p_from, p_to) in (
+    ('pending','succeeded'), ('pending','failed'), ('pending','cancelled'), ('pending','expired'),
+    ('failed','succeeded'), ('failed','cancelled'), ('failed','expired'),
+    ('cancelled','succeeded'), ('expired','succeeded'),          -- płatność potwierdzona po czasie (np. przelew)
+    ('succeeded','partially_refunded'), ('succeeded','refunded'), ('succeeded','disputed'),
+    ('partially_refunded','partially_refunded'), ('partially_refunded','refunded'), ('partially_refunded','disputed'),
+    ('disputed','succeeded'),                                     -- spór wygrany albo zamknięte ostrzeżenie
+    ('disputed','partially_refunded'), ('disputed','refunded'));  -- spór przegrany (chargeback)
+$$;
+
+-- Rozbieżność do wyjaśnienia (jedna otwarta danego rodzaju na zamówienie albo referencję) + alert dla zespołu
+create or replace function public.payment_discrepancy_open(
+  p_kind text, p_provider text, p_ref text, p_order uuid, p_details jsonb default '{}'::jsonb)
+returns boolean
+language plpgsql set search_path = '' as $$
+declare
+  v_id bigint;
+begin
+  insert into public.payment_discrepancies (kind, provider, provider_ref, order_id, details)
+  values (p_kind, p_provider, nullif(p_ref, ''), p_order, coalesce(p_details, '{}'::jsonb))
+  on conflict do nothing
+  returning id into v_id;
+  if v_id is not null then
+    insert into public.outbox_emails (template, recipient, payload)
+    values ('payment_discrepancy_team', 'team:platnosci', jsonb_build_object('kind', p_kind, 'id', v_id));
+  end if;
+  return v_id is not null;
+end $$;
+
+-- Pierwsza udana płatność zamówienia (płatność „główna” – od niej liczone są zwroty)
+create or replace function public.training_order_main_payment(p_order uuid)
+returns uuid
+language sql stable set search_path = '' as $$
+  select p.id from public.training_payments p
+   where p.order_id = p_order and p.status in ('succeeded','partially_refunded','disputed','refunded')
+   order by p.succeeded_at nulls last, p.attempt
+   limit 1;
+$$;
+
+create or replace function public.training_refund_create(
+  p_order uuid, p_payment uuid, p_amount integer, p_reason text, p_actor text)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_id uuid;
+begin
+  insert into public.training_refunds (order_id, payment_id, amount_grosze, reason, requested_by)
+  values (p_order, p_payment, p_amount, p_reason, p_actor)
+  returning id into v_id;
+  insert into public.client_audit_log (account_id, organizer_id, actor, action, entity, entity_id, payload)
+  select o.account_id, o.organizer_id, p_actor, 'training_refund_requested', 'training_refund', v_id,
+         jsonb_build_object('order', p_order, 'amount_grosze', p_amount, 'reason', p_reason)
+    from public.training_orders o where o.id = p_order;
+  return v_id;                         -- serwer wykonuje zwrot u operatora (adapter refund, klucz = id zwrotu)
+end $$;
+
+-- Potwierdzenie zapisu po udanej płatności. Wywołujący trzyma blokady szkolenia i zamówienia i już
+-- przeniósł miejsce do seats_registered. Dane dla organizatora – minimalna migawka jak w app_training_register.
+create or replace function public.training_order_confirm(p_order uuid, p_paid_at timestamptz)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_o   public.training_orders%rowtype;
+  v_b   public.training_order_buyer_data%rowtype;
+  v_reg uuid;
+begin
+  select * into v_o from public.training_orders o where o.id = p_order;
+  select * into v_b from public.training_order_buyer_data b where b.order_id = p_order;
+  insert into public.training_registrations (training_id, account_id, user_id, status)
+  values (v_o.training_id, v_o.account_id, v_o.user_id, 'registered')
+  on conflict (training_id, user_id) do update
+    set status = 'registered', account_id = excluded.account_id, cancelled_at = null, updated_at = now(),
+        created_at = now()
+  returning id into v_reg;
+  insert into public.training_participant_contacts
+    (registration_id, training_id, organizer_id, status, participant_name, participant_email, salon_name, notice_version)
+  values (v_reg, v_o.training_id, v_o.organizer_id, 'registered', v_b.participant_name, v_b.participant_email,
+          case when v_b.buyer_kind = 'firma' then v_b.buyer_name end, v_o.notice_version)
+  on conflict (registration_id) do update
+    set status = 'registered', participant_name = excluded.participant_name,
+        participant_email = excluded.participant_email, salon_name = excluded.salon_name,
+        notice_version = excluded.notice_version, updated_at = now();
+  update public.training_orders
+     set status = 'paid', paid_at = coalesce(p_paid_at, now()), registration_id = v_reg, updated_at = now()
+   where id = p_order;
+  insert into public.outbox_emails (template, recipient, payload, account_id)
+  values ('training_order_paid', 'user:' || v_o.user_id::text,
+          jsonb_build_object('order_ref', v_o.order_ref, 'training_id', v_o.training_id), v_o.account_id);
+  insert into public.client_audit_log (account_id, organizer_id, actor, action, entity, entity_id, payload)
+  values (v_o.account_id, v_o.organizer_id,
+          coalesce(nullif(current_setting('app.audit_actor', true), ''), 'system:payments'),
+          'training_registered', 'training', v_o.training_id, jsonb_build_object('order', p_order));
+  return v_reg;
+end $$;
+
+-- Zwolnienie opłaconego miejsca (pełny zwrot, rezygnacja przyjęta przez organizatora, odwołanie).
+-- Po rozpoczęciu szkolenia (obecny / nieobecny) zapis zostaje – zwrot nie zmienia historii obecności.
+create or replace function public.training_order_release_seat(p_order uuid)
+returns boolean
+language plpgsql set search_path = '' as $$
+declare
+  v_reg uuid;
+  v_tid uuid;
+begin
+  select o.registration_id into v_reg from public.training_orders o where o.id = p_order;
+  if v_reg is null then
+    return false;
+  end if;
+  update public.training_registrations r
+     set status = 'cancelled', cancelled_at = now(), updated_at = now()
+   where r.id = v_reg and r.status = 'registered'
+  returning r.training_id into v_tid;
+  if v_tid is null then
+    return false;
+  end if;
+  delete from public.training_participant_contacts c where c.registration_id = v_reg;
+  update public.trainings t set seats_registered = t.seats_registered - 1 where t.id = v_tid;
+  return true;
+end $$;
+
+-- Odrzucenie zdarzenia, które nie zgadza się z zamówieniem (kwota, waluta, zamówienie) – bez zmiany stanu,
+-- z rozbieżnością i alertem. Worker i tak odpowiada operatorowi 2xx (zdarzenie zapisane; ponawianie nic nie zmieni).
+create or replace function public.payment_event_reject(
+  p_event bigint, p_kind text, p_provider text, p_ref text, p_order uuid)
+returns text
+language plpgsql set search_path = '' as $$
+begin
+  update public.payment_webhook_events
+     set status = 'rejected_mismatch', result = p_kind, order_id = coalesce(order_id, p_order), processed_at = now()
+   where id = p_event;
+  perform public.payment_discrepancy_open(p_kind, p_provider, p_ref, p_order, jsonb_build_object('event', p_event));
+  insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id, payload)
+  select o.organizer_id, coalesce(nullif(current_setting('app.audit_actor', true), ''), 'system:payments'),
+         'payment_event_rejected', 'payment', p_order, jsonb_build_object('kind', p_kind)
+    from public.training_orders o where o.id = p_order;
+  return 'rejected_mismatch';
+end $$;
+
+-- Zdarzenie od operatora (webhook) albo z uzgadniania (reconciliation). Worker PRZED wywołaniem:
+-- (1) sprawdza podpis na surowej treści i znacznik czasu (sekret tylko w sekretach Workera), (2) u operatorów,
+-- którzy tego wymagają, potwierdza transakcję w API (np. weryfikacja / pobranie stanu płatności) – stan
+-- bierzemy z API operatora, nie z treści żądania, (3) normalizuje kwotę do groszy. Funkcja: deduplikacja
+-- po (provider, event_id), kontrola zamówienia, kwoty i waluty z bazą, przejścia stanów niezależne od
+-- kolejności zdarzeń, potwierdzenie zapisu albo automatyczny zwrot (spóźniona lub podwójna płatność,
+-- zawieszony organizator, odwołane szkolenie). Zwraca wynik do logów Workera (bez danych osobowych).
+-- Wyniki 'unknown_ref' i 'deferred_out_of_order' → Worker odpowiada 409 (operator ponawia doręczenie);
+-- pozostałe → 2xx po zapisie (przegląd red team 13.11.2026).
+-- p_our_payment_id – nasz UUID płatności z metadanych sesji (app_training_payment_begin); p_charge_ref – druga
+-- referencja operatora (Stripe: PaymentIntent albo charge; P24: orderId), z którą przychodzą zwroty i spory;
+-- p_dispute_outcome – wynik sporu przy 'dispute.closed' ('won' | 'lost' | 'warning_closed').
+create or replace function public.app_payment_webhook(
+  p_provider text, p_event_id text, p_event_type text, p_provider_ref text, p_payment_ref text,
+  p_order_id uuid, p_amount_grosze integer, p_currency text, p_payload_sha256 text,
+  p_occurred_at timestamptz default null, p_method text default null, p_source text default 'webhook',
+  p_dispute_outcome text default null, p_charge_ref text default null, p_our_payment_id uuid default null)
+returns text
+language plpgsql set search_path = '' as $$
+declare
+  v_ev      bigint;
+  v_prev    text;
+  v_pay_ref text;
+  v_pid     uuid;
+  v_oid     uuid;
+  v_tid     uuid;
+  v_t       public.trainings%rowtype;
+  v_o       public.training_orders%rowtype;
+  v_p       public.training_payments%rowtype;
+  v_r       public.training_refunds%rowtype;
+  v_target  text;
+  v_result  text;
+  v_actor   text;
+  v_full    boolean;
+  v_org_ok  boolean;
+  v_reason  text;
+  v_amt     integer;
+begin
+  if p_provider is null or p_provider not in ('p24','payu','tpay','stripe')
+     or coalesce(p_event_id, '') !~ '^[A-Za-z0-9_.:-]{1,200}$'
+     or p_event_type is null or p_event_type not in ('payment.succeeded','payment.failed','payment.cancelled',
+          'payment.expired','refund.succeeded','refund.failed','dispute.opened','dispute.closed')
+     or coalesce(p_provider_ref, '') !~ '^[A-Za-z0-9_.:-]{1,200}$'
+     or (p_payment_ref is not null and p_payment_ref !~ '^[A-Za-z0-9_.:-]{1,200}$')
+     or (p_charge_ref is not null and p_charge_ref !~ '^[A-Za-z0-9_.:-]{3,200}$')
+     or coalesce(p_payload_sha256, '') !~ '^[0-9a-f]{64}$'
+     or p_source is null or p_source not in ('webhook','reconciliation')
+     or (p_currency is not null and p_currency !~ '^[A-Z]{3}$')
+     or (p_method is not null and p_method not in ('blik','karta','przelew','inna'))
+     or (p_event_type = 'dispute.closed') <> (p_dispute_outcome is not null)
+     or (p_dispute_outcome is not null and p_dispute_outcome not in ('won','lost','warning_closed')) then
+    raise exception 'webhook: nieprawidłowe zdarzenie' using errcode = 'BP422';
+  end if;
+  v_actor := 'system:' || p_source || ':' || p_provider;
+  perform set_config('app.audit_actor', v_actor, true);
+
+  -- 1. deduplikacja: równoległe doręczenie tego samego zdarzenia czeka na pierwsze i dostaje 'duplicate'
+  insert into public.payment_webhook_events
+    (provider, event_id, event_type, provider_ref, order_id, amount_grosze, currency, payload_sha256, source, occurred_at)
+  values (p_provider, p_event_id, p_event_type, p_provider_ref, p_order_id, p_amount_grosze, p_currency,
+          p_payload_sha256, p_source, p_occurred_at)
+  on conflict (provider, event_id) do nothing
+  returning id into v_ev;
+  if v_ev is null then
+    select e.id, e.status into v_ev, v_prev from public.payment_webhook_events e
+     where e.provider = p_provider and e.event_id = p_event_id for update;
+    if v_prev not in ('unknown_ref','deferred_out_of_order') then
+      return 'duplicate';
+    end if;                  -- przetwarzamy ponownie (płatność mogła się pojawić albo zostać potwierdzona)
+  end if;
+
+  -- 2. płatność, której dotyczy zdarzenie: po referencji płatności albo drugiej referencji operatora
+  --    (charge / PaymentIntent – zwroty i spory), po referencji zwrotu, a na końcu po naszym UUID z metadanych
+  v_pay_ref := case when p_event_type like 'payment.%' then p_provider_ref else coalesce(p_payment_ref, p_charge_ref) end;
+  select p.id, p.order_id into v_pid, v_oid from public.training_payments p
+   where p.provider = p_provider and (p.provider_payment_ref = v_pay_ref or p.provider_charge_ref = v_pay_ref
+                                      or (p_charge_ref is not null and p.provider_charge_ref = p_charge_ref))
+   order by p.attempt limit 1;
+  if v_pid is null and p_event_type like 'refund.%' then
+    select r.payment_id, r.order_id into v_pid, v_oid from public.training_refunds r
+     where r.provider_refund_ref = p_provider_ref;
+  end if;
+  if v_pid is null and p_our_payment_id is not null then
+    select p.id, p.order_id into v_pid, v_oid from public.training_payments p
+     where p.id = p_our_payment_id and p.provider = p_provider;
+    if v_pid is not null and exists (select 1 from public.training_payments p where p.id = v_pid
+                                        and p.provider_payment_ref is not null and p.provider_payment_ref <> v_pay_ref
+                                        and p.provider_charge_ref is distinct from v_pay_ref) then
+      return public.payment_event_reject(v_ev, 'order_mismatch', p_provider, v_pay_ref, v_oid);
+    end if;
+  end if;
+  if v_pid is null then
+    update public.payment_webhook_events set status = 'unknown_ref', result = 'unknown_payment', processed_at = now()
+     where id = v_ev;
+    perform public.payment_discrepancy_open('unknown_payment', p_provider, coalesce(v_pay_ref, p_provider_ref), null,
+                                            jsonb_build_object('event_type', p_event_type));
+    return 'unknown_ref';                                   -- Worker: 409, operator ponawia
+  end if;
+  if p_order_id is not null and p_order_id <> v_oid then
+    return public.payment_event_reject(v_ev, 'order_mismatch', p_provider, v_pay_ref, v_oid);
+  end if;
+
+  -- 3. blokady w stałej kolejności: szkolenie → zamówienie → płatność
+  select o.training_id into v_tid from public.training_orders o where o.id = v_oid;
+  select * into v_t from public.trainings t where t.id = v_tid for update;
+  select * into v_o from public.training_orders o where o.id = v_oid for update;
+  select * into v_p from public.training_payments p where p.id = v_pid for update;
+  update public.payment_webhook_events set order_id = v_oid where id = v_ev;
+
+  -- 4. zła kolejność: zwrot albo spór, zanim płatność jest potwierdzona u nas → odłożenie (409, operator
+  --    ponawia); bez zapisu zwrotu „spoza portalu” i bez blokady miejsca (przegląd red team, RT1)
+  if p_event_type not like 'payment.%'
+     and v_p.status not in ('succeeded','partially_refunded','refunded','disputed') then
+    update public.payment_webhook_events set status = 'deferred_out_of_order', result = v_p.status, processed_at = now()
+     where id = v_ev;
+    return 'deferred_out_of_order';
+  end if;
+
+  if p_event_type = 'payment.succeeded' then
+    -- kwota i waluta muszą zgadzać się z zamówieniem w bazie (nigdy odwrotnie)
+    if p_amount_grosze is distinct from v_o.amount_grosze or v_p.amount_grosze <> v_o.amount_grosze then
+      return public.payment_event_reject(v_ev, 'amount_mismatch', p_provider, v_pay_ref, v_oid);
+    end if;
+    if p_currency is distinct from v_o.currency then
+      return public.payment_event_reject(v_ev, 'currency_mismatch', p_provider, v_pay_ref, v_oid);
+    end if;
+    if p_charge_ref is not null and exists (select 1 from public.training_payments p
+                                             where p.provider = p_provider and p.provider_charge_ref = p_charge_ref
+                                               and p.id <> v_pid) then
+      return public.payment_event_reject(v_ev, 'order_mismatch', p_provider, p_charge_ref, v_oid);
+    end if;
+    if not public.payment_status_next_ok(v_p.status, 'succeeded') then
+      update public.payment_webhook_events set status = 'ignored_stale', result = v_p.status, processed_at = now()
+       where id = v_ev;
+      return 'ignored_stale';
+    end if;
+    update public.training_payments
+       set status = 'succeeded', succeeded_at = coalesce(p_occurred_at, now()), method = coalesce(p_method, method),
+           provider_payment_ref = coalesce(provider_payment_ref, p_provider_ref),
+           provider_charge_ref = coalesce(provider_charge_ref, p_charge_ref),
+           last_event_at = now(), updated_at = now()
+     where id = v_pid;
+    v_org_ok := exists (select 1 from public.training_organizers g
+                         where g.id = v_o.organizer_id and g.status = 'active' and g.verified_at is not null);
+    if v_o.status in ('reserved','expired','cancelled') then
+      if v_o.status = 'reserved' then                     -- rezerwacja kończy się płatnością
+        update public.trainings t set seats_held = t.seats_held - 1 where t.id = v_tid;
+        v_t.seats_held := v_t.seats_held - 1;
+      end if;
+      if v_o.user_id is not null and v_org_ok
+         and v_t.status = 'published' and now() < v_t.starts_at
+         and (v_o.status = 'reserved'
+              or v_t.capacity is null or v_t.seats_registered + v_t.seats_held < v_t.capacity)
+         and not exists (select 1 from public.training_orders x
+                          where x.training_id = v_o.training_id and x.user_id = v_o.user_id and x.id <> v_o.id
+                            and x.status in ('paid','partially_refunded'))
+         and not exists (select 1 from public.training_registrations r
+                          where r.training_id = v_o.training_id and r.user_id = v_o.user_id
+                            and r.status in ('registered','attended','no_show')) then
+        update public.trainings t set seats_registered = t.seats_registered + 1 where t.id = v_tid;
+        perform public.training_order_confirm(v_oid, coalesce(p_occurred_at, now()));
+        v_result := case when v_o.status = 'reserved' then 'paid' else 'paid_late' end;
+      else
+        -- pieniądze nie powinny były wpłynąć → pełny zwrot automatyczny: zawieszony organizator, szkolenie
+        -- odwołane / usunięte / rozpoczęte albo spóźniona płatność bez wolnego miejsca
+        v_reason := case when not v_org_ok then 'organizator-zawieszony'
+                         when v_t.status in ('cancelled','removed') then 'odwolanie'
+                         else 'spozniona-platnosc' end;
+        update public.training_orders
+           set status = 'refund_pending', refund_reason = v_reason,
+               paid_at = coalesce(p_occurred_at, now()), updated_at = now()
+         where id = v_oid;
+        perform public.training_refund_create(v_oid, v_pid, v_o.amount_grosze, v_reason, v_actor);
+        perform public.payment_discrepancy_open('late_payment_no_seat', p_provider, v_pay_ref, v_oid,
+                                                jsonb_build_object('reason', v_reason));
+        if v_o.user_id is not null then
+          insert into public.outbox_emails (template, recipient, payload, account_id)
+          values ('training_order_late_refund', 'user:' || v_o.user_id::text,
+                  jsonb_build_object('order_ref', v_o.order_ref, 'reason', v_reason), v_o.account_id);
+        end if;
+        v_result := 'refund_required';
+      end if;
+    elsif exists (select 1 from public.training_refunds r where r.payment_id = v_pid and r.status <> 'failed') then
+      -- ta płatność ma już zwrot (np. z uzgadniania) – bez drugiego zwrotu „podwójna płatność”
+      perform public.payment_discrepancy_open('double_payment', p_provider, v_pay_ref, v_oid,
+                                              jsonb_build_object('already_refunded', true));
+      v_result := 'already_refunded';
+    else
+      -- zamówienie już opłacone albo w zwrotach: druga udana płatność za to samo zamówienie → zwrot tej płatności
+      perform public.training_refund_create(v_oid, v_pid, v_p.amount_grosze, 'podwojna-platnosc', v_actor);
+      perform public.payment_discrepancy_open('double_payment', p_provider, v_pay_ref, v_oid);
+      v_result := 'refund_required';
+    end if;
+
+  elsif p_event_type in ('payment.failed','payment.cancelled','payment.expired') then
+    v_target := split_part(p_event_type, '.', 2);
+    if not public.payment_status_next_ok(v_p.status, v_target) then
+      update public.payment_webhook_events set status = 'ignored_stale', result = v_p.status, processed_at = now()
+       where id = v_ev;
+      return 'ignored_stale';
+    end if;
+    update public.training_payments
+       set status = v_target, provider_payment_ref = coalesce(provider_payment_ref, p_provider_ref),
+           last_event_at = now(), updated_at = now()
+     where id = v_pid;
+    v_result := v_target;              -- rezerwacja trwa do wygaśnięcia: kupujący może spróbować ponownie
+
+  elsif p_event_type = 'refund.succeeded' then
+    select * into v_r from public.training_refunds r where r.provider_refund_ref = p_provider_ref for update;
+    if not found then
+      -- webhook szybszy niż zapis referencji zwrotu: przypisz do oczekującego zwrotu tej płatności o tej kwocie
+      select * into v_r from public.training_refunds r
+       where r.payment_id = v_pid and r.status in ('requested','submitted') and r.provider_refund_ref is null
+         and r.amount_grosze = p_amount_grosze
+       order by r.created_at limit 1 for update;
+      if found then
+        update public.training_refunds set provider_refund_ref = p_provider_ref, updated_at = now() where id = v_r.id;
+      else
+        -- zwrot wykonany poza portalem (np. w panelu operatora) – zapisujemy, żeby stany i kwoty się zgadzały
+        if p_amount_grosze is null or p_amount_grosze < 1
+           or p_amount_grosze > v_o.amount_grosze - v_o.refunded_grosze then
+          return public.payment_event_reject(v_ev, 'amount_mismatch', p_provider, p_provider_ref, v_oid);
+        end if;
+        insert into public.training_refunds
+          (order_id, payment_id, amount_grosze, reason, status, provider_refund_ref, requested_by, submitted_at)
+        values (v_oid, v_pid, p_amount_grosze, 'inne', 'submitted', p_provider_ref, 'system:operator', now())
+        returning * into v_r;
+        perform public.payment_discrepancy_open('external_refund', p_provider, p_provider_ref, v_oid);
+      end if;
+    end if;
+    if v_r.status = 'succeeded' then
+      update public.payment_webhook_events set status = 'ignored_stale', result = 'succeeded', processed_at = now()
+       where id = v_ev;
+      return 'ignored_stale';
+    end if;
+    if p_amount_grosze is distinct from v_r.amount_grosze
+       or (v_r.reason <> 'podwojna-platnosc' and v_r.amount_grosze > v_o.amount_grosze - v_o.refunded_grosze) then
+      return public.payment_event_reject(v_ev, 'amount_mismatch', p_provider, p_provider_ref, v_oid);
+    end if;
+    update public.training_refunds set status = 'succeeded', succeeded_at = now(), updated_at = now() where id = v_r.id;
+    if v_r.reason = 'podwojna-platnosc' then
+      update public.training_payments set status = 'refunded', updated_at = now() where id = v_r.payment_id;
+      v_result := 'refunded_duplicate';
+    else
+      v_full := v_o.refunded_grosze + v_r.amount_grosze = v_o.amount_grosze;
+      update public.training_orders
+         set refunded_grosze = refunded_grosze + v_r.amount_grosze,
+             status = case when v_full then 'refunded' else 'partially_refunded' end,
+             paid_at = coalesce(paid_at, now()), updated_at = now()
+       where id = v_oid;
+      update public.training_payments
+         set status = case when v_full then 'refunded' else 'partially_refunded' end, updated_at = now()
+       where id = v_r.payment_id
+         and public.payment_status_next_ok(status, case when v_full then 'refunded' else 'partially_refunded' end);
+      if v_full then
+        perform public.training_order_release_seat(v_oid);
+      end if;
+      if v_o.user_id is not null then
+        insert into public.outbox_emails (template, recipient, payload, account_id)
+        values ('training_order_refunded', 'user:' || v_o.user_id::text,
+                jsonb_build_object('order_ref', v_o.order_ref, 'amount_grosze', v_r.amount_grosze), v_o.account_id);
+      end if;
+      v_result := case when v_full then 'refunded' else 'partially_refunded' end;
+    end if;
+    insert into public.client_audit_log (account_id, organizer_id, actor, action, entity, entity_id, payload)
+    values (v_o.account_id, v_o.organizer_id, v_actor, 'training_refund_status_changed', 'training_refund', v_r.id,
+            jsonb_build_object('from', v_r.status, 'to', 'succeeded'));
+
+  elsif p_event_type = 'refund.failed' then
+    select * into v_r from public.training_refunds r where r.provider_refund_ref = p_provider_ref for update;
+    if not found then
+      update public.payment_webhook_events set status = 'unknown_ref', result = 'unknown_refund', processed_at = now()
+       where id = v_ev;
+      return 'unknown_ref';
+    end if;
+    if v_r.status not in ('requested','submitted') then
+      update public.payment_webhook_events set status = 'ignored_stale', result = v_r.status, processed_at = now()
+       where id = v_ev;
+      return 'ignored_stale';
+    end if;
+    update public.training_refunds set status = 'failed', failed_at = now(), updated_at = now() where id = v_r.id;
+    -- zamówienie zostaje w 'refund_pending' – zwrot ponawia organizator albo system; alert dla zespołu
+    perform public.payment_discrepancy_open('refund_failed', p_provider, p_provider_ref, v_oid);
+    insert into public.client_audit_log (account_id, organizer_id, actor, action, entity, entity_id, payload)
+    values (v_o.account_id, v_o.organizer_id, v_actor, 'training_refund_status_changed', 'training_refund', v_r.id,
+            jsonb_build_object('from', v_r.status, 'to', 'failed'));
+    v_result := 'refund_failed';
+
+  elsif p_event_type = 'dispute.opened' then
+    if not public.payment_status_next_ok(v_p.status, 'disputed') then
+      update public.payment_webhook_events set status = 'ignored_stale', result = v_p.status, processed_at = now()
+       where id = v_ev;
+      return 'ignored_stale';
+    end if;
+    update public.training_payments
+       set status = 'disputed', provider_charge_ref = coalesce(provider_charge_ref, p_charge_ref),
+           last_event_at = now(), updated_at = now()
+     where id = v_pid;
+    update public.training_orders set disputed_at = coalesce(disputed_at, now()), updated_at = now() where id = v_oid;
+    perform public.payment_discrepancy_open('dispute', p_provider, v_pay_ref, v_oid);
+    insert into public.outbox_emails (template, recipient, payload)
+    values ('training_order_disputed', 'organizer:' || v_o.organizer_id::text, jsonb_build_object('order_ref', v_o.order_ref));
+    v_result := 'dispute_opened';
+
+  else -- 'dispute.closed' z wynikiem od operatora (NormalizedEvent.disputeOutcome)
+    if v_p.status <> 'disputed' then
+      update public.payment_webhook_events set status = 'ignored_stale', result = v_p.status, processed_at = now()
+       where id = v_ev;
+      return 'ignored_stale';
+    end if;
+    if p_dispute_outcome in ('won','warning_closed') then
+      -- środki zostają u organizatora: płatność wraca do 'succeeded', zwroty przez portal znów możliwe
+      update public.training_payments set status = 'succeeded', last_event_at = now(), updated_at = now() where id = v_pid;
+      update public.training_orders set disputed_at = null, updated_at = now() where id = v_oid;
+      v_result := 'dispute_' || p_dispute_outcome;
+    else
+      -- spór przegrany: środki wróciły do kupującego przez operatora (chargeback) – zamówienie jak po zwrocie,
+      -- miejsce zwolnione (bez dostępu do linku i adresu), bez zwrotu przez portal (brak podwójnego zwrotu)
+      v_amt := coalesce(p_amount_grosze, v_o.amount_grosze - v_o.refunded_grosze);
+      if v_amt < 1 or v_amt > v_o.amount_grosze - v_o.refunded_grosze then
+        return public.payment_event_reject(v_ev, 'amount_mismatch', p_provider, v_pay_ref, v_oid);
+      end if;
+      v_full := v_o.refunded_grosze + v_amt = v_o.amount_grosze;
+      update public.training_orders
+         set refunded_grosze = refunded_grosze + v_amt, disputed_at = null,
+             status = case when v_full then 'refunded' else 'partially_refunded' end,
+             refund_reason = 'chargeback', paid_at = coalesce(paid_at, now()), updated_at = now()
+       where id = v_oid;
+      update public.training_payments
+         set status = case when v_full then 'refunded' else 'partially_refunded' end, last_event_at = now(),
+             updated_at = now()
+       where id = v_pid;
+      if v_full then
+        perform public.training_order_release_seat(v_oid);
+      end if;
+      if v_o.user_id is not null then
+        insert into public.outbox_emails (template, recipient, payload, account_id)
+        values ('training_order_chargeback', 'user:' || v_o.user_id::text,
+                jsonb_build_object('order_ref', v_o.order_ref, 'amount_grosze', v_amt), v_o.account_id);
+      end if;
+      v_result := 'dispute_lost';
+    end if;
+    insert into public.outbox_emails (template, recipient, payload)
+    values ('training_order_dispute_closed', 'organizer:' || v_o.organizer_id::text,
+            jsonb_build_object('order_ref', v_o.order_ref, 'outcome', p_dispute_outcome));
+    insert into public.client_audit_log (account_id, organizer_id, actor, action, entity, entity_id, payload)
+    values (v_o.account_id, v_o.organizer_id, v_actor, 'training_dispute_closed', 'training_order', v_oid,
+            jsonb_build_object('outcome', p_dispute_outcome, 'amount_grosze', p_amount_grosze));
+  end if;
+
+  update public.payment_webhook_events set status = 'processed', result = v_result, processed_at = now() where id = v_ev;
+  return v_result;
+end $$;
+
+-- Zwrot inicjowany przez ORGANIZATORA (rezygnacja wg jego regulaminu, odstąpienie konsumenta albo inna decyzja
+-- sprzedawcy): tylko właściciel aktywnego organizatora szkolenia, poza karencją po resecie TOTP
+-- (organizer_money_ok; pieniądze organizatora – personel Aura nie zleca zwrotów),
+-- kwota ≤ pozostałej do zwrotu, jeden zwrot organizatora naraz. p_cancel_registration – zwolnienie miejsca
+-- od razu (rezygnacja); bez niego – zwrot częściowy z zachowaniem zapisu. Wykonuje operator (klucz = id zwrotu).
+create or replace function public.app_training_refund_request(
+  p_order uuid, p_actor uuid, p_amount_grosze integer, p_reason text, p_cancel_registration boolean default true)
+returns uuid
+language plpgsql set search_path = '' as $$
+declare
+  v_tid uuid;
+  v_org uuid;
+  v_o   public.training_orders%rowtype;
+  v_pay uuid;
+  v_id  uuid;
+begin
+  select o.training_id, o.organizer_id into v_tid, v_org from public.training_orders o where o.id = p_order;
+  if not found or not public.organizer_money_ok(v_org, p_actor) then
+    raise exception 'refund: brak uprawnień';
+  end if;
+  if p_reason is null or p_reason not in ('rezygnacja','odstapienie','inne') then
+    raise exception 'refund: nieprawidłowe pole reason' using errcode = 'BP422';
+  end if;
+  perform 1 from public.trainings t where t.id = v_tid for update;
+  select * into v_o from public.training_orders o where o.id = p_order for update;
+  if v_o.status not in ('paid','partially_refunded','refund_pending') then
+    raise exception 'refund: zamówienie nieopłacone albo zwrócone' using errcode = 'BP409';
+  end if;
+  if exists (select 1 from public.training_refunds r
+              where r.order_id = p_order and r.status in ('requested','submitted')) then
+    raise exception 'refund: zwrot w toku' using errcode = 'BP409';
+  end if;
+  if v_o.disputed_at is not null then
+    raise exception 'refund: płatność w sporze – rozstrzyga operator' using errcode = 'BP409';
+  end if;
+  if p_amount_grosze is null or p_amount_grosze < 1 or p_amount_grosze > v_o.amount_grosze - v_o.refunded_grosze then
+    raise exception 'refund: nieprawidłowe pole amount_grosze' using errcode = 'BP422';
+  end if;
+  v_pay := public.training_order_main_payment(p_order);
+  perform set_config('app.audit_actor', 'user:' || p_actor::text, true);
+  update public.training_orders set status = 'refund_pending', refund_reason = p_reason, updated_at = now()
+   where id = p_order;
+  v_id := public.training_refund_create(p_order, v_pay, p_amount_grosze, p_reason, 'user:' || p_actor::text);
+  if coalesce(p_cancel_registration, true) then
+    perform public.training_order_release_seat(p_order);
+  end if;
+  return v_id;
+end $$;
+
+-- Wynik wywołania API zwrotu (adapter refund): referencja operatora albo kod błędu. Idempotentnie.
+create or replace function public.app_training_refund_attach(
+  p_refund uuid, p_provider_refund_ref text, p_failure_code text default null)
+returns text
+language plpgsql set search_path = '' as $$
+declare
+  v_r public.training_refunds%rowtype;
+begin
+  select * into v_r from public.training_refunds r where r.id = p_refund for update;
+  if not found then
+    raise exception 'refund: brak zwrotu';
+  end if;
+  if p_failure_code is not null then
+    if coalesce(p_failure_code, '') !~ '^[A-Za-z0-9_.:-]{1,60}$' then
+      raise exception 'refund: nieprawidłowe pole failure_code' using errcode = 'BP422';
+    end if;
+    if v_r.status in ('requested','submitted') then
+      update public.training_refunds set status = 'failed', failure_code = p_failure_code, failed_at = now(),
+             updated_at = now() where id = p_refund;
+      perform public.payment_discrepancy_open('refund_failed', null, null, v_r.order_id,
+                                              jsonb_build_object('refund', p_refund, 'code', p_failure_code));
+      return 'failed';
+    end if;
+    return v_r.status;
+  end if;
+  if coalesce(p_provider_refund_ref, '') !~ '^[A-Za-z0-9_.:-]{3,200}$' then
+    raise exception 'refund: nieprawidłowe pole provider_refund_ref' using errcode = 'BP422';
+  end if;
+  if v_r.provider_refund_ref = p_provider_refund_ref then
+    return v_r.status;                         -- powtórzenie albo webhook był szybszy
+  end if;
+  if v_r.provider_refund_ref is not null then
+    raise exception 'refund: zwrot ma już inną referencję operatora';
+  end if;
+  update public.training_refunds
+     set provider_refund_ref = p_provider_refund_ref,
+         status = case when status = 'requested' then 'submitted' else status end,
+         submitted_at = coalesce(submitted_at, now()), updated_at = now()
+   where id = p_refund;
+  return 'submitted';
+end $$;
+
+-- Odwołanie albo usunięcie szkolenia: pełne zwroty pozostałych kwot wszystkim opłaconym zamówieniom,
+-- zwolnienie miejsc, zamknięcie rezerwacji. Zamówienia w otwartym sporze (disputed_at) – BEZ zwrotu przez
+-- portal (kupujący dostałby pieniądze dwa razy: z chargebacku i ze zwrotu); rozbieżność 'dispute' dla
+-- zespołu i e-mail do kupującego. Wywołujący TRZYMA blokadę wiersza szkolenia.
+create or replace function public.training_orders_refund_all(p_training uuid, p_actor text)
+returns integer
+language plpgsql set search_path = '' as $$
+declare
+  v_count integer := 0;
+  v_left  integer;
+  v_rel   boolean;
+  r       record;
+begin
+  perform public.training_orders_close_reserved(p_training, p_actor);
+  perform set_config('app.audit_actor', p_actor, true);
+  for r in select o.id, o.user_id, o.account_id, o.order_ref, o.disputed_at, o.provider,
+                  o.amount_grosze - o.refunded_grosze as left_grosze
+             from public.training_orders o
+            where o.training_id = p_training and o.status in ('paid','partially_refunded','refund_pending')
+            order by o.id for update loop
+    v_rel := public.training_order_release_seat(r.id);
+    if r.disputed_at is not null then
+      perform public.payment_discrepancy_open('dispute', r.provider, null, r.id,
+                                              jsonb_build_object('training_cancelled', true));
+      insert into public.outbox_emails (template, recipient, payload)
+      values ('payment_dispute_training_cancelled', 'team:platnosci', jsonb_build_object('order_ref', r.order_ref));
+      if r.user_id is not null then
+        insert into public.outbox_emails (template, recipient, payload, account_id)
+        values ('training_cancelled_dispute', 'user:' || r.user_id::text, jsonb_build_object('order_ref', r.order_ref),
+                r.account_id);
+      end if;
+      v_count := v_count + 1;
+      continue;
+    end if;
+    v_left := r.left_grosze - coalesce((select sum(x.amount_grosze) from public.training_refunds x
+                                         where x.order_id = r.id and x.status in ('requested','submitted')
+                                           and x.reason <> 'podwojna-platnosc'), 0);
+    if v_left > 0 then
+      update public.training_orders set status = 'refund_pending', refund_reason = 'odwolanie', updated_at = now()
+       where id = r.id;
+      perform public.training_refund_create(r.id, public.training_order_main_payment(r.id), v_left, 'odwolanie', p_actor);
+    end if;
+    -- e-mail tylko do osób z miejscem albo z nowym zwrotem (spóźniona płatność bez miejsca ma już swój zwrot)
+    if r.user_id is not null and (v_left > 0 or v_rel) then
+      insert into public.outbox_emails (template, recipient, payload, account_id)
+      values ('training_cancelled_refund', 'user:' || r.user_id::text, jsonb_build_object('order_ref', r.order_ref),
+              r.account_id);
+    end if;
+    v_count := v_count + 1;
+  end loop;
+  return v_count;
+end $$;
+
+-- Odstąpienie od umowy przez konsumenta (14 dni – dok. 11 §12a.8 [do weryfikacji prawnej]): jednostronne
+-- OŚWIADCZENIE kupującego, nie prośba – portal je przyjmuje, potwierdza na trwałym nośniku (e-mail), zwalnia
+-- miejsce i przekazuje organizatorowi, który zwraca płatność (app_training_refund_request, powód
+-- 'odstapienie') w ustawowym terminie 14 dni; alert dla zespołu po 3 dniach bez zwrotu (app_payment_health).
+-- Odmowa tylko po terminie (14 dni od zawarcia umowy = opłacenia) albo po pełnym wykonaniu usługi, której
+-- rozpoczęcia przed terminem kupujący zażądał (early_start_requested_at). Idempotentnie.
+create or replace function public.app_training_order_withdraw(p_order uuid, p_user uuid, p_notice_version text)
+returns void
+language plpgsql set search_path = '' as $$
+declare
+  v_tid uuid;
+  v_o   public.training_orders%rowtype;
+  v_t   public.trainings%rowtype;
+begin
+  if coalesce(char_length(p_notice_version), 0) not between 1 and 40 then
+    raise exception 'withdraw: nieprawidłowe pole notice_version' using errcode = 'BP422';
+  end if;
+  select o.training_id into v_tid from public.training_orders o where o.id = p_order and o.user_id = p_user;
+  if not found then
+    raise exception 'withdraw: brak zamówienia';
+  end if;
+  select * into v_t from public.trainings t where t.id = v_tid for update;
+  select * into v_o from public.training_orders o where o.id = p_order for update;
+  if v_o.withdrawal_declared_at is not null then
+    return;
+  end if;
+  if v_o.status not in ('paid','partially_refunded','refund_pending') then
+    raise exception 'withdraw: zamówienie nieopłacone albo zwrócone' using errcode = 'BP409';
+  end if;
+  if now() > v_o.paid_at + interval '14 days' then
+    raise exception 'withdraw: minął termin odstąpienia' using errcode = 'BP409';
+  end if;
+  if v_o.early_start_requested_at is not null and v_t.ends_at < now() then
+    raise exception 'withdraw: usługa wykonana na żądanie kupującego' using errcode = 'BP409';
+  end if;
+  perform set_config('app.audit_actor', 'user:' || p_user::text, true);
+  update public.training_orders
+     set withdrawal_declared_at = now(), withdrawal_notice_version = p_notice_version, updated_at = now()
+   where id = p_order;
+  perform public.training_order_release_seat(p_order);
+  insert into public.client_audit_log (account_id, organizer_id, actor, action, entity, entity_id)
+  values (v_o.account_id, v_o.organizer_id, 'user:' || p_user::text, 'training_order_withdrawal_declared',
+          'training_order', p_order);
+  insert into public.outbox_emails (template, recipient, payload, account_id)
+  values ('training_order_withdrawal_received', 'user:' || p_user::text,
+          jsonb_build_object('order_ref', v_o.order_ref), v_o.account_id);
+  insert into public.outbox_emails (template, recipient, payload)
+  values ('training_order_withdrawal', 'organizer:' || v_o.organizer_id::text,
+          jsonb_build_object('order_ref', v_o.order_ref, 'training_id', v_o.training_id,
+                             'refund_due', (now() + interval '14 days')::date));
+end $$;
+
+-- Prośba uczestnika o rezygnację z opłaconego miejsca POZA ustawowym odstąpieniem (np. po 14 dniach): decyzję
+-- i kwotę zwrotu wg regulaminu organizatora podejmuje organizator w panelu. Odstąpienie konsumenta w terminie
+-- to osobna ścieżka – app_training_order_withdraw() (dok. 11 §12a.8). Idempotentnie.
+create or replace function public.app_training_order_cancel_request(p_order uuid, p_user uuid)
+returns void
+language plpgsql set search_path = '' as $$
+declare
+  v_o public.training_orders%rowtype;
+begin
+  select * into v_o from public.training_orders o where o.id = p_order and o.user_id = p_user for update;
+  if not found then
+    raise exception 'cancel request: brak zamówienia';
+  end if;
+  if v_o.status not in ('paid','partially_refunded') then
+    raise exception 'cancel request: zamówienie nieopłacone albo w zwrocie' using errcode = 'BP409';
+  end if;
+  if v_o.cancel_requested_at is not null then
+    return;
+  end if;
+  update public.training_orders set cancel_requested_at = now(), updated_at = now() where id = p_order;
+  insert into public.client_audit_log (account_id, organizer_id, actor, action, entity, entity_id)
+  values (v_o.account_id, v_o.organizer_id, 'user:' || p_user::text, 'training_order_cancel_requested',
+          'training_order', p_order);
+  insert into public.outbox_emails (template, recipient, payload)
+  values ('training_order_cancel_requested', 'organizer:' || v_o.organizer_id::text,
+          jsonb_build_object('order_ref', v_o.order_ref, 'training_id', v_o.training_id));
+end $$;
+
+-- Organizator: zamówienia swojego szkolenia (SEC-01 – jedyna droga odczytu, zawsze z wpisem w dzienniku).
+-- Bez adresów, NIP i e-maili – te tylko w app_organizer_invoice_data() dla jednego zamówienia.
+create or replace function public.app_organizer_training_orders(p_training uuid, p_actor uuid)
+returns table (order_id uuid, order_ref text, status text, amount_grosze integer, platform_fee_grosze integer,
+               refunded_grosze integer, paid_at timestamptz, cancel_requested_at timestamptz,
+               withdrawal_declared_at timestamptz, disputed boolean,
+               participant_name text, buyer_kind text, invoice_added boolean)
+language plpgsql set search_path = '' as $$
+#variable_conflict use_column
+begin
+  if public.training_actor_kind(p_training, p_actor) is distinct from 'user:' then
+    raise exception 'organizer orders: brak uprawnień';
+  end if;
+  insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id)
+  select t.organizer_id, 'user:' || p_actor::text, 'organizer_orders_viewed', 'training', p_training
+    from public.trainings t where t.id = p_training;
+  return query
+    select o.id, o.order_ref, o.status, o.amount_grosze, o.platform_fee_grosze, o.refunded_grosze, o.paid_at,
+           o.cancel_requested_at, o.withdrawal_declared_at, o.disputed_at is not null, b.participant_name, o.buyer_kind,
+           (o.invoice_storage_path is not null or o.invoice_number is not null)
+      from public.training_orders o
+      left join public.training_order_buyer_data b on b.order_id = o.id
+     where o.training_id = p_training and o.status in ('paid','refund_pending','partially_refunded','refunded')
+     order by o.paid_at;
+end $$;
+
+create or replace function public.app_organizer_invoice_data(p_order uuid, p_actor uuid)
+returns table (order_ref text, buyer_kind text, buyer_name text, nip text, street text, postal_code text,
+               city text, invoice_email text, amount_grosze integer, paid_at timestamptz)
+language plpgsql set search_path = '' as $$
+#variable_conflict use_column
+declare
+  v_o public.training_orders%rowtype;
+begin
+  select * into v_o from public.training_orders o where o.id = p_order;
+  if not found or public.training_actor_kind(v_o.training_id, p_actor) is distinct from 'user:'
+     or v_o.status not in ('paid','refund_pending','partially_refunded','refunded') then
+    raise exception 'invoice data: brak uprawnień';
+  end if;
+  insert into public.client_audit_log (organizer_id, actor, action, entity, entity_id)
+  values (v_o.organizer_id, 'user:' || p_actor::text, 'organizer_invoice_data_viewed', 'training_order', p_order);
+  return query
+    select v_o.order_ref, b.buyer_kind, b.buyer_name, b.nip, b.street, b.postal_code, b.city, b.invoice_email,
+           v_o.amount_grosze, v_o.paid_at
+      from public.training_order_buyer_data b where b.order_id = p_order;
+end $$;
+
+-- Faktura od organizatora (opcjonalnie): numer i/lub plik PDF w prywatnym kubełku training-invoices
+-- ({organizer_id}/{order_id}/{uuid}.pdf, nazwa z serwera, skrót SHA-256). Portal faktur nie wystawia.
+create or replace function public.app_training_order_invoice_attach(
+  p_order uuid, p_actor uuid, p_invoice_number text, p_storage_path text default null, p_sha256 text default null)
+returns void
+language plpgsql set search_path = '' as $$
+declare
+  v_o public.training_orders%rowtype;
+begin
+  select * into v_o from public.training_orders o where o.id = p_order for update;
+  if not found or public.training_actor_kind(v_o.training_id, p_actor) is distinct from 'user:' then
+    raise exception 'invoice: brak uprawnień';
+  end if;
+  if v_o.status not in ('paid','refund_pending','partially_refunded','refunded') then
+    raise exception 'invoice: zamówienie nieopłacone' using errcode = 'BP409';
+  end if;
+  if coalesce(char_length(trim(p_invoice_number)), 0) not between 1 and 60 or p_invoice_number ~ '[<>]' then
+    raise exception 'invoice: nieprawidłowe pole invoice_number' using errcode = 'BP422';
+  end if;
+  if (p_storage_path is null) <> (p_sha256 is null)
+     or (p_storage_path is not null and (p_storage_path not like v_o.organizer_id::text || '/' || p_order::text || '/%'
+                                         or p_sha256 !~ '^[0-9a-f]{64}$')) then
+    raise exception 'invoice: nieprawidłowe pole storage_path' using errcode = 'BP422';
+  end if;
+  update public.training_orders
+     set invoice_number = trim(p_invoice_number), invoice_storage_path = p_storage_path, invoice_sha256 = p_sha256,
+         invoice_added_at = now(), updated_at = now()
+   where id = p_order;
+  insert into public.client_audit_log (account_id, organizer_id, actor, action, entity, entity_id)
+  values (v_o.account_id, v_o.organizer_id, 'user:' || p_actor::text, 'training_invoice_attached', 'training_order', p_order);
+  if v_o.user_id is not null then
+    insert into public.outbox_emails (template, recipient, payload, account_id)
+    values ('training_invoice_available', 'user:' || v_o.user_id::text, jsonb_build_object('order_ref', v_o.order_ref),
+            v_o.account_id);
+  end if;
+end $$;
+
+-- Pobranie pliku faktury: kupujący (własne zamówienie), właściciel salonu (tylko faktura na NIP salonu –
+-- bill_to_account)
+-- albo organizator szkolenia. Serwer podpisuje URL kluczem serwisowym dopiero po tej kontroli (60 s,
+-- download – jak dokumenty polis, 10.1); kubełek training-invoices nie ma polityk dla authenticated.
+create or replace function public.app_training_invoice_path(p_order uuid, p_actor uuid)
+returns text
+language plpgsql stable set search_path = '' as $$
+declare
+  v_path text;
+begin
+  select o.invoice_storage_path into v_path from public.training_orders o
+   where o.id = p_order and o.invoice_storage_path is not null
+     and (o.user_id = p_actor
+          or (o.bill_to_account and exists (
+                select 1 from public.client_members m
+                  join public.client_accounts a on a.id = m.account_id and a.status = 'active'
+                 where m.account_id = o.account_id and m.user_id = p_actor
+                   and m.role = 'owner' and m.status = 'active'))
+          or public.training_actor_kind(o.training_id, p_actor) = 'user:');
+  if v_path is null then
+    raise exception 'invoice: brak pliku albo uprawnień';
+  end if;
+  return v_path;
+end $$;
+
+-- Uzgadnianie z raportami operatora (zadanie dzienne w Workerze): płatność potwierdzona u operatora, a nie
+-- w bazie → serwer woła app_payment_webhook() ze zdarzeniem syntetycznym (source = 'reconciliation',
+-- event_id 'recon:<referencja>:<stan>') – ta sama, idempotentna ścieżka; pozostałe rozbieżności – tutaj.
+create or replace function public.app_payment_discrepancy_report(
+  p_kind text, p_provider text, p_ref text, p_order uuid, p_details jsonb default '{}'::jsonb)
+returns boolean
+language plpgsql set search_path = '' as $$
+begin
+  if p_kind is null or p_kind not in ('confirmed_not_paid','paid_not_confirmed','amount_mismatch','seat_counter',
+                                      'reservation_stuck','refund_stuck','cancel_request_stale','unknown_payment',
+                                      'withdrawal_overdue','kyb_mismatch') then
+    raise exception 'discrepancy: nieprawidłowe pole kind' using errcode = 'BP422';
+  end if;
+  return public.payment_discrepancy_open(p_kind, p_provider, p_ref, p_order, p_details);
+end $$;
+
+create or replace function public.app_payment_discrepancy_resolve(p_id bigint, p_actor uuid, p_resolution text)
+returns void
+language plpgsql set search_path = '' as $$
+begin
+  if not exists (select 1 from public.admin_users u
+                 where u.user_id = p_actor and u.is_active and u.role in ('admin','agent')) then
+    raise exception 'discrepancy: brak uprawnień';
+  end if;
+  if coalesce(char_length(trim(p_resolution)), 0) not between 5 and 500 or p_resolution ~ '[<>]' then
+    raise exception 'discrepancy: nieprawidłowe pole resolution' using errcode = 'BP422';
+  end if;
+  update public.payment_discrepancies
+     set resolved_at = now(), resolved_by = p_actor, resolution = trim(p_resolution)
+   where id = p_id and resolved_at is null;
+  if not found then
+    raise exception 'discrepancy: brak otwartej pozycji';
+  end if;
+  insert into public.client_audit_log (actor, action, entity, payload)
+  values ('staff:' || p_actor::text, 'payment_discrepancy_resolved', 'payment', jsonb_build_object('id', p_id));
+end $$;
+
+-- Kontrole spójności (Cron co 5 minut, razem z wygaszaniem rezerwacji; wynik > 0 → alert dla zespołu; dok. 11 §12a.13)
+create or replace function public.app_payment_health()
+returns table (check_name text, n bigint)
+language sql stable set search_path = '' as $$
+  select 'reservation_stuck', count(*) from public.training_orders o
+   where o.status = 'reserved' and o.reserved_until < now() - interval '5 minutes'
+  union all
+  select 'refund_stuck', count(*) from public.training_refunds r
+   where r.status in ('requested','submitted') and r.created_at < now() - interval '24 hours'
+  union all
+  select 'cancel_request_stale', count(*) from public.training_orders o
+   where o.status in ('paid','partially_refunded') and o.cancel_requested_at < now() - interval '7 days'
+  union all
+  -- odstąpienie konsumenta bez zleconego zwrotu po 3 dniach (ustawowy termin zwrotu – 14 dni) [do weryfikacji prawnej]
+  select 'withdrawal_overdue', count(*) from public.training_orders o
+   where o.withdrawal_declared_at < now() - interval '3 days' and o.status in ('paid','partially_refunded')
+     and not exists (select 1 from public.training_refunds r where r.order_id = o.id and r.status <> 'failed'
+                        and r.created_at >= o.withdrawal_declared_at)
+  union all
+  -- sesja płatności bez wyniku po 48 h (uzgadnianie co 15 minut nie znalazło jej u operatora)
+  select 'payment_pending_stale', count(*) from public.training_payments p
+   where p.status = 'pending' and p.created_at < now() - interval '48 hours'
+  union all
+  select 'paid_without_registration', count(*) from public.training_orders o
+   where o.status = 'paid' and not exists (select 1 from public.training_registrations r
+                                            where r.id = o.registration_id and r.status in ('registered','attended','no_show'))
+  union all
+  select 'seat_counter', count(*) from public.trainings t
+   where t.seats_held <> (select count(*) from public.training_orders o where o.training_id = t.id and o.status = 'reserved')
+      or t.seats_registered <> (select count(*) from public.training_registrations r
+                                 where r.training_id = t.id and r.status in ('registered','attended','no_show'))
+  union all
+  select 'open_discrepancies', count(*) from public.payment_discrepancies d where d.resolved_at is null;
+$$;
+
+-- Retencja (Cron dziennie) [Założenie: okresy; obowiązki księgowe i DAC7 – do potwierdzenia, dok. 11 §12a.12]:
+--  * dane kupującego i do faktury – 90 dni po zakończeniu szkolenia (organizator ma je w swojej księgowości),
+--    nie przy otwartym zwrocie ani sporze; zamówienia nieopłacone – 7 dni od utworzenia;
+--  * zamówienie – 12 miesięcy po szkoleniu bez powiązania z osobą i kontem (plik faktury serwer usuwa
+--    z kubełka wcześniej, wg ścieżek z tego samego warunku);
+--  * zdarzenia operatora – 13 miesięcy; rekord finansowy bez danych osobowych (zamówienie, płatności, zwroty)
+--    – do końca 5. roku po roku szkolenia; rozbieżności zamknięte – 24 miesiące.
+create or replace function public.app_purge_training_orders()
+returns integer
+language plpgsql set search_path = '' as $$
+declare
+  v_buyers integer;
+  v_anon   integer;
+  v_old    integer;
+begin
+  delete from public.training_order_buyer_data b
+   using public.training_orders o, public.trainings t
+   where o.id = b.order_id and t.id = o.training_id
+     and ((o.status in ('expired','cancelled') and o.created_at < now() - interval '7 days')
+       or (o.status in ('paid','partially_refunded','refunded') and t.ends_at < now() - interval '90 days'
+           and o.disputed_at is null
+           and not exists (select 1 from public.training_refunds r
+                            where r.order_id = o.id and r.status in ('requested','submitted'))));
+  get diagnostics v_buyers = row_count;
+  update public.training_orders o
+     set user_id = null, account_id = null, invoice_storage_path = null, invoice_sha256 = null,
+         anonymized_at = now(), updated_at = now()
+    from public.trainings t
+   where t.id = o.training_id and o.anonymized_at is null
+     and o.status not in ('reserved','refund_pending')
+     and t.ends_at < now() - interval '12 months';
+  get diagnostics v_anon = row_count;
+  delete from public.payment_webhook_events e where e.received_at < now() - interval '13 months';
+  delete from public.payment_discrepancies d where d.resolved_at < now() - interval '24 months';
+  with old as (
+    select o.id from public.training_orders o join public.trainings t on t.id = o.training_id
+     where o.anonymized_at is not null
+       and t.ends_at < date_trunc('year', now()) - interval '5 years'),
+  r as (delete from public.training_refunds x using old where x.order_id = old.id returning 1),
+  p as (delete from public.training_payments x using old where x.order_id = old.id
+         and not exists (select 1 from public.training_refunds y where y.payment_id = x.id and y.order_id <> old.id)
+        returning 1)
+  select count(*) into v_old from old;
+  delete from public.training_orders o
+   where o.anonymized_at is not null
+     and not exists (select 1 from public.training_payments p where p.order_id = o.id)
+     and exists (select 1 from public.trainings t where t.id = o.training_id
+                  and t.ends_at < date_trunc('year', now()) - interval '5 years');
+  insert into public.client_audit_log (actor, action, entity, payload)
+  values ('system:cron', 'training_orders_purged', 'training_order',
+          jsonb_build_object('buyer_data', v_buyers, 'anonymized', v_anon, 'old', v_old));
+  return v_buyers + v_anon;
+end $$;
+
 -- Uprawnienia funkcji zapisu i funkcji wewnętrznych: wyłącznie service_role
 revoke execute on function
   public.app_activate_client_account(uuid, uuid, text, text),
@@ -5022,7 +6950,52 @@ revoke execute on function
   public.app_purge_verification_data(),
   -- 00, D41 (zabiegi); public.zabiegi_ids(boolean) – granty przy definicji (authenticated i service_role)
   public.zabiegi_filter(jsonb),
-  public.app_job_offers_page(jsonb, jsonb)
+  public.app_job_offers_page(jsonb, jsonb),
+  -- 00, D42 (płatności za szkolenia)
+  public.platform_fee_current(timestamptz),
+  public.app_set_platform_fee(uuid, integer, integer, timestamptz, text),
+  public.organizer_owner_ok(uuid, uuid),
+  -- przegląd red team płatności (13.11.2026)
+  public.organizer_money_ok(uuid, uuid),
+  public.payout_alert(uuid, text, jsonb),
+  public.app_organizer_owner_mfa_reset(uuid, uuid),
+  public.app_payout_link_issued(uuid, uuid, timestamptz),
+  public.training_orders_close_reserved(uuid, text),
+  public.app_suspend_organizer(uuid, uuid, text),
+  public.app_checkouts_to_cancel(integer),
+  public.app_payments_to_reconcile(integer),
+  public.training_order_payable_error(uuid),
+  public.app_training_payment_begin(uuid, uuid, text),
+  public.app_training_order_withdraw(uuid, uuid, text),
+  public.app_payout_account_register(uuid, uuid, text, text),
+  public.app_payout_account_set_status(text, text, boolean, boolean, boolean, boolean, boolean, text),
+  public.app_sales_terms_submit(uuid, uuid, jsonb),
+  public.app_sales_terms_moderate(uuid, uuid, text, text),
+  public.training_orders_expire_for(uuid),
+  public.app_expire_training_orders(),
+  public.app_training_order_create(uuid, uuid, uuid, uuid, uuid, text, text, jsonb, text, text),
+  public.app_training_order_abandon(uuid, uuid),
+  public.app_training_payment_attach(uuid, uuid, text, text, timestamptz, uuid),
+  public.payment_status_next_ok(text, text),
+  public.payment_discrepancy_open(text, text, text, uuid, jsonb),
+  public.training_order_main_payment(uuid),
+  public.training_refund_create(uuid, uuid, integer, text, text),
+  public.training_order_confirm(uuid, timestamptz),
+  public.training_order_release_seat(uuid),
+  public.payment_event_reject(bigint, text, text, text, uuid),
+  public.app_payment_webhook(text, text, text, text, text, uuid, integer, text, text, timestamptz, text, text, text, text, uuid),
+  public.app_training_refund_request(uuid, uuid, integer, text, boolean),
+  public.app_training_refund_attach(uuid, text, text),
+  public.training_orders_refund_all(uuid, text),
+  public.app_training_order_cancel_request(uuid, uuid),
+  public.app_organizer_training_orders(uuid, uuid),
+  public.app_organizer_invoice_data(uuid, uuid),
+  public.app_training_order_invoice_attach(uuid, uuid, text, text, text),
+  public.app_training_invoice_path(uuid, uuid),
+  public.app_payment_discrepancy_report(text, text, text, uuid, jsonb),
+  public.app_payment_discrepancy_resolve(bigint, uuid, text),
+  public.app_payment_health(),
+  public.app_purge_training_orders()
   from public, anon, authenticated;
 grant execute on function
   public.app_activate_client_account(uuid, uuid, text, text),
@@ -5096,7 +7069,52 @@ grant execute on function
   public.app_purge_verification_data(),
   -- 00, D41 (zabiegi)
   public.zabiegi_filter(jsonb),
-  public.app_job_offers_page(jsonb, jsonb)
+  public.app_job_offers_page(jsonb, jsonb),
+  -- 00, D42 (płatności za szkolenia)
+  public.platform_fee_current(timestamptz),
+  public.app_set_platform_fee(uuid, integer, integer, timestamptz, text),
+  public.organizer_owner_ok(uuid, uuid),
+  -- przegląd red team płatności (13.11.2026)
+  public.organizer_money_ok(uuid, uuid),
+  public.payout_alert(uuid, text, jsonb),
+  public.app_organizer_owner_mfa_reset(uuid, uuid),
+  public.app_payout_link_issued(uuid, uuid, timestamptz),
+  public.training_orders_close_reserved(uuid, text),
+  public.app_suspend_organizer(uuid, uuid, text),
+  public.app_checkouts_to_cancel(integer),
+  public.app_payments_to_reconcile(integer),
+  public.training_order_payable_error(uuid),
+  public.app_training_payment_begin(uuid, uuid, text),
+  public.app_training_order_withdraw(uuid, uuid, text),
+  public.app_payout_account_register(uuid, uuid, text, text),
+  public.app_payout_account_set_status(text, text, boolean, boolean, boolean, boolean, boolean, text),
+  public.app_sales_terms_submit(uuid, uuid, jsonb),
+  public.app_sales_terms_moderate(uuid, uuid, text, text),
+  public.training_orders_expire_for(uuid),
+  public.app_expire_training_orders(),
+  public.app_training_order_create(uuid, uuid, uuid, uuid, uuid, text, text, jsonb, text, text),
+  public.app_training_order_abandon(uuid, uuid),
+  public.app_training_payment_attach(uuid, uuid, text, text, timestamptz, uuid),
+  public.payment_status_next_ok(text, text),
+  public.payment_discrepancy_open(text, text, text, uuid, jsonb),
+  public.training_order_main_payment(uuid),
+  public.training_refund_create(uuid, uuid, integer, text, text),
+  public.training_order_confirm(uuid, timestamptz),
+  public.training_order_release_seat(uuid),
+  public.payment_event_reject(bigint, text, text, text, uuid),
+  public.app_payment_webhook(text, text, text, text, text, uuid, integer, text, text, timestamptz, text, text, text, text, uuid),
+  public.app_training_refund_request(uuid, uuid, integer, text, boolean),
+  public.app_training_refund_attach(uuid, text, text),
+  public.training_orders_refund_all(uuid, text),
+  public.app_training_order_cancel_request(uuid, uuid),
+  public.app_organizer_training_orders(uuid, uuid),
+  public.app_organizer_invoice_data(uuid, uuid),
+  public.app_training_order_invoice_attach(uuid, uuid, text, text, text),
+  public.app_training_invoice_path(uuid, uuid),
+  public.app_payment_discrepancy_report(text, text, text, uuid, jsonb),
+  public.app_payment_discrepancy_resolve(bigint, uuid, text),
+  public.app_payment_health(),
+  public.app_purge_training_orders()
   to service_role;
 
 -- Test w CI (rozszerzenie packages/db/tests/privileges.test.sql) – pełna lista w pkt 9.6 dokumentu 11.
@@ -5151,3 +7169,29 @@ grant execute on function
 --       i app_candidate_ads_page() bez zmiany kolejności (od najnowszej); nieznany identyfikator w filtrze
 --       → BP422 bez naliczenia kwoty; anon: kolumna zabiegi czytelna, RLS i kwoty bez zmian;
 --       gen_zabiegi_sql.py --check zgodny z snippets/zabiegi-oc-beauty.json.
+--  (20) płatności za szkolenia (00, D42; dok. 11 §12a.15): authenticated nie wykonuje app_training_order_create()
+--       ani app_payment_webhook(); kwota zamówienia = cena szkolenia z bazy (pola kwoty w danych z formularza
+--       ignorowane), prowizja 0 w promocji; ten sam klucz idempotencji i druga karta → to samo zamówienie;
+--       brak nadsprzedaży (5 równoległych sesji o 1 miejsce → 1 rezerwacja, 4 × BP409); wygaśnięcie rezerwacji
+--       (cron i „leniwie” przy nowym zamówieniu) zwalnia miejsce; webhook: zła kwota, waluta albo zamówienie →
+--       rejected_mismatch + rozbieżność, to samo zdarzenie → duplicate (także 3 doręczenia naraz), „failed” po
+--       „succeeded” → ignored_stale, spóźniona płatność bez miejsca → zwrot automatyczny, z wolnym miejscem →
+--       zapis, podwójna płatność → zwrot drugiej; zwrot tylko przez właściciela organizatora (nie członek, nie
+--       personel), kwota ≤ pozostałej, webhook zwrotu szybszy niż zapis referencji; odwołanie szkolenia → zwroty
+--       wszystkim i zamknięte rezerwacje; RLS: kupujący – własne zamówienia i dane do faktury (bez user_id,
+--       idempotency_key), organizator – 0 wierszy (tylko funkcje z dziennikiem), personel aal2 – zamówienia bez
+--       danych kupujących, anon – permission denied; retencja: dane kupującego 90 dni po szkoleniu (nieopłacone –
+--       7 dni), zamówienie anonimizowane po 12 miesiącach z zachowaniem kwot.
+--  (21) przegląd red team płatności (13.11.2026; dok. 11 §12a.15): zwrot / spór przed płatnością →
+--       deferred_out_of_order bez zapisu, po płatności i ponowieniu jeden zwrot; dispute.closed: lost → refunded,
+--       chargeback, zapis anulowany, bez zwrotu przez portal; won → disputed_at = null, zwroty znów możliwe; bez
+--       wyniku → BP422; odwołanie szkolenia z opłaconymi zamówieniami: członek, agent → odmowa, admin bez
+--       uzasadnienia → BP422, zamówienie w sporze bez zwrotu; bill_to_account: zakup pracownika na własny NIP
+--       niewidoczny dla właściciela (RLS i plik), pracownik na NIP salonu → BP409; karencja 72 h konta wypłat
+--       (publikacja i zamówienie → BP409), link bez świeżego TOTP → BP409, alerty, zmiana rachunku → ponowna
+--       karencja, NIP z KYB innej firmy → restricted + kyb_mismatch, 72 h bez zwrotów po resecie TOTP;
+--       zawieszenie zamyka rezerwacje (funkcją i cronem), nowa sesja → BP409, płatność po zawieszeniu → zwrot
+--       'organizator-zawieszony', sesje do cancelCheckout; płatność po naszym UUID bez referencji, zwrot po
+--       drugiej referencji, unknown_ref także przy ponowieniu; rezerwacja Stripe = 30 min; szkolenie < 14 dni
+--       bez żądania wcześniejszego rozpoczęcia → BP422; odstąpienie: zapis, miejsce, e-maile, alert po 3 dniach,
+--       po 14 dniach → BP409; limit sprzedaży nowego organizatora → BP409.

@@ -9,12 +9,22 @@
     "owu_obowiazuje_od": "2.06.2025 r.",
     "katalog_i_dodatki_obowiazuja_od": "13.02.2026",
     "kolor_marki_zrodla": "#E4002B",
-    "uwaga": "Dane wyekstrahowane wyłącznie z kodu klienckiego dostępnego w pobranych chunkach. Kroki 2–6 kalkulatora (ankieta, weryfikacja, oferta, podsumowanie, sukces) NIE były w pobranych plikach – ich pola, treści i wysyłka są nieznane (patrz 'braki').",
-    "weryfikacja_2026_11_13": "Krytyk kompletności: potwierdzono PREMIUMS, ADDONS, getAgeGroup, calcMonthlyPremium, listy wariantów strony głównej, wybrane wiersze tabeli świadczeń. Kroki 2–6 nadal brak w kodzie.",
+    "uwaga": "Stan 2026-11-13 po analizie repozytorium gohestia: znane są wszystkie kroki 1–6, ankieta, ekrany wykluczeń, 14 zgód/oświadczeń, wysyłka (route handlery /api/turnstile i /api/oferta, Resend) i Turnstile. Pierwotna uwaga (kroki 2–6 nieznane) zachowana w uwaga_pierwotna_nieaktualna; poprawki wcześniejszych twierdzeń w poprawki_po_repozytorium.",
+    "weryfikacja_2026_11_13": "Krytyk kompletności: potwierdzono PREMIUMS, ADDONS, getAgeGroup, calcMonthlyPremium, listy wariantów strony głównej, wybrane wiersze tabeli świadczeń. Kroki 2–6 nadal brak w kodzie. (stan sprzed repozytorium – nieaktualne co do kroków 2–6)",
     "zrodlo_kod": "repozytorium gohestia (klon tylko do odczytu, commit e186f2a z 2026-07-12) – kod źródłowy aplikacji ergo.beautypolisa.eu",
     "technologia_z_repo": "Next.js 16.2.9 (App Router), React 19.2.4, OpenNext → Cloudflare Workers (Worker „gohestia”, nodejs_compat), Zustand 5 bez persist, react-hook-form 7 + Zod 4, Resend 6 + @react-email/components, @marsidev/react-turnstile; brak Supabase i jakiejkolwiek bazy (gohestia/package.json:13-27, gohestia/wrangler.jsonc:1-11)",
     "wdrozenie": "GitHub Actions: push do main → npm ci → opennextjs-cloudflare build && deploy (gohestia/.github/workflows/deploy.yml:5-60). Sekrety runtime po stronie Cloudflare: RESEND_API_KEY, AGENT_EMAIL, TURNSTILE_SECRET_KEY, FROM_EMAIL (+ opcjonalnie SITE_URL, NEXT_PUBLIC_TURNSTILE_SITE_KEY) – wartości w konfiguracji, nie w dokumencie",
-    "uwaga_aktualizacja_2026_11_13": "Po analizie repozytorium gohestia znane są WSZYSTKIE kroki (1–6), ankieta, zgody, wysyłka i Turnstile. Pole „uwaga” powyżej opisuje stan sprzed dostępu do repozytorium i jest nieaktualne w części o krokach 2–6. Szczegóły i status braków R1–R11: sekcja „Zamknięcie braków po analizie repozytorium gohestia” w pliku .md oraz klucz zamkniecie_brakow."
+    "uwaga_aktualizacja_2026_11_13": "Po analizie repozytorium gohestia znane są WSZYSTKIE kroki (1–6), ankieta, zgody, wysyłka i Turnstile. Stan sprzed dostępu do repozytorium opisuje pole uwaga_pierwotna_nieaktualna (nieaktualne w części o krokach 2–6); pole „uwaga” jest już zaktualizowane. Szczegóły i status braków R1–R11: sekcja „Zamknięcie braków po analizie repozytorium gohestia” w pliku .md oraz klucz zamkniecie_brakow.",
+    "uwaga_pierwotna_nieaktualna": "Dane wyekstrahowane wyłącznie z kodu klienckiego dostępnego w pobranych chunkach. Kroki 2–6 kalkulatora (ankieta, weryfikacja, oferta, podsumowanie, sukces) NIE były w pobranych plikach – ich pola, treści i wysyłka są nieznane (patrz 'braki').",
+    "weryfikacja_repo_2026_11_13": "Ponowne porównanie maszynowe: 27 pozycji PREMIUMS (gohestia/lib/data/premiums.ts:3-55) i 66 wierszy tabel świadczeń A/B (gohestia/lib/data/benefits.ts:59-143: nazwa, wartości, karencja, wyróżnienie) – zgodne z tym plikiem. Zgody, ankieta, szablony e-mail i strony treści sprawdzone z kodem; odwołania do OWU.pdf (s. 3, 4, 5, 13, 50, 148) sprawdzone pdftotext.",
+    "metadane_strony": {
+      "title": "ERGO Razem — Kalkulator Grupy Otwartej",
+      "description": "Oblicz składkę grupowego ubezpieczenia na życie ERGO Razem. Sopockie TU na Życie ERGO Hestia S.A.",
+      "html_lang": "pl",
+      "font": "Inter (next/font/google, subset latin)",
+      "zrodlo": "gohestia/app/layout.tsx:5-15",
+      "uwaga": "W portalu tytuł i opis według konwencji portalu BeautyPolisa (ER jako formularz w portalu, nie osobny serwis)."
+    }
   },
   "kroki": [
     {
@@ -511,7 +521,7 @@
       "klucz_w_store": "globalDoctors",
       "w_kroku_oferta": "przełącznik „wycena wg wieku”, wyłączony dla wieku ≥ 64; w podsumowaniu „+ Global Doctors: wycena indywidualna”; do e-maila trafia tylko etykieta „Global Doctors”",
       "cena_w_repozytorium": "BRAK – ani w kodzie, ani w OWU.pdf (WU GD 02/24 nie są dołączone)",
-      "zgodnosc_z_wu": "WU ER 01/25 (OWU.pdf s. 5) wymieniają GD 02/24 jako część umowy; maks. wiek 63 tylko z treści aplikacji"
+      "zgodnosc_z_wu": "Informacje dla konsumenta (OWU.pdf s. 5, pkt 3.2) wymieniają WU GD 02/24 jako element określający świadczenie (obok WU ER 01/25 w pkt 3.1); samego tekstu WU GD 02/24 nie ma w OWU.pdf. Maks. wiek 63 tylko z treści aplikacji"
     }
   },
   "wzor_skladki": "skladka = PREMIUMS[grupa][produkt].find(wariant).monthly (0 gdy brak) + (mediplan ? 9 : 0) + (medicalAssistance ? 6 : 0) + (globalDoctors && wiek<64 ? 0 : 0)",
@@ -4307,7 +4317,9 @@
       "zrodlo": "gohestia/components/premium-calculator.tsx:18-33"
     },
     "przycisk": "Przejdź do podsumowania →",
-    "BLAD_podwojne_liczenie_dodatkow": "produkt/page.tsx:40-42 liczy monthly = calcMonthlyPremium(...) (już z dodatkami 9/6 zł), a PremiumCalculator dodaje 9 i 6 zł drugi raz (premium-calculator.tsx:18-20). Przykład: A1 Dla Mnie Rozszerzony + MediPlan → krok Oferta pokazuje 75 zł, Podsumowanie i e-mail 66 zł. W portalu: jedna funkcja wyceny, wynik tylko wyświetlany."
+    "BLAD_podwojne_liczenie_dodatkow": "produkt/page.tsx:40-42 liczy monthly = calcMonthlyPremium(...) (już z dodatkami 9/6 zł), a PremiumCalculator dodaje 9 i 6 zł drugi raz (premium-calculator.tsx:18-20). Przykład: A1 Dla Mnie Rozszerzony + MediPlan → krok Oferta pokazuje 75 zł, Podsumowanie i e-mail 66 zł. W portalu: jedna funkcja wyceny, wynik tylko wyświetlany.",
+    "uwaga_dostepnosc_przelacznikow": "AddonToggle to <label> bez pola input; przełączanie tylko kliknięciem w sam suwak (div z onClick), kliknięcie w etykietę nic nie robi, brak obsługi klawiatury i roli switch (gohestia/components/addon-toggle.tsx:15-38). W portalu: input type=checkbox / role=switch.",
+    "uwaga_brak_wariantu_domyslnego": "Brak wariantu domyślnego i brak zaznaczenia produktu przy wejściu; zmiana produktu zeruje wariant, ale dodatki zostają (store/calculator-store.ts:41-45)."
   },
   "formularz_kontaktowy": {
     "naglowek_oferty": "Twoja oferta",
@@ -4548,7 +4560,67 @@
         "„token weryfikacji Cloudflare Turnstile” nie trafia razem z danymi kontaktowymi (/api/oferta go nie przyjmuje).",
         "„preferowany region” nie jest wysyłany.",
         "Cloudflare Web Analytics – brak w kodzie; CSP (next.config.ts:16-21) zablokowałby skrypt beacona spoza self/challenges."
-      ]
+      ],
+      "tresc_pelna": [
+        {
+          "n": "1. Administrator danych osobowych",
+          "tresc": "Administratorem danych osobowych zbieranych za pośrednictwem niniejszego serwisu jest:\nAura Expert sp. z o.o.\nAgent ubezpieczeniowy ERGO Hestia\ne-mail: [e-mail biura Aura Expert]\nUbezpieczycielem jest:\nSopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.\nul. Hestii 1, 81-731 Sopot\nKRS: 0000040562"
+        },
+        {
+          "n": "2. Cele i podstawy prawne przetwarzania danych",
+          "tresc": "Dane osobowe przetwarzamy w następujących celach:",
+          "lista": [
+            "Przedstawienie oferty ubezpieczeniowej — imię, nazwisko, adres e-mail, numer telefonu, preferowany region — na podstawie art. 6 ust. 1 lit. a RODO (zgoda osoby, której dane dotyczą).",
+            "Kontakt telefoniczny lub e-mailowy w celu omówienia oferty — na podstawie wyrażonej zgody (art. 6 ust. 1 lit. a RODO).",
+            "Marketing usług ubezpieczeniowych — wyłącznie po wyrażeniu odrębnej zgody marketingowej (art. 6 ust. 1 lit. a RODO)."
+          ]
+        },
+        {
+          "n": "3. Dane medyczne — przetwarzanie wyłącznie lokalnie",
+          "tresc": "Odpowiedzi na pytania ankiety medycznej są przetwarzane wyłącznie lokalnie w przeglądarce użytkownika (JavaScript po stronie klienta). Żadne odpowiedzi z ankiety nie są przesyłane na serwer, zapisywane w bazie danych ani logowane. Do naszych serwerów trafia jedynie: dane kontaktowe, wybrana konfiguracja oferty (produkt, wariant, dodatki, składka) oraz token weryfikacji Cloudflare Turnstile."
+        },
+        {
+          "n": "4. Odbiorcy danych",
+          "tresc": "Dane kontaktowe oraz wybrana konfiguracja oferty są przekazywane:",
+          "lista": [
+            "Agentowi ubezpieczeniowemu Aura Expert sp. z o.o. w celu nawiązania kontaktu.",
+            "Dostawcy usługi poczty e-mail Resend Inc. (przetwarzanie w celu wysyłki wiadomości e-mail).",
+            "Cloudflare Inc. — hosting, CDN, weryfikacja Turnstile."
+          ]
+        },
+        {
+          "n": "5. Okres przechowywania danych",
+          "tresc": "Dane kontaktowe przesłane przez formularz są przekazywane agentowi w formie wiadomości e-mail i nie są przechowywane przez serwis w żadnej bazie danych. Kopie e-maili mogą być przechowywane przez agenta przez czas niezbędny do realizacji celu kontaktu, nie dłużej niż 3 lata lub do odwołania zgody."
+        },
+        {
+          "n": "6. Prawa osoby, której dane dotyczą",
+          "tresc": "Przysługują Ci następujące prawa:",
+          "lista": [
+            "Prawo dostępu do swoich danych (art. 15 RODO)",
+            "Prawo sprostowania danych (art. 16 RODO)",
+            "Prawo do usunięcia danych („prawo do bycia zapomnianym\") (art. 17 RODO)",
+            "Prawo do ograniczenia przetwarzania (art. 18 RODO)",
+            "Prawo do przenoszenia danych (art. 20 RODO)",
+            "Prawo sprzeciwu wobec przetwarzania (art. 21 RODO)",
+            "Prawo do cofnięcia zgody w dowolnym momencie — bez wpływu na zgodność z prawem przetwarzania przed jej cofnięciem",
+            "Prawo wniesienia skargi do organu nadzorczego — Prezesa Urzędu Ochrony Danych Osobowych (UODO), ul. Stawki 2, 00-193 Warszawa"
+          ],
+          "po_liscie": "W celu realizacji praw skontaktuj się z nami pod adresem: [e-mail biura Aura Expert]"
+        },
+        {
+          "n": "7. Pliki cookie i analityka",
+          "tresc": "Serwis korzysta z Cloudflare Web Analytics — narzędzia privacy-first, które nie używa plików cookie ani nie śledzi użytkowników między stronami. Nie stosujemy plików cookie do celów marketingowych ani profilowania."
+        },
+        {
+          "n": "8. Przekazywanie danych poza EOG",
+          "tresc": "Dane mogą być przekazywane do Resend Inc. i Cloudflare Inc. z siedzibą w USA. Transfer odbywa się na podstawie standardowych klauzul umownych (SCC) zatwierdzonych przez Komisję Europejską."
+        },
+        {
+          "n": "9. Zmiany polityki",
+          "tresc": "Zastrzegamy prawo do zmiany niniejszej polityki. O istotnych zmianach poinformujemy poprzez aktualizację daty na początku dokumentu."
+        }
+      ],
+      "tresc_pelna_zrodlo": "gohestia/app/polityka-prywatnosci/page.tsx:24-118 (adres e-mail biura zastąpiony opisem)"
     },
     "regulamin": {
       "tytul": "Regulamin serwisu",
@@ -4572,10 +4644,69 @@
       ],
       "zrodlo": "gohestia/app/regulamin/page.tsx:15-133",
       "uwagi": [
-        "§1 ust. 2: produkt „dystrybuowany przez Sopockie TU na Życie ERGO Hestia S.A.” – ubezpieczyciel nie jest dystrybutorem w tym sensie; do korekty.",
+        "§1 ust. 2: produkt „dystrybuowanego przez Sopockie TU na Życie ERGO Hestia S.A.” (gohestia/app/regulamin/page.tsx:35-36) – ubezpieczyciel nie jest dystrybutorem w tym sensie; do korekty.",
         "§7 ust. 3 (sąd właściwy dla siedziby Operatora) wobec konsumentów to klauzula niedozwolona – nie przenosić.",
-        "„Korzystanie z Serwisu oznacza akceptację niniejszego Regulaminu” – w portalu regulamin świadczenia usług drogą elektroniczną wg własnego wzoru."
-      ]
+        "„Korzystanie z Serwisu oznacza akceptację niniejszego Regulaminu” – w portalu regulamin świadczenia usług drogą elektroniczną wg własnego wzoru.",
+        "§2 ust. 3 odsyła do OWU, które są „dostępne na stronie ERGO Hestia” (gohestia/app/regulamin/page.tsx:60-61), a aplikacja sama ma OWU.pdf w public/dokumenty – w portalu linkować własny, wersjonowany plik."
+      ],
+      "tresc_pelna": [
+        {
+          "n": "§1. Postanowienia ogólne",
+          "lista": [
+            "Niniejszy regulamin określa zasady korzystania z serwisu internetowego dostępnego pod adresem domeny obsługiwanej przez Aura Expert sp. z o.o. (dalej: „Serwis\").",
+            "Serwis służy do prezentacji oferty grupowego ubezpieczenia na życie ERGO Razem Grupy Otwartej (kod produktu ER 01/25) dystrybuowanego przez Sopockie TU na Życie ERGO Hestia S.A. z siedzibą w Sopocie.",
+            "Operatorem Serwisu jest: Aura Expert sp. z o.o. Agent ubezpieczeniowy wpisany do rejestru agentów ubezpieczeniowych KNF Kontakt: [e-mail biura Aura Expert]",
+            "Korzystanie z Serwisu oznacza akceptację niniejszego Regulaminu."
+          ]
+        },
+        {
+          "n": "§2. Charakter informacji",
+          "lista": [
+            "Wszystkie informacje prezentowane w Serwisie, w tym tabele świadczeń i wyliczenia składek, mają charakter informacyjny i pomocniczy.",
+            "Przedstawione kwoty świadczeń i składek nie stanowią oferty w rozumieniu Kodeksu Cywilnego. Wiążąca oferta przedstawiana jest przez agenta ubezpieczeniowego.",
+            "Szczegółowe warunki ubezpieczenia określają Ogólne Warunki Ubezpieczenia ERGO Razem (kod ER 01/25) dostępne na stronie ERGO Hestia."
+          ]
+        },
+        {
+          "n": "§3. Kalkulator i ankieta medyczna",
+          "lista": [
+            "Kalkulator składek służy wyłącznie do orientacyjnego obliczenia miesięcznej składki na podstawie wybranych parametrów.",
+            "Ankieta medyczna przetwarzana jest wyłącznie lokalnie w przeglądarce użytkownika. Odpowiedzi nie są przesyłane na serwer ani zapisywane.",
+            "Wynik ankiety medycznej nie stanowi oceny ryzyka ubezpieczeniowego. Ostateczna decyzja o przyjęciu do ubezpieczenia należy do Towarzystwa Ubezpieczeniowego."
+          ]
+        },
+        {
+          "n": "§4. Formularz kontaktowy",
+          "lista": [
+            "Wypełnienie formularza i przesłanie danych kontaktowych jest dobrowolne.",
+            "Po wysłaniu formularza dane przekazywane są agentowi ubezpieczeniowemu Aura Expert sp. z o.o., który skontaktuje się z użytkownikiem w terminie do 2 dni roboczych.",
+            "Przesłanie formularza nie jest równoznaczne z zawarciem umowy ubezpieczenia."
+          ]
+        },
+        {
+          "n": "§5. Odpowiedzialność",
+          "lista": [
+            "Operator Serwisu nie ponosi odpowiedzialności za decyzje podjęte na podstawie informacji zawartych w Serwisie bez uprzedniej konsultacji z agentem.",
+            "Operator dokłada starań, aby informacje w Serwisie były aktualne i zgodne z obowiązującymi OWU, jednak zastrzega prawo do błędów."
+          ]
+        },
+        {
+          "n": "§6. Własność intelektualna",
+          "lista": [
+            "Wszelkie treści Serwisu, w tym teksty, tabele i kod źródłowy, są własnością Aura Expert sp. z o.o. lub zostały udostępnione na podstawie stosownych licencji.",
+            "Nazwa i logo ERGO Hestia są zastrzeżonymi znakami towarowymi Sopockiego TU na Życie ERGO Hestia S.A."
+          ]
+        },
+        {
+          "n": "§7. Postanowienia końcowe",
+          "lista": [
+            "W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają przepisy prawa polskiego, w szczególności Kodeksu Cywilnego i Ustawy o dystrybucji ubezpieczeń.",
+            "Operator zastrzega prawo do zmiany Regulaminu. Zmiany wchodzą w życie z dniem opublikowania zaktualizowanej wersji w Serwisie.",
+            "Wszelkie spory rozstrzygane będą przez sąd właściwy miejscowo dla siedziby Operatora."
+          ]
+        }
+      ],
+      "tresc_pelna_zrodlo": "gohestia/app/regulamin/page.tsx:24-133 (adres e-mail biura zastąpiony opisem)"
     },
     "zglos_roszczenie": {
       "tytul_meta": "Zgłoś roszczenie — Grupa Otwarta ERGO Hestia",
@@ -4646,6 +4777,38 @@
     },
     "ubezpieczenia_dodatkowe": {
       "zgodnosc": "Dane MediPlan/Medical Assistance w gohestia/app/ubezpieczenia-dodatkowe/ubezpieczenia.tsx (np. summary l. 62, procedure l. 128-137 i 220-227) zgodne z kluczem ubezpieczenia_dodatkowe_szczegoly (sprawdzone wyrywkowo, w tym literówka „pomniejsza pula” l. 72 i adres pmu.szkody@ l. 136)."
+    },
+    "strona_glowna": {
+      "zrodlo": "gohestia/app/page.tsx",
+      "metadane": "patrz meta.metadane_strony (gohestia/app/layout.tsx:8-9)",
+      "zasoby_do_zastapienia": [
+        {
+          "plik": "/ergo-hestia-logo.jpg",
+          "uzycie": "logo w nagłówku serwisu i kalkulatora",
+          "zrodlo": "gohestia/components/site-header.tsx:8; gohestia/app/kalkulator/layout.tsx:10",
+          "uwaga": "znak ERGO Hestia – użycie wymaga zgody"
+        },
+        {
+          "plik": "/girl.jpg",
+          "uzycie": "karta produktu Dla Mnie",
+          "zrodlo": "gohestia/app/page.tsx:25"
+        },
+        {
+          "plik": "/para.jpg",
+          "uzycie": "karta produktu Dla Nas",
+          "zrodlo": "gohestia/app/page.tsx:36"
+        },
+        {
+          "plik": "/family.jpg",
+          "uzycie": "karta produktu Dla Rodziny",
+          "zrodlo": "gohestia/app/page.tsx:47"
+        },
+        {
+          "plik": "/hero-family.mp4",
+          "uzycie": "wideo w panelu hero (autoPlay, muted, loop, playsInline; ukryte poniżej md)",
+          "zrodlo": "gohestia/app/page.tsx:125-133"
+        }
+      ]
     }
   },
   "skladki_weryfikacja_repo": "PREMIUMS (gohestia/lib/data/premiums.ts:3-55) i ADDONS (premiums.ts:57-62) identyczne z skladki_miesieczne_zl i dodatki; 66 wierszy tabel świadczeń A i B (gohestia/lib/data/benefits.ts:59-143) identycznych co do nazw, wartości, karencji i wyróżnień (porównanie maszynowe).",
@@ -4751,8 +4914,8 @@
     {
       "kod": "R10",
       "status": "częściowo",
-      "dowod": "Data 13.02.2026 = errata ER/EHZ01/2602 (OWU.pdf s. 148); MAKSYMALNY (34) to węższy zakres niż KOMFORT (56) – zgodnie z WU; wiek wg WU liczony w dniu podpisania certyfikatu.",
-      "dalej": "„od 57 zł” vs 50 zł (A2), „56 chorób” w treściach marketingowych, znaczenie „120/50 zł”, który wariant korzysta z zakresu MAKSYMALNY/KOMFORT (tabele A i B), zgon rodziców/teściów w „Dla Nas”. Od: zleceniodawca."
+      "dowod": "Data 13.02.2026 = errata ER/EHZ01/2602 (OWU.pdf s. 148); MAKSYMALNY (34) to węższy zakres niż KOMFORT (56) – zgodnie z WU (OWU.pdf s. 42–44); wiek wg WU liczony w dniu podpisania certyfikatu (OWU.pdf s. 3); „120/50 zł” = dzień 1–14 / od 15. dnia leczenia szpitalnego po NW (§ 48 WU, OWU.pdf s. 50) – interpretacja.",
+      "dalej": "„od 57 zł” vs 50 zł (A2 Dla Mnie Podstawowy), „56 chorób” w treściach marketingowych (tabela B ma 34 j.ch.), potwierdzenie interpretacji „120/50 zł”, który wariant korzysta z zakresu MAKSYMALNY/KOMFORT, zgon rodziców/teściów w „Dla Nas”, data „Obowiązuje od 2.06.2025” w stopce przy erracie z 13.02.2026. Od: zleceniodawca / ERGO Hestia."
     },
     {
       "kod": "R11",
@@ -4760,5 +4923,53 @@
       "dowod": "public/dokumenty/OWU.pdf = pakiet GO/WU002/2504: karta produktu (art. 8 UDU), informacje dla konsumenta na odległość, WU ER 01/25, errata.",
       "dalej": "WU GD 02/24, informacja o dystrybutorze (PDF), ewentualnie IPID; potwierdzenie aktualności pakietu 2504 i zgoda na publikację w portalu. Od: zleceniodawca / ERGO Hestia."
     }
-  ]
+  ],
+  "poprawki_po_repozytorium": [
+    {
+      "bylo": "Wysyłka przez server action (Next-Action) w kroku Podsumowanie.",
+      "jest": "Route handlery: POST /api/turnstile (krok 3) i POST /api/oferta (krok 5), fetch z JSON; server actions brak.",
+      "zrodlo": "gohestia/app/api/turnstile/route.ts:1-32; gohestia/app/api/oferta/route.ts:61-136"
+    },
+    {
+      "bylo": "W kodzie nie ma żadnej zgody ani klauzuli.",
+      "jest": "Krok 5 zbiera 7 zgód obowiązkowych, 4 oświadczenia obowiązkowe i 3 zgody dobrowolne (pełne treści w zgody.w_kodzie); serwis ma strony /rodo, /polityka-prywatnosci, /regulamin.",
+      "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:15-39,263-422"
+    },
+    {
+      "bylo": "Weryfikacja to najpewniej Turnstile; skrypt challenges.cloudflare.com nieobecny w HTML.",
+      "jest": "Krok 3 to wyłącznie widżet Turnstile (@marsidev/react-turnstile) ładowany na /kalkulator/weryfikacja; CSP dopuszcza challenges.cloudflare.com. Pobrane wcześniej strony go nie zawierały, bo to inna trasa.",
+      "zrodlo": "gohestia/app/kalkulator/weryfikacja/page.tsx:4-57; gohestia/next.config.ts:14-21"
+    },
+    {
+      "bylo": "Nazwy zakresów „MAKSYMALNY” (34) i „KOMFORT” (56) wyglądają na odwrócone.",
+      "jest": "Tak jest w WU ER 01/25 (tabela § 40 ust. 9): zakres MAKSYMALNY obejmuje 34 jednostki, KOMFORT 56 – nazwy pochodzą od ubezpieczyciela, nie są błędem aplikacji. Do wyjaśnienia zostaje tylko, które warianty korzystają z którego zakresu (tabela A: 56 j.ch., tabela B: 34 j.ch.).",
+      "zrodlo": "gohestia/public/dokumenty/OWU.pdf s. 42–44; gohestia/lib/data/benefits.ts"
+    },
+    {
+      "bylo": "Znaczenie „120/50 zł” w wierszu „Leczenie szpitalne NW” nieznane.",
+      "jest": "Najpewniej: pierwsza liczba = świadczenie za dzień leczenia szpitalnego po NW w pierwszych 14 dniach, druga = za każdy dzień po 14. dniu (§ 48 ust. 1–2 WU). Druga liczba we wszystkich 12 kolumnach tabeli A i 7 kolumnach B równa się wartości „Leczenie szpitalne choroba”, co odpowiada § 48 ust. 2 zd. 2. Karencja „2 mies. (od 15. dnia)” dotyczy drugiej części. Wymaga potwierdzenia przez ERGO Hestię.",
+      "zrodlo": "gohestia/public/dokumenty/OWU.pdf s. 50 (§ 48); gohestia/lib/data/benefits.ts (wiersze „Leczenie szpitalne NW” i „Leczenie szpitalne choroba”)"
+    },
+    {
+      "bylo": "Definicji 57 zachorowań brak; nie wiadomo, która pozycja jest poza KOMFORT.",
+      "jest": "Definicje (skróty redakcyjne) i flagi są w tablicy illnesses; poza KOMFORT jest tylko lp 1 „Bakteryjne zapalenie opon mózgowych” (tylko dziecko).",
+      "zrodlo": "gohestia/app/katalog-zachorowan/katalog.tsx:7-575"
+    },
+    {
+      "bylo": "Data urodzenia trafia do wysyłki? (niepotwierdzone)",
+      "jest": "Nie trafia: ładunek /api/oferta zawiera tylko imię, nazwisko, e-mail, telefon i ofertę (grupa wiekowa, produkt, wariant, etykiety dodatków, składka).",
+      "zrodlo": "gohestia/app/kalkulator/podsumowanie/page.tsx:136-151"
+    },
+    {
+      "bylo": "Wzór składki: składka = wariant + dodatki (jedno miejsce).",
+      "jest": "Wzór calcMonthlyPremium bez zmian, ale krok Oferta dolicza dodatki drugi raz w komponencie PremiumCalculator (błąd).",
+      "zrodlo": "gohestia/app/kalkulator/produkt/page.tsx:40-42; gohestia/components/premium-calculator.tsx:18-20"
+    }
+  ],
+  "swiadczenia_leczenie_szpitalne_NW_interpretacja": {
+    "format": "„{pierwsze 14 dni}/{od 15. dnia} zł” za dzień leczenia szpitalnego po nieszczęśliwym wypadku",
+    "podstawa": "§ 48 ust. 1–2 WU ER 01/25 (OWU.pdf s. 50): za pierwsze 14 dni – kwota z certyfikatu; za każdy dzień po 14. dniu – kwota z certyfikatu, należna również za leczenie niespowodowane NW",
+    "dowod_z_danych": "druga liczba = wartość wiersza „Leczenie szpitalne choroba” w każdej kolumnie tabel A i B",
+    "status": "interpretacja – do potwierdzenia przez ERGO Hestię; w portalu pokazać jako dwie wartości z opisem („dzień 1–14 / od 15. dnia”)"
+  }
 }

@@ -1,0 +1,1557 @@
+{
+  "_zrodlo": {
+    "aplikacja": "tax.beautypolisa.eu (Cloudflare Pages, projekt taxbp; Next.js 14, edge) + funkcje brzegowe Supabase w projekcie 'BEAUTY'",
+    "repozytorium": {
+      "repo": "aurabroker/taxbp (płytki klon, tylko odczyt, nieuruchamiany)",
+      "galaz": "main",
+      "commit": "d693a7c",
+      "data_commita": "2026-08-18",
+      "analiza": "2026-11-13",
+      "odwolania": "taxbp/<ścieżka>:<linia>",
+      "zastrzezenia": [
+        "Brak w repozytorium funkcji tax-warianty, tax-gus, tax-admin oraz migracji tabel tax_wnioski i tax_warianty (README.md:15 twierdzi, że są).",
+        "README.md:13-14 i .env.example:20-22 opisują starszą architekturę (/api/wniosek, /api/gus, hasło admina) – kod woła funkcje Supabase.",
+        "Archiwum beauty-polisa-tax-protect.zip (11.06.2026) zawiera starszą wersję; czytane tylko dla porównania."
+      ]
+    },
+    "pliki": [
+      "app/page.tsx",
+      "app/layout.tsx",
+      "components/WniosekForm.tsx",
+      "components/WycenaModal.tsx",
+      "components/InfoPage.tsx",
+      "app/admin/page.tsx",
+      "supabase/functions/tax-wniosek/index.ts",
+      "supabase/functions/tax-potwierdz/index.ts",
+      "supabase/functions/tax-wycena/index.ts",
+      "apiregon.md",
+      "public/OWU_Tax_Protect.pdf",
+      "public/Tax_Karta_Produktu.pdf",
+      "README.md",
+      ".env.example"
+    ],
+    "uwaga": "Adres projektu Supabase, klucz anon, site key Turnstile, sekrety i adresy odbiorców celowo pominięte (wartości w konfiguracji, nie w dokumencie). Adresy e-mail w tekstach dla użytkownika zastąpione opisami w nawiasach kwadratowych. Raport: tax-protect-wniosek.md."
+  },
+  "produkt": {
+    "nazwa": "Tax Protect – ubezpieczenie ochrony skarbowej i podatkowej (omówienie, nie cytat)",
+    "tytul_owu": "Tax Protect – Ogólne warunki ubezpieczenia ochrony skarbowej i podatkowej",
+    "nazwa_w_stopce_strony": "„Ogólnych warunkach ubezpieczenia ochrony skarbowej i podatkowej Tax Protect” (taxbp/app/page.tsx:346)",
+    "ubezpieczyciel": "Colonnade Insurance S.A. Oddział w Polsce (Colonnade Insurance Société Anonyme Oddział w Polsce)",
+    "program": "Beauty Polisa",
+    "agent": "Aura Expert sp. z o.o., RPU 11229690/A",
+    "sekcja_1": "ochrona karnoskarbowa osób (właściciel, zarząd, zespół)",
+    "sekcja_2": "ochrona podatkowa firmy: spory z US/KAS, ZUS, PIP, PFRON, asysta podatkowa",
+    "limit_przychodu_online_zl": 3000000
+  },
+  "trasy": [
+    {
+      "trasa": "/",
+      "plik": "app/page.tsx",
+      "runtime": "edge, force-dynamic (l. 3-4)",
+      "opis": "landing + WniosekForm + WycenaModal; warianty SSR z tax-warianty (revalidate 60 s, błąd -> [])"
+    },
+    {
+      "trasa": "/admin",
+      "plik": "app/admin/page.tsx",
+      "opis": "panel: Supabase Auth (e-mail+hasło), lista, status, nr polisy przez tax-admin"
+    },
+    {
+      "trasa": "/rodo",
+      "plik": "app/rodo/page.tsx",
+      "tytul": "RODO — nota informacyjna",
+      "tresc": "Treść w przygotowaniu."
+    },
+    {
+      "trasa": "/regulamin",
+      "plik": "app/regulamin/page.tsx",
+      "tytul": "Regulamin",
+      "tresc": "Treść w przygotowaniu."
+    },
+    {
+      "trasa": "/polityka-prywatnosci",
+      "plik": "app/polityka-prywatnosci/page.tsx",
+      "tytul": "Polityka Prywatności",
+      "tresc": "Treść w przygotowaniu."
+    },
+    {
+      "trasa": "/o-nas",
+      "plik": "app/o-nas/page.tsx",
+      "tytul": "O nas",
+      "tresc": "Treść w przygotowaniu."
+    }
+  ],
+  "kroki": [
+    {
+      "id": "przychod",
+      "etykieta": "Krok 1 — Ile wynoszą Twoje roczne przychody?",
+      "widoczny": "zawsze",
+      "zrodlo": "taxbp/components/WniosekForm.tsx:200-245",
+      "zawartosc": "5 przycisków przedziałów (aria-pressed); domyślnie 'do 250 000 zł'; klik resetuje sumę do 50 000 zł (l. 209)"
+    },
+    {
+      "id": "wycena_box",
+      "etykieta": "Wycena indywidualna",
+      "widoczny": "bracket === null (powyżej 3 000 000 zł)",
+      "zrodlo": "taxbp/components/WniosekForm.tsx:228-244",
+      "zawartosc": "tekst + przycisk 'Wypełnij formularz wyceny' (modal) + 'Zadzwoń: +48 504 400 901' (tel:+48504400901)"
+    },
+    {
+      "id": "suma",
+      "etykieta": "Krok 2 — Wybierz sumę ubezpieczenia",
+      "widoczny": "bracket ≤ 3 mln zł",
+      "zrodlo": "taxbp/components/WniosekForm.tsx:248-281",
+      "zawartosc": "2 karty (50 000 / 100 000 zł) z podlimitem, składką, 'Obejmuje 1 spór podatkowy rocznie'; karta bez wariantu disabled"
+    },
+    {
+      "id": "dane",
+      "etykieta": "Dane do wniosku",
+      "widoczny": "istnieje activeWariant (przychod_max === bracket && suma_ubezpieczenia === selectedSuma)",
+      "zrodlo": "taxbp/components/WniosekForm.tsx:285-375",
+      "zawartosc": "NIP+GUS, nazwa, imię i nazwisko, e-mail, telefon; pasek podsumowania; 5 oświadczeń/zgód; Turnstile; przycisk; ostrzeżenie"
+    },
+    {
+      "id": "po_wyslaniu",
+      "etykieta": "Sprawdź swoją skrzynkę e-mail",
+      "widoczny": "odpowiedź 2xx z tax-wniosek",
+      "zrodlo": "taxbp/components/WniosekForm.tsx:179-193"
+    },
+    {
+      "id": "potwierdzenie",
+      "etykieta": "strony HTML tax-potwierdz",
+      "widoczny": "GET ?token= z e-maila",
+      "zrodlo": "taxbp/supabase/functions/tax-potwierdz/index.ts:97-197"
+    }
+  ],
+  "nawigacja": {
+    "typ": "jedna strona, bloki warunkowe; bez steppera; walidacja tylko przy submit; pierwszy błąd w boksie role=alert (l. 362-364)",
+    "wyslij": "Wyślij wniosek o ubezpieczenie",
+    "wysylanie": "Wysyłam wniosek…",
+    "zapis_stanu": "brak (localStorage/sessionStorage nieużywane przez formularz)",
+    "usterki": [
+      "Brak wariantów (błąd tax-warianty) -> karty kroku 2 disabled, blok 'Dane do wniosku' się nie pojawia, brak komunikatu (WniosekForm.tsx:253-261, 285).",
+      "Widżet Turnstile nie renderuje się ponownie po przejściu przez 'powyżej 3 000 000 zł' (kontener odmontowany, efekt z deps [siteKey] i flagą tsRendered; l. 81-99, 358); analogicznie po ponownym otwarciu WycenaModal (WycenaModal.tsx:52-72).",
+      "Kotwica #wniosek istnieje tylko, gdy widoczny blok danych lub ekran po wysłaniu (l. 181, 286).",
+      "Zmiana NIP po pobraniu danych z GUS czyści tylko gusState (WniosekForm.tsx:297); ukryte regon, adres i pkd z poprzedniego NIP zostają i idą w ładunku (l. 149-151), więc do tax_wnioski może trafić REGON/adres/PKD innej firmy. Tryb ręczny po nieudanym wyszukaniu też ich nie czyści (l. 122-127); pkd nie jest nadpisywane, gdy GUS go nie zwróci (l. 117).",
+      "WycenaModal nie resetuje stanu po zamknięciu: komponent zawsze zamontowany (WniosekForm.tsx:377), przy zamkniętym zwraca null (WycenaModal.tsx:72), stan done/pola/zgody/token (l. 18-29) zostaje, onClose (l. 42, 139, 144, 160) nic nie czyści; ekran zależy od done (l. 151). Po wysłaniu każde kolejne otwarcie pokazuje 'Zapytanie wysłane — dziękujemy!' i drugiego zapytania nie da się wysłać bez przeładowania strony."
+    ],
+    "zalecenia_dla_portalu": [
+      "Przy każdej zmianie NIP i przy nieudanym wyszukaniu w GUS czyścić dane pobrane z GUS (REGON, adres, PKD, nazwa z GUS); dane z GUS pokazywać klientowi przed wysłaniem.",
+      "Formularz w okienku (zapytanie/wycena): po zamknięciu i po udanej wysyłce resetować pola, zgody, token Turnstile i stan 'wysłano'; widżet Turnstile renderować przy każdym zamontowaniu kontenera."
+    ]
+  },
+  "pola": {
+    "wniosek": [
+      {
+        "stan": "bracket",
+        "klucz": "przychod",
+        "etykieta": "Krok 1 (przyciski)",
+        "wartosci": [
+          250000,
+          500000,
+          1000000,
+          3000000,
+          null
+        ],
+        "domyslnie": 250000,
+        "wymagane": true,
+        "blad_klient": "Wybierz przychód i sumę ubezpieczenia.",
+        "serwer": {
+          "przeksztalcenie": "Math.round(n/1000)*1000",
+          "bledy": {
+            "<=0": "Podaj wielkość przychodów.",
+            ">3000000": "Tax Protect jest dostępny dla firm o przychodach do 3 mln zł."
+          },
+          "zrodlo": "taxbp/supabase/functions/tax-wniosek/index.ts:103-105",
+          "uwaga": "brak kontroli zgodności z wariantem"
+        }
+      },
+      {
+        "stan": "selectedSuma",
+        "klucz": null,
+        "etykieta": "Krok 2 (karty)",
+        "wartosci": [
+          50000,
+          100000
+        ],
+        "domyslnie": 50000,
+        "wymagane": true,
+        "uwaga": "do ładunku idzie tylko wariant_id"
+      },
+      {
+        "stan": "nip",
+        "klucz": "nip",
+        "etykieta": "NIP",
+        "typ": "text",
+        "atrybuty": {
+          "inputMode": "numeric",
+          "autoComplete": "off",
+          "placeholder": "np. 1234563218"
+        },
+        "wymagane": true,
+        "walidacja": "cyfry (usunięcie reszty); długość 10; suma(cyfra_i*[6,5,7,2,3,4,5,6,7]_i) mod 11 == cyfra 10",
+        "blad_na_biezaco": "Ten NIP wygląda na niepoprawny — sprawdź cyfry.",
+        "blad_klient": "Podany NIP jest nieprawidłowy.",
+        "blad_serwer": "Podany NIP jest nieprawidłowy.",
+        "przycisk_gus": {
+          "etykieta": "Pobierz z GUS",
+          "w_trakcie": "Szukam…",
+          "aktywny_gdy": "NIP poprawny"
+        },
+        "zrodlo": "taxbp/components/WniosekForm.tsx:36-42, 292-309"
+      },
+      {
+        "stan": "nazwa",
+        "klucz": "nazwa_firmy",
+        "etykieta": "Nazwa działalności",
+        "placeholder": "np. Studio Urody Bella Anna Kowalska",
+        "wymagane": true,
+        "walidacja": "trim().length >= 3",
+        "blad_klient": "Podaj nazwę działalności.",
+        "blad_serwer": "Podaj nazwę działalności."
+      },
+      {
+        "stan": "osoba",
+        "klucz": "osoba_kontaktu",
+        "etykieta": "Imię i nazwisko",
+        "atrybuty": {
+          "autoComplete": "name"
+        },
+        "placeholder": "np. Anna Kowalska",
+        "wymagane": false,
+        "walidacja": null,
+        "uwaga": "brak walidacji i brak dopisku '(opcjonalnie)'"
+      },
+      {
+        "stan": "email",
+        "klucz": "email",
+        "etykieta": "E-mail",
+        "typ": "email",
+        "atrybuty": {
+          "autoComplete": "email"
+        },
+        "placeholder": "anna@twojsalon.pl",
+        "wymagane": true,
+        "walidacja": "/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/ (klient na wartości bez trim; wysyła trim)",
+        "blad_klient": "Podaj prawidłowy adres e-mail.",
+        "serwer": "trim().toLowerCase() + ten sam regex; 'Podaj prawidłowy adres e-mail.'"
+      },
+      {
+        "stan": "telefon",
+        "klucz": "telefon",
+        "etykieta": "Telefon (opcjonalnie)",
+        "typ": "tel",
+        "atrybuty": {
+          "autoComplete": "tel"
+        },
+        "placeholder": "+48 600 000 000",
+        "wymagane": false,
+        "walidacja": null
+      },
+      {
+        "stan": "regon",
+        "klucz": "regon",
+        "ukryte": true,
+        "zrodlo_wartosci": "GUS"
+      },
+      {
+        "stan": "adres",
+        "klucz": "adres",
+        "ukryte": true,
+        "zrodlo_wartosci": "GUS",
+        "kolumna": "adres_siedziby"
+      },
+      {
+        "stan": "pkd",
+        "klucz": "pkd",
+        "ukryte": true,
+        "zrodlo_wartosci": "GUS (pole nieobecne w dokumentowanej odpowiedzi tax-gus)",
+        "kolumna": "numer_pkd"
+      },
+      {
+        "stan": "token",
+        "klucz": "turnstileToken",
+        "wymagane": true,
+        "blad_klient": "Potwierdź, że nie jesteś robotem.",
+        "blad_serwer": "Weryfikacja antyspamowa nie powiodła się. Odśwież stronę i spróbuj ponownie."
+      }
+    ],
+    "kolejnosc_walidacji_klient": [
+      "wariant",
+      "nip",
+      "nazwa",
+      "email",
+      "oswiadczenia_wymagane",
+      "turnstile"
+    ],
+    "kolejnosc_walidacji_serwer": [
+      "turnstile",
+      "nip",
+      "nazwa",
+      "email",
+      "przychod",
+      "oswiadczenia_wymagane"
+    ],
+    "wycena_modal": [
+      {
+        "stan": "nip",
+        "klucz": "nip",
+        "etykieta": "NIP (opcjonalnie)",
+        "placeholder": "np. 1234563218",
+        "wymagane": false,
+        "blad_na_biezaco": "Ten NIP wygląda na niepoprawny.",
+        "uwaga": "nie blokuje wysyłki; serwer tylko usuwa nie-cyfry",
+        "przycisk_gus": {
+          "etykieta": "GUS",
+          "w_trakcie": "Szukam…",
+          "wypelnia": "tylko nazwę"
+        }
+      },
+      {
+        "stan": "nazwa",
+        "klucz": "nazwa_firmy",
+        "etykieta": "Nazwa działalności",
+        "placeholder": "np. Studio Urody Bella",
+        "wymagane": true,
+        "blad": "Podaj nazwę działalności."
+      },
+      {
+        "stan": "osoba",
+        "klucz": "osoba_kontaktu",
+        "etykieta": "Imię i nazwisko",
+        "placeholder": "np. Anna Kowalska",
+        "wymagane": false
+      },
+      {
+        "stan": "email",
+        "klucz": "email",
+        "etykieta": "E-mail *",
+        "placeholder": "anna@twojsalon.pl",
+        "wymagane": true,
+        "blad": "Podaj prawidłowy adres e-mail."
+      },
+      {
+        "stan": "telefon",
+        "klucz": "telefon",
+        "etykieta": "Telefon *",
+        "placeholder": "+48 600 000 000",
+        "wymagane": true,
+        "walidacja": "co najmniej 9 cyfr",
+        "blad_klient": "Telefon jest obowiązkowy — podaj prawidłowy numer.",
+        "blad_serwer": "Podaj prawidłowy numer telefonu."
+      },
+      {
+        "stan": "wiadomosc",
+        "klucz": "wiadomosc",
+        "etykieta": "Czego potrzebujesz? (opcjonalnie)",
+        "typ": "textarea",
+        "wiersze": 3,
+        "placeholder": "np. wyższa suma ubezpieczenia, więcej sporów rocznie…",
+        "wymagane": false,
+        "uwaga": "bez limitu długości"
+      },
+      {
+        "stan": "token",
+        "klucz": "turnstileToken",
+        "wymagane": true,
+        "blad_klient": "Potwierdź, że nie jesteś robotem."
+      }
+    ]
+  },
+  "zgody": {
+    "wniosek": [
+      {
+        "klucz": "prawdziwosc",
+        "ladunek": "zgoda_prawdziwosc",
+        "kolumna": "zgoda_prawdziwosc",
+        "wymagana": true,
+        "tresc": "Oświadczam, że podane dane są prawdziwe i kompletne. Wiem, że umowa ubezpieczenia zawierana jest w zaufaniu do złożonych oświadczeń."
+      },
+      {
+        "klucz": "postepowania",
+        "ladunek": "oswiadczenie_brak_postepowan",
+        "kolumna": "oswiadczenie_brak_postepowan",
+        "wymagana": true,
+        "tresc": "Oświadczam, że wobec mnie ani mojej firmy nie toczy się obecnie postępowanie karnoskarbowe, kontrola podatkowa, celno-skarbowa ani spór z ZUS, PIP lub PFRON."
+      },
+      {
+        "klucz": "rodo",
+        "ladunek": "zgoda_rodo",
+        "kolumna": "zgoda_rodo",
+        "wymagana": true,
+        "tresc": "Zapoznałam/em się z notą informacyjną RODO Aura Expert sp. z o.o. i wyrażam zgodę na przetwarzanie moich danych w celu obsługi wniosku o ubezpieczenie."
+      },
+      {
+        "klucz": "kanaly",
+        "ladunek": "zgoda_kanaly",
+        "kolumna": "zgoda_kanaly_kontaktu",
+        "wymagana": false,
+        "tresc": "Wyrażam zgodę na kontakt w sprawie oferty kanałami elektronicznymi i telefonicznymi: SMS, WhatsApp, komunikatory oraz połączenia telefoniczne (art. 172 Prawa telekomunikacyjnego oraz art. 10 ustawy o świadczeniu usług drogą elektroniczną)."
+      },
+      {
+        "klucz": "marketing",
+        "ladunek": "zgoda_marketing",
+        "kolumna": "zgoda_marketing",
+        "wymagana": false,
+        "tresc": "Chcę otrzymywać informacje o produktach Beauty Polisa (opcjonalnie)."
+      }
+    ],
+    "wycena": [
+      {
+        "klucz": "rodo",
+        "wymagana": true,
+        "zapis": "brak (tylko walidacja)",
+        "tresc": "Zapoznałam/em się z notą informacyjną RODO Aura Expert sp. z o.o. i wyrażam zgodę na przetwarzanie moich danych w celu przygotowania oferty."
+      },
+      {
+        "klucz": "kanaly",
+        "wymagana": false,
+        "zapis": "brak",
+        "tresc": "Wyrażam zgodę na kontakt kanałami elektronicznymi i telefonicznymi: SMS, WhatsApp, komunikatory oraz połączenia telefoniczne (art. 172 Prawa telekomunikacyjnego oraz art. 10 uśude)."
+      },
+      {
+        "klucz": "marketing",
+        "wymagana": false,
+        "zapis": "brak",
+        "tresc": "Chcę otrzymywać informacje o produktach Beauty Polisa (opcjonalnie)."
+      }
+    ],
+    "zrodlo": [
+      "taxbp/components/WniosekForm.tsx:344-350",
+      "taxbp/components/WycenaModal.tsx:222-226"
+    ],
+    "domyslnie": "wszystkie odznaczone",
+    "oznaczenie_wymaganych": "* (gwiazdka przed treścią)",
+    "blad": {
+      "wniosek": "Zaznacz wymagane oświadczenia.",
+      "wycena": "Zaznacz wymaganą zgodę RODO."
+    },
+    "wersjonowanie": null,
+    "zapis_tresci_hash_czasu_ip": false,
+    "nota_rodo": "strona /rodo pusta ('Treść w przygotowaniu.'); formularz nie linkuje noty",
+    "do_prawnika": [
+      "podstawa prawna 'zgody' na obsługę wniosku (raczej art. 6 ust. 1 lit. b RODO)",
+      "art. 172 PT i art. 10 UŚUDE zastąpione przez Prawo komunikacji elektronicznej (od 10.11.2024) – do weryfikacji",
+      "brak informacji o przekazaniu danych Colonnade (odrębny administrator wg OWU s. 22)"
+    ]
+  },
+  "kalkulacja": {
+    "wzor": null,
+    "regula": "skladka = tax_warianty.skladka_roczna dla przychod_max === bracket && suma_ubezpieczenia === selectedSuma",
+    "zrodlo": "taxbp/components/WniosekForm.tsx:102-104, 253",
+    "model_wariantu": [
+      "id",
+      "nazwa",
+      "suma_ubezpieczenia",
+      "podlimit_grzywny",
+      "skladka_roczna",
+      "opis",
+      "kolejnosc",
+      "przychod_min",
+      "przychod_max",
+      "aktywny (filtr serwera)"
+    ],
+    "przedzialy": [
+      {
+        "etykieta": "do 250 000 zł",
+        "przychod_max": 250000
+      },
+      {
+        "etykieta": "do 500 000 zł",
+        "przychod_max": 500000
+      },
+      {
+        "etykieta": "do 1 000 000 zł",
+        "przychod_max": 1000000
+      },
+      {
+        "etykieta": "do 3 000 000 zł",
+        "przychod_max": 3000000
+      },
+      {
+        "etykieta": "powyżej 3 000 000 zł",
+        "przychod_max": null,
+        "akcja": "wycena indywidualna"
+      }
+    ],
+    "sumy": [
+      50000,
+      100000
+    ],
+    "domyslnie": {
+      "przychod_max": 250000,
+      "suma": 50000
+    },
+    "podlimit_grzywien": {
+      "karta_kroku_2": "suma * 0.75 (37 500 / 75 000 zł), WniosekForm.tsx:268",
+      "pasek_podsumowania": "wariant.podlimit_grzywny ?? 0 (z bazy), WniosekForm.tsx:336",
+      "uwaga": "dwa źródła tej samej wartości; wartości w bazie nieodczytane"
+    },
+    "liczba_sporow_tekst": "Obejmuje 1 spór podatkowy rocznie",
+    "taryfa": {
+      "zrodlo": "poza repozytorium: wiersze tax_warianty (odczyt bazy 'BEAUTY' 12.11.2026) i decyzja D26 – 01-audyt-stanu-obecnego.md:46-59",
+      "jednostka": "zł rocznie, 1 spór",
+      "wiersze": [
+        {
+          "przychod_max": 250000,
+          "suma_50000": 1532,
+          "suma_100000": 2501
+        },
+        {
+          "przychod_max": 500000,
+          "suma_50000": 1612,
+          "suma_100000": 2581
+        },
+        {
+          "przychod_max": 1000000,
+          "suma_50000": 1732,
+          "suma_100000": 2701
+        },
+        {
+          "przychod_max": 3000000,
+          "suma_50000": 1932,
+          "suma_100000": 2901
+        },
+        {
+          "przychod_max": null,
+          "suma_50000": "wycena indywidualna",
+          "suma_100000": "wycena indywidualna"
+        }
+      ],
+      "readme_nieaktualne": "3 warianty PLACEHOLDER (590/890/1290 zł) – README.md:41 (model z archiwum zip)"
+    },
+    "serwer": {
+      "skladka_z_bazy": true,
+      "kontrola_zgodnosci_przychod_wariant": false,
+      "nieznany_wariant": "zapis z wariant_id/suma/skladka = null, bez błędu",
+      "zrodlo": "taxbp/supabase/functions/tax-wniosek/index.ts:115-149"
+    },
+    "formatowanie": {
+      "strona": "własny formater 'X XXX zł' (WniosekForm.tsx:31-34)",
+      "emaile": "Intl pl-PL currency, bez groszy – kwoty 4-cyfrowe bez separatora, np. '1532 zł' (tax-potwierdz/index.ts:4-5)"
+    },
+    "wycena_indywidualna": {
+      "wyzwalacze": [
+        "przychód powyżej 3 000 000 zł",
+        "więcej niż 1 spór rocznie",
+        "wyższa suma ubezpieczenia"
+      ],
+      "zrodlo": [
+        "taxbp/components/WniosekForm.tsx:228-244, 280",
+        "taxbp/supabase/functions/tax-wycena/index.ts:114"
+      ],
+      "gorna_granica_sporow": null
+    }
+  },
+  "teksty": {
+    "metadane": {
+      "title": "Beauty Polisa — Tax Protect | Ubezpieczenie karno-skarbowe dla salonów beauty",
+      "description": "Kontrola z urzędu skarbowego, ZUS lub PIP? Tax Protect chroni Ciebie i Twój salon: opłacamy doradcę podatkowego, prawnika i refundujemy grzywny karnoskarbowe. Wniosek online w 3 minuty."
+    },
+    "krok1_wycena_box": {
+      "tytul": "Wycena indywidualna",
+      "tekst": "Dla firm o przychodach powyżej 3 000 000 zł program standardowy nie obejmuje oferty online. Skontaktuj się z nami — przygotujemy ofertę dopasowaną do Twojej skali działalności.",
+      "przyciski": [
+        "Wypełnij formularz wyceny",
+        "Zadzwoń: +48 504 400 901"
+      ]
+    },
+    "krok2_karta": {
+      "naglowek": "Suma ubezpieczenia",
+      "podlimit": "Podlimit grzywien: {suma*0,75}",
+      "skladka": "{skladka_roczna} / rok",
+      "spor": "Obejmuje 1 spór podatkowy rocznie",
+      "znacznik": {
+        "aktywna": "Wybrana ✓",
+        "nieaktywna": "Wybierz"
+      },
+      "pod_kartami": "Potrzebujesz obsługi więcej niż 1 sporu lub wyższej sumy? Skontaktuj się z nami — przygotujemy wycenę indywidualną.",
+      "pod_kartami_link": "Skontaktuj się z nami (otwiera modal)"
+    },
+    "dane": {
+      "naglowek": "Dane do wniosku",
+      "podtytul": "Trzy minuty — i fiskus przestaje spędzać Ci sen z powiek.",
+      "pasek": "Suma: {suma} · Podlimit grzywien: {podlimit_grzywny} · Przychody: {bracket}  |  {skladka_roczna} / rok",
+      "gus_ok": "✓ Dane pobrane z rejestru REGON — sprawdź, czy się zgadzają.",
+      "gus_zawieszona": "⚠️ Według GUS działalność jest zawieszona od {data_zawieszenia}. Ubezpieczenie można wystawić po wznowieniu.",
+      "gus_recznie": "Nie udało się pobrać danych — wpisz nazwę firmy ręcznie.",
+      "turnstile_brak_klucza": "Weryfikacja Turnstile zostanie włączona po konfiguracji klucza.",
+      "ostrzezenie_pod_przyciskiem": "Wysłanie wniosku nie jest jeszcze zawarciem umowy — otrzymasz jednego meila potwierdzającego wysłanie wniosku. Drugi e-mail będzie zawierał ofertę formalną, zgodną z Kodeksem Cywilnym. Dopiero jej zaakceptowanie, będzie dla Ciebie wiążące."
+    },
+    "po_wyslaniu": {
+      "ikona": "📩",
+      "naglowek": "Sprawdź swoją skrzynkę e-mail",
+      "tekst": "Wysłaliśmy do Ciebie wiadomość z linkiem potwierdzającym. Kliknij link w e-mailu, aby dokończyć złożenie wniosku. Dopiero po potwierdzeniu przekażemy wniosek do obsługi i prześlemy Ci komplet dokumentów (OWU, Karta produktu).",
+      "pogrubione": "Kliknij link w e-mailu",
+      "dopisek": "Nie widzisz wiadomości? Sprawdź folder SPAM lub Oferty.",
+      "uwaga": "pokazywany także, gdy e-mail nie wyszedł (verificationEmailSent ignorowane)"
+    },
+    "wycena_modal": {
+      "naglowek": "Wycena indywidualna",
+      "opis": "Dla większej liczby sporów rocznie lub wyższej sumy ubezpieczenia. Wypełnij formularz — przygotujemy ofertę dopasowaną do Ciebie.",
+      "gus_ok": "✓ Dane pobrane z rejestru REGON.",
+      "przycisk": "Wyślij zapytanie o wycenę",
+      "wysylanie": "Wysyłam…",
+      "sukces": {
+        "ikona": "💗",
+        "naglowek": "Zapytanie wysłane — dziękujemy!",
+        "tekst": "Otrzymaliśmy Twoje zapytanie o wycenę indywidualną. Przygotujemy ofertę dopasowaną do Twoich potrzeb i odezwiemy się wkrótce.",
+        "przycisk": "Zamknij"
+      },
+      "zamknij_aria": "Zamknij"
+    },
+    "strony_potwierdzenia": {
+      "szablon": "<title>{tytuł} — Beauty Polisa</title>; ikona 💗; h1; p; przycisk 'Wróć na stronę' -> https://beautypolisa.eu (domena bez rekordu DNS wg audytu)",
+      "stany": [
+        {
+          "http": 400,
+          "tytul": "Brak tokenu",
+          "tekst": "Link potwierdzający jest niekompletny."
+        },
+        {
+          "http": 404,
+          "tytul": "Nieprawidłowy link",
+          "tekst": "Ten link potwierdzający jest nieprawidłowy lub wygasł."
+        },
+        {
+          "http": 200,
+          "tytul": "Adres już potwierdzony",
+          "tekst": "Twój wniosek został już potwierdzony i przekazany do obsługi. Dziękujemy!"
+        },
+        {
+          "http": 200,
+          "tytul": "Adres e-mail potwierdzony!",
+          "tekst": "Dziękujemy — Twój wniosek został przyjęty i przekazany do obsługi. Komplet dokumentów (OWU, Karta produktu) wysłaliśmy na Twój adres e-mail."
+        }
+      ],
+      "zrodlo": "taxbp/supabase/functions/tax-potwierdz/index.ts:97-129, 193-197"
+    }
+  },
+  "komunikaty": {
+    "serwer": {
+      "405": "Method not allowed",
+      "400_json": "Nieprawidłowy JSON",
+      "400_turnstile": "Weryfikacja antyspamowa nie powiodła się. Odśwież stronę i spróbuj ponownie.",
+      "500_zapis": "Nie udało się zapisać wniosku. Spróbuj ponownie za chwilę."
+    },
+    "klient": {
+      "blad_domyslny": "Coś poszło nie tak. Spróbuj ponownie.",
+      "brak_polaczenia": "Brak połączenia z serwerem. Spróbuj ponownie.",
+      "turnstile": "Potwierdź, że nie jesteś robotem."
+    },
+    "obsluga_bledu": "data.error ?? domyślny; turnstile.reset(); token = '' (WniosekForm.tsx:165-168); odpowiedź nie-JSON -> 'Brak połączenia z serwerem…'"
+  },
+  "wysylka": {
+    "endpointy": [
+      {
+        "nazwa": "tax-warianty",
+        "metoda": "GET",
+        "kto": "SSR app/page.tsx:10",
+        "auth": "brak",
+        "w_repo": false
+      },
+      {
+        "nazwa": "tax-gus",
+        "metoda": "GET ?nip=",
+        "kto": "WniosekForm.tsx:111, WycenaModal.tsx:78",
+        "auth": "brak",
+        "w_repo": false,
+        "wzor": "apiregon.md:126-237"
+      },
+      {
+        "nazwa": "tax-wniosek",
+        "metoda": "POST JSON",
+        "auth": "brak; Turnstile",
+        "w_repo": true
+      },
+      {
+        "nazwa": "tax-potwierdz",
+        "metoda": "GET ?token=",
+        "auth": "token w URL",
+        "w_repo": true
+      },
+      {
+        "nazwa": "tax-wycena",
+        "metoda": "POST JSON",
+        "auth": "brak; Turnstile",
+        "w_repo": true
+      },
+      {
+        "nazwa": "tax-admin",
+        "metoda": "GET / PATCH",
+        "kto": "app/admin/page.tsx:69-70, 93-95",
+        "auth": "Bearer JWT Supabase Auth (reguła nieznana)",
+        "w_repo": false
+      }
+    ],
+    "adres": "{SUPABASE_URL}/functions/v1/<nazwa> (wartość w konfiguracji)",
+    "naglowki_klienta": "tylko Content-Type: application/json (bez apikey/Authorization)",
+    "cors": {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey, x-client-info"
+    },
+    "wniosek": {
+      "ladunek": [
+        "wariant_id",
+        "nip",
+        "nazwa_firmy",
+        "regon",
+        "adres",
+        "pkd",
+        "przychod",
+        "email",
+        "telefon",
+        "osoba_kontaktu",
+        "zgoda_rodo",
+        "zgoda_prawdziwosc",
+        "oswiadczenie_brak_postepowan",
+        "zgoda_marketing",
+        "zgoda_kanaly",
+        "turnstileToken"
+      ],
+      "kolejnosc": [
+        "OPTIONS->ok; !POST->405",
+        "JSON",
+        "Turnstile",
+        "walidacje",
+        "klient service_role",
+        "wariant (aktywny)",
+        "INSERT tax_wnioski -> id, token_weryfikacyjny",
+        "e-mail weryfikacyjny",
+        "200 {ok:true, pending:true, id, verificationEmailSent}"
+      ],
+      "zrodlo": "taxbp/supabase/functions/tax-wniosek/index.ts:77-172",
+      "tabela_tax_wnioski": {
+        "id": "prawdopodobnie uuid – do potwierdzenia migracją (T1); z kodu wynika tylko tekst: Nr wniosku = id.slice(0, 8).toUpperCase() (tax-potwierdz/index.ts:38)",
+        "created_at": "baza",
+        "nip": "ładunek",
+        "nazwa_firmy": "ładunek",
+        "regon": "ładunek || null",
+        "adres_siedziby": "adres || null",
+        "numer_pkd": "pkd || null",
+        "email_kontaktowy": "email (lowercase)",
+        "telefon": "|| null",
+        "osoba_kontaktu": "|| null",
+        "przychod_roczny": "roundToThousand(przychod)",
+        "wariant_id": "tax_warianty.id || null",
+        "suma_ubezpieczenia": "z wariantu",
+        "skladka_roczna": "z wariantu",
+        "zgoda_rodo": "true",
+        "zgoda_prawdziwosc": "true",
+        "oswiadczenie_brak_postepowan": "true",
+        "zgoda_marketing": "bool",
+        "zgoda_kanaly_kontaktu": "bool",
+        "token_weryfikacyjny": "domyślna wartość w bazie (nieznana)",
+        "zweryfikowany": "bool (tax-potwierdz)",
+        "data_weryfikacji": "timestamp (tax-potwierdz)",
+        "emaile_wyslane": "prawdopodobnie jsonb – do potwierdzenia migracją (T1); z kodu wynika tylko obiekt {user, broker, colonnade} (tax-potwierdz/index.ts:191; app/admin/page.tsx:25 Record<string, unknown>)",
+        "status": "nowy | w_obsludze | polisa_wystawiona | odrzucony",
+        "nr_polisy": "panel",
+        "data_wystawienia": "panel"
+      },
+      "stan_bazy_audyt_2026_11_12": {
+        "tax_warianty": 8,
+        "tax_wnioski": 1,
+        "rls_tax_wnioski": "brak polityk (tylko service_role)",
+        "rls_tax_warianty": "publiczny odczyt aktywnych"
+      }
+    },
+    "potwierdzenie": {
+      "kroki": [
+        "GET ?token=",
+        "SELECT po token_weryfikacyjny",
+        "już potwierdzony -> strona",
+        "UPDATE zweryfikowany=true, data_weryfikacji",
+        "nazwa wariantu",
+        "PDF z Storage",
+        "3 e-maile",
+        "UPDATE emaile_wyslane",
+        "strona sukcesu"
+      ],
+      "wygasanie_tokenu": false,
+      "uwagi": [
+        "GET z efektem ubocznym (skanery linków mogą potwierdzić)",
+        "wyścig przy podwójnym kliknięciu -> e-maile dwa razy",
+        "link na domenie projektu Supabase"
+      ],
+      "zrodlo": "taxbp/supabase/functions/tax-potwierdz/index.ts:110-197"
+    },
+    "wycena": {
+      "ladunek": [
+        "nip",
+        "nazwa_firmy",
+        "osoba_kontaktu",
+        "email",
+        "telefon",
+        "wiadomosc",
+        "zgoda_rodo",
+        "zgoda_kanaly",
+        "zgoda_marketing",
+        "turnstileToken"
+      ],
+      "zapis_w_bazie": false,
+      "odpowiedz": "{ok:true}",
+      "zrodlo": "taxbp/supabase/functions/tax-wycena/index.ts:64-131"
+    },
+    "turnstile": {
+      "skrypt": "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit (dołączany dynamicznie)",
+      "render": "turnstile.render(el, {sitekey, callback, 'expired-callback'}); bez language/appearance/action",
+      "site_key": "NEXT_PUBLIC_SITE_KEY albo wartość zapasowa wpisana w kod (pominięta)",
+      "reset_po_bledzie": true,
+      "widzety": [
+        "formularz wniosku",
+        "modal wyceny"
+      ],
+      "serwer": {
+        "sekret": "TSK albo TURNSTILE_SECRET_KEY (sekret funkcji; wartość w konfiguracji)",
+        "brak_sekretu": "return true (fail-open)",
+        "siteverify": "POST secret, response, remoteip (pierwszy z x-forwarded-for)",
+        "sprawdza": "tylko success === true (bez hostname/action)",
+        "zrodlo": [
+          "taxbp/supabase/functions/tax-wniosek/index.ts:33-45",
+          "taxbp/supabase/functions/tax-wycena/index.ts:16-28"
+        ]
+      },
+      "tax_potwierdz": "bez Turnstile"
+    }
+  },
+  "emaile": {
+    "dostawca": "Resend (POST https://api.resend.com/emails, RESEND_API_KEY – sekret)",
+    "nadawca": "RESEND_FROM (konfiguracja); bez niej testowy nadawca Resend",
+    "reply_to": null,
+    "bledy": "połykane; brak klucza -> false",
+    "szablon": {
+      "naglowek": "Beauty ❤ Polisa",
+      "stopka": "Beauty Polisa — program ubezpieczeniowy dystrybuowany przez Aura Expert sp. z o.o., agenta ubezpieczeniowego wpisanego do rejestru KNF pod nr 11229690/A, działającego na rzecz Colonnade Insurance S.A. Oddział w Polsce.",
+      "kolory": {
+        "tlo": "#FDF4F7",
+        "tekst": "#222A45",
+        "przycisk": "#D81B60"
+      }
+    },
+    "tabela_podsumowania": [
+      "Firma",
+      "NIP",
+      "Przychód roczny",
+      "Wariant",
+      "Suma ubezpieczenia",
+      "Składka roczna",
+      "Nr wniosku"
+    ],
+    "escapowanie": {
+      "tax-potwierdz": false,
+      "tax-wycena": "esc(): < > &"
+    },
+    "lista": [
+      {
+        "nr": 1,
+        "kiedy": "po wysłaniu wniosku",
+        "do": "klient",
+        "temat": "Potwierdź swój adres e-mail — Beauty Polisa Tax Protect",
+        "h1": "Jeszcze jeden krok 💗",
+        "akapity": [
+          "Dziękujemy za wypełnienie wniosku o ubezpieczenie Tax Protect. Aby dokończyć jego złożenie, potwierdź swój adres e-mail — kliknij przycisk poniżej.",
+          "[przycisk] Potwierdzam adres e-mail -> {SUPABASE_URL}/functions/v1/tax-potwierdz?token={token_weryfikacyjny}",
+          "Dopiero po potwierdzeniu przekażemy wniosek do obsługi i prześlemy Ci komplet dokumentów (OWU, Karta produktu). Jeśli to nie Ty wypełniałaś/eś wniosek — po prostu zignoruj tę wiadomość.",
+          "Gdyby przycisk nie działał, skopiuj ten link do przeglądarki: {link}"
+        ],
+        "zrodlo": "taxbp/supabase/functions/tax-wniosek/index.ts:157-170"
+      },
+      {
+        "nr": 2,
+        "kiedy": "po potwierdzeniu",
+        "do": "klient",
+        "temat": "Dziękujemy za wniosek — Beauty Polisa Tax Protect",
+        "h1": "Dziękujemy{, osoba_kontaktu}! 💗",
+        "akapity": [
+          "Twój adres e-mail został potwierdzony, a wniosek o ubezpieczenie Tax Protect przekazany do obsługi. Skontaktujemy się z Tobą, gdy tylko polisa będzie gotowa — zwykle zajmuje to 1–2 dni robocze.",
+          "[tabela podsumowania]",
+          "W załączniku znajdziesz Ogólne Warunki Ubezpieczenia (OWU) oraz Kartę produktu Tax Protect. (tylko gdy są załączniki)",
+          "Masz pytania? Po prostu odpowiedz na tego e-maila."
+        ],
+        "zalaczniki": [
+          "OWU-Tax-Protect.pdf",
+          "Karta-produktu-Tax-Protect.pdf"
+        ],
+        "zrodlo": "taxbp/supabase/functions/tax-potwierdz/index.ts:150-161"
+      },
+      {
+        "nr": 3,
+        "kiedy": "po potwierdzeniu",
+        "do": "EMAIL_BROKER (Aura Expert; wartość w konfiguracji)",
+        "temat": "✅ Wniosek Tax Protect: {nazwa_firmy} — {skladka}",
+        "h1": "Klient potwierdził wniosek 🎉",
+        "akapity": [
+          "[tabela podsumowania]",
+          "Kontakt: {email}{, tel. {telefon}}"
+        ],
+        "zrodlo": "taxbp/supabase/functions/tax-potwierdz/index.ts:164-175"
+      },
+      {
+        "nr": 4,
+        "kiedy": "po potwierdzeniu",
+        "do": "EMAIL_COLONNADE (adres imienny pracownika partnera; wartość w konfiguracji)",
+        "temat": "Nowy wniosek Tax Protect — {nazwa_firmy} (NIP {nip})",
+        "h1": "Nowy wniosek Tax Protect (Beauty Polisa)",
+        "akapity": [
+          "[tabela podsumowania]",
+          "Kontakt: {email}{, tel. {telefon}}"
+        ],
+        "zrodlo": "taxbp/supabase/functions/tax-potwierdz/index.ts:178-189"
+      },
+      {
+        "nr": 5,
+        "kiedy": "wycena",
+        "do": "EMAIL_BROKER",
+        "temat": "📝 Zapytanie o wycenę indywidualną Tax Protect — {nazwa_firmy}",
+        "h1": "Zapytanie o wycenę indywidualną",
+        "akapity": [
+          "Klient prosi o wycenę wykraczającą poza standardowy cennik (więcej niż 1 spór rocznie lub wyższa suma ubezpieczenia).",
+          "[tabela: Firma, NIP*, Osoba*, E-mail, Telefon]",
+          "Wiadomość: {wiadomosc} (gdy podana)"
+        ],
+        "zrodlo": "taxbp/supabase/functions/tax-wycena/index.ts:94-118"
+      },
+      {
+        "nr": 6,
+        "kiedy": "wycena",
+        "do": "klient",
+        "temat": "Otrzymaliśmy Twoje zapytanie o wycenę — Beauty Polisa Tax Protect",
+        "h1": "Dziękujemy{, osoba_kontaktu}! 💗",
+        "akapity": [
+          "Otrzymaliśmy Twoje zapytanie o wycenę indywidualną ubezpieczenia Tax Protect. Nasz zespół przygotuje ofertę dopasowaną do Twoich potrzeb i skontaktuje się z Tobą.",
+          "[ta sama tabela z wiadomością]"
+        ],
+        "zrodlo": "taxbp/supabase/functions/tax-wycena/index.ts:120-129"
+      }
+    ],
+    "pdf": {
+      "owu": [
+        "DOC_OWU_URL",
+        "{SUPABASE_URL}/storage/v1/object/public/dokumenty/OWU.pdf",
+        ".../owu.pdf"
+      ],
+      "karta": [
+        "DOC_KARTA_URL",
+        ".../dokumenty/karta-produktu.pdf",
+        ".../Karta-produktu.pdf"
+      ],
+      "kubelek": "dokumenty (publiczny)",
+      "pliki_public_repo_uzywane": false,
+      "zrodlo": "taxbp/supabase/functions/tax-potwierdz/index.ts:44-77"
+    },
+    "wersja_zip_dodatkowo": "Pamiętaj: ochrona obejmuje zdarzenia, które wystąpią po raz pierwszy w okresie ubezpieczenia. Obowiązuje karencja 21 dni od zawarcia umowy."
+  },
+  "gus": {
+    "klient": "przycisk aktywny przy poprawnym NIP; found -> nazwa, regon, adres, pkd; data_zawieszenia -> ostrzeżenie (nie blokuje); inaczej tryb ręczny",
+    "funkcja": "tax-gus (poza repo); wzór apiregon.md:126-237: SOAP BIR 1.1 Zaloguj -> DaneSzukajPodmioty; klucz GUS_API_KEY (sekret)",
+    "odpowiedz_wzoru": {
+      "found": true,
+      "nazwa": "…",
+      "regon": "…",
+      "adres": "…",
+      "data_zawieszenia": "YYYY-MM-DD | null"
+    },
+    "brak_klucza": {
+      "available": false,
+      "reason": "no_key"
+    },
+    "rozbieznosc": "klient czyta data.pkd, którego wzór nie zwraca",
+    "ochrona": "brak (bez Turnstile, limitu, cache)"
+  },
+  "admin": {
+    "logowanie": "supabase.auth.signInWithPassword kluczem anon wpisanym w kod (app/admin/page.tsx:7, 77-82)",
+    "lista": "GET tax-admin, Bearer access_token -> {wnioski}",
+    "zmiany": "PATCH tax-admin {id, status} | {id, nr_polisy, status:'polisa_wystawiona'}",
+    "statusy": {
+      "nowy": "Nowy",
+      "w_obsludze": "W obsłudze",
+      "polisa_wystawiona": "Polisa wystawiona",
+      "odrzucony": "Odrzucony"
+    },
+    "statystyki": [
+      "Wszystkie wnioski",
+      "Nowe (do obsługi)",
+      "Polisy wystawione",
+      "Składki z wystawionych"
+    ],
+    "autoryzacja_tax_admin": "nieznana (funkcja poza repo); projekt BEAUTY ma innych użytkowników Auth",
+    "zweryfikowany_w_panelu": false,
+    "smieci": [
+      "app/admin/admin (1 B)",
+      "app/admin/readme.txt ('Admin')"
+    ]
+  },
+  "dokumenty": [
+    {
+      "plik": "public/OWU_Tax_Protect.pdf",
+      "tytul": "Tax Protect – Ogólne warunki ubezpieczenia ochrony skarbowej i podatkowej",
+      "ubezpieczyciel": "Colonnade Insurance Société Anonyme Oddział w Polsce",
+      "zatwierdzone": "2023-01-25",
+      "stosowane_od": "2023-01-26",
+      "kod_druku": "157/0625",
+      "pdf": {
+        "autor": "Colonnade",
+        "narzedzie": "Adobe InDesign 19.1",
+        "utworzony": "2025-06-09",
+        "zmieniony": "2025-07-09",
+        "strony": 23,
+        "format": "A4",
+        "szyfrowanie": "AES; druk i kopiowanie dozwolone, edycja nie",
+        "formularz": "AcroForm"
+      },
+      "rozmiar_b": 683346,
+      "sha256": "640d23e399ce8661a49a3d6a3388847852e1e648bbbfe02d2cea328b1ec9be7b",
+      "linkowany_w_aplikacji": false
+    },
+    {
+      "plik": "public/Tax_Karta_Produktu.pdf",
+      "tytul": "Ubezpieczenie ochrony skarbowej i podatkowej – Dokument zawierający informacje o produkcie ubezpieczeniowym (Produkt: TAX PROTECT)",
+      "ubezpieczyciel": "Colonnade Insurance S.A. zarejestrowana w Luksemburgu działająca przez Oddział w Polsce",
+      "odwolanie_do_owu": "z dnia 25 stycznia 2023 r.",
+      "kod": null,
+      "pdf": {
+        "narzedzie": "Microsoft Word for Microsoft 365",
+        "utworzony": "2023-01-27",
+        "zmieniony": "2023-01-27",
+        "strony": 2,
+        "format": "Letter"
+      },
+      "rozmiar_b": 151149,
+      "sha256": "b74d4617c1774df023b9694cfbc10ba94dfbca53785a99fcd836e002b7ee924e",
+      "linkowany_w_aplikacji": false,
+      "niezgodnosci_z_owu": [
+        "wymienia koszty powiadomienia osób, których dane wyciekły, i obronę przy naruszeniu bezpieczeństwa danych – brak w OWU (jest tylko § 7 ust. 3 'Niewłaściwe postępowanie z informacją')",
+        "wyłączenie postępowań z prawa karnego i KKS bez zastrzeżenia, że w OWU (§ 15 ust. 1 pkt 6 lit. b) dotyczy tylko Usługi Pomocy Prawnopodatkowej"
+      ]
+    }
+  ],
+  "owu_ustalenia": {
+    "parametry_z_polisy": {
+      "pkt_4": "liczba Sporów Podatkowych, Sporów z ZUS/PIP/PFRON, postępowań os. fiz., Problemów Podatkowych (§ 9-10)",
+      "pkt_5": "podlimity: kaucje (§ 5 ust. 5), tryb awaryjny (§ 6 ust. 1), grzywny (§ 7 ust. 1), schematy podatkowe (§ 7 ust. 2), limit dodatkowy (§ 7 ust. 4)",
+      "pkt_6": "Data Ciągłości (§ 14 ust. 4; § 15 ust. 1 pkt 1 lit. a)",
+      "pkt_7": "Karencja (§ 14 ust. 6)",
+      "pkt_8": "fakultatywny Okres Dodatkowy (§ 2)"
+    },
+    "okres_dodatkowy_automatyczny_dni": 60,
+    "skladka": "ustala Ubezpieczyciel po indywidualnej ocenie ryzyka z uwzględnieniem Karencji (§ 17 ust. 2); ryczałtowa (§ 40 ust. 2)",
+    "zawarcie_umowy": "przez zaakceptowanie oferty Ubezpieczyciela (§ 16 ust. 1)",
+    "wylaczenia": "§ 15",
+    "grzywna_lub_kara": "nałożona w Postępowaniu Karnoskarbowym (§ 14 ust. 5)",
+    "wyplata_dni": 30,
+    "administrator_danych_wg_owu": "Colonnade (s. 22)",
+    "zalacznik_002BR": "brak w pliku"
+  },
+  "strona": {
+    "hero": {
+      "znacznik": "Tax Protect dla branży beauty",
+      "h1": "Kontrola skarbowa w salonie? Niech to będzie problem Twojego ubezpieczyciela.",
+      "lead": "Prowadzisz salon, a nie kancelarię podatkową. Gdy odezwie się urząd skarbowy, ZUS albo Inspekcja Pracy — ubezpieczyciel organizuje i opłaca doradcę podatkowego oraz prawnika, a grzywny karnoskarbowe refunduje. Ty zajmujesz się klientkami.",
+      "przyciski": [
+        "Wypełnij wniosek — 3 minuty",
+        "Zobacz składki"
+      ],
+      "liczby": [
+        [
+          "Colonnade",
+          "ubezpieczyciel z ratingiem A- (AM Best)"
+        ],
+        [
+          "Pełne pokrycie",
+          "retroaktywne — liczy się data zdarzenia, nie błędu"
+        ],
+        [
+          "21 dni",
+          "karencji, potem pełna ochrona"
+        ],
+        [
+          "0 zł",
+          "z Twojej kieszeni za doradcę przy sporze"
+        ]
+      ],
+      "obraz": {
+        "src": "/hero-beauty.jpg",
+        "alt": "Właścicielka salonu beauty maluje usta czerwoną pomadką",
+        "zrodlo": "taxbp/app/page.tsx:105-107"
+      }
+    },
+    "dlaczego": {
+      "h2": "Księgowa księguje. Odpowiadasz Ty.",
+      "lead": "Polskie prawo nie pozwala przenieść odpowiedzialności podatkowej i karnoskarbowej na biuro rachunkowe — nawet jeśli to ono popełniło błąd. Mandat, grzywna albo postępowanie zawsze trafiają do podatnika: właścicielki salonu. Tax Protect domyka tę lukę.",
+      "karty": [
+        [
+          "Niestabilne przepisy",
+          "Zmieniające się interpretacje i linie orzecznicze sprawiają, że nawet rzetelna firma może mieć spór z fiskusem."
+        ],
+        [
+          "Kontrole US, ZUS, PIP, PFRON",
+          "Każda z tych instytucji może wszcząć kontrolę z urzędu — a jej obsługa bez wsparcia kosztuje czas i pieniądze."
+        ],
+        [
+          "Osobiste grzywny",
+          "Kary z kodeksu karnego skarbowego płaci człowiek, nie firma. Polisa refunduje poniesioną stratę."
+        ]
+      ],
+      "zrodlo": "taxbp/app/page.tsx:136-146"
+    },
+    "zakres_h2": "Jedna polisa, podwójna ochrona",
+    "zakres_lead": "Tax Protect chroni równolegle Ciebie jako osobę i Twoją firmę jako podatnika.",
+    "zakres_zrodlo": "taxbp/app/page.tsx:158-161 (sekcja id=ochrona)",
+    "sekcja_1": {
+      "naglowek": "Ochrona karnoskarbowa właścicielki i zespołu",
+      "pozycje": [
+        "Koszty obrony w postępowaniach karnoskarbowych i karnych",
+        "Koszty postępowania przygotowawczego (przesłuchania, dochodzenia)",
+        "Refundacja grzywien i kar nałożonych w postępowaniu karnoskarbowym",
+        "Koszty porady prawnej — zanim sprawa się rozkręci",
+        "Postępowania porządkowe i kary porządkowe przy kontrolach",
+        "Koszty odzyskania dobrego imienia i wsparcie psychologiczne"
+      ]
+    },
+    "sekcja_2": {
+      "naglowek": "Bezgotówkowa obsługa sporów z urzędami",
+      "ostrzezenie": "⚠ Zakres obejmuje 1 spór podatkowy rocznie. Więcej sporów lub wyższe potrzeby — wycena indywidualna.",
+      "pozycje": [
+        "Doradca podatkowy przy kontroli podatkowej i celno-skarbowej — organizuje i opłaca ubezpieczyciel",
+        "Reprezentacja w postępowaniach podatkowych przed urzędem i sądem",
+        "Obsługa kontroli i postępowań ZUS, PIP oraz PFRON",
+        "Asysta podatkowa: szybkie odpowiedzi na problemy podatkowe",
+        "Wsparcie przy czynnościach sprawdzających i wnioskach do KIS"
+      ]
+    },
+    "wylaczenia": {
+      "naglowek": "Wyłączenia z ochrony (wyciąg z OWU § 8–9)",
+      "pozycje": [
+        "Zapłata samego podatku, VAT, składek ZUS/KRUS — ryzyko nieubezpieczalne",
+        "Grzywny i kary z Kodeksu Karnego (polisa obejmuje wyłącznie Kodeks Karny Skarbowy)",
+        "Kary administracyjne nałożone przez organy inne niż wskazane w zakresie",
+        "Postępowania wszczęte lub zdarzenia, które wystąpiły przed zawarciem umowy",
+        "Postępowania wszczęte w 21-dniowym okresie karencji od daty zawarcia umowy",
+        "Sprawy i postępowania toczące się poza terytorium Rzeczypospolitej Polskiej",
+        "Działanie umyślne lub rażące niedbalstwo Ubezpieczonego",
+        "Czyny stanowiące przestępstwa niefiskalne (wyłudzenia, pranie pieniędzy itp.)",
+        "Firmy o przychodach powyżej 3 000 000 zł — wymagana indywidualna ocena ryzyka",
+        "Sekcja 2: wyłącznie 1 spór podatkowy rocznie — kolejne spory wymagają indywidualnej wyceny"
+      ],
+      "dopisek": "Pełna treść wyłączeń: Załącznik 002BR do OWU Tax Protect zatwierdzonego przez Colonnade Insurance S.A. Oddział w Polsce, obowiązującego od 26.01.2023 r.",
+      "uwaga": "w OWU wyłączenia są w § 15; '002BR' brak w pliku"
+    },
+    "jak_dziala": [
+      [
+        "Wypełniasz wniosek",
+        "Podajesz NIP, nazwę działalności i przychody. Zajmie Ci to mniej czasu niż jeden manicure hybrydowy."
+      ],
+      [
+        "Wystawiamy polisę",
+        "Sprawdzamy wniosek i potwierdzamy ochronę — zwykle w 1–2 dni robocze. Składkę opłacasz raz w roku."
+      ],
+      [
+        "Urząd? Dzwonisz do nas",
+        "Zgłaszasz sprawę, a ubezpieczyciel organizuje doradcę podatkowego lub prawnika i pokrywa koszty."
+      ]
+    ],
+    "skladki_naglowek": "Wybierz wariant i złóż wniosek",
+    "skladki_lead": "Składka roczna, bez ukrytych kosztów, bez udziałów własnych dla osób ubezpieczonych. Dla firm o przychodach do 3 mln zł.",
+    "faq_naglowek": "Pytania, które słyszymy najczęściej",
+    "faq_naglowek_zrodlo": "taxbp/app/page.tsx:258",
+    "faq": [
+      [
+        "Dla kogo jest to ubezpieczenie?",
+        "Tax Protect w programie Beauty Polisa jest przeznaczony dla firm o przychodach do 3 mln zł za ostatni zamknięty rok podatkowy — niezależnie od formy prawnej: od jednoosobowej działalności po spółki."
+      ],
+      [
+        "Mam zewnętrzną księgową z polisą OC. Czy to nie wystarczy?",
+        "Nie. Odpowiedzialność podatkowa dotyczy podatnika — czyli Ciebie. Odpowiedzialność karnoskarbowa dotyczy osób odpowiedzialnych w firmie (właściciela, członka zarządu). Zgodnie z ustawą o rachunkowości tej odpowiedzialności nie da się przenieść na biuro rachunkowe."
+      ],
+      [
+        "Prowadzę JDG — co dokładnie chroni polisa?",
+        "Polisa chroni Cię na wypadek kontroli lub postępowania podatkowego z urzędem, a także zabezpiecza Twoją osobistą odpowiedzialność karnoskarbową jako właściciela."
+      ],
+      [
+        "Czy ubezpieczyciel zapłaci za mnie podatek albo VAT?",
+        "Nie — to ryzyko nieubezpieczalne. Podatki płaci się samodzielnie. Polisa pokrywa natomiast koszty obrony, doradcy podatkowego, prawnika oraz refunduje grzywny i mandaty karnoskarbowe."
+      ],
+      [
+        "Czy mandat po kontroli skarbowej jest refundowany?",
+        "Tak. Mandat nałożony na podstawie kodeksu karnego skarbowego opłacasz samodzielnie, a ubezpieczyciel refunduje poniesioną stratę. Analogicznie działa to przy mandatach z kontroli Państwowej Inspekcji Pracy (obszar kadrowo-płacowy)."
+      ],
+      [
+        "Mam już trwające postępowanie karnoskarbowe — czy polisa mnie ochroni?",
+        "Nie. Postępowania rozpoczęte przed zawarciem umowy lub w okresie karencji nie są objęte ochroną. Dlatego warto ubezpieczyć się zanim cokolwiek się wydarzy."
+      ],
+      [
+        "Czym jest karencja i ile trwa?",
+        "Karencja to 21 dni od zawarcia umowy — okres, w którym ubezpieczyciel nie odpowiada za nowe zdarzenia. Po jej upływie ochrona działa w pełnym zakresie."
+      ],
+      [
+        "Co z błędami sprzed zawarcia polisy?",
+        "Polisa ma pełne pokrycie retroaktywne. Nie ma znaczenia, kiedy doszło do nieprawidłowego działania — liczy się to, że wypadek ubezpieczeniowy (mandat, grzywna, postępowanie) nastąpił po raz pierwszy w okresie ubezpieczenia."
+      ],
+      [
+        "Czy polisa pokrywa koszty prawnika, ekspertyz i biegłych?",
+        "Tak. Pokrywane są koszty wynagrodzenia prawnika oraz koszty ekspertyz i biegłych, jeśli są niezbędne do prawidłowego prowadzenia postępowania, a także koszty stawiennictwa na rozprawach i przesłuchaniach."
+      ],
+      [
+        "Jak szybko wypłacane są środki po zgłoszeniu?",
+        "Kodeks cywilny przewiduje termin 30 dni od zgłoszenia. Szkody zgłaszane są do brokera ([e-mail zgłoszeń szkód brokera]) lub przez formularze na vero24.pl."
+      ]
+    ],
+    "serwisy": {
+      "znacznik": "Nasze serwisy",
+      "tytul": "Poznaj pozostałe serwisy Aura Expert",
+      "wstep": "Wyspecjalizowane rozwiązania w ramach grupy Aura Expert — dla przedsiębiorców, zespołów i branż.",
+      "karty": [
+        {
+          "etykieta": "utratadochodu.pl",
+          "opis": "Ochrona dochodu dla wolnych zawodów",
+          "cel": "https://utratadochodu.pl"
+        },
+        {
+          "etykieta": "ERGO Grupa Otwarta",
+          "opis": "Ubezpieczenia grupowe ERGO",
+          "cel": "https://ergo.beautypolisa.eu"
+        },
+        {
+          "etykieta": "Grupowe Pakiety Branżowe",
+          "opis": "Pakiety ubezpieczeń dla branż",
+          "cel": "https://ergo.auraexpert.pl/"
+        },
+        {
+          "etykieta": "Beauty Polisa",
+          "opis": "Ochrona salonów i gabinetów",
+          "cel": null,
+          "znacznik": "Wkrótce"
+        }
+      ],
+      "obrazki": "ładowane z auraexpert.pl",
+      "zrodlo": "taxbp/app/page.tsx:41-51, 294"
+    },
+    "zrodlo": "taxbp/app/page.tsx:26-294"
+  },
+  "agent": {
+    "stopka_strony": "Beauty Polisa to program ubezpieczeniowy dystrybuowany przez Aura Expert sp. z o.o. z siedzibą w Warszawie, ul. Bolkowska 2A/28, 01-466 Warszawa, KRS 0000599840, NIP 5242793544 — agenta ubezpieczeniowego wpisanego do rejestru agentów KNF pod nr 11229690/A, działającego m.in. na rzecz Colonnade Insurance Société Anonyme Oddział w Polsce. Niniejsza strona ma charakter marketingowy. Pełne informacje o zakresie ochrony, ograniczeniach i wyłączeniach znajdują się w „Ogólnych warunkach ubezpieczenia ochrony skarbowej i podatkowej Tax Protect” z 25.01.2023 r. oraz w dokumencie zawierającym informacje o produkcie ubezpieczeniowym. Administratorem danych osobowych podanych we wniosku jest Aura Expert sp. z o.o. — szczegóły w nocie informacyjnej RODO (kontakt z IOD: [e-mail IOD Aura Expert]).",
+    "stopka_linia_2": "© {rok} Aura Expert sp. z o.o. · Reklamacje: [e-mail reklamacji Aura Expert] · tel. +48 504 400 901",
+    "ubezpieczyciel_linia": "Ubezpieczyciel: Colonnade Insurance S.A. Oddział w Polsce · rating A- (AM Best)",
+    "stopka_emaili": "patrz emaile.szablon.stopka",
+    "zrodlo": "taxbp/app/page.tsx:327-351",
+    "brakuje_wg_art_22_23_UDU": [
+      "lista zakładów ubezpieczeń",
+      "wynagrodzenie",
+      "powiązania kapitałowe",
+      "tryb reklamacji i Rzecznik Finansowy",
+      "sprawdzenie wpisu w RPU",
+      "sąd rejestrowy i kapitał"
+    ]
+  },
+  "idd": {
+    "analiza_potrzeb": false,
+    "ipid_i_owu_przed_wnioskiem": false,
+    "ipid_i_owu_kiedy": "załącznik e-maila po potwierdzeniu adresu (jeśli pobranie z Storage się uda)",
+    "oswiadczenia_underwritingowe": [
+      "prawdziwosc",
+      "postepowania"
+    ],
+    "wniosek_do": "e-mail do Colonnade (EMAIL_COLONNADE) i brokera po potwierdzeniu",
+    "portal": "kroki makiety 'Kalkulator albo kontakt' / 'Kontakt doradcy' (podpis 'Analiza potrzeb') / 'Wniosek' (podpis 'Z doradcą Aura Expert') / 'Polisa' (design/v3/tax-protect.html#jak-kupic, l. 934-978 w stanie a82d8b1); etap 2: osobisty link portal.beautypolisa.eu/w/XXXXXXXXXX (D32)",
+    "wniosek": "formularz taxbp nie pasuje do żadnej ze ścieżek; dane i oświadczenia -> APK i wniosek pod /w/ w etapie 2 (W5 wariant a)"
+  },
+  "bezpieczenstwo": {
+    "endpointy_bez_jwt": [
+      "tax-wniosek",
+      "tax-wycena",
+      "tax-potwierdz",
+      "tax-warianty",
+      "tax-gus"
+    ],
+    "cors": "*",
+    "turnstile_fail_open": true,
+    "turnstile_hostname_action": false,
+    "rate_limit": null,
+    "honeypot": null,
+    "deduplikacja": null,
+    "limity_dlugosci": null,
+    "przekaznik_poczty": "tax-wycena wysyła treść użytkownika (nazwa, wiadomość) na dowolny adres z pola e-mail",
+    "html_injection": "tax-potwierdz: nazwa_firmy, osoba_kontaktu, email, telefon bez escapowania w HTML i temacie (l. 28-40, 154, 168-172)",
+    "double_opt_in": "GET bez wygasania, na domenie Supabase",
+    "admin": "autoryzacja tax-admin nieznana; logowanie tylko hasłem",
+    "przechowywanie": {
+      "projekt": "Supabase 'BEAUTY' (wspólny z katalogiem salonów, CRM, e-mailami)",
+      "tabela": "tax_wnioski (zapis service_role)",
+      "dane": [
+        "NIP",
+        "nazwa firmy",
+        "REGON",
+        "adres",
+        "PKD",
+        "e-mail",
+        "telefon",
+        "imię i nazwisko",
+        "przychód",
+        "wariant",
+        "zgody"
+      ],
+      "dane_szczegolne": false,
+      "zapis_przed_potwierdzeniem": true,
+      "retencja_niepotwierdzonych": null,
+      "wycena_w_bazie": false,
+      "przekazanie_colonnade": "e-mail na adres imienny po potwierdzeniu; brak informacji dla klienta"
+    },
+    "fonty_google_bez_zgody": true,
+    "naglowki_bezpieczenstwa_w_aplikacji": false,
+    "repo_publiczne_zawiera": [
+      "adres projektu Supabase",
+      "klucz anon (app/admin/page.tsx:7)",
+      "site key Turnstile (kod i treść commita)",
+      "imienny adres e-mail pracownika partnera i adres zarządu (.env.example:17-18)",
+      "archiwum zip ze starszym kodem"
+    ]
+  },
+  "braki_T": [
+    {
+      "id": "T1",
+      "mamy": "Kod tax-wniosek, tax-potwierdz, tax-wycena; wywołania tax-warianty, tax-gus, tax-admin; schemat tax_wnioski z zapytań",
+      "brakuje": "Kod trzech funkcji spoza repo; migracja tax_wnioski/tax_warianty (typy, token_weryfikacyjny, status, RLS, indeksy); zgodność wdrożonych wersji",
+      "od_kogo": "Zleceniodawca (projekt 'BEAUTY')",
+      "blokuje": "TAK tylko, jeśli portal miałby nadal zapisywać do tax_wnioski w projekcie 'BEAUTY' (poza wariantami W1 A–C); przy W1 A/B/C – nie (do C: tylko migracja 1 wiersza – T14)",
+      "uwaga_W1": "W1 (00-braki-i-decyzje.md): A – CRM 'aurabroker' przez dedykowane funkcje; B – własna baza portalu; C – hybryda. Dokument 14 odpowiada wariantem C; 'BEAUTY' (tax_wnioski) to stan obecny, nie wariant W1."
+    },
+    {
+      "id": "T2",
+      "mamy": "Taryfa 8 wariantów (odczyt bazy 12.11.2026, D26); przedziały i sumy w kodzie",
+      "brakuje": "Dokument taryfy od Colonnade z wersją i datą; procedura zmian; 'składka stała' vs OWU § 17 ust. 2; wartości podlimit_grzywny",
+      "od_kogo": "Zleceniodawca / Colonnade",
+      "blokuje": "nie (start na D26), wersja potrzebna do zapisu (W6)"
+    },
+    {
+      "id": "T3",
+      "mamy": "Podlimit 75% (kod), karencja 21 dni, '1 spór', 'pełne pokrycie retroaktywne' (treści)",
+      "brakuje": "Wzór polisy programu: pkt 4, 5 (w tym tryb awaryjny – portal 30%), 6, 7, 8",
+      "od_kogo": "Colonnade",
+      "blokuje": "TAK dla publikacji liczb"
+    },
+    {
+      "id": "T4",
+      "mamy": "3 oświadczenia i 2 zgody dosłownie",
+      "brakuje": "Nota RODO, klauzula art. 13 z przekazaniem do Colonnade, podstawa prawna, zgoda na kanały po PKE, wersjonowanie (W3), regulamin, polityka prywatności",
+      "od_kogo": "Zleceniodawca + prawnik",
+      "blokuje": "TAK"
+    },
+    {
+      "id": "T5",
+      "mamy": "—",
+      "brakuje": "Analiza potrzeb dla Tax Protect (pytania, zapis, kto prowadzi; etap 2 /w/); decyzja W5",
+      "od_kogo": "Zleceniodawca (compliance)",
+      "blokuje": "TAK dla wniosku w portalu"
+    },
+    {
+      "id": "T6",
+      "mamy": "Zapowiedź oferty formalnej e-mailem; statusy w panelu",
+      "brakuje": "Proces oferta -> akceptacja -> płatność -> polisa -> CRM/Strefa; rola EMAIL_COLONNADE",
+      "od_kogo": "Zleceniodawca / Colonnade",
+      "blokuje": "TAK"
+    },
+    {
+      "id": "T7",
+      "mamy": "6 szablonów e-maili dosłownie",
+      "brakuje": "Decyzja W4, nadawca, reply_to, odbiorcy, powiadomienie Colonnade, szablony portalu",
+      "od_kogo": "Zleceniodawca",
+      "blokuje": "TAK (W4)"
+    },
+    {
+      "id": "T8",
+      "mamy": "OWU 157/0625 (25.01.2023) i karta produktu (27.01.2023)",
+      "brakuje": "Aktualność i zgodność z kubełkiem; poprawiona karta (pozycje spoza OWU, wyłączenie KKS, A4); 'Załącznik 002BR'; dostęp przed wnioskiem",
+      "od_kogo": "Colonnade",
+      "blokuje": "TAK"
+    },
+    {
+      "id": "T9",
+      "mamy": "Kontrakt i wzór tax-gus (apiregon.md)",
+      "brakuje": "Kod wdrożony, klucz BIR, pole pkd, reguła dla działalności zawieszonej",
+      "od_kogo": "Zleceniodawca",
+      "blokuje": "nie (tryb ręczny)"
+    },
+    {
+      "id": "T10",
+      "mamy": "Turnstile w 3 funkcjach",
+      "brakuje": "Site key i sekret dla domeny portalu; bez fail-open; hostname/action (W2)",
+      "od_kogo": "Zleceniodawca (Cloudflare) + portal",
+      "blokuje": "TAK (W2)"
+    },
+    {
+      "id": "T11",
+      "mamy": "Modal wyceny (tylko e-mail)",
+      "brakuje": "Zasady wyceny indywidualnej (>3 mln, 2–4 vs >1 spór, suma >100 000 zł), kto i kiedy wycenia",
+      "od_kogo": "Zleceniodawca / Colonnade",
+      "blokuje": "nie"
+    },
+    {
+      "id": "T12",
+      "mamy": "Panel /admin",
+      "brakuje": "Kod i autoryzacja tax-admin; zastąpienie sprawami w CRM (etap 2)",
+      "od_kogo": "Zleceniodawca / zespół CRM",
+      "blokuje": "nie (ryzyko bezpieczeństwa)"
+    },
+    {
+      "id": "T13",
+      "mamy": "Treści strony taxbp",
+      "brakuje": "Źródła: rating A- (AM Best), retroaktywność, mandaty PIP, 'Wyłączenia z ochrony (wyciąg z OWU § 8–9)' (app/page.tsx:202), zakres 'Koszty obrony'",
+      "od_kogo": "Colonnade",
+      "blokuje": "nie (przed publikacją)"
+    },
+    {
+      "id": "T14",
+      "mamy": "1 wiersz tax_wnioski, tax.beautypolisa.eu",
+      "brakuje": "W9 (301/wyłączenie), dane historyczne, retencja niepotwierdzonych",
+      "od_kogo": "Zleceniodawca",
+      "blokuje": "nie"
+    },
+    {
+      "id": "T15",
+      "mamy": "Double opt-in tax-potwierdz",
+      "brakuje": "Decyzja o potwierdzaniu e-maila w portalu i formie; usunięcie imiennego adresu z publicznego repo",
+      "od_kogo": "Portal + zleceniodawca",
+      "blokuje": "nie"
+    }
+  ],
+  "porownanie_z_portalem": {
+    "plik": "docs/koncepcja/design/v3/tax-protect.html",
+    "uwaga": "rozbieżności wypisane, strony nie poprawiano",
+    "stan_makiety": "Numery linii według commita a82d8b1 (= wersja w HEAD). Kopia robocza zmieniana równolegle (gen:slownik-css i link 'Słownik pojęć' dodały 35 linii): linie od ok. 740 są dziś o +35 (taryfa 948-951, hero 870, wstęp 'Jak kupić' 975). Trwałe odnośniki: id sekcji (#zakres, #sekcja-1, #sekcja-2, #taryfa, #jak-kupic, #pytanie-N, #dalej). Linie 642 i 650 to JSON-LD w <head> (bez przesunięcia).",
+    "pozycje": [
+      {
+        "id": "P1",
+        "temat": "kwoty taryfy",
+        "portal": "1 532–2 901 zł (#taryfa, l. 913-916), 'od 1 532 zł' (hero .figures, l. 835)",
+        "taxbp": "brak kwot w kodzie; README 590/890/1290 zł",
+        "owu": "§ 17 ust. 2",
+        "ocena": "portal zgodny z bazą 12.11 (D26); README nieaktualny"
+      },
+      {
+        "id": "P2",
+        "temat": "sumy i przedziały",
+        "portal": "50/100 tys.; 250 tys./500 tys./1 mln/3 mln; wiersz 'powyżej 3 000 000 zł' – 'wycena indywidualna' (#taryfa, l. 913-917)",
+        "taxbp": "identyczne (WniosekForm.tsx:44-52)",
+        "ocena": "zgodne"
+      },
+      {
+        "id": "P3",
+        "temat": "okres przychodu",
+        "portal": "'ostatni zamknięty rok obrotowy' (#taryfa, l. 905; JSON-LD 'Ile kosztuje Tax Protect?', l. 642)",
+        "taxbp": "ostatni zamknięty rok podatkowy (app/page.tsx:27)",
+        "ocena": "do ujednolicenia"
+      },
+      {
+        "id": "P4",
+        "temat": "podlimit grzywien",
+        "portal": "do 75% sumy, dopisek 'próg 75% i zakres – do potwierdzenia' (#sekcja-1, l. 867)",
+        "taxbp": "0,75 w kodzie (l. 268) + podlimit_grzywny (l. 336)",
+        "owu": "pkt 5 polisy",
+        "ocena": "spójne; źródło – polisa"
+      },
+      {
+        "id": "P5",
+        "temat": "tryb awaryjny",
+        "portal": "do 30% sumy, np. aresztowanie (#sekcja-1, l. 865)",
+        "taxbp": "brak",
+        "owu": "pkt 5 polisy (§ 6 ust. 1)",
+        "ocena": "30% bez źródła"
+      },
+      {
+        "id": "P6",
+        "temat": "karencja",
+        "portal": "21 dni, dopisek 'karencja 21 dni – do potwierdzenia' (#zakres, 'O czym pamiętać', l. 890)",
+        "taxbp": "21 dni (app/page.tsx:33, 121, 209)",
+        "owu": "pkt 7 polisy",
+        "ocena": "spójne; źródło – polisa"
+      },
+      {
+        "id": "P7",
+        "temat": "liczba sporów",
+        "portal": "'Taryfa obejmuje jeden pełny spór podatkowy w roku – na przykład z urzędem skarbowym lub KAS, z ZUS, z Państwową Inspekcją Pracy albo z PFRON.' (JSON-LD l. 650; #pytanie-3) i 'Taryfa obejmuje jeden pełny spór podatkowy w roku.' (#sekcja-2, l. 875); 'Chcesz ubezpieczyć 2–4 spory w roku? To wycena indywidualna – zapytaj doradcę.' (#sekcja-2 p.scope-extra, l. 883) i 'Ochrona 2–4 sporów w roku – wycena indywidualna.' (#taryfa p.tariff-note, l. 921)",
+        "taxbp": "1 spór podatkowy; 'więcej niż 1' bez górnej granicy",
+        "owu": "odrębne limity kategorii (§ 9-10, pkt 4)",
+        "ocena": "do potwierdzenia; '2–4' brak w taxbp"
+      },
+      {
+        "id": "P8",
+        "temat": "wyzwalacze wyceny",
+        "portal": "omówienie: >3 mln lub 2–4 spory (JSON-LD l. 642; #dalej, l. 1046)",
+        "taxbp": ">3 mln, więcej sporów lub wyższa suma",
+        "ocena": "portal pomija wyższą sumę"
+      },
+      {
+        "id": "P9",
+        "temat": "charakter składki",
+        "portal": "'Składki są stałe – wynikają z taryfy, a nie z indywidualnej wyceny.' (#taryfa, l. 905)",
+        "taxbp": "oferta formalna e-mailem",
+        "owu": "§ 16, § 17 ust. 2",
+        "ocena": "portal przeczy OWU"
+      },
+      {
+        "id": "P10",
+        "temat": "koszty obrony",
+        "portal": "postępowania cywilne, administracyjne, arbitrażowe (#sekcja-1, l. 862)",
+        "taxbp": "postępowania karnoskarbowe i karne (app/page.tsx:168)",
+        "owu": "def. Koszty Obrony obejmuje m.in. karnoskarbowe",
+        "ocena": "portal pomija karnoskarbowe"
+      },
+      {
+        "id": "P11",
+        "temat": "retroaktywność",
+        "portal": "brak (K18)",
+        "taxbp": "pełne pokrycie retroaktywne (l. 120, 34)",
+        "owu": "Data Ciągłości pkt 6; § 15 ust. 1 pkt 1 lit. a",
+        "ocena": "taxbp obiecuje więcej"
+      },
+      {
+        "id": "P12",
+        "temat": "rating",
+        "portal": "brak",
+        "taxbp": "A- (AM Best) (l. 119, 332)",
+        "ocena": "źródło nieznane"
+      },
+      {
+        "id": "P13",
+        "temat": "postępowania porządkowe / PIP",
+        "portal": "dopisek 'zwrot kar, w tym PIP – do potwierdzenia' (#sekcja-1, l. 866)",
+        "taxbp": "mandaty PIP refundowane (l. 31)",
+        "owu": "§ 14 ust. 5; § 7 ust. 5",
+        "ocena": "taxbp mocniej niż OWU"
+      },
+      {
+        "id": "P14",
+        "temat": "odwołania do OWU",
+        "portal": "25.01.2023 / 26.01.2023, link /dokumenty/owu-tax-protect-colonnade (#zakres, 'O czym pamiętać', l. 892)",
+        "taxbp": "te same daty; 'OWU § 8–9', 'Załącznik 002BR'; PDF niepodlinkowany",
+        "owu": "wyłączenia § 15; kod 157/0625",
+        "ocena": "daty zgodne; numeracja błędna w taxbp"
+      },
+      {
+        "id": "P15",
+        "temat": "ścieżka zakupu",
+        "portal": "omówienie: kalkulator/formularz -> doradca -> APK -> wniosek -> polisa (#jak-kupic, l. 934-978; #pytanie-5, l. 991)",
+        "taxbp": "wniosek online bez APK -> e-mail do Colonnade -> oferta",
+        "ocena": "sprzeczne procesy (T5, T6)"
+      },
+      {
+        "id": "P16",
+        "temat": "czas",
+        "portal": "brak",
+        "taxbp": "1–2 dni robocze",
+        "owu": "wypłata 30 dni (§ 38)",
+        "ocena": "SLA do potwierdzenia"
+      },
+      {
+        "id": "P17",
+        "temat": "asysta i KIS",
+        "portal": "#sekcja-2, l. 880-881",
+        "taxbp": "app/page.tsx:190-191",
+        "owu": "§ 14 ust. 37; liczba pkt 4",
+        "ocena": "zgodne co do zakresu"
+      }
+    ]
+  },
+  "weryfikacja_2026_11_13": "Potwierdzono w kodzie: przedziały, sumy, domyślne, podlimit ×0,75, suma kontrolna NIP w obu komponentach klienta (WniosekForm.tsx:36-42, WycenaModal.tsx:7-15) i w tax-wniosek/index.ts:21-27 (tax-wycena nie sprawdza sumy kontrolnej, l. 91), kolejność walidacji i komunikaty, 5+3 zgody dosłownie, ładunki i mapowanie, fail-open Turnstile, brak escapowania w tax-potwierdz, PDF ze Storage, brak linków do PDF, puste strony informacyjne, metadane i treść PDF. Niesprawdzalne z kodu: wartości w bazie, wersje wdrożone, autoryzacja tax-admin. Dopisane usterki: dane z GUS nieczyszczone po zmianie NIP (WniosekForm.tsx:297, 149-151); modal wyceny bez resetu stanu (WycenaModal.tsx:18-29, 72, 151)."
+}

@@ -1,5 +1,5 @@
 {
-  "_zrodlo": "Inżynieria wsteczna kodu klienckiego https://ergo.auraexpert.pl/wniosek?branza=beauty (SvelteKit, adapter-static/SPA). Cennik osadzony w chunku _app/immutable/chunks/s4z72ZNe.js (stała H), formularz w nodes/7.75cyHC3C.js. Wartości liczbowe skopiowane 1:1; pola *_tekst wygenerowane wg funkcji formatujących z kodu (O, D, b) — w oryginale separator tysięcy to twarda spacja (U+00A0) z toLocaleString('pl-PL').",
+  "_zrodlo": "Inżynieria wsteczna kodu klienckiego https://ergo.auraexpert.pl/wniosek?branza=beauty (SvelteKit z @sveltejs/adapter-cloudflare – Cloudflare Workers; trasa /wniosek bez SSR, ssr=false). Cennik osadzony w chunku _app/immutable/chunks/s4z72ZNe.js (stała H), formularz w nodes/7.75cyHC3C.js. Wartości liczbowe skopiowane 1:1; pola *_tekst wygenerowane wg funkcji formatujących z kodu (O, D, b) — w oryginale separator tysięcy to twarda spacja (U+00A0) z toLocaleString('pl-PL'). Uzupełnienie 13.11.2026: backend z repozytorium aurabroker/branzowe (gałąź claude/cool-hypatia-ndksid @ 8dc9a90; produkcja = PR #1 @ 3c5086f) – klucze repozytorium, backend, emaile, arkusz_xlsx, zgody_rodo, dokumenty_pliki, katalogi_owu, landingi_i_atrybucja, pkd_mediplan_deklaracje, braki_E_po_analizie_repo, integracja_crm, bezpieczenstwo. Poprawka 13.11.2026: wcześniej podano 'adapter-static/SPA'.",
   "produkt": {
     "nazwa": "ERGO Życie w Biznesie",
     "ubezpieczyciel": "Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.",
@@ -18,7 +18,14 @@
     },
     "kod_ulotki_beauty": "EH-UL-EZB-F-2607",
     "wersja_cennika_w_kliencie": null,
-    "uwaga_wersja": "Klient nie zawiera numeru wersji cennika (brak pola meta); w bazie CRM tabela ezb_cenniki ma wersję 'branze-2607' — powiązanie ustala serwer."
+    "uwaga_wersja": "Klient nie zawiera numeru wersji cennika (brak pola meta). Serwer zapisuje stałą CENNIK_WERSJA='branze-2607' (src/routes/api/wnioski/+server.ts:14) w ezb_wnioski.cennik_wersja (FK do ezb_cenniki.wersja). ezb_cenniki to tabela aplikacji EZB w projekcie Supabase 'aurabroker' (wspólnym z CRM), nie tabela CRM — poprawione 13.11.2026. Ceny serwer bierze z bundla (src/lib/dane/produkty.json), nie z bazy.",
+    "wersja_cennika_serwer": "branze-2607",
+    "cennik_obowiazuje": {
+      "od": "2026-07-01",
+      "do": "2026-12-31",
+      "pakiety_dodatkowe_do": "2026-12-31",
+      "zrodlo": "dane/produkty.json meta.skladki_obowiazuja; seed scripts/seed-cennika.mjs:20-24"
+    }
   },
   "sesja": {
     "klucz_sessionStorage": "ezb-wniosek-v1",
@@ -409,7 +416,8 @@
       "pkd_opis",
       "data_zawieszenia"
     ],
-    "zapis_w_stanie": "gus = {...odpowiedź, nip, zrodlo:'gus'}; ręcznie: {nip, nazwa, zrodlo:'recznie'}"
+    "zapis_w_stanie": "gus = {...odpowiedź, nip, zrodlo:'gus'}; ręcznie: {nip, nazwa, zrodlo:'recznie'}",
+    "kod_serwera": "§9.2 w .md oraz klucz backend.gus"
   },
   "wysylka": {
     "endpoint": "POST /api/wnioski",
@@ -431,7 +439,7 @@
       "zalozona_adopcja": "0..1 (krok 0,05)",
       "liczba_osob": "int",
       "struktura": "[{rok,plec,liczba}] | null",
-      "firma": "obiekt gus | null",
+      "firma": "obiekt gus | ręczny {nip,nazwa,zrodlo:'recznie'}; data_zawieszenia tylko gdy GUS ją zwróci — null serwer odrzuca (poprawione 13.11.2026)",
       "kontakt": {
         "imie": "",
         "stanowisko": "",
@@ -448,15 +456,18 @@
         "min": "number",
         "max": "number",
         "szacunek": "number"
-      }
+      },
+      "zrodlo_wizyty": "tylko gałęzie 990b947+ (nie na produkcji): {utm_source,utm_medium,utm_campaign,utm_content,utm_term,gclid,fbclid,msclkid,wejscie,skad,ts} | null"
     },
     "odpowiedz_ok": {
-      "nr_wniosku": "string"
+      "status": 201,
+      "nr_wniosku": "EZB-RRRR-NNNNNN"
     },
     "po_sukcesie": "sessionStorage.removeItem('ezb-wniosek-v1'); goto /wniosek/dziekujemy?nr=<nr>&email=<email>&kompletny=<1 jeśli struktura podana, inaczej 0>",
     "blad": "komunikat: 'Nie udało się wysłać wniosku. Spróbuj ponownie za chwilę. (<status>: <pierwsze 200 znaków treści>)'",
     "turnstile": false,
-    "honeypot": false
+    "honeypot": false,
+    "serwer": "§9.1 w .md oraz klucz backend.wnioski"
   },
   "wzor_skladki": {
     "opis": "K(cennik, branza, wariant, {medi, gd, pakiety}, liczbaOsob, adopcja)",
@@ -6292,35 +6303,1048 @@
     {
       "nazwa": "OWU — ERGO Życie w Biznesie",
       "kod": "EZwB 01/25",
-      "plik": "/dokumenty/owu-ergo-zycie-w-biznesie.pdf"
+      "plik": "/dokumenty/owu-ergo-zycie-w-biznesie.pdf",
+      "rozmiar_b": 2526378,
+      "strony": 357,
+      "w_zyciu": "2025-12-22",
+      "errata": "ER/EHZ01/2602 (Uchwała Zarządu WS 03/2026 z 27.01.2026, stosowana od 13.02.2026)",
+      "linkowany": [
+        "/dokumenty",
+        "mail klienta (link do zakładki)"
+      ]
     },
     {
       "nazwa": "OWU — Medi Opieka",
       "kod": "MA 01/25",
-      "plik": "/dokumenty/owu-medi-opieka.pdf"
+      "plik": "/dokumenty/owu-medi-opieka.pdf",
+      "rozmiar_b": 887652,
+      "strony": 109,
+      "w_zyciu": "2025-12-22",
+      "errata": "ER/EHZ01/2602",
+      "linkowany": [
+        "/dokumenty"
+      ]
     },
     {
       "nazwa": "OWU — Global Doctors",
       "kod": "GD-GZ 01/25",
-      "plik": "/dokumenty/owu-global-doctors.pdf"
+      "plik": "/dokumenty/owu-global-doctors.pdf",
+      "rozmiar_b": 926473,
+      "strony": 68,
+      "w_zyciu": "2025-12-22",
+      "errata": "ER/EHZ01/2602",
+      "linkowany": [
+        "/dokumenty"
+      ]
     },
     {
       "nazwa": "Karta Produktu — ERGO Życie w Biznesie",
       "kod": "EZwB 01/25",
-      "plik": "/dokumenty/karta-produktu-ergo-zycie-w-biznesie.pdf"
+      "plik": "/dokumenty/karta-produktu-ergo-zycie-w-biznesie.pdf",
+      "rozmiar_b": 81779,
+      "strony": 8,
+      "linkowany": [
+        "/dokumenty",
+        "mail klienta"
+      ]
     },
     {
       "nazwa": "Karta Produktu — Medi Opieka",
       "kod": "MA 01/25",
-      "plik": "/dokumenty/karta-produktu-medi-opieka.pdf"
+      "plik": "/dokumenty/karta-produktu-medi-opieka.pdf",
+      "rozmiar_b": 63895,
+      "strony": 4,
+      "linkowany": [
+        "/dokumenty",
+        "mail klienta"
+      ]
     },
     {
       "nazwa": "Karta Produktu — Global Doctors",
       "kod": "GD-GZ 01/25",
-      "plik": "/dokumenty/karta-produktu-global-doctors.pdf"
+      "plik": "/dokumenty/karta-produktu-global-doctors.pdf",
+      "rozmiar_b": 83842,
+      "strony": 5,
+      "linkowany": [
+        "/dokumenty",
+        "mail klienta"
+      ]
     }
   ],
   "_weryfikacja": {
-    "2026-11-13": "Krytyk kompletności: sprawdzono cennik beauty (58/68/76, liczby świadczeń 32/44/57), wzór K(), walidacje kroku 5 (NIP, imie>2, e-mail, telefon ≥9 cyfr), ładunek POST /api/wnioski, wersję zgód 2026-07-a. Poprawiono krok pola adopcja (5→3) i dodano opis parsera struktury."
-  }
+    "2026-11-13": "Krytyk kompletności: sprawdzono cennik beauty (58/68/76, liczby świadczeń 32/44/57), wzór K(), walidacje kroku 5 (NIP, imie>2, e-mail, telefon ≥9 cyfr), ładunek POST /api/wnioski, wersję zgód 2026-07-a. Poprawiono krok pola adopcja (5→3) i dodano opis parsera struktury.",
+    "2026-11-13 repozytorium": "Analiza aurabroker/branzowe @ 8dc9a90 (produkcja = 3c5086f): dodano klucze repozytorium, backend, emaile, arkusz_xlsx, zgody_rodo, dokumenty_pliki, katalogi_owu, landingi_i_atrybucja, pkd_mediplan_deklaracje, braki_E_po_analizie_repo, integracja_crm, bezpieczenstwo; rozmiary/strony/daty w dokumenty. Poprawiono: _zrodlo (adapter-cloudflare zamiast adapter-static), produkt.uwaga_wersja (ezb_cenniki nie jest tabelą CRM), wysylka.ksztalt.firma (data_zawieszenia nie jako null)."
+  },
+  "repozytorium": {
+    "repo": "aurabroker/branzowe",
+    "analizowana_galaz": {
+      "nazwa": "claude/cool-hypatia-ndksid (lokalnie ezb-najnowsza)",
+      "commit": "8dc9a90",
+      "data": "2026-09-24"
+    },
+    "produkcja": {
+      "domena": "ergo.auraexpert.pl",
+      "odpowiada_commitowi": "3c5086f (PR #1, gałąź claude/sveltekit-cloudflare-supabase-resend-pgz9w8, 2026-07-20)",
+      "dowody": [
+        "nodes/8 produkcji: 12 grafik utrata-dochodu-*.png i link https://utratadochodu.pl bez UTM = src/lib/promo/ i dziekujemy/+page.svelte:57 w 3c5086f",
+        "mapa tras produkcji bez /branza/[slug], /sitemap.xml, /robots.txt",
+        "kafle strony głównej → /wniosek?branza= (w 990b947+ → /branza/{slug})",
+        "ładunek POST /api/wnioski bez zrodlo_wizyty (dodane Krok6Zgody.svelte:33 w 990b947)"
+      ],
+      "wdrozenie": "ręcznie (wrangler deploy, README.md:26-32); krok deploy w .github/workflows/ci.yml:23-36 zakomentowany; main zawiera tylko README (PR #1 niescalony)"
+    },
+    "galezie": [
+      {
+        "nazwa": "main",
+        "commit": "d94205b",
+        "data": "2026-07-12",
+        "zawartosc": "Initial commit (README)"
+      },
+      {
+        "nazwa": "claude/sveltekit-cloudflare-supabase-resend-pgz9w8",
+        "commit": "3c5086f",
+        "data": "2026-07-20",
+        "zawartosc": "M1–M3: kreator, zakres ochrony, /api/wnioski, /api/gus, Resend, migracja ezb_*, dokumenty PDF, losowy baner (PR #1) — PRODUKCJA"
+      },
+      {
+        "nazwa": "claude/czytaj-repo-czekaj-m1talo",
+        "commit": "990b947",
+        "data": "2026-09-04",
+        "zawartosc": "+ landingi /branza/[slug], atrybucja zrodlo_wizyty (migracja 20260904120000), sitemap.xml, robots.txt, hooks.server.ts (X-Robots-Tag), rodo.ts"
+      },
+      {
+        "nazwa": "claude/cool-hypatia-ndksid",
+        "commit": "8dc9a90",
+        "data": "2026-09-24",
+        "zawartosc": "+ banery static/banery/ pod stałymi adresami, link banera z UTM"
+      },
+      {
+        "nazwa": "claude/great-noether-3vadc2",
+        "commit": "8df6f8d",
+        "data": "2026-09-23",
+        "zawartosc": "tylko gus-regon-verification.json (przenośny klient BIR 1.1), odgałęzienie od main"
+      }
+    ],
+    "bez_zmian_3c5086f_vs_8dc9a90": [
+      "src/lib/serwer/resend.ts",
+      "src/lib/serwer/gus.ts",
+      "src/lib/domena/zgody.ts",
+      "supabase/migrations/20260713120000_init.sql",
+      "static/dokumenty/*"
+    ],
+    "migracja_zrodlo_wizyty_wykonana": "nieznane",
+    "docs_ARCHITEKTURA_rozbieznosci": [
+      "tabele bez prefiksu ezb_ (l. 100–135)",
+      "domena Resend utratadochodu.com (l. 59)",
+      "opiekun pod [e-mail biura Aura Expert] i „link do rekordu” (l. 180)",
+      "log kroków lejka (l. 128–135) – nie powstał",
+      "49 haseł MO + hasła EZwB (l. 199) – w kodzie tylko MO",
+      "GUS >100 zatrudnionych ⇒ stop (l. 166–167) – brak w kodzie"
+    ],
+    "sekrety_workera_nazwy": [
+      "SUPABASE_URL",
+      "SUPABASE_SERVICE_ROLE_KEY",
+      "RESEND_API_KEY",
+      "MAIL_OD",
+      "MAIL_OPIEKUN",
+      "GUS_API_KEY"
+    ],
+    "sekrety_uwaga": "wartości w konfiguracji Workera, nie w dokumencie; .env.example i historia bez wartości"
+  },
+  "backend": {
+    "wnioski": {
+      "plik": "src/routes/api/wnioski/+server.ts",
+      "kolejnosc": [
+        "503 bez SUPABASE_URL (l. 136)",
+        "400 nie-JSON (l. 138–143)",
+        "Zod → 422 (l. 144–145)",
+        "PESEL (l. 148)",
+        "suma struktury (l. 150–153)",
+        "wymagane zgody z1–z5 (l. 155–157)",
+        "przeliczenie składki → 409 (l. 159–180)",
+        "INSERT ezb_wnioski service_role (l. 182–222)",
+        "załączniki + 2 maile, błędy nie przerywają (l. 224–241)",
+        "INSERT ezb_zdarzenia (l. 243–253)",
+        "201 {nr_wniosku} (l. 255)"
+      ],
+      "walidacje": {
+        "branza": "slug z produkty.json",
+        "wariant": "int 0–2 (w bazie +1 → 1–3)",
+        "rozszerzenia": "medi ≤10 slugów; gd bool (bez sprawdzania wieku 18–64); pakiety slug→0–2",
+        "zalozona_adopcja": "0–1",
+        "liczba_osob": "int 2–100",
+        "struktura": "null | ≤200 × {rok 1940…(bieżący rok−10), plec K|M, liczba 1–100}; suma = liczba_osob",
+        "firma": "nip suma kontrolna; nazwa 3–300; regon ≤20, adres ≤300, pkd_kod ≤10, pkd_opis ≤300, data_zawieszenia ≤10 (optional, nie nullable); zrodlo gus|recznie; bez ponownej weryfikacji w GUS",
+        "kontakt": "imie 3–120; stanowisko ≤120; email z.string().email() ≤200; telefon 9–20 znaków (cyfr nie liczy); start ≤10 znaków (bez walidacji daty)",
+        "zgody": "rekord kod→{wersja ≤20}; wymagana obecność z1–z5; wersja i nieznane kody niesprawdzane",
+        "skladka_klienta": "{min,max,szacunek}; porównanie min/max z tolerancją 0,01",
+        "zrodlo_wizyty": "(990b947+) obiekt strict, 11 pól ≤200 | null",
+        "pesel": "zawieraPesel (src/lib/domena/rodo.ts:26-31): /\\d{11}/ w JSON.stringify ładunku poza kontakt.telefon i zrodlo_wizyty → 422 'Payload zawiera ciąg wyglądający jak PESEL — odrzucono'; PESEL z separatorami przechodzi; fałszywe trafienie dla 14-cyfrowego REGON-u lub e-maila z 11 cyframi"
+      },
+      "skladka": {
+        "funkcja": "wyliczSkladke (src/lib/domena/skladka.ts:71-89), ta sama co w kliencie",
+        "cennik": "bundel src/lib/dane/produkty.json (identyczny z dane/produkty.json), nie ezb_cenniki",
+        "zapis": "skladka = {os: baza, min, max, szacunek} wg serwera",
+        "rozjazd": {
+          "status": 409,
+          "cialo": {
+            "blad": "Cennik się zmienił — odśwież stronę",
+            "skladka": {
+              "min": "number",
+              "max": "number"
+            }
+          },
+          "klient": "brak osobnej obsługi — pokazuje surowy tekst w komunikacie błędu"
+        }
+      },
+      "odpowiedzi": [
+        {
+          "status": 201,
+          "cialo": "{ \"nr_wniosku\": \"EZB-RRRR-NNNNNN\" }"
+        },
+        {
+          "status": 400,
+          "komunikat": "Nieprawidłowy JSON"
+        },
+        {
+          "status": 409,
+          "komunikat": "Cennik się zmienił — odśwież stronę"
+        },
+        {
+          "status": 422,
+          "komunikaty": [
+            "Walidacja: {pierwszy komunikat Zod}",
+            "Payload zawiera ciąg wyglądający jak PESEL — odrzucono",
+            "Suma struktury nie zgadza się z liczbą osób",
+            "Brak wymaganej zgody {kod}"
+          ]
+        },
+        {
+          "status": 500,
+          "komunikat": "Nie udało się zapisać wniosku"
+        },
+        {
+          "status": 503,
+          "komunikat": "Backend nieskonfigurowany"
+        }
+      ],
+      "idempotencja": "brak (tylko blokada przycisku w kliencie, Krok6Zgody.svelte:14)",
+      "rate_limit": "brak w kodzie",
+      "turnstile": "brak",
+      "honeypot": "brak",
+      "cors": "nieustawiony (przeglądarka z innej domeny nie przejdzie preflightu JSON; skrypty serwerowe – bez ograniczeń)",
+      "ochrona_strefy": "Cloudflare JS challenge wstrzykiwany na poziomie strefy (index.html produkcji), poza repozytorium",
+      "dostep_supabase": "klucz service_role z sekretów Workera (src/lib/serwer/supabase.ts:8-12); RLS włączone bez polityk (init.sql:50-53); projekt współdzielony z CRM"
+    },
+    "baza": {
+      "projekt": "Supabase 'aurabroker' (wspólny schemat public z crm_*, ud_*, izba_*; commit 438d70a)",
+      "migracje": [
+        "supabase/migrations/20260713120000_init.sql",
+        "supabase/migrations/20260904120000_zrodlo_wizyty.sql"
+      ],
+      "tabele": {
+        "ezb_cenniki": [
+          "id",
+          "wersja (unique)",
+          "obowiazuje_od",
+          "obowiazuje_do",
+          "dane jsonb",
+          "utworzono"
+        ],
+        "ezb_wnioski": [
+          "id uuid",
+          "nr_wniosku (unique)",
+          "cennik_wersja (FK)",
+          "branza",
+          "wariant 1–3",
+          "rozszerzenia jsonb",
+          "zalozona_adopcja numeric(3,2)",
+          "liczba_osob 2–100",
+          "struktura jsonb|null",
+          "firma jsonb",
+          "kontakt jsonb",
+          "zgody jsonb",
+          "skladka jsonb",
+          "status",
+          "utworzono",
+          "zrodlo_wizyty jsonb (od 20260904)"
+        ],
+        "ezb_zdarzenia": [
+          "id",
+          "sesja uuid (= id wniosku)",
+          "typ",
+          "dane jsonb",
+          "utworzono"
+        ]
+      },
+      "indeksy": [
+        "ezb_wnioski (status, utworzono desc)",
+        "ezb_wnioski (zrodlo_wizyty->>utm_campaign, utworzono desc) where not null",
+        "ezb_wnioski (zrodlo_wizyty->>wejscie, utworzono desc) where not null",
+        "ezb_zdarzenia (typ, utworzono desc)"
+      ],
+      "nr_wniosku": "'EZB-' || to_char(now(),'YYYY') || '-' || lpad(nextval('ezb_wnioski_nr'),6,'0') — sekwencja globalna, nie zeruje się co rok (init.sql:14,18-19)",
+      "statusy": [
+        "nowy",
+        "przekazany",
+        "oferta",
+        "polisa",
+        "odrzucony"
+      ],
+      "statusy_uwaga": "domyślnie nowy; żaden kod nie zmienia statusu",
+      "zgody_w_bazie": "{ \"z1\": { \"wersja\": \"2026-07-a\", \"ts\": \"<ISO, czas serwera>\" }, … } — tylko zaznaczone",
+      "zdarzenia_typy": {
+        "wyslano": "{wniosek, branza, zrodlo}",
+        "atrybucja_pominieta": "{wniosek} — brak kolumny zrodlo_wizyty (PGRST204/42703), zapis ponowiony bez niej",
+        "mail_blad": "{wniosek, adresat, blad} — jeden na nieudany mail"
+      },
+      "seed": "scripts/seed-cennika.mjs: POST /rest/v1/ezb_cenniki?on_conflict=wersja, merge-duplicates; wersja 'branze-2607', dane = cały dane/produkty.json",
+      "aktualizacja_cennika": "nowy produkty.json + nowa wersja w seedzie + zmiana stałej CENNIK_WERSJA + redeploy; kod nie wymusza zgodności; brak blokady po 31.12.2026"
+    },
+    "gus": {
+      "plik_endpoint": "src/routes/api/gus/+server.ts",
+      "plik_klient": "src/lib/serwer/gus.ts",
+      "protokol": "BIR 1.1, SOAP 1.2 + WS-Addressing, endpoint produkcyjny wyszukiwarkaregon.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc",
+      "klucz": "sekret GUS_API_KEY (wartość w konfiguracji, nie w dokumencie)",
+      "sesja": "Zaloguj przy każdym zapytaniu spoza cache, sid w nagłówku HTTP sid, bez Wyloguj, timeout 5 s na wywołanie (maks. 3 wywołania)",
+      "kroki": [
+        "Zaloguj",
+        "DaneSzukajPodmioty(Nip)",
+        "DanePobierzPelnyRaport(BIR11OsFizycznaPkd dla Typ=F, inaczej BIR11OsPrawnaPkd) – best effort"
+      ],
+      "mapowanie": {
+        "nazwa": "Nazwa",
+        "regon": "Regon",
+        "adres": "\"{Ulica} {NrNieruchomosci}/{NrLokalu}, {KodPocztowy} {Miejscowosc}\" (bez lokalu bez /…)",
+        "data_zawieszenia": "DataZawieszeniaDzialalnosci z wyniku wyszukiwania — do weryfikacji, czy BIR 1.1 zwraca to pole w wyszukiwaniu (great-noether czyta je z raportu pełnego)",
+        "pkd_kod/pkd_opis": "wiersz z _pkd_Przewazajace=1, inaczej pierwszy; LP/LF dostają niewłaściwy raport"
+      },
+      "cache": "caches.default, klucz https://cache.internal/gus/{nip}, tylko 200, 24 h; nagłówek cache-control: public, max-age=86400",
+      "odpowiedzi": [
+        {
+          "status": 200,
+          "cialo": "{nazwa, regon, adres?, pkd_kod?, pkd_opis?, data_zawieszenia?}"
+        },
+        {
+          "status": 400,
+          "komunikat": "Nieprawidłowy NIP"
+        },
+        {
+          "status": 404,
+          "komunikat": "Nie znaleziono firmy w rejestrze REGON"
+        },
+        {
+          "status": 502,
+          "komunikat": "Rejestr REGON nie odpowiada"
+        },
+        {
+          "status": 503,
+          "komunikat": "Brak konfiguracji API REGON"
+        },
+        {
+          "status": 500,
+          "kiedy": "inne wyjątki, w tym timeout (AbortSignal.timeout)"
+        }
+      ],
+      "nie_czytane": [
+        "DataZakonczeniaDzialalnosci",
+        "StatusNip",
+        "forma prawna"
+      ],
+      "tryb_reczny": "tylko klient (Krok5Firma.svelte:51-59): {nip, nazwa, zrodlo:'recznie'}; serwer nie weryfikuje",
+      "rate_limit": "brak"
+    },
+    "gus_great_noether": {
+      "plik": "gus-regon-verification.json (gałąź claude/great-noether-3vadc2 @ 8df6f8d, 223 linie)",
+      "zawartosc": [
+        "walidacja offline REGON-9/14, NIP, KRS (files gus/regon.js)",
+        "GusClient: prod/test, timeout 15 s, login/ensureSession/logout (Wyloguj), escapowanie XML, ErrorCode 4 → [], ErrorCode 2 → ponowne logowanie (rekurencja bez licznika)",
+        "mapa raportów pełnych wg Typ/SilosID: P, LP, LF, F/1 CEIDG, F/2 rolnicza, F/3 pozostała, F/4 skreślona do 08.11.2014, F/6",
+        "verifyRegon → {valid, found, active, identifierType, entity, error, raw}; entity z datami start/suspended/resumed/end/deletion i adresem w polach; active=false przy zakończeniu, skreśleniu lub zawieszeniu bez wznowienia; logout w finally",
+        "testy offline 19 asercji; wywołania na żywo niezweryfikowane (notes[6])"
+      ],
+      "ograniczenia": "nie pobiera raportów *Pkd; pkdMain czyta klucze zwykle nieobecne w raportach pełnych",
+      "rekomendacja_portal": "połączyć: walidacja offline, dobór raportu, Wyloguj, relogin z limitem, ocena aktywności (great-noether) + PKD przeważające z właściwych raportów *Pkd, cache 24 h, kontrakt {nazwa, regon, adres, pkd_kod, pkd_opis, data_zawieszenia} (branzowe) + rate limit i Turnstile"
+    }
+  },
+  "emaile": {
+    "plik": "src/lib/serwer/resend.ts (identyczny w 3c5086f i 8dc9a90)",
+    "nadawca": "sekret MAIL_OD: nazwa wyświetlana 'ERGO Życie w Biznesie' + skrzynka funkcyjna w domenie auraexpert.pl (wartość w konfiguracji)",
+    "klient": {
+      "do": "kontakt.email z formularza",
+      "reply_to": "MAIL_OPIEKUN",
+      "temat": "Wniosek {nr} przyjęty — ERGO Życie w Biznesie",
+      "naglowek_graficzny": "ERGO HESTIA (tekst, czerwona linia)",
+      "tresc": [
+        "Dziękujemy — wniosek {nr} jest u nas",
+        "Dzień dobry {imie},  (bez imienia: „Dzień dobry,”)",
+        "przyjęliśmy wniosek o grupowe ubezpieczenie na życie ERGO Życie w Biznesie dla firmy {firma} (NIP {nip}). Opiekun odezwie się w ciągu jednego dnia roboczego.",
+        "TABELA: „Pakiet główny ({branża} · Wariant {I}) × {N} os.” = „{min} / mies.”; „{nazwa rozszerzenia}” = „{składka} / os.”; [przy rozszerzeniach] „Szacunek przy {X}% adopcji rozszerzeń” = „≈ {szacunek} / mies.”, „Widełki (0–100% adopcji)” = „{min} – {max}”",
+        "kompletny: Wniosek jest kompletny. Strukturę wiekową już mamy — nie musisz nic odsyłać.",
+        "bez struktury: Do wystawienia polisy potrzebujemy jeszcze struktury wiekowej zespołu. W załączniku jest arkusz lista-ubezpieczonych.xlsx — wypełnij go i odeślij odpowiedzią na tę wiadomość. Składka się nie zmieni.",
+        "Ostateczna składka za rozszerzenia wyjdzie po zebraniu deklaracji od pracowników — każdy sam wskaże, które rozszerzenia bierze.",
+        "Dokumenty produktowe",
+        "Karty Produktu (PDF): ERGO Życie w Biznesie · Medi Opieka · Global Doctors. Pełne Ogólne Warunki Ubezpieczenia (OWU) znajdziesz w zakładce Dokumenty.",
+        "W załącznikach przekazujemy informację o przetwarzaniu danych osobowych (RODO) oraz informację o dystrybutorze ubezpieczeń.",
+        "Materiał informacyjny — nie jest ofertą w rozumieniu art. 66 k.c. Wiążące są wyłącznie OWU: EZwB 01/25, MA 01/25, GD-GZ 01/25. Ubezpieczyciel: Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A."
+      ],
+      "linki": [
+        "{origin}/dokumenty/karta-produktu-ergo-zycie-w-biznesie.pdf",
+        "{origin}/dokumenty/karta-produktu-medi-opieka.pdf",
+        "{origin}/dokumenty/karta-produktu-global-doctors.pdf",
+        "{origin}/dokumenty"
+      ],
+      "zalaczniki": [
+        {
+          "plik": "RODO.pdf",
+          "zrodlo": "/dokumenty/rodo.pdf",
+          "kiedy": "zawsze"
+        },
+        {
+          "plik": "Informacja-o-dystrybutorze.pdf",
+          "zrodlo": "/dokumenty/informacja-o-dystrybutorze.pdf",
+          "kiedy": "zawsze"
+        },
+        {
+          "plik": "lista-ubezpieczonych.xlsx",
+          "zrodlo": "/dokumenty/lista-ubezpieczonych.xlsx",
+          "kiedy": "struktura == null"
+        }
+      ]
+    },
+    "opiekun": {
+      "do": "sekret MAIL_OPIEKUN (skrzynka zgłoszeń w domenie auraexpert.pl; wartość w konfiguracji)",
+      "reply_to": "e-mail klienta",
+      "temat": "Nowy wniosek {nr}: {firma} ({branża}, {N} os.)",
+      "tresc": [
+        "Nowy wniosek {nr}",
+        "Firma: {firma} · NIP {nip}",
+        "Program: {branża} · Wariant {I}",
+        "Osób: {N}",
+        "Struktura wiekowa: podana w kreatorze (wniosek kompletny) | BRAK — klient odeśle arkusz",
+        "Koszt pewny: {min} / mies.",
+        "Widełki: {min} – {max} / mies.",
+        "Kontakt: {imie} · {email (mailto)} · {telefon}"
+      ],
+      "brakuje": [
+        "lista rozszerzeń",
+        "stanowisko",
+        "planowany start",
+        "adres, REGON, PKD",
+        "zgody marketingowe",
+        "struktura",
+        "link do rekordu"
+      ],
+      "zalaczniki": []
+    },
+    "bledy": "Promise.allSettled; nieudany mail → ezb_zdarzenia typ mail_blad {wniosek, adresat, blad}; wyjątek całości → adresat \"-\"; brak pliku załącznika → mail bez niego; brak ponawiania i outboxa",
+    "escapowanie_html": "brak (imie, firma, email, telefon wstawiane wprost)",
+    "rozbieznosci": [
+      "strona dziękujemy: „Kopia oferty poszła na…” — mail to potwierdzenie, nie oferta",
+      "strona dziękujemy: „Wypełnij dane osób przystępujących” — arkusz liczy tylko strukturę wiekową"
+    ]
+  },
+  "arkusz_xlsx": {
+    "plik": "static/dokumenty/lista-ubezpieczonych.xlsx",
+    "rozmiar_b": 20394,
+    "charakter": "kalkulator struktury wiekowej, nie lista imienna ani deklaracja",
+    "zakladki": [
+      {
+        "nazwa": "Struktura",
+        "zakres": "A1:C53",
+        "kolumny": [
+          "wiek",
+          "kobieta",
+          "mezczyzna"
+        ],
+        "uwagi": "wiek 18–69 (52 wiersze); COUNTIF po kluczu płeć+wiek z 3 zakładek"
+      },
+      {
+        "nazwa": "ObliczeniaPESEL",
+        "tabela": "ObliczeniaPESEL (A1:I2)",
+        "kolumny": [
+          "PESEL",
+          "Plec kod",
+          "Plec",
+          "Rok",
+          "Miesiąc",
+          "Dzień",
+          "Data Urodzenia",
+          "Wiek",
+          "Sklejenie"
+        ],
+        "zacheta": "Tutaj wklej PESEL klientów",
+        "uwagi": "Rok = LEFT(PESEL,2) bez stulecia — błędne daty dla urodzonych od 2000 r."
+      },
+      {
+        "nazwa": "ObliczeniaDataUrodzenia",
+        "tabela": "Tabela3 (A1:D2)",
+        "kolumny": [
+          "Data urodzenia [RRRR-MM-DD]",
+          "Płeć [K lub M]",
+          "Wiek",
+          "Sklejenie"
+        ],
+        "zacheta": [
+          "Tu wklej listę z datami urodzenia",
+          "Tutaj wklej listę z płcią (M lub K)"
+        ],
+        "uwagi": "Wiek = INT((NOW()-data)/365)"
+      },
+      {
+        "nazwa": "ObliczeniaRocznik",
+        "tabela": "Tabela4 (A1:D68)",
+        "kolumny": [
+          "Rocznik [RRRR]",
+          "Płeć [K lub M]",
+          "Wiek",
+          "Sklejenie"
+        ],
+        "uwagi": "Wiek = YEAR(NOW())-rocznik; 67 wierszy z wartością 2026"
+      }
+    ],
+    "problemy": [
+      "zakres 18–69 zamiast 15–70",
+      "wiek liczony w dniu otwarcia (NOW())",
+      "zachęca do wklejenia PESEL i odesłania mailem — sprzeczne z obietnicą kroku 4 i regulaminem §3 ust. 3",
+      "metadane docProps/core.xml z imionami i nazwiskami autorów — wyczyścić (nie przepisano)"
+    ]
+  },
+  "zgody_rodo": {
+    "plik": "src/lib/domena/zgody.ts",
+    "tresci": "identyczne z kluczem zgody (potwierdzone dosłownie)",
+    "todo_w_kodzie": "TODO: treści robocze z prototypu — do zatwierdzenia przez prawnika. (zgody.ts:4)",
+    "wersja": "2026-07-a (wspólna dla 7 zgód; zmiana treści „wymaga podbicia wersji” — niewymuszane)",
+    "zapis": "ezb_wnioski.zgody: tylko zaznaczone {kod:{wersja, ts serwera}}; brak treści/hasha, IP, UA; brak wycofania z6/z7",
+    "administrator": {
+      "z3": "Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.",
+      "strona_rodo": "Aura Expert sp. z o.o. (dystrybutor ubezpieczeń); po przekazaniu wniosku ERGO Hestia w celu zawarcia i wykonania umowy; dopisek „Dokument roboczy — wymaga zatwierdzenia przez prawnika przed startem kampanii.”",
+      "rodo_pdf": "Aura Expert spółka z ograniczoną odpowiedzialnością; kontakt do IOD Aura Expert (wartości w pliku); „Warszawa, lipiec 2026”",
+      "regulamin": "Operator: Aura Expert sp. z o.o., „dystrybutor ubezpieczeń”",
+      "przeplyw_danych": "baza Supabase 'aurabroker' i skrzynka Aura Expert; żaden kod nie przekazuje danych do ERGO Hestii",
+      "rozstrzygniecie_E5": "Na etapie wniosku administratorem jest Aura Expert (3 źródła + przepływ danych); z3 to robocza treść z prototypu, do zastąpienia klauzulą informacyjną art. 13 Aura Expert z informacją o ERGO Hestii jako odrębnym administratorze po przekazaniu wniosku. Otwarte dla prawnika: rola agenta (administrator czy podmiot przetwarzający dla ERGO Hestii)."
+    },
+    "bledy_rodo_pdf": [
+      "„czynności brokerskie”, „interes brokera” — Aura Expert jest agentem",
+      "KRS „XII Wydział” vs informacja o dystrybutorze „XIII Wydział” (por. D38)"
+    ],
+    "transfer": "strona /rodo: „Dane przechowujemy w Unii Europejskiej” (Supabase, Resend, Cloudflare) — do weryfikacji umów powierzenia i transferu",
+    "regulamin_kluczowe": [
+      "Złożenie wniosku w serwisie nie jest równoznaczne z zawarciem umowy ubezpieczenia — umowa dochodzi do skutku po potwierdzeniu warunków przez opiekuna i ubezpieczyciela.",
+      "Numery PESEL wklejane w kroku „struktura zespołu” są przetwarzane wyłącznie lokalnie w przeglądarce użytkownika i nie są przesyłane do Operatora.",
+      "Reklamacje … Odpowiadamy w terminie 14 dni."
+    ]
+  },
+  "dokumenty_pliki": {
+    "katalog": "static/dokumenty (stan identyczny w 3c5086f i 8dc9a90); pliki nie zostały skopiowane — robi to zadanie „docs”",
+    "tylko_zalaczniki_maila": [
+      {
+        "plik": "/dokumenty/informacja-o-dystrybutorze.pdf",
+        "rozmiar_b": 79070,
+        "strony": 1,
+        "tresc": "Aura Expert … – Informacje dotyczące agenta ubezpieczeniowego; Warszawa, lipiec 2026; art. 22 UDU; 9 zakładów; KRS XIII Wydział",
+        "linkowany": [
+          "załącznik maila klienta",
+          "wspomniany na /o-nas"
+        ]
+      },
+      {
+        "plik": "/dokumenty/rodo.pdf",
+        "rozmiar_b": 131697,
+        "strony": 1,
+        "tresc": "Nota informacyjna RODO zgodnie z art. 13-14 …; Warszawa, lipiec 2026; administrator Aura Expert",
+        "linkowany": [
+          "załącznik maila klienta"
+        ]
+      },
+      {
+        "plik": "/dokumenty/lista-ubezpieczonych.xlsx",
+        "rozmiar_b": 20394,
+        "linkowany": [
+          "załącznik maila klienta, gdy brak struktury"
+        ]
+      }
+    ],
+    "poza_static": {
+      "plik": "dane/Beauty1072026.pdf",
+      "rozmiar_b": 349188,
+      "strony": 4,
+      "kod": "EH-UL- EZB-F-2607",
+      "uwagi": "ulotka beauty, nieserwowana; potwierdza 58/68/76 zł, MediOpiekę 3/2,50/2/0,80/2,80 zł i „dla przedsiębiorców z wybranym PKD w branży beauty”"
+    },
+    "prerender": "svelte.config.js:9-17 toleruje 404 dla /dokumenty/owu-*.pdf"
+  },
+  "katalogi_owu": {
+    "skrypt": "scripts/tnij-owu.mjs (uruchamiany w npm run build) → static/dane/owu/ (generowane, poza repozytorium)",
+    "pliki_wyjsciowe": [
+      {
+        "plik": "rozdzialy-ezb.json",
+        "pola": [
+          "nr",
+          "nazwa",
+          "strona",
+          "kod",
+          "karencja[]",
+          "wylaczenia[]",
+          "dokumenty[]"
+        ],
+        "licznosc": "92 z 103 rozdziałów; 150 karencji, 306 wyłączeń, 415 punktów dokumentów"
+      },
+      {
+        "plik": "rozdzialy-mo.json",
+        "pola": [
+          "nr",
+          "nazwa",
+          "strona",
+          "kod",
+          "karencja[]",
+          "wylaczenia[]",
+          "dokumenty[]"
+        ],
+        "licznosc": "13 z 23 rozdziałów; 35 wyłączeń"
+      },
+      {
+        "plik": "powazne-zachorowania.json",
+        "pola": [
+          "_liczba",
+          "_lp_ciagle",
+          "pozycje[{lp,nazwa,definicja,strona_pdf}]"
+        ],
+        "licznosc": 104
+      },
+      {
+        "plik": "operacje-1..5.json",
+        "pola": [
+          "lp",
+          "nazwa",
+          "sekcja",
+          "grupa_5podgrup",
+          "grupa_3podgrupy",
+          "kod_icd9 (pusty)"
+        ],
+        "licznosc": "602 w 18 sekcjach, po 150 na plik"
+      },
+      {
+        "plik": "operacje-indeks.json",
+        "pola": [
+          "zrodlo",
+          "liczba",
+          "stawki",
+          "stron",
+          "na_strone"
+        ],
+        "stawki": {
+          "5_podgrup": [
+            "100%",
+            "75%",
+            "50%",
+            "25%",
+            "10%"
+          ],
+          "3_podgrupy": [
+            "100%",
+            "60%",
+            "20%"
+          ]
+        }
+      },
+      {
+        "plik": "slowniczek.json",
+        "zrodlo": "mo.slowniczek (MediOpieka)",
+        "licznosc": 49
+      },
+      {
+        "plik": "owu-meta.json",
+        "pola": [
+          "wylaczenia_wspolne_top (prefiks, liczba, pełne brzmienia z rozdziałami)",
+          "statystyki",
+          "mediopieka_statystyki"
+        ],
+        "licznosc": "10 wyłączeń wspólnych"
+      }
+    ],
+    "zrodla": {
+      "dane/owu.json": {
+        "rozmiar_b": 806122,
+        "zrodlo": "EZB_OWU.pdf (EZwB 01/25), pdfplumber",
+        "rozdzialy": 103,
+        "punkty": {
+          "zdarzenia": 141,
+          "karencja": 150,
+          "wylaczenia": 306,
+          "dokumenty": 415
+        },
+        "powazne_zachorowania": 104,
+        "operacje": 602,
+        "mediopieka": "kopia mo.json"
+      },
+      "dane/mo.json": {
+        "rozmiar_b": 148917,
+        "zrodlo": "MO_OWU.pdf (MA 01/25)",
+        "rozdzialy": 23,
+        "punkty": {
+          "zdarzenia": 306,
+          "wylaczenia": 35
+        },
+        "slowniczek": 49
+      },
+      "dane/zakres-marketing.json": {
+        "rozmiar_b": 21613,
+        "kopia": "src/lib/dane/zakres-marketing.json (bundel)",
+        "sekcje": {
+          "_meta": "ostrzeżenie + liczby z ulotek: 124 świadczenia, 102 jednostki PZ, 87 PZ w Pakiecie Zdrowie, 20 metod leczenia, 5 podgrup, 13 produktów assistance",
+          "warunki_programu": "6 punktów",
+          "pakiety": "10 opisów",
+          "ograniczenia": "KOMPLETNE 306/150",
+          "katalog_powaznych_zachorowan": 104,
+          "katalog_operacji": 602,
+          "leczenie_specjalistyczne": "CZĘŚCIOWE, 9 z 20 metod",
+          "slowniczek": "25 haseł, wyjaśnienia potoczne"
+        }
+      }
+    },
+    "niespojnosc": "ulotki: 102 jednostki PZ; katalog OWU: 104",
+    "pobieranie": [
+      "ZakladkaKatalogi.svelte:33-40",
+      "ZakladkaOgraniczenia.svelte:39-41",
+      "ZakladkaSlowniczek.svelte:18"
+    ]
+  },
+  "landingi_i_atrybucja": {
+    "na_produkcji": false,
+    "landingi": {
+      "trasa": "/branza/[slug] (prerender)",
+      "slugi": [
+        "beauty",
+        "budownictwo",
+        "gastronomia-hotelarstwo",
+        "ksiegowosc",
+        "nieruchomosci",
+        "piekarnictwo",
+        "stomatologia",
+        "transport-ladowy"
+      ],
+      "tresci": "src/lib/dane/branze-landing.json: naglowek, lead, kogo (5), scenariusze (3: kod świadczenia, tytuł, opis), seo_tytul z {od}, seo_opis; kwoty z cennika (Wariant I)",
+      "elementy": [
+        "tabela 13 kluczowych świadczeń",
+        "składki 3 wariantów",
+        "ostrzeżenie o niemonotonicznych wariantach (stomatologia)",
+        "warunki wejścia",
+        "okres oferty",
+        "canonical, og:*",
+        "CTA /wniosek?branza={slug}"
+      ],
+      "beauty": {
+        "naglowek": "Ubezpieczenie grupowe dla salonów beauty",
+        "lead": "Fryzjerstwo, kosmetyka, SPA i stylizacja paznokci to praca rękami, w kontakcie z chemią i narzędziem. Program branżowy wycenia to ryzyko osobno, zamiast wrzucać salon do wspólnego cennika usług.",
+        "kogo": [
+          "salony fryzjerskie",
+          "gabinety kosmetyczne",
+          "SPA i wellness",
+          "studia stylizacji paznokci",
+          "barber shopy"
+        ],
+        "scenariusze": [
+          {
+            "kod": "tu_w_pracy",
+            "tytul": "Uraz dłoni przy pracy"
+          },
+          {
+            "kod": "pz_max",
+            "tytul": "Poważne zachorowanie"
+          },
+          {
+            "kod": "operacja",
+            "tytul": "Operacja chirurgiczna"
+          }
+        ],
+        "seo_tytul": "Ubezpieczenie grupowe dla salonu beauty — składka od {od}",
+        "seo_opis": "Grupowe ubezpieczenie na życie dla salonów fryzjerskich, kosmetycznych i SPA zatrudniających od 2 do 100 osób. Trzy warianty, cennik branżowy, wniosek online."
+      },
+      "sitemap_robots": "sitemap.xml: /, 8 landingów, 4 zakładki zakresu, /dokumenty, /o-nas, /regulamin, /rodo; robots.txt: Allow: / (bez Disallow /wniosek); X-Robots-Tag noindex, follow dla /wniosek* (hooks.server.ts:11-19)"
+    },
+    "atrybucja": {
+      "plik": "src/lib/zrodlo.ts",
+      "klucz_sessionStorage": "ezb-zrodlo-v1",
+      "zasada": "first touch, zapis z +layout.svelte przy każdej nawigacji",
+      "pola": [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_content",
+        "utm_term",
+        "gclid",
+        "fbclid",
+        "msclkid",
+        "wejscie",
+        "skad",
+        "ts"
+      ],
+      "limit": "200 znaków, usuwanie znaków sterujących",
+      "pusty": "wejście bez kampanii i odsyłającego nie tworzy rekordu",
+      "kolumna": "ezb_wnioski.zrodlo_wizyty jsonb (migracja 20260904120000)",
+      "uwaga_rodo": "gclid/fbclid/msclkid to identyfikatory internetowe — deklaracja „bez danych osobowych” dyskusyjna"
+    },
+    "banery": {
+      "produkcja": {
+        "pliki": "src/lib/promo/utrata-dochodu-{03…10,12…15}-*.png (12)",
+        "link": "https://utratadochodu.pl"
+      },
+      "galaz_8dc9a90": {
+        "pliki": [
+          "aktor",
+          "architekt",
+          "balerina",
+          "dentysta",
+          "dom",
+          "jacht",
+          "narty",
+          "nurkowanie",
+          "podroze",
+          "programista",
+          "przedsiebiorca",
+          "rodzina"
+        ],
+        "sciezka": "/banery/{nazwa}.png",
+        "wymiary": "1200×628",
+        "rozmiary": "0,3–1,1 MB",
+        "link": "https://utratadochodu.pl/?utm_source=partner&utm_medium=display&utm_campaign=permanentlink&utm_content=ergobranzowe&utm_term=wniosek",
+        "uwaga": "stałe adresy — pobierają je inne serwisy (promo.ts:4-6)"
+      },
+      "atrybuty": "target=_blank, rel=noopener, alt=\"\"; losowanie w onMount",
+      "portal": "zastąpić wewnętrznym linkiem do formularza UD"
+    }
+  },
+  "pkd_mediplan_deklaracje": {
+    "pkd": {
+      "kod": "tylko wyświetlanie PKD przeważającego z GUS (Krok5Firma.svelte:103-108) i zapis w firma",
+      "lista_kodow": "brak w repozytorium",
+      "obietnice_bez_pokrycia": [
+        "Sprawdzimy też, czy Twoje PKD mieści się w wybranej branży. (Krok5Firma.svelte:67-68)",
+        "…trzy warianty, które ERGO Hestia oferuje firmom z Twoim PKD. (Krok1Branza.svelte:18)"
+      ],
+      "ulotka": "dla przedsiębiorców z wybranym PKD w branży beauty",
+      "status_E7": "otwarty"
+    },
+    "mediplan": {
+      "skladka": 2.8,
+      "potwierdzenie": "ulotka beauty: „MediPlan Składka miesięczna od osoby: 2,80 zł”",
+      "warianty_opisowe": [
+        "podstawowy: 10 świadczeń",
+        "rozszerzony: 15, rehabilitacja 20 zabiegów, USG",
+        "maksymalny: 20, rehabilitacja 40 zabiegów, TK, MR, USG"
+      ],
+      "UWAGA": "Cennik branżowy podaje jedną składkę 2,80 zł, bez rozbicia na 3 warianty MediPlanu — do potwierdzenia w taryfie.",
+      "ui": "bez wyboru wariantu; serwer liczy 2,80 zł",
+      "status_E6": "częściowo"
+    },
+    "deklaracje_pracownikow": {
+      "kod": "brak (tylko teksty w kroku 3, 6, mailu, stronie podziękowania)",
+      "odsylanie_arkusza": "odpowiedź na mail (Reply-To = MAIL_OPIEKUN)",
+      "prototyp": "„odeślij na wnioski@…”",
+      "status_E9": "otwarty"
+    }
+  },
+  "braki_E_po_analizie_repo": [
+    {
+      "kod": "E1",
+      "status": "zamknięty",
+      "dowod": "+server.ts:19-255; rodo.ts:26-31; init.sql:14-53",
+      "zostaje": "brak rate limitu, Turnstile, honeypota, idempotencji"
+    },
+    {
+      "kod": "E2",
+      "status": "zamknięty (klucz poza dokumentem)",
+      "dowod": "gus.ts:30-124; api/gus/+server.ts:6-33",
+      "zostaje": "klucz GUS; weryfikacja DataZawieszeniaDzialalnosci na żywym API; great-noether jako baza"
+    },
+    {
+      "kod": "E3",
+      "status": "zamknięty",
+      "dowod": "resend.ts:24-123; static/dokumenty/*",
+      "zostaje": "W4: kto wysyła z portalu; poprawki treści i arkusza"
+    },
+    {
+      "kod": "E4",
+      "status": "zamknięty",
+      "dowod": "static/dokumenty/* (6 PDF + rodo.pdf + informacja-o-dystrybutorze.pdf)",
+      "zostaje": "kopiowanie (zadanie docs)"
+    },
+    {
+      "kod": "E5",
+      "status": "częściowo",
+      "dowod": "zgody.ts:4,37; /rodo; rodo.pdf; regulamin §1",
+      "zostaje": "akceptacja prawnika, rola agenta, błędy rodo.pdf, transfer poza UE"
+    },
+    {
+      "kod": "E6",
+      "status": "częściowo",
+      "dowod": "+server.ts:14; seed-cennika.mjs:20-24; produkty.json meta, mediplan.UWAGA; ulotka beauty",
+      "zostaje": "taryfa MediPlanu, cennik 2027"
+    },
+    {
+      "kod": "E7",
+      "status": "otwarty",
+      "dowod": "Krok5Firma.svelte:67-68,103-108; brak listy PKD",
+      "zostaje": "lista PKD od ERGO Hestii"
+    },
+    {
+      "kod": "E8",
+      "status": "zamknięty",
+      "dowod": "scripts/tnij-owu.mjs; dane/owu.json, mo.json, zakres-marketing.json",
+      "zostaje": "—"
+    },
+    {
+      "kod": "E9",
+      "status": "otwarty",
+      "dowod": "brak kodu deklaracji; resend.ts:111 (Reply-To)",
+      "zostaje": "proces deklaracji i SLA od zleceniodawcy"
+    },
+    {
+      "kod": "E10",
+      "status": "częściowo",
+      "dowod": "static/banery/ (12 × 1200×628); src/lib/obrazy.ts (trybloom.ai)",
+      "zostaje": "zdjęcia branż — w portalu własne"
+    }
+  ],
+  "integracja_crm": {
+    "stan": "wnioski EZB NIE trafiają do CRM",
+    "dowody": [
+      "tabele ezb_* w projekcie Supabase aurabroker (commit 438d70a), wspólnym z crm_*",
+      "crmaura: 0 referencji do ezb_ w supabase/migrations (63 pliki) i src/ (w tym src/lib/types/database.ts)",
+      "żaden inny klon /home/user/aurabroker/* nie czyta ezb_wnioski",
+      "opiekun dostaje tylko e-mail (MAIL_OPIEKUN)"
+    ],
+    "wzorzec_UD": "crmaura/supabase/migrations/20261019000002_ud_leady_do_crm.sql: triggery + cron co godzinę → crm_clients, crm_prospects (zainteresowanie/źródło utrata_dochodu), crm_zgloszenia (ref ud:<id>), tabela crm_ud_leady z RLS po get_my_tenant_id(), flaga crm_tenants.features.ud_leady",
+    "kody_zainteresowan_crm": [
+      "oc",
+      "tax",
+      "utrata_dochodu",
+      "zdrowie",
+      "grupowe",
+      "konsultacja",
+      "inne"
+    ],
+    "etapy_leada_crm": [
+      "nowy",
+      "w_kontakcie",
+      "oferta_wyslana",
+      "wygrany",
+      "przegrany"
+    ],
+    "mapowanie_statusow": {
+      "nowy": "nowy",
+      "przekazany": "w_kontakcie",
+      "oferta": "oferta_wyslana",
+      "polisa": "wygrany",
+      "odrzucony": "przegrany"
+    },
+    "rekomendacja_W1": [
+      "Nie wołać ergo.auraexpert.pl/api/wnioski z portalu (brak uwierzytelnienia, mail z marką ERGO HESTIA i linkami do ergo.auraexpert.pl, Cloudflare challenge na strefie)",
+      "Wariant C: walidacja, Turnstile, rate limit, idempotencja i koperta zgód w portalu; zapis do ezb_wnioski przez dedykowaną funkcję z kluczem integracji (wzór crm_klucze_integracji, skrót SHA-256), bez service_role w portalu",
+      "Kanał w zrodlo_wizyty (utm_source: beautypolisa) lub nowej kolumnie kanal — wymaga potwierdzenia migracji 20260904120000",
+      "Synchronizacja ezb_wnioski → CRM na wzór UD: klient po NIP, lead z zainteresowania {grupowe}, zgłoszenie ref ezb:<nr_wniosku>, notatka ze składką; uwaga na wariant 1–3 vs pakiety 0–2",
+      "E-maile wysyła portal (W4) z poprawionymi szablonami; EZB nie ma danych szczególnych ani PESEL — najprostszy kandydat do pełnej integracji"
+    ]
+  },
+  "bezpieczenstwo": [
+    {
+      "id": "B1",
+      "waga": "wysoka",
+      "ustalenie": "POST /api/wnioski bez Turnstile, honeypota, rate limitu i idempotencji",
+      "dowod": "+server.ts:134-255; hooks.server.ts"
+    },
+    {
+      "id": "B2",
+      "waga": "wysoka",
+      "ustalenie": "mail z marką ERGO HESTIA z domeny auraexpert.pl na dowolny adres z formularza, z załącznikami i treścią sterowaną przez wysyłającego (phishing/spam)",
+      "dowod": "resend.ts:53-75,107-114; +server.ts:226-241"
+    },
+    {
+      "id": "B3",
+      "waga": "wysoka",
+      "ustalenie": "brak escapowania HTML w szablonach maili",
+      "dowod": "resend.ts:30,58-61,79-89"
+    },
+    {
+      "id": "B4",
+      "waga": "wysoka",
+      "ustalenie": "klucz service_role projektu współdzielonego z CRM i UD w sekretach Workera",
+      "dowod": "supabase.ts:8-12; commit 438d70a; README.md:29-30"
+    },
+    {
+      "id": "B5",
+      "waga": "średnia",
+      "ustalenie": "/api/gus bez limitu (otwarte proxy BIR na kluczu Aura Expert), sesje bez Wyloguj, timeout → 500",
+      "dowod": "api/gus/+server.ts:8-33; gus.ts:38,59-66"
+    },
+    {
+      "id": "B6",
+      "waga": "średnia",
+      "ustalenie": "adres e-mail i treść błędu w ezb_zdarzenia (mail_blad); console.error",
+      "dowod": "+server.ts:220,251; resend.ts:117-121"
+    },
+    {
+      "id": "B7",
+      "waga": "średnia",
+      "ustalenie": "zgody bez treści/hasha, IP, UA; wersja i nieznane kody nieweryfikowane; brak wycofania z6/z7",
+      "dowod": "+server.ts:60,155-157,193-195"
+    },
+    {
+      "id": "B8",
+      "waga": "średnia",
+      "ustalenie": "heurystyka PESEL (separatory przechodzą, fałszywe trafienia); arkusz XLSX prosi o PESEL-e mailem",
+      "dowod": "rodo.ts:18-30; lista-ubezpieczonych.xlsx"
+    },
+    {
+      "id": "B9",
+      "waga": "niska–średnia",
+      "ustalenie": "e-mail w URL strony podziękowania",
+      "dowod": "Krok6Zgody.svelte:44-46; dziekujemy/+page.svelte:7,59"
+    },
+    {
+      "id": "B10",
+      "waga": "niska",
+      "ustalenie": "surowe komunikaty błędów (do 200 znaków, Zod) pokazywane użytkownikowi",
+      "dowod": "Krok6Zgody.svelte:36-39,119-122; +server.ts:145"
+    },
+    {
+      "id": "B11",
+      "waga": "niska–średnia",
+      "ustalenie": "serwer ufa danym firmy z klienta (bez ponownej weryfikacji GUS i statusu działalności)",
+      "dowod": "+server.ts:43-52"
+    },
+    {
+      "id": "B12",
+      "waga": "niska",
+      "ustalenie": "cennik w bundlu i stała wersja; brak blokady po 31.12.2026",
+      "dowod": "+server.ts:13-14; seed-cennika.mjs:20-24"
+    },
+    {
+      "id": "B13",
+      "waga": "niska",
+      "ustalenie": "brak CSP/Referrer-Policy; Google Fonts i trybloom.ai",
+      "dowod": "app.html:7-11; obrazy.ts"
+    },
+    {
+      "id": "B14",
+      "waga": "niska",
+      "ustalenie": "produkcja z niescalonej gałęzi, ręczny deploy, CI bez deployu",
+      "dowod": ".github/workflows/ci.yml:23-36"
+    },
+    {
+      "id": "B15",
+      "waga": "niska",
+      "ustalenie": "identyfikatory kliknięcia (gclid/fbclid/msclkid) jako „bez danych osobowych”, bez zgody cookies",
+      "dowod": "zrodlo.ts:8-25; migracja 20260904120000"
+    }
+  ],
+  "bezpieczenstwo_pozytywne": [
+    "PESEL-e liczone lokalnie, serwer egzekwuje agregat",
+    "sekrety tylko w Workerze, brak klucza Supabase w przeglądarce, RLS bez polityk dla anon",
+    "przeliczenie składki po stronie serwera",
+    "wniosek zapisany mimo awarii maila lub braku kolumny atrybucji",
+    "noindex + X-Robots-Tag na krokach lejka",
+    "brak wartości sekretów w repozytorium i historii .env.example"
+  ]
 }

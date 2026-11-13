@@ -424,7 +424,7 @@
               <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
             </div>
             <div class="tr-side">
-              <p class="price">280&nbsp;zł brutto (przykład) <small>fakturę wystawia organizator</small></p>
+              <p class="price">280&nbsp;zł brutto (przykład) <small>sprzedawca: organizator&nbsp;· płatność u&nbsp;organizatora</small></p>
               <div class="seats"><span><span class="badge badge--warn">Brak wolnych miejsc</span></span><span>0 z&nbsp;16&nbsp;· zapis na listę rezerwową</span><span class="seats-bar" aria-hidden="true"><i class="f100"></i></span></div>
               <a class="btn btn-ghost btn-sm" href="#szkolenie">Szczegóły<span class="sr-only">: Stylizacja brwi&nbsp;– techniki pracy (przykład)</span></a>
             </div>
@@ -438,7 +438,7 @@
               <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
             </div>
             <div class="tr-side">
-              <p class="price">350&nbsp;zł brutto (przykład) <small>fakturę wystawia organizator</small></p>
+              <p class="price">350&nbsp;zł brutto (przykład) <small>sprzedawca: organizator&nbsp;· płatność u&nbsp;organizatora</small></p>
               <div class="seats"><span><span class="badge badge--warn">Brak wolnych miejsc</span></span><span>0 z&nbsp;14&nbsp;· zapis na listę rezerwową</span><span class="seats-bar" aria-hidden="true"><i class="f100"></i></span></div>
               <a class="btn btn-ghost btn-sm" href="#rezerwowa">Szczegóły<span class="sr-only">: Pierwsza pomoc w&nbsp;salonie beauty (przykład)</span></a>
             </div>
@@ -613,6 +613,22 @@
             </form>
           </section>
 
+          <!-- wariant: szkolenie płatne z płatnością u organizatora (poza portalem). Zapis to zamówienie usługi z obowiązkiem zapłaty
+               (u.p.k. art. 17 ust. 3): blok „Sprzedawca”, warunki sprzedaży, informacja o płatności i odstąpieniu, potwierdzenie
+               na trwałym nośniku. Alternatywa po decyzji prawnika: niewiążąca rezerwacja – Q31. -->
+          <section class="card surface" aria-labelledby="t-poza">
+            <span class="mock-note">Wariant: szkolenie płatne, płatność u&nbsp;organizatora</span>
+            <p class="small muted">Przykład: „Stylizacja brwi&nbsp;– techniki pracy (przykład)”, 280&nbsp;zł brutto.</p>
+            <h2 class="card-title" id="t-poza">Zapis z&nbsp;obowiązkiem zapłaty</h2>
+            <ul class="pay-facts">
+              <li>Sprzedawca: <strong>Organizator przykładowy</strong>&nbsp;– dane firmy, regulamin i&nbsp;oświadczenie organizatora pokazujemy tak jak przy <a class="link-quiet" href="#sprzedawca">szkoleniu płatnym w&nbsp;portalu</a>.</li>
+              <li>Płatność: u&nbsp;organizatora, według jego regulaminu (np. przelew po fakturze)&nbsp;– nie przez portal.</li>
+              <li>Jeśli kupujesz jako konsument, możesz odstąpić od umowy w&nbsp;ciągu 14&nbsp;dni; wzór formularza jest w&nbsp;regulaminie organizatora.</li>
+            </ul>
+            <p class="small">Przycisk w&nbsp;kroku informacyjnym brzmi wtedy: <strong>„Zapisuję się z&nbsp;obowiązkiem zapłaty”</strong>. Potwierdzenie z&nbsp;pełną treścią warunków wyślemy <span class="nowrap">e-mailem</span> w&nbsp;imieniu organizatora.</p>
+            <p class="xsmall muted">Druga możliwość (decyzja prawnika): zapis jako niewiążąca rezerwacja&nbsp;– wtedy umowę zawierasz z&nbsp;organizatorem poza portalem i&nbsp;napiszemy to wprost w&nbsp;tym kroku. <span class="mock-note">Do weryfikacji prawnej&nbsp;– Q31</span></p>
+          </section>
+
           <!-- krok 2: zapisano -->
           <section class="card surface reg-step" id="zapisano" data-step="zapisano" data-reg aria-labelledby="t-zapisano" tabindex="-1">
             <span class="mock-note step-label">Stan po zapisie</span>
@@ -703,21 +719,24 @@
               <div><dt>Rejestr</dt><dd>KRS 0000000000 (przykład)</dd></div>
               <div><dt>Adres</dt><dd>ul.&nbsp;Przykładowa 1, 00-001 Warszawa (przykład)</dd></div>
               <div><dt>Kontakt</dt><dd>kontakt@organizator-przykladowy.example<br>+48&nbsp;000&nbsp;000&nbsp;000 (przykład)</dd></div>
-              <div><dt>Regulamin</dt><dd>Regulamin szkoleń organizatora, wersja 1.2 (przykład)<br><span class="xsmall muted">rezygnacja, zwroty, reklamacje, faktury</span></dd></div>
+              <div><dt>Regulamin</dt><dd>Regulamin szkoleń organizatora, wersja 1.2 (przykład)<br><span class="xsmall muted">odstąpienie, rezygnacja, zwroty, reklamacje, faktury</span></dd></div>
+              <div id="rodo-org" tabindex="-1"><dt>Dane osobowe</dt><dd>Informacja organizatora o&nbsp;danych osobowych, wersja 1.0 (przykład)<br><span class="xsmall muted">organizator jest administratorem danych uczestników i&nbsp;danych do faktury</span></dd></div>
+              <div><dt>Oświadczenie</dt><dd>Organizator oświadczył, że oferuje wyłącznie usługi zgodne z&nbsp;prawem Unii Europejskiej. <span class="mock-note">DSA art.&nbsp;30 ust.&nbsp;1 lit.&nbsp;e</span></dd></div>
             </dl>
             <details class="mini" id="regulamin-org">
               <summary class="link-quiet">Najważniejsze zasady z&nbsp;regulaminu organizatora</summary>
               <div class="mini-body small">
                 <ul class="pay-facts">
-                  <li><strong>Rezygnacja</strong> do 14&nbsp;dni przed szkoleniem&nbsp;– pełny zwrot; od 13 do 3&nbsp;dni&nbsp;– zwrot 50%; później&nbsp;– bez zwrotu (przykład).</li>
+                  <li><strong>Odstąpienie od umowy</strong>&nbsp;– jeśli kupujesz jako konsument, możesz odstąpić bez podania przyczyny w&nbsp;ciągu 14&nbsp;dni od zawarcia umowy. Organizator zwraca całą kwotę w&nbsp;ciągu 14&nbsp;dni od otrzymania oświadczenia. Wzór formularza jest w&nbsp;regulaminie.</li>
+                  <li><strong>Rezygnacja</strong> po tym terminie albo bez prawa odstąpienia: do 14&nbsp;dni przed szkoleniem&nbsp;– pełny zwrot; od 13 do 3&nbsp;dni&nbsp;– zwrot 50%; później&nbsp;– bez zwrotu (przykład).</li>
                   <li><strong>Odwołanie przez organizatora</strong>&nbsp;– pełny zwrot dla wszystkich.</li>
                   <li><strong>Faktura</strong>&nbsp;– wystawia organizator na dane z&nbsp;zamówienia.</li>
                   <li><strong>Reklamacje</strong>&nbsp;– do organizatora, na kontakt podany wyżej.</li>
                 </ul>
-                <p class="xsmall muted">Treść regulaminu przygotowuje organizator; wersję zapisujemy przy zamówieniu. Prawo odstąpienia od umowy (14&nbsp;dni) i&nbsp;wyjątek dla usług z&nbsp;oznaczonym terminem&nbsp;– do weryfikacji prawnej. <span class="mock-note">Do weryfikacji prawnej</span></p>
+                <p class="xsmall muted">Treść regulaminu przygotowuje organizator; wersję zapisujemy przy zamówieniu. Ustawowe prawo odstąpienia ma pierwszeństwo przed zasadami rezygnacji organizatora. Wyjątki (usługa z&nbsp;oznaczonym terminem, szkolenie przed upływem 14&nbsp;dni, kupujący z&nbsp;NIP)&nbsp;– do weryfikacji prawnej. <span class="mock-note">Do weryfikacji prawnej&nbsp;– Q31</span></p>
               </div>
             </details>
-            <p class="xsmall muted">Dane sprzedawcy pochodzą ze zweryfikowanego profilu: Aura Expert sprawdziła firmę w&nbsp;rejestrze i&nbsp;zawarła z&nbsp;nią umowę organizatora. Organizator nie wpisuje ich sam. <span class="mock-note">DSA art.&nbsp;30&nbsp;– do weryfikacji prawnej</span></p>
+            <p class="xsmall muted">Nazwę firmy, NIP i&nbsp;rejestr bierzemy ze zweryfikowanego profilu: Aura Expert sprawdziła firmę w&nbsp;rejestrze i&nbsp;zawarła z&nbsp;nią umowę organizatora. Adres, kontakt, regulamin i&nbsp;oświadczenie organizator podaje w&nbsp;warunkach sprzedaży, a&nbsp;zespół Aura Expert sprawdza je przed publikacją. <span class="mock-note">DSA art.&nbsp;30&nbsp;– do weryfikacji prawnej</span></p>
           </section>
         </div>
 
@@ -739,8 +758,8 @@
             <div class="seats"><span>Wolne miejsca: 4 z&nbsp;16</span><span class="seats-bar" aria-hidden="true"><i class="f75"></i></span></div>
             <ul class="pay-facts">
               <li>Sprzedawca: <strong>Organizator przykładowy</strong>&nbsp;– wystawia fakturę i&nbsp;odpowiada za szkolenie.</li>
-              <li>Płacisz BLIK-iem, kartą albo szybkim przelewem na stronie operatora płatności. Pieniądze trafiają do organizatora, nie do BeautyPolisa.</li>
-              <li>BeautyPolisa nie pobiera prowizji w&nbsp;okresie promocji na otwarcie portalu.</li>
+              <li>Płacisz BLIK-iem, kartą albo szybkim przelewem na stronie operatora płatności. Pieniądze trafiają do organizatora, nie do BeautyPolisa. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></li>
+              <li>Cena zawiera wszystkie opłaty. Portal nie dolicza opłat do ceny. <span class="mock-note">O&nbsp;ile potwierdzą to operator i&nbsp;model</span></li>
             </ul>
             <a class="btn btn-navy btn-block" href="#zamowienie">Zapisz się i&nbsp;zapłać</a>
             <p class="xsmall muted">Podasz dane uczestnika i&nbsp;dane do faktury. Potem zarezerwujemy miejsce na 15&nbsp;minut&nbsp;– na czas płatności.</p>
@@ -750,8 +769,8 @@
             <span class="mock-note">Wariant: brak wolnych miejsc</span>
             <div class="alert alert--info">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-              <strong class="alert-title">Wszystkie miejsca są zajęte albo zarezerwowane</strong>
-              <p class="small">Rezerwacje innych osób wygasają po 15&nbsp;minutach, więc miejsce może się zwolnić. Możesz też zapisać się na listę rezerwową&nbsp;– gdy zwolni się miejsce, dostaniesz <span class="nowrap">e-mail</span> z&nbsp;linkiem do płatności. <span class="mock-note">Założenie: link ważny 24&nbsp;h</span></p>
+              <strong class="alert-title">Brak wolnych miejsc</strong>
+              <p class="small">Wszystkie miejsca są zajęte albo zarezerwowane. Rezerwacje innych osób wygasają po 15&nbsp;minutach, więc miejsce może się zwolnić&nbsp;– sprawdź ponownie później. Szkolenia płatne w&nbsp;portalu nie mają listy rezerwowej. <span class="mock-note">Q34</span></p>
             </div>
           </div>
           <div class="variant">
@@ -810,25 +829,46 @@
               <p class="hint">Zapisujesz siebie&nbsp;– dane z&nbsp;Twojego konta. Pracownik zapisuje się sam ze swojego konta.</p>
             </div>
 
-            <fieldset class="field">
-              <legend>Faktura na</legend>
+            <!-- strona umowy i status kupującego (konsument / JDG / firma) – bez wartości domyślnej; status i wersja informacji
+                 zapisują się w zamówieniu. Rodzaj faktury wynika z wyboru, a nie odwrotnie (Q31, Q32). -->
+            <fieldset class="field" id="kup-fs">
+              <legend>Kupuję jako</legend>
               <div class="radio-cards row">
-                <div class="radio-card"><input type="radio" id="fv-firma" name="faktura" value="firma" checked><label for="fv-firma">firmę (z&nbsp;NIP)</label></div>
-                <div class="radio-card"><input type="radio" id="fv-osoba" name="faktura" value="osoba"><label for="fv-osoba">osobę prywatną</label></div>
+                <div class="radio-card"><input type="radio" id="kup-osoba" name="kupujacy" value="osoba" required><label for="kup-osoba">osoba prywatna</label></div>
+                <div class="radio-card"><input type="radio" id="kup-firma" name="kupujacy" value="firma"><label for="kup-firma">w&nbsp;imieniu firmy (faktura z&nbsp;NIP)</label></div>
               </div>
+              <p class="field-error" id="kup-err" hidden></p>
             </fieldset>
             <div class="fv-group" data-fv="firma">
+              <fieldset class="field" id="kup-rodzaj-fs">
+                <legend>Rodzaj firmy <span class="no-js-only">(zakup w&nbsp;imieniu firmy)</span></legend>
+                <div class="radio-cards row">
+                  <div class="radio-card"><input type="radio" id="kup-jdg" name="rodzaj_firmy" value="jdg"><label for="kup-jdg">jednoosobowa działalność</label></div>
+                  <div class="radio-card"><input type="radio" id="kup-spolka" name="rodzaj_firmy" value="firma"><label for="kup-spolka">spółka lub inna firma</label></div>
+                </div>
+                <p class="field-error" id="kup-rodzaj-err" hidden></p>
+              </fieldset>
               <div class="fields-2">
                 <div class="field">
-                  <label for="fv-nazwa">Nazwa firmy <span class="no-js-only">(faktura na firmę)</span></label>
-                  <input type="text" id="fv-nazwa" name="firma" maxlength="200" autocomplete="organization" value="Salon Przykładowy">
+                  <label for="fv-nazwa">Nazwa firmy <span class="no-js-only">(zakup w&nbsp;imieniu firmy)</span></label>
+                  <input type="text" id="fv-nazwa" name="firma" maxlength="200" autocomplete="organization">
                   <p class="field-error" id="fv-nazwa-err" hidden></p>
                 </div>
                 <div class="field">
-                  <label for="fv-nip">NIP <span class="no-js-only">(faktura na firmę)</span></label>
-                  <input type="text" id="fv-nip" name="nip" inputmode="numeric" maxlength="13" autocomplete="off" spellcheck="false" value="0000000000" aria-describedby="fv-nip-hint">
-                  <p class="hint" id="fv-nip-hint">10 cyfr. Dane salonu wstawiliśmy z&nbsp;konta&nbsp;– możesz je zmienić. <span class="mock-note">przykład</span></p>
+                  <label for="fv-nip">NIP <span class="no-js-only">(zakup w&nbsp;imieniu firmy)</span></label>
+                  <input type="text" id="fv-nip" name="nip" inputmode="numeric" maxlength="13" autocomplete="off" spellcheck="false" aria-describedby="fv-nip-hint">
+                  <p class="hint" id="fv-nip-hint">10 cyfr, bez kresek.</p>
                   <p class="field-error" id="fv-nip-err" hidden></p>
+                </div>
+              </div>
+              <label class="check-row" for="zg-umoc"><input type="checkbox" id="zg-umoc" name="umocowanie" value="tak">Oświadczam, że mogę zawrzeć tę umowę w&nbsp;imieniu firmy (jestem jej właścicielem albo mam do tego upoważnienie).</label>
+              <p class="field-error" id="zg-umoc-err" hidden></p>
+              <div class="variant">
+                <span class="mock-note">Wariant: pracownik salonu wpisuje NIP swojego salonu</span>
+                <div class="alert alert--warn">
+                  <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>
+                  <strong class="alert-title">Zakup na firmę salonu wymaga zgody właściciela</strong>
+                  <p class="small">Jako pracownik nie kupujesz na NIP Salonu Przykładowego. Kup jako osoba prywatna albo poproś właściciela o&nbsp;zgodę. <span class="mock-note">Do decyzji zleceniodawcy&nbsp;– Q32</span></p>
                 </div>
               </div>
             </div>
@@ -857,23 +897,35 @@
                 <p class="field-error" id="fv-miasto-err" hidden></p>
               </div>
             </div>
-            <p class="xsmall muted">Dane do faktury otrzyma organizator&nbsp;– to on wystawia fakturę. Kupując na firmę, co do zasady nie korzystasz z&nbsp;praw konsumenta. <span class="mock-note">Do weryfikacji prawnej</span></p>
+            <p class="xsmall muted">Dane do faktury otrzyma organizator&nbsp;– to on wystawia fakturę. Jeśli kupujesz w&nbsp;imieniu firmy, prawo odstąpienia zwykle nie przysługuje. Wyjątek: jednoosobowa działalność, dla której umowa nie ma charakteru zawodowego. <span class="mock-note">Tekst do akceptacji prawnika&nbsp;– Q31</span></p>
 
+            <!-- informacja o sprzedawcy (Omnibus) to informacja, a nie zgoda – bez pola wyboru; wersja zapisuje się w zamówieniu -->
+            <p class="small"><strong>Sprzedawcą jest organizator</strong>&nbsp;– Organizator Przykładowy sp.&nbsp;z&nbsp;o.o. Aura Expert (BeautyPolisa) nie jest stroną umowy: odpowiada za konto, zamówienie i&nbsp;<span class="nowrap">e-maile</span>, a&nbsp;organizator&nbsp;– za szkolenie, fakturę, zwroty i&nbsp;reklamacje.</p>
             <fieldset class="field consents">
-              <legend>Zgody i&nbsp;informacje</legend>
-              <label class="check-row" for="zg-reg"><input type="checkbox" id="zg-reg" name="regulamin" value="1.2" required>Akceptuję regulamin szkoleń organizatora Organizator przykładowy (wersja 1.2), w&nbsp;tym zasady rezygnacji i&nbsp;zwrotów.</label>
+              <legend>Regulamin organizatora</legend>
+              <label class="check-row" for="zg-reg"><input type="checkbox" id="zg-reg" name="regulamin" value="1.2" required>Akceptuję regulamin szkoleń organizatora Organizator przykładowy (wersja 1.2), w&nbsp;tym zasady odstąpienia, rezygnacji i&nbsp;zwrotów.</label>
               <p class="field-error" id="zg-reg-err" hidden></p>
-              <label class="check-row" for="zg-sprz"><input type="checkbox" id="zg-sprz" name="sprzedawca" value="tak" required>Wiem, że sprzedawcą jest organizator: to on wystawia fakturę i&nbsp;odpowiada za szkolenie, a&nbsp;BeautyPolisa (Aura Expert) nie pobiera prowizji w&nbsp;okresie promocji na otwarcie portalu.</label>
-              <p class="field-error" id="zg-sprz-err" hidden></p>
+              <div class="variant">
+                <span class="mock-note">Wariant: szkolenie zaczyna się przed upływem 14&nbsp;dni (tylko kupujący-konsument)</span>
+                <label class="check-row" for="zg-start"><input type="checkbox" id="zg-start" name="zadanie_rozpoczecia" value="1.0">Żądam rozpoczęcia usługi przed upływem 14&nbsp;dni na odstąpienie od umowy. Wiem, że po pełnym wykonaniu usługi stracę prawo odstąpienia, a&nbsp;jeśli odstąpię wcześniej, zapłacę za część już wykonaną.</label>
+                <p class="xsmall muted">Wersję tej treści zapisujemy w&nbsp;zamówieniu. <span class="mock-note">Treść i&nbsp;skutki braku zaznaczenia&nbsp;– do weryfikacji prawnej, Q31</span></p>
+              </div>
             </fieldset>
+            <!-- RODO: trzy podmioty (role zgodne z oboma wariantami Q1 – do potwierdzenia przez IOD) -->
             <div class="notice-box">
-              <p>Twoje imię i&nbsp;nazwisko, adres <span class="nowrap">e-mail</span> i&nbsp;dane do faktury otrzyma organizator <strong>Organizator przykładowy</strong>, który jest administratorem tych danych. Operator płatności dostaje tylko to, co potrzebne do płatności.</p>
+              <p>Przy tym zamówieniu Twoje dane przetwarzają:</p>
+              <ul class="pay-facts">
+                <li><strong>Organizator przykładowy</strong> (sprzedawca)&nbsp;– imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;dane do faktury: umowa, lista uczestników, faktura i&nbsp;księgowość. Faktury przechowuje według swoich obowiązków księgowych. <a class="link-quiet" href="#rodo-org">Informacja organizatora</a></li>
+                <li><strong>Aura Expert</strong> (BeautyPolisa)&nbsp;– konto, zamówienie, bezpieczeństwo i&nbsp;dziennik zdarzeń, uzgadnianie płatności z&nbsp;operatorem i&nbsp;obowiązki platformy. Dane kupującego usuwamy 90&nbsp;dni po szkoleniu; zamówienie bez danych osobowych zostaje dłużej, do rozliczeń. <a class="link-quiet" href="logowanie.html#klauzula">Klauzula informacyjna</a></li>
+                <li><strong>Operator płatności</strong>&nbsp;– płatność, zwroty, przeciwdziałanie oszustwom i&nbsp;praniu pieniędzy; jest odrębnym administratorem. Informację operatora podamy po jego wyborze.</li>
+              </ul>
+              <p class="xsmall muted">Role Aura Expert (administrator albo podmiot przetwarzający przy danych do faktury) i&nbsp;okresy przechowywania potwierdzą prawnik i&nbsp;IOD. <span class="mock-note">Do weryfikacji&nbsp;– Q1, Q35</span></p>
               <details class="mini">
-                <summary class="link-quiet">Zasady rezygnacji i&nbsp;zwrotów (skrót regulaminu)</summary>
-                <p class="mini-body small">Rezygnacja do 14&nbsp;dni przed szkoleniem&nbsp;– pełny zwrot; od 13 do 3&nbsp;dni&nbsp;– 50%; później&nbsp;– bez zwrotu. Odwołanie przez organizatora&nbsp;– pełny zwrot. (przykład z&nbsp;regulaminu organizatora)</p>
+                <summary class="link-quiet">Odstąpienie, rezygnacja i&nbsp;zwroty (skrót regulaminu)</summary>
+                <p class="mini-body small">Konsument może odstąpić od umowy w&nbsp;ciągu 14&nbsp;dni bez podania przyczyny&nbsp;– pełny zwrot w&nbsp;ciągu 14&nbsp;dni. Rezygnacja po tym terminie: do 14&nbsp;dni przed szkoleniem&nbsp;– pełny zwrot; od 13 do 3&nbsp;dni&nbsp;– 50%; później&nbsp;– bez zwrotu. Odwołanie przez organizatora&nbsp;– pełny zwrot. (przykład z&nbsp;regulaminu organizatora)</p>
               </details>
             </div>
-            <p class="xsmall muted">Informacje przed zawarciem umowy (sprzedawca, cena, zasady rezygnacji) i&nbsp;prawo odstąpienia (14&nbsp;dni oraz wyjątek dla usług z&nbsp;oznaczonym terminem)&nbsp;– treść do weryfikacji prawnej. Wersje regulaminu i&nbsp;informacji zapisujemy przy zamówieniu. <span class="mock-note">Do weryfikacji prawnej</span></p>
+            <p class="xsmall muted">Informacje przed zawarciem umowy (sprzedawca, cena, termin i&nbsp;miejsce, prawo odstąpienia, reklamacje) pokazujemy z&nbsp;warunków sprzedaży organizatora. Wersje regulaminu i&nbsp;informacji zapisujemy przy zamówieniu, a&nbsp;po opłaceniu wysyłamy ich pełną treść <span class="nowrap">e-mailem</span>. <span class="mock-note">Do weryfikacji prawnej&nbsp;– Q31</span></p>
             <div class="form-foot">
               <button class="btn btn-navy" type="submit">Zarezerwuj miejsce i&nbsp;przejdź do płatności</button>
               <a class="link-quiet" href="#szkolenie-platne">Wróć do szkolenia</a>
@@ -885,19 +937,18 @@
             <span class="mock-note step-label">Krok 2: płatność (miejsce zarezerwowane)</span>
             <h2 class="card-title" id="t-zam-pl">Płatność</h2>
             <div class="hold" role="group" aria-label="Rezerwacja miejsca">
-              <p><strong>Miejsce zarezerwowane.</strong> Zostało <span class="hold-left js-hold-left" role="timer" aria-live="off">15:00</span>&nbsp;min.</p>
-              <button class="btn btn-ghost btn-sm js-extend" type="button">Przedłuż o&nbsp;15&nbsp;minut</button>
+              <p><strong>Rezerwacja trwa do <span class="js-hold-until">10:45</span>.</strong> Zostało <span class="hold-left js-hold-left" role="timer" aria-live="off">15:00</span>&nbsp;min.</p>
             </div>
-            <p class="xsmall muted">Twoje dane zostaną w&nbsp;formularzu także po końcu rezerwacji. Przypomnimy o&nbsp;czasie na 5 i&nbsp;na 1&nbsp;minutę przed końcem. <span class="mock-note">Założenie: przedłużanie do 60&nbsp;min łącznie</span></p>
+            <p class="xsmall muted">Jeśli płatność dotrze później, zapiszemy Cię, gdy będzie wolne miejsce; jeśli nie&nbsp;– zwrot całej kwoty. Przypomnimy o&nbsp;czasie na 5 i&nbsp;na 1&nbsp;minutę przed końcem, a&nbsp;Twoje dane zostaną w&nbsp;formularzu. <span class="mock-note">Z-43: 15&nbsp;min (parametr 10–30), bez przedłużania</span></p>
 
             <dl class="kv kv--rows order-sum">
               <div><dt>Szkolenie</dt><dd>Stylizacja rzęs&nbsp;– lifting i&nbsp;laminacja (przykład)<br><span class="xsmall muted"><time datetime="2027-01-28T10:00">28.01.2027, 10:00–16:00</time>&nbsp;· Warszawa</span></dd></div>
               <div><dt>Uczestnik</dt><dd>Anna Przykładowa</dd></div>
-              <div><dt>Faktura na</dt><dd id="sum-fv">firmę: Salon Przykładowy, NIP 0000000000</dd></div>
+              <div><dt>Kupujesz jako</dt><dd id="sum-fv">osoba prywatna: Anna Przykładowa</dd></div>
               <div><dt>Sprzedawca</dt><dd>Organizator Przykładowy sp.&nbsp;z&nbsp;o.o., NIP 000-000-00-00 (przykład)</dd></div>
-              <div><dt>Prowizja BeautyPolisa</dt><dd>0&nbsp;zł&nbsp;– promocja na otwarcie portalu</dd></div>
               <div class="total"><dt>Do zapłaty</dt><dd>450,00&nbsp;zł brutto</dd></div>
             </dl>
+            <p class="xsmall muted">Cena zawiera wszystkie opłaty. Portal nie dolicza opłat do ceny. <span class="mock-note">O&nbsp;ile potwierdzą to operator i&nbsp;model</span></p>
 
             <form class="form" id="f-metoda" action="#zam-w-toku" method="post" novalidate>
               <fieldset class="field">
@@ -913,7 +964,7 @@
                 <button class="btn btn-navy" type="submit">Zamawiam i&nbsp;płacę 450,00&nbsp;zł</button>
                 <a class="link-quiet" href="#zamowienie">Zmień dane</a>
               </div>
-              <p class="xsmall muted">Przejdziesz na stronę operatora płatności. BeautyPolisa nie widzi kodu BLIK ani danych karty, a&nbsp;pieniądze trafiają na konto organizatora u&nbsp;operatora. Brzmienie przycisku zamówienia&nbsp;– <span class="mock-note">do weryfikacji prawnej</span></p>
+              <p class="xsmall muted">Przejdziesz na stronę operatora płatności. BeautyPolisa nie widzi kodu BLIK ani danych karty, a&nbsp;pieniądze trafiają na konto organizatora u&nbsp;operatora (<span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span>). Brzmienie przycisku zamówienia&nbsp;– <span class="mock-note">do weryfikacji prawnej</span></p>
             </form>
 
             <div class="sim" id="sim-operator" tabindex="-1">
@@ -934,9 +985,9 @@
             <div class="alert alert--info">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
               <strong class="alert-title" id="t-zam-wt">Czekamy na potwierdzenie płatności</strong>
-              <p class="small">Operator jeszcze nie potwierdził płatności. <strong>Nie płać ponownie</strong>&nbsp;– status sprawdzamy automatycznie i&nbsp;wyślemy <span class="nowrap">e-mail</span>. Miejsce trzymamy do odpowiedzi operatora. <span class="mock-note">Założenie: najdłużej 30&nbsp;min</span></p>
+              <p class="small">Operator jeszcze nie potwierdził płatności. <strong>Nie płać ponownie</strong>&nbsp;– status sprawdzamy automatycznie i&nbsp;wyślemy <span class="nowrap">e-mail</span>. Rezerwacja trwa do <span class="js-hold-until">10:45</span>.</p>
             </div>
-            <p class="small">Jeśli płatność dotrze, gdy miejsca już nie będzie, operator zwróci całą kwotę automatycznie. Jeśli płatność się nie uda, pieniądze nie zostaną pobrane.</p>
+            <p class="small">Jeśli płatność dotrze później, zapiszemy Cię, gdy będzie wolne miejsce; jeśli nie&nbsp;– zwrócimy całą kwotę (zwrot wykonuje operator). Jeśli operator nie potwierdzi płatności, a&nbsp;pieniądze zeszły z&nbsp;konta, wrócą automatycznie.</p>
             <div class="actions">
               <a class="btn btn-ghost btn-sm" href="#zam-w-toku">Sprawdź status</a>
               <a class="link-lux" href="#p-zam">Moje zamówienia</a>
@@ -959,8 +1010,9 @@
               <span>Weź własne narzędzia do stylizacji. (przykład)</span>
             </div>
             <ul class="pay-facts">
+              <li><strong>Potwierdzenie umowy</strong>&nbsp;– w&nbsp;<span class="nowrap">e-mailu</span> (wysyłamy go w&nbsp;imieniu organizatora) jest pełna treść warunków w&nbsp;wersji zaakceptowanej przy zamówieniu: dane sprzedawcy, cena, termin i&nbsp;miejsce, prawo odstąpienia z&nbsp;wzorem formularza, reklamacje i&nbsp;regulamin organizatora. <span class="mock-note">Trwały nośnik&nbsp;– Q31</span></li>
               <li><strong>Faktura</strong>&nbsp;– wystawi ją organizator na dane z&nbsp;zamówienia. Jeśli doda plik, znajdziesz go w&nbsp;„Moich szkoleniach”.</li>
-              <li><strong>Rezygnacja</strong>&nbsp;– według regulaminu organizatora; zwrot zleca organizator, a&nbsp;wykonuje operator płatności.</li>
+              <li><strong>Odstąpienie od umowy</strong>&nbsp;– jako konsument możesz odstąpić do <time datetime="2026-11-27">27.11.2026</time> (14&nbsp;dni)&nbsp;– wtedy organizator zwraca całą kwotę. <strong>Rezygnacja</strong> później&nbsp;– według regulaminu organizatora. Obie ścieżki są w&nbsp;„Zamówieniach i&nbsp;fakturach”.</li>
             </ul>
             <div class="actions"><a class="btn btn-navy btn-sm" href="#p-zam">Moje zamówienia</a><a class="link-lux" href="#katalog">Katalog szkoleń</a></div>
           </section>
@@ -971,10 +1023,10 @@
             <div class="alert alert--error">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>
               <strong class="alert-title" id="t-zam-nu">Płatność nie powiodła się</strong>
-              <p class="small">Operator odrzucił płatność albo została przerwana. Pieniądze nie zostały pobrane.</p>
+              <p class="small">Operator nie potwierdził płatności. Jeśli pieniądze zeszły z&nbsp;konta, wrócą automatycznie albo zapiszemy Cię, gdy płatność dotrze.</p>
             </div>
             <div class="hold" role="group" aria-label="Rezerwacja miejsca">
-              <p><strong>Miejsce nadal czeka.</strong> Zostało <span class="hold-left js-hold-left" role="timer" aria-live="off">15:00</span>&nbsp;min.</p>
+              <p><strong>Miejsce czeka do <span class="js-hold-until">10:45</span>.</strong> Zostało <span class="hold-left js-hold-left" role="timer" aria-live="off">15:00</span>&nbsp;min.</p>
             </div>
             <div class="actions"><a class="btn btn-navy btn-sm" href="#zam-platnosc">Spróbuj ponownie</a><a class="link-quiet" href="#szkolenie-platne">Zrezygnuj z&nbsp;zamówienia</a></div>
             <p class="xsmall muted">Możesz wybrać inną metodę. Ponowna próba dotyczy tego samego zamówienia&nbsp;– nie zapłacisz dwa razy.</p>
@@ -988,7 +1040,7 @@
               <strong class="alert-title" id="t-zam-wy">Rezerwacja wygasła</strong>
               <p class="small">Minął czas na płatność, więc miejsce wróciło do puli. Twoje dane zostały w&nbsp;formularzu.</p>
             </div>
-            <p class="small">Wolne miejsca teraz: 3 z&nbsp;16. Jeśli płatność została jednak wykonana, potwierdzimy zapis, gdy miejsce jest wolne&nbsp;– a&nbsp;jeśli nie, operator zwróci całą kwotę automatycznie.</p>
+            <p class="small">Wolne miejsca teraz: 3 z&nbsp;16. Jeśli płatność dotrze później, zapiszemy Cię, gdy będzie wolne miejsce; jeśli nie&nbsp;– zwrócimy całą kwotę (zwrot wykonuje operator).</p>
             <div class="actions"><a class="btn btn-navy btn-sm" href="#zam-platnosc">Zarezerwuj ponownie</a><a class="link-quiet" href="#szkolenie-platne">Wróć do szkolenia</a></div>
           </section>
         </div>
@@ -1001,9 +1053,9 @@
           <ul>
             <li><span><strong>Sprzedawca to organizator.</strong> Umowę zawierasz z&nbsp;Organizator Przykładowy sp.&nbsp;z&nbsp;o.o.; on wystawia fakturę i&nbsp;rozpatruje reklamacje.</span></li>
             <li><span><strong>Płatność u&nbsp;operatora.</strong> BLIK, karta albo szybki przelew&nbsp;– na stronie licencjonowanego operatora płatności. <span class="mock-note">Operator nie jest wybrany</span></span></li>
-            <li><span><strong>Pieniądze trafiają do organizatora.</strong> BeautyPolisa ich nie przyjmuje i&nbsp;nie przechowuje danych kart.</span></li>
-            <li><span><strong>Bez prowizji portalu.</strong> W&nbsp;okresie promocji BeautyPolisa nie pobiera prowizji od sprzedaży szkoleń.</span></li>
-            <li><span><strong>Zwroty.</strong> Według regulaminu organizatora; przy odwołaniu szkolenia&nbsp;– pełny zwrot dla wszystkich.</span></li>
+            <li><span><strong>Pieniądze trafiają do organizatora.</strong> BeautyPolisa ich nie przyjmuje i&nbsp;nie przechowuje danych kart. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></span></li>
+            <li><span><strong>Cena zawiera wszystkie opłaty.</strong> Portal nie dolicza opłat do ceny. <span class="mock-note">O&nbsp;ile potwierdzą to operator i&nbsp;model</span></span></li>
+            <li><span><strong>Zwroty.</strong> Odstąpienie od umowy (konsument, 14&nbsp;dni)&nbsp;– pełny zwrot; rezygnacja później&nbsp;– według regulaminu organizatora; odwołanie szkolenia&nbsp;– pełny zwrot dla wszystkich.</span></li>
           </ul>
         </aside>
       </div>
@@ -1137,11 +1189,21 @@
               </div>
               <span class="badge badge--ok" data-status>Opłacone</span>
               <div class="row-actions">
+                <!-- konsument (i JDG na prawach konsumenta): odstąpienie jednostronne – organizator nie decyduje, tylko zwraca całość
+                     w 14 dni od doręczenia oświadczenia (withdrawal_due_at); rezygnacja – prośba, o zwrocie decyduje organizator -->
                 <details class="mini">
-                  <summary class="btn btn-quiet btn-sm">Zrezygnuj<span class="sr-only">: Stylizacja rzęs</span></summary>
+                  <summary class="btn btn-ghost btn-sm">Odstępuję od umowy<span class="sr-only">: Stylizacja rzęs</span></summary>
                   <div class="mini-body">
-                    <p class="small">Według regulaminu organizatora rezygnacja do <time datetime="2027-01-14">14.01.2027</time> daje pełny zwrot (450,00&nbsp;zł). Rezygnacja od razu zwalnia miejsce. Zwrot zleca organizator, a&nbsp;operator oddaje pieniądze na Twoją metodę płatności.</p>
-                    <button class="btn btn-danger btn-sm js-cancel" type="button" data-badge="Rezygnacja&#160;– zwrot u&#160;organizatora" data-msg="Zrezygnowano ze „Stylizacji rzęs (przykład)”. Organizator dostał prośbę o&#160;zwrot według swojego regulaminu&#160;– o&#160;zwrocie napiszemy e-mailem.">Rezygnuję</button>
+                    <p class="small">Jako konsument możesz odstąpić od umowy bez podania przyczyny do <time datetime="2026-11-27">27.11.2026</time>. Organizator nie może odmówić: zwraca całą kwotę tą samą metodą płatności w&nbsp;ciągu 14&nbsp;dni od otrzymania oświadczenia. Potwierdzenie wyślemy <span class="nowrap">e-mailem</span>.</p>
+                    <button class="btn btn-danger btn-sm js-cancel" type="button" data-badge="Odstąpienie&#160;– zwrot do 27.11.2026" data-msg="Oświadczenie o&#160;odstąpieniu od umowy („Stylizacja rzęs (przykład)”) doręczone organizatorowi 13.11.2026 (przykład). Organizator zwróci całą kwotę najpóźniej do 27.11.2026. Potwierdzenie wysłaliśmy e-mailem.">Odstępuję od umowy</button>
+                    <p class="xsmall muted">Tylko dla kupujących-konsumentów (i&nbsp;jednoosobowej działalności na prawach konsumenta), w&nbsp;terminie. <span class="mock-note">Do weryfikacji prawnej&nbsp;– Q31</span></p>
+                  </div>
+                </details>
+                <details class="mini">
+                  <summary class="btn btn-quiet btn-sm">Poproś o&nbsp;rezygnację<span class="sr-only">: Stylizacja rzęs</span></summary>
+                  <div class="mini-body">
+                    <p class="small">Po terminie odstąpienia albo przy zakupie na firmę o&nbsp;zwrocie decyduje organizator według swojego regulaminu. Do jego decyzji miejsce zostaje Twoje.</p>
+                    <button class="btn btn-danger btn-sm js-cancel" type="button" data-badge="Prośba o&#160;rezygnację&#160;– czeka na organizatora" data-msg="Wysłaliśmy organizatorowi prośbę o&#160;rezygnację ze „Stylizacji rzęs (przykład)”. O&#160;jego decyzji i&#160;ewentualnym zwrocie napiszemy e-mailem.">Wyślij prośbę</button>
                   </div>
                 </details>
               </div>
@@ -1181,7 +1243,7 @@
               <div class="grow">
                 <strong>Henna pudrowa brwi (przykład)</strong>
                 <span class="meta">BP-SZK-2026-000118&nbsp;· 260,00&nbsp;zł&nbsp;· sprzedawca: Organizator przykładowy</span>
-                <span class="meta">Rezerwacja wygasła bez płatności&nbsp;– pieniądze nie zostały pobrane.</span>
+                <span class="meta">Rezerwacja wygasła, operator nie potwierdził płatności. Jeśli pieniądze zeszły z&nbsp;konta, wrócą automatycznie.</span>
               </div>
               <span class="badge badge--off">Nieopłacone&nbsp;· rezerwacja wygasła</span>
               <div class="row-actions">
@@ -1189,7 +1251,7 @@
               </div>
             </li>
           </ul>
-          <p class="xsmall muted">Fakturę wystawia organizator (sprzedawca)&nbsp;– BeautyPolisa nie wystawia faktur za szkolenia. Plik faktury pokazujemy, jeśli organizator go doda. Reklamacje i&nbsp;pytania o&nbsp;fakturę kieruj do organizatora. Okres przechowywania historii zamówień w&nbsp;portalu&nbsp;– do ustalenia z&nbsp;prawnikiem i&nbsp;księgowością. <span class="mock-note">Założenie</span></p>
+          <p class="xsmall muted">Fakturę wystawia organizator (sprzedawca)&nbsp;– BeautyPolisa nie wystawia faktur za szkolenia. Plik faktury pokazujemy, jeśli organizator go doda. Reklamacje i&nbsp;pytania o&nbsp;fakturę kieruj do organizatora. Swoje zamówienia, faktury i&nbsp;odstąpienie widzisz tutaj także wtedy, gdy stracisz dostęp do konta salonu. Dane kupującego usuwamy z&nbsp;portalu 90&nbsp;dni po szkoleniu&nbsp;– pobierz plik faktury i&nbsp;zachowaj go u&nbsp;siebie; okres przechowywania pliku faktury w&nbsp;portalu&nbsp;– do decyzji. <span class="mock-note">Założenie Z-46&nbsp;– Q35</span></p>
         </div>
 
         <div class="tabpanel owner-only" role="tabpanel" id="p-zespol" aria-labelledby="t-zespol" tabindex="0" hidden>
@@ -1232,7 +1294,7 @@
               </tbody>
             </table>
           </div>
-          <p class="xsmall muted">Każdy zapisuje się sam ze swojego konta. Na jednym szkoleniu salon ma najwyżej 3&nbsp;miejsca. Odebranie dostępu pracownikowi anuluje jego przyszłe zapisy (przy opłaconych&nbsp;– zwrot według regulaminu organizatora). Przy zapisach zespołu nie pokazujemy danych płatności ani faktur pracowników. <span class="mock-note">Założenie</span></p>
+          <p class="xsmall muted">Każdy zapisuje się sam ze swojego konta. Na jednym szkoleniu salon ma najwyżej 3&nbsp;miejsca. Odebranie dostępu pracownikowi anuluje jego zapisy na szkolenia bezpłatne. Zapisy na szkolenia płatne (opłacone w&nbsp;portalu albo z&nbsp;płatnością u&nbsp;organizatora) zostają: rezygnację albo odstąpienie składa tylko osoba, która kupiła, i&nbsp;zachowuje ona dostęp do swoich zamówień i&nbsp;faktur. Przy zapisach zespołu nie pokazujemy danych płatności ani faktur pracowników. <span class="mock-note">Założenie</span></p>
         </div>
       </div>
     </section>
@@ -1384,7 +1446,7 @@
             <li><strong>Moderacja przed publikacją</strong><p>Aura Expert sprawdza treść: temat związany z&nbsp;branżą beauty, brak obietnic uprawnień zawodowych, brak linków i&nbsp;numerów telefonów w&nbsp;opisie.</p></li>
             <li><strong>Katalog tylko przy aktywnym planie</strong><p>Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy do końca planu. Potem znikają z&nbsp;katalogu, a&nbsp;zapisani zachowują miejsca.</p></li>
             <li><strong>Minimum danych uczestników</strong><p>Widzisz imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status&nbsp;– tylko na swoich szkoleniach. Dane służą do przeprowadzenia szkolenia i&nbsp;wystawienia faktury.</p></li>
-            <li><strong>Sprzedajesz Ty, płatność u&nbsp;operatora</strong><p>Przy szkoleniu płatnym jesteś sprzedawcą: uczestnik płaci u&nbsp;operatora płatności na Twoje konto, a&nbsp;fakturę wystawiasz sam. Prowizja BeautyPolisa w&nbsp;promocji: 0%. <a class="link-quiet" href="#wyplaty">Sprzedaż i&nbsp;wypłaty</a></p></li>
+            <li><strong>Sprzedajesz Ty, płatność u&nbsp;operatora</strong><p>Przy szkoleniu płatnym jesteś sprzedawcą: uczestnik płaci u&nbsp;operatora płatności na Twoje konto (<span class="mock-note">do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span>), a&nbsp;fakturę wystawiasz sam. Prowizja BeautyPolisa w&nbsp;promocji: 0%. <a class="link-quiet" href="#wyplaty">Sprzedaż i&nbsp;wypłaty</a></p></li>
           </ol>
         </section>
       </div>
@@ -1476,10 +1538,11 @@
               <div><dt>Miasto</dt><dd>Kraków</dd></div>
               <div><dt>Weryfikacja</dt><dd><time datetime="2026-10-20">20&nbsp;października 2026&nbsp;r.</time> (przykład)</dd></div>
               <div><dt>Umowa organizatora</dt><dd>wersja 1.0 (przykład)</dd></div>
-              <div><dt>Dane sprzedawcy</dt><dd>Salon Przykładowy (przykład), NIP 000-000-00-00, adres i&nbsp;kontakt z&nbsp;weryfikacji&nbsp;– widoczne przy szkoleniach płatnych <span class="mock-note">DSA art.&nbsp;30</span></dd></div>
+              <div><dt>Dane sprzedawcy</dt><dd>Salon Przykładowy (przykład), NIP 000-000-00-00, rejestr&nbsp;– z&nbsp;weryfikacji; adres i&nbsp;kontakt&nbsp;– z&nbsp;Twoich warunków sprzedaży. Widoczne przy szkoleniach płatnych. <span class="mock-note">DSA art.&nbsp;30</span></dd></div>
+              <div><dt>Oświadczenie o&nbsp;zgodności oferty z&nbsp;prawem</dt><dd>złożone <time datetime="2026-11-13">13.11.2026</time> (przykład)&nbsp;– widoczne przy szkoleniach płatnych <span class="mock-note">DSA art.&nbsp;30 ust.&nbsp;1 lit.&nbsp;e</span></dd></div>
               <div><dt>Regulamin szkoleń</dt><dd>wersja 1.0 z&nbsp;<time datetime="2026-11-13">13.11.2026</time> (przykład)<br><span class="xsmall muted">rezygnacja, zwroty, reklamacje; nowa wersja przechodzi moderację, zamówienia zachowują swoją wersję</span></dd></div>
             </dl>
-            <p class="xsmall muted">Nazwę i&nbsp;dane firmy zmienia doradca Aura Expert&nbsp;– organizator nie wpisuje ich sam.</p>
+            <p class="xsmall muted">Nazwę firmy, NIP i&nbsp;rejestr zmienia doradca Aura Expert po weryfikacji. Adres, kontakt, regulamin i&nbsp;oświadczenie podajesz w&nbsp;warunkach sprzedaży&nbsp;– sprawdzamy je przed publikacją. Dane firmy przechowujemy do 6&nbsp;miesięcy po zakończeniu współpracy. <span class="mock-note">DSA art.&nbsp;30 ust.&nbsp;5&nbsp;– do weryfikacji prawnej</span></p>
           </section>
         </div>
       </div>
@@ -1496,7 +1559,7 @@
         <ol class="crumbs" aria-label="Ścieżka"><li><a href="#organizator">Moje szkolenia</a></li><li aria-current="page">Sprzedaż i&nbsp;wypłaty</li></ol>
         <p class="eyebrow">Organizator szkoleń</p>
         <h1 id="t-wyp">Sprzedaż <em>i&nbsp;wypłaty</em></h1>
-        <p class="lead">Przy szkoleniach płatnych jesteś sprzedawcą. Uczestnicy płacą u&nbsp;operatora płatności, a&nbsp;pieniądze trafiają na Twoje konto u&nbsp;operatora&nbsp;– BeautyPolisa ich nie przyjmuje ani nie przekazuje.</p>
+        <p class="lead">Przy szkoleniach płatnych jesteś sprzedawcą. Uczestnicy płacą u&nbsp;operatora płatności, a&nbsp;pieniądze trafiają na Twoje konto u&nbsp;operatora&nbsp;– BeautyPolisa ich nie przyjmuje ani nie przekazuje. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></p>
         <div class="badges"><span class="badge badge--ok">Konto u&nbsp;operatora: aktywne</span><span class="badge badge--role">Prowizja BeautyPolisa: 0% (promocja)</span></div>
       </header>
 
@@ -1557,8 +1620,9 @@
           </div>
           <p class="premium"><strong>0%</strong><span>od sprzedaży szkoleń w&nbsp;okresie promocji</span></p>
           <ul class="plan-facts">
-            <li>Cała kwota zamówienia trafia na Twoje konto u&nbsp;operatora; opłaty operatora za transakcje&nbsp;– według Twojej umowy z&nbsp;operatorem. <span class="mock-note">Do ustalenia przy wyborze operatora</span></li>
-            <li>Po promocji prowizja może się pojawić&nbsp;– zapowiemy ją z&nbsp;wyprzedzeniem; nie obejmie zamówień już opłaconych. <span class="mock-note">Q16</span></li>
+            <li>Cała kwota zamówienia trafia na Twoje konto u&nbsp;operatora; opłaty operatora za transakcje&nbsp;– według Twojej umowy z&nbsp;operatorem. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></li>
+            <li>Koniec promocji: data do ustalenia. Zmianę prowizji ogłosimy <span class="nowrap">e-mailem</span> co najmniej 15&nbsp;dni wcześniej; nie obejmie zamówień już złożonych. <span class="mock-note">P2B art.&nbsp;3&nbsp;– Q16, Q33</span></li>
+            <li>Jeśli zdejmiemy szkolenie albo wstrzymamy sprzedaż, podamy Ci powód. <span class="mock-note">P2B art.&nbsp;4</span></li>
             <li>Plan organizatora rozliczasz z&nbsp;Aura Expert osobno, fakturą poza portalem.</li>
             <li>Fakturę za szkolenie wystawiasz Ty&nbsp;– dokumenty księgowe przechowujesz według swoich obowiązków.</li>
           </ul>
@@ -1611,6 +1675,7 @@
                           <label for="zw-pw-1">Powód</label>
                           <select id="zw-pw-1" name="powod">
                             <option>Rezygnacja według regulaminu</option>
+                            <option>Odstąpienie od umowy (konsument)&nbsp;– pełna kwota</option>
                             <option>Reklamacja</option>
                             <option>Inny powód</option>
                           </select>
@@ -1641,6 +1706,7 @@
                         <label for="zw-pw-2">Powód</label>
                         <select id="zw-pw-2" name="powod">
                           <option>Rezygnacja według regulaminu</option>
+                          <option>Odstąpienie od umowy (konsument)&nbsp;– pełna kwota</option>
                           <option>Reklamacja</option>
                           <option>Inny powód</option>
                         </select>
@@ -1649,6 +1715,22 @@
                       <p class="small" role="status" hidden></p>
                     </form>
                   </details>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" data-label="Zamówienie">BP-SZK-2026-000143<br><span class="muted small">opłacone <time datetime="2026-11-10">10.11.2026</time></span></th>
+                <td data-label="Uczestnik i faktura"><div><strong>Ewa Przykładowa</strong><br><span class="small">osoba prywatna, Kraków (przykład)</span></div></td>
+                <td data-label="Kwota" class="money">390,00&nbsp;zł</td>
+                <td data-label="Status"><div><span class="badge badge--warn" data-status>Odstąpienie od umowy</span><br><span class="muted small">oświadczenie doręczone <time datetime="2026-11-11">11.11.2026</time>; zwrot całej kwoty do <time datetime="2026-11-25">25.11.2026</time></span></div></td>
+                <td class="cell-actions">
+                  <form class="js-refund" action="#wyplaty" method="post" novalidate data-max="390.00">
+                    <input type="hidden" id="zw-kw-3" name="kwota" value="390,00">
+                    <p class="field-error" id="zw-kw-3-err" hidden></p>
+                    <input type="hidden" name="powod" value="odstapienie">
+                    <button class="btn btn-danger btn-sm" type="submit">Zwróć 390,00&nbsp;zł<span class="sr-only">: BP-SZK-2026-000143</span></button>
+                    <p class="small" role="status" hidden></p>
+                  </form>
+                  <p class="xsmall muted">Odstąpienia nie można odmówić. Po 10&nbsp;dniach bez zwrotu sprawa trafia do zespołu Aura Expert. <span class="mock-note">Q31</span></p>
                 </td>
               </tr>
               <tr>
@@ -1942,10 +2024,10 @@
         <li><strong>Założenie <span class="nowrap">Z-6</span>:</strong> katalog jest publiczny, zapis tylko z&nbsp;konta salonu (gość widzi „Zaloguj się, aby się zapisać”). Czy katalog ma być publiczny&nbsp;– pytanie Q10.</li>
         <li><strong>Decyzja <span class="nowrap">D-D</span>:</strong> szkolenia dodają salony i&nbsp;firmy szkoleniowe. Organizator nie potrzebuje polisy; konto dostaje z&nbsp;zaproszenia po weryfikacji przez Aura Expert (<strong>Założenie Z-16</strong>). Salon-organizator ma osobny profil i&nbsp;przełącza się w&nbsp;menu konta&nbsp;– ten sam widok ma firma szkoleniowa, np. „Organizator przykładowy”.</li>
         <li>RODO: organizator jest administratorem danych uczestników swoich szkoleń; rola Aura Expert (odrębny administrator albo podmiot przetwarzający)&nbsp;– do decyzji prawnika i&nbsp;IOD (Q1). Organizator widzi tylko imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status, nazwę salonu tylko przy szkoleniu płatnym; dane usuwane 30&nbsp;dni po szkoleniu (<strong>Założenie Z-17</strong>).</li>
-        <li><strong>Decyzja zleceniodawcy 13.11.2026 (szkolenia płatne):</strong> płatność z&nbsp;poziomu panelu; sprzedawcą jest organizator; BeautyPolisa bez prowizji w&nbsp;okresie promocji (prowizja to parametr&nbsp;– później możliwa, Q16). Model: marketplace z&nbsp;płatnościami dzielonymi u&nbsp;licencjonowanego operatora (np. Przelewy24, PayU, Tpay albo Stripe Connect&nbsp;– <strong>operator nie jest wybrany</strong>): pieniądze płyną od uczestnika na konto organizatora u&nbsp;operatora, Aura Expert nie przyjmuje ani nie przekazuje cudzych środków, weryfikację KYC/KYB organizatora prowadzi operator. Kwalifikację prawną (usługi płatnicze, zezwolenie KNF) potwierdza prawnik.</li>
-        <li><strong>Ekrany płatności:</strong> karta szkolenia płatnego z&nbsp;danymi sprzedawcy (<code>#szkolenie-platne</code>; DSA art.&nbsp;30&nbsp;– dane z&nbsp;weryfikacji organizatora, 12.1), zamówienie (<code>#zamowienie</code>: dane uczestnika i&nbsp;faktury, zgody, rezerwacja 15&nbsp;min, metoda u&nbsp;operatora; stany <code>#zam-w-toku</code>, <code>#zam-oplacone</code>, <code>#zam-nieudane</code>, <code>#zam-wygasla</code>), zakładka „Zamówienia i&nbsp;faktury” w&nbsp;„Moich szkoleniach” (to są „Moje zapisy”), „Sprzedaż i&nbsp;wypłaty” organizatora (<code>#wyplaty</code>: konto u&nbsp;operatora&nbsp;– niepodłączone, weryfikacja, aktywne, wstrzymane; zamówienia, faktura, zwrot) i&nbsp;odwołanie szkolenia płatnego z&nbsp;pełnymi zwrotami w&nbsp;„Moich szkoleniach” organizatora. <strong>Płatność w&nbsp;makiecie to symulacja</strong>&nbsp;– w&nbsp;produkcji ekran operatora.</li>
+        <li><strong>Decyzja zleceniodawcy 13.11.2026 (szkolenia płatne):</strong> płatność z&nbsp;poziomu panelu; sprzedawcą jest organizator; BeautyPolisa bez prowizji w&nbsp;okresie promocji (prowizja to parametr&nbsp;– później możliwa, Q16). Model: marketplace z&nbsp;płatnościami dzielonymi u&nbsp;licencjonowanego operatora (np. Przelewy24, PayU, Tpay albo Stripe Connect&nbsp;– <strong>operator nie jest wybrany</strong>): pieniądze płyną od uczestnika na konto organizatora u&nbsp;operatora, Aura Expert nie przyjmuje ani nie przekazuje cudzych środków, weryfikację KYC/KYB organizatora prowadzi operator. Kwalifikację prawną (usługi płatnicze, zezwolenie KNF) potwierdza prawnik&nbsp;– dlatego zdania „pieniądze trafiają do organizatora, BeautyPolisa ich nie przyjmuje” mają w&nbsp;makiecie dopisek „do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej” (organizator jako odbiorca i&nbsp;akceptant z&nbsp;własną umową z&nbsp;operatorem; Q30).</li>
+        <li><strong>Ekrany płatności:</strong> karta szkolenia płatnego z&nbsp;danymi sprzedawcy (<code>#szkolenie-platne</code>; DSA art.&nbsp;30&nbsp;– dane z&nbsp;weryfikacji organizatora, 12.1), zamówienie (<code>#zamowienie</code>: „Kupuję jako” osoba prywatna albo w&nbsp;imieniu firmy&nbsp;– bez wartości domyślnej, z&nbsp;oświadczeniem o&nbsp;umocowaniu; regulamin organizatora, informacja o&nbsp;sprzedawcy bez pola wyboru, trzy podmioty przetwarzające dane; rezerwacja 15&nbsp;min bez przedłużania, metoda u&nbsp;operatora; stany <code>#zam-w-toku</code>, <code>#zam-oplacone</code>, <code>#zam-nieudane</code>, <code>#zam-wygasla</code>), zakładka „Zamówienia i&nbsp;faktury” w&nbsp;„Moich szkoleniach” (to są „Moje zapisy”; osobno „Odstępuję od umowy” dla konsumenta i&nbsp;„Poproś o&nbsp;rezygnację”), „Sprzedaż i&nbsp;wypłaty” organizatora (<code>#wyplaty</code>: konto u&nbsp;operatora&nbsp;– niepodłączone, weryfikacja, aktywne, wstrzymane; zamówienia, faktura, zwrot) i&nbsp;odwołanie szkolenia płatnego z&nbsp;pełnymi zwrotami w&nbsp;„Moich szkoleniach” organizatora. <strong>Płatność w&nbsp;makiecie to symulacja</strong>&nbsp;– w&nbsp;produkcji ekran operatora.</li>
         <li><strong>Bezpieczeństwo (produkcja):</strong> kwota i&nbsp;waluta wyłącznie z&nbsp;bazy, nigdy z&nbsp;przeglądarki; klucz idempotencji zamówienia; status zmienia tylko webhook po weryfikacji podpisu oraz zgodności zamówienia, kwoty i&nbsp;waluty (powrót przeglądarki pokazuje najwyżej „w&nbsp;toku”); odporność na powtórzenia i&nbsp;kolejność zdarzeń; rezerwacja miejsca atomowo, bez nadsprzedaży; bez danych kart i&nbsp;kodów BLIK w&nbsp;portalu (PCI DSS SAQ A); sekrety operatora w&nbsp;Workers secrets; RLS: uczestnik&nbsp;– swoje zamówienia, organizator&nbsp;– zamówienia swoich szkoleń bez e-maila i&nbsp;danych płatności, personel&nbsp;– odczyt i&nbsp;dziennik; każda zmiana statusu, faktura i&nbsp;zwrot w&nbsp;dzienniku; limity zamówień i&nbsp;zwrotów.</li>
-        <li><strong>Do weryfikacji prawnej:</strong> prawo odstąpienia (14&nbsp;dni i&nbsp;wyjątek dla usług z&nbsp;oznaczonym terminem), informacje przed zawarciem umowy i&nbsp;brzmienie przycisku zamówienia, rola Aura Expert wobec danych (Q1), okres przechowywania danych zamówień w&nbsp;portalu (faktury przechowuje organizator według swoich obowiązków księgowych). Rezerwacja 15&nbsp;min z&nbsp;przedłużaniem do 60&nbsp;min łącznie&nbsp;– do sprawdzenia w&nbsp;audycie WCAG 2.2.1. Lista rezerwowa przy szkoleniu płatnym (link do płatności ważny 24&nbsp;h) i&nbsp;utrzymanie miejsca do odpowiedzi operatora (30&nbsp;min)&nbsp;– <strong>Założenia</strong>. Specyfikacja 11 §12.2 i&nbsp;§12.4 nadal opisuje brak płatności online&nbsp;– do aktualizacji osobno.</li>
+        <li><strong>Do weryfikacji prawnej:</strong> prawo odstąpienia (14&nbsp;dni i&nbsp;wyjątek dla usług z&nbsp;oznaczonym terminem), informacje przed zawarciem umowy i&nbsp;brzmienie przycisku zamówienia, rola Aura Expert wobec danych (Q1), okres przechowywania danych zamówień w&nbsp;portalu (faktury przechowuje organizator według swoich obowiązków księgowych). Rezerwacja 15&nbsp;min bez przedłużania (Z-43; dane zostają w&nbsp;formularzu, więc można zarezerwować ponownie)&nbsp;– do sprawdzenia w&nbsp;audycie WCAG 2.2.1. Płatność po końcu rezerwacji: zapis przy wolnym miejscu, inaczej pełny zwrot. Szkolenia płatne w&nbsp;portalu bez listy rezerwowej (Q34). Szkolenie płatne z&nbsp;płatnością u&nbsp;organizatora: „Zapisuję się z&nbsp;obowiązkiem zapłaty” albo niewiążąca rezerwacja (Q31). Zmiana prowizji: powiadomienie co najmniej 15&nbsp;dni wcześniej (P2B). Specyfikacja 11 §12.2 i&nbsp;§12.4 nadal opisuje brak płatności online&nbsp;– do aktualizacji osobno.</li>
         <li><strong>Założenia <span class="nowrap">Z-5</span> i&nbsp;<span class="nowrap">Z-11</span>:</strong> szkolenie płatne pokazuje cenę brutto, fakturę wystawia organizator (sprzedawca); założenie „bez płatności online w&nbsp;MVP” zastąpiła decyzja z&nbsp;13.11.2026; limit 3&nbsp;miejsc na salon. Ceny, numery zamówień, NIP-y i&nbsp;tematy są przykładowe.</li>
         <li>Filtr „Temat” to zamknięta lista kategorii (<strong>Założenie</strong>)&nbsp;– wymaga kolumny <code>topic</code> w&nbsp;tabeli <code>trainings</code> (do dopisania w&nbsp;11 §7.1 i&nbsp;<code>strefa-klienta.sql</code>). Kolejność wyników wyłącznie według terminu.</li>
         <li>Makieta ma jedną stronę szkolenia („Higiena i&nbsp;bezpieczeństwo zabiegów (przykład)”); „Pierwsza pomoc w&nbsp;salonie beauty (przykład)” prowadzi do wariantu z&nbsp;listą rezerwową.</li>
@@ -1962,6 +2044,7 @@
     <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html">Tax Protect</a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a></nav>
     <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
     <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
+    <p>Przy zamówieniu szkolenia płatnego dane kupującego przetwarzają także organizator szkolenia (sprzedawca) i&nbsp;operator płatności&nbsp;– role i&nbsp;okresy przechowywania pokazujemy w&nbsp;kroku zamówienia. <span class="mock-note">Q1&nbsp;– do weryfikacji IOD</span></p>
     <!-- L1 (12–13.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy („XII Wydział” – prawidłowo; strona
          ergo.beautypolisa.eu/informacja-o-agencie podaje „XIII” – błąd po tamtej stronie, uwaga dla zleceniodawcy).
          Informacje o agencie (art. 22 ustawy o dystrybucji ubezpieczeń) – źródło: ujawnienie Aura Expert. Blok details.legal-idd
@@ -2132,6 +2215,7 @@
       var scope = b.closest('.reg-step') || b.closest('.card');
       var live = scope.querySelector('.js-live');
       b.hidden = true;
+      if (item) { all('.js-cancel', item).forEach(function (x) { x.hidden = true; }); all('details[open]', item).forEach(function (d) { d.open = false; }); }
       if (live) { live.querySelector('p').textContent = b.getAttribute('data-msg'); live.hidden = false; live.focus(); }
     });
   });
@@ -2236,15 +2320,15 @@
   document.getElementById('d-szkic').addEventListener('click', function () { document.getElementById('d-szkic-ok').hidden = false; });
 
   /* ---------- szkolenie płatne: zamówienie, rezerwacja 15 min, symulacja operatora (makieta) ----------
-     Produkcja: rezerwację tworzy i przedłuża serwer (blokada wiersza szkolenia, bez nadsprzedaży), kwotę bierze z bazy,
-     status zmienia wyłącznie podpisany webhook operatora; ten licznik tylko pokazuje czas z odpowiedzi serwera. */
+     Produkcja: rezerwację tworzy serwer (blokada wiersza szkolenia, bez nadsprzedaży; 15 min, parametr 10–30, bez przedłużania – Z-43),
+     kwotę bierze z bazy, status zmienia wyłącznie podpisany webhook operatora; ten licznik tylko pokazuje czas z odpowiedzi serwera. */
   var paySteps = all('.pay-step');
   var payStepper = all('#zam-stepper li');
   var holdLeft = all('.js-hold-left');
   var holdLive = document.getElementById('hold-live');
-  var extendBtn = document.querySelector('.js-extend');
+  var holdUntil = all('.js-hold-until');
   var sim = document.getElementById('sim-operator');
-  var HOLD = 15 * 60 * 1000, HOLD_MAX = 60 * 60 * 1000;
+  var HOLD = 15 * 60 * 1000;
   var holdStart = 0, holdEnd = 0, holdTick = null, holdSaid = {};
   function mmss(ms) { var t = Math.ceil(ms / 1000), m = Math.floor(t / 60), r = t % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
   function holdStop() { clearInterval(holdTick); holdTick = null; holdStart = 0; holdEnd = 0; holdSaid = {}; }
@@ -2252,13 +2336,15 @@
     var left = Math.max(0, holdEnd - Date.now());
     holdLeft.forEach(function (x) { x.textContent = mmss(left); });
     [5, 1].forEach(function (min) {
-      if (left <= min * 60000 && !holdSaid[min]) { holdSaid[min] = true; holdLive.textContent = 'Rezerwacja miejsca wygaśnie za ' + min + NB + (min === 1 ? 'minutę' : 'minut') + '. Możesz ją przedłużyć.'; }
+      if (left <= min * 60000 && !holdSaid[min]) { holdSaid[min] = true; holdLive.textContent = 'Rezerwacja miejsca wygaśnie za ' + min + NB + (min === 1 ? 'minutę' : 'minut') + '.'; }
     });
     if (left === 0) { holdStop(); location.hash = 'zam-wygasla'; }
   }
   function holdBegin() {
     holdStart = Date.now(); holdEnd = holdStart + HOLD; holdSaid = { 5: false, 1: false };
-    extendBtn.removeAttribute('aria-disabled'); holdUpdate(); holdTick = setInterval(holdUpdate, 1000);
+    var end = new Date(holdEnd), hm = end.getHours() + ':' + (end.getMinutes() < 10 ? '0' : '') + end.getMinutes();
+    holdUntil.forEach(function (x) { x.textContent = hm; });
+    holdUpdate(); holdTick = setInterval(holdUpdate, 1000);
   }
   function showPay(state) {
     paySteps.forEach(function (s) { s.classList.toggle('is-on', s.getAttribute('data-pay') === state); });
@@ -2272,24 +2358,17 @@
     if (state === 'platnosc') { sim.hidden = true; }
   }
   sim.hidden = true;
-  extendBtn.addEventListener('click', function () {
-    if (!holdEnd) { return; }
-    if (extendBtn.getAttribute('aria-disabled') === 'true') { holdLive.textContent = 'Rezerwacji nie można już przedłużyć' + NB + '– to najdłuższy możliwy czas (60' + NB + 'minut).'; return; }
-    holdEnd = Math.min(holdEnd + HOLD, holdStart + HOLD_MAX); holdSaid = { 5: false, 1: false }; holdUpdate();
-    var capped = holdEnd >= holdStart + HOLD_MAX;
-    if (capped) { extendBtn.setAttribute('aria-disabled', 'true'); }
-    holdLive.textContent = 'Rezerwację przedłużono. Zostało ' + mmss(holdEnd - Date.now()) + NB + 'min.' + (capped ? ' To najdłuższy możliwy czas rezerwacji.' : '');
-  });
 
   var fz = document.getElementById('zam-dane');
+  /* „Kupuję jako” bez wartości domyślnej: dopóki kupujący nie wybierze, nie pokazujemy pól firmy ani osoby */
   function syncFv() {
-    var mode = document.getElementById('fv-firma').checked ? 'firma' : 'osoba';
+    var mode = document.getElementById('kup-firma').checked ? 'firma' : (document.getElementById('kup-osoba').checked ? 'osoba' : '');
     all('.fv-group', fz).forEach(function (g) {
       var on = g.getAttribute('data-fv') === mode;
       g.hidden = !on; all('input', g).forEach(function (i) { i.disabled = !on; });
     });
   }
-  all('input[name="faktura"]', fz).forEach(function (r) { r.addEventListener('change', syncFv); });
+  all('input[name="kupujacy"]', fz).forEach(function (r) { r.addEventListener('change', syncFv); });
   syncFv();
   function nipOk(v) {
     var d = v.replace(/[\s-]/g, '');
@@ -2301,24 +2380,29 @@
   fz.addEventListener('submit', function (e) {
     e.preventDefault();
     var byId = function (id) { return document.getElementById(id); };
-    var bad = [], firma = byId('fv-firma').checked;
+    var bad = [], firma = byId('kup-firma').checked, osoba = byId('kup-osoba').checked;
     function need(id, msg) { var i = byId(id); if (!setErr(i, id + '-err', i.value.trim() ? '' : msg)) { bad.push(i); } }
+    if (!setErr(byId('kup-osoba'), 'kup-err', firma || osoba ? '' : 'Wybierz, czy kupujesz jako osoba prywatna, czy w' + NB + 'imieniu firmy.')) { bad.push(byId('kup-osoba')); }
     if (firma) {
+      var jdg = byId('kup-jdg'), sp = byId('kup-spolka');
+      if (!setErr(jdg, 'kup-rodzaj-err', jdg.checked || sp.checked ? '' : 'Wybierz rodzaj firmy.')) { bad.push(jdg); }
       need('fv-nazwa', 'Wpisz nazwę firmy.');
       var nip = byId('fv-nip');
       if (!setErr(nip, 'fv-nip-err', nipOk(nip.value) ? '' : 'Wpisz poprawny NIP: 10' + NB + 'cyfr, bez liter.')) { bad.push(nip); }
-    } else { need('fv-imie', 'Wpisz imię i' + NB + 'nazwisko.'); }
+      var um = byId('zg-umoc');
+      if (!setErr(um, 'zg-umoc-err', um.checked ? '' : 'Potwierdź, że możesz zawrzeć umowę w' + NB + 'imieniu firmy.')) { bad.push(um); }
+    } else if (osoba) { need('fv-imie', 'Wpisz imię i' + NB + 'nazwisko.'); }
     need('fv-ulica', 'Wpisz ulicę i' + NB + 'numer.');
     var kod = byId('fv-kod');
     if (!setErr(kod, 'fv-kod-err', /^\d{2}-\d{3}$/.test(kod.value.trim()) ? '' : 'Wpisz kod pocztowy w' + NB + 'formacie 00-000.')) { bad.push(kod); }
     need('fv-miasto', 'Wpisz miejscowość.');
-    [['zg-reg', 'Zaakceptuj regulamin organizatora, żeby złożyć zamówienie.'], ['zg-sprz', 'Potwierdź, że wiesz, kto jest sprzedawcą.']].forEach(function (z) {
+    [['zg-reg', 'Zaakceptuj regulamin organizatora, żeby złożyć zamówienie.']].forEach(function (z) {
       var c = byId(z[0]); if (!setErr(c, z[0] + '-err', c.checked ? '' : z[1])) { bad.push(c); }
     });
     var box = byId('zam-err');
     if (bad.length) { box.hidden = false; bad[0].focus(); return; }
     box.hidden = true;
-    byId('sum-fv').textContent = firma ? 'firmę: ' + byId('fv-nazwa').value.trim() + ', NIP ' + byId('fv-nip').value.replace(/[\s-]/g, '') : 'osobę prywatną: ' + byId('fv-imie').value.trim();
+    byId('sum-fv').textContent = firma ? 'w' + NB + 'imieniu firmy (' + (byId('kup-jdg').checked ? 'jednoosobowa działalność' : 'spółka lub inna firma') + '): ' + byId('fv-nazwa').value.trim() + ', NIP ' + byId('fv-nip').value.replace(/[\s-]/g, '') : 'osoba prywatna: ' + byId('fv-imie').value.trim();
     location.hash = 'zam-platnosc';
   });
 

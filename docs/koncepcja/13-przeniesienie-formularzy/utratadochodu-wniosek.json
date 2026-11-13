@@ -26,7 +26,20 @@
       "kroki[].opis_rodo nie jest martwym kodem: KROKI[].opis zasila listę kategorii danych w klauzuli informacyjnej (ud/apps/portal/src/pages/klauzula-informacyjna/index.astro:104-108).",
       "wysylka.szkic.tabela: schemat z migracji zamiast opisu z zadania.",
       "wysylka.szkic.akcje[wycofaj]: odpowiedź HTTP 2xx z {status:'success'}.",
-      "Raport .md §5: usunięto fragment identyfikatora projektu Supabase."
+      "Raport .md §5: usunięto fragment identyfikatora projektu Supabase.",
+      "backend.wniosek_szkic.linie: numery linii wniosek-szkic/index.ts poprawione (były przesunięte o 40).",
+      "leady_panel.opiekun: nieznany kod przechodzi do autora oferty; bez opiekuna tylko konto nieaktywne.",
+      "leady_panel.etap_wylaczony: źródło kanban_3_sprzedaz.sql:56.",
+      "zgody.klauzula_informacyjna.akceptacja: ud/CLAUDE.md:1245-1248; dopisane sprzeczności polityki prywatności i komentarza wniosek-szkic.",
+      "backend.emaile_po_wniosku.klient.naglowek: tekst dosłowny (wersaliki to CSS); uwaga o logach."
+    ],
+    "poprawki_2026_11_13_runda_2": [
+      "dokumenty.logika_zawsze_obowiazujace: owu-adresy.json.ts:18-29 (było 60-75; plik ma 36 linii).",
+      "backend.form_submit.mapowanie_nazwy_pol: med_* czytane najpierw w snake_case; część pól ma jedną nazwę.",
+      "zgody.klauzula_informacyjna.sprzecznosci_z_kodem: statystyka — niespójność wewnątrz polityki prywatności (l. 45 vs l. 54), nie z klauzulą.",
+      "leady_panel.opiekun: dopisany rozjazd z ud/CLAUDE.md:1678-1679.",
+      "zgody.regulamin i backend.contact_submit: nowe sekcje.",
+      "braki_U_po_analizie_repo.U5: uzupełnione."
     ]
   },
   "kroki": [
@@ -1519,7 +1532,7 @@
       "url": "https://utratadochodu.pl/klauzula-informacyjna/",
       "plik": "ud/apps/portal/src/pages/klauzula-informacyjna/index.astro",
       "zaktualizowano": "2026-10-01",
-      "akceptacja": "według ud/CLAUDE.md:1253-1256 zaakceptowana przez prawnika razem z polityką prywatności",
+      "akceptacja": "według ud/CLAUDE.md:1245-1248 zaakceptowana przez prawnika razem z polityką prywatności (01.10.2026)",
       "administrator": "Aura Expert spółka z ograniczoną odpowiedzialnością (dane z ud/apps/portal/src/lib/firma.ts)",
       "cele": [
         "Przygotowanie oferty i obsługa wniosku — art. 6 ust. 1 lit. b",
@@ -1540,13 +1553,31 @@
       "sprzecznosci_z_kodem": [
         "zgoda art. 9 opisana jako zaznaczana w ostatnim kroku — w kreatorze jej nie ma (Wniosek.svelte:740-764)",
         "kontakt marketingowy 'gdy zaznaczysz odpowiednie pole' — pola brak",
-        "kategorie danych z KROKI[].opis: 'wysokość dochodu', 'okres wypłaty świadczenia' — formularz ich nie zbiera"
+        "kategorie danych z KROKI[].opis: 'wysokość dochodu', 'okres wypłaty świadczenia' — formularz ich nie zbiera",
+        "polityka prywatności (ud/apps/portal/src/pages/polityka-prywatnosci/index.astro:56): 'Dane dotyczące zdrowia — art. 9 ust. 2 lit. a RODO (wyraźna zgoda udzielona przed złożeniem wniosku).' — zgody brak",
+        "komentarz ud/supabase/functions/wniosek-szkic/index.ts:15-19 i ud/PLAN-NIEDOKONCZONE-WNIOSKI.md:199-200 zakładają zgodę art. 9 w ostatnim kroku — niewdrożony element projektu",
+        "niespójność wewnątrz polityki prywatności: 'Statystyka kroków wniosku, bez danych osobowych (numer kroku i data)' (polityka-prywatnosci/index.astro:54) vs 'Dane techniczne' z tej samej polityki: 'Przy zakładaniu szkicu wniosku przechowujemy przez dobę wyłącznie skrót adresu IP, żeby ograniczyć nadużycia.' (l. 45); cel 'Statystyka porzuconych wniosków' w klauzuli (klauzula-informacyjna/index.astro:93-101) jest spójny",
+        "polityka prywatności: 'Marketing własny — art. 6 ust. 1 lit. f RODO (prawnie uzasadniony interes) albo zgoda' (l. 52) — jedyna podstawa dla GetResponse; e-mail marketingowy wymaga zgody (art. 398 PKE, por. PLAN l. 188-191)"
       ]
     },
     "wycofanie": {
       "kontakt": "link z e-maila /wycofaj-zgode/#id&sig (POST akcja wycofaj), one-click List-Unsubscribe-Post, e-mail lub telefon",
       "art9": "brak mechanizmu (zgoda nie jest zbierana)",
       "cookies": "UDCookies.otworz()"
+    },
+    "regulamin": {
+      "plik": "ud/apps/portal/src/pages/regulamin/index.astro",
+      "tytul": "Regulamin świadczenia usług drogą elektroniczną",
+      "zaktualizowano": "2026-08-27 (l. 15)",
+      "o_wniosku": [
+        "Strona umożliwia zapoznanie się z ofertą ubezpieczeń utraty dochodu oraz przesłanie wniosku o przygotowanie indywidualnej oferty. (§ 1 ust. 2, l. 27-30)",
+        "Kalkulator składki dostępny na stronie ma charakter wyłącznie poglądowy i edukacyjny. Wyniki symulacji nie stanowią oferty w rozumieniu przepisów Kodeksu cywilnego. (§ 2, l. 41-45)",
+        "Ostateczna wysokość składki ubezpieczeniowej zależy od indywidualnej oceny ryzyka (underwritingu) dokonywanej przez towarzystwo ubezpieczeniowe na podstawie pełnego wniosku. (§ 2, l. 46-50)",
+        "Złożenie wniosku przez formularz nie jest równoznaczne z zawarciem umowy ubezpieczenia ani ze złożeniem oferty jej zawarcia przez ubezpieczyciela. (§ 2, l. 51-54)"
+      ],
+      "czego_nie_ma": "zgód, danych osobowych, terminów obsługi wniosku; poza tym wymagania techniczne, wyłączenie odpowiedzialności, reklamacje 14 dni (adres reklamacyjny poza dokumentem), zmiany regulaminu",
+      "dla_portalu": "własny regulamin portalu; potwierdzenie w kroku 5 linkuje do niego, nie do /regulamin/ UD",
+      "polityka_cookies": "ud/apps/portal/src/pages/polityka-cookies/index.astro (zaktualizowano 2026-08-27, l. 34) — nie analizowano szczegółowo; portal ma własny baner i politykę"
     }
   },
   "wysylka": {
@@ -1983,6 +2014,7 @@
         }
       ],
       "tabela": "ud_clients (pełne DDL poza repozytorium; atrapa: ud/supabase/tests/stub.sql:39-58)",
+      "mapowanie_nazwy_pol": "część pól ma dwie nazwy (body.a ?? body.b), zwykle camelCase przed snake_case (np. body.fullName ?? body.full_name, l. 192); med_* odwrotnie (body.med_heart ?? body.medHeart, l. 221-227); jedną nazwę mają email, phone, profession, source, weight, height, handedness, emp_*, smoker i 15 sportowych risk_* (ud/supabase/functions/form-submit/index.ts:190-277)",
       "mapowanie": {
         "fullName": "full_name",
         "email": "email",
@@ -2145,8 +2177,27 @@
         "cron": "wnioski-szkice-retencja '20 2 * * *' (UTC)",
         "ip_hash": "null po 1 dniu",
         "szkic": "usuwany po 30 dniach od updated_at, liczby do ud_lejek_wniosku_archiwum",
-        "kontakt": "czyszczony od razu przy ukoncz"
-      }
+        "kontakt": "czyszczony od razu przy ukoncz",
+        "uwaga": "przypomnienie ustawia updated_at, więc 30 dni liczy się od ostatniej aktywności lub wysyłki przypomnienia"
+      },
+      "linie": {
+        "cors": "35-38",
+        "mapa_ZGODY": "51-55",
+        "sprawdzKontakt": "86-95",
+        "parsujWejscie": "97-113",
+        "tylko_POST": "115-119",
+        "akcja_i_id": "156-161",
+        "start": "169-222",
+        "limit_ip": "182-196",
+        "kontakt": "225-259",
+        "krok": "262-277",
+        "ukoncz": "280-284",
+        "wycofaj": "286-303",
+        "wyjatek": "304-309",
+        "uwaga": "numery dla ud @ 793a158; poprawione 13.11 (wcześniej przesunięte o 40)"
+      },
+      "art9_w_komentarzu": "komentarz l. 15-19: 'zgoda z art. 9 RODO pada dopiero w ostatnim kroku' — w kreatorze jej nie ma",
+      "plan": "ud/PLAN-NIEDOKONCZONE-WNIOSKI.md (uzasadnienie prawne l. 186-200, decyzje właściciela 01.10.2026)"
     },
     "wniosek_przypomnienie": {
       "plik": "ud/supabase/functions/wniosek-przypomnienie/index.ts",
@@ -2219,7 +2270,7 @@
         "tytul_html": "Wniosek przyjęty",
         "naglowek": [
           "utratadochodu.pl",
-          "Aura Expert Sp. z o.o."
+          "Aura Expert Sp. z o.o. (wersaliki tylko przez CSS text-transform, l. 178-179)"
         ],
         "tresc": [
           "Cześć {pierwszy wyraz full_name},",
@@ -2239,7 +2290,8 @@
         "uwagi": [
           "imię wstawiane bez escapowania HTML",
           "termin 1–2 dni robocze vs '24 godzin roboczych' na /podziekowanie/",
-          "marka UD — wiersz z portalu w ud_clients wywoła ten sam e-mail"
+          "marka UD — wiersz z portalu w ud_clients wywoła ten sam e-mail",
+          "logi: adres odbiorcy w console.log (l. 290); rekord bez e-maila w całości w console.error (l. 262), czyli z PESEL-em i form_data"
         ]
       },
       "doradca_sms": {
@@ -2256,6 +2308,20 @@
       },
       "opiekun_agent": "brak e-maila; lead w panelu po synchronizacji",
       "apps_portal_public_email": "tylko obrazki newslettera i logo (ud/CLAUDE.md:2047-2062), brak szablonów transakcyjnych"
+    },
+    "contact_submit": {
+      "plik": "ud/supabase/functions/contact-submit/index.ts",
+      "tabela": "udochodu_contacts {name, email, phone, rodo_consent} (l. 103-107)",
+      "turnstile": "serwerowo; bez sekretu 503 + wpis w ud_errors (l. 74-81)",
+      "walidacje": "name/email/phone wymagane i przycięte, regex e-mail, min. 9 cyfr telefonu (l. 83-96)",
+      "rodo_consent": "zapisywane jako body.rodo_consent === true, serwer nie wymaga (l. 107)",
+      "cors": "*",
+      "deduplikacja_limit": "brak",
+      "skutki": "webhook INSERT -> send-confirmation-email, szablon isQuick (send-confirmation-email/index.ts:104-162, 257-258) + SMS 'UtrataDochodu: nowy kontakt. …' (l. 294-297); raport co 2 h (send-digest-email/index.ts:136-140)",
+      "uzycie": "szybki formularz starego serwisu statycznego (ud/app.js:171-197, ud/index.html:486; ud/CLAUDE.md:283-287). W portalu Astro SzybkiKontakt.svelte jest tylko na /pracuj-z-nami/ i wysyła do funkcji Pages /wspolpraca (e-mail, bez tabeli; pracuj-z-nami/index.astro:21, 135; apps/portal/functions/wspolpraca.js:1-9)",
+      "zgoda_komponentu_SzybkiKontakt": "Zgadzam się na kontakt telefoniczny i e-mailowy w sprawie oferty ubezpieczenia. Zapoznałem się z klauzulą informacyjną RODO. (SzybkiKontakt.svelte:122-127, required w przeglądarce)",
+      "tablica_leadow": "nie zasila (lead = wiersz ud_clients)",
+      "propozycja_dla_portalu": "nie przenosić jako osobnego formularza UD; jeden formularz 'oddzwonimy' portalu; kierunek leadów (udochodu_contacts z e-mailem marki UD vs CRM portalu) w W1/W4"
     }
   },
   "dokumenty": {
@@ -2266,7 +2332,7 @@
     "stary_adres": "/pobierz/<id> -> 301 /owu/<slug>.pdf",
     "logika_zawsze_obowiazujace": [
       "slug z tytułu, nie z symbolu — adres przeżywa nową wersję (ud/apps/portal/src/lib/owu.ts:14-45)",
-      "dwie aktywne wersje tego samego tytułu wywalają build (ud/apps/portal/src/pages/owu-adresy.json.ts:60-75)",
+      "dwie aktywne wersje tego samego tytułu wywalają build (ud/apps/portal/src/pages/owu-adresy.json.ts:18-29, throw w l. 21-28)",
       "active sprawdzane na żywo w ud_owu_library (active=is.true), cache public max-age=300 s-maxage=600",
       "oferty w panelu trzymają wskaźnik na konkretny plik; wersje wycofuje się przełącznikiem active, nie usuwaniem (ud/CLAUDE.md:1484-1525)",
       "dopasowanie po bazie symbolu (np. LW044) z filtrem bezInnychWersji — test ud/apps/panel/scripts/test-owu.mjs:28-82",
@@ -2411,7 +2477,7 @@
       "Wygrany (wymaga składki rocznej)",
       "Przegrany (wymaga powodu)"
     ],
-    "etap_wylaczony": "Kontakt (od 2026-10-02)",
+    "etap_wylaczony": "Kontakt (od 2026-10-02; aktywny=false w ud/supabase/migrations/20261002120000_leady_kanban_3_sprzedaz.sql:56)",
     "etap_startowy_z_ofert": {
       "bought": "Wygrany",
       "chosen": "Decyzja klienta",
@@ -2427,7 +2493,7 @@
       "bought",
       "rejected"
     ],
-    "opiekun": "referred_by -> ud_user_profiles.affiliate_code = affiliate_code_used (aktywny) -> autor oferty; inaczej bez opiekuna",
+    "opiekun": "coalesce(referred_by, profil z ud_user_profiles.affiliate_code = btrim(affiliate_code_used), autor oferty), potem filtr konto aktywne (ud/supabase/migrations/20261004200000_leady_kanban_5_prowizja_polisy.sql:494-505). Nieznany kod -> autor oferty; kod lub referred_by konta nieaktywnego -> brak opiekuna (czeka na administratora). Poprawka 13.11. Rozjazd intencji z kodem: ud/CLAUDE.md:1678-1679 zakłada, że nieznany kod też daje lead bez opiekuna; kod robi inaczej — do potwierdzenia u zleceniodawcy, które zachowanie jest zamierzone (istotne przy przekazywaniu affiliateCode z portalu).",
     "link_agenta": "https://utratadochodu.pl/wniosek/?agent=<kod>",
     "prowizja": "składka roczna × ud_user_profiles.prowizja_procent (migawka w ud_leady.prowizja_procent); opłata dystrybucyjna nie jest prowizją",
     "dostep": "RLS bez polityk, service_role; agent widzi tylko swoje leady",
@@ -2457,7 +2523,8 @@
     {
       "kod": "U5",
       "status": "częściowo",
-      "zostaje": "zgoda art. 9 nadal brak, a klauzula twierdzi, że jest; zgoda marketingowa; własne teksty portalu"
+      "zostaje": "zgoda art. 9 nadal brak, a klauzula twierdzi, że jest; zgoda marketingowa; własne teksty portalu; zgodę art. 9 zakładają też polityka prywatności (l. 56), komentarz wniosek-szkic (l. 15-19) i PLAN (l. 199-200) — niewdrożony element; niespójność wewnątrz polityki prywatności (l. 54 'bez danych osobowych' vs l. 45 skrót IP przez dobę); regulamin opisany (zgód nie dotyczy, portal potrzebuje własnego); szybki kontakt contact-submit/udochodu_contacts — decyzja w W1/W4",
+      "dowod": "ud/apps/portal/src/pages/klauzula-informacyjna/index.astro:63-68, 76-81, 121-127; Wniosek.svelte:740-764; ud/apps/portal/src/pages/regulamin/index.astro:27-54; ud/supabase/functions/contact-submit/index.ts:103-107"
     },
     {
       "kod": "U6",

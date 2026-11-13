@@ -1113,6 +1113,40 @@ html:has(.klauzula[open]){overflow:hidden}
 @media print{.pasek-akcji,.mega{display:none!important}}
 </style>
 <!-- /gen:wspolne-css -->
+<!-- gen:slownik-css -->
+<style>
+/* ===== Pojęcia ze słownika w treści + dymek z definicją (gen_terminy.py – nie edytuj ręcznie) ===== */
+/* bez JS: zwykły link do słownika z dyskretnym kropkowanym podkreśleniem (rozróżnienie nie tylko kolorem – WCAG 1.4.1) */
+a.bp-termin.bp-termin{display:inline;min-height:0;padding:0;margin:0;border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-decoration-color:rgba(42,59,104,.8);text-underline-offset:.24em;text-decoration-skip-ink:auto;cursor:pointer;border-radius:2px}
+a.bp-termin.bp-termin:hover{text-decoration-style:solid;text-decoration-color:var(--color-gold,#B8975A)}
+a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.3);text-decoration-style:solid}
+.dark a.bp-termin.bp-termin{text-decoration-color:var(--color-gold-light,#D9C089)}
+.dark a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
+a.bp-termin.bp-termin:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
+.dark a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
+/* dymek: kryjące ivory (bez backdrop-filter – nie liczy się do limitu 3 tafli), złota linia, cień */
+.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
+.bp-dymek[hidden]{display:none}
+.bp-dymek:focus{outline:none}
+.bp-dymek:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
+.bp-dymek-t{margin:0 44px 6px 0;padding-bottom:8px;border-bottom:1px solid rgba(184,151,90,.45);font:600 1.4rem/1.2 var(--font-serif,Georgia,serif);color:var(--color-navy,#2A3B68);text-wrap:balance}
+.bp-dymek-d{margin:0;color:var(--color-ink,#1B2233);text-wrap:pretty}
+.bp-dymek-akcje{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;margin-top:6px}
+.bp-dymek a.bp-dymek-wiecej{display:inline-flex;align-items:center;min-height:44px;padding:0;font:500 var(--text-sm,.875rem)/1.3 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-transform:none;color:var(--color-navy,#2A3B68);text-decoration:underline;text-decoration-color:var(--color-gold,#B8975A);text-decoration-thickness:1px;text-underline-offset:5px}
+.bp-dymek a.bp-dymek-wiecej:hover{text-decoration-thickness:2px}
+.bp-dymek-x{position:absolute;top:6px;right:6px;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;margin:0;padding:0;background:none;border:0;border-radius:3px;color:var(--color-navy,#2A3B68);cursor:pointer}
+.bp-dymek-x:hover{background:var(--color-parchment,#EDE5D8)}
+.bp-dymek-x svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.bp-dymek :focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
+/* wąskie ekrany: panel u dołu okna (mieści się od 320 px), nad paskiem akcji */
+@media (max-width:599px){
+  .bp-dymek{position:fixed;top:auto!important;left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));width:auto;max-height:min(70vh,560px);overflow-y:auto;overscroll-behavior:contain;padding:14px 16px 10px}
+}
+@media (prefers-contrast:more){.bp-dymek{border-color:var(--color-navy,#2A3B68)}a.bp-termin.bp-termin{text-decoration-color:currentColor}}
+@media (forced-colors:active){.bp-dymek{border:2px solid CanvasText}a.bp-termin.bp-termin{text-decoration-color:LinkText}a.bp-termin.bp-termin[aria-expanded="true"]{background:none;outline:1px solid Highlight}}
+@media print{.bp-dymek{display:none!important}a.bp-termin.bp-termin{text-decoration:none}}
+</style>
+<!-- /gen:slownik-css -->
 </head>
 <body>
 <a class="skip" href="#tresc">Przejdź do treści</a>
@@ -1176,6 +1210,7 @@ html:has(.klauzula[open]){overflow:hidden}
           <a href="strefa/dam-prace.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Dam&nbsp;pracę</a>
           <a href="strefa/logowanie.html#s-rs-email"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Szukam pracy</a>
           <a href="strefa/szkolenia.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Szkolenia</a>
+          <a href="slownik.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Słownik pojęć</a>
           <a class="btn btn-navy" href="#kontakt">Zapytaj doradcę</a>
         </nav>
       </details>
@@ -1192,7 +1227,7 @@ html:has(.klauzula[open]){overflow:hidden}
       <div class="hero-panel glass frame">
         <p class="eyebrow">OC dla salonów beauty · program z&nbsp;ERGO Hestią</p>
         <h1 id="hero-title">Ochrona szyta <em>na miarę</em> Twojego salonu</h1>
-        <p class="lead">OC w&nbsp;programie z&nbsp;ERGO Hestią oraz ochrona dla właściciela i&nbsp;zespołu – od Tax Protect po opiekę medyczną. Składkę OC sprawdzisz w&nbsp;dwie minuty.</p>
+        <p class="lead"><a class="bp-termin" href="slownik.html#haslo-odpowiedzialnosc-cywilna" data-termin="odpowiedzialnosc-cywilna">OC</a> w&nbsp;programie z&nbsp;ERGO Hestią oraz ochrona dla właściciela i&nbsp;zespołu – od Tax Protect po opiekę medyczną. <a class="bp-termin" href="slownik.html#haslo-skladka" data-termin="skladka">Składkę</a> OC sprawdzisz w&nbsp;dwie minuty.</p>
         <div class="hero-actions">
           <a class="btn btn-navy" href="#kalkulator" data-calc="oc">Oblicz składkę OC</a>
           <a class="btn btn-ghost" href="#ubezpieczenia">Poznaj ubezpieczenia</a>
@@ -1231,13 +1266,13 @@ html:has(.klauzula[open]){overflow:hidden}
       <!-- details bez atrybutu name: wszystkie chwile mogą być otwarte jednocześnie; działa bez JS -->
       <ol class="clues glass glass--dark" id="day-clues">
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="09:40">9:40</time><span class="clue-risk">Dzień po zabiegu klientka dzwoni: skóra wciąż jest podrażniona, pyta o&nbsp;odszkodowanie.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
-          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><div><h3>OC dla branży beauty</h3><p>Roszczenia klientów za szkody wyrządzone podczas zabiegów to obszar OC w&nbsp;programie z&nbsp;ERGO Hestią. Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p><a class="link-lux" href="#oc-beauty">Zobacz ubezpieczenie<span class="sr-only">: OC dla branży beauty</span></a></div></div></details></li>
+          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><div><h3>OC dla branży beauty</h3><p><a class="bp-termin" href="slownik.html#haslo-roszczenie" data-termin="roszczenie">Roszczenia</a> klientów za <a class="bp-termin" href="slownik.html#haslo-szkoda" data-termin="szkoda">szkody</a> wyrządzone podczas zabiegów to obszar OC w&nbsp;programie z&nbsp;ERGO Hestią. Zakres i&nbsp;<a class="bp-termin" href="slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">wyłączenia</a> określają <a class="bp-termin" href="slownik.html#haslo-owu" data-termin="owu">warunki ubezpieczenia programu</a>.</p><a class="link-lux" href="#oc-beauty">Zobacz ubezpieczenie<span class="sr-only">: OC dla branży beauty</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="11:15">11:15</time><span class="clue-risk">W&nbsp;skrzynce czeka zawiadomienie o&nbsp;zamiarze wszczęcia kontroli podatkowej.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
-          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><div><h3>Tax Protect</h3><p>Ochrona karnoskarbowa dla właściciela i&nbsp;ochrona podatkowa dla salonu (Colonnade). Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#tax-protect">Zobacz ubezpieczenie<span class="sr-only">: Tax Protect</span></a></div></div></details></li>
+          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><div><h3>Tax Protect</h3><p><a class="bp-termin" href="slownik.html#haslo-ochrona-karnoskarbowa" data-termin="ochrona-karnoskarbowa">Ochrona karnoskarbowa</a> dla właściciela i&nbsp;<a class="bp-termin" href="slownik.html#haslo-ochrona-podatkowa" data-termin="ochrona-podatkowa">ochrona podatkowa</a> dla salonu (Colonnade). Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#tax-protect">Zobacz ubezpieczenie<span class="sr-only">: Tax Protect</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="13:30">13:30</time><span class="clue-risk">Właścicielka skręca nadgarstek i&nbsp;przez kilka tygodni nie może przyjmować klientek.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
-          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><div><h3>Utrata dochodu</h3><p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią pracę. Składkę wylicza ubezpieczyciel po ocenie ryzyka – wniosek złożysz na utratadochodu.pl albo z&nbsp;doradcą Aura Expert.</p><a class="link-lux" href="#utrata-dochodu">Zobacz ubezpieczenie<span class="sr-only">: utrata dochodu</span></a></div></div></details></li>
+          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><div><h3>Utrata dochodu</h3><p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią pracę. Składkę wylicza <a class="bp-termin" href="slownik.html#haslo-ubezpieczyciel" data-termin="ubezpieczyciel">ubezpieczyciel</a> po <a class="bp-termin" href="slownik.html#haslo-ocena-ryzyka" data-termin="ocena-ryzyka">ocenie ryzyka</a> – wniosek złożysz na utratadochodu.pl albo z&nbsp;<a class="bp-termin" href="slownik.html#haslo-doradca" data-termin="doradca">doradcą Aura Expert</a>.</p><a class="link-lux" href="#utrata-dochodu">Zobacz ubezpieczenie<span class="sr-only">: utrata dochodu</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="15:05">15:05</time><span class="clue-risk">Dzwoni szkoła: syn przewrócił się na lekcji wychowania fizycznego.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
-          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><div><h3>NNW dla dzieci</h3><p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków w&nbsp;Colonnade – działa 24&nbsp;godziny na dobę, także na treningach i&nbsp;zawodach sportowych. Polisę kupujesz online. Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#nnw-dzieci">Zobacz ubezpieczenie<span class="sr-only">: NNW dla dzieci</span></a></div></div></details></li>
+          <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><div><h3>NNW dla dzieci</h3><p>Ubezpieczenie dziecka od <a class="bp-termin" href="slownik.html#haslo-nnw" data-termin="nnw">następstw nieszczęśliwych wypadków</a> w&nbsp;Colonnade – działa 24&nbsp;godziny na dobę, także na treningach i&nbsp;zawodach sportowych. Polisę kupujesz online. Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#nnw-dzieci">Zobacz ubezpieczenie<span class="sr-only">: NNW dla dzieci</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="17:20">17:20</time><span class="clue-risk">Najlepsza stylistka pyta, jakie benefity salon daje zespołowi.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
           <div class="clue-answer"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><div><h3>Grupowe ERGO dla beauty</h3><p>Grupowe ubezpieczenie na życie w&nbsp;ERGO Hestii dla zespołu salonu – ERGO Życie w&nbsp;Biznesie, dla firm od 2 do 100 osób, ze stałą składką za osobę. Zakres – zgodnie z&nbsp;OWU.</p><a class="link-lux" href="#grupowe-ergo">Zobacz ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a></div></div></details></li>
         <li class="rv-rise"><details class="clue"><summary><time class="clue-time" datetime="20:00">20:00</time><span class="clue-risk">Po zamknięciu plecy po całym dniu przy fotelu dają o&nbsp;sobie znać.</span><span class="clue-open" aria-hidden="true">Odsłoń</span></summary>
@@ -1748,7 +1783,7 @@ html:has(.klauzula[open]){overflow:hidden}
           <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html">OC dla branży beauty</a></li><li><a href="tax-protect.html">Tax Protect</a></li><li><a href="utrata-dochodu.html">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dla dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO dla beauty</a></li><li><a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a></li></ul></div>
           <div class="rv-rise"><h2 class="footer-title">Dla kogo</h2><ul><li><a href="/dla-kogo/kosmetolog">Kosmetolog</a></li><li><a href="/dla-kogo/fryzjer">Fryzjer i&nbsp;barber</a></li><li><a href="/dla-kogo/podolog">Podolog</a></li><li><a href="/dla-kogo/linergistka">Linergistka</a></li><li><a href="/dla-kogo/stylistka-paznokci">Stylistka paznokci</a></li><li><a href="/dla-kogo/tatuazysta">Tatuażysta</a></li></ul></div>
           <!-- „Zgłoś szkodę”: w makiecie #jak-zglosic-szkode, produkcyjnie /szkoda; „Polityka prywatności”: /rodo -->
-          <div class="rv-rise"><h2 class="footer-title">BeautyPolisa</h2><ul><li><a href="/o-nas">O&nbsp;nas</a></li><li><a href="/dokumenty">Dokumenty i&nbsp;OWU</a></li><li><a href="#jak-zglosic-szkode">Zgłoś szkodę</a></li><li><a href="/rodo">Polityka prywatności</a></li><li><a href="#kontakt">Kontakt</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">BeautyPolisa</h2><ul><li><a href="/o-nas">O&nbsp;nas</a></li><li><a href="/dokumenty">Dokumenty i&nbsp;OWU</a></li><li><a href="slownik.html">Słownik pojęć</a></li><li><a href="#jak-zglosic-szkode">Zgłoś szkodę</a></li><li><a href="/rodo">Polityka prywatności</a></li><li><a href="#kontakt">Kontakt</a></li></ul></div>
           <!-- produkcyjnie /strefa-klienta/logowanie, /dam-prace, /strefa-klienta/rejestracja/szukam-pracy, /szkolenia, /szkolenia#dla-organizatorow -->
           <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="https://beautyrazem.pl/polisa">Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa (członkostwo w&nbsp;Beauty Razem nie jest wymagane)</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę – ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy – dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
         </nav>
@@ -2542,5 +2577,141 @@ html:has(.klauzula[open]){overflow:hidden}
 })();
 </script>
 <!-- /gen:wspolne-js -->
+<!-- gen:slownik-js -->
+<script type="application/json" id="slownik-dymki">
+{
+ "odpowiedzialnosc-cywilna": {
+  "t": "OC (ubezpieczenie odpowiedzialności cywilnej)",
+  "d": "Ubezpieczenie, które płaci za Ciebie, gdy wyrządzisz szkodę komuś innemu (osobie trzeciej) i odpowiadasz za nią – np. klientce, u której zabieg spowodował uraz. Ubezpieczyciel wypłaca poszkodowanemu odszkodowanie do wysokości sumy gwarancyjnej, w zakresie i z wyłączeniami z warunków ubezpieczenia.",
+  "u": "slownik.html#haslo-odpowiedzialnosc-cywilna"
+ },
+ "skladka": {
+  "t": "Składka",
+  "d": "Cena ubezpieczenia – kwota, którą ubezpieczający płaci ubezpieczycielowi za ochronę, jednorazowo albo w ratach (np. co miesiąc). Jej wysokość zależy od ryzyka i wybranego zakresu; wynika ze stałej taryfy albo z wyliczenia ubezpieczyciela po ocenie ryzyka.",
+  "u": "slownik.html#haslo-skladka"
+ },
+ "roszczenie": {
+  "t": "Roszczenie",
+  "d": "Żądanie zapłaty albo innego świadczenia. Klientka może mieć roszczenie wobec salonu (np. o pokrycie kosztów leczenia po zabiegu), a Ty – wobec ubezpieczyciela (o wypłatę z polisy).",
+  "u": "slownik.html#haslo-roszczenie"
+ },
+ "szkoda": {
+  "t": "Szkoda",
+  "d": "Strata, którą ktoś poniósł w wyniku zdarzenia – na osobie (uraz, koszty leczenia, utracone zarobki) albo w mieniu (zniszczona lub uszkodzona rzecz). W języku ubezpieczeń „szkodą” nazywa się też samo zgłaszane zdarzenie, np. „zgłoś szkodę”.",
+  "u": "slownik.html#haslo-szkoda"
+ },
+ "zakres-i-wylaczenia": {
+  "t": "Zakres ochrony i wyłączenia",
+  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia to opisane w OWU sytuacje, w których – mimo że zdarzenie wygląda na objęte ochroną – wypłaty nie będzie.",
+  "u": "slownik.html#haslo-zakres-i-wylaczenia"
+ },
+ "owu": {
+  "t": "OWU (ogólne warunki ubezpieczenia)",
+  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. To OWU – a nie strona internetowa czy ulotka – rozstrzygają o wypłacie.",
+  "u": "slownik.html#haslo-owu"
+ },
+ "ochrona-karnoskarbowa": {
+  "t": "Ochrona karnoskarbowa",
+  "d": "Sekcja 1 Tax Protect: pokrycie kosztów obrony właściciela lub członka zarządu w sprawach o przestępstwa i wykroczenia skarbowe, np. związane z podatkami – m.in. adwokata w dochodzeniu lub śledztwie i porady prawnej przed oficjalnym roszczeniem. Odpowiedzialność karnoskarbowa jest osobista: nie przejmie jej zewnętrzne biuro rachunkowe.",
+  "u": "slownik.html#haslo-ochrona-karnoskarbowa"
+ },
+ "ochrona-podatkowa": {
+  "t": "Ochrona podatkowa (spór podatkowy)",
+  "d": "Sekcja 2 Tax Protect: pomoc dla firmy w sporze z urzędem. Przy kontroli i w postępowaniu przed urzędem skarbowym i Krajową Administracją Skarbową (KAS) reprezentuje Cię doradca podatkowy; w sprawach z ZUS, Państwową Inspekcją Pracy (PIP) i PFRON przysługuje zastępstwo prawne.",
+  "u": "slownik.html#haslo-ochrona-podatkowa"
+ },
+ "ubezpieczyciel": {
+  "t": "Ubezpieczyciel (zakład ubezpieczeń)",
+  "d": "Firma, która udziela ochrony: przyjmuje składkę, rozpatruje zgłoszenia i decyduje o wypłacie. Działalność ubezpieczeniową mogą prowadzić tylko zakłady ubezpieczeń spełniające wymogi przepisów (także ubezpieczyciele z innych państw UE działający w Polsce, np. przez oddział).",
+  "u": "slownik.html#haslo-ubezpieczyciel"
+ },
+ "ocena-ryzyka": {
+  "t": "Ocena ryzyka (underwriting)",
+  "d": "Sprawdzenie przez ubezpieczyciela, jak prawdopodobna i jak wysoka może być wypłata w Twoim przypadku. Na tej podstawie ubezpieczyciel decyduje, czy przyjmie Cię do ubezpieczenia, na jakich warunkach i za jaką składkę.",
+  "u": "slownik.html#haslo-ocena-ryzyka"
+ },
+ "doradca": {
+  "t": "Doradca Aura Expert",
+  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
+  "u": "slownik.html#haslo-doradca"
+ },
+ "nnw": {
+  "t": "NNW (ubezpieczenie następstw nieszczęśliwych wypadków)",
+  "d": "Ubezpieczenie, które wypłaca świadczenia, gdy nieszczęśliwy wypadek spowoduje uraz, uszczerbek na zdrowiu, pobyt w szpitalu albo śmierć. Choroby obejmuje tylko wtedy, gdy umowa wprost to dodaje – np. NNW dla dzieci w Colonnade ma też świadczenie za poważne zachorowanie (19 jednostek), a w wariantach II i III – za pobyt w szpitalu z powodu choroby.",
+  "u": "slownik.html#haslo-nnw"
+ }
+}
+</script>
+<script>
+/* Dymek z definicją pojęcia (gen_terminy.py – nie edytuj ręcznie).
+   Bez JS oznaczenie jest linkiem do słownika. Z JS: link dostaje rolę przycisku (aria-haspopup="dialog", aria-expanded, aria-controls),
+   klik / Enter / Spacja otwiera niemodalny dialog (role="dialog" + aria-labelledby/aria-describedby – w środku link i przycisk, więc nie tooltip).
+   Fokus przechodzi do dialogu; Esc i „Zamknij” zamykają i oddają fokus pojęciu; Tab za ostatnim elementem i Shift+Tab przed pierwszym też wracają do pojęcia;
+   klik poza dymkiem zamyka. Najechanie myszą niczego nie otwiera ani nie zamyka (WCAG 1.4.13: dymek nie znika, gdy kursor jest nad nim).
+   Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Szerokie ekrany: dymek pod pojęciem (albo nad nim), w granicach okna;
+   poniżej 600 px: panel u dołu okna. */
+(function(){
+  var dane=document.getElementById('slownik-dymki'); if(!dane) return;
+  var D; try{D=JSON.parse(dane.textContent)}catch(e){return}
+  var pojecia=[].slice.call(document.querySelectorAll('a.bp-termin[data-termin]')); if(!pojecia.length) return;
+  var box=document.createElement('div');
+  box.className='bp-dymek';box.id='bp-dymek';box.hidden=true;box.tabIndex=-1;
+  box.setAttribute('role','dialog');box.setAttribute('aria-labelledby','bp-dymek-t');box.setAttribute('aria-describedby','bp-dymek-d');
+  box.innerHTML='<p class="bp-dymek-t" id="bp-dymek-t"></p><p class="bp-dymek-d" id="bp-dymek-d"></p>'+
+    '<div class="bp-dymek-akcje"><a class="bp-dymek-wiecej" href="#">Więcej w&nbsp;słowniku</a></div>'+
+    '<button type="button" class="bp-dymek-x" aria-label="Zamknij objaśnienie"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg></button>';
+  document.body.appendChild(box);
+  var tytul=box.querySelector('.bp-dymek-t'), opis=box.querySelector('.bp-dymek-d'), wiecej=box.querySelector('.bp-dymek-wiecej'), zamknij=box.querySelector('.bp-dymek-x');
+  var mqWaski=window.matchMedia('(max-width:599px)'), biezace=null;
+  pojecia.forEach(function(a){
+    if(!D[a.getAttribute('data-termin')])return;
+    a.setAttribute('role','button');a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
+  });
+  function pozycja(){
+    if(!biezace||box.hidden)return;
+    if(mqWaski.matches){box.style.top='';box.style.left='';return}
+    var r=biezace.getClientRects()[0]||biezace.getBoundingClientRect(), vw=document.documentElement.clientWidth, vh=window.innerHeight;
+    var w=box.offsetWidth, h=box.offsetHeight, x=Math.min(Math.max(16,r.left),vw-w-16), y=r.bottom+10;
+    if(y+h>vh-12&&r.top-h-10>76)y=r.top-h-10;
+    box.style.left=Math.round(x+window.scrollX)+'px';box.style.top=Math.round(y+window.scrollY)+'px';
+  }
+  function otworz(a){
+    var d=D[a.getAttribute('data-termin')]; if(!d)return;
+    if(biezace&&biezace!==a)biezace.setAttribute('aria-expanded','false');
+    biezace=a;tytul.textContent=d.t;opis.textContent=d.d;wiecej.href=d.u;
+    box.hidden=false;a.setAttribute('aria-expanded','true');pozycja();
+    try{box.focus({preventScroll:true})}catch(e){box.focus()}
+  }
+  function zamknijDymek(oddaj){
+    if(!biezace)return;var a=biezace;biezace=null;box.hidden=true;a.setAttribute('aria-expanded','false');
+    if(oddaj){try{a.focus({preventScroll:mqWaski.matches})}catch(e){a.focus()}}
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a.bp-termin[data-termin]');
+    if(a&&D[a.getAttribute('data-termin')]){
+      if(e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+      e.preventDefault();
+      if(biezace===a)zamknijDymek(true);else otworz(a);
+      return;
+    }
+    if(biezace&&!box.contains(e.target))zamknijDymek(false);
+  });
+  document.addEventListener('keydown',function(e){
+    var a=e.target.closest&&e.target.closest('a.bp-termin[data-termin]');
+    if(a&&(e.key===' '||e.key==='Spacebar')&&D[a.getAttribute('data-termin')]){e.preventDefault();if(biezace===a)zamknijDymek(true);else otworz(a);return}
+    if(!biezace)return;
+    if(e.key==='Escape'||e.key==='Esc'){e.preventDefault();zamknijDymek(true);return}
+    if(e.key==='Tab'&&box.contains(document.activeElement)){
+      var ost=document.activeElement===zamknij, pierw=document.activeElement===box||document.activeElement===wiecej;
+      if((!e.shiftKey&&ost)||(e.shiftKey&&pierw)){e.preventDefault();zamknijDymek(true)}
+    }
+  });
+  zamknij.addEventListener('click',function(){zamknijDymek(true)});
+  box.addEventListener('focusout',function(e){if(biezace&&e.relatedTarget&&!box.contains(e.relatedTarget)&&e.relatedTarget!==biezace)zamknijDymek(false)});
+  window.addEventListener('resize',pozycja);
+  if(mqWaski.addEventListener)mqWaski.addEventListener('change',pozycja);
+})();
+</script>
+<!-- /gen:slownik-js -->
 </body>
 </html>
