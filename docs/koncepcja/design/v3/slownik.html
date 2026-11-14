@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Słownik pojęć ubezpieczeniowych | BeautyPolisa</title>
-<meta name="description" content="Słownik pojęć ubezpieczeniowych BeautyPolisa: składka, suma gwarancyjna, OWU, karencja, prywatne L4 i inne – prostym językiem, z przykładami z salonu beauty.">
+<meta name="description" content="Słownik pojęć ubezpieczeniowych BeautyPolisa: składka, suma gwarancyjna, OWU, karencja, prywatne L4 i inne – wyjaśnione prostym językiem. Wiążące są OWU i umowa.">
 <link rel="canonical" href="https://beautypolisa.eu/slownik">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:site_name" content="BeautyPolisa">
 <meta property="og:url" content="https://beautypolisa.eu/slownik">
 <meta property="og:title" content="Słownik pojęć ubezpieczeniowych | BeautyPolisa">
-<meta property="og:description" content="Słownik pojęć ubezpieczeniowych BeautyPolisa: składka, suma gwarancyjna, OWU, karencja, prywatne L4 i inne – prostym językiem, z przykładami z salonu beauty.">
+<meta property="og:description" content="Słownik pojęć ubezpieczeniowych BeautyPolisa: składka, suma gwarancyjna, OWU, karencja, prywatne L4 i inne – wyjaśnione prostym językiem. Wiążące są OWU i umowa.">
 <meta name="theme-color" content="#141C33">
 <meta name="color-scheme" content="only light">
 <!-- Makieta strony /slownik – WYGENEROWANA (slownik/gen_strona.py z snippets/slownik.json; nie edytować ręcznie).
@@ -383,19 +383,22 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
    Panel narzędzi i karty liter są kryjące (bez backdrop-filter) – nie liczą się do limitu 3 tafli.
    ========================================================= */
 .menu-panel a[aria-current="page"]:not(.btn){margin-inline:-10px;padding-inline:10px;background:var(--color-parchment);box-shadow:inset 2px 0 0 var(--color-gold)}
+.page-hero h1,.page-hero h1 em{overflow-wrap:anywhere;hyphens:auto}   /* długie „ubezpieczeniowych” przy 320 px i odstępach z WCAG 1.4.12 */
 .hero-note{max-width:40rem;font-size:var(--text-sm);line-height:1.65;color:var(--color-ink);padding-left:14px;border-left:2px solid var(--color-gold)}
 .slownik{background:var(--color-parchment);border-top:1px solid rgba(217,192,137,.45);padding-block:clamp(48px,7vw,104px)}
 .sl-uklad{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(24px,4vw,48px);align-items:start}
 @media (min-width:1024px){.sl-uklad{grid-template-columns:minmax(0,340px) minmax(0,1fr)}}
 /* narzędzia: kryjące ivory, złota linia */
 .sl-narzedzia{display:grid;grid-template-columns:minmax(0,1fr);min-width:0;gap:22px;padding:clamp(20px,2.4vw,28px);border:1px solid var(--bp-line-gold);border-radius:var(--radius-card);background:var(--color-ivory);box-shadow:0 24px 48px -36px rgba(20,28,51,.45)}
-/* przyklejony panel tylko na szerokim i wysokim oknie (kolumna obok listy – nic nie zasłania); niższe okna – zwykły układ */
-@media (min-width:1024px) and (min-height:760px){
+/* przyklejony panel tylko na szerokim i wysokim oknie (kolumna obok listy – nic nie zasłania); niższe okna – zwykły układ.
+   W zwykłym stanie (kategorie zwinięte) panel ma ok. 520 px i mieści się bez przewijania; max-height i przewijanie wewnątrz – tylko
+   zabezpieczenie, gdy ktoś rozwinie kategorie (indeks A–Z stoi nad nimi, więc zostaje w widoku) */
+@media (min-width:1024px) and (min-height:700px){
   .sl-narzedzia{position:sticky;top:108px;max-height:calc(100vh - 128px);overflow-y:auto;overscroll-behavior:contain}
 }
 .sl-szukaj{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin:0;min-width:0}
 .sl-szukaj > *,.sl-narzedzia > *{min-width:0}
-.sl-szukaj label[for="sl-q"],.sl-kategorie legend,.sl-az-t{font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
+.sl-szukaj label[for="sl-q"],.sl-kat-etyk,.sl-az-t{font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
 .sl-pole-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 .sl-pole{display:flex;gap:8px}
 .sl-pole input{flex:1 1 auto;width:100%;min-width:0;min-height:50px;padding:10px 14px;border:1px solid var(--bp-line-field);border-radius:var(--radius-btn);background:#fff;font:400 var(--text-base)/1.4 var(--font-sans);color:var(--color-ink)}
@@ -404,33 +407,43 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 .sl-pole .btn{flex:none;min-height:50px;padding-inline:16px}
 .sl-pomoc{font-size:var(--text-sm);line-height:1.5;color:var(--color-taupe)}
 .sl-kategorie{margin:0;padding:0;border:0;min-width:0}
-.sl-kategorie legend{padding:0;margin-bottom:10px}
-.sl-chipy{display:flex;flex-wrap:wrap;gap:8px}
-.sl-chip{position:relative;display:inline-flex;max-width:100%}
+/* kategorie: rozwijany panel (summary = wybrana kategoria) i lista radio w wierszach, łamana – bez przewijania w poziomie */
+.sl-kat{min-width:0}
+.sl-kat > summary{display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;min-height:48px;padding:8px 14px;border:1px solid var(--bp-line-field);border-radius:var(--radius-btn);background:#fff;cursor:pointer;list-style:none}
+.sl-kat > summary::-webkit-details-marker{display:none}
+.sl-kat > summary:hover{border-color:var(--color-navy)}
+.sl-kat > summary:focus-visible{outline:2px solid var(--color-navy);outline-offset:2px}
+.sl-kat-wybor{flex:1 1 auto;min-width:0;font:500 var(--text-sm)/1.3 var(--font-sans);color:var(--color-navy)}
+.sl-kat-ikona{flex:none;width:16px;height:16px;fill:none;stroke:var(--color-navy);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease}
+.sl-kat[open] .sl-kat-ikona{transform:rotate(180deg)}
+.sl-chipy{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:2px 12px;padding-top:8px}
+.sl-chip{position:relative;display:flex;min-width:0}
 .sl-chip input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
 .sl-chip span{font:inherit}
-.sl-chip > span{display:inline-flex;flex-wrap:wrap;align-items:center;gap:0 8px;max-width:100%;min-height:40px;padding:6px 12px;border:1px solid rgba(42,59,104,.35);border-radius:20px;background:rgba(255,255,255,.6);font:500 var(--text-sm)/1.25 var(--font-sans);color:var(--color-navy);pointer-events:none}
-.sl-chip .sl-ile{font-weight:400;color:var(--color-taupe);font-variant-numeric:lining-nums tabular-nums}
-.sl-chip input:hover + span{border-color:var(--color-navy)}
-.sl-chip input:checked + span{background:var(--color-navy);border-color:var(--color-navy);color:var(--color-ivory)}
-.sl-chip input:checked + span .sl-ile{color:var(--color-gold-light)}
-.sl-chip input:focus-visible + span{outline:2px solid var(--color-navy);outline-offset:2px}
+.sl-chip > span{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:6px 10px;border-radius:var(--radius-btn);font:400 var(--text-sm)/1.3 var(--font-sans);color:var(--color-ink);pointer-events:none}
+.sl-chip > span::before{content:"";flex:none;width:16px;height:16px;box-sizing:border-box;border:1.5px solid var(--color-navy);border-radius:50%;background:#fff}
+.sl-chip-n{flex:1 1 auto;min-width:0}
+.sl-chip .sl-ile{flex:none;color:var(--color-taupe);font-variant-numeric:lining-nums tabular-nums}
+.sl-chip input:hover + span{background:rgba(237,229,216,.7)}
+.sl-chip input:checked + span{background:var(--color-parchment);color:var(--color-navy);font-weight:500}
+.sl-chip input:checked + span::before{background:var(--color-navy);box-shadow:inset 0 0 0 3px #fff}
+.sl-chip input:focus-visible + span{outline:2px solid var(--color-navy);outline-offset:0}
 .sl-licznik{font-size:var(--text-sm);color:var(--color-ink);padding-top:12px;border-top:1px solid var(--bp-line-gold-soft)}
 .sl-licznik strong{font-weight:500}
 /* indeks A–Z */
 .sl-az{display:grid;gap:10px}
-.sl-az ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:4px;margin:0;padding:0;list-style:none}
-.sl-az a,.sl-az-off{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:var(--radius-btn);font:600 1.35rem/1 var(--font-serif);font-variant-numeric:lining-nums}
+.sl-az ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(30px,1fr));gap:4px;margin:0;padding:0;list-style:none}
+.sl-az a,.sl-az-off{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:var(--radius-btn);font:600 1.3rem/1 var(--font-serif);font-variant-numeric:lining-nums}
 .sl-az a{color:var(--color-navy);text-decoration:none;border:1px solid var(--bp-line-gold-soft);background:rgba(255,255,255,.55)}
 .sl-az a:hover{border-color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:4px;text-decoration-thickness:1px}
 .sl-az a:not([href]){color:rgba(95,87,77,.5);border-color:transparent;background:none;cursor:default;text-decoration:none}
 .sl-az-off{color:rgba(95,87,77,.5)}
 /* lista: litera = jedna kryjąca karta, hasła oddzielone liniami włoskowymi */
 .sl-lista{display:grid;gap:clamp(20px,3vw,32px);min-width:0}
-.sl-litera{position:relative;padding:clamp(20px,3vw,36px);border:1px solid var(--bp-line-gold-soft);border-radius:var(--radius-card);background:var(--color-ivory);box-shadow:0 24px 48px -40px rgba(20,28,51,.45)}
+.sl-litera{position:relative;min-width:0;padding:clamp(20px,3vw,36px);border:1px solid var(--bp-line-gold-soft);border-radius:var(--radius-card);background:var(--color-ivory);box-shadow:0 24px 48px -40px rgba(20,28,51,.45)}
 .sl-litera-t{display:flex;align-items:baseline;gap:14px;padding-bottom:10px;margin-bottom:6px;border-bottom:1px solid var(--color-gold);font-size:clamp(2.6rem,2rem + 2vw,3.6rem);line-height:1}
 .sl-litera-ile{font:500 var(--text-xs)/1 var(--font-caps);letter-spacing:var(--tracking-label);color:var(--color-taupe)}
-.haslo{display:grid;gap:12px;padding-block:22px;border-bottom:1px solid var(--bp-line-gold-soft);overflow-wrap:break-word}
+.haslo{display:grid;gap:12px;min-width:0;padding-block:22px;border-bottom:1px solid var(--bp-line-gold-soft);overflow-wrap:anywhere}
 .haslo:last-of-type{border-bottom:0}
 .haslo:target{margin-inline:calc(-1 * clamp(10px,1.6vw,18px));padding-inline:clamp(10px,1.6vw,18px);box-shadow:inset 3px 0 0 var(--color-navy);background:rgba(237,229,216,.45)}
 .haslo-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 16px}
@@ -467,10 +480,10 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 .end-card p:not(.eyebrow){font-size:var(--text-body);color:var(--color-parchment);max-width:44rem}
 .end-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
 @media (max-width:479px){.end-actions .btn,.hero-actions .btn{width:100%}.sl-pole .btn{padding-inline:12px}}
-/* telefon i tablet: kategorie w jednym przewijanym wierszu (krótszy panel nad listą); przewijanie tylko wewnątrz wiersza */
-@media (max-width:1023px){.sl-chipy{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding:2px 2px 8px;margin-inline:-2px}.sl-chip{flex:none}.sl-chip > span{flex-wrap:nowrap;white-space:nowrap}}
-@media (max-width:359px){.sl-chip > span{padding-inline:10px}}
-@media (forced-colors:active){.sl-narzedzia,.sl-litera,.end-card{border:1px solid CanvasText}.end-card::before{display:none}.sl-chip input:checked + span{outline:2px solid Highlight}.haslo:target{outline:2px solid Highlight}}
+/* telefon i tablet (panel nad listą): przy aktywnej frazie lub kategorii indeks A–Z się chowa – wyniki stoją tuż pod licznikiem */
+@media (max-width:1023px){.slownik[data-filtr] .sl-az,.slownik[data-filtr] .sl-wroc{display:none}}
+@media (prefers-reduced-motion:reduce){.sl-kat-ikona{transition:none}}
+@media (forced-colors:active){.sl-narzedzia,.sl-litera,.end-card{border:1px solid CanvasText}.end-card::before{display:none}.sl-chip > span::before{forced-color-adjust:none;border-color:CanvasText;background:Canvas}.sl-chip input:checked + span::before{background:Highlight;box-shadow:inset 0 0 0 3px Canvas}.haslo:target{outline:2px solid Highlight}}
 @media print{.sl-narzedzia,.sl-wroc,.haslo-akcje,.end-card{display:none!important}.sl-uklad{display:block}.haslo{break-inside:avoid}}
 </style>
 <noscript><style>
@@ -489,7 +502,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
    "url": "https://beautypolisa.eu/slownik",
    "inLanguage": "pl-PL",
    "name": "Słownik pojęć ubezpieczeniowych | BeautyPolisa",
-   "description": "Słownik pojęć ubezpieczeniowych BeautyPolisa: składka, suma gwarancyjna, OWU, karencja, prywatne L4 i inne – prostym językiem, z przykładami z salonu beauty.",
+   "description": "Słownik pojęć ubezpieczeniowych BeautyPolisa: składka, suma gwarancyjna, OWU, karencja, prywatne L4 i inne – wyjaśnione prostym językiem. Wiążące są OWU i umowa.",
    "breadcrumb": {
     "@id": "https://beautypolisa.eu/slownik#breadcrumb"
    },
@@ -1624,7 +1637,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
       <nav class="main-nav" aria-label="Menu główne">
         <ul>
           <!-- gen:menu-produkty -->
-          <li class="nav-produkty" data-biezacy>
+          <li class="nav-produkty">
             <!-- bez JS: link do sekcji produktów; skrypt (gen:wspolne-js) zamienia go na przycisk aria-expanded + aria-controls -->
             <a class="nav-produkty-btn" href="makieta-v3.html#ubezpieczenia">Ubezpieczenia</a>
             <div class="mega" id="menu-produkty" hidden>
@@ -1695,7 +1708,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
         </nav>
         <p class="eyebrow">Słownik BeautyPolisa</p>
         <h1 id="hero-title">Słownik <em>pojęć ubezpieczeniowych</em></h1>
-        <p class="lead">Pojęcia, które spotkasz na stronach BeautyPolisa, w&nbsp;dokumentach ubezpieczenia i&nbsp;w&nbsp;Strefie Klienta – wyjaśnione prostym językiem, z&nbsp;przykładami z&nbsp;salonu.</p>
+        <p class="lead">Pojęcia, które spotkasz na stronach BeautyPolisa, w&nbsp;dokumentach ubezpieczenia i&nbsp;w&nbsp;Strefie Klienta – wyjaśnione prostym językiem, przy części haseł z&nbsp;przykładem.</p>
         <p class="hero-note">Definicje wyjaśniają pojęcia prostym językiem. O&nbsp;zakresie ochrony decydują ogólne warunki ubezpieczenia (OWU) konkretnego produktu i&nbsp;umowa (polisa) – to objaśnienia, a&nbsp;nie warunki ubezpieczenia.</p>
         <div class="hero-actions">
           <a class="btn btn-navy" href="#indeks">Przejdź do indeksu A–Z</a>
@@ -1723,28 +1736,33 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
             </div>
             <p class="sl-pomoc" id="sl-q-pomoc">Szukamy w&nbsp;nazwach pojęć i&nbsp;ich odmianach – możesz pisać bez polskich znaków.</p>
           </div>
-          <fieldset class="sl-kategorie">
-            <legend>Kategoria</legend>
-            <div class="sl-chipy">
-                <label class="sl-chip"><input type="radio" name="kategoria" value="" checked><span>Wszystkie <span class="sl-ile">95</span></span></label>
-                <label class="sl-chip"><input type="radio" name="kategoria" value="podstawy" data-nazwa="Podstawy umowy"><span>Podstawy umowy <span class="sl-ile">15</span></span></label>
-                <label class="sl-chip"><input type="radio" name="kategoria" value="strony" data-nazwa="Strony umowy"><span>Strony umowy <span class="sl-ile">10</span></span></label>
-                <label class="sl-chip"><input type="radio" name="kategoria" value="ochrona" data-nazwa="Ochrona i świadczenia"><span>Ochrona i&nbsp;świadczenia <span class="sl-ile">10</span></span></label>
-                <label class="sl-chip"><input type="radio" name="kategoria" value="oc" data-nazwa="OC i ochrona prawna"><span>OC i&nbsp;ochrona prawna <span class="sl-ile">8</span></span></label>
-                <label class="sl-chip"><input type="radio" name="kategoria" value="tax-protect" data-nazwa="Tax Protect"><span>Tax Protect <span class="sl-ile">2</span></span></label>
-                <label class="sl-chip"><input type="radio" name="kategoria" value="zycie-zdrowie" data-nazwa="Życie i zdrowie"><span>Życie i&nbsp;zdrowie <span class="sl-ile">22</span></span></label>
-                <label class="sl-chip"><input type="radio" name="kategoria" value="utrata-dochodu" data-nazwa="Utrata dochodu"><span>Utrata dochodu <span class="sl-ile">7</span></span></label>
-                <label class="sl-chip"><input type="radio" name="kategoria" value="szkody" data-nazwa="Szkody i reklamacje"><span>Szkody i&nbsp;reklamacje <span class="sl-ile">6</span></span></label>
-                <label class="sl-chip"><input type="radio" name="kategoria" value="dystrybucja-prawo" data-nazwa="Dystrybucja i prawo"><span>Dystrybucja i&nbsp;prawo <span class="sl-ile">11</span></span></label>
-                <label class="sl-chip"><input type="radio" name="kategoria" value="strefa-klienta" data-nazwa="Strefa Klienta i bezpieczeństwo konta"><span>Strefa Klienta i&nbsp;bezpieczeństwo konta <span class="sl-ile">4</span></span></label>
-            </div>
-          </fieldset>
           <p class="sl-licznik" id="sl-licznik" aria-live="polite" aria-atomic="true">Wszystkie hasła: 95</p>
         </form>
         <nav class="sl-az" id="indeks" aria-labelledby="indeks-t">
           <p class="sl-az-t" id="indeks-t">Indeks A–Z</p>
           <ul><li><a href="#litera-a" data-litera="a" aria-label="A – 6 haseł">A</a></li><li><a href="#litera-b" data-litera="b" aria-label="B – 1 hasło">B</a></li><li><a href="#litera-c" data-litera="c" aria-label="C – 2 hasła">C</a></li><li aria-hidden="true"><span class="sl-az-off">Ć</span></li><li><a href="#litera-d" data-litera="d" aria-label="D – 4 hasła">D</a></li><li><a href="#litera-e" data-litera="e" aria-label="E – 1 hasło">E</a></li><li aria-hidden="true"><span class="sl-az-off">F</span></li><li><a href="#litera-g" data-litera="g" aria-label="G – 2 hasła">G</a></li><li aria-hidden="true"><span class="sl-az-off">H</span></li><li><a href="#litera-i" data-litera="i" aria-label="I – 4 hasła">I</a></li><li aria-hidden="true"><span class="sl-az-off">J</span></li><li><a href="#litera-k" data-litera="k" aria-label="K – 6 haseł">K</a></li><li><a href="#litera-l" data-litera="l" aria-label="L – 4 hasła">L</a></li><li aria-hidden="true"><span class="sl-az-off">Ł</span></li><li><a href="#litera-m" data-litera="m" aria-label="M – 2 hasła">M</a></li><li><a href="#litera-n" data-litera="n" aria-label="N – 3 hasła">N</a></li><li><a href="#litera-o" data-litera="o" aria-label="O – 18 haseł">O</a></li><li aria-hidden="true"><span class="sl-az-off">Ó</span></li><li><a href="#litera-p" data-litera="p" aria-label="P – 5 haseł">P</a></li><li><a href="#litera-r" data-litera="r" aria-label="R – 6 haseł">R</a></li><li><a href="#litera-s" data-litera="s" aria-label="S – 9 haseł">S</a></li><li><a href="#litera-s-pl" data-litera="s-pl" aria-label="Ś – 2 hasła">Ś</a></li><li><a href="#litera-t" data-litera="t" aria-label="T – 2 hasła">T</a></li><li><a href="#litera-u" data-litera="u" aria-label="U – 9 haseł">U</a></li><li><a href="#litera-w" data-litera="w" aria-label="W – 5 haseł">W</a></li><li aria-hidden="true"><span class="sl-az-off">Y</span></li><li><a href="#litera-z" data-litera="z" aria-label="Z – 4 hasła">Z</a></li><li aria-hidden="true"><span class="sl-az-off">Ź</span></li><li aria-hidden="true"><span class="sl-az-off">Ż</span></li></ul>
         </nav>
+        <!-- kategorie: grupa radio (jeden wybór) w rozwijanym panelu – pod indeksem, żeby indeks był zawsze w pierwszym widoku panelu;
+             wiersze łamią się (bez przewijania w poziomie) -->
+        <details class="sl-kat" id="sl-kat" hidden>
+          <summary><span class="sl-kat-etyk">Kategoria</span><span class="sl-kat-wybor" id="sl-kat-wybor">Wszystkie</span><svg class="sl-kat-ikona" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></summary>
+          <fieldset class="sl-kategorie">
+            <legend class="sr-only">Kategoria</legend>
+            <div class="sl-chipy">
+                <label class="sl-chip"><input type="radio" name="kategoria" value="" data-krotko="Wszystkie" checked><span><span class="sl-chip-n">Wszystkie</span> <span class="sl-ile">95</span></span></label>
+                <label class="sl-chip"><input type="radio" name="kategoria" value="podstawy" data-nazwa="Podstawy umowy" data-krotko="Podstawy umowy"><span><span class="sl-chip-n">Podstawy umowy</span> <span class="sl-ile">15</span></span></label>
+                <label class="sl-chip"><input type="radio" name="kategoria" value="strony" data-nazwa="Strony umowy" data-krotko="Strony umowy"><span><span class="sl-chip-n">Strony umowy</span> <span class="sl-ile">10</span></span></label>
+                <label class="sl-chip"><input type="radio" name="kategoria" value="ochrona" data-nazwa="Ochrona i świadczenia" data-krotko="Ochrona i świadczenia"><span><span class="sl-chip-n">Ochrona i&nbsp;świadczenia</span> <span class="sl-ile">10</span></span></label>
+                <label class="sl-chip"><input type="radio" name="kategoria" value="oc" data-nazwa="OC i ochrona prawna" data-krotko="OC i ochrona prawna"><span><span class="sl-chip-n">OC i&nbsp;ochrona prawna</span> <span class="sl-ile">8</span></span></label>
+                <label class="sl-chip"><input type="radio" name="kategoria" value="tax-protect" data-nazwa="Tax Protect" data-krotko="Tax Protect"><span><span class="sl-chip-n">Tax Protect</span> <span class="sl-ile">2</span></span></label>
+                <label class="sl-chip"><input type="radio" name="kategoria" value="zycie-zdrowie" data-nazwa="Życie i zdrowie" data-krotko="Życie i zdrowie"><span><span class="sl-chip-n">Życie i&nbsp;zdrowie</span> <span class="sl-ile">22</span></span></label>
+                <label class="sl-chip"><input type="radio" name="kategoria" value="utrata-dochodu" data-nazwa="Utrata dochodu" data-krotko="Utrata dochodu"><span><span class="sl-chip-n">Utrata dochodu</span> <span class="sl-ile">7</span></span></label>
+                <label class="sl-chip"><input type="radio" name="kategoria" value="szkody" data-nazwa="Szkody i reklamacje" data-krotko="Szkody i reklamacje"><span><span class="sl-chip-n">Szkody i&nbsp;reklamacje</span> <span class="sl-ile">6</span></span></label>
+                <label class="sl-chip"><input type="radio" name="kategoria" value="dystrybucja-prawo" data-nazwa="Dystrybucja i prawo" data-krotko="Dystrybucja i prawo"><span><span class="sl-chip-n">Dystrybucja i&nbsp;prawo</span> <span class="sl-ile">11</span></span></label>
+                <label class="sl-chip"><input type="radio" name="kategoria" value="strefa-klienta" data-nazwa="Strefa Klienta i bezpieczeństwo konta" data-krotko="Strefa Klienta i konto"><span><span class="sl-chip-n">Strefa Klienta i&nbsp;konto</span> <span class="sl-ile">4</span></span></label>
+            </div>
+          </fieldset>
+        </details>
       </div>
       <div class="sl-lista">
         <div class="sl-pusto" id="sl-pusto" hidden>
@@ -1919,7 +1937,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
             </dl>
             <p class="haslo-notka"><span class="mock-note">do potwierdzenia: Status prawny „doradców” (osoby wykonujące czynności agencyjne w&nbsp;imieniu Aura Expert) i&nbsp;to, czy nazwa „doradca” nie sugeruje niezależnego doradztwa – do potwierdzenia z&nbsp;prawnikiem.</span></p>
           </article>
-          <article class="haslo" id="haslo-drugi-skladnik" data-kat="strefa-klienta" data-szukaj="drugi skladnik logowania (totp)|drugi skladnik|drugiego skladnika|drugim skladnikiem|drugi skladnik logowania|totp|uwierzytelnianie dwuskladnikowe|2fa|kod z aplikacji|kodu z aplikacji|aplikacja uwierzytelniajaca|aplikacji uwierzytelniajacej|aplikacje uwierzytelniajaca|zapasowe urzadzenie|zapasowego urzadzenia|zapasowa aplikacja|zapasowej aplikacji|zapasowa aplikacje|google authenticator|microsoft authenticator" aria-labelledby="haslo-drugi-skladnik-t">
+          <article class="haslo" id="haslo-drugi-skladnik" data-kat="strefa-klienta" data-szukaj="drugi skladnik logowania (totp)|drugi skladnik logowania|drugi skladnik|drugiego skladnika|drugim skladnikiem|totp|uwierzytelnianie dwuskladnikowe|2fa|kod z aplikacji|kodu z aplikacji|aplikacja uwierzytelniajaca|aplikacji uwierzytelniajacej|aplikacje uwierzytelniajaca|zapasowe urzadzenie|zapasowego urzadzenia|zapasowa aplikacja|zapasowej aplikacji|zapasowa aplikacje|google authenticator|microsoft authenticator" aria-labelledby="haslo-drugi-skladnik-t">
             <header class="haslo-head">
               <h3 id="haslo-drugi-skladnik-t">Drugi składnik logowania (TOTP)</h3>
               <p class="haslo-kat">Strefa Klienta i&nbsp;bezpieczeństwo konta</p>
@@ -2098,7 +2116,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
               <div class="haslo-zrodlo"><dt>Źródło</dt><dd>strony BeautyPolisa; ustalenia programu BeautyPolisa</dd></div>
             </dl>
           </article>
-          <article class="haslo" id="haslo-karta-apteczna" data-kat="zycie-zdrowie" data-szukaj="koszty leczenia poszpitalnego (karta apteczna)|karta apteczna|karty aptecznej|karte apteczna|koszty leczenia poszpitalnego|kosztow leczenia poszpitalnego" aria-labelledby="haslo-karta-apteczna-t">
+          <article class="haslo" id="haslo-karta-apteczna" data-kat="zycie-zdrowie" data-szukaj="koszty leczenia poszpitalnego (karta apteczna)|koszty leczenia poszpitalnego|karta apteczna|karty aptecznej|karte apteczna|kosztow leczenia poszpitalnego" aria-labelledby="haslo-karta-apteczna-t">
             <header class="haslo-head">
               <h3 id="haslo-karta-apteczna-t">Koszty leczenia poszpitalnego (karta apteczna)</h3>
               <p class="haslo-kat">Życie i&nbsp;zdrowie</p>
@@ -2138,7 +2156,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
               <div class="haslo-zrodlo"><dt>Źródło</dt><dd>Kodeks cywilny, art.&nbsp;817 §&nbsp;1–2; strony BeautyPolisa; ustalenia programu BeautyPolisa</dd></div>
             </dl>
           </article>
-          <article class="haslo" id="haslo-limit" data-kat="ochrona" data-szukaj="limit (podlimit)|podlimit|podlimitu|podlimity|limit swiadczenia|limitu swiadczenia|limit swiadczen|limity swiadczen|limitow swiadczen|limitami swiadczen|limit odpowiedzialnosci|limitu odpowiedzialnosci|limit na rok polisowy" aria-labelledby="haslo-limit-t">
+          <article class="haslo" id="haslo-limit" data-kat="ochrona" data-szukaj="limit (podlimit)|limit|podlimit|podlimitu|podlimity|limit swiadczenia|limitu swiadczenia|limit swiadczen|limity swiadczen|limitow swiadczen|limitami swiadczen|limit odpowiedzialnosci|limitu odpowiedzialnosci|limit na rok polisowy" aria-labelledby="haslo-limit-t">
             <header class="haslo-head">
               <h3 id="haslo-limit-t">Limit (podlimit)</h3>
               <p class="haslo-kat">Ochrona i&nbsp;świadczenia</p>
@@ -2291,7 +2309,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
             </dl>
             <p class="haslo-notka"><span class="mock-note">do potwierdzenia: Limity w&nbsp;sekcji 1 (tryb awaryjny – refundacja do 30% sumy, grzywny i&nbsp;kary – do 75% sumy, zwrot kar w&nbsp;tym nałożonych przez Państwową Inspekcję Pracy (PIP)) – w&nbsp;makiecie oznaczone jako do potwierdzenia z&nbsp;OWU Tax Protect.</span></p>
           </article>
-          <article class="haslo" id="haslo-ochrona-podatkowa" data-kat="tax-protect" data-szukaj="ochrona podatkowa (spor podatkowy)|ochrony podatkowej|ochrone podatkowa|ochrona podatkowa|spor podatkowy|sporu podatkowego|spory podatkowe|sporow podatkowych|sporze podatkowym" aria-labelledby="haslo-ochrona-podatkowa-t">
+          <article class="haslo" id="haslo-ochrona-podatkowa" data-kat="tax-protect" data-szukaj="ochrona podatkowa (spor podatkowy)|ochrona podatkowa|ochrony podatkowej|ochrone podatkowa|spor podatkowy|sporu podatkowego|spory podatkowe|sporow podatkowych|sporze podatkowym" aria-labelledby="haslo-ochrona-podatkowa-t">
             <header class="haslo-head">
               <h3 id="haslo-ochrona-podatkowa-t">Ochrona podatkowa (spór podatkowy)</h3>
               <p class="haslo-kat">Tax Protect</p>
@@ -2823,7 +2841,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
               <div class="haslo-zrodlo"><dt>Źródło</dt><dd>strony BeautyPolisa</dd></div>
             </dl>
           </article>
-          <article class="haslo" id="haslo-ubezpieczenie-utraty-dochodu" data-kat="utrata-dochodu" data-szukaj="ubezpieczenie utraty dochodu (prywatne l4)|utrata dochodu|utraty dochodu|utrate dochodu|prywatne l4|prywatnego l4|ubezpieczenia utraty dochodu|ubezpieczeniu utraty dochodu|ubezpieczenie utraty dochodu" aria-labelledby="haslo-ubezpieczenie-utraty-dochodu-t">
+          <article class="haslo" id="haslo-ubezpieczenie-utraty-dochodu" data-kat="utrata-dochodu" data-szukaj="ubezpieczenie utraty dochodu (prywatne l4)|ubezpieczenie utraty dochodu|utrata dochodu|utraty dochodu|utrate dochodu|prywatne l4|prywatnego l4|ubezpieczenia utraty dochodu|ubezpieczeniu utraty dochodu" aria-labelledby="haslo-ubezpieczenie-utraty-dochodu-t">
             <header class="haslo-head">
               <h3 id="haslo-ubezpieczenie-utraty-dochodu-t">Ubezpieczenie utraty dochodu (prywatne L4)</h3>
               <p class="haslo-kat">Utrata dochodu</p>
@@ -2927,7 +2945,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
               <div class="haslo-zrodlo"><dt>Źródło</dt><dd>strony BeautyPolisa</dd></div>
             </dl>
           </article>
-          <article class="haslo" id="haslo-role-w-strefie" data-kat="strefa-klienta" data-szukaj="wlasciciel konta i pracownik (role w strefie)|wlasciciel konta|wlasciciela konta|wlascicielka konta|wlascicielki konta" aria-labelledby="haslo-role-w-strefie-t">
+          <article class="haslo" id="haslo-role-w-strefie" data-kat="strefa-klienta" data-szukaj="wlasciciel konta i pracownik (role w strefie)|wlasciciel konta i pracownik|wlasciciel konta|wlasciciela konta|wlascicielka konta|wlascicielki konta" aria-labelledby="haslo-role-w-strefie-t">
             <header class="haslo-head">
               <h3 id="haslo-role-w-strefie-t">Właściciel konta i&nbsp;pracownik (role w&nbsp;Strefie)</h3>
               <p class="haslo-kat">Strefa Klienta i&nbsp;bezpieczeństwo konta</p>
@@ -3007,7 +3025,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
             </dl>
             <p class="haslo-notka"><span class="mock-note">do potwierdzenia: Kwoty (najniższa podstawa 5 652&nbsp;zł, zasiłek 3 902&nbsp;zł, ok. 995&nbsp;zł na preferencyjnym ZUS-ie) zmieniają się co roku – aktualizować razem z&nbsp;makietą utrata-dochodu.html.</span></p>
           </article>
-          <article class="haslo" id="haslo-obowiazek-informacyjny" data-kat="zycie-zdrowie" data-szukaj="zatajenie okolicznosci (obowiazek informacyjny)|zatajenie|zatajenia|zatajenie okolicznosci|zatajenia okolicznosci|obowiazek informacyjny|obowiazku informacyjnego" aria-labelledby="haslo-obowiazek-informacyjny-t">
+          <article class="haslo" id="haslo-obowiazek-informacyjny" data-kat="zycie-zdrowie" data-szukaj="zatajenie okolicznosci (obowiazek informacyjny)|zatajenie okolicznosci|zatajenie|zatajenia|zatajenia okolicznosci|obowiazek informacyjny|obowiazku informacyjnego" aria-labelledby="haslo-obowiazek-informacyjny-t">
             <header class="haslo-head">
               <h3 id="haslo-obowiazek-informacyjny-t">Zatajenie okoliczności (obowiązek informacyjny)</h3>
               <p class="haslo-kat">Życie i&nbsp;zdrowie</p>
@@ -3229,54 +3247,88 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 
 </script>
 <script>
-/* Słownik: wyszukiwarka (termin i aliasy, bez względu na wielkość liter i polskie znaki), filtr kategorii (radio), licznik w aria-live,
-   stan pusty, indeks A–Z (litery bez widocznych haseł nieaktywne), „Kopiuj link”. Bez JS: pełna lista + indeks (kotwice). */
+/* Słownik: wyszukiwarka (termin i aliasy, bez względu na wielkość liter i polskie znaki), filtr kategorii (radio w rozwijanym panelu),
+   licznik w aria-live, stan pusty, indeks A–Z (litery bez widocznych haseł nieaktywne, liczby przy literach liczone po filtrze),
+   „Kopiuj link”. Bez JS: pełna lista + indeks (kotwice).
+   Kolejność wyników przy wpisanej frazie: najpierw dokładne trafienie terminu lub odmiany, potem początek terminu, potem początek
+   wyrazu, na końcu fragment w środku wyrazu (ten tylko dla fraz dłuższych niż 3 znaki – „OC” nie znajduje „ochrona”, a „NW” – „inwalidztwo”).
+   Litery i hasła są wtedy przestawiane w DOM (kolejność czytania = kolejność na ekranie); po wyczyszczeniu frazy wraca kolejność alfabetyczna. */
 (function(){
   var form=document.getElementById('sl-szukaj'), q=document.getElementById('sl-q'), wyczysc=document.getElementById('sl-wyczysc');
   var licznik=document.getElementById('sl-licznik'), pusto=document.getElementById('sl-pusto'), pustoQ=document.getElementById('sl-pusto-q');
+  var kat=document.getElementById('sl-kat'), katWybor=document.getElementById('sl-kat-wybor'), sekcja=document.getElementById('hasla');
+  var lista=document.querySelector('.sl-lista'), uwaga=document.querySelector('.sl-stopka-uwaga'), indeks=document.getElementById('indeks');
   var hasla=[].slice.call(document.querySelectorAll('.haslo')), litery=[].slice.call(document.querySelectorAll('.sl-litera'));
-  var az=[].slice.call(document.querySelectorAll('.sl-az a[data-litera]'));
-  if(!form||!q||!hasla.length) return;
-  form.hidden=false;
+  if(!form||!q||!hasla.length||!kat) return;
+  form.hidden=false;kat.hidden=false;
   function norm(s){return (s||'').toLowerCase().replace(/[’‘]/g,"'").replace(/ł/g,'l').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim()}
+  function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
   function plural(n,a,b,c){if(n===1)return a;var d=n%10,s=n%100;return (d>=2&&d<=4&&(s<12||s>14))?b:c}
-  var dane=hasla.map(function(h){return {el:h,kat:h.getAttribute('data-kat'),txt:h.getAttribute('data-szukaj').split('|')}});
-  var tLive=0;
-  function kategoria(){var r=form.querySelector('input[name="kategoria"]:checked');return r?r:null}
+  var dane=hasla.map(function(h,i){return {el:h,i:i,kat:h.getAttribute('data-kat'),txt:h.getAttribute('data-szukaj').split('|')}});
+  litery.forEach(function(l,i){l._i=i;l._ile=l.querySelector('.sl-litera-ile');l._wroc=l.querySelector('.sl-wroc')});
+  var tLive=0, porzadek=false;
+  function radio(){return document.querySelector('input[name="kategoria"]:checked')}
+  /* ranga trafienia: 0 dokładne, 1 początek terminu/odmiany, 2 początek wyrazu, 3 fragment; Infinity – brak */
+  function ranga(d,fraza,reWyraz){
+    var best=Infinity;
+    d.txt.forEach(function(x){
+      var r=x===fraza?0:x.indexOf(fraza)===0?1:reWyraz.test(x)?2:(fraza.length>3&&x.indexOf(fraza)!==-1)?3:Infinity;
+      if(r<best)best=r;
+    });
+    return best;
+  }
+  function ustawKolejnosc(wg){
+    /* wg: true – według rangi; false – alfabetycznie (kolejność z pliku) */
+    if(!wg&&!porzadek)return;
+    litery.forEach(function(l){
+      var hs=dane.filter(function(d){return d.el.parentNode===l});
+      hs.sort(function(a,b){return wg?(a.r-b.r)||(a.i-b.i):a.i-b.i});
+      hs.forEach(function(d){l.insertBefore(d.el,l._wroc)});
+      l._r=hs.reduce(function(m,d){return Math.min(m,d.el.hidden?Infinity:d.r)},Infinity);
+    });
+    litery.slice().sort(function(a,b){return wg?((a._r-b._r)||(a._i-b._i)):a._i-b._i}).forEach(function(l){lista.insertBefore(l,uwaga)});
+    porzadek=wg;
+  }
   function filtruj(ogloszenie){
-    var fraza=norm(q.value), kr=kategoria(), kat=kr&&kr.value, widoczne=0;
+    var fraza=norm(q.value), kr=radio(), kv=kr&&kr.value, widoczne=0;
+    var reWyraz=new RegExp('(^|[^a-z0-9])'+esc(fraza));
     dane.forEach(function(d){
-      var ok=(!kat||d.kat===kat)&&(!fraza||d.txt.some(function(x){return x.indexOf(fraza)!==-1}));
+      d.r=fraza?ranga(d,fraza,reWyraz):0;
+      var ok=(!kv||d.kat===kv)&&d.r<Infinity;
       d.el.hidden=!ok;if(ok)widoczne++;
     });
+    ustawKolejnosc(!!fraza);
     litery.forEach(function(l){
-      var ma=!!l.querySelector('.haslo:not([hidden])');l.hidden=!ma;
+      var n=l.querySelectorAll('.haslo:not([hidden])').length;l.hidden=!n;
+      if(l._ile)l._ile.textContent=n;
       var a=document.querySelector('.sl-az a[data-litera="'+l.id.replace('litera-','')+'"]');
       if(a){
-        var n=l.querySelectorAll('.haslo:not([hidden])').length, c=a.textContent;
+        var c=a.textContent;
         a.setAttribute('aria-label',n?c+' – '+n+' '+plural(n,'hasło','hasła','haseł'):c+' – brak haseł w wynikach');
-        if(ma){a.setAttribute('href','#'+l.id);a.removeAttribute('aria-disabled')}else{a.removeAttribute('href');a.setAttribute('aria-disabled','true')}
+        if(n){a.setAttribute('href','#'+l.id);a.removeAttribute('aria-disabled')}else{a.removeAttribute('href');a.setAttribute('aria-disabled','true')}
       }
     });
+    if(fraza||kv)sekcja.setAttribute('data-filtr','');else sekcja.removeAttribute('data-filtr');
+    if(katWybor&&kr)katWybor.textContent=kr.getAttribute('data-krotko')||'Wszystkie';
     wyczysc.hidden=!q.value;
     pusto.hidden=widoczne>0;
     if(!widoczne)pustoQ.textContent=q.value.trim();
-    var wKat=kat?' w kategorii „'+kr.getAttribute('data-nazwa')+'”':'';
-    var txt=(!fraza&&!kat)?'Wszystkie hasła: '+widoczne:(widoczne?'Znaleziono '+widoczne+' '+plural(widoczne,'hasło','hasła','haseł')+wKat:'Brak haseł'+(fraza?' dla „'+q.value.trim()+'”':'')+wKat);
+    var wKat=kv?' w kategorii „'+kr.getAttribute('data-nazwa')+'”':'';
+    var txt=(!fraza&&!kv)?'Wszystkie hasła: '+widoczne:(widoczne?'Znaleziono '+widoczne+' '+plural(widoczne,'hasło','hasła','haseł')+wKat:'Brak haseł'+(fraza?' dla „'+q.value.trim()+'”':'')+wKat);
     clearTimeout(tLive);
     if(ogloszenie===false){licznik.textContent=txt;return}
     tLive=setTimeout(function(){licznik.textContent=txt},350);
   }
-  function reset(){q.value='';var w=form.querySelector('input[name="kategoria"][value=""]');if(w)w.checked=true;filtruj()}
+  function reset(){q.value='';var w=document.querySelector('input[name="kategoria"][value=""]');if(w)w.checked=true;filtruj()}
   q.addEventListener('input',function(){filtruj()});
-  form.addEventListener('change',function(e){if(e.target.name==='kategoria')filtruj()});
+  kat.addEventListener('change',function(e){if(e.target.name==='kategoria')filtruj()});
   form.addEventListener('submit',function(e){e.preventDefault();filtruj()});
   form.addEventListener('reset',function(){setTimeout(function(){filtruj();q.focus()},0)});
   q.addEventListener('keydown',function(e){if(e.key==='Escape'&&q.value){e.preventDefault();q.value='';filtruj()}});
   document.getElementById('sl-pusto-reset').addEventListener('click',function(){reset();q.focus()});
-  /* odnośnik do ukrytego hasła (kotwica, „Zobacz też”, adres z #haslo-…): czyści filtry przed przewinięciem */
-  function pokaz(id){var el=id&&document.getElementById(id);if(el&&(el.hidden||(el.closest('.sl-litera')||{}).hidden))reset()}
-  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="#haslo-"],a[href^="#litera-"]');if(a)pokaz(a.getAttribute('href').slice(1))},true);
+  /* odnośnik do ukrytego hasła (kotwica, „Zobacz też”, adres z #haslo-…) albo do schowanego indeksu: czyści filtry przed przewinięciem */
+  function pokaz(id){var el=id&&document.getElementById(id);if(el&&(el.hidden||(el.closest('.sl-litera')||{}).hidden||(el===indeks&&!el.getClientRects().length)))reset()}
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="#haslo-"],a[href^="#litera-"],a[href="#indeks"]');if(a)pokaz(a.getAttribute('href').slice(1))},true);
   /* wejście z #haslo-…: przewinięcie po zbudowaniu strony (przyciski kopiowania zmieniają wysokość) – bez animacji */
   function zHash(e){try{var id=decodeURIComponent(location.hash.slice(1)), el;if(!id)return;var ukryte=(el=document.getElementById(id))&&(el.hidden||(el.closest('.sl-litera')||{}).hidden);pokaz(id);
     if(el&&(!e||ukryte))requestAnimationFrame(function(){el.scrollIntoView({block:'start',behavior:'instant'})})}catch(err){}}
