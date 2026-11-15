@@ -296,6 +296,8 @@ html:has(.zab-sheet[open]){overflow:hidden}
 .zab-tags ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .zab-tags li{display:inline-flex;align-items:center;max-width:100%;min-height:26px;padding:2px 10px;border:1px solid var(--bp-line-gold);border-radius:999px;background:rgba(255,255,255,.8);font-size:var(--text-xs);line-height:1.35;color:var(--color-ink);overflow-wrap:anywhere}
 .zab-tags li.zab-tags-more{border-style:dashed;color:var(--color-taupe);background:transparent}
+/* pozycja wycofana z listy (archiwum, 00 Q1): nazwa z dopiskiem, stonowana – ten sam wygląd z generatora i z podglądu (renderTags) */
+.zab-tags li.zab-tag-wycofany{color:var(--color-taupe);background:transparent}
 .zab-tags li.zab-tags-more:has(details){padding:0;border:0}
 .zab-tags details > summary{display:inline-flex;align-items:center;gap:6px;min-height:26px;padding:2px 10px;border:1px dashed var(--color-navy);border-radius:999px;font-size:var(--text-xs);color:var(--color-navy);cursor:pointer;list-style:none}
 .zab-tags details > summary::-webkit-details-marker{display:none}
@@ -758,7 +760,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <div class="offers-head">
             <div>
               <h2 class="card-title" id="t-lista">Oferty pracy</h2>
-              <p class="small" id="ofert-liczba" role="status">6 ogłoszeń <span class="muted">(dane przykładowe)</span></p>
+              <p class="small" id="ofert-liczba" role="status">7 ogłoszeń <span class="muted">(dane przykładowe)</span></p>
             </div>
           </div>
           <ul class="offers" id="lista-ofert">
@@ -797,6 +799,17 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <div class="zab-tags" data-ids="g2-01 g2-13 g2-18"><ul aria-label="Zabiegi w ogłoszeniu"><li>Chemiczne usuwanie makijażu permanentnego</li><li>Makijaż permanentny</li><li>Microblading</li></ul></div>
               <p class="offer-pay"><strong>50–70&nbsp;zł</strong><span>brutto za godzinę</span></p>
               <p class="offer-until">ważne do <time datetime="2026-11-23">23&nbsp;listopada 2026&nbsp;r.</time></p>
+            </li>
+            <!-- ogłoszenie sprzed wersji 2 listy (Aneks nr 5): g3-12 i g3-18 są w archiwum wycofanych pozycji – na karcie nazwa z dopiskiem
+                 „pozycja wycofana z listy” (00, Q1; 11 §11.10), filtr ze starego adresu ?zabieg=g3-18 nadal je znajduje -->
+            <li class="offer" data-zawod="podolog" data-woj="wielkopolskie" data-umowa="b2b">
+              <svg class="lux-icon" aria-hidden="true"><use href="#lux-podolog"/></svg>
+              <h3><a href="#oferta">Podolog / podolożka (przykład)</a></h3>
+              <p class="offer-salon">Gabinet Przykładowy · Poznań, wielkopolskie</p>
+              <ul class="offer-meta"><li>B2B</li><li>część etatu</li><li>dodano <time datetime="2026-10-30">30.10.2026</time></li></ul>
+              <div class="zab-tags" data-ids="g1-25 g3-12 g3-18"><ul aria-label="Zabiegi w ogłoszeniu"><li>Pedicure kosmetyczny</li><li class="zab-tag-wycofany">Konsultacja podologiczna (pozycja wycofana z listy)</li><li class="zab-tag-wycofany">Opracowanie łożyska przy onycholizie (pozycja wycofana z listy)</li></ul></div>
+              <p class="offer-pay"><strong>60–80&nbsp;zł</strong><span>netto za godzinę</span></p>
+              <p class="offer-until">ważne do <time datetime="2026-11-29">29&nbsp;listopada 2026&nbsp;r.</time></p>
             </li>
             <li class="offer" data-zawod="tatuazysta" data-woj="pomorskie" data-umowa="inna">
               <svg class="lux-icon" aria-hidden="true"><use href="#lux-tatuazysta"/></svg>
@@ -1380,7 +1393,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             </div>
             <fieldset class="field zab" id="zab-nowe" data-zab="form" data-zab-max="30">
               <legend>Zabiegi <span>(opcjonalnie, maks.&nbsp;30)</span></legend>
-              <p class="hint" id="zab-nowe-opis">Zabiegi, które obejmuje stanowisko&nbsp;– z&nbsp;listy zabiegów programu OC dla branży beauty. Pokażemy je na karcie ogłoszenia, a&nbsp;kandydaci mogą filtrować oferty po zabiegach. Kolejność na tablicy się nie zmienia; nikt nie dobiera ani nie ocenia ogłoszeń.</p>
+              <p class="hint" id="zab-nowe-opis">Zabiegi, które obejmuje stanowisko&nbsp;– z&nbsp;listy zabiegów programu OC dla branży beauty (listy nr&nbsp;1 i&nbsp;2 oraz zabiegi wymagające ankiety; lista podologiczna – w&nbsp;dokumentach programu). Pokażemy je na karcie ogłoszenia, a&nbsp;kandydaci mogą filtrować oferty po zabiegach. Kolejność na tablicy się nie zmienia; nikt nie dobiera ani nie ocenia ogłoszeń.</p>
 <!-- gen:zabiegi-checkboxy:nowe checked="g2-32 g1-26" -->
 <div class="zab-groups">
   <details class="zab-grp" data-lista="lista-1" open>
@@ -2226,7 +2239,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             </fieldset>
             <fieldset class="field zab" id="zab-sa" data-zab="form" data-zab-max="30">
               <legend>Zabiegi <span>(opcjonalnie, maks.&nbsp;30)</span></legend>
-              <p class="hint" id="zab-sa-opis">Wybierz zabiegi, które wykonujesz. <strong>Rzadkie połączenie zabiegów z&nbsp;miastem i&nbsp;imieniem może ułatwić rozpoznanie Cię przez obecnego pracodawcę&nbsp;– zaznacz tylko to, co chcesz pokazać.</strong> Lista pochodzi z&nbsp;programu OC dla branży beauty. Pracodawcy mogą filtrować ogłoszenia po zabiegach; kolejność się nie zmienia, a&nbsp;nikt nie dobiera ani nie ocenia ogłoszeń.</p>
+              <p class="hint" id="zab-sa-opis">Wybierz zabiegi, które wykonujesz. <strong>Rzadkie połączenie zabiegów z&nbsp;miastem i&nbsp;imieniem może ułatwić rozpoznanie Cię przez obecnego pracodawcę&nbsp;– zaznacz tylko to, co chcesz pokazać.</strong> Lista pochodzi z&nbsp;programu OC dla branży beauty (listy nr&nbsp;1 i&nbsp;2 oraz zabiegi wymagające ankiety; lista podologiczna – w&nbsp;dokumentach programu). Pracodawcy mogą filtrować ogłoszenia po zabiegach; kolejność się nie zmienia, a&nbsp;nikt nie dobiera ani nie ocenia ogłoszeń.</p>
 <!-- gen:zabiegi-checkboxy:sa checked="g1-18 g2-29 g1-21 g2-22" -->
 <div class="zab-groups">
   <details class="zab-grp" data-lista="lista-1" open>
@@ -2584,7 +2597,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
 <footer class="app-footer">
   <div class="app-footer-inner">
-    <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html">Tax Protect</a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a></nav>
+    <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html">Tax Protect</a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="../opieka-medyczna.html">Opieka medyczna</a></nav>
     <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="../slownik.html">Słownik pojęć</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
     <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
     <!-- L1 (12–13.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy („XII Wydział” – prawidłowo; strona
@@ -2904,10 +2917,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
      Pozycje wycofane z listy (archiwum) – tylko nazwa z dopiskiem w ogłoszeniach, które już je mają; nie ma ich w wyborze. */
   var ZAB = null;
   try { ZAB = JSON.parse(byId('zabiegi-data').textContent); } catch (e) { ZAB = null; }
-  var ZNAME = {};
+  var ZNAME = {}, WYC = {};
   if (ZAB) {
     ZAB.zabiegi.forEach(function (z) { ZNAME[z.id] = z.nazwa; });
-    (ZAB.wycofane || []).forEach(function (z) { ZNAME[z.id] = z.nazwa + ' (pozycja wycofana z listy)'; });
+    (ZAB.wycofane || []).forEach(function (z) { ZNAME[z.id] = z.nazwa + ' (pozycja wycofana z listy)'; WYC[z.id] = true; });
   }
   function norm(s) { return String(s).toLowerCase().replace(/ł/g, 'l').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim(); }
   var X_ICON = '<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
@@ -2920,7 +2933,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     ids = ids.slice().sort(function (a, b) { return ZORD[a] - ZORD[b]; });
     box.setAttribute('data-ids', ids.join(' '));
     var ul = document.createElement('ul'); ul.setAttribute('aria-label', 'Zabiegi w ogłoszeniu');
-    ids.slice(0, 3).forEach(function (id) { var li = document.createElement('li'); li.textContent = ZNAME[id] || id; ul.appendChild(li); });
+    ids.slice(0, 3).forEach(function (id) { var li = document.createElement('li'); li.textContent = ZNAME[id] || id; if (WYC[id]) { li.className = 'zab-tag-wycofany'; } ul.appendChild(li); });
     if (ids.length > 3) { var m = document.createElement('li'); m.className = 'zab-tags-more'; m.textContent = moreLabel(ids.length - 3); ul.appendChild(m); }
     box.textContent = ''; if (ids.length) { box.appendChild(ul); }
   }
@@ -2935,7 +2948,17 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     var hint = fs.querySelector('.hint');
     /* wybrane id bez powtórzeń (pozycja z obu list ma dwa checkboxy) */
     function uniq(list) { return list.filter(function (v, i) { return list.indexOf(v) === i; }); }
-    var api = { boxes: boxes, selected: function () { return uniq(boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; })); }, setResult: function () {} };
+    /* filtr ze starego adresu z identyfikatorem wycofanym z listy (np. ?zabieg=g3-18) nadal działa (11 §11.10): takiego id nie ma
+       w oknie wyboru (brak checkboxa), ale liczy się w wyborze, ma usuwalny chip z dopiskiem „pozycja wycofana z listy”
+       i ukryte pole zabieg – ponowne wysłanie formularza GET go zachowuje. Usunięcie chipa, „Wyczyść” i reset formularza je usuwają. */
+    var extra = [], extraInputs = [];
+    function setExtra(ids) {
+      extra = ids;
+      extraInputs.forEach(function (i) { i.remove(); });
+      extraInputs = ids.map(function (id) { var i = document.createElement('input'); i.type = 'hidden'; i.name = 'zabieg'; i.value = id; fs.appendChild(i); return i; });
+    }
+    var api = { boxes: boxes, selected: function () { return uniq(boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; }).concat(extra)); }, setResult: function () {} };
+    if (ZAB && mode === 'filter') { setExtra(uniq(urlZab.filter(function (id) { return WYC[id] === true; }))); }
     if (!ZAB || typeof HTMLDialogElement !== 'function') { return api; } /* bez danych lub bez <dialog>: zostają zwykłe checkboxy */
     boxes.forEach(function (b) { b._n = norm(ZNAME[b.value] || b.parentNode.textContent); });
     if (mode === 'filter' && urlZab.length) { boxes.forEach(function (b) { if (urlZab.indexOf(b.value) > -1) { b.checked = true; } }); } /* każde wystąpienie */
@@ -3012,9 +3035,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     function mirror(b) { boxes.forEach(function (x) { if (x !== b && x.value === b.value) { x.checked = b.checked; } }); }
     chips.addEventListener('click', function (e) {
       var c = e.target.closest('.zab-chip'); if (!c) { return; }
-      var all = Array.prototype.slice.call(chips.querySelectorAll('.zab-chip')), i = all.indexOf(c);
-      var b = boxes.filter(function (x) { return x.value === c.getAttribute('data-id'); })[0];
-      b.checked = false; fire(b);
+      var all = Array.prototype.slice.call(chips.querySelectorAll('.zab-chip')), i = all.indexOf(c), id = c.getAttribute('data-id');
+      var b = boxes.filter(function (x) { return x.value === id; })[0];
+      if (b) { b.checked = false; fire(b); }
+      else { setExtra(extra.filter(function (x) { return x !== id; })); sync(); fs.dispatchEvent(new Event('change', { bubbles: true })); } /* pozycja wycofana */
       var next = chips.querySelectorAll('.zab-chip')[Math.min(i, all.length - 2)];
       (next || open).focus();
     });
@@ -3034,7 +3058,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       });
       if (!t) { saved = null; }
       none.hidden = hits > 0;
-      none.textContent = hits ? '' : 'Brak zabiegu, którego nazwa zawiera „' + q.value.trim() + '”. Sprawdź pisownię albo przejrzyj listy.';
+      none.textContent = hits ? '' : 'Brak zabiegu, którego nazwa zawiera „' + q.value.trim() + '”. Sprawdź pisownię albo przejrzyj listy. Zabiegów podologicznych nie ma na listach – lista zabiegów podologicznych jest w dokumentach programu.';
       clearTimeout(stTimer);
       stTimer = setTimeout(function () { qst.textContent = t ? (hits ? 'Znalezione zabiegi: ' + hits : 'Nie znaleziono zabiegu') : ''; }, 450);
     }
@@ -3063,13 +3087,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       if (api.onclose) { api.onclose(); }
     });
     clear.addEventListener('click', function () {
-      var changed = boxes.filter(function (b) { return b.checked; });
+      var changed = boxes.filter(function (b) { return b.checked; }), hadExtra = extra.length > 0;
       changed.forEach(function (b) { b.checked = false; });
+      setExtra([]);
       if (changed.length) { fire(changed[0]); }
+      else if (hadExtra) { sync(); fs.dispatchEvent(new Event('change', { bubbles: true })); }
       q.focus();
     });
     var form = fs.form || fs.closest('form');
-    if (form) { form.addEventListener('reset', function () { setTimeout(sync, 0); }); }
+    if (form) { form.addEventListener('reset', function () { setExtra([]); setTimeout(sync, 0); }); }
     api.setResult = function (n) { resultN = n; sync(); };
     api.sync = sync;
     sync();

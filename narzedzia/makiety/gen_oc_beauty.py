@@ -8,7 +8,7 @@
                                        # bez znacznika GEN:taryfa – dziś kończy się błędem „brak znacznika”)
 
 Bloki: jsonld, zabiegi-skok, zabiegi, zabiegi-reguly, taryfa, klauzula, faq; poza blokami – liczby pozycji list w elementach
-data-gen="liczba-lista-1", "liczba-lista-2", "liczba-ankieta".
+data-gen="liczba-lista-1", "liczba-lista-2", "liczba-ankieta" oraz słowo „pozycja” uzgodnione z liczbą w data-gen="pozycje-<lista>".
 Źródła (docs/koncepcja/snippets/): zabiegi-oc-beauty.json (wersja 2: listy nr 1 i 2 z PDF Aneksu nr 5, ankieta a–h, podologia –
 dokument) i zabiegi-oc-beauty-wycofane.json (aliasy kotwic), taryfa-oc-beauty.json (stawki, dopłata, ochrona prawna, zdania CRM),
 faq-oc-beauty.json (pytania), klauzula-ochrona-prawna.json, schema-produkt-oc-beauty.json, schema-home.json.
@@ -122,14 +122,8 @@ def wypelnij(s):
 
 
 def teksty_crm(klucz):
-    """Zdania CRM przytaczane dosłownie (taryfa-oc-beauty.json → teksty_crm). W wymaganiu dokumentów CRM wstawia datę
-    „najpóźniej {termin}” (dzień początku ochrony minus 12 miesięcy) – na stronie bez daty zostaje warunek z nawiasu CRM."""
-    out = []
-    for t in T['teksty_crm'][klucz]['pozycje']:
-        t2 = re.sub(r'najpóźniej \{termin\} \((co najmniej 12 miesięcy przed początkiem ochrony)\)', r'\1', t)
-        assert '{' not in t2, 'teksty_crm.%s: nieobsłużone pole w %r' % (klucz, t)
-        out.append(t2)
-    return out
+    """Zdania CRM przytaczane dosłownie – jedna implementacja dla obu stron (oc_taryfa.teksty_crm; K16)."""
+    return ot.teksty_crm(klucz)
 
 
 def faq():
@@ -204,7 +198,7 @@ def block_listy():
             assert m, l['zalacznik']
             out.append(f'      <p class="eyebrow">{e(m.group(1))} · {pozycji(n)}</p>')
         elif n:
-            out.append(f'      <p class="eyebrow">Brzmienie Aneksu nr 5 · {pozycji(n)}</p>')
+            out.append(f'      <p class="eyebrow">Brzmienie Aneksu nr&nbsp;5 · {pozycji(n)}</p>')
         else:
             out.append('      <p class="eyebrow">Dokumenty programu</p>')
         out.append(f'      <h3 id="{e(a)}-tytul">{e(l["nazwa"])}</h3>')
@@ -215,8 +209,8 @@ def block_listy():
                        f'<a href="{KONTAKT}">Zapytaj doradcę o&nbsp;listę zabiegów podologicznych</a>.</p>')
         out.append('    </div>')
         if l.get('dokument'):
-            nr = (' nr %d' % l['numer']) if l.get('numer') else ''
-            out.append(f'    <p class="zlista-doc"><a class="link-lux" href="{e(l["dokument"])}">Pobierz listę{nr} (PDF, Aneks nr 5)</a></p>')
+            nr = ('&nbsp;nr&nbsp;%d' % l['numer']) if l.get('numer') else ''  # spacje twarde: „nr 2” i „nr 5” bez łamania (390 px)
+            out.append(f'    <p class="zlista-doc"><a class="link-lux" href="{e(l["dokument"])}">Pobierz listę{nr} (PDF, Aneks&nbsp;nr&nbsp;5)</a></p>')
         out.append('  </div>')
         if n:
             litery = l.get('numeracja') == 'litery'
@@ -349,6 +343,11 @@ def inject(src):
         src, k = re.subn(r'(<[a-z]+ data-gen="%s">)[^<]*(</[a-z]+>)' % dg, lambda m: f'{m.group(1)}{LICZBY[lst]}{m.group(2)}', src)
         if k < minimum:
             sys.exit(f'za mało znaczników data-gen="{dg}" ({k}, minimum {minimum})')
+    # data-gen="pozycje-<lista>" – słowo „pozycja” w formie uzgodnionej z liczbą pozycji tej listy (np. tekst dla czytnika ekranu
+    # po „49 + 63” w hero: rzeczownik uzgadnia się z ostatnią liczbą – „63 pozycje”)
+    for lst, n in LICZBY.items():
+        src = re.sub(r'(<[a-z]+ data-gen="pozycje-%s"[^>]*>)[^<]*(</[a-z]+>)' % re.escape(lst),
+                     lambda m, n=n: f'{m.group(1)} {plural(n, "pozycja", "pozycje", "pozycji")}{m.group(2)}', src)
     return src
 
 
@@ -413,6 +412,9 @@ def check(src):
     for wz in (r'<meta name="description" content="([^"]*)">', r'<meta property="og:description" content="([^"]*)">'):
         mm = re.search(wz, src)
         assert mm and html.unescape(mm.group(1)) == OPIS_STRONY, 'opis strony (%s) ≠ OPIS_STRONY w generatorze' % wz[:30]
+    # K12 (rozstrzygnięcie): pierwsze zdanie komunikatu CRM o zabiegach z innej listy – dosłownie w sekcji list zabiegów
+    tekst = html.unescape(re.sub(r'<[^>]+>', '', src)).replace('\u00a0', ' ')
+    assert ot.zdanie_z_innej_listy() in tekst, 'K12: brak zdania CRM o zabiegach z innej listy'
     # FAQ: widoczne pytania = FAQPage
     assert len(re.findall(r'<details id="pytanie-\d+">', B['faq'])) == len(F['pytania'])
 

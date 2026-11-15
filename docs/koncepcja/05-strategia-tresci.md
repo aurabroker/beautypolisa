@@ -5,7 +5,7 @@
 ## TL;DR
 
 - Hubami są **strony produktowe i kalkulator**, nie osobne „artykuły filarowe”: 6 produktów + 2 filary tematyczne („Prawo, kontrole i bezpieczeństwo w salonie”, „Pracownicy i benefity”), 45 artykułów long-tail w 20 klastrach, 5 treści narzędziowych.
-- Największa przewaga: BeautyPolisa będzie **pierwotnym źródłem** dla programu OC ERGO Hestia realizowanego z Fundacją Beauty Razem, czterech grup ryzyka zabiegów i listy zabiegów wysokiego ryzyka (01, pkt 7) – te treści idą pierwsze.
+- Największa przewaga: BeautyPolisa będzie **pierwotnym źródłem** dla programu OC ERGO Hestia realizowanego z Fundacją Beauty Razem, list zabiegów programu w brzmieniu Aneksu nr 5, zabiegów wymagających ankiety ERGO Hestii i taryfy według rodzaju działalności (01, pkt 7; 00, D43) – te treści idą pierwsze.
 - Kolejność: quick wins w OC i prawie salonowym (tygodnie 1–5), potem Tax Protect i utrata dochodu (sezon styczeń–luty), grupowe i opieka medyczna, NNW dzieci jako evergreen przed wrześniem. Rytm: **2 publikacje + 1 aktualizacja strony produktowej tygodniowo**.
 - „NNW dzieci” ma od 13.11.2026 stronę programu Colonnade (warianty I / II / III – 40 / 94 / 175 zł rocznie za osobę) z zakupem online na platformie ubezpieczyciela (00, D35); „Grupowe ERGO” – stronę z dwiema drogami: ERGO Życie w Biznesie dla salonu i ERGO Razem dla siebie i rodziny (00, D36). „Utrata dochodu” ma od 12.11.2026 treść opartą na naszym serwisie utratadochodu.pl i wniosek na utratadochodu.pl, bez kwot składek (00, D33, D34).
 - **Każda treść kończy się prawdziwą ścieżką zakupu (00, D32; rozdział „Ścieżka zakupu w treściach”):** OC – kalkulator albo formularz → doradca → e-mail z osobistym linkiem do APK i wniosku w serwisie portal.beautypolisa.eu → podpis → polisa; Tax Protect – kalkulator albo formularz → doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; NNW dzieci – „Kup online u Colonnade” (https://bit.ly/szkolneNNW2026) albo formularz → doradca; grupowe – wniosek dla salonu na ergo.auraexpert.pl albo kalkulator ERGO Razem na ergo.beautypolisa.eu, obok formularz → doradca; opieka medyczna – formularz → doradca.
@@ -15,18 +15,18 @@
 
 ## Grupa docelowa
 
-Wspólny mianownik: mikroprzedsiębiorca lub mała firma beauty, wysoka ekspozycja na roszczenia z zabiegu, niska znajomość języka ubezpieczeniowego, decyzje „przy okazji” (odnowienie polisy, kontrola, pierwsze roszczenie, nowy pracownik). Portal nie sprzedaje polis w koszyku i nie przyjmuje płatności (00, D40) – persona kończy na formularzu leadowym, na `/kalkulator/oc` albo na drodze wskazanej na stronie produktu: zakup online NNW dzieci na platformie ubezpieczyciela Colonnade lub okresowej niezdolności do pracy u Leadenhall Insurance S.A. (coverholder Lloyd’s), wniosek na utratadochodu.pl, wniosek dla salonu na ergo.auraexpert.pl, kalkulator ERGO Razem na ergo.beautypolisa.eu (01, pkt 8.1; 00, D33–D36). Grupy ryzyka wg cennika kalkulatora (01, pkt 3.1). Produkty w tabelach skrótowo; pełne nazwy: OC dla branży beauty (ERGO Hestia), Tax Protect (Colonnade), Utrata dochodu, NNW dzieci, Grupowe ERGO dla beauty, Opieka medyczna (ENEL-MED / LUX MED).
+Wspólny mianownik: mikroprzedsiębiorca lub mała firma beauty, wysoka ekspozycja na roszczenia z zabiegu, niska znajomość języka ubezpieczeniowego, decyzje „przy okazji” (odnowienie polisy, kontrola, pierwsze roszczenie, nowy pracownik). Portal nie sprzedaje polis w koszyku i nie przyjmuje płatności (00, D40) – persona kończy na formularzu leadowym, na `/kalkulator/oc` albo na drodze wskazanej na stronie produktu: zakup online NNW dzieci na platformie ubezpieczyciela Colonnade lub okresowej niezdolności do pracy u Leadenhall Insurance S.A. (coverholder Lloyd’s), wniosek na utratadochodu.pl, wniosek dla salonu na ergo.auraexpert.pl, kalkulator ERGO Razem na ergo.beautypolisa.eu (01, pkt 8.1; 00, D33–D36). Rodzaj działalności w kolumnie OC – ten, który kalkulator zaznacza dla profilu „Dla kogo” (decyzja zleceniodawcy 14.11.2026; 00, D43 g). Produkty w tabelach skrótowo; pełne nazwy: OC dla branży beauty (ERGO Hestia), Tax Protect (Colonnade), Utrata dochodu, NNW dzieci, Grupowe ERGO dla beauty, Opieka medyczna (ENEL-MED / LUX MED).
 
 | Persona | Cele | Obawy | Typowe pytania | Etap zakupu | Produkt główny | Dodatkowe |
 |---|---|---|---|---|---|---|
 | Właścicielka salonu 1–8 osób | ciągłość biznesu, jedna polisa dla zespołu | roszczenie klientki, kontrola, odejście pracownicy | „czy OC obejmuje pracownice”, „ile kosztuje ubezpieczenie salonu” | rozważanie → decyzja (odnowienie) | OC | Tax Protect, Grupowe ERGO, Opieka medyczna |
-| Kosmetolog JDG | bezpiecznie wykonywać zabiegi gr. 2, czasem gr. 4 | powikłanie, brak dochodu w chorobie, granice kompetencji | „oc kosmetologa mezoterapia”, „prywatne L4 na JDG” | świadomość → rozważanie | OC (gr. 2 / 4) | Utrata dochodu, Opieka medyczna, NNW dzieci (jako rodzic) |
-| Fryzjer / barber | niska składka, szybka wycena | uczulenie na farbę, choroba zawodowa | „oc fryzjera ile kosztuje” | decyzja (porównuje cenę) | OC (gr. 1) | Utrata dochodu, Grupowe ERGO (gdy zatrudnia) |
-| Podolog | ochrona przy pacjencie obciążonym [hipoteza] | rana, zakażenie | „oc podologa” | rozważanie | OC (gr. 3) | Utrata dochodu, Opieka medyczna |
-| Linergistka / makijaż permanentny | ochrona przed roszczeniami „estetycznymi” | niezadowolenie z efektu, migracja pigmentu, alergia | „oc linergistki”, „zgoda na makijaż permanentny wzór” | rozważanie → decyzja | OC (gr. 2) | Utrata dochodu, Tax Protect |
-| Stylistka paznokci | najtańsze OC, pierwszy kontakt z ubezpieczeniem | uszkodzenie płytki, zakażenie | „czy stylistka paznokci musi mieć oc” | świadomość | OC (gr. 1) | Utrata dochodu, NNW dzieci (jako rodzic) |
-| Tatuażysta | OC wymagane przez studio, zgodność z sanepidem | zakażenie, błąd sterylizacji | „oc tatuażysty”, „sanepid studio tatuażu wymagania” | rozważanie | OC (gr. 2) | Tax Protect, Utrata dochodu |
-| Trycholog | ochrona przy zabiegach na skórę głowy | zarzut „leczenia bez uprawnień” | „oc trychologa” | świadomość | OC – grupa [hipoteza – do weryfikacji] | Utrata dochodu, Opieka medyczna |
+| Kosmetolog JDG | bezpiecznie wykonywać zabiegi z list programu, czasem zabiegi wymagające ankiety | powikłanie, brak dochodu w chorobie, granice kompetencji | „oc kosmetologa mezoterapia”, „prywatne L4 na JDG” | świadomość → rozważanie | OC (rodzaj „Gabinet kosmetologiczny”; zabiegi wymagające ankiety – wycena indywidualna) | Utrata dochodu, Opieka medyczna, NNW dzieci (jako rodzic) |
+| Fryzjer / barber | niska składka, szybka wycena | uczulenie na farbę, choroba zawodowa | „oc fryzjera ile kosztuje” | decyzja (porównuje cenę) | OC (rodzaj „Salon fryzjerski”) | Utrata dochodu, Grupowe ERGO (gdy zatrudnia) |
+| Podolog | ochrona przy pacjencie obciążonym [hipoteza] | rana, zakażenie | „oc podologa” | rozważanie | OC (rodzaj „Gabinet podologiczny”) | Utrata dochodu, Opieka medyczna |
+| Linergistka / makijaż permanentny | ochrona przed roszczeniami „estetycznymi” | niezadowolenie z efektu, migracja pigmentu, alergia | „oc linergistki”, „zgoda na makijaż permanentny wzór” | rozważanie → decyzja | OC (rodzaj „Gabinet kosmetologiczny”) | Utrata dochodu, Tax Protect |
+| Stylistka paznokci | najtańsze OC, pierwszy kontakt z ubezpieczeniem | uszkodzenie płytki, zakażenie | „czy stylistka paznokci musi mieć oc” | świadomość | OC (rodzaj „Gabinet kosmetyczny”) | Utrata dochodu, NNW dzieci (jako rodzic) |
+| Tatuażysta | OC wymagane przez studio, zgodność z sanepidem | zakażenie, błąd sterylizacji | „oc tatuażysty”, „sanepid studio tatuażu wymagania” | rozważanie | OC (rodzaj „Salon tatuażu”) | Tax Protect, Utrata dochodu |
+| Trycholog | ochrona przy zabiegach na skórę głowy | zarzut „leczenia bez uprawnień” | „oc trychologa” | świadomość | OC – rodzaj działalności do ustalenia (zabiegi trychologiczne są na listach nr 1 i 2) | Utrata dochodu, Opieka medyczna |
 | Manager sieci salonów (> 8 osób) | jedna umowa, benefity obniżające rotację | rotacja, koszty stałe, kontrola PIP | „ubezpieczenie grupowe dla pracowników salonu” | rozważanie → decyzja (budżet XI–XII) | Grupowe ERGO | Opieka medyczna, OC (wycena indywidualna), Tax Protect |
 
 Dwa wymiary przekrojowe. **Rodzic**: pracownice i klientki salonów to w większości osoby w wieku rodzicielskim [założenie]; NNW dzieci jest produktem prywatnym, ale kanał dotarcia jest zawodowy (salon jako miejsce rozmowy, pracodawca jako fundator benefitu) – treści D piszemy do rodzica, dystrybuujemy przez persony 1, 2, 6, 9 i filar H. **JDG**: większość person to jednoosobowa działalność; „Utrata dochodu” dotyczy tej grupy (wg researchu w 01: min. ok. 80 % przychodów z własnej działalności), a niezdolność do pracy, karencja, wyłączenia i koszt podatkowy to pojęcia, o które persona pyta.
@@ -38,7 +38,7 @@ Dwa wymiary przekrojowe. **Rodzic**: pracownice i klientki salonów to w większ
 Hub-and-spoke: **hub = strona produktowa** (`/ubezpieczenia/*`) lub `/kalkulator/oc`, szprychy = artykuły `/baza-wiedzy/<slug>`. Filary G i H mają hub w widoku bazy wiedzy filtrowanym po filarze i w `/dla-kogo/<zawod>`. Nie tworzymy osobnych „pillar pages”, żeby nie kanibalizować stron produktowych na frazach komercyjnych.
 
 ```text
-A. OC dla branży beauty (ERGO Hestia)   A1 Podstawy OC · A2 Grupy ryzyka (pierwotne źródło) · A3 Wniosek i klauzule · A4 Szkody
+A. OC dla branży beauty (ERGO Hestia)   A1 Podstawy OC · A2 Listy zabiegów i taryfa (pierwotne źródło) · A3 Wniosek i klauzule · A4 Szkody
 B. Tax Protect (Colonnade)               B1 Ochrona karnoskarbowa właściciela (sekcja 1) · B2 Ochrona podatkowa firmy (sekcja 2), kontrole
 C. Utrata dochodu                        C1 „Prywatne L4” dla JDG · C2 Pojęcia: niezdolność, karencja, wyłączenia, podatki
 D. NNW dzieci                            D1 NNW szkolne a indywidualne (wrzesień) · D2 NNW dziecka jako benefit
@@ -56,12 +56,12 @@ H. Pracownicy i benefity                 H1 Zatrudnienie i odpowiedzialność ·
 | A1.2 | Ubezpieczenie salonu – co obowiązkowe | ubezpieczenie salonu kosmetycznego | Ś | inf. | przewodnik |
 | A1.3 | OC zawodowe a OC działalności | oc zawodowe kosmetologa | N | inf. | wyjaśnienie |
 | A1.4 | Suma 100 / 200 / 300 tys. zł – jak dobrać | suma gwarancyjna oc kosmetyczka | N | kom. | poradnik |
-| A2.1 | Cztery grupy ryzyka zabiegów – pełna lista | grupy ryzyka zabiegów kosmetycznych ubezpieczenie | N | inf. | tabela (PŹ); **stan 12.11.2026:** dane gotowe (`snippets/zabiegi-oc-beauty.json`, 117 zabiegów – 00, D29), strona w makiecie (`design/v3/oc-beauty.html#zabiegi`) |
-| A2.2 | Zabiegi wysokiego ryzyka (gr. 4) – ocena indywidualna | oc kosmetologa medycyna estetyczna | Ś | inf. / kom. | opis procesu (PŹ) |
-| A2.3 | Quiz „Czy Twoje zabiegi są w grupie ryzyka?” | ubezpieczenie oc zabiegi lista | N | kom. | narzędzie |
+| A2.1 | Listy zabiegów programu OC (Aneks nr 5) i taryfa według rodzaju działalności | lista zabiegów oc kosmetyczka | N | inf. | tabela (PŹ); **stan 15.11.2026:** dane gotowe (`snippets/zabiegi-oc-beauty.json` w wersji 2 – listy nr 1 i 2 oraz zabiegi wymagające ankiety; `snippets/taryfa-oc-beauty.json` – 00, D29, D43), strona w makiecie (`design/v3/oc-beauty.html#zabiegi`) |
+| A2.2 | Zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna | oc kosmetologa medycyna estetyczna | Ś | inf. / kom. | opis procesu (PŹ) |
+| A2.3 | Quiz „Ile zapłacisz za OC?” (rodzaj działalności → liczba osób → składka) | ubezpieczenie oc zabiegi lista | N | kom. | narzędzie |
 | A3.1 | Co przygotować do wniosku (NIP, REGON, szkodowość 3 lat, zabiegi, zgody, kwalifikacje) | wniosek oc kosmetyczka dokumenty | N | trans. | checklista |
 | A3.2 | Klauzula ochrony prawnej | ochrona prawna dla kosmetyczki | N | inf. | wyjaśnienie; pełna treść klauzuli jest już na stronie OC (`#ochrona-prawna`, 00, D30) – artykuł ją objaśnia i linkuje, nie streszcza zamiast niej |
-| A3.3 | Zespół > 8 osób – wycena indywidualna | oc salon kosmetyczny pracownicy | N | kom. | poradnik |
+| A3.3 | Więcej niż 8 osób wykonujących zabiegi – wycena indywidualna | oc salon kosmetyczny pracownicy | N | kom. | poradnik |
 | A4.1 | Nieudany zabieg – zgłoszenie szkody krok po kroku | odszkodowanie za nieudany zabieg kosmetyczny | W | inf. | poradnik procesowy |
 | A4.2 | Poparzenie, uczulenie, migracja pigmentu – scenariusze (hipotetyczne) | roszczenie klientki salon kosmetyczny | N | inf. | studia przypadków |
 | B1.1 | Karno-skarbowe dla właściciela – sekcja 1 | ubezpieczenie karno skarbowe | Ś | inf. | wyjaśnienie |
@@ -102,8 +102,8 @@ Treści narzędziowe (spójne z sekcją 06-… lead magnety i lejki):
 
 | # | Narzędzie | URL | Bramkowanie | Rola |
 |---|---|---|---|---|
-| 1 | Kalkulator OC (gr. 1–3, sumy 100/200/300 tys. zł, klauzula ochrony prawnej; gr. 4 i > 8 osób → wycena indywidualna) | `/kalkulator/oc` | brak; lead na końcu | główny konwerter |
-| 2 | Quiz grup ryzyka (A2.3) | `/baza-wiedzy/quiz-grupy-ryzyka` | brak; wynik → kalkulator z prewypełnioną grupą | kwalifikacja |
+| 1 | Kalkulator OC (rodzaj działalności → taryfa, liczba osób, sumy 100/200/300 tys. zł, klauzula ochrony prawnej; zabiegi wymagające ankiety i więcej niż 8 osób → wycena indywidualna; 00, D43) | `/kalkulator/oc` | brak; lead na końcu | główny konwerter |
+| 2 | Quiz składki OC (A2.3) | `/baza-wiedzy/quiz-skladka-oc` | brak; wynik → kalkulator z zaznaczonym rodzajem działalności i liczbą osób | kwalifikacja |
 | 3 | Generator wzoru zgody na zabieg (G1.1) | `/baza-wiedzy/zgoda-na-zabieg-wzor` | PDF po e-mailu | lead magnet 1 |
 | 4 | Checklista kontroli: sanepid / PIP / skarbowa / UODO (G2.1) | `/baza-wiedzy/checklista-kontroli` | online bez bramki, PDF po e-mailu | lead magnet 2 |
 | 5 | Kalkulator kosztu przestoju w JDG (C1.4) | `/baza-wiedzy/kalkulator-przestoju` | brak; CTA „zapytaj o ofertę” | edukacja → lead |
@@ -116,8 +116,8 @@ Backlog: arkusz „koszt rotacji vs koszt benefitu” (E2.2) – gdy zespół do
 
 | Temat | Co jest dziś (01) | Kto pokrywa w SERP (01, pkt 7) | Luka i szansa |
 |---|---|---|---|
-| OC beauty – podstawy, cena | kalkulator w `indeksowt.html` / `bp-app.js`, FAQ bez `FAQPage` | CUK, Rankomat, Warta (Studio urody / Ekstrabiznes Plus) | nikt nie opisuje składki wg grup ryzyka ani nie ma kalkulatora z grupami zabiegów |
-| Grupy ryzyka, zabiegi wysokiego ryzyka | lista zaszyta w JS, nieindeksowalna | brak publicznych źródeł o programie OC ERGO Hestia dla Beauty Razem | **PŹ**: cytowalna tabela 4 grup i lista gr. 4 z opisem oceny indywidualnej |
+| OC beauty – podstawy, cena | kalkulator w `indeksowt.html` / `bp-app.js`, FAQ bez `FAQPage` | CUK, Rankomat, Warta (Studio urody / Ekstrabiznes Plus) | nikt nie opisuje taryfy programu według rodzaju działalności ani nie ma kalkulatora liczącego jak CRM programu |
+| Listy zabiegów, zabiegi wymagające ankiety | lista zaszyta w JS, nieindeksowalna | brak publicznych źródeł o programie OC ERGO Hestia dla Beauty Razem | **PŹ**: cytowalne listy nr 1 i 2 w brzmieniu Aneksu nr 5 i 8 zabiegów wymagających ankiety z opisem wyceny indywidualnej |
 | Wniosek (szkodowość, zgody, kwalifikacje) | ankieta PDF (`AnkietaBPEH.pdf`) | brak | checklista przygotowania – unikalna, skraca sprzedaż |
 | Szkody, nieudany zabieg | brak | Prawo.pl (perspektywa klientki) | perspektywa salonu: jak zgłosić, dokumentować; powiązanie ze `/szkoda` |
 | Zgoda na zabieg | brak | blog Booksy | wzór powiązany z wymaganiami wniosku OC – mocniejszy niż ogólny poradnik |
@@ -140,7 +140,7 @@ Tam, gdzie jesteśmy pierwotnym źródłem, treść musi być w stu procentach z
 | Informacyjna „co to / jak działa” | oc kosmetyczki, ubezpieczenie karno skarbowe, prywatne l4 jdg | poradnik, wyjaśnienie, słownik | `/baza-wiedzy/<slug>` | link do produktu + zapis na aktualizacje |
 | Informacyjna „jak zrobić” | zgoda na zabieg kosmetyczny wzór, kontrola sanepidu salon kosmetyczny | checklista, poradnik procesowy, generator | `/baza-wiedzy/<slug>`, `/szkoda` | lead magnet (PDF za e-mail) |
 | Komercyjna – porównanie | ubezpieczenie grupowe czy pakiet medyczny, abonament medyczny dla firm porównanie | porównanie z tabelą | `/baza-wiedzy/<slug>` → `/ubezpieczenia/*` | „zapytaj o ofertę” |
-| Komercyjna – dla zawodu | oc kosmetologa, oc fryzjera, oc podologa, oc linergistki, oc tatuażysty | strona persony | `/dla-kogo/<zawod>` | kalkulator z prewypełnioną grupą |
+| Komercyjna – dla zawodu | oc kosmetologa, oc fryzjera, oc podologa, oc linergistki, oc tatuażysty | strona persony | `/dla-kogo/<zawod>` | kalkulator z zaznaczonym rodzajem działalności (00, D43 g) |
 | Transakcyjna | kalkulator oc kosmetyczka, oc kosmetyczki cena | kalkulator, formularz | `/kalkulator/oc`, formularze `/ubezpieczenia/*` | formularz (Turnstile, zgody – 02) |
 | Posprzedażowa | zgłoszenie szkody oc kosmetyczka, owu ergo hestia oc beauty | instrukcja, dokumenty | `/szkoda`, `/dokumenty` | zgłoszenie / pobranie OWU |
 
@@ -163,7 +163,7 @@ oc tatuazysty,A,niski,1
 oc trychologa,A,niski,0
 oc zawodowe kosmetologa,A,niski,0
 suma gwarancyjna oc kosmetyczka,A,niski,0
-grupy ryzyka zabiegow kosmetycznych ubezpieczenie,A,niski,1
+lista zabiegow oc kosmetyczka,A,niski,1
 oc kosmetologa medycyna estetyczna,A,sredni,1
 ubezpieczenie oc mezoterapia,A,niski,0
 odszkodowanie za nieudany zabieg kosmetyczny,A,wysoki,1
@@ -226,7 +226,7 @@ Zasady redakcyjne:
 3. `konsultacja.beautypolisa.eu` nie jest APK ani wnioskiem – nie linkujemy tam z treści o zakupie.
 4. Tax Protect w tej samej ścieżce co OC to etap 2 – opisany tylko w dokumentacji (00, D32), nie w treściach publicznych.
 5. W tabelach tego dokumentu CTA „zapytaj o ofertę” przy treściach filaru C (Utrata dochodu) oznacza od 12.11.2026 link do `/ubezpieczenia/utrata-dochodu` i wniosku na utratadochodu.pl; strona produktu nie jest już wersją edukacyjną (00, D33, D34).
-6. Artykuł A3.1 „Co przygotować do wniosku” opisuje dane, o które zapyta wniosek OC pod osobistym linkiem; nie publikuje formularza wniosku. Przy zabiegach z grupy 4 ankieta indywidualnej oceny ryzyka ERGO Hestii jest częścią tego samego osobistego linku.
+6. Artykuł A3.1 „Co przygotować do wniosku” opisuje dane, o które zapyta wniosek OC pod osobistym linkiem; nie publikuje formularza wniosku. Przy zabiegach wymagających ankiety ERGO Hestii (00, D43) ankieta jest częścią tego samego osobistego linku; wymagane dokumenty artykuł przytacza za CRM albo odsyła do doradcy.
 7. NNW dzieci i grupowe ERGO: składki podajemy jako stałe stawki programu (NNW 40 / 94 / 175 zł rocznie za osobę; ERGO Życie w Biznesie 58 / 68 / 76 zł miesięcznie za osobę, stawki do 31.12.2026; ERGO Razem „od 57 zł”, dokładnie w kalkulatorze) – bez słów „orientacyjne” czy „szacunkowe”. Warianty i obie drogi grupowego opisujemy jako równorzędne, bez wskazywania „najlepszego” (IDD – propozycja wymaga analizy potrzeb). Treści D (NNW) kończą się linkiem do `/ubezpieczenia/nnw-dzieci`, nie bezpośrednio do bit.ly – strona pokazuje warianty i OWU przed wyjściem do ubezpieczyciela.
 8. Nie piszemy, że OC jest „tylko dla członków Beauty Razem” – członkostwo nie jest wymagane (00, D39). Nie powtarzamy sformułowań partnera „Ubezpieczamy wszystkie zabiegi!” ani „opłaci mandat lub karę” (00, rozdział 13 – uwagi dla zleceniodawcy).
 
@@ -238,12 +238,12 @@ Kryteria: (1) wartość biznesowa – jak blisko leada jest czytelnik, (2) przew
 
 | # | Tytuł roboczy | Słowo kluczowe [hipoteza] | Intencja | Priorytet | Szac. długość | Produkt | Lead magnet / CTA |
 |---|---|---|---|---|---|---|---|
-| 1 | A2.1 Cztery grupy ryzyka | grupy ryzyka zabiegów kosmetycznych ubezpieczenie | inf. | quick win (PŹ) | 1500–2000 | OC | kalkulator |
+| 1 | A2.1 Listy zabiegów programu OC | lista zabiegów oc kosmetyczka | inf. | quick win (PŹ) | 1500–2000 | OC | kalkulator |
 | 2 | G1.1 Zgoda na zabieg | zgoda na zabieg kosmetyczny wzór | inf. / trans. | big bet | 1800–2500 | OC (pośrednio) | generator wzoru |
 | 3 | A1.1 OC kosmetyczki | oc kosmetyczki | inf. / kom. | big bet | 2000–2500 | OC | kalkulator |
 | 4 | A4.1 Zgłoszenie szkody | odszkodowanie za nieudany zabieg kosmetyczny | inf. | big bet | 1800–2200 | OC | `/szkoda` + kalkulator |
-| 5 | A2.2 Zabiegi wysokiego ryzyka | oc kosmetologa medycyna estetyczna | inf. / kom. | quick win (PŹ) | 1500–2000 | OC | formularz „wycena indywidualna” |
-| 6 | A2.3 Quiz grup ryzyka | ubezpieczenie oc zabiegi lista | kom. | quick win | narzędzie + 600 | OC | wynik → kalkulator |
+| 5 | A2.2 Zabiegi wymagające ankiety | oc kosmetologa medycyna estetyczna | inf. / kom. | quick win (PŹ) | 1500–2000 | OC | formularz „wycena indywidualna” |
+| 6 | A2.3 Quiz składki OC | ubezpieczenie oc zabiegi lista | kom. | quick win | narzędzie + 600 | OC | wynik → kalkulator |
 | 7 | B1.1 Karno-skarbowe właściciela | ubezpieczenie karno skarbowe | inf. | quick win (sezon I–II) | 1500–2000 | Tax Protect | „zapytaj o ofertę” |
 | 8 | B2.1 Kontrola skarbowa | kontrola skarbowa salon kosmetyczny | inf. | quick win | 1500–1800 | Tax Protect | checklista kontroli |
 | 9 | G2.1 Checklista sanepidu | kontrola sanepidu salon kosmetyczny | inf. | big bet | 1500 + checklista | OC, Tax Protect | checklista kontroli |
@@ -260,7 +260,7 @@ Kryteria: (1) wartość biznesowa – jak blisko leada jest czytelnik, (2) przew
 | 20 | A3.2 Klauzula ochrony prawnej | ochrona prawna dla kosmetyczki | inf. | fill-in | 900–1200 | OC | kalkulator (opcja klauzuli) |
 | 21 | D1.1 NNW szkolne dobrowolne | ubezpieczenie szkolne obowiązkowe czy dobrowolne | inf. | big bet (sezon IX) | 1200–1500 | NNW dzieci | `/ubezpieczenia/nnw-dzieci` (zakup online u Colonnade) / benefit |
 | 22 | C2.2 Koszt podatkowy utraty dochodu | ubezpieczenie utraty dochodu koszt podatkowy | inf. | fill-in | 1000–1200 | Utrata dochodu | „zapytaj o ofertę” |
-| 23 | G3.1 Kompetencje do zabiegów | kto może wykonywać mezoterapię igłową | inf. | big bet | 1800–2200 | OC | quiz grup ryzyka |
+| 23 | G3.1 Kompetencje do zabiegów | kto może wykonywać mezoterapię igłową | inf. | big bet | 1800–2200 | OC | quiz składki OC |
 | 24 | A4.2 Scenariusze roszczeń | roszczenie klientki salon kosmetyczny | inf. | fill-in | 1500 | OC | kalkulator |
 
 Pozostałe 21 artykułów (A1.3, A1.4, A3.3, B2.3, B2.4, C1.2, C2.1, D1.2, D1.3, D2.1, E1.2, E2.1, E2.2, F1.2, F2.1, G1.2, G2.2, G3.2, H1.1, H2.1, H2.2) wchodzi do kolejki po przeliczeniu wolumenów i pierwszych danych GSC (tydzień 10–12), z priorytetem dla sezonów XI–XII (E, F, H) i IX (D).
@@ -273,13 +273,13 @@ Start w pierwszym pełnym tygodniu po uruchomieniu; przyjęto **styczeń** [zał
 
 | Tydz. | Publikacja 1 | Publikacja 2 | Aktualizacja strony produktowej / hubu | Uwagi |
 |---|---|---|---|---|
-| 1 | A2.1 Cztery grupy ryzyka | G1.1 Zgoda na zabieg + generator | `/ubezpieczenia/oc-beauty`: sekcja „grupy ryzyka” → A2.1, FAQ z `FAQPage` | PŹ + lead magnet 1 |
+| 1 | A2.1 Listy zabiegów programu OC | G1.1 Zgoda na zabieg + generator | `/ubezpieczenia/oc-beauty`: sekcja „Listy zabiegów w programie” → A2.1, FAQ z `FAQPage` | PŹ + lead magnet 1 |
 | 2 | A1.1 OC kosmetyczki | B1.1 Karno-skarbowe | `/ubezpieczenia/tax-protect`: sekcje 1 i 2, warianty sum ze składką roczną wg taryfy programu, przychody > 3 mln zł → wycena indywidualna | sezon podatkowy |
 | 3 | A4.1 Zgłoszenie szkody | B2.1 Kontrola skarbowa | `/szkoda`: instrukcja, lista dokumentów → A4.1 | |
-| 4 | A1.2 Ubezpieczenie salonu | A2.3 Quiz grup ryzyka | `/kalkulator/oc`: wejście z quizu (parametr grupy), opis grup | narzędzie 2 |
-| 5 | A2.2 Zabiegi wysokiego ryzyka | G2.1 Checklista kontroli | `/dla-kogo/kosmetolog` → A2.2, quiz, kalkulator | lead magnet 2 |
+| 4 | A1.2 Ubezpieczenie salonu | A2.3 Quiz składki OC | `/kalkulator/oc`: wejście z quizu (rodzaj działalności i liczba osób), opis taryfy | narzędzie 2 |
+| 5 | A2.2 Zabiegi wymagające ankiety | G2.1 Checklista kontroli | `/dla-kogo/kosmetolog` → A2.2, quiz, kalkulator | lead magnet 2 |
 | 6 | C1.1 Prywatne L4 dla JDG | B2.2 Ryzyka podatkowe | `/ubezpieczenia/utrata-dochodu`: treść z utratadochodu.pl i wniosek na utratadochodu.pl, bez kwot składek (00, D33, D34) | C – parametry z utratadochodu.pl |
-| 7 | A3.1 Co przygotować do wniosku | G1.3 RODO w salonie | `/dla-kogo/fryzjer`, `/dla-kogo/stylistka-paznokci`: gr. 1 → A1.1, A3.1 | |
+| 7 | A3.1 Co przygotować do wniosku | G1.3 RODO w salonie | `/dla-kogo/fryzjer`, `/dla-kogo/stylistka-paznokci`: rodzaj działalności w kalkulatorze → A1.1, A3.1 | |
 | 8 | C1.3 Choroby zawodowe | C1.4 Kalkulator przestoju | `/dokumenty`: OWU z wersjami (Tax Protect 25.01.2023; EZwB 01/25; MediOpieka MA 01/25) | narzędzie 5 |
 | 9 | E1.1 Grupowe w małym salonie | G4.1 Reklamacja klientki | `/ubezpieczenia/grupowe-ergo`: pakiety i moduły wg OWU, bez liczb bez źródła | |
 | 10 | F1.1 ENEL-MED czy LUX MED | A3.2 Klauzula ochrony prawnej | `/ubezpieczenia/opieka-medyczna`: zakresy, próg 51+, FAQ | przeliczenie kolejki po eksporcie fraz |
@@ -306,26 +306,26 @@ Każdy artykuł linkuje „w górę” do huba produktowego i (jeśli dotyczy OC
 | Hub | Szprychy (linkują do huba) | Hub linkuje do | Przykładowy anchor |
 |---|---|---|---|
 | `/ubezpieczenia/oc-beauty` | A1.1–A1.4, A2.1, A2.2, A3.1–A3.3, A4.1, A4.2, G1.1, G3.1, G3.2, G4.1 | A1.1, A2.1, A4.1, A3.1, G1.1 | „OC dla branży beauty (ERGO Hestia) – zakres i składki” |
-| `/kalkulator/oc` | A1.1, A1.4, A2.1, A2.2, A2.3 (quiz → grupa), A3.1, A3.2, wszystkie `/dla-kogo/*` | A2.1, A1.4 | „sprawdź, w której grupie ryzyka są Twoje zabiegi” |
+| `/kalkulator/oc` | A1.1, A1.4, A2.1, A2.2, A2.3 (quiz → rodzaj działalności), A3.1, A3.2, wszystkie `/dla-kogo/*` | A2.1, A1.4 | „sprawdź, na której liście programu jest Twój zabieg” |
 | `/ubezpieczenia/tax-protect` | B1.1, B2.1–B2.4, G2.1 | B1.1, B2.1, B2.3 | „Tax Protect (Colonnade) – ochrona karnoskarbowa i podatkowa” |
 | `/ubezpieczenia/utrata-dochodu` | C1.1–C1.4, C2.1, C2.2, F2.1 | C1.1, C2.1, C1.4 | „ubezpieczenie utraty dochodu dla JDG – wniosek na utratadochodu.pl” |
 | `/ubezpieczenia/nnw-dzieci` | D1.1–D1.3, D2.1, H2.2 | D1.1, D2.1 | „NNW dzieci – o co zapytać przed wrześniem” |
 | `/ubezpieczenia/grupowe-ergo` | E1.1, E1.2, E2.1, E2.2, H2.1, H2.2, D2.1 | E1.1, E2.1, E2.2 | „Grupowe ERGO dla beauty – pakiety dla zespołu” |
 | `/ubezpieczenia/opieka-medyczna` | F1.1, F1.2, F2.1, E1.2, H2.2 | F1.1, F2.1 | „Opieka medyczna (ENEL-MED / LUX MED) dla zespołu” |
-| `/dla-kogo/<zawod>` (6 stron) | artykuły z `personas` zawierającym zawód | 2–3 artykuły klastra A2 lub G właściwe dla zawodu + kalkulator (np. kosmetolog: A2.1, A2.2, G3.1; fryzjer: A1.1, C1.3) | „OC dla kosmetologa – grupa 2 i zabiegi wysokiego ryzyka” |
+| `/dla-kogo/<zawod>` (6 stron) | artykuły z `personas` zawierającym zawód | 2–3 artykuły klastra A2 lub G właściwe dla zawodu + kalkulator (np. kosmetolog: A2.1, A2.2, G3.1; fryzjer: A1.1, C1.3) | „OC dla kosmetologa – gabinet kosmetologiczny i zabiegi wymagające ankiety” |
 | `/szkoda`, `/dokumenty` | A4.1, A4.2, G4.1; każdy artykuł cytujący OWU | A4.1, G1.2 | „OWU Tax Protect (25.01.2023)” |
 
-Zasady: jeden link do tego samego URL w treści akapitowej (reszta w bloku „powiązane”), anchory opisowe, breadcrumbs z `BreadcrumbList` (04, pkt 4.5), brak linków do subdomen `tax.`, `app.`, `crm.` z treści edukacyjnych (01, pkt 8.3). `/dla-kogo/trycholog` i `/dla-kogo/wlasciciel-salonu` [propozycja rozszerzenia konwencji URL] dochodzą po weryfikacji grupy ryzyka i pierwszych danych GSC.
+Zasady: jeden link do tego samego URL w treści akapitowej (reszta w bloku „powiązane”), anchory opisowe, breadcrumbs z `BreadcrumbList` (04, pkt 4.5), brak linków do subdomen `tax.`, `app.`, `crm.` z treści edukacyjnych (01, pkt 8.3). `/dla-kogo/trycholog` i `/dla-kogo/wlasciciel-salonu` [propozycja rozszerzenia konwencji URL] dochodzą po ustaleniu rodzaju działalności dla tych profili (00, D43 g) i pierwszych danych GSC.
 
 ```yaml
-# packages/content/baza-wiedzy/grupy-ryzyka-zabiegow.mdx – frontmatter (fragment)
-title: "Cztery grupy ryzyka zabiegów w OC beauty – pełna lista"
+# packages/content/baza-wiedzy/listy-zabiegow-oc.mdx – frontmatter (fragment)
+title: "Listy zabiegów w programie OC beauty (Aneks nr 5)"
 pillar: A
 cluster: A2
 product: oc-beauty                 # hub: /ubezpieczenia/oc-beauty
 personas: [kosmetolog, linergistka, podolog, tatuazysta]
-keyword: "grupy ryzyka zabiegów kosmetycznych ubezpieczenie"   # [hipoteza]
-related: [zabiegi-wysokiego-ryzyka, quiz-grupy-ryzyka, suma-gwarancyjna-oc]
+keyword: "lista zabiegów oc kosmetyczka"   # [hipoteza]
+related: [zabiegi-wymagajace-ankiety, quiz-skladka-oc, suma-gwarancyjna-oc]
 cta: calculator                    # calculator | lead-form | lead-magnet:<id> | ask-offer
 author: "<imię i nazwisko, rola>"
 reviewedBy: "<imię i nazwisko, uprawnienia>"
@@ -338,7 +338,7 @@ hypotheticalCases: false
 
 Schemat Zod z 02 (`title`, `description`, `product`, `updatedAt`, `reviewedBy`, `owuVersion`) rozszerzamy o `pillar`, `cluster`, `personas`, `keyword`, `related` (2–5 slugów), `cta`, `author`, `reviewedAt`, `disclaimer`, `hypotheticalCases`; reguła: artykuł z `product` innym niż `none` musi mieć `owuVersion`, a brak `reviewedBy` odrzuca PR w CI.
 
-**A2.1 – „pełna lista” (stan 12.11.2026, 00, D29).** Dane są gotowe: `snippets/zabiegi-oc-beauty.json` – 117 zabiegów z `bp-app.js` (grupa 1: 40, grupa 2: 38, grupa 3: 31, grupa 4: 8; grupa 4 w brzmieniu ankiety ERGO Hestii), 1:1 jak na listach źródłowych – tylko `id`, `slug`, `nazwa`, `grupa` (w grupie 4 `nazwa_w_ankiecie_ergo`); synonimy, zawody, uwagi i opisy grup są odłożone w `snippets/zabiegi-oc-beauty-propozycje.json` i nie są używane. Pełna lista stoi na stronie produktu (`/ubezpieczenia/oc-beauty#zabiegi`, makieta `design/v3/oc-beauty.html`), więc artykuł A2.1 jej nie przepisuje: pokazuje listę z tego samego pliku (import przy budowaniu, bez kopii w MDX), objaśnia zasady łączenia grup (grupy 1 i 2 razem oraz grupa 3 z grupą 1 lub 2 – stawki grupy 3) i linkuje do kotwic zabiegów (`#<slug>`). Strony `/dla-kogo/<zawod>` w v1 linkują do właściwej grupy (`#grupa-N`) i do `#zabiegi`; linki do pojedynczych zabiegów według zawodu powstaną dopiero po ułożeniu listy. W każdym miejscu z listą stoi zdanie: lista pokazuje, do której grupy ryzyka zabieg przypisano w programie; zakres i wyłączenia określają warunki ubezpieczenia programu, a grupa 4 wymaga ankiety ERGO Hestii i oceny ryzyka przez ubezpieczyciela. Publikacja czeka na zgodę ERGO Hestii i Fundacji Beauty Razem (pytania 2 i 3); 16 pytań o ułożenie listy (plik propozycji) nie blokuje listy 1:1.
+**A2.1 – listy zabiegów programu (stan 15.11.2026, 00, D29, D43).** Dane są gotowe: `snippets/zabiegi-oc-beauty.json` w wersji 2 – listy nr 1 (49 pozycji) i nr 2 (63 pozycje) 1:1 z PDF Aneksu nr 5 (20 zabiegów jest na obu listach), 8 zabiegów wymagających ankiety ERGO Hestii w brzmieniu Aneksu nr 5 z CRM; lista zabiegów podologicznych jest tylko w dokumentach programu (00, Q1). Taryfa: `snippets/taryfa-oc-beauty.json` (= CRM). Listy stoją na stronie produktu (`/ubezpieczenia/oc-beauty#zabiegi`, makieta `design/v3/oc-beauty.html`), więc artykuł A2.1 ich nie przepisuje: pokazuje listy z tego samego pliku (import przy budowaniu, bez kopii w MDX), objaśnia taryfę według rodzaju działalności (reguła jak w CRM: gabinet kosmetyczny, salon fryzjerski lub salon masażu – „Gabinety kosmetyczne i fryzjerskie”; gabinet kosmetologiczny lub salon tatuażu – „Gabinety kosmetologiczne”; gabinet podologiczny albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu – „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”) i linkuje do kotwic zabiegów (`#<slug>`). Przykłady zabiegów tylko dosłownie z list (nazwa pozycji w cudzysłowie, z numerem listy). Wybór zabiegu z list nie zmienia składki – składkę wyznacza rodzaj działalności. Strony `/dla-kogo/<zawod>` w v1 linkują do kalkulatora z rodzajem działalności zaznaczonym dla zawodu (00, D43 g) i do `#zabiegi`; linki do pojedynczych zabiegów według zawodu powstaną dopiero po ułożeniu listy. W każdym miejscu z listą stoi zdanie: listy pokazują brzmienie pozycji z załączników do programu; zakres ochrony i wyłączenia określają warunki ubezpieczenia programu; zabiegi wymagające ankiety ERGO Hestii podlegają ocenie ryzyka przez ubezpieczyciela. Publikacja czeka na zgodę ERGO Hestii i Fundacji Beauty Razem (pytania 2 i 3); pytania o OC po Aneksie nr 5 – 00, Q1–Q13.
 
 ---
 
@@ -357,8 +357,8 @@ Treści o ubezpieczeniach, podatkach i odpowiedzialności cywilnej są YMYL: bł
 Materiał ma charakter informacyjny i nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego,
 porady prawnej ani podatkowej. Zakres ochrony, wyłączenia i obowiązki określają wyłącznie Ogólne
 Warunki Ubezpieczenia i dokument polisy – przed zawarciem umowy zapoznaj się z OWU na /dokumenty.
-Kalkulator pokazuje składkę roczną wg taryfy programu; zabiegi grupy 4 i zespoły od 9 osób wymagają
-wyceny indywidualnej (ankieta ERGO Hestii). Dystrybutor: Aura Expert sp. z o.o. – informacje
+Kalkulator pokazuje składkę roczną wg taryfy programu; zabiegi wymagające ankiety ERGO Hestii i więcej
+niż 8 osób wykonujących zabiegi – wycena indywidualna. Dystrybutor: Aura Expert sp. z o.o. – informacje
 wymagane ustawą o dystrybucji ubezpieczeń: /o-nas.
 ```
 
@@ -435,7 +435,7 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 ## Decyzje
 
 1. **Huby = strony produktowe i kalkulator; baza wiedzy to szprychy.** Fraza komercyjna ma jedno miejsce docelowe, strona produktowa zyskuje linki i treść pomocniczą. Odrzucone: „pillar pages” w bazie wiedzy (dublują intencję stron produktowych), blog bez struktury.
-2. **Pierwsze pięć tygodni to klaster OC + prawo salonowe.** Tam jest przewaga pierwotnego źródła i jedyny produkt z kalkulatorem taryfy programu (grupy ryzyka × sumy gwarancyjne). Odrzucone: start od sześciu produktów naraz (rozproszenie, brak danych dla dwóch).
+2. **Pierwsze pięć tygodni to klaster OC + prawo salonowe.** Tam jest przewaga pierwotnego źródła i jedyny produkt z kalkulatorem taryfy programu (rodzaj działalności × liczba osób × sumy gwarancyjne). Odrzucone: start od sześciu produktów naraz (rozproszenie, brak danych dla dwóch).
 3. **Wolumeny jako hipotezy w trzech progach, jednorazowa weryfikacja 52 fraz, potem GSC jako źródło prawdy.** Narzędzia były niedostępne (01, pkt 7); w niszy dane GSC po 2–3 miesiącach będą wiarygodniejsze niż estymaty. Odrzucone: czekanie na narzędzia, publikacja bez weryfikacji.
 4. **Rytm 2 publikacje + 1 aktualizacja huba tygodniowo, produkcja w dwutygodniowych partiach.** Wystarcza do zbudowania klastra OC w kwartał przy zespole 1 autor + 1 recenzent. Odrzucone: 1/tydz. (klaster w pół roku), codzienne publikacje AI (ryzyko YMYL, obciążenie recenzenta).
 5. **Pięć treści narzędziowych, bramka e-mailowa tylko dla wzoru zgody i checklisty kontroli.** Quiz i kalkulatory bez bramki zbierają linki i prowadzą do kalkulatora OC. Odrzucone: bramkowanie wszystkiego (spadek zasięgu), brak bramek (brak bazy do nurture – 06-…).
@@ -443,14 +443,14 @@ Warunek wstępny dla cytowań: zmiana bot managementu w strefie (dziś blokada w
 7. **AI jako asystent z notatką w PR; zero generowania faktów o OWU.** Największe ryzyko to zmyślone wyłączenie lub limit. Odrzucone: AI jako autor pierwszej wersji z „ludzkim przeglądem”, publiczne oznaczanie „wspomagane AI”.
 8. **MDX w repozytorium, publikacja przez PR z walidacją Zod i testem linków** – spójnie z 02 (decyzja 6). Odrzucone: CMS, dokumenty Google jako źródło prawdy.
 9. **„Utrata dochodu” i „NNW dzieci” – edukacja i „zapytaj o ofertę” do czasu dostarczenia produktu.** Publikowanie parametrów rynkowych jako własnych naruszałoby E-E-A-T. Odrzucone: wstrzymanie filarów (strata sezonów), orientacyjne ceny jako oferta. **W zakresie Utraty dochodu zastąpione 12.11.2026 (00, D33, D34):** parametry pochodzą z naszego serwisu utratadochodu.pl, tekst piszemy od nowa pod branżę beauty, bez kwot składek, z wnioskiem na utratadochodu.pl. **W zakresie NNW dzieci zastąpione 13.11.2026 (00, D35):** strona programu Colonnade ze stałymi stawkami 40 / 94 / 175 zł i zakupem online na platformie ubezpieczyciela; treści D1–D2 linkują do tej strony.
-10. **Nakładka sezonowa zamiast dat dziennych; sześć stron `/dla-kogo/*` na start, trycholog i właścicielka salonu po weryfikacji.** Data startu nieznana, sezony stałe; dla trychologa brak grupy ryzyka w cenniku z audytu. Odrzucone: kalendarz z datami, strona persony z „wyceną indywidualną” jako zastępnikiem.
+10. **Nakładka sezonowa zamiast dat dziennych; sześć stron `/dla-kogo/*` na start, trycholog i właścicielka salonu po weryfikacji.** Data startu nieznana, sezony stałe; dla trychologa brak rodzaju działalności wśród 6 rodzajów programu (00, D43). Odrzucone: kalendarz z datami, strona persony z „wyceną indywidualną” jako zastępnikiem.
 11. **Ścieżka zakupu w treściach zgodna z ustaleniami z 12.11.2026 (00, D32):** osobisty link do APK i wniosku opisujemy tylko przy OC i tylko słowami (domena portal.beautypolisa.eu, data ważności, nie przekazuj innym); Tax Protect – doradca prowadzi wniosek; utrata dochodu – utratadochodu.pl; pozostałe produkty – formularz → doradca. **Uzupełnione 13.11.2026 (00, D35, D36):** NNW dzieci – zakup online na platformie ubezpieczyciela Colonnade (`https://bit.ly/szkolneNNW2026` → market.colonnade.pl) albo formularz → doradca; grupowe ERGO – wniosek dla salonu (ERGO Życie w Biznesie, ergo.auraexpert.pl) albo kalkulator ERGO Razem (ergo.beautypolisa.eu), obok formularz → doradca; opieka medyczna – formularz → doradca. Odrzucone: sprzedaż i płatność w portalu (bez koszyka) – „kup online” w treściach tylko jako odesłanie do zakupu u ubezpieczyciela tam, gdzie on istnieje (00, D40); opis linku przy Tax Protect przed etapem 2, odsyłanie do `konsultacja.beautypolisa.eu` jako APK.
 
 ## Pytania otwarte do zleceniodawcy
 
 1. Kto będzie imiennym autorem, a kto recenzentem z uprawnieniami do dystrybucji ubezpieczeń? Status dystrybutora – rozstrzygnięty 12.11.2026: agent ubezpieczeniowy (RPU 11229690/A; 01, pkt 2) – zastrzeżenia i stopki używają formuły agenta.
-2. Czy ERGO Hestia i Fundacja Beauty Razem wymagają akceptacji materiałów o programie OC (numer, logo, zasady grup ryzyka) przed publikacją? Tryb i czas akceptacji wpływają na SLA kroku 3.
-3. ~~Czy lista zabiegów w grupach 1–4 z kalkulatora (01, pkt 3.1) jest kompletna i może być opublikowana jako „pełna lista”?~~ – **rozstrzygnięte 12.11.2026 (00, D29):** kanoniczna lista to 117 zabiegów w `snippets/zabiegi-oc-beauty.json`; zabiegi trychologiczne mają na niej pozycje w grupie 1 (np. „Kosmetyczna diagnostyka trychologiczna”, „Kosmetyczny zabieg trychologiczny”), co przybliża stronę `/dla-kogo/trycholog` (decyzja 10). Otwarte: zgoda ERGO Hestii na publikację listy 1:1 (pytanie 2); 16 pytań o ułożenie listy – `snippets/zabiegi-oc-beauty-propozycje.json` (nie blokują listy 1:1).
+2. Czy ERGO Hestia i Fundacja Beauty Razem wymagają akceptacji materiałów o programie OC (numer, logo, listy zabiegów i taryfa) przed publikacją? Tryb i czas akceptacji wpływają na SLA kroku 3.
+3. ~~Czy lista zabiegów z kalkulatora (01, pkt 3.1) jest kompletna i może być opublikowana jako „pełna lista”?~~ – **rozstrzygnięte 12.11.2026 (00, D29), zmienione 15.11.2026 (00, D43):** kanoniczna lista to listy nr 1 i 2 oraz zabiegi wymagające ankiety w `snippets/zabiegi-oc-beauty.json` (wersja 2, 1:1 z Aneksem nr 5); zabiegi trychologiczne są na obu listach („Kosmetyczna diagnostyka trychologiczna” – lista nr 1, poz. 11, i lista nr 2, poz. 59; „Kosmetyczny zabieg trychologiczny” – lista nr 1, poz. 12, i lista nr 2, poz. 58), co przybliża stronę `/dla-kogo/trycholog` (decyzja 10). Otwarte: zgoda ERGO Hestii na publikację list 1:1 (pytanie 2); pytania o OC po Aneksie nr 5 – 00, Q1–Q13; 16 pytań o ułożenie listy wersji 1 – `snippets/zabiegi-oc-beauty-propozycje.json` (archiwum).
 4. ~~Parametry „NNW dzieci”~~ – rozstrzygnięte 13.11.2026 (00, D35): program Colonnade wg ulotki 2026; otwarte: liczba wariantów (3 czy 4), brzmienie zniżki 4% na drugie i kolejne dziecko, kod OWU. Grupowe ERGO – rozstrzygnięte 13.11.2026 (00, D36); otwarte: pozycje „do potwierdzenia” z makiety `grupowe-ergo.html`. „Utrata dochodu” – rozstrzygnięte 12.11.2026 (00, D33, D34): parametry z utratadochodu.pl; otwarte: kto recenzuje teksty filaru C pod kątem zgodności z OWU wariantów Leadenhall i CEU.
 5. Rozstrzygnięte 11.11.2026 (pytanie 7 sekcji 02): składki Tax Protect są sztywne (taryfa programu) – B2.3, B2.4 i `/ubezpieczenia/tax-protect` podają składkę roczną wg taryfy potwierdzonej 12.11.2026 (01, pkt 3.2: suma 50 000 zł – 1 532–1 932 zł, suma 100 000 zł – 2 501–2 901 zł za 1 spór, zależnie od przychodu); przychody powyżej 3 mln zł lub 2–4 spory → wycena indywidualna. Bez słów „orientacyjnie” i „szacunkowo”.
 6. Czy liczby z obecnej argumentacji grupowego (koszt rotacji, pakiet zamiast podwyżki – 01, pkt 3.3) mają cytowalne źródło? Bez niego znikają z treści.

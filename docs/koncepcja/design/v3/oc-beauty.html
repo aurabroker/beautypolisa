@@ -220,7 +220,7 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
 }
 .hero-panel .eyebrow{color:var(--color-navy)}
 
-/* ---------- nagłówki sekcji i numery rozdziałów (jak na stronie głównej); cyfry w nagłówkach wersalikowe, żeby „Grupa 1” nie czytało się jak „Grupa I” ---------- */
+/* ---------- nagłówki sekcji i numery rozdziałów (jak na stronie głównej); cyfry w nagłówkach wersalikowe, żeby „Lista nr 1” nie czytało się jak „Lista nr I” ---------- */
 h1,h2,h3{font-variant-numeric:lining-nums}
 .section-head{display:grid;gap:18px;margin-bottom:clamp(36px,5vw,72px);max-width:46rem}
 .section-head .eyebrow{color:var(--color-navy)}
@@ -266,7 +266,9 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .zlista-doc{align-self:end;font-size:var(--text-sm)}
 /* aliasy dawnych kotwic (#grupa-N, dawne slugi, slugi wycofanych pozycji): puste elementy BEZ hidden – cel przewinięcia do #fragmentu */
 .z-alias{position:absolute;top:0;left:0;width:0;height:0;overflow:hidden;scroll-margin-top:104px}
-.zlist .z-alias{scroll-margin-top:120px}
+/* alias w pozycji listy: pierwszy wiersz siatki <li> o zerowej wysokości (w przepływie, nie position:absolute – w układzie wielokolumnowym
+   element absolutny trafiał obok swojej pozycji i przewinięcie do #aliasu chowało pozycję pod nagłówkiem) */
+.zlist .z-alias{position:static;display:block;grid-column:1/-1;width:auto;height:0;scroll-margin-top:120px}
 .zdetails summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:56px;padding-block:14px;cursor:pointer;color:var(--color-navy);font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase}
 .zdetails summary::-webkit-details-marker{display:none}
 .zdetails summary::after{content:"";flex:none;width:16px;height:16px;background:linear-gradient(currentColor,currentColor) center/100% 1px no-repeat,linear-gradient(currentColor,currentColor) center/1px 100% no-repeat;transition:transform var(--bp-dur-2) var(--ease-lux)}
@@ -684,7 +686,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    "@id": "https://beautypolisa.eu/#agency",
    "name": "BeautyPolisa",
    "alternateName": "BeautyPolisa created by Aura Expert",
-   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
+   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dla dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dla dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
    "url": "https://beautypolisa.eu/",
    "address": {
     "@type": "PostalAddress",
@@ -721,7 +723,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     },
     {
      "@type": "Question",
-     "name": "Ile kosztuje OC salonu kosmetycznego?",
+     "name": "Ile kosztuje OC w programie dla branży beauty?",
      "acceptedAnswer": {
       "@type": "Answer",
       "text": "Według stałej taryfy programu, gdy zabiegi wykonuje do 5 osób, składka roczna wynosi od 400 zł (taryfa „Gabinety kosmetyczne i fryzjerskie”, suma gwarancyjna 100 000 zł) do 1 250 zł (taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”, suma gwarancyjna 300 000 zł). Gdy zabiegi wykonuje 6–8 osób, składka z taryfy jest wyższa o 25% – np. 987,50 zł zamiast 790 zł w taryfie „Gabinety kosmetologiczne” przy sumie gwarancyjnej 200 000 zł. Klauzula ochrony prawnej kosztuje dodatkowo 92 zł rocznie, bez tej dopłaty. Więcej niż 8 osób wykonujących zabiegi oraz zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna."
@@ -737,7 +739,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     },
     {
      "@type": "Question",
-     "name": "Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?",
+     "name": "Czy zabiegi wymagające ankiety ERGO Hestii można ubezpieczyć?",
      "acceptedAnswer": {
       "@type": "Answer",
       "text": "Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „Zabiegi z użyciem toksyny botulinowej”, „Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego” i „Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)” – wszystkie 8 pozycji znajdziesz w sekcji Zabiegi wymagające ankiety ERGO Hestii. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne: Dyplom kosmetologa dla każdej osoby — tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i szkół policealnych nie są dyplomem. Certyfikat ze szkolenia z każdego zabiegu, który wykonuje dana osoba — szkolenie ukończone co najmniej 12 miesięcy przed początkiem ochrony. Zostaw kontakt przez formularz – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka."
@@ -880,7 +882,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                 <li><a class="mega-item" href="utrata-dochodu.html" aria-labelledby="mp-utrata-dochodu-n" aria-describedby="mp-utrata-dochodu-d mp-utrata-dochodu-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name" id="mp-utrata-dochodu-n">Utrata dochodu</span><span class="mega-desc" id="mp-utrata-dochodu-d">Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy – Lloyd’s przez Leadenhall i&nbsp;CEU.</span><span class="mega-price" id="mp-utrata-dochodu-c"><span class="mega-cena">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></span></a></li>
                 <li><a class="mega-item" href="nnw-dzieci.html" aria-labelledby="mp-nnw-dzieci-n" aria-describedby="mp-nnw-dzieci-d mp-nnw-dzieci-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name" id="mp-nnw-dzieci-n">NNW dla dzieci</span><span class="mega-desc" id="mp-nnw-dzieci-d">Ochrona dziecka od następstw nieszczęśliwych wypadków – całą dobę (Colonnade).</span><span class="mega-price" id="mp-nnw-dzieci-c"><span class="mega-cena">od 40&nbsp;zł rocznie za dziecko</span><span class="mega-dop">Zakup online u&nbsp;Colonnade</span></span></span></a></li>
                 <li><a class="mega-item" href="grupowe-ergo.html" aria-labelledby="mp-grupowe-ergo-n" aria-describedby="mp-grupowe-ergo-d mp-grupowe-ergo-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name" id="mp-grupowe-ergo-n">Grupowe ERGO dla beauty</span><span class="mega-desc" id="mp-grupowe-ergo-d">Ubezpieczenie na życie dla zespołu (2–&#8288;100 osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</span><span class="mega-price" id="mp-grupowe-ergo-c"><span class="mega-cena">Zespół: od 58&nbsp;zł za osobę / mies.</span><span class="mega-cena">ERGO Razem: od 57&nbsp;zł / mies.</span></span></span></a></li>
-                <li><a class="mega-item" href="makieta-v3.html?produkt=opieka-medyczna#kontakt" aria-labelledby="mp-opieka-medyczna-n" aria-describedby="mp-opieka-medyczna-d mp-opieka-medyczna-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name" id="mp-opieka-medyczna-n">Opieka medyczna</span><span class="mega-desc" id="mp-opieka-medyczna-d">Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price" id="mp-opieka-medyczna-c"><span class="mega-cena">Według cennika programu</span></span></span></a></li>
+                <li><a class="mega-item" href="opieka-medyczna.html" aria-labelledby="mp-opieka-medyczna-n" aria-describedby="mp-opieka-medyczna-d mp-opieka-medyczna-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name" id="mp-opieka-medyczna-n">Opieka medyczna</span><span class="mega-desc" id="mp-opieka-medyczna-d">Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price" id="mp-opieka-medyczna-c"><span class="mega-cena">Cenę przygotuje doradca</span></span></span></a></li>
               </ul>
               <div class="mega-foot"><a class="btn btn-navy" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a><a class="btn btn-ghost" href="makieta-v3.html#kalkulator-tax">Oblicz składkę Tax Protect</a></div>
             </div>
@@ -906,11 +908,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <li><a href="utrata-dochodu.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mm-text"><span class="mm-name">Utrata dochodu</span><span class="mm-price">składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></a></li>
             <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie za dziecko</span></span></a></li>
             <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 58&nbsp;zł za osobę / mies.</span></span></a></li>
-            <li><a href="makieta-v3.html?produkt=opieka-medyczna#kontakt"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mm-text"><span class="mm-name">Opieka medyczna</span><span class="mm-price">według cennika programu</span></span></a></li>
+            <li><a href="opieka-medyczna.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mm-text"><span class="mm-name">Opieka medyczna</span><span class="mm-price">cenę przygotuje doradca</span></span></a></li>
           </ul>
           <!-- /gen:menu-mobilne -->
           <a href="makieta-v3.html#kalkulator"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kalkulator"/></svg>Kalkulator</a>
-          <a href="#zabiegi"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupy-ryzyka"/></svg>Lista zabiegów</a>
+          <a href="#zabiegi"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-wskaznik"/></svg>Lista zabiegów</a>
           <a href="#ochrona-prawna"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Ochrona prawna</a>
           <a href="#jak-kupic"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Jak kupić</a>
           <a href="#faq"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Pytania</a>
@@ -943,7 +945,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </nav>
         <p class="eyebrow">Program ERGO Hestia · Fundacja Beauty Razem</p>
         <h1 id="hero-title">Ubezpieczenie OC dla branży beauty</h1>
-        <p class="lead">Program OC ERGO Hestii nr WA50/003353/24/A, realizowany we współpracy z&nbsp;Fundacją Beauty Razem. Suma gwarancyjna do wyboru: 100, 200 lub 300&nbsp;tys.&nbsp;zł. Składka wynika ze stałej taryfy programu – zależy od grupy ryzyka Twoich zabiegów, sumy i&nbsp;liczby osób w&nbsp;zespole.</p>
+        <p class="lead">Program OC ERGO Hestii nr WA50/003353/24/A, realizowany we współpracy z&nbsp;Fundacją Beauty Razem. Suma gwarancyjna do wyboru: 100, 200 lub 300&nbsp;tys.&nbsp;zł. Składka wynika ze stałej taryfy programu – zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i&nbsp;sumy.</p>
         <div class="hero-actions">
           <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Policz składkę</a>
           <a class="btn btn-ghost" href="#zabiegi">Sprawdź swój zabieg</a>
@@ -951,7 +953,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <dl class="figures">
           <div><dt>Składka OC rocznie</dt><dd>od 400&nbsp;zł</dd></div>
           <div><dt>Sumy gwarancyjne</dt><dd>100–300&nbsp;tys.&nbsp;zł</dd></div>
-          <div><dt>Listy zabiegów nr&nbsp;1 i&nbsp;2</dt><dd><span data-gen="liczba-lista-1">49</span> + <span data-gen="liczba-lista-2">63</span><span class="sr-only"> pozycji</span></dd></div>
+          <div><dt>Listy zabiegów nr&nbsp;1 i&nbsp;2</dt><dd><span data-gen="liczba-lista-1">49</span> + <span data-gen="liczba-lista-2">63</span><span data-gen="pozycje-lista-2" class="sr-only"> pozycje</span></dd></div>
         </dl>
       </div>
     </div>
@@ -969,8 +971,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <span class="chapter-no" aria-hidden="true">I</span>
         <p class="eyebrow">Listy zabiegów</p>
         <h2 id="zab-title" class="rv-curtain">Listy zabiegów w&nbsp;programie</h2>
-        <p class="lead">Sprawdź, w&nbsp;której grupie jest Twój zabieg. Grupa decyduje o&nbsp;stawce z&nbsp;<a class="bp-termin" href="slownik.html#haslo-stala-taryfa" data-termin="stala-taryfa">taryfy programu</a>.</p>
-        <p>Lista pokazuje, do której <a class="bp-termin" href="slownik.html#haslo-grupa-ryzyka" data-termin="grupa-ryzyka">grupy ryzyka</a> program przypisuje zabieg. Zakres ochrony i&nbsp;wyłączenia określają <a class="bp-termin" href="slownik.html#haslo-owu" data-termin="owu">warunki ubezpieczenia programu</a>.</p>
+        <p class="lead">Sprawdź, na której liście programu jest Twój zabieg. Brzmienie i&nbsp;kolejność pozycji pochodzą z&nbsp;załączników do programu w&nbsp;brzmieniu Aneksu nr&nbsp;5.</p>
+        <p>Ten sam zabieg może być na obu listach. Składkę wyznacza <a class="bp-termin" href="slownik.html#haslo-rodzaj-dzialalnosci" data-termin="rodzaj-dzialalnosci">rodzaj działalności</a> gabinetu, nie pojedynczy zabieg. Dopisanie zabiegów z&nbsp;innej listy zmienia rodzaj działalności i&nbsp;składkę według <a class="bp-termin" href="slownik.html#haslo-stala-taryfa" data-termin="stala-taryfa">taryfy programu</a>. Zakres ochrony i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p>
       </div>
 
       <div class="ztools glass glass--tint">
@@ -1006,7 +1008,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <p class="eyebrow">Załącznik nr 1 · 49 pozycji</p>
               <h3 id="lista-1-tytul">Lista zabiegów – gabinety kosmetyczne i fryzjerskie</h3>
             </div>
-            <p class="zlista-doc"><a class="link-lux" href="dokumenty/oc-beauty/lista-zabiegow-nr-1-kosmetyczne-fryzjerskie-aneks-5.pdf">Pobierz listę nr 1 (PDF, Aneks nr 5)</a></p>
+            <p class="zlista-doc"><a class="link-lux" href="dokumenty/oc-beauty/lista-zabiegow-nr-1-kosmetyczne-fryzjerskie-aneks-5.pdf">Pobierz listę&nbsp;nr&nbsp;1 (PDF, Aneks&nbsp;nr&nbsp;5)</a></p>
           </div>
           <details class="zdetails" open>
             <summary><span>Pozycje listy nr 1 (<span data-z-ile>49</span>)</span></summary>
@@ -1071,7 +1073,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <p class="eyebrow">Załącznik nr 2 · 63 pozycje</p>
               <h3 id="lista-2-tytul">Lista zabiegów – gabinety kosmetyczne i kosmetologiczne</h3>
             </div>
-            <p class="zlista-doc"><a class="link-lux" href="dokumenty/oc-beauty/lista-zabiegow-nr-2-kosmetyczne-kosmetologiczne-aneks-5.pdf">Pobierz listę nr 2 (PDF, Aneks nr 5)</a></p>
+            <p class="zlista-doc"><a class="link-lux" href="dokumenty/oc-beauty/lista-zabiegow-nr-2-kosmetyczne-kosmetologiczne-aneks-5.pdf">Pobierz listę&nbsp;nr&nbsp;2 (PDF, Aneks&nbsp;nr&nbsp;5)</a></p>
           </div>
           <details class="zdetails" open>
             <summary><span>Pozycje listy nr 2 (<span data-z-ile>63</span>)</span></summary>
@@ -1147,7 +1149,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <span class="z-alias" id="grupa-4"></span>
           <div class="zlista-head">
             <div class="zlista-title">
-              <p class="eyebrow">Brzmienie Aneksu nr 5 · 8 pozycji</p>
+              <p class="eyebrow">Brzmienie Aneksu nr&nbsp;5 · 8 pozycji</p>
               <h3 id="ankieta-tytul">Zabiegi wymagające ankiety ERGO Hestii</h3>
               <p class="zlista-desc">Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel na podstawie ankiety.</p>
             </div>
@@ -1212,7 +1214,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       </div>
 
       <div class="zrules glass glass--tint">
-        <h3>Rodzaj działalności, zespół i&nbsp;ankieta</h3>
+        <h3>Rodzaj działalności, liczba osób i&nbsp;ankieta</h3>
         <!-- GEN:zabiegi-reguly (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
         <ul>
           <li>Taryfę wyznacza rodzaj działalności: gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem) – „Gabinety kosmetyczne i fryzjerskie”; gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu – „Gabinety kosmetologiczne”; gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu – „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”.</li>
@@ -1221,7 +1223,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <li>Zabiegi wymagające ankiety ERGO Hestii – cała składka do indywidualnej wyceny.</li>
         </ul>
         <!-- /GEN:zabiegi-reguly -->
-        <p>Lista przypisuje zabiegi do grup ryzyka programu. <a class="bp-termin" href="slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">Zakres ochrony i&nbsp;wyłączenia</a> określają warunki ubezpieczenia programu. Zabiegi z&nbsp;grupy 4 wymagają ankiety ERGO Hestii i&nbsp;oceny ryzyka przez ubezpieczyciela.</p>
+        <p>Listy pokazują brzmienie pozycji z&nbsp;załączników do programu. <a class="bp-termin" href="slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">Zakres ochrony i&nbsp;wyłączenia</a> określają warunki ubezpieczenia programu. Zabiegi wymagające <a class="bp-termin" href="slownik.html#haslo-ankieta-indywidualnej-oceny-ryzyka" data-termin="ankieta-indywidualnej-oceny-ryzyka">ankiety ERGO Hestii</a> podlegają ocenie ryzyka przez ubezpieczyciela.</p>
         <div class="cta-row">
           <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Policz składkę</a>
           <a class="link-lux" href="makieta-v3.html?produkt=oc-beauty#kontakt">Nie ma Twojego zabiegu? Zapytaj doradcę</a>
@@ -1309,7 +1311,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <span class="chapter-no" aria-hidden="true">III</span>
         <p class="eyebrow">Taryfa programu</p>
         <h2 id="tar-title" class="rv-curtain">Ile kosztuje OC <em>w&nbsp;programie</em></h2>
-        <p class="lead">Składki dla grup 1–3 są stałe – wynikają z&nbsp;taryfy programu. Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – <a class="bp-termin" href="slownik.html#haslo-wycena-indywidualna" data-termin="wycena-indywidualna">wycena indywidualna</a>.</p>
+        <p class="lead">Składki są stałe – wynikają z&nbsp;taryfy programu i&nbsp;zależą od rodzaju działalności gabinetu. Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO Hestii – <a class="bp-termin" href="slownik.html#haslo-wycena-indywidualna" data-termin="wycena-indywidualna">wycena indywidualna</a>.</p>
       </div>
       <div class="tariff-table glass glass--tint">
         <!-- GEN:taryfa (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
@@ -1329,7 +1331,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       </div>
       <div class="tariff-actions">
         <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Policz składkę</a>
-        <a class="link-lux" href="#zabiegi">Sprawdź grupę swojego zabiegu</a>
+        <a class="link-lux" href="#zabiegi">Sprawdź swój zabieg na listach</a>
       </div>
     </div>
   </section>
@@ -1395,9 +1397,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <!-- GEN:faq (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
         <details id="pytanie-1"><summary>Co obejmuje OC dla branży beauty w programie ERGO Hestia?</summary><p>Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr WA50/003353/24/A realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi objęte programem wymieniają listy zabiegów nr 1 i nr 2 w brzmieniu Aneksu nr 5; zabiegi wymagające ankiety ERGO Hestii (8 pozycji) podlegają ocenie ubezpieczyciela. Pełny zakres znajdziesz w dokumentach OWU na stronie <a href="/dokumenty">beautypolisa.eu/dokumenty</a>.</p></details>
         <details id="pytanie-2"><summary>Od czego zależy składka i co jest na listach zabiegów?</summary><p>Składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i sumy gwarancyjnej. Taryfę wyznacza rodzaj działalności: gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem) – „Gabinety kosmetyczne i fryzjerskie”; gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu – „Gabinety kosmetologiczne”; gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu – „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”.</p> <p>Listy zabiegów programu: „Lista zabiegów – gabinety kosmetyczne i fryzjerskie” (49 pozycji) i „Lista zabiegów – gabinety kosmetyczne i kosmetologiczne” (63 pozycje); część zabiegów (20) jest na obu listach. Zabiegi wymagające ankiety ERGO Hestii (8 pozycji) – wycena indywidualna. Lista zabiegów podologicznych jest w dokumentach programu. Wszystkie pozycje w brzmieniu Aneksu nr 5 znajdziesz w sekcji <a href="#zabiegi">Listy zabiegów w programie</a>.</p></details>
-        <details id="pytanie-3"><summary>Ile kosztuje OC salonu kosmetycznego?</summary><p>Według stałej taryfy programu, gdy zabiegi wykonuje do 5 osób, składka roczna wynosi od 400&nbsp;zł (taryfa „Gabinety kosmetyczne i fryzjerskie”, suma gwarancyjna 100&nbsp;000&nbsp;zł) do 1&nbsp;250&nbsp;zł (taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”, suma gwarancyjna 300&nbsp;000&nbsp;zł). Gdy zabiegi wykonuje 6–8 osób, składka z taryfy jest wyższa o 25% – np. 987,50&nbsp;zł zamiast 790&nbsp;zł w taryfie „Gabinety kosmetologiczne” przy sumie gwarancyjnej 200&nbsp;000&nbsp;zł. Klauzula ochrony prawnej kosztuje dodatkowo 92&nbsp;zł rocznie, bez tej dopłaty. Więcej niż 8 osób wykonujących zabiegi oraz zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.</p></details>
+        <details id="pytanie-3"><summary>Ile kosztuje OC w programie dla branży beauty?</summary><p>Według stałej taryfy programu, gdy zabiegi wykonuje do 5 osób, składka roczna wynosi od 400&nbsp;zł (taryfa „Gabinety kosmetyczne i fryzjerskie”, suma gwarancyjna 100&nbsp;000&nbsp;zł) do 1&nbsp;250&nbsp;zł (taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”, suma gwarancyjna 300&nbsp;000&nbsp;zł). Gdy zabiegi wykonuje 6–8 osób, składka z taryfy jest wyższa o 25% – np. 987,50&nbsp;zł zamiast 790&nbsp;zł w taryfie „Gabinety kosmetologiczne” przy sumie gwarancyjnej 200&nbsp;000&nbsp;zł. Klauzula ochrony prawnej kosztuje dodatkowo 92&nbsp;zł rocznie, bez tej dopłaty. Więcej niż 8 osób wykonujących zabiegi oraz zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.</p></details>
         <details id="pytanie-4"><summary>Czym jest klauzula ochrony prawnej i ile kosztuje?</summary><p>To rozszerzenie OC w programie o koszty ochrony prawnej w postępowaniach przed sądami polskimi, w których ubezpieczony występuje jako pozwany, podejrzany lub oskarżony, także w postępowaniu dyscyplinarnym. Postępowanie musi być wszczęte na terenie RP w okresie ubezpieczenia i dotyczyć czynności zawodowych objętych umową. Klauzula kosztuje dodatkowo 92&nbsp;zł rocznie. Pełną treść, w tym wyłączenia, znajdziesz w sekcji <a href="#ochrona-prawna">Klauzula ochrony prawnej</a>.</p></details>
-        <details id="pytanie-5"><summary>Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?</summary><p>Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „Zabiegi z użyciem toksyny botulinowej”, „Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego” i „Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)” – wszystkie 8 pozycji znajdziesz w sekcji <a href="#ankieta">Zabiegi wymagające ankiety ERGO Hestii</a>. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne:</p> <ul><li>Dyplom kosmetologa dla każdej osoby — tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i szkół policealnych nie są dyplomem.</li> <li>Certyfikat ze szkolenia z każdego zabiegu, który wykonuje dana osoba — szkolenie ukończone co najmniej 12 miesięcy przed początkiem ochrony.</li></ul> <p>Zostaw kontakt przez <a href="makieta-v3.html?produkt=oc-beauty#kontakt">formularz</a> – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka.</p></details>
+        <details id="pytanie-5"><summary>Czy zabiegi wymagające ankiety ERGO Hestii można ubezpieczyć?</summary><p>Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „Zabiegi z użyciem toksyny botulinowej”, „Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego” i „Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)” – wszystkie 8 pozycji znajdziesz w sekcji <a href="#ankieta">Zabiegi wymagające ankiety ERGO Hestii</a>. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne:</p> <ul><li>Dyplom kosmetologa dla każdej osoby — tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i szkół policealnych nie są dyplomem.</li> <li>Certyfikat ze szkolenia z każdego zabiegu, który wykonuje dana osoba — szkolenie ukończone co najmniej 12 miesięcy przed początkiem ochrony.</li></ul> <p>Zostaw kontakt przez <a href="makieta-v3.html?produkt=oc-beauty#kontakt">formularz</a> – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka.</p></details>
         <!-- /GEN:faq -->
       </div>
     </div>
@@ -1444,7 +1446,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="end-card dark">
         <p class="eyebrow">Na koniec</p>
         <h2 id="end-title" class="rv-curtain">Policz składkę <em>albo porozmawiaj z&nbsp;doradcą</em></h2>
-        <p>Kalkulator na stronie głównej liczy składkę ze stałej taryfy programu. Przy zabiegach z&nbsp;grupy 4 albo zespole od 9&nbsp;osób doradca Aura Expert przekaże Ci ankietę ERGO Hestii.</p>
+        <p>Kalkulator na stronie głównej liczy składkę ze stałej taryfy programu. Przy zabiegach wymagających ankiety ERGO Hestii albo więcej niż 8&nbsp;osobach doradca Aura Expert przygotuje wycenę indywidualną.</p>
         <div class="end-actions">
           <a class="btn btn-ivory" href="makieta-v3.html#kalkulator">Policz składkę</a>
           <a class="btn btn-ghost-dark" href="makieta-v3.html?produkt=oc-beauty#kontakt">Zapytaj doradcę</a>
@@ -1466,7 +1468,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <p>Program ubezpieczeń dla branży beauty prowadzony przez Aura Expert sp.&nbsp;z&nbsp;o.o. – agenta ubezpieczeniowego.</p>
         </div>
         <nav class="footer-nav" aria-label="Stopka">
-          <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html" aria-current="page">OC dla branży beauty</a></li><li><a href="tax-protect.html">Tax Protect</a></li><li><a href="utrata-dochodu.html">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dla dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO dla beauty</a></li><li><a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html" aria-current="page">OC dla branży beauty</a></li><li><a href="tax-protect.html">Tax Protect</a></li><li><a href="utrata-dochodu.html">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dla dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO dla beauty</a></li><li><a href="opieka-medyczna.html">Opieka medyczna</a></li></ul></div>
           <div class="rv-rise"><h2 class="footer-title">Dla kogo</h2><ul><li><a href="/dla-kogo/kosmetolog">Kosmetolog</a></li><li><a href="/dla-kogo/fryzjer">Fryzjer i&nbsp;barber</a></li><li><a href="/dla-kogo/podolog">Podolog</a></li><li><a href="/dla-kogo/linergistka">Linergistka</a></li><li><a href="/dla-kogo/stylistka-paznokci">Stylistka paznokci</a></li><li><a href="/dla-kogo/tatuazysta">Tatuażysta</a></li></ul></div>
           <!-- „Zgłoś szkodę”: w makiecie makieta-v3.html#jak-zglosic-szkode, produkcyjnie /szkoda; „Polityka prywatności”: /rodo -->
           <div class="rv-rise"><h2 class="footer-title">BeautyPolisa</h2><ul><li><a href="/o-nas">O&nbsp;nas</a></li><li><a href="/dokumenty">Dokumenty i&nbsp;OWU</a></li><li><a href="slownik.html">Słownik pojęć</a></li><li><a href="makieta-v3.html#jak-zglosic-szkode">Zgłoś szkodę</a></li><li><a href="/rodo">Polityka prywatności</a></li><li><a href="makieta-v3.html#kontakt">Kontakt</a></li></ul></div>
@@ -1503,7 +1505,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <symbol id="lux-bezpieczenstwo" viewBox="0 0 96 96"><title>Bezpieczeństwo danych</title><path d="M44 43C38 48 29 43 29 36C29 30 33 26 39 26C39 14 57 14 57 26C63 26 67 30 67 36C67 43 58 48 52 43V77H45V48" /><path d="M43 35C36 40 32 30 39 30H44V25C44 19 52 19 52 25V30H57C64 30 60 40 53 35" /><path d="M45 52H52M52 63H62V68H58V72H62V77H52" /></symbol>
   <symbol id="lux-dokumenty" viewBox="0 0 96 96"><title>Dokumenty i OWU</title><path d="M25 23L68 18V35L77 34L73 78L27 75L29 51" /><path d="M25 23L20 51H39M57 51H69L68 18M34 72L68 74L70 56" /><path d="M48 43C51 41 54 44 54 46C58 47 59 51 57 54C58 57 55 60 52 60C50 63 46 63 44 60C40 60 38 57 39 54C37 51 39 47 42 46C43 43 45 42 48 43Z" /><circle cx="48" cy="52" r="5" /></symbol>
   <symbol id="lux-doradca" viewBox="0 0 96 96"><title>Rozmowa z doradcą</title><path d="M19 38C21 25 75 25 77 38M27 39C32 34 38 33 41 34M55 34C58 33 64 34 69 39" /><path d="M20 38C15 41 15 46 17 49H31C33 44 31 40 27 39ZM69 39C65 40 63 44 65 49H79C81 46 81 41 76 38" /><path d="M39 38C38 45 35 50 31 55L23 66V70H73V66L65 55C61 50 58 45 57 38M21 71H75V78H21Z" /><circle cx="48" cy="57" r="12" /><circle cx="48" cy="57" r="6" /><path d="M48 48V49M55 51L54 52M57 58H56M52 65L51 64M43 65L44 64M39 58H40M41 51L42 52" /><path d="M31 24Q48 19 65 24" /></symbol>
-  <symbol id="lux-grupy-ryzyka" viewBox="0 0 96 96"><title>Grupy ryzyka zabiegów</title><path d="M17 70V64C17 47 31 33 48 33C65 33 79 47 79 64V70Z" /><path d="M22 62H26M26 49L30 51M35 39L37 43M48 37V42M61 39L59 43M70 49L66 51M74 62H70" /><circle cx="48" cy="64" r="3" /><path d="M50 62L64 47" /></symbol>
+  <symbol id="lux-wskaznik" viewBox="0 0 96 96"><title>Wskaźnik</title><path d="M17 70V64C17 47 31 33 48 33C65 33 79 47 79 64V70Z" /><path d="M22 62H26M26 49L30 51M35 39L37 43M48 37V42M61 39L59 43M70 49L66 51M74 62H70" /><circle cx="48" cy="64" r="3" /><path d="M50 62L64 47" /></symbol>
   <symbol id="lux-kalkulator" viewBox="0 0 96 96"><title>Kalkulator składki</title><rect x="25" y="17" width="46" height="62" rx="4" /><rect x="31" y="23" width="34" height="13" rx="1" /><path d="M33 45H36M46 45H49M59 45H62M33 54H36M46 54H49M59 54H62M33 63H36M46 63H49M33 72H36M46 72H49M60 63V72" /></symbol>
   <symbol id="lux-kosmetolog" viewBox="0 0 96 96"><title>Kosmetolog</title><path d="M43 32V23C43 15 53 15 53 23V32" /><path d="M39 32H57V43H39ZM42 43V48C34 51 33 54 33 60V75C33 78 35 79 38 79H58C61 79 63 78 63 75V60C63 54 62 51 54 48V43" /><path d="M44 35V40M48 35V40M52 35V40M48 48V61" /><path d="M48 65C46 68 44 70 44 72C44 77 52 77 52 72C52 70 50 68 48 65Z" /></symbol>
   <symbol id="lux-oc-beauty" viewBox="0 0 96 96"><title>OC dla branży beauty</title><path d="M48 17C39 27 29 29 19 28V45C19 62 29 73 48 80C67 73 77 62 77 45V28C67 29 57 27 48 17Z" /><path d="M48 24C40 31 32 34 25 34V45C25 59 33 68 48 74C63 68 71 59 71 45V34C64 34 56 31 48 24Z" /><path d="M48 59C44 55 35 49 35 43C35 35 45 34 48 41C51 34 61 35 61 43C61 49 52 55 48 59Z" /></symbol>
@@ -1531,7 +1533,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
    Szuka w brzmieniu pozycji list programu (1:1: listy nr 1 i 2, zabiegi wymagające ankiety), bez polskich znaków i wielkości
    liter; każde wpisane słowo musi pasować do początku jakiegoś wyrazu nazwy. Słowa od 5 znaków porównuje bez ostatniej litery
    (henna → henny). Zabieg z obu list ma dwie pozycje (po jednej na liście) – licznik liczy pozycje. Sekcja „Podologia” nie ma
-   pozycji (lista w dokumentach programu) – przy wyszukiwaniu jest ukryta. */
+   pozycji (lista w dokumentach programu) – przy wyszukiwaniu jest ukryta, a komunikat braku wyników odsyła do niej (Q1; odnośnik
+   najpierw czyści wyszukiwanie, żeby sekcja była widoczna). */
 (function(){
   var root=document.getElementById('zabiegi'), form=document.getElementById('z-szukaj-form'); if(!root||!form) return;
   var input=document.getElementById('z-szukaj'), clear=document.getElementById('z-wyczysc'), count=document.getElementById('z-licznik'), empty=document.getElementById('z-brak'), jumpNav=document.querySelector('.zjump');
@@ -1568,6 +1571,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       empty.textContent='';
       empty.append('Nie znaleźliśmy zabiegu „'+raw.trim()+'” na listach programu. Sprawdź pisownię albo ');
       var a=document.createElement('a');a.href='makieta-v3.html?produkt=oc-beauty#kontakt';a.textContent='zapytaj doradcę';empty.append(a,' – sprawdzi, czy i jak program obejmuje Twój zabieg.');
+      var pod=document.createElement('a');pod.href='#podologia';pod.textContent='sekcja Podologia';
+      pod.addEventListener('click',function(){input.value='';apply(true)});
+      empty.append(' Lista zabiegów podologicznych jest w\u00a0dokumentach programu (',pod,').');
       empty.hidden=false;
     } else empty.hidden=true;
     clearTimeout(timer);
@@ -1788,28 +1794,28 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <!-- gen:slownik-js -->
 <script type="application/json" id="slownik-dymki">
 {
+ "rodzaj-dzialalnosci": {
+  "t": "Rodzaj działalności (OC beauty)",
+  "d": "Odpowiedź na pytanie „Jaką działalność prowadzisz?” w kalkulatorze OC i w analizie potrzeb: gabinet kosmetyczny, salon fryzjerski, gabinet kosmetologiczny, gabinet podologiczny, salon masażu, salon tatuażu – można zaznaczyć kilka. Z rodzajów działalności wynika taryfa programu, czyli zakres na certyfikacie; sam zabieg z list programu składki nie zmienia.",
+  "u": "slownik.html#haslo-rodzaj-dzialalnosci",
+  "o": 1
+ },
  "stala-taryfa": {
   "t": "Stała taryfa",
-  "d": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. grupę ryzyka i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
+  "d": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. rodzaj działalności i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
   "u": "slownik.html#haslo-stala-taryfa",
-  "o": 1
- },
- "grupa-ryzyka": {
-  "t": "Grupa ryzyka (zabiegów)",
-  "d": "Kategoria, do której program OC przypisuje zabieg według ryzyka szkody; od niej zależy stawka z taryfy. Grupa 1 – kosmetyka i fryzjerstwo, grupa 2 – kosmetologia i tatuaż, grupa 3 – podologia medyczna, grupa 4 – zabiegi specjalistyczne wysokiego ryzyka (tylko wycena indywidualna).",
-  "u": "slownik.html#haslo-grupa-ryzyka",
-  "o": 1
- },
- "owu": {
-  "t": "OWU (ogólne warunki ubezpieczenia)",
-  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. Ubezpieczyciel ma obowiązek doręczyć je przed zawarciem umowy.",
-  "u": "slownik.html#haslo-owu",
   "o": 1
  },
  "zakres-i-wylaczenia": {
   "t": "Zakres ochrony i wyłączenia",
   "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
   "u": "slownik.html#haslo-zakres-i-wylaczenia",
+  "o": 1
+ },
+ "ankieta-indywidualnej-oceny-ryzyka": {
+  "t": "Ankieta indywidualnej oceny ryzyka",
+  "d": "Formularz ERGO Hestii dla gabinetów, które wykonują zabiegi wymagające ankiety (Aneks nr 5, 8 pozycji). Pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat; na tej podstawie ubezpieczyciel decyduje o ochronie i składce.",
+  "u": "slownik.html#haslo-ankieta-indywidualnej-oceny-ryzyka",
   "o": 1
  },
  "ochrona-prawna": {

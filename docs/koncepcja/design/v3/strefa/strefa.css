@@ -292,6 +292,7 @@ html:not(.js) .no-js-only{display:block}
 
 /* tabela danych; na wąskich ekranach wiersze jako karty (data-label) */
 .table-wrap{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.table-wrap[tabindex]:focus-visible{outline-offset:-2px} /* przewijana tabela jako region z fokusem (WCAG 2.1.1) – obrys wewnątrz, nie ucięty */
 table.data{width:100%;border-collapse:collapse;font-size:var(--text-sm)}
 table.data caption{text-align:left;padding:0 0 10px;font:600 var(--text-serif-sm)/1.25 var(--font-serif);color:var(--color-navy)}
 table.data th,table.data td{padding:12px 14px;border-bottom:1px solid var(--bp-line-gold-soft);text-align:left;vertical-align:middle}

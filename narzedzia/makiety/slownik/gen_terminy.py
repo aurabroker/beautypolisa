@@ -8,13 +8,15 @@ Na każdej stronie z listy STRONY:
   1. usuwa stare oznaczenia <a class="bp-termin" …>…</a> (zostaje sam tekst),
   2. oznacza pierwsze wystąpienie hasła na stronie (maks. MAX_NA_STRONE) – tylko tekst w <p> i <li> wewnątrz <main>,
      poza: nagłówkami, linkami, przyciskami, etykietami i polami formularzy, tabelami, okruszkami, nazwami zabiegów,
-     treścią klauzuli ochrony prawnej, adnotacjami makiety, regionami aria-live, elementami ukrytymi i blokami gen:* / GEN:*;
+     treścią klauzuli ochrony prawnej, adnotacjami makiety, regionami aria-live, elementami ukrytymi, przykładami
+     (data-przyklad="tak" – przykładowe stawki opieki medycznej) i blokami gen:* / GEN:*;
      reguły z $comment: najdłuższe dopasowanie wygrywa, całe wyrazy, bez rozróżniania wielkości liter, ’ = ',
      wyrażenia wykluczone blokują dopasowanie, krótkie aliasy tylko w akapitach <p>, hasła „tylko Strefa” tylko w strefa/*,
      hasła „ma tylko aliasy” bez gołego terminu (wielowyrazowy termin – tak),
      poprawki po kontroli 13.11.2026: bez oznaczeń w otwarciu strony (hero), nie w cudzysłowie „…”, gęstość (1 na zdanie, 2 na akapit
      i na listę, 4 na sekcję, odstęp ODSTEP znaków), bez hasła-produktu bieżącej strony i bez „składka”/„polisa” na stronach produktów,
      dodatkowe wyrażenia wykluczone WYKLUCZONE_GEN (składki ZUS, „przed oficjalnym roszczeniem”, OC w życiu prywatnym),
+     hasła w innym znaczeniu na danej stronie INNE_ZNACZENIE (15.11.2026: opieka medyczna, szkolenia),
   3. oznaczenie bez JS = link do slownik.html#haslo-<id> (w strefa/ – ../slownik.html#haslo-<id>),
   4. blok <!-- gen:slownik-css --> (koniec <head>) i <!-- gen:slownik-js --> (koniec <body>): dane dymków
      (<script type="application/json" id="slownik-dymki"> – tylko użyte hasła, definicja skrócona do 2 zdań: pierwsze + wybrane
@@ -34,8 +36,11 @@ import sys
 
 V3 = pathlib.Path(__file__).resolve().parents[3] / 'docs/koncepcja/design/v3'
 SLOWNIK = V3.parent.parent / 'snippets' / 'slownik.json'
+# opieka-medyczna.html (od 15.11.2026) buduje opieka-medyczna/build.py, który na końcu wywołuje przetworz() z tego pliku –
+# kolejne uruchomienie gen_terminy.py nic na tej stronie nie zmienia
 STRONY = ['makieta-v3.html', 'oc-beauty.html', 'tax-protect.html', 'utrata-dochodu.html', 'nnw-dzieci.html',
-          'grupowe-ergo.html', 'strefa/logowanie.html', 'strefa/panel.html', 'strefa/dam-prace.html']
+          'grupowe-ergo.html', 'opieka-medyczna.html', 'strefa/logowanie.html', 'strefa/panel.html', 'strefa/dam-prace.html',
+          'strefa/szkolenia.html']
 MAX_NA_STRONE = 12
 # gęstość (kontrola 13.11.2026): w akapicie / punkcie listy najwyżej 2 oznaczenia, w zdaniu 1, między oznaczeniami co najmniej
 # ODSTEP znaków; otwarcie strony (hero) bez oznaczeń – spokojny pierwszy ekran
@@ -49,16 +54,24 @@ WLASNE = {
     'utrata-dochodu.html': {'ubezpieczenie-utraty-dochodu'},
     'nnw-dzieci.html': {'nnw'},
     'grupowe-ergo.html': {'ubezpieczenie-grupowe'},
+    'opieka-medyczna.html': {'abonament-medyczny'},
 }
 # hasła oczywiste na stronach produktów (na stronie głównej i w Strefie – tak)
 OCZYWISTE = {'skladka', 'polisa'}
-STRONY_PRODUKTOW = {'oc-beauty.html', 'tax-protect.html', 'utrata-dochodu.html', 'nnw-dzieci.html', 'grupowe-ergo.html'}
+STRONY_PRODUKTOW = {'oc-beauty.html', 'tax-protect.html', 'utrata-dochodu.html', 'nnw-dzieci.html', 'grupowe-ergo.html',
+                    'opieka-medyczna.html'}
 # wyrażenia wykluczone dodatkowo w generatorze (fałszywe trafienia z kontroli 13.11.2026) – do przeniesienia do $comment
 # slownik.json przez właściciela słownika: składki ZUS to nie składka ubezpieczeniowa; „roszczenie” w Tax Protect to działanie organu
 WYKLUCZONE_GEN = ['podstawy składek', 'podstawa składek', 'podstawie składek', 'podstawę składek', 'składki ZUS', 'składek ZUS',
                   'składka ZUS', 'składkę ZUS', 'składkach ZUS', 'płacisz składki', 'płacić składki', 'opłacasz składki',
                   'przed oficjalnym roszczeniem',
                   'odpowiedzialności cywilnej w życiu prywatnym']   # NNW: to OC prywatne (hasło oc-w-zyciu-prywatnym), nie OC zawodowe
+# hasła, których słowo występuje na stronie wyłącznie w innym znaczeniu niż w słowniku – nie są na niej oznaczane
+# (fałszywe trafienia z kontroli stron dodanych 15.11.2026; wyrażenie wykluczone nie wystarcza, bo słowo stoi też samo, np. w <strong>)
+INNE_ZNACZENIE = {
+    'opieka-medyczna.html': {'swiadczenie'},              # „świadczenia medyczne” ENEL-MED / LUX MED – usługi, nie świadczenie ubezpieczyciela
+    'strefa/szkolenia.html': {'prowizja', 'reklamacja'},  # prowizja portalu od sprzedaży szkoleń; reklamacja szkolenia u organizatora
+}
 # klucze do wyboru zdań definicji w dymku na stronach produktów (zdania o tym produkcie mają pierwszeństwo, o innym – są pomijane)
 PRODUKT_KLUCZE = {
     'oc-beauty.html': r'\bOC\b|Program OC|branży beauty|ERGO Hesti',
@@ -66,6 +79,7 @@ PRODUKT_KLUCZE = {
     'utrata-dochodu.html': r'utrat\w* dochodu|Leadenhall|CEU|prywatne L4',
     'nnw-dzieci.html': r'\bNNW\b|Colonnade|dzieci',
     'grupowe-ergo.html': r'Życie w Biznesie|ER 01/25|grupow',
+    'opieka-medyczna.html': r'abonament\w* medyczn|ENEL-MED|LUX MED|opiek\w* medyczn',
 }
 # kategorie, przy których dymek dopisuje stałą linię o OWU (pojęcia ubezpieczeniowe – nie konto w Strefie ani dystrybucja)
 KAT_OWU = {'podstawy', 'strony', 'ochrona', 'oc', 'tax-protect', 'zycie-zdrowie', 'utrata-dochodu', 'szkody'}
@@ -93,6 +107,7 @@ assert len(KROTKIE) == 18, KROTKIE
 assert TYLKO_STREFA == {'drugi-skladnik', 'role-w-strefie', 'osobisty-link'}, TYLKO_STREFA
 assert TYLKO_ALIASY == {'Doradca Aura Expert', 'Limit (podlimit)'}, TYLKO_ALIASY
 assert all(i in HASLA for i in TYLKO_STREFA)
+assert all(i in HASLA for z in list(WLASNE.values()) + list(INNE_ZNACZENIE.values()) for i in z)
 
 # ---------------------------------------------------------------- normalizacja (tekst i formy porównujemy tak samo)
 USUN = {'⁠', '­', '​'}            # word joiner, miękki dywiz, zero-width space
@@ -231,6 +246,8 @@ def atrybuty(tag):
 
 def zakazany(nazwa, a):
     if nazwa in ZAKAZANE_TAGI:
+        return True
+    if a.get('data-przyklad') == 'tak':          # opieka medyczna: przykładowe stawki (cennika programu jeszcze nie ma)
         return True
     if a.get('aria-hidden') == 'true' or 'hidden' in a or 'aria-live' in a or a.get('role') in ('status', 'alert', 'log', 'dialog', 'search', 'navigation', 'listbox', 'option', 'combobox', 'menu', 'tablist', 'tab'):
         return True
@@ -526,7 +543,7 @@ def przetworz(strona, s, debug=False):
     uzyte = []          # kolejność pierwszego użycia
     zmiany = []         # (start, koniec, html)
     akapity = {}        # element <p>/<li> -> stan: zdanie, cyt, off (znaki przed segmentem), n, zdania, koniec ostatniego oznaczenia
-    pomin = (WLASNE.get(strona, set()) | (OCZYWISTE if strona in STRONY_PRODUKTOW else set()))
+    pomin = (WLASNE.get(strona, set()) | INNE_ZNACZENIE.get(strona, set()) | (OCZYWISTE if strona in STRONY_PRODUKTOW else set()))
     n_lista, n_sekcja = {}, {}
     for a, b, kont, sciezka, el, lista, sekcja in segmenty(s):
         if len(uzyte) >= MAX_NA_STRONE:

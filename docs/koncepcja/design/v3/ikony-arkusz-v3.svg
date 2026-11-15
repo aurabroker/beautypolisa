@@ -1,5 +1,5 @@
 <svg width="1024" height="768" viewBox="0 0 1024 768" fill="none" stroke="#2A3B68" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-  <g transform="translate(0 164.5714) scale(1.5238095)">
+  <g transform="translate(0 91.4286) scale(1.5238095)">
     <g id="oc-beauty">
       <path d="M48 17C39 27 29 29 19 28V45C19 62 29 73 48 80C67 73 77 62 77 45V28C67 29 57 27 48 17Z"></path>
       <path d="M48 24C40 31 32 34 25 34V45C25 59 33 68 48 74C63 68 71 59 71 45V34C64 34 56 31 48 24Z"></path>
@@ -115,7 +115,7 @@
       <path d="M43 35C36 40 32 30 39 30H44V25C44 19 52 19 52 25V30H57C64 30 60 40 53 35"></path>
       <path d="M45 52H52M52 63H62V68H58V72H62V77H52"></path>
     </g>
-    <g id="grupy-ryzyka" transform="translate(384 192)">
+    <g id="wskaznik" transform="translate(384 192)">
       <path d="M17 70V64C17 47 31 33 48 33C65 33 79 47 79 64V70Z"></path>
       <path d="M22 62H26M26 49L30 51M35 39L37 43M48 37V42M61 39L59 43M70 49L66 51M74 62H70"></path>
       <circle cx="48" cy="64" r="3"></circle>
@@ -129,6 +129,18 @@
     </g>
     <g id="serce" transform="translate(576 192)">
       <path d="M48 77C41 69 18 53 18 37C18 17 41 15 48 33C55 15 78 17 78 37C78 53 55 69 48 77Z"></path>
+    </g>
+    <g id="gabinet-kosmetyczny" transform="translate(0 288)">
+      <path d="M31 41H65C67 41 68 42 68 44V49H28V44C28 42 29 41 31 41Z"></path>
+      <path d="M30 49H66V71C66 76 63 79 58 79H38C33 79 30 76 30 71Z"></path>
+      <path d="M37 59H59M37 66H51"></path>
+      <path d="M48 17V31M41 24H55M64 26V34M60 30H68M32 27V33M29 30H35"></path>
+    </g>
+    <g id="salon-masazu" transform="translate(96 288)">
+      <ellipse cx="48" cy="71" rx="25" ry="8"></ellipse>
+      <ellipse cx="48" cy="55.5" rx="18.5" ry="6.5"></ellipse>
+      <ellipse cx="48" cy="42.5" rx="12" ry="5"></ellipse>
+      <path d="M43 33C41 29 45 27 43 23C42 21 43 19 44 18M53 33C51 29 55 27 53 23C52 21 53 19 54 18"></path>
     </g>
   </g>
 </svg>

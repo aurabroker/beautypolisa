@@ -1,6 +1,6 @@
 {
-  "$comment": "Słownik pojęć dla użytkowników BeautyPolisa (właścicielki i właściciele salonów, kosmetolożki, fryzjerzy, podolodzy, rodzice – bez wiedzy ubezpieczeniowej). Zlecenie 13.11.2026: „trzeba dodać słownik z definicjami dla userów”. Hasła zebrane z makiet design/v3 (makieta-v3, oc-beauty, tax-protect, utrata-dochodu, nnw-dzieci, grupowe-ergo, opieka-medyczna, strefa/*), 25 haseł słowniczka ERGO Życie w Biznesie (typ ergo-slowniczek), stron utratadochodu.pl i ergo.beautypolisa.eu, ulotki NNW Colonnade, dokumentów koncepcji 00–12 i snippetów (klauzula-ochrona-prawna.json, legal-distributor.json, zabiegi-oc-beauty.json) oraz przepisów (KC, ustawa o dystrybucji ubezpieczeń, ustawa o działalności ubezpieczeniowej i reasekuracyjnej, RODO, ustawa o rozpatrywaniu reklamacji, Kodeks pracy). Definicje są ogólne i nie zastępują OWU – przy każdym produkcie wiążą OWU i polisa; na stronie słownika pod definicjami umieszczamy zdanie: „Definicje wyjaśniają pojęcia prostym językiem. O zakresie ochrony decydują ogólne warunki ubezpieczenia (OWU) konkretnego produktu.” Bez rekomendacji produktów; kwoty wyłącznie ze źródeł (taryfy, cenniki, słowniczek ERGO). Pola: id (slug, stały – używany w adresach /slownik#<id> i w zobacz_tez), termin, alias (odmiany i synonimy do wyszukiwarki i oznaczania pojęć w treści), kategoria (id z listy kategorie), definicja (1–3 zdania), przyklad (opcjonalnie, „Przykład z salonu”), gdzie (makiety design/v3 z kotwicami – w aplikacji mapować na trasy, np. oc-beauty.html → /ubezpieczenia/oc-beauty), zobacz_tez (id innych haseł), zrodlo (typ: ergo-slowniczek | przepis | strona | koncepcja), do_potwierdzenia (opcjonalnie – nie publikować na stronie; usunąć pole po potwierdzeniu). Oznaczanie pojęć w treści: dopasowanie bez rozróżniania wielkości liter i z normalizacją apostrofów (’ = '), najdłuższe dopasowanie wygrywa, tylko całe wyrazy, tylko pierwsze wystąpienie na stronie, bez oznaczania w nagłówkach, linkach, przyciskach, nazwach zabiegów z zabiegi-oc-beauty.json i dosłownej treści klauzuli ochrony prawnej (00, D30). Krótkie aliasy (OC, NW, SU, IOD, L4, APK, KNF, TOTP, 2FA, OIT, OIOM, NNW, RPU, OWU, agent, wariant, taryfa, abonament) oznaczać tylko w akapitach tekstu. Wyrażenia wykluczone – blokują dopasowanie w tym miejscu (porównanie jak przy aliasach): „doradca podatkowy”, „doradcy podatkowego”, „doradcę podatkowego”, „doradcą podatkowym”, „doradców podatkowych”, „adwokata lub doradcy”, „czasowa niezdolność do pracy”, „czasowej niezdolności do pracy”, „kod z e-maila”, „kodu z e-maila”. Hasło „Doradca Aura Expert” ma tylko aliasy z nazwą „Aura Expert” – goła forma „doradca” nie jest oznaczana (w Tax Protect oznacza doradcę podatkowego lub prawnego z zakresu polisy). Hasło „Limit (podlimit)” ma tylko aliasy złożone („limit świadczenia”, „limit odpowiedzialności” itd.) – w Strefie „limit” oznacza ograniczenie techniczne (np. dzienny limit przeglądania ogłoszeń). Hasła drugi-skladnik, role-w-strefie i osobisty-link oznaczać tylko na stronach strefa/*; na stronach produktów pojawiają się wyłącznie w samym słowniku. Hasła sortowane alfabetycznie według terminu: polska kolejność liter, wyraz po wyrazie, dopisek w nawiasie pomijany przy sortowaniu. Test CI: unikalne id, unikalne aliasy (także względem terminów innych haseł), zobacz_tez i kategoria wskazują istniejące id.",
-  "wersja": "2026-11-13",
+  "$comment": "Słownik pojęć dla użytkowników BeautyPolisa (właścicielki i właściciele salonów, kosmetolożki, fryzjerzy, podolodzy, rodzice – bez wiedzy ubezpieczeniowej). Zlecenie 13.11.2026: „trzeba dodać słownik z definicjami dla userów”. Hasła zebrane z makiet design/v3 (makieta-v3, oc-beauty, tax-protect, utrata-dochodu, nnw-dzieci, grupowe-ergo, opieka-medyczna, strefa/*), 25 haseł słowniczka ERGO Życie w Biznesie (typ ergo-slowniczek), stron utratadochodu.pl i ergo.beautypolisa.eu, ulotki NNW Colonnade, dokumentów koncepcji 00–12 i snippetów (klauzula-ochrona-prawna.json, legal-distributor.json, zabiegi-oc-beauty.json) oraz przepisów (KC, ustawa o dystrybucji ubezpieczeń, ustawa o działalności ubezpieczeniowej i reasekuracyjnej, RODO, ustawa o rozpatrywaniu reklamacji, Kodeks pracy). Definicje są ogólne i nie zastępują OWU – przy każdym produkcie wiążą OWU i polisa; na stronie słownika pod definicjami umieszczamy zdanie: „Definicje wyjaśniają pojęcia prostym językiem. O zakresie ochrony decydują ogólne warunki ubezpieczenia (OWU) konkretnego produktu.” Bez rekomendacji produktów; kwoty wyłącznie ze źródeł (taryfy, cenniki, słowniczek ERGO). Pola: id (slug, stały – używany w adresach /slownik#<id> i w zobacz_tez), termin, alias (odmiany i synonimy do wyszukiwarki i oznaczania pojęć w treści), kategoria (id z listy kategorie), definicja (1–3 zdania), przyklad (opcjonalnie, „Przykład z salonu”), gdzie (makiety design/v3 z kotwicami – w aplikacji mapować na trasy, np. oc-beauty.html → /ubezpieczenia/oc-beauty), zobacz_tez (id innych haseł), zrodlo (typ: ergo-slowniczek | przepis | strona | koncepcja), dawne_id (opcjonalnie – dawne id hasła zastąpionego tym hasłem; strona słownika zostawia pod nim pustą kotwicę haslo-<dawne_id>, żeby stare odnośniki działały), do_potwierdzenia (opcjonalnie – nie publikować na stronie; usunąć pole po potwierdzeniu). Oznaczanie pojęć w treści: dopasowanie bez rozróżniania wielkości liter i z normalizacją apostrofów (’ = '), najdłuższe dopasowanie wygrywa, tylko całe wyrazy, tylko pierwsze wystąpienie na stronie, bez oznaczania w nagłówkach, linkach, przyciskach, nazwach zabiegów z zabiegi-oc-beauty.json i dosłownej treści klauzuli ochrony prawnej (00, D30). Krótkie aliasy (OC, NW, SU, IOD, L4, APK, KNF, TOTP, 2FA, OIT, OIOM, NNW, RPU, OWU, agent, wariant, taryfa, abonament) oznaczać tylko w akapitach tekstu. Wyrażenia wykluczone – blokują dopasowanie w tym miejscu (porównanie jak przy aliasach): „doradca podatkowy”, „doradcy podatkowego”, „doradcę podatkowego”, „doradcą podatkowym”, „doradców podatkowych”, „adwokata lub doradcy”, „czasowa niezdolność do pracy”, „czasowej niezdolności do pracy”, „kod z e-maila”, „kodu z e-maila”. Hasło „Doradca Aura Expert” ma tylko aliasy z nazwą „Aura Expert” – goła forma „doradca” nie jest oznaczana (w Tax Protect oznacza doradcę podatkowego lub prawnego z zakresu polisy). Hasło „Limit (podlimit)” ma tylko aliasy złożone („limit świadczenia”, „limit odpowiedzialności” itd.) – w Strefie „limit” oznacza ograniczenie techniczne (np. dzienny limit przeglądania ogłoszeń). Hasła drugi-skladnik, role-w-strefie i osobisty-link oznaczać tylko na stronach strefa/*; na stronach produktów pojawiają się wyłącznie w samym słowniku. Hasła sortowane alfabetycznie według terminu: polska kolejność liter, wyraz po wyrazie, dopisek w nawiasie pomijany przy sortowaniu. Test CI: unikalne id, unikalne aliasy (także względem terminów innych haseł), zobacz_tez i kategoria wskazują istniejące id.",
+  "wersja": "2026-11-15",
   "kategorie": [
     {
       "id": "podstawy",
@@ -143,23 +143,23 @@
         "ankietę ERGO Hestii"
       ],
       "kategoria": "oc",
-      "definicja": "Formularz ERGO Hestii dla salonów, które wykonują zabiegi z grupy 4 albo mają zespół od 9 osób. Pyta m.in. o wykonywane zabiegi, kwalifikacje personelu, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat; na tej podstawie ubezpieczyciel decyduje o ochronie i składce. Wypełniasz ją pod osobistym linkiem, razem z APK i wnioskiem.",
+      "definicja": "Formularz ERGO Hestii dla gabinetów, które wykonują zabiegi wymagające ankiety (Aneks nr 5, 8 pozycji). Pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat; na tej podstawie ubezpieczyciel decyduje o ochronie i składce. Wypełniasz ją pod osobistym linkiem, razem z APK i wnioskiem – wymagane dokumenty wskazuje doradca Aura Expert.",
       "gdzie": [
         {
-          "strona": "oc-beauty.html#grupa-4",
-          "etykieta": "OC dla branży beauty – grupa 4"
+          "strona": "oc-beauty.html#ankieta",
+          "etykieta": "OC dla branży beauty – zabiegi wymagające ankiety"
         },
         {
           "strona": "oc-beauty.html#pytanie-5",
-          "etykieta": "OC dla branży beauty – zabiegi wysokiego ryzyka"
+          "etykieta": "OC dla branży beauty – czy te zabiegi można ubezpieczyć"
         },
         {
           "strona": "makieta-v3.html#kalkulator-oc",
-          "etykieta": "Kalkulator OC – grupa 4"
+          "etykieta": "Kalkulator OC – zabiegi wymagające ankiety"
         }
       ],
       "zobacz_tez": [
-        "grupa-ryzyka",
+        "lista-zabiegow-programu",
         "wycena-indywidualna",
         "ocena-ryzyka",
         "szkodowosc",
@@ -169,7 +169,11 @@
       "zrodlo": [
         {
           "typ": "strona",
-          "opis": "oc-beauty.html#pytanie-5 i #grupa-4"
+          "opis": "oc-beauty.html#pytanie-5 i #ankieta"
+        },
+        {
+          "typ": "koncepcja",
+          "opis": "snippets/zabiegi-oc-beauty.json – zabiegi wymagające ankiety a–h w brzmieniu Aneksu nr 5 (00, D43)"
         }
       ]
     },
@@ -653,50 +657,6 @@
         }
       ],
       "do_potwierdzenia": "Kto jest ubezpieczającym w grupie otwartej ERGO Razem (organizator grupy) – według OWU ER 01/25."
-    },
-    {
-      "id": "grupa-ryzyka",
-      "termin": "Grupa ryzyka (zabiegów)",
-      "alias": [
-        "grupa ryzyka",
-        "grupy ryzyka",
-        "grupie ryzyka",
-        "grupę ryzyka",
-        "grup ryzyka",
-        "grupa zabiegów"
-      ],
-      "kategoria": "oc",
-      "definicja": "Kategoria, do której program OC przypisuje zabieg według ryzyka szkody; od niej zależy stawka z taryfy. Grupa 1 – kosmetyka i fryzjerstwo, grupa 2 – kosmetologia i tatuaż, grupa 3 – podologia medyczna, grupa 4 – zabiegi specjalistyczne wysokiego ryzyka (tylko wycena indywidualna). Liczą się wykonywane zabiegi, a nie nazwa zawodu.",
-      "przyklad": "Wykonujesz manicure i microblading? To grupy 1 i 2 razem – płacisz według stawek grupy 3.",
-      "gdzie": [
-        {
-          "strona": "oc-beauty.html#zabiegi",
-          "etykieta": "OC dla branży beauty – lista zabiegów w programie"
-        },
-        {
-          "strona": "makieta-v3.html#kalkulator-oc",
-          "etykieta": "Kalkulator OC – wybór grup ryzyka"
-        },
-        {
-          "strona": "makieta-v3.html#dla-kogo",
-          "etykieta": "Strona główna – dla kogo"
-        }
-      ],
-      "zobacz_tez": [
-        "stala-taryfa",
-        "ankieta-indywidualnej-oceny-ryzyka",
-        "wycena-indywidualna"
-      ],
-      "zrodlo": [
-        {
-          "typ": "strona",
-          "opis": "oc-beauty.html#zabiegi i #taryfa"
-        },
-        {
-          "typ": "koncepcja",
-          "opis": "snippets/zabiegi-oc-beauty.json – 117 zabiegów w 4 grupach"
-        }
-      ]
     },
     {
       "id": "idd",
@@ -1205,6 +1165,46 @@
       ]
     },
     {
+      "id": "lista-zabiegow-programu",
+      "termin": "Lista zabiegów programu (OC beauty)",
+      "alias": [
+        "lista zabiegów programu",
+        "listy zabiegów programu",
+        "listę zabiegów programu",
+        "listach zabiegów programu",
+        "listy zabiegów",
+        "listach zabiegów"
+      ],
+      "kategoria": "oc",
+      "definicja": "Załączniki do programu OC z nazwami zabiegów, w brzmieniu Aneksu nr 5: lista nr 1 „Lista zabiegów – gabinety kosmetyczne i fryzjerskie” (49 pozycji) i lista nr 2 „Lista zabiegów – gabinety kosmetyczne i kosmetologiczne” (63 pozycje); ten sam zabieg może być na obu listach. Zabiegi wymagające ankiety ERGO Hestii (8 pozycji) i lista zabiegów podologicznych to osobne dokumenty programu. Składki nie wyznacza zabieg, tylko rodzaj działalności.",
+      "przyklad": "„Manicure” jest na liście nr 1 (poz. 17) i na liście nr 2 (poz. 19), a „Microblading” – tylko na liście nr 2 (poz. 30).",
+      "gdzie": [
+        {
+          "strona": "oc-beauty.html#zabiegi",
+          "etykieta": "OC dla branży beauty – listy zabiegów w programie"
+        },
+        {
+          "strona": "makieta-v3.html#kalkulator-oc",
+          "etykieta": "Kalkulator OC – wyszukiwarka zabiegów"
+        }
+      ],
+      "zobacz_tez": [
+        "rodzaj-dzialalnosci",
+        "ankieta-indywidualnej-oceny-ryzyka",
+        "stala-taryfa"
+      ],
+      "zrodlo": [
+        {
+          "typ": "strona",
+          "opis": "oc-beauty.html#zabiegi"
+        },
+        {
+          "typ": "koncepcja",
+          "opis": "snippets/zabiegi-oc-beauty.json – listy nr 1 i 2 z PDF Aneksu nr 5 i zabiegi wymagające ankiety (00, D43)"
+        }
+      ]
+    },
+    {
       "id": "lloyds",
       "termin": "Lloyd’s",
       "alias": [
@@ -1453,7 +1453,7 @@
       ],
       "kategoria": "oc",
       "definicja": "Ubezpieczenie, które płaci za Ciebie, gdy wyrządzisz szkodę komuś innemu (osobie trzeciej) i odpowiadasz za nią – np. klientce, u której zabieg spowodował uraz. Ubezpieczyciel wypłaca poszkodowanemu odszkodowanie do wysokości sumy gwarancyjnej, w zakresie i z wyłączeniami z warunków ubezpieczenia.",
-      "przyklad": "Klientka po peelingu chemicznym ma poparzoną skórę i żąda pokrycia kosztów leczenia – to roszczenie zgłaszasz z OC salonu, jeśli peeling chemiczny jest objęty Twoją polisą (grupa 2).",
+      "przyklad": "Klientka po peelingu chemicznym ma poparzoną skórę i żąda pokrycia kosztów leczenia – to roszczenie zgłaszasz z OC salonu, jeśli zabieg jest objęty Twoją polisą.",
       "gdzie": [
         {
           "strona": "oc-beauty.html#pytanie-1",
@@ -1468,7 +1468,7 @@
         "suma-gwarancyjna",
         "odszkodowanie",
         "roszczenie",
-        "grupa-ryzyka",
+        "lista-zabiegow-programu",
         "regres",
         "oc-w-zyciu-prywatnym"
       ],
@@ -1531,7 +1531,7 @@
         },
         {
           "strona": "oc-beauty.html#pytanie-5",
-          "etykieta": "OC dla branży beauty – zabiegi wysokiego ryzyka"
+          "etykieta": "OC dla branży beauty – zabiegi wymagające ankiety"
         }
       ],
       "zobacz_tez": [
@@ -2143,7 +2143,7 @@
       ],
       "kategoria": "podstawy",
       "definicja": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę. Polisa nie zastępuje OWU – pełne zasady ochrony są w warunkach ubezpieczenia, do których się odwołuje.",
-      "przyklad": "Na karcie polisy OC w Strefie Klienta widać numer polisy, okres ochrony, grupę ryzyka, sumę gwarancyjną i składkę roczną.",
+      "przyklad": "Na karcie polisy OC w Strefie Klienta widać numer polisy, okres ochrony, zakres (np. „Gabinety kosmetologiczne”), sumę gwarancyjną i składkę roczną.",
       "gdzie": [
         {
           "strona": "strefa/panel.html#polisa-oc",
@@ -2399,6 +2399,52 @@
       "do_potwierdzenia": "Numery artykułów ustawy o rozpatrywaniu reklamacji (art. 2, 7, 8) – do sprawdzenia przez prawnika przed publikacją. Do rozważenia zdanie, że brak odpowiedzi w terminie oznacza rozpatrzenie reklamacji zgodnie z wolą klienta – z artykułem po weryfikacji przez prawnika."
     },
     {
+      "id": "rodzaj-dzialalnosci",
+      "termin": "Rodzaj działalności (OC beauty)",
+      "alias": [
+        "rodzaj działalności",
+        "rodzaju działalności",
+        "rodzajem działalności",
+        "rodzaje działalności",
+        "rodzajów działalności"
+      ],
+      "kategoria": "oc",
+      "definicja": "Odpowiedź na pytanie „Jaką działalność prowadzisz?” w kalkulatorze OC i w analizie potrzeb: gabinet kosmetyczny, salon fryzjerski, gabinet kosmetologiczny, gabinet podologiczny, salon masażu, salon tatuażu – można zaznaczyć kilka. Z rodzajów działalności wynika taryfa programu, czyli zakres na certyfikacie; sam zabieg z list programu składki nie zmienia. Dopisanie zabiegów z innej listy zmienia rodzaj działalności i składkę według taryfy programu.",
+      "przyklad": "Gabinet kosmetyczny i gabinet kosmetologiczny w jednym lokalu: taryfa „Gabinety kosmetologiczne” – 790 zł rocznie przy sumie gwarancyjnej 200 000 zł, gdy zabiegi wykonuje do 5 osób.",
+      "gdzie": [
+        {
+          "strona": "makieta-v3.html#kalkulator-oc",
+          "etykieta": "Kalkulator OC – jaką działalność prowadzisz"
+        },
+        {
+          "strona": "oc-beauty.html#taryfa",
+          "etykieta": "OC dla branży beauty – taryfa programu"
+        },
+        {
+          "strona": "makieta-v3.html#dla-kogo",
+          "etykieta": "Strona główna – dla kogo"
+        }
+      ],
+      "zobacz_tez": [
+        "stala-taryfa",
+        "lista-zabiegow-programu",
+        "wycena-indywidualna"
+      ],
+      "zrodlo": [
+        {
+          "typ": "strona",
+          "opis": "oc-beauty.html#taryfa i #zabiegi"
+        },
+        {
+          "typ": "koncepcja",
+          "opis": "snippets/taryfa-oc-beauty.json – rodzaje działalności i taryfa programu jak w CRM Aura Expert (00, D43)"
+        }
+      ],
+      "dawne_id": [
+        "grupa-ryzyka"
+      ]
+    },
+    {
       "id": "rok-polisowy",
       "termin": "Rok polisowy",
       "alias": [
@@ -2587,7 +2633,7 @@
       ],
       "kategoria": "podstawy",
       "definicja": "Cena ubezpieczenia – kwota, którą ubezpieczający płaci ubezpieczycielowi za ochronę, jednorazowo albo w ratach (np. co miesiąc). Jej wysokość zależy od ryzyka i wybranego zakresu; wynika ze stałej taryfy albo z wyliczenia ubezpieczyciela po ocenie ryzyka. Przy części produktów rata obejmuje oprócz składki także opłatę dystrybucyjną – wtedy nie cała rata trafia do ubezpieczyciela.",
-      "przyklad": "W OC dla branży beauty składka zależy od grupy ryzyka zabiegów, sumy gwarancyjnej i liczby osób w zespole.",
+      "przyklad": "W OC dla branży beauty składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i sumy gwarancyjnej.",
       "gdzie": [
         {
           "strona": "oc-beauty.html#taryfa",
@@ -2674,8 +2720,8 @@
         "stałe stawki"
       ],
       "kategoria": "podstawy",
-      "definicja": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. grupę ryzyka i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
-      "przyklad": "Przy grupie 1 i sumie gwarancyjnej 100 tys. zł składka OC dla zespołu do 5 osób wynosi według taryfy 400 zł rocznie.",
+      "definicja": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. rodzaj działalności i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
+      "przyklad": "Gabinet kosmetyczny, suma gwarancyjna 100 000 zł, zabiegi wykonuje do 5 osób: taryfa „Gabinety kosmetyczne i fryzjerskie” – 400 zł rocznie, tyle samo dla każdego gabinetu z tymi odpowiedziami.",
       "gdzie": [
         {
           "strona": "oc-beauty.html#taryfa",
@@ -2693,7 +2739,7 @@
       "zobacz_tez": [
         "skladka",
         "wycena-indywidualna",
-        "grupa-ryzyka"
+        "rodzaj-dzialalnosci"
       ],
       "zrodlo": [
         {
@@ -3512,11 +3558,11 @@
       ],
       "kategoria": "podstawy",
       "definicja": "Składka ustalana osobno dla Twojej sytuacji, bo stała taryfa jej nie przewiduje. Liczy się ją po zebraniu dodatkowych informacji, np. z ankiety, a o warunkach decyduje ubezpieczyciel.",
-      "przyklad": "Zabiegi z grupy 4 (np. toksyna botulinowa, wypełniacze z kwasem hialuronowym) i zespoły od 9 osób w OC dla branży beauty wymagają wyceny indywidualnej.",
+      "przyklad": "Zabiegi wymagające ankiety ERGO Hestii (np. „Zabiegi z użyciem toksyny botulinowej”) oraz gabinety, w których zabiegi wykonuje więcej niż 8 osób, mają w OC dla branży beauty wycenę indywidualną.",
       "gdzie": [
         {
-          "strona": "oc-beauty.html#grupa-4",
-          "etykieta": "OC dla branży beauty – grupa 4"
+          "strona": "oc-beauty.html#ankieta",
+          "etykieta": "OC dla branży beauty – zabiegi wymagające ankiety"
         },
         {
           "strona": "tax-protect.html#taryfa",
@@ -3535,7 +3581,7 @@
       "zrodlo": [
         {
           "typ": "strona",
-          "opis": "oc-beauty.html#grupa-4, tax-protect.html#taryfa, opieka-medyczna.html#ceny"
+          "opis": "oc-beauty.html#ankieta, tax-protect.html#taryfa, opieka-medyczna.html#ceny"
         }
       ]
     },

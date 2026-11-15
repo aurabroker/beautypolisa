@@ -10,8 +10,9 @@ const { chromium } = require('playwright');
 const OUT = WYNIKI;
 require('fs').mkdirSync(OUT, { recursive: true });
 const V3 = 'file://' + REPO + '/docs/koncepcja/design/v3/';
+// = lista STRONY w slownik/gen_terminy.py (od 15.11.2026 także opieka-medyczna.html i strefa/szkolenia.html)
 const STRONY = ['makieta-v3.html', 'oc-beauty.html', 'tax-protect.html', 'utrata-dochodu.html', 'nnw-dzieci.html', 'grupowe-ergo.html',
-  'strefa/logowanie.html', 'strefa/panel.html', 'strefa/dam-prace.html'];
+  'opieka-medyczna.html', 'strefa/logowanie.html', 'strefa/panel.html', 'strefa/dam-prace.html', 'strefa/szkolenia.html'];
 const TRYB = process.argv[2] || 'wszystko';
 const bledy = [], info = [];
 const ok = (c, m) => { if (!c) bledy.push(m); };

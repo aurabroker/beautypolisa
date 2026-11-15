@@ -15,7 +15,7 @@
    ]
   },
   {
-   "pytanie": "Ile kosztuje OC salonu kosmetycznego?",
+   "pytanie": "Ile kosztuje OC w programie dla branży beauty?",
    "odpowiedz": [
     "Według stałej taryfy programu, gdy zabiegi wykonuje do 5 osób, składka roczna wynosi od {stawka.kosmetyczny_fryzjerski.100000} (taryfa „{kategoria.kosmetyczny_fryzjerski}”, suma gwarancyjna {suma.100000}) do {stawka.pelny.300000} (taryfa „{kategoria.pelny}”, suma gwarancyjna {suma.300000}). Gdy zabiegi wykonuje 6–8 osób, składka z taryfy jest wyższa o {doplata} – np. {kwota_6_8.kosmetologiczny.200000} zamiast {stawka.kosmetologiczny.200000} w taryfie „{kategoria.kosmetologiczny}” przy sumie gwarancyjnej {suma.200000}. Klauzula ochrony prawnej kosztuje dodatkowo {op.skladka} rocznie, bez tej dopłaty. Więcej niż 8 osób wykonujących zabiegi oraz zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna."
    ]
@@ -27,7 +27,7 @@
    ]
   },
   {
-   "pytanie": "Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?",
+   "pytanie": "Czy zabiegi wymagające ankiety ERGO Hestii można ubezpieczyć?",
    "odpowiedz": [
     "Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „{ankieta.h}”, „{ankieta.a}” i „{ankieta.d}” – wszystkie {ankieta.pozycji} znajdziesz w sekcji <a href=\"#ankieta\">Zabiegi wymagające ankiety ERGO Hestii</a>. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne:",
     {"crm": "dokumenty_przy_zabiegach_z_ankiety"},

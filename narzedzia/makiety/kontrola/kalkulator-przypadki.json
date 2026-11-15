@@ -1,5 +1,5 @@
 {
- "$comment": "Fixture kalkulatora OC (plan „OC beauty po Aneksie nr 5”, rozdz. 8) – wyniki według reguł CRM (crmaura/src/lib/renewals/program.ts: KATEGORIE, DOPLATA_6_8_OSOB, OCHRONA_PRAWNA_SKLADKA, kategoriaZRodzajow, skladkaProgramu, wycenaNowej). Grupy: A – rodzaje → kategoria, B – sumy, osoby, ochrona prawna, grosze, C – więcej niż 8 osób, D – zabiegi wymagające ankiety, E – wyszukiwarka, F – braki danych. tylko_portal = true (F1–F5): stany interfejsu portalu, których CRM nie wycenia (wycenaNowej bez sumy zwraca null, bez rodzaju – „brak danych do wyceny”) – porównanie z CRM obejmuje 44 przypadki A–E. zabiegi_ankieta – dosłowne nazwy z ZABIEGI_ANKIETA w CRM (mapa litera a–h ↔ id g4-xx ↔ nazwa: snippets/zabiegi-oc-beauty.json, pozycje listy „ankieta”). oczekiwane.tekst i opis – format portalu (kwota z groszami, spacje twarde U+00A0, sumy „200 tys. zł”); tekst_crm i opis_crm – dosłownie jak CRM (formatZl, opis skladkaProgramu). kombinacje_rodzajow – 64 kombinacje 6 rodzajów z wynikiem kategoriaZRodzajow; kwoty_taryfy – 36 kwot (3 kategorie × 3 sumy × 1–5/6–8 × ochrona prawna). Kontrole: kontrola/oc/oc-skladka.test.js (oc-skladka.js), check_zgodnosc_crm.py (niezależnie, ze stałymi i kodem CRM).",
+ "$comment": "Fixture kalkulatora OC (plan „OC beauty po Aneksie nr 5”, rozdz. 8) – wyniki według reguł CRM (crmaura/src/lib/renewals/program.ts: KATEGORIE, DOPLATA_6_8_OSOB, OCHRONA_PRAWNA_SKLADKA, kategoriaZRodzajow, skladkaProgramu, wycenaNowej). Grupy: A – rodzaje → kategoria, B – sumy, osoby, ochrona prawna, grosze, C – więcej niż 8 osób, D – zabiegi wymagające ankiety, E – wyszukiwarka, F – braki danych. tylko_portal = true (F1–F5): stany interfejsu portalu, których CRM nie wycenia (wycenaNowej bez sumy zwraca null, bez rodzaju – „brak danych do wyceny”) – porównanie z CRM obejmuje 44 przypadki A–E. zabiegi_ankieta – dosłowne nazwy z ZABIEGI_ANKIETA w CRM (mapa litera a–h ↔ id g4-xx ↔ nazwa: snippets/zabiegi-oc-beauty.json, pozycje listy „ankieta”). oczekiwane.tekst i opis – format portalu (kwota z groszami, spacje twarde U+00A0, sumy „200 tys. zł”); tekst_crm i opis_crm – dosłownie jak CRM (formatZl, opis skladkaProgramu). kombinacje_rodzajow – 64 kombinacje 6 rodzajów z wynikiem kategoriaZRodzajow; kwoty_taryfy – 36 kwot (3 kategorie × 3 sumy × 1–5/6–8 × ochrona prawna). Kontrole: kontrola/oc/oc-skladka.test.js (oc-skladka.js), check_zgodnosc_crm.py (niezależnie, ze stałymi i kodem CRM). oczekiwane.przycisk_portalu (D4) – stan przycisku kalkulatora w portalu, gdy zaznaczono „Wykonuję zabiegi wymagające ankiety…” bez pozycji a–h: kwota bez zmian (jak w CRM), przycisk nieaktywny (aria-disabled), po kliknięciu fokus na pozycji a) – CRM taki wniosek zatrzymuje walidacją (stan.svelte.ts, sprawdzWniosek); bez tego pola przycisk aktywny („Poproś o polisę” / „Poproś o wycenę indywidualną”).",
  "przypadki": [
   {
    "id": "A1",
@@ -425,7 +425,7 @@
     "kwota": 812.5,
     "tekst": "812,50\u00a0zł",
     "tekst_crm": "812,50 zł",
-    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 300\u00a0tys.\u00a0zł: 650\u00a0zł, +25% (6–8\u00a0osób)",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 300\u00a0tys.\u00a0zł: 650\u00a0zł, +25% (6–\u20608\u00a0osób)",
     "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 300.000 zł: 650 zł, +25% (6–8 osób)"
    }
   },
@@ -448,7 +448,7 @@
     "kwota": 904.5,
     "tekst": "904,50\u00a0zł",
     "tekst_crm": "904,50 zł",
-    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 300\u00a0tys.\u00a0zł: 650\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 300\u00a0tys.\u00a0zł: 650\u00a0zł, +25% (6–\u20608\u00a0osób), +92\u00a0zł ochrona prawna",
     "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 300.000 zł: 650 zł, +25% (6–8 osób), +92 zł ochrona prawna"
    }
   },
@@ -471,7 +471,7 @@
     "kwota": 812.5,
     "tekst": "812,50\u00a0zł",
     "tekst_crm": "812,50 zł",
-    "opis": "Gabinety kosmetologiczne, suma 100\u00a0tys.\u00a0zł: 650\u00a0zł, +25% (6–8\u00a0osób)",
+    "opis": "Gabinety kosmetologiczne, suma 100\u00a0tys.\u00a0zł: 650\u00a0zł, +25% (6–\u20608\u00a0osób)",
     "opis_crm": "Gabinety kosmetologiczne, suma 100.000 zł: 650 zł, +25% (6–8 osób)"
    }
   },
@@ -494,7 +494,7 @@
     "kwota": 987.5,
     "tekst": "987,50\u00a0zł",
     "tekst_crm": "987,50 zł",
-    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł, +25% (6–8\u00a0osób)",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł, +25% (6–\u20608\u00a0osób)",
     "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł, +25% (6–8 osób)"
    }
   },
@@ -517,7 +517,7 @@
     "kwota": 1079.5,
     "tekst": "1\u00a0079,50\u00a0zł",
     "tekst_crm": "1079,50 zł",
-    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł, +25% (6–\u20608\u00a0osób), +92\u00a0zł ochrona prawna",
     "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł, +25% (6–8 osób), +92 zł ochrona prawna"
    }
   },
@@ -540,7 +540,7 @@
     "kwota": 1279.5,
     "tekst": "1\u00a0279,50\u00a0zł",
     "tekst_crm": "1279,50 zł",
-    "opis": "Gabinety kosmetologiczne, suma 300\u00a0tys.\u00a0zł: 950\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis": "Gabinety kosmetologiczne, suma 300\u00a0tys.\u00a0zł: 950\u00a0zł, +25% (6–\u20608\u00a0osób), +92\u00a0zł ochrona prawna",
     "opis_crm": "Gabinety kosmetologiczne, suma 300.000 zł: 950 zł, +25% (6–8 osób), +92 zł ochrona prawna"
    }
   },
@@ -610,7 +610,7 @@
     "kwota": 1062.5,
     "tekst": "1\u00a0062,50\u00a0zł",
     "tekst_crm": "1062,50 zł",
-    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 100\u00a0tys.\u00a0zł: 850\u00a0zł, +25% (6–8\u00a0osób)",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 100\u00a0tys.\u00a0zł: 850\u00a0zł, +25% (6–\u20608\u00a0osób)",
     "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 100.000 zł: 850 zł, +25% (6–8 osób)"
    }
   },
@@ -633,7 +633,7 @@
     "kwota": 1654.5,
     "tekst": "1\u00a0654,50\u00a0zł",
     "tekst_crm": "1654,50 zł",
-    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300\u00a0tys.\u00a0zł: 1\u00a0250\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300\u00a0tys.\u00a0zł: 1\u00a0250\u00a0zł, +25% (6–\u20608\u00a0osób), +92\u00a0zł ochrona prawna",
     "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300.000 zł: 1250 zł, +25% (6–8 osób), +92 zł ochrona prawna"
    }
   },
@@ -656,7 +656,7 @@
     "kwota": 1317.0,
     "tekst": "1\u00a0317,00\u00a0zł",
     "tekst_crm": "1317,00 zł",
-    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł, +25% (6–\u20608\u00a0osób), +92\u00a0zł ochrona prawna",
     "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200.000 zł: 980 zł, +25% (6–8 osób), +92 zł ochrona prawna"
    }
   },
@@ -679,7 +679,7 @@
     "kwota": 717.0,
     "tekst": "717,00\u00a0zł",
     "tekst_crm": "717,00 zł",
-    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 200\u00a0tys.\u00a0zł: 500\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 200\u00a0tys.\u00a0zł: 500\u00a0zł, +25% (6–\u20608\u00a0osób), +92\u00a0zł ochrona prawna",
     "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 200.000 zł: 500 zł, +25% (6–8 osób), +92 zł ochrona prawna"
    }
   },
@@ -754,7 +754,7 @@
     "kwota": 1279.5,
     "tekst": "1\u00a0279,50\u00a0zł",
     "tekst_crm": "1279,50 zł",
-    "opis": "Gabinety kosmetologiczne, suma 300\u00a0tys.\u00a0zł: 950\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis": "Gabinety kosmetologiczne, suma 300\u00a0tys.\u00a0zł: 950\u00a0zł, +25% (6–\u20608\u00a0osób), +92\u00a0zł ochrona prawna",
     "opis_crm": "Gabinety kosmetologiczne, suma 300.000 zł: 950 zł, +25% (6–8 osób), +92 zł ochrona prawna"
    }
   },
@@ -777,7 +777,7 @@
     "kwota": 592.0,
     "tekst": "592,00\u00a0zł",
     "tekst_crm": "592,00 zł",
-    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 100\u00a0tys.\u00a0zł: 400\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 100\u00a0tys.\u00a0zł: 400\u00a0zł, +25% (6–\u20608\u00a0osób), +92\u00a0zł ochrona prawna",
     "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 100.000 zł: 400 zł, +25% (6–8 osób), +92 zł ochrona prawna"
    }
   },
@@ -894,7 +894,12 @@
     "tekst_crm": "790,00 zł",
     "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
     "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł",
-    "komunikat_ankiety": "Zaznacz zabiegi wymagające ankiety (albo odznacz tę pozycję)."
+    "komunikat_ankiety": "Zaznacz zabiegi wymagające ankiety (albo odznacz tę pozycję).",
+    "przycisk_portalu": {
+     "tekst": "Najpierw zaznacz zabiegi wymagające ankiety",
+     "nieaktywny": true,
+     "fokus": "g4-05"
+    }
    }
   },
   {

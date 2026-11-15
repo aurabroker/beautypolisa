@@ -15,6 +15,7 @@ import html
 import itertools
 import json
 import pathlib
+import re
 import sys
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -119,6 +120,28 @@ def nota_taryfy():
     return ('6–8&nbsp;osób wykonujących zabiegi – składka z&nbsp;taryfy wyższa o&nbsp;%s (klauzula ochrony prawnej +%d&nbsp;zł bez tej dopłaty). '
             'Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.'
             % (doplata_proc(), T['ochrona_prawna']['skladka']))
+
+
+def teksty_crm(klucz):
+    """Zdania CRM przytaczane dosłownie (teksty_crm → pozycje). W wymaganiu dokumentów CRM wstawia datę „najpóźniej {termin}”
+    (dzień początku ochrony minus 12 miesięcy) – na stronach bez daty zostaje warunek z nawiasu CRM: „co najmniej 12 miesięcy
+    przed początkiem ochrony” (rozstrzygnięcie K16)."""
+    out = []
+    for t in T['teksty_crm'][klucz]['pozycje']:
+        t2 = re.sub(r'najpóźniej \{termin\} \((co najmniej 12 miesięcy przed początkiem ochrony)\)', r'\1', t)
+        assert '{' not in t2, 'teksty_crm.%s: nieobsłużone pole w %r' % (klucz, t)
+        out.append(t2)
+    return out
+
+
+def zdanie_z_innej_listy():
+    """K12 (rozstrzygnięcie): z komunikatu CRM przy „Zabiegi z innej listy programu” tylko pierwsze zdanie, bez końcówki
+    o ekranie CRM („— nową składkę widzisz niżej”): „Dopisanie zabiegów z innej listy zmienia rodzaj działalności i składkę
+    według taryfy programu.”"""
+    t = T['teksty_crm']['zabiegi_z_innej_listy']['tekst']
+    z = t.split(' — ')[0].rstrip('.') + '.'
+    assert z.startswith('Dopisanie zabiegów z innej listy') and '{' not in z, z
+    return z
 
 
 def tabela_taryfy(aria_label):

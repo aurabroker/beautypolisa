@@ -1,123 +1,200 @@
+// oc-beauty.html po Aneksie nr 5 (plan rozdz. 7, krok 4; uwagi K2, K3) – kontrola z werdyktem:
+//   * lista vs JSON: sekcje .zlista #lista-1, #lista-2, #ankieta (pozycje: kolejność, numer/value, brzmienie, id = slug przy pierwszym
+//     wystąpieniu, <slug>-lista-2 przy drugim, odnośnik „także na liście nr …”), #podologia bez pozycji; bez oznaczeń pojęć w listach;
+//     id na stronie bez powtórzeń;
+//   * bez JS: cała lista widoczna (49 + 63 + 8), wyszukiwarka ukryta; każda dawna kotwica (#grupa-1…4, 18 dawnych slugów, 31 slugów
+//     wycofanych pozycji podologicznych) przewija do widocznego elementu (odbiór pkt 4);
+//   * z JS: filtr („klamra” – 0, „manicure” – 2 pozycje: lista nr 1 poz. 17 i lista nr 2 poz. 19, „kobido” – 2, MEZO = mezo, brak wyników),
+//     licznik i „Wyczyść”; kotwice sekcji, aliasy i pozycje – widoczne pod nagłówkiem, także przy zamkniętych <details> i aktywnym filtrze;
+//   * nagłówki (jeden H1, bez przeskoków), cele dotyku ≥ 24 × 24 px.
+// Uruchom: node narzedzia/makiety/kontrola/oc/t_func.js   (kod wyjścia 1 przy błędzie)
 const { chromium } = require('playwright');
-const REPO = require('path').resolve(__dirname, '../../../..');  // katalog główny repozytorium
+const path = require('path');
 const fs = require('fs');
+const REPO = path.resolve(__dirname, '../../../..');  // katalog główny repozytorium
 const FILE = 'file://' + REPO + '/docs/koncepcja/design/v3/oc-beauty.html';
-const Z = JSON.parse(fs.readFileSync(REPO + '/docs/koncepcja/snippets/zabiegi-oc-beauty.json', 'utf8'));
+const SN = REPO + '/docs/koncepcja/snippets/';
+const Z = JSON.parse(fs.readFileSync(SN + 'zabiegi-oc-beauty.json', 'utf8'));
+const W = JSON.parse(fs.readFileSync(SN + 'zabiegi-oc-beauty-wycofane.json', 'utf8'));
+const bledy = [];
+const ma = (opis, war, info) => { if (!war) bledy.push(opis + (info !== undefined ? ': ' + JSON.stringify(info) : '')); };
+
+// --- oczekiwane pozycje list z JSON (jak zabiegi_model.pozycje_listy / kotwice_wystapien) ---
+function pozycje(klucz) {
+  const out = [];
+  for (const z of Z.zabiegi) z.pozycje.forEach((p, i) => {
+    if (p.lista !== klucz) return;
+    const inne = z.pozycje.filter((q) => q !== p && q.lista !== 'ankieta');
+    out.push({ nr: p.nr, nazwa: p.nazwa || z.nazwa, id: i === 0 ? z.slug : z.slug + '-lista-2', inne: inne.length ? inne[0] : null, z });
+  });
+  return out.sort((a, b) => (typeof a.nr === 'number' ? a.nr - b.nr : a.nr.localeCompare(b.nr)));
+}
+const LISTY = Z.listy.filter((l) => l.liczba_pozycji);
+const ALIASY_ZAB = Z.zabiegi.flatMap((z) => (z.dawne_slugi || []).map((s) => [s, z]));
+const ALIASY_SEK = Z.listy.flatMap((l) => (l.dawne_kotwice || []).map((k) => [k, l.kotwica]));
+const ALIASY_WYC = W.wycofane.map((w) => [w.slug, 'podologia']);
+
 (async () => {
   const b = await chromium.launch();
-  const R = {};
-  // ---------- bez JS ----------
-  for (const [w, h] of [[1440, 900], [360, 740]]) {
-    const ctx = await b.newContext({ viewport: { width: w, height: h }, javaScriptEnabled: false });
-    const p = await ctx.newPage();
-    await p.goto(FILE, { waitUntil: 'networkidle' });
-    R['nojs-' + w] = await p.evaluate(() => {
-      const lis = [...document.querySelectorAll('.zlist > li')];
-      const vis = lis.filter(l => l.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true }));
-      const det = [...document.querySelectorAll('.zdetails')].map(d => d.open);
-      return { li: lis.length, visible: vis.length, detailsOpen: det, formVisible: document.getElementById('z-szukaj-form').checkVisibility(), jumpVisible: document.querySelector('.zjump').checkVisibility(), sticky: document.querySelector('.sticky-cta').checkVisibility(), hscroll: document.documentElement.scrollWidth > document.documentElement.clientWidth, bgScenes: getComputedStyle(document.querySelector('.scene--marble')).backgroundImage.slice(0, 60) };
-    });
-    // po przewinięciu na dół (animacje CSS bez JS) – czy treść widoczna
-    await p.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight)); await p.waitForTimeout(300);
-    R['nojs-' + w].rvOpacityAfterScroll = await p.evaluate(() => [...document.querySelectorAll('.site-footer .rv-rise')].map(e => getComputedStyle(e).opacity).join(','));
-    await ctx.close();
-  }
   // ---------- lista vs JSON ----------
   {
     const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
     await p.goto(FILE, { waitUntil: 'networkidle' });
-    const dom = await p.evaluate(() => [...document.querySelectorAll('.zgroup')].map(g => ({ id: g.id, h3: g.querySelector('h3').textContent, items: [...g.querySelectorAll('.zlist > li')].map(l => [l.id, l.querySelector('.z-name').textContent, l.attributes.length]) })));
-    const errs = [];
+    const dom = await p.evaluate(() => [...document.querySelectorAll('.zlista')].map((g) => ({
+      id: g.id, h3: g.querySelector('h3').textContent, termin: g.querySelectorAll('a.bp-termin').length,
+      items: [...g.querySelectorAll('.zlist > li')].map((l) => ({ id: l.id, value: l.getAttribute('value'), nr: l.querySelector('.z-nr').textContent,
+        nazwa: l.querySelector('.z-name').textContent, inna: l.querySelector('.z-inna') ? l.querySelector('.z-inna').getAttribute('href') : null })),
+    })));
+    ma('sekcje list', JSON.stringify(dom.map((d) => d.id)) === JSON.stringify(Z.listy.map((l) => l.kotwica)), dom.map((d) => d.id));
     let n = 0;
-    for (const g of Z.grupy) {
-      const dg = dom.find(d => d.id === g.kotwica);
-      if (!dg) { errs.push('brak sekcji ' + g.kotwica); continue }
-      if (dg.h3 !== g.nazwa) errs.push('nazwa grupy ' + g.grupa + ': ' + dg.h3);
-      const exp = Z.zabiegi.filter(z => z.grupa === g.grupa);
-      if (exp.length !== dg.items.length) errs.push('liczba ' + g.grupa);
-      exp.forEach((z, i) => { const d = dg.items[i]; n++; if (!d || d[0] !== z.slug || d[1] !== z.nazwa) errs.push('poz ' + z.id + ' ' + JSON.stringify(d)); if (d && d[2] !== 1) errs.push('dodatkowe atrybuty li ' + z.slug) });
+    for (const l of LISTY) {
+      const d = dom.find((x) => x.id === l.kotwica);
+      if (!d) { bledy.push('brak sekcji ' + l.kotwica); continue; }
+      const h3 = l.klucz === 'ankieta' ? 'Zabiegi wymagające ankiety ERGO Hestii' : l.nazwa;
+      ma(`${l.klucz}: nagłówek`, d.h3 === h3, d.h3);
+      ma(`${l.klucz}: bez oznaczeń pojęć w nazwach pozycji (K3)`, d.termin === 0, d.termin);
+      const exp = pozycje(l.klucz);
+      ma(`${l.klucz}: liczba pozycji = ${l.liczba_pozycji}`, d.items.length === l.liczba_pozycji && exp.length === l.liczba_pozycji, d.items.length);
+      exp.forEach((e, i) => {
+        const x = d.items[i]; n++;
+        const nrTxt = typeof e.nr === 'number' ? e.nr + '.' : e.nr + ')';
+        const value = typeof e.nr === 'number' ? String(e.nr) : String(i + 1);
+        const inna = e.inne ? '#' + (e.inne === e.z.pozycje[0] ? e.z.slug : e.z.slug + '-lista-2') : null;
+        ma(`${l.klucz} poz. ${nrTxt} (${e.z.id})`, x && x.id === e.id && x.value === value && x.nr === nrTxt && x.nazwa === e.nazwa && x.inna === inna, x);
+      });
     }
-    const ids = await p.evaluate(() => { const a = [...document.querySelectorAll('[id]')].map(e => e.id); return a.length - new Set(a).size });
-    R.lista = { compared: n, errs, dupIds: ids, groupsInDom: dom.map(d => d.id + ':' + d.items.length) };
-    // nagłówki
-    R.headings = await p.evaluate(() => [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(h => h.tagName + ' ' + h.textContent.trim().replace(/\s+/g, ' ').slice(0, 50)));
-    const lv = R.headings.map(s => +s[1]); const skips = []; lv.forEach((l, i) => { if (i && l > lv[i - 1] + 1) skips.push(R.headings[i]) }); R.headingSkips = skips; R.h1count = lv.filter(l => l === 1).length;
+    ma('porównane pozycje: 49 + 63 + 8', n === 120, n);
+    const pod = dom.find((x) => x.id === 'podologia');
+    ma('podologia bez pozycji, z informacją o dokumentach programu', pod && pod.items.length === 0 &&
+      (await p.textContent('#podologia')).includes('Lista zabiegów podologicznych jest w dokumentach programu'));
+    const dup = await p.evaluate(() => { const a = [...document.querySelectorAll('[id]')].map((e) => e.id); return a.filter((x, i) => a.indexOf(x) !== i); });
+    ma('id bez powtórzeń', dup.length === 0, dup);
+    const naglowki = await p.evaluate(() => [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].filter((h) => h.checkVisibility()).map((h) => +h.tagName[1]));
+    ma('jeden H1', naglowki.filter((x) => x === 1).length === 1);
+    ma('nagłówki bez przeskoków', naglowki.every((l, i) => !i || l <= naglowki[i - 1] + 1));
     await p.close();
+  }
+  // ---------- bez JS: lista i dawne kotwice ----------
+  for (const [w, h] of [[1440, 900], [360, 740]]) {
+    // reducedMotion: bez płynnego przewijania (scroll-behavior: smooth) – pozycja po przejściu do #fragmentu od razu końcowa
+    const ctx = await b.newContext({ viewport: { width: w, height: h }, javaScriptEnabled: false, reducedMotion: 'reduce' });
+    const p = await ctx.newPage();
+    await p.goto(FILE, { waitUntil: 'networkidle' });
+    const r = await p.evaluate(() => {
+      const lis = [...document.querySelectorAll('.zlist > li')];
+      return { li: lis.length, vis: lis.filter((l) => l.checkVisibility()).length, form: document.getElementById('z-szukaj-form').checkVisibility(),
+        hscroll: document.documentElement.scrollWidth > document.documentElement.clientWidth };
+    });
+    ma(`bez JS ${w}: cała lista widoczna`, r.li === 120 && r.vis === 120, r);
+    ma(`bez JS ${w}: wyszukiwarka ukryta`, !r.form);
+    ma(`bez JS ${w}: bez przewijania w poziomie`, !r.hscroll);
+    const zle = [];
+    for (const [alias] of [...ALIASY_SEK, ...ALIASY_ZAB, ...ALIASY_WYC]) {
+      await p.goto(FILE + '#' + alias, { waitUntil: 'load' });  // przewinięcie przeglądarki do #fragmentu (bez skryptu strony)
+      await p.waitForTimeout(50);
+      const ok = await p.evaluate((a) => {
+        const t = document.getElementById(a); if (!t) return 'brak';
+        const cel = t.classList.contains('z-alias') ? (t.closest('li') || t.closest('section')) : t;
+        const r = cel.getBoundingClientRect();
+        return t.hidden ? 'hidden' : cel.checkVisibility() && r.top >= 0 && r.top < innerHeight && scrollY > 0 ? 'ok' : 'poza widokiem ' + Math.round(r.top);
+      }, alias);
+      if (ok !== 'ok') zle.push(alias + ': ' + ok);
+    }
+    ma(`bez JS ${w}: ${ALIASY_SEK.length + ALIASY_ZAB.length + ALIASY_WYC.length} dawnych kotwic prowadzi do widocznego elementu`, zle.length === 0, zle);
+    ma('dawne kotwice: 4 sekcje, 18 slugów, 31 wycofanych', ALIASY_SEK.length === 4 && ALIASY_ZAB.length === 18 && ALIASY_WYC.length === 31,
+      [ALIASY_SEK.length, ALIASY_ZAB.length, ALIASY_WYC.length]);
+    await ctx.close();
   }
   // ---------- filtr ----------
   for (const [w, h] of [[1440, 900], [390, 844]]) {
     const p = await b.newPage({ viewport: { width: w, height: h } });
+    const errs = []; p.on('pageerror', (e) => errs.push(e.message));
     await p.goto(FILE, { waitUntil: 'networkidle' });
-    const live = await p.evaluate(() => { const c = document.getElementById('z-licznik'); return { ariaLive: c.getAttribute('aria-live'), atomic: c.getAttribute('aria-atomic'), formHidden: document.getElementById('z-szukaj-form').hidden, describedby: document.getElementById('z-szukaj').getAttribute('aria-describedby'), label: document.querySelector('label[for=z-szukaj]').textContent, placeholder: document.getElementById('z-szukaj').placeholder } });
-    const res = { live };
-    for (const q of ['zel', 'żel', 'mezo', 'MEZO', 'mezoterapia', 'henna', 'klamra', 'klamr', 'glowy', 'pedicure', 'laser', 'xyzzy']) {
-      await p.fill('#z-szukaj', q);
-      await p.waitForTimeout(450);
-      res[q] = await p.evaluate(() => {
-        const vis = [...document.querySelectorAll('.zlist > li')].filter(l => !l.hidden && !l.closest('[hidden]'));
-        return { n: vis.length, names: vis.slice(0, 6).map(l => l.closest('.zgroup').id.slice(-1) + ':' + l.querySelector('.z-name').textContent), count: document.getElementById('z-licznik').textContent, empty: document.getElementById('z-brak').hidden ? '' : document.getElementById('z-brak').textContent, via: document.querySelectorAll('.z-via').length, groupsHidden: [...document.querySelectorAll('.zgroup')].filter(g => g.hidden).map(g => g.id), jumps: [...document.querySelectorAll('.zjump li')].map(li => (li.hidden ? '-' : '+') + li.textContent.trim()), clearVisible: !document.getElementById('z-wyczysc').hidden };
+    const start = await p.textContent('#z-licznik');
+    ma(`filtr ${w}: licznik startowy`, start.replace(/\s+/g, ' ').trim() === 'Lista nr 1: 49 · lista nr 2: 63 · ankieta: 8', start);
+    const wynik = async (q) => {
+      await p.fill('#z-szukaj', q); await p.waitForTimeout(450);
+      return p.evaluate(() => {
+        const vis = [...document.querySelectorAll('.zlist > li')].filter((l) => !l.hidden && !l.closest('[hidden]'));
+        return { n: vis.length, poz: vis.map((l) => l.closest('.zlista').id + '/' + l.querySelector('.z-nr').textContent), licznik: document.getElementById('z-licznik').textContent.replace(/\s+/g, ' ').trim(),
+          brak: document.getElementById('z-brak').hidden ? '' : document.getElementById('z-brak').textContent, wyczysc: !document.getElementById('z-wyczysc').hidden };
       });
-    }
-    // reset
-    await p.click('#z-wyczysc'); await p.waitForTimeout(100);
-    res.afterReset = await p.evaluate(() => ({ count: document.getElementById('z-licznik').textContent, visible: [...document.querySelectorAll('.zlist > li')].filter(l => !l.hidden && !l.closest('[hidden]')).length, focus: document.activeElement.id, open: [...document.querySelectorAll('.zdetails')].map(d => d.open) }));
-    // licznik: aktualizacja z opóźnieniem (debounce) – stan po 100 ms i po 450 ms
-    await p.fill('#z-szukaj', 'mezo'); await p.waitForTimeout(80);
-    const early = await p.textContent('#z-licznik'); await p.waitForTimeout(400); const late = await p.textContent('#z-licznik');
-    res.debounce = { early, late };
-    // Enter nie przeładowuje strony
-    await p.focus('#z-szukaj'); await p.keyboard.press('Enter'); await p.waitForTimeout(150); res.enterKeepsValue = await p.inputValue('#z-szukaj');
-    // głęboki link do zabiegu ukrytego filtrem
+    };
+    const kl = await wynik('klamra');
+    ma(`filtr ${w}: „klamra” – 0 (podologia tylko jako dokument)`, kl.n === 0 && kl.brak !== '', kl);
+    // Q1: komunikat braku wyników odsyła do sekcji Podologia (lista zabiegów podologicznych w dokumentach programu)
+    ma(`filtr ${w}: brak wyników – zdanie o liście podologicznej i odnośnik #podologia`,
+      kl.brak.replace(/\u00a0/g, ' ').includes('Lista zabiegów podologicznych jest w dokumentach programu') && (await p.locator('#z-brak a[href="#podologia"]').count()) === 1, kl);
+    const man = await wynik('manicure');
+    ma(`filtr ${w}: „manicure” – lista nr 1 poz. 17 i lista nr 2 poz. 19`, JSON.stringify(man.poz) === JSON.stringify(['lista-1/17.', 'lista-2/19.']) && /Znaleziono 2/.test(man.licznik), man);
+    const kob = await wynik('kobido');
+    ma(`filtr ${w}: „kobido” – 2 pozycje`, kob.n === 2, kob);
+    const m1 = await wynik('mezo'), m2 = await wynik('MEZO');
+    ma(`filtr ${w}: wielkość liter`, m1.n > 0 && m1.n === m2.n, [m1.n, m2.n]);
+    const nici = await wynik('nici pdo');
+    ma(`filtr ${w}: „nici pdo” – poz. g)`, nici.poz.includes('ankieta/g)'), nici.poz);
+    const x = await wynik('xyzzy');
+    ma(`filtr ${w}: brak wyników`, x.n === 0 && x.brak.length > 0 && x.wyczysc, x);
+    await p.click('#z-wyczysc'); await p.waitForTimeout(150);
+    const po = await p.evaluate(() => ({ licznik: document.getElementById('z-licznik').textContent.replace(/\s+/g, ' ').trim(), vis: [...document.querySelectorAll('.zlist > li')].filter((l) => !l.hidden && !l.closest('[hidden]')).length }));
+    ma(`filtr ${w}: „Wyczyść”`, po.vis === 120 && po.licznik === start.replace(/\s+/g, ' ').trim(), po);
+    // głęboki link (alias) przy aktywnym filtrze: filtr czyszczony, pozycja widoczna
     await p.fill('#z-szukaj', 'henna'); await p.waitForTimeout(450);
-    await p.evaluate(() => { location.hash = 'klamry-ortonyksyjne-aplikacja-i-aktywacje' }); await p.waitForTimeout(400);
-    res.deepLinkWhileFiltered = await p.evaluate(() => { const t = document.getElementById('klamry-ortonyksyjne-aplikacja-i-aktywacje'); const r = t.getBoundingClientRect(); return { inputValue: document.getElementById('z-szukaj').value, hidden: !!(t.hidden || t.closest('[hidden]')), top: Math.round(r.top), inView: r.top >= 0 && r.bottom <= innerHeight, targetMatch: t.matches(':target') } });
-    R['filtr-' + w] = res;
+    await p.evaluate(() => { location.hash = 'zabiegi-z-uzyciem-nici-pdo'; }); await p.waitForTimeout(1200);
+    const dl = await p.evaluate(() => { const t = document.getElementById('zabiegi-z-uzyciem-nici-pdo').closest('li'); const r = t.getBoundingClientRect(); return { q: document.getElementById('z-szukaj').value, hidden: !!t.closest('[hidden]') || t.hidden, inView: r.top >= 0 && r.bottom <= innerHeight }; });
+    ma(`filtr ${w}: alias przy aktywnym filtrze`, dl.q === '' && !dl.hidden && dl.inView, dl);
+    ma(`filtr ${w}: bez błędów JS`, errs.length === 0, errs);
     await p.close();
   }
-  // ---------- kotwice grup i zabiegów, details zamknięte ----------
+  // ---------- kotwice z JS (zamknięte <details>, nagłówek) ----------
   for (const [w, h] of [[1440, 900], [360, 740]]) {
     const ctx = await b.newContext({ viewport: { width: w, height: h }, reducedMotion: 'reduce' });
     const p = await ctx.newPage();
-    const r = {};
-    for (const hash of ['grupa-1', 'grupa-2', 'grupa-3', 'grupa-4', 'zabiegi', 'ochrona-prawna', 'faq', 'taryfa', 'wypelniacze-kwas-hialuronowy', 'barbering', 'pytanie-5']) {
-      await p.goto(FILE + '#' + hash, { waitUntil: 'networkidle' }); await p.waitForTimeout(250);
-      r[hash] = await p.evaluate(hash => { const t = document.getElementById(hash); const rc = t.getBoundingClientRect(); const hb = document.querySelector('.header-bar').getBoundingClientRect(); return { top: Math.round(rc.top), hdrBottom: Math.round(hb.bottom), belowHeader: rc.top >= hb.bottom - 1, inView: rc.top < innerHeight, open: t.tagName === 'DETAILS' ? t.open : (t.closest('details') ? t.closest('details').open : null) } }, hash);
+    const zle = [];
+    const cele = ['lista-1', 'lista-2', 'ankieta', 'podologia', 'grupa-1', 'grupa-2', 'grupa-3', 'grupa-4', 'zabiegi-z-uzyciem-wypelniaczy-na-bazie-kwasu-hialuronowego',
+      'wypelniacze-kwas-hialuronowy', 'barbering', 'manicure', 'manicure-lista-2', 'tatuaz', 'taryfa', 'ochrona-prawna', 'faq', 'pytanie-5', ...ALIASY_ZAB.map((a) => a[0])];
+    for (const hash of cele) {
+      await p.goto(FILE + '#' + hash, { waitUntil: 'networkidle' }); await p.waitForTimeout(200);
+      const r = await p.evaluate((hash) => {
+        const t = document.getElementById(hash); const cel = t.classList.contains('z-alias') ? (t.closest('li') || t.closest('section')) : t;
+        const rc = cel.getBoundingClientRect(); const hb = document.querySelector('.header-bar').getBoundingClientRect();
+        const d = t.closest('details');
+        return { below: rc.top >= hb.bottom - 2, inView: rc.top < innerHeight && rc.bottom > 0, open: d ? d.open : true, vis: cel.checkVisibility() };
+      }, hash);
+      if (!(r.inView && r.open && r.vis && r.below)) zle.push(hash + ' ' + JSON.stringify(r));
     }
-    // zamknięta grupa 2 + klik w link skoku + głęboki link do zabiegu w zamkniętej grupie
+    ma(`kotwice z JS ${w}: sekcje, aliasy i pozycje widoczne pod nagłówkiem`, zle.length === 0, zle);
+    // zamknięte <details> + alias dawnego slugu → rozwija listę i pokazuje właściwy <li>
     await p.goto(FILE, { waitUntil: 'networkidle' });
-    await p.evaluate(() => { document.querySelectorAll('.zdetails').forEach(d => d.open = false) });
-    await p.click('.zjump a[href="#grupa-2"]'); await p.waitForTimeout(300);
-    r.jumpClick = await p.evaluate(() => ({ hash: location.hash, open2: document.querySelector('#grupa-2 .zdetails').open, top: Math.round(document.getElementById('grupa-2').getBoundingClientRect().top) }));
-    await p.evaluate(() => { location.hash = 'tatuaz' }); await p.waitForTimeout(300);
-    r.deepClosed = await p.evaluate(() => { const t = document.getElementById('tatuaz'); return { open: t.closest('details').open, visible: t.checkVisibility(), top: Math.round(t.getBoundingClientRect().top) } });
-    // fokus klawiaturą: skip link
-    await p.goto(FILE, { waitUntil: 'networkidle' });
-    await p.keyboard.press('Tab');
-    r.firstTab = await p.evaluate(() => { const a = document.activeElement; const cs = getComputedStyle(a); const rc = a.getBoundingClientRect(); return { text: a.textContent.trim(), visible: rc.top >= 0 && rc.height > 0 && cs.opacity !== '0', outline: cs.outlineStyle + ' ' + cs.outlineWidth } });
-    // fokus widoczny na kolejnych elementach
-    const fv = [];
-    for (let i = 0; i < 14; i++) { await p.keyboard.press('Tab'); fv.push(await p.evaluate(() => { const a = document.activeElement; const cs = getComputedStyle(a); return (a.id || a.className || a.tagName).toString().slice(0, 24) + ':' + (cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 ? 'outline' : (cs.boxShadow !== 'none' ? 'shadow' : 'BRAK')) })) }
-    r.focusRing = fv;
-    R['kotwice-' + w] = r;
+    const zleAliasy = [];
+    for (const [alias, z] of ALIASY_ZAB) {
+      await p.evaluate(() => { document.querySelectorAll('.zdetails').forEach((d) => { d.open = false; }); location.hash = ''; });
+      await p.evaluate((a) => { location.hash = a; }, alias); await p.waitForTimeout(150);
+      const r = await p.evaluate((a) => { const li = document.getElementById(a).closest('li'); const rc = li.getBoundingClientRect(); return { id: li.id, open: li.closest('details').open, inView: rc.top >= 0 && rc.bottom <= innerHeight }; }, alias);
+      if (!(r.id === z.slug && r.open && r.inView)) zleAliasy.push(alias + ' ' + JSON.stringify(r));
+    }
+    ma(`aliasy ${w}: 18 dawnych slugów rozwija listę i przewija do pozycji`, zleAliasy.length === 0, zleAliasy);
     await ctx.close();
   }
-  // ---------- cele dotyku (WCAG 2.2 2.5.8: 24x24, bez linków w tekście) ----------
+  // ---------- cele dotyku (WCAG 2.2 2.5.8: 24 × 24, bez linków w tekście) ----------
   for (const [w, h] of [[390, 844], [1440, 900]]) {
     const p = await b.newPage({ viewport: { width: w, height: h } });
     await p.goto(FILE, { waitUntil: 'networkidle' });
-    R['target-' + w] = await p.evaluate(() => {
+    const male = await p.evaluate(() => {
       const res = [];
       for (const el of document.querySelectorAll('a[href],button,summary,input,[tabindex="0"]')) {
         if (!el.checkVisibility()) continue;
         const r = el.getBoundingClientRect(); if (r.width === 0) continue;
-        const inline = getComputedStyle(el).display === 'inline' && el.closest('p,li,dd') && el.closest('p,li,dd').textContent.trim() !== el.textContent.trim();
-        if (inline) continue;
+        const blok = el.closest('p,li,dd');
+        if (getComputedStyle(el).display === 'inline' && blok && blok.textContent.trim() !== el.textContent.trim()) continue;
         if (r.width < 24 || r.height < 24) res.push(el.tagName + '.' + el.className + ' "' + el.textContent.trim().slice(0, 30) + '" ' + Math.round(r.width) + 'x' + Math.round(r.height));
       }
-      return res.slice(0, 20);
+      return res;
     });
+    ma(`cele dotyku ${w}: ≥ 24 × 24`, male.length === 0, male.slice(0, 10));
     await p.close();
   }
-  console.log(JSON.stringify(R, null, 1));
   await b.close();
+  console.log(bledy.length ? 'BŁĘDY (' + bledy.length + '):\n' + bledy.join('\n') : 'OK – listy = JSON (120 pozycji), 53 dawne kotwice bez JS, filtr, kotwice i aliasy z JS, nagłówki, cele dotyku');
+  process.exit(bledy.length ? 1 : 0);
 })();

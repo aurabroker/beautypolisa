@@ -394,14 +394,14 @@
    "kod_wersja": "Program WA50/003353/24/A, ankieta pkt 2 (brzmienie sprzed Aneksu nr 5)",
    "ubezpieczyciel": "Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.",
    "obowiazuje_od": null,
-   "sciezka": "docs/koncepcja/design/v3/dokumenty/oc-beauty/ankieta-oceny-ryzyka-grupa-4-wa50-003353-24-a.pdf",
+   "sciezka": "docs/koncepcja/design/v3/dokumenty/oc-beauty/ankieta-oceny-ryzyka-wa50-003353-24-a-sprzed-aneksu-5.pdf",
    "zrodlo": "beautypolisa:AnkietaBPEH.pdf (repozytorium portalu, katalog główny)",
    "zrodlo_url_publiczny": "https://pliki.auraexpert.pl/media/beautypolisa/ankieta-oceny-ryzyka.pdf",
    "rozmiar_bajty": 245761,
    "sha256": "af9d747f5475e0e7b683eac6ec084319206e0e5ffb958b68f330a188937e2b69",
    "strony": 2,
    "pdf_utworzono": "Mon Feb 16 10:08:23 2026 UTC",
-   "uwagi": "Pusty formularz (bez pól formularza i bez wpisanych danych). NIEAKTUALNY od 06.11.2026: 3 z 8 pozycji pkt 2 mają brzmienie sprzed Aneksu nr 5 (osocze bogatopłytkowe, nici PDO, laser ablacyjny); aktualne brzmienie: crmaura/src/lib/renewals/program.ts:92-111. CRM generuje aktualny pusty formularz sam (crmaura/src/lib/server/plikiPubliczne.ts:28-37 i 55, crmaura/src/lib/server/renewalDocs.ts:858-861) pod https://pliki.auraexpert.pl/media/beautypolisa/ankieta-oceny-ryzyka.pdf (z tego środowiska niedostępny). Metadane autora zawierają nazwisko – wyczyścić przed publikacją."
+   "uwagi": "Pusty formularz (bez pól formularza i bez wpisanych danych). NIEAKTUALNY od 06.11.2026: 3 z 8 pozycji pkt 2 mają brzmienie sprzed Aneksu nr 5 (osocze bogatopłytkowe, nici PDO, laser ablacyjny); aktualne brzmienie: crmaura/src/lib/renewals/program.ts:92-111 – portal pokazuje pozycje a–h w brzmieniu Aneksu nr 5 za CRM (snippets/zabiegi-oc-beauty.json, lista „ankieta”; 00, D43), a ten plik służy tylko jako wzór pól ankiety (dawne brzmienia pozycji c, f, g sprawdza narzedzia/makiety/check_zabiegi_pdf.py). Nazwa pliku do 15.11.2026: ankieta-oceny-ryzyka-grupa-4-wa50-003353-24-a.pdf – zmieniona po D43 (bez dawnej numeracji grup), treść i sha256 bez zmian. CRM generuje aktualny pusty formularz sam (crmaura/src/lib/server/plikiPubliczne.ts:28-37 i 55, crmaura/src/lib/server/renewalDocs.ts:858-861) pod https://pliki.auraexpert.pl/media/beautypolisa/ankieta-oceny-ryzyka.pdf (z tego środowiska niedostępny). Metadane autora zawierają nazwisko – wyczyścić przed publikacją."
   }
  ],
  "linki_zewnetrzne": [
@@ -445,7 +445,7 @@
   {
    "produkt": "oc-beauty",
    "typ": "lista-zabiegow",
-   "dokument": "Lista zabiegów – podologiczne (grupa 3)",
+   "dokument": "Lista zabiegów – podologiczne",
    "gdzie_szukano": "crmaura/src/lib/server/plikiPubliczne.ts:54 – tylko adres w zewnętrznym narzędziu mailingowym; pliku w repo brak; pliki.auraexpert.pl niedostępny z tego środowiska",
    "od_kogo": "Zleceniodawca",
    "blokuje": false
@@ -453,7 +453,7 @@
   {
    "produkt": "oc-beauty",
    "typ": "ankieta",
-   "dokument": "Ankieta oceny ryzyka (grupa 4) w brzmieniu Aneksu nr 5",
+   "dokument": "Ankieta ubezpieczeniowa do zabiegów wymagających ankiety (Aneks nr 5, pkt 2 lit. a–h) – pusty wzór w brzmieniu Aneksu nr 5",
    "gdzie_szukano": "generowana przez CRM (crmaura/src/lib/server/renewalDocs.ts:858-861); w repo portalu tylko wersja sprzed aneksu",
    "od_kogo": "Zleceniodawca (eksport z CRM)",
    "blokuje": false

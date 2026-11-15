@@ -96,7 +96,7 @@ Legenda: **zamknięty** – brak wiedzy o kodzie usunięty (nie znaczy, że moż
 | T14 | otwarty | los `tax.beautypolisa.eu` i 1 wiersza `tax_wnioski` (W9) |
 | T15 | otwarty | potwierdzenie e-maila w portalu; usunięcie imiennego adresu z publicznego repozytorium |
 
-**Nowe braki dokumentów** (`dokumenty-produktowe.md` §5): pełnomocnictwo ERGO Hestii dla Aura Expert (wymagane przez oświadczenie 3 w ER), WU GD 02/24, informacja o dystrybutorze UD z panelu (do porównania), dokumenty opieki medycznej, a poza trzema formularzami – OWU, karta produktu (IPID) i program WA50/003353/24/A z Aneksem nr 5 dla OC beauty. [przegląd repo 13.11] `udapp` serwuje informację o dystrybutorze UD z magazynu (`udapp/app/src/routes/dystrybutor/+server.js:9-14`), ale pliku w repo nie ma; `medaura` i `medicalaura` nie mają ani dokumentów, ani cennika opieki medycznej.
+**Nowe braki dokumentów** (`dokumenty-produktowe.md` §5): pełnomocnictwo ERGO Hestii dla Aura Expert (wymagane przez oświadczenie 3 w ER), WU GD 02/24, informacja o dystrybutorze UD z panelu (do porównania), dokumenty opieki medycznej, a poza trzema formularzami – OWU, karta produktu (IPID) i program WA50/003353/24/A z Aneksem nr 5 dla OC beauty (listy zabiegów nr 1 i 2 – 49 i 63 pozycje – portal ma już 1:1 z PDF list w brzmieniu Aneksu nr 5, a 8 pozycji ankiety a–h – w brzmieniu Aneksu nr 5 z CRM – 00, D43; brakuje samego tekstu programu i Aneksu, 00, Q5). [przegląd repo 13.11] `udapp` serwuje informację o dystrybutorze UD z magazynu (`udapp/app/src/routes/dystrybutor/+server.js:9-14`), ale pliku w repo nie ma; `medaura` i `medicalaura` nie mają ani dokumentów, ani cennika opieki medycznej.
 
 ### D. Braki blokujące (do wysłania zleceniodawcy) – stan po repozytoriach
 
@@ -151,7 +151,7 @@ Tylko to, czego nadal brakuje. Lista z rozdz. 3 jest nieaktualna.
 
 ### E. W1 – rekomendacja (streszczenie `../14-integracja-wnioskow-z-crm.md` rozdz. 4)
 
-- **Tak, do CRM, automatycznie** trafiają: OC (kalkulator i lead), Tax Protect, EZB, ER, UD, opieka medyczna, „Zapytaj doradcę” przy NNW i kontakt ogólny. **Nie** trafiają: szkolenia, „Dam pracę”/„Szukam pracy”, newsletter. Ankieta oceny ryzyka grupy 4 nie jest formularzem portalu – zostaje w osobistym linku do APK i wniosku w CRM.
+- **Tak, do CRM, automatycznie** trafiają: OC (kalkulator i lead), Tax Protect, EZB, ER, UD, opieka medyczna, „Zapytaj doradcę” przy NNW i kontakt ogólny. **Nie** trafiają: szkolenia, „Dam pracę”/„Szukam pracy”, newsletter. Ankieta ERGO Hestii przy zabiegach wymagających ankiety (00, D43) nie jest formularzem portalu – zostaje w osobistym linku do APK i wniosku w CRM.
 - **Wariant C (hybryda) jako jeden punkt przyjęcia w CRM.** Worker portalu po walidacji i Turnstile wysyła ładunek do `POST /api/integracje/portal/v1/zgloszenia`, podpisany HMAC sekretem `CRM_LEAD_INTAKE_KEY` (czas, nonce, skrót treści), z idempotencją po `zgloszenie_id`. Odpowiedź `202` ma jeden kształt i nie zdradza, czy firma jest klientem. CORS nie jest potrzebny.
 - **Portal trzyma tylko kopertę:** numer, produkt, zgody z wersją i skrótem treści, `crm_ref`, etap. **PESEL i dane o zdrowiu z UD przechodzą bez zapisu** do `ud_clients`, skąd istniejące wyzwalacze przenoszą wniosek do CRM.
 - **Odrzucone:** wariant A (wołanie `/api/wnioski`, `form-submit` i arkusza – trzy kontrakty, jednorazowy token Turnstile z cudzej witryny, stałe klucze) i wariant B (PESEL i zdrowie w bazie portalu). Dwa jawne odstępstwa od `12` 3.2 pkt 4 wariant B: dopasowanie do istniejącego klienta z zadaniem dla doradcy (O-1) i `crm_ref` w odpowiedzi (O-2).

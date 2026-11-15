@@ -1,6 +1,8 @@
 # 09 · Design v2 – marka i ikony z Bloom
 
-> **Uwaga – wersja zastąpiona.** Zleceniodawca odrzucił v2 jako „ilustrację z komiksu”. Aktualny jest design v3 w stylu old money, opisany w `10-design-v3-old-money.md` (makieta: `design/v3/makieta-v3.html`, tokeny: `design/v3/tokens-v3.css`). Z tej sekcji nadal obowiązują reguły kalkulatora OC i opis pracy z Bloom. Paleta z różem, ikony z różowym akcentem, ilustracja hero i makieta v2 są nieaktualne.
+> **Uwaga – wersja zastąpiona.** Zleceniodawca odrzucił v2 jako „ilustrację z komiksu”. Aktualny jest design v3 w stylu old money, opisany w `10-design-v3-old-money.md` (makieta: `design/v3/makieta-v3.html`, tokeny: `design/v3/tokens-v3.css`). Z tej sekcji nadal obowiązuje opis pracy z Bloom (reguły kalkulatora OC zastąpione przez D43 – uwaga niżej). Paleta z różem, ikony z różowym akcentem, ilustracja hero i makieta v2 są nieaktualne.
+>
+> **Uwaga (15.11.2026, OC po Aneksie nr 5):** reguła grup ryzyka zabiegów, lista 117 zabiegów w czterech grupach i zaokrąglenie składki OC do złotówki, opisane w tym dokumencie, są zastąpione przez decyzję D43 w 00 (listy zabiegów nr 1 i 2 oraz zabiegi wymagające ankiety w brzmieniu Aneksu nr 5, taryfa według rodzaju działalności jak w CRM, kwota do grosza). Treść poniżej zostaje bez zmian jako zapis stanu z dnia przeglądu.
 
 > Ta sekcja zastępuje część wizualną sekcji `07-design-ux-i-glass-widget.md`: paletę, typografię, ikony, ilustracje i makietę. Z sekcji 07 nadal obowiązują: lista kontrolna dostępności WCAG 2.2 AA, zasady responsywności, inwentarz komponentów, mikrocopy i szablony stron.
 

@@ -70,7 +70,7 @@
       "@id": "https://beautypolisa.eu/#agency",
       "name": "BeautyPolisa",
       "alternateName": "BeautyPolisa created by Aura Expert",
-      "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
+      "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dla dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dla dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
       "url": "https://beautypolisa.eu/",
       "logo": {
         "@type": "ImageObject",
@@ -107,7 +107,7 @@
         "ubezpieczenie OC zawodowe dla branży beauty",
         "ubezpieczenie karno-skarbowe Tax Protect",
         "ubezpieczenie utraty dochodu dla samozatrudnionych",
-        "ubezpieczenie NNW dzieci",
+        "ubezpieczenie NNW dla dzieci",
         "ubezpieczenia grupowe na życie dla salonów",
         "grupowe ubezpieczenie na życie ERGO Razem dla osób prywatnych i rodzin",
         "abonamenty medyczne ENEL-MED i LUX MED"
@@ -183,7 +183,7 @@
       "@id": "https://beautypolisa.eu/#website",
       "url": "https://beautypolisa.eu/",
       "name": "BeautyPolisa",
-      "description": "Ubezpieczenia dla branży beauty: OC zawodowe, Tax Protect, utrata dochodu, NNW dzieci, grupowe i opieka medyczna.",
+      "description": "Ubezpieczenia dla branży beauty: OC zawodowe, Tax Protect, utrata dochodu, NNW dla dzieci, grupowe i opieka medyczna.",
       "inLanguage": "pl-PL",
       "publisher": {
         "@id": "https://beautypolisa.eu/#organization"

@@ -52,6 +52,14 @@
     "title": "Tatuażysta"
   },
   {
+    "slug": "gabinet-kosmetyczny",
+    "title": "Gabinet kosmetyczny"
+  },
+  {
+    "slug": "salon-masazu",
+    "title": "Salon masażu"
+  },
+  {
     "slug": "dokumenty",
     "title": "Dokumenty i OWU"
   },
@@ -72,8 +80,8 @@
     "title": "Bezpieczeństwo danych"
   },
   {
-    "slug": "grupy-ryzyka",
-    "title": "Grupy ryzyka zabiegów"
+    "slug": "wskaznik",
+    "title": "Wskaźnik"
   },
   {
     "slug": "w-zakresie",

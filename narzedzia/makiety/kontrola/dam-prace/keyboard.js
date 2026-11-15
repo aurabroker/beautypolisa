@@ -13,7 +13,8 @@ const desc=()=>{const a=document.activeElement;const s=getComputedStyle(a);const
  if(!(await p.$eval('#filtry-panel',d=>d.open))){await p.focus('#filtry-panel > summary');await p.keyboard.press('Enter');}
  await p.focus('#f-umowa');await p.keyboard.press('Tab');console.log('Tab po „Rodzaj umowy” ->',await p.evaluate(desc));
  await p.keyboard.press('Enter');await p.waitForTimeout(300);console.log('Enter ->',await p.evaluate(desc),'open',await p.$eval('#zab-oferty-dlg',d=>d.open));
- for(let i=0;i<4;i++){await p.keyboard.press('Tab');console.log(' Tab ->',await p.evaluate(desc));}
+ // Tab do ostatniej sekcji list (od kroku 3: lista nr 1, lista nr 2, ankieta – 3 sekcje; dawniej 4 grupy i stała pętla 4× Tab)
+ for(let i=0;i<10;i++){await p.keyboard.press('Tab');console.log(' Tab ->',await p.evaluate(desc));if(await p.evaluate(()=>{const s=[...document.querySelectorAll('#zab-oferty-dlg .zab-grp > summary')];return document.activeElement===s[s.length-1]}))break;}
  await p.keyboard.press('Enter');await p.waitForTimeout(50);console.log('Enter na summary -> open grp?',await p.evaluate(()=>[...document.querySelectorAll('#zab-oferty-dlg .zab-grp')].map(g=>g.open)));
  await p.keyboard.press('Tab');console.log(' Tab ->',await p.evaluate(desc));
  await p.screenshot({path:WYNIKI+`fokus-checkbox-${w}.png`});

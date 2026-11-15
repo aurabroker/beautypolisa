@@ -3,7 +3,7 @@
 import pathlib, json
 root = pathlib.Path(__file__).parent; pub = root / 'public'
 TYPES = {'.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.txt': 'text/plain; charset=utf-8',
-         '.webp': 'image/webp', '.png': 'image/png', '.svg': 'image/svg+xml'}
+         '.webp': 'image/webp', '.png': 'image/png', '.svg': 'image/svg+xml', '.pdf': 'application/pdf'}
 lines, entries = [], []
 for i, p in enumerate(sorted(x for x in pub.rglob('*') if x.is_file())):
     rel = '/' + str(p.relative_to(pub))

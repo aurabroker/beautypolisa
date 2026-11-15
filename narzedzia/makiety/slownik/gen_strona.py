@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Strona „Słownik pojęć ubezpieczeniowych” – design/v3/slownik.html (makieta /slownik).
 
-Źródło treści: docs/koncepcja/snippets/slownik.json (95 haseł, 10 kategorii) – bez ręcznych zmian w HTML.
+Źródło treści: docs/koncepcja/snippets/slownik.json (hasła i kategorie z pliku) – bez ręcznych zmian w HTML.
+Pole dawne_id hasła (np. „grupa-ryzyka” w haśle rodzaj-dzialalnosci, 00 D43) → pusta kotwica span.haslo-alias#haslo-<dawne_id>
+na początku hasła (bez hidden – przeglądarka przewija do niej także bez JavaScriptu), żeby stare odnośniki działały.
 Szkielet (nagłówek, stopka, sprite ikon, bazowy CSS i skrypt strony) kopiowany z tax-protect.html; bloki gen:* (menu „Ubezpieczenia”,
 szuflada, pasek akcji, wspólne CSS/JS) wstawia narzedzia/makiety/gen_wspolne.py (funkcja przetworz – ten sam szablon co na stronach produktów).
 Idempotentny: każde uruchomienie buduje stronę od nowa z tych samych źródeł (wynik zależy tylko od slownik.json, tax-protect.html i gen_wspolne.py).
@@ -113,8 +115,11 @@ def haslo_html(h):
     hid = h['id']
     baza = re.sub(r'\s*\([^)]*\)\s*$', '', h['termin']).strip()
     szuk = '|'.join(dict.fromkeys(szukaj_norm(x) for x in [h['termin'], baza] + h.get('alias', [])))
-    r = [f'          <article class="haslo" id="haslo-{hid}" data-kat="{h["kategoria"]}" data-szukaj="{e(szuk)}" aria-labelledby="haslo-{hid}-t">',
-         '            <header class="haslo-head">',
+    r = [f'          <article class="haslo" id="haslo-{hid}" data-kat="{h["kategoria"]}" data-szukaj="{e(szuk)}" aria-labelledby="haslo-{hid}-t">']
+    for d in h.get('dawne_id', []):
+        assert d not in PO_ID, f'dawne_id {d} hasła {hid} jest id istniejącego hasła'
+        r.append(f'            <span class="haslo-alias" id="haslo-{e(d)}"></span>')
+    r += ['            <header class="haslo-head">',
          f'              <h3 id="haslo-{hid}-t">{t(h["termin"])}</h3>',
          f'              <p class="haslo-kat">{t(KAT[h["kategoria"]])}</p>',
          '            </header>',
@@ -456,10 +461,10 @@ JS_SLOWNIK = r'''<script>
   q.addEventListener('keydown',function(e){if(e.key==='Escape'&&q.value){e.preventDefault();q.value='';filtruj()}});
   document.getElementById('sl-pusto-reset').addEventListener('click',function(){reset();q.focus()});
   /* odnośnik do ukrytego hasła (kotwica, „Zobacz też”, adres z #haslo-…) albo do schowanego indeksu: czyści filtry przed przewinięciem */
-  function pokaz(id){var el=id&&document.getElementById(id);if(el&&(el.hidden||(el.closest('.sl-litera')||{}).hidden||(el===indeks&&!el.getClientRects().length)))reset()}
+  function pokaz(id){var el=id&&document.getElementById(id);if(el&&el.classList.contains('haslo-alias'))el=el.closest('.haslo');if(el&&(el.hidden||(el.closest('.sl-litera')||{}).hidden||(el===indeks&&!el.getClientRects().length)))reset()}
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="#haslo-"],a[href^="#litera-"],a[href="#indeks"]');if(a)pokaz(a.getAttribute('href').slice(1))},true);
   /* wejście z #haslo-…: przewinięcie po zbudowaniu strony (przyciski kopiowania zmieniają wysokość) – bez animacji */
-  function zHash(e){try{var id=decodeURIComponent(location.hash.slice(1)), el;if(!id)return;var ukryte=(el=document.getElementById(id))&&(el.hidden||(el.closest('.sl-litera')||{}).hidden);pokaz(id);
+  function zHash(e){try{var id=decodeURIComponent(location.hash.slice(1)), el;if(!id)return;el=document.getElementById(id);if(el&&el.classList.contains('haslo-alias'))el=el.closest('.haslo');var ukryte=el&&(el.hidden||(el.closest('.sl-litera')||{}).hidden);pokaz(id);
     if(el&&(!e||ukryte))requestAnimationFrame(function(){el.scrollIntoView({block:'start',behavior:'instant'})})}catch(err){}}
   window.addEventListener('hashchange',zHash);
   filtruj(false);

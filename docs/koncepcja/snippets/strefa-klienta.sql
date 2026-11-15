@@ -351,14 +351,19 @@ create table client_policies (
   valid_to            date not null,
   premium_amount      numeric(10,2) check (premium_amount >= 0),
   premium_period      text check (premium_period in ('year','month','month_per_person')),
-  -- OC beauty: parametry taryfy programu (składki sztywne). Serwer przelicza składkę z aktywnej wersji
-  -- cennika i odrzuca zapis, jeśli premium_amount się nie zgadza (ta sama czysta funkcja co kalkulator).
-  oc_risk_groups      smallint[] check (oc_risk_groups <@ array[1,2,3,4]::smallint[]), -- zaznaczone grupy zabiegów
-  oc_tariff_group     smallint check (oc_tariff_group between 1 and 3),           -- grupa taryfowa po regułach łączenia (gr. 3 z 1/2 → 3; 1+2 → 3)
+  -- OC beauty (00, D43): parametry taryfy programu (składki sztywne), klucze jak w CRM (snippets/taryfa-oc-beauty.json).
+  -- Doradca wybiera rodzaje działalności, liczbę osób, sumę, ochronę prawną i zabiegi wymagające ankiety; serwer liczy
+  -- kategorię i składkę z aktywnej wersji cennika tą samą czystą funkcją co kalkulator (snippets/oc-skladka.js) i odrzuca
+  -- zapis, jeśli oc_kategoria albo premium_amount się nie zgadza. Zabiegi z list nr 1 i 2 nie wpływają na składkę.
+  oc_rodzaje          text[] check (oc_rodzaje <@ array['kosmetyczny','fryzjerski','kosmetologiczny','podologiczny',
+                                                        'masaz','tatuaz']::text[]),        -- rodzaje działalności (pytanie APK)
+  oc_kategoria        text check (oc_kategoria in ('kosmetyczny_fryzjerski','kosmetologiczny','pelny')), -- taryfa z rodzajów = zakres na certyfikacie
   oc_sum_insured      integer check (oc_sum_insured in (100000, 200000, 300000)),
   oc_legal_protection boolean,
-  oc_team_size_band   text check (oc_team_size_band in ('do-5','6-8','9+')),
-  oc_individual_quote boolean not null default false, -- gr. 4 albo zespół 9+: składka z wyceny indywidualnej, nie z taryfy
+  oc_team_size_band   text check (oc_team_size_band in ('1-5','6-8','9+')), -- osoby wykonujące zabiegi (łącznie z klientem)
+  oc_zabiegi_ankieta  text[] not null default '{}'                          -- zabiegi wymagające ankiety (a–h, id g4-xx);
+                        check (array_to_string(oc_zabiegi_ankieta, ',') ~ '^(g4-[0-9]{2}(,g4-[0-9]{2})*)?$'), -- + CHECK z zabiegi_ids() niżej
+  oc_individual_quote boolean not null default false, -- zabiegi wymagające ankiety albo więcej niż 8 osób: składka z wyceny indywidualnej
   pricing_version_id  uuid references pricing_versions(id),
   published_at        timestamptz,            -- klient widzi polisę dopiero po publikacji przez personel
   crm_ref             text check (char_length(crm_ref) <= 64), -- id polisy w CRM Aura Expert (crm_renewals.polisa_id, w obrębie crm_tenant konta – 12 §5.2, Q7); tylko personel
@@ -366,11 +371,30 @@ create table client_policies (
   created_at          timestamptz not null default now(),
   updated_at          timestamptz not null default now(),
   check (valid_to >= valid_from),
-  check (product <> 'oc-beauty' or status = 'draft' or oc_individual_quote
-         or (oc_tariff_group is not null and oc_sum_insured is not null and oc_legal_protection is not null
-             and oc_team_size_band in ('do-5','6-8') and pricing_version_id is not null)),
+  constraint client_policies_oc_taryfa check (product <> 'oc-beauty' or status = 'draft' or oc_individual_quote
+         or (coalesce(cardinality(oc_rodzaje), 0) > 0 and oc_kategoria is not null and oc_sum_insured is not null
+             and oc_legal_protection is not null and oc_team_size_band in ('1-5','6-8')
+             and cardinality(oc_zabiegi_ankieta) = 0 and pricing_version_id is not null)),
   check (not oc_individual_quote or product = 'oc-beauty')
 );
+-- Migracja kolumn OC z wcześniejszej wersji tego pliku (00, D43; plan „OC po Aneksie nr 5”, uwaga K17). Dawne kolumny
+-- oc_risk_groups (grupy zabiegów 1–4) i oc_tariff_group (grupa taryfowa 1–3) NIE są przenoszone automatycznie: grupa zabiegów
+-- to nie rodzaj działalności, a dawna grupa taryfowa nie przekłada się na kategorię (np. dawne grupy 1 i 2 razem dawały
+-- taryfę 3, a w CRM ta sama odpowiedź – gabinet kosmetyczny z kosmetologicznym – daje „Gabinety kosmetologiczne”).
+-- Rodzaje działalności i kategorię wprowadza ponownie doradca (według wniosku w CRM). Jedyna zmiana 1:1 – nazwa
+-- przedziału 'do-5' → '1-5' (ten sam próg: do 5 osób). Kolejność w migracji …_oc_aneks_5.sql (tylko addytywnie, bez
+-- utraty danych do czasu ręcznego uzupełnienia; stan 15.11.2026: Strefa Klienta nie jest wdrożona – pliki opisują schemat):
+--   1) alter table client_policies add column oc_rodzaje …, add column oc_kategoria …, add column oc_zabiegi_ankieta …;
+--   2) create table client_policies_oc_grupy_archiwum as select id, oc_risk_groups, oc_tariff_group, now() as przeniesiono
+--      from client_policies where oc_risk_groups is not null or oc_tariff_group is not null;  -- wgląd dla doradcy, tylko personel;
+--   3) drop constraint dwóch dawnych CHECK-ów, które wymieniają 'do-5': oc_team_size_band ('do-5','6-8','9+') i taryfy
+--      (bez nazwy w starej wersji – nazwa z pg_constraint, np. client_policies_check1); potem update … set oc_team_size_band
+--      = '1-5' where oc_team_size_band = 'do-5' i add constraint z nowym CHECK przedziału (od razu ważny);
+--   4) add constraint client_policies_oc_taryfa … NOT VALID – wiersze OC sprzed migracji (bez oc_rodzaje i oc_kategoria)
+--      zostają widoczne dla klienta bez zmian, a każda ich edycja wymaga uzupełnienia rodzajów i kategorii; po uzupełnieniu
+--      wszystkich: alter table client_policies validate constraint client_policies_oc_taryfa;
+--   5) zamiana grantów kolumnowych (sekcja 8.3) i usunięcie oc_risk_groups, oc_tariff_group dopiero po walidacji.
+--   (Sprawdzone 15.11.2026 na PostgreSQL 16 na kopii dawnej definicji tabeli: kroki 1–5 i CHECK-i z tej wersji pliku.)
 create index client_policies_account_idx on client_policies (account_id, valid_to desc);
 create index client_policies_renewal_idx on client_policies (valid_to) where status = 'active';
 
@@ -441,15 +465,16 @@ alter table outbox_emails
 
 -- Zabiegi w ogłoszeniach (00, D41 – decyzja zleceniodawcy 13.11.2026): pole „Zabiegi” w ofertach
 -- (job_offers) i w ogłoszeniach „Szukam pracy” (candidate_ads) oraz filtr na tablicy. Lista = kanoniczna
--- lista 117 zabiegów z snippets/zabiegi-oc-beauty.json (D29) – dane w repozytorium, import przy budowaniu:
--- baza NIE ma tabeli słownikowej (nazwy i grupy renderuje aplikacja z tego samego pliku), a dozwolone
+-- lista zabiegów z snippets/zabiegi-oc-beauty.json (D29, D43: listy nr 1 i 2 oraz zabiegi wymagające ankiety, wersja 2)
+-- – dane w repozytorium, import przy budowaniu: baza NIE ma tabeli słownikowej (nazwy i listy renderuje aplikacja
+-- z tego samego pliku, nazwy wycofanych – z zabiegi-oc-beauty-wycofane.json), a dozwolone
 -- identyfikatory zwraca funkcja IMMUTABLE wygenerowana z pliku (blok gen:zabiegi-ids). Dlaczego tak:
 -- (a) CHECK nie czyta tabeli (deterministyczny, bez zależności kolejności przy pg_dump/restore), (b) brak
 -- tabeli = brak dodatkowych polityk RLS i grantów, (c) jedno źródło prawdy jak w kalkulatorze i na stronie OC.
 -- Wersjonowanie: identyfikatory są stabilne i lista tylko rośnie – pozycja usunięta z pliku przechodzi do
 -- „wycofanych”: zostaje dozwolona w ogłoszeniach, które już ją mają (CHECK z p_tylko_aktywne = false), ale
 -- nowo dodawane zabiegi muszą być aktywne (guard ofert, app_candidate_ad_save). Zmiana listy = nowa migracja
--- z tego samego skryptu (CI: --check). Nazwa ani grupa zabiegu nie trafiają do bazy.
+-- z tego samego skryptu (CI: --check). Nazwa zabiegu ani numer listy nie trafiają do bazy.
 -- EXECUTE: authenticated (CHECK w job_offers sprawdza się przy zapisie właściciela przez Data API) i service_role;
 -- anon – nie (tylko czyta). Funkcja zwraca wyłącznie publiczne identyfikatory z listy na stronie OC.
 -- gen:zabiegi-ids
@@ -479,6 +504,11 @@ end $$;
 -- /gen:zabiegi-ids
 revoke all on function public.zabiegi_ids(boolean) from public, anon;
 grant execute on function public.zabiegi_ids(boolean) to authenticated, service_role;
+
+-- Polisa OC (sekcja 2): zabiegi wymagające ankiety tylko z listy (także wycofane – polisa sprzed zmiany listy zostaje ważna);
+-- CHECK dodany tutaj, bo client_policies powstaje przed funkcją zabiegi_ids().
+alter table client_policies add constraint client_policies_oc_ankieta_z_listy
+  check (oc_zabiegi_ankieta <@ public.zabiegi_ids());
 
 create table job_offers (
   id               uuid primary key default gen_random_uuid(),
@@ -2040,17 +2070,17 @@ create policy client_invitations_staff_read on client_invitations
 -- 8.3 Polisy i dokumenty: właściciel czyta opublikowane (także archiwalne – D-B); pracownik nie widzi
 --     polis; zapis – personel ------------------------------------------------------------------------
 grant select (id, account_id, product, insurer, product_label, policy_number, status, valid_from, valid_to,
-              premium_amount, premium_period, oc_risk_groups, oc_tariff_group, oc_sum_insured,
-              oc_legal_protection, oc_team_size_band, oc_individual_quote, pricing_version_id, published_at,
-              created_at, updated_at)
+              premium_amount, premium_period, oc_rodzaje, oc_kategoria, oc_sum_insured,
+              oc_legal_protection, oc_team_size_band, oc_zabiegi_ankieta, oc_individual_quote, pricing_version_id,
+              published_at, created_at, updated_at)
   on client_policies to authenticated;          -- bez crm_ref i created_by
 grant insert (account_id, product, insurer, product_label, policy_number, status, valid_from, valid_to,
-              premium_amount, premium_period, oc_risk_groups, oc_tariff_group, oc_sum_insured,
-              oc_legal_protection, oc_team_size_band, oc_individual_quote, pricing_version_id, published_at,
-              crm_ref, created_by),
+              premium_amount, premium_period, oc_rodzaje, oc_kategoria, oc_sum_insured,
+              oc_legal_protection, oc_team_size_band, oc_zabiegi_ankieta, oc_individual_quote, pricing_version_id,
+              published_at, crm_ref, created_by),
       update (product_label, policy_number, status, valid_from, valid_to, premium_amount, premium_period,
-              oc_risk_groups, oc_tariff_group, oc_sum_insured, oc_legal_protection, oc_team_size_band,
-              oc_individual_quote, pricing_version_id, published_at, crm_ref, updated_at)
+              oc_rodzaje, oc_kategoria, oc_sum_insured, oc_legal_protection, oc_team_size_band,
+              oc_zabiegi_ankieta, oc_individual_quote, pricing_version_id, published_at, crm_ref, updated_at)
   on client_policies to authenticated;
 
 create policy client_policies_owner_read on client_policies
@@ -2935,7 +2965,7 @@ end $$;
 -- NULL = brak filtra (klucz pominięty albo pusta tablica). Tylko identyfikatory z listy (także wycofane – stare
 -- adresy z filtrem nadal działają), bez powtórzeń; inaczej BP422 bez wartości. Serwer najpierw normalizuje
 -- adres (?zabieg=…: pomija nieznane i powtórzone identyfikatory i mówi o tym na stronie), więc BP422 oznacza
--- wywołanie z pominięciem aplikacji. Górna granica = długość listy (117) – zapytanie pozostaje ograniczone.
+-- wywołanie z pominięciem aplikacji. Górna granica = długość listy z pliku – zapytanie pozostaje ograniczone.
 create or replace function public.zabiegi_filter(p_filters jsonb)
 returns text[]
 language plpgsql immutable set search_path = '' as $$

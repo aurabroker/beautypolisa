@@ -3,6 +3,8 @@
 > Dokument wejściowy do koncepcji portalu **beautypolisa.eu**. Zawiera wyłącznie fakty ustalone
 > podczas przeglądu repozytorium, projektów Supabase i konta Cloudflare oraz wyniki researchu rynkowego.
 > Tam, gdzie czegoś nie udało się potwierdzić, jest to zaznaczone wprost.
+>
+> **Uwaga (15.11.2026, OC po Aneksie nr 5):** reguła grup ryzyka zabiegów, lista 117 zabiegów w czterech grupach i zaokrąglenie składki OC do złotówki, opisane w tym dokumencie, są zastąpione przez decyzję D43 w 00 (listy zabiegów nr 1 i 2 oraz zabiegi wymagające ankiety w brzmieniu Aneksu nr 5, taryfa według rodzaju działalności jak w CRM, kwota do grosza). Treść poniżej zostaje bez zmian jako zapis stanu z dnia przeglądu.
 
 ## 1. Zlecenie
 

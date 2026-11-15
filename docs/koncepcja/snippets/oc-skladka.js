@@ -1,12 +1,14 @@
 /*
  * Wycena OC beauty (program WA50/003353/24/A) – czysta funkcja wspólna dla makiety, aplikacji i testów.
- * Przepisanie CRM bez zmiany kolejności działań: crmaura/src/lib/renewals/program.ts – kategoriaZRodzajow,
- * skladkaProgramu, wycenaNowej. Stałe nie są tu wpisane: przychodzą jako T = snippets/taryfa-oc-beauty.json.
+ * Przepisanie reguł CRM (crmaura/src/lib/renewals/program.ts): kategoriaZRodzajow i skladkaProgramu – ta sama kolejność
+ * działań i zaokrąglenie; wycenaNowej – ten sam wynik dla kompletu odpowiedzi. Stałe nie są tu wpisane: przychodzą jako
+ * T = snippets/taryfa-oc-beauty.json.
  *
  * Dla kompletu odpowiedzi (rodzaje, osoby, suma) wynik jest taki sam jak w CRM: ta sama kategoria, kwota do grosza,
- * ten sam powód wyceny indywidualnej i ten sam opis (pole opisCrm). Stany „brak” to tylko podpowiedzi interfejsu
- * portalu – w CRM taki wniosek zatrzymuje walidacja. Kolejność sprawdzeń: zabiegi wymagające ankiety (cała składka
- * do wyceny indywidualnej), rodzaje, osoby, więcej niż 8 osób, suma.
+ * ten sam powód wyceny indywidualnej i ten sam opis (pole opisCrm). Przy brakach – stany interfejsu portalu (fixture
+ * F1–F5, tylko_portal): w CRM bez sumy nie ma wyceny (wycenaNowej zwraca null), a taki wniosek zatrzymuje walidacja.
+ * Kolejność sprawdzeń w portalu: zabiegi wymagające ankiety (cała składka do wyceny indywidualnej), rodzaje, osoby,
+ * więcej niż 8 osób, suma – wycenaNowej w CRM najpierw sprawdza sumę.
  *
  * Wejście po walidacji (jak w CRM po listOf/oneOf): rodzaje – klucze z T.rodzaje_gabinetu, osoby – klucz
  * z T.liczba_osob albo pusty, suma – wartość z T.sumy albo pusta, zabiegiAnkieta – wybrane pozycje a–h
@@ -20,7 +22,7 @@
   else root.OcSkladka = api;
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
-  var NB = ' ';
+  var NB = ' ', WJ = '\u2060';
 
   // = kategoriaZRodzajow (program.ts): podologia albo fryzjerstwo razem z kosmetologią lub tatuażem – pełna;
   // kosmetologia albo tatuaż – kosmetologiczna; pozostałe – kosmetyczna i fryzjerska; brak rodzaju – null.
@@ -113,7 +115,8 @@
     var portal = [kat.nazwa + ', suma ' + formatSuma(suma) + ': ' + formatKwotaCalkowita(baza)];
     if (osoby === '6-8') {
       crm.push('+25% (6–8 osób)');
-      portal.push('+' + Math.round(T.doplata_6_8_osob * 100) + '% (6–8' + NB + 'osób)');
+      // łącznik słowa (U+2060) po półpauzie: „6–8 osób” nie łamie się na wąskim ekranie
+      portal.push('+' + Math.round(T.doplata_6_8_osob * 100) + '% (6–' + WJ + '8' + NB + 'osób)');
     }
     if (ochronaPrawna) {
       crm.push('+' + T.ochrona_prawna.skladka + ' zł ochrona prawna');

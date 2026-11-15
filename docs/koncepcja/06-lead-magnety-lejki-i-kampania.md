@@ -4,7 +4,7 @@
 
 ## TL;DR
 
-- Cztery magnesy wg ramy MAGNET, każdy zakotwiczony w produkcie, który dziś ma parametry w briefie: **quiz grup ryzyka** (OC dla branży beauty (ERGO Hestia), góra lejka, bez bramki, e-mail opcjonalny), **wzór zgody na zabieg + checklista dokumentacji** (OC, środek, bramka e-mail), **checklista kontroli sanepid / ZUS / US** (Tax Protect (Colonnade), środek, bramka e-mail), **kalkulator kosztu rotacji vs pakiet** (Grupowe ERGO dla beauty, dół lejka, na liczbach użytkownika).
+- Cztery magnesy wg ramy MAGNET, każdy zakotwiczony w produkcie, który dziś ma parametry w briefie: **quiz składki OC** (OC dla branży beauty (ERGO Hestia): rodzaj działalności → liczba osób → zabiegi wymagające ankiety → taryfa i składka, jak kalkulator – 00, D43; góra lejka, bez bramki, e-mail opcjonalny), **wzór zgody na zabieg + checklista dokumentacji** (OC, środek, bramka e-mail), **checklista kontroli sanepid / ZUS / US** (Tax Protect (Colonnade), środek, bramka e-mail), **kalkulator kosztu rotacji vs pakiet** (Grupowe ERGO dla beauty, dół lejka, na liczbach użytkownika).
 - Kalkulator „ile tracisz na L4 jako JDG” odrzucony jako magnes nr 3: produkt „Utrata dochodu” nie miał w briefie żadnych parametrów (01, pkt 3.5), więc magnes nie miałby kotwicy; zostaje narzędziem edukacyjnym bez bramki (05, C1.4). Od 12.11.2026 strona produktu ma treść z naszego serwisu utratadochodu.pl i wniosek na utratadochodu.pl, bez kwot składek (00, D33, D34) – narzędzie kieruje więc do `/ubezpieczenia/utrata-dochodu` i wniosku na utratadochodu.pl; powrót kalkulatora jako magnesu z bramką – do decyzji (pytanie 13).
 - Wynik zawsze natychmiast na ekranie. E-mail służy dostarczeniu kopii, a seria pielęgnująca (4 wiadomości z gałęziami na zachowanie) startuje dopiero po osobnej zgodzie i jej potwierdzeniu (double opt-in). Orkiestracja serii w Supabase + Cron Worker z sekcji 02, wysyłka i zdarzenia przez Resend (tagi, webhooki).
 - Zgody jako trzy osobne elementy (informacja RODO, zgoda e-mail, zgoda na telefon – ta ostatnia tylko tam, gdzie zbieramy numer), bez domyślnych zaznaczeń, bez pilności i ciemnych wzorców. Obowiązki informacyjne dystrybutora (IDD) warstwowo: stopka, `/o-nas`, `/dokumenty`, strona sukcesu formularza leada i pierwszy kontakt doradcy. Treści klauzul – do weryfikacji prawnej.
@@ -16,14 +16,14 @@
 
 ## 0. Zakres i rama MAGNET
 
-Portal nie sprzedaje polis (01, pkt 8.1). Magnesy mają trzy zadania: **zakwalifikować** (grupa ryzyka, wielkość zespołu, zawód), **zbudować zaufanie** dokumentami, których klient faktycznie użyje w salonie, i **oddać kontakt doradcy Aura Expert** (agenta ubezpieczeniowego) w momencie, gdy osoba sama o to prosi. Każdy magnes przechodzi przez ramę MAGNET:
+Portal nie sprzedaje polis (01, pkt 8.1). Magnesy mają trzy zadania: **zakwalifikować** (rodzaj działalności, liczba osób wykonujących zabiegi, zawód), **zbudować zaufanie** dokumentami, których klient faktycznie użyje w salonie, i **oddać kontakt doradcy Aura Expert** (agenta ubezpieczeniowego) w momencie, gdy osoba sama o to prosi. Każdy magnes przechodzi przez ramę MAGNET:
 
 | Litera | Zasada | Jak egzekwujemy w BeautyPolisa |
 |---|---|---|
 | **M** – jedna grupa, jeden problem, jedna szybka wygrana | Magnes nie jest „dla całej branży” | Persony z 05 (właścicielka salonu 1–8 osób, kosmetolog JDG, fryzjer, linergistka, stylistka paznokci, tatuażysta, manager sieci); jeden magnes = jedna persona główna |
 | **A** – zakotwiczenie w produkcie płatnym i etapie lejka | Góra: quiz / kalkulator; środek: szablon / checklista; dół: case / ROI | Produkt musi mieć parametry w 01 (cennik, sumy, zakres). Bez parametrów – brak magnesu, tylko treść edukacyjna |
 | **G** – natychmiastowy, interaktywny wynik | Zamiast PDF-a „sprawdź skrzynkę” | Wynik renderowany na stronie; PDF i e-mail to kopia, nie warunek |
-| **N** – nazwa od efektu | Nie „e-book o OC”, lecz „sprawdź, w której grupie…” | Nazwy w tabeli poniżej; H1 testowane A/B (pkt 4.2) |
+| **N** – nazwa od efektu | Nie „e-book o OC”, lecz „sprawdź, ile kosztuje OC…” | Nazwy w tabeli poniżej; H1 testowane A/B (pkt 4.2) |
 | **E** – cały lejek | Landing (korzyść-first) → krótki formularz (e-mail + imię) → strona sukcesu → dostarczenie → 3–5 e-maili rozgałęzionych na zachowanie | Pełny przykład dla magnesu 1 w pkt 2; mechanika wspólna w pkt 1.5 |
 | **T** – pielęgnacja bez wczesnego pitchu | Dostarczenie → szybka wygrana → dowód → miękki następny krok | Seria 4 e-maili: pierwszy pitch (kalkulator) dopiero w 3. wiadomości; rozmowa z doradcą – w 4. |
 
@@ -31,7 +31,7 @@ Przegląd czterech magnesów (adresy URL spójne z tabelą „Treści narzędzio
 
 | # | Nazwa robocza (od efektu) | Persona główna | Problem | Produkt płatny (kotwica) | Etap lejka | Bramka | URL |
 |---|---|---|---|---|---|---|---|
-| 1 | „Sprawdź, czy Twoje zabiegi mieszczą się w programie OC dla beauty” (quiz) | kosmetolog JDG; wtórnie wszystkie zawody | „Nie wiem, czy moje zabiegi w ogóle da się ubezpieczyć i ile to kosztuje” | OC dla branży beauty (ERGO Hestia) | góra | brak; e-mail opcjonalny po wyniku | `/baza-wiedzy/quiz-grupy-ryzyka` |
+| 1 | „Sprawdź, ile kosztuje OC Twojego gabinetu” (quiz) | kosmetolog JDG; wtórnie wszystkie zawody | „Nie wiem, czy moje zabiegi w ogóle da się ubezpieczyć i ile to kosztuje” | OC dla branży beauty (ERGO Hestia) | góra | brak; e-mail opcjonalny po wyniku | `/baza-wiedzy/quiz-skladka-oc` |
 | 2 | „Komplet przed zabiegiem: wzór zgody + checklista dokumentacji” | linergistka, kosmetolog, tatuażysta | „Mam zgodę na kolanie, nie wiem, co powinna zawierać i czego zażąda ubezpieczyciel” | OC dla branży beauty (ERGO Hestia) – ankieta wymaga formularzy zgody (01, pkt 3.1) | środek | e-mail + imię; dostęp natychmiast na stronie sukcesu + kopia e-mailem | `/baza-wiedzy/zgoda-na-zabieg-wzor` |
 | 3 | „Gotowość na kontrolę: sanepid, ZUS, US – checklista” | właścicielka salonu 1–8 osób | „Boję się kontroli, nie wiem, co powinnam mieć przygotowane” | Tax Protect (Colonnade): sekcja 1 ochrona karno-skarbowa właściciela, sekcja 2 jeden pełny spór podatkowy w roku (01, pkt 3.2) | środek | e-mail + imię; lista online bez bramki, PDF i zapis postępu po e-mailu | `/baza-wiedzy/checklista-kontroli` |
 | 4 | „Rotacja vs pakiet: policz różnicę na własnych liczbach” | manager sieci / właścicielka zatrudniająca | „Ludzie odchodzą, a ja nie wiem, czy benefit się opłaca” | Grupowe ERGO dla beauty – pakiety 58 / 68 / 76 zł za osobę miesięcznie (wg cennika programu) | dół | brak; e-mail opcjonalny („wyślij podsumowanie”) | `/baza-wiedzy/kalkulator-rotacji` [propozycja] |
@@ -79,34 +79,35 @@ Sekcja „Która droga dla mnie” (`#ktora-droga`) porównuje fakty (kto zawier
 
 ## 1. Cztery magnesy
 
-### 1.1 Magnes 1 – quiz „Sprawdź, czy Twoje zabiegi mieszczą się w programie OC dla beauty”
+### 1.1 Magnes 1 – quiz „Sprawdź, ile kosztuje OC Twojego gabinetu”
 
-Uwaga do nazwy: tytuł z zadania („…są objęte OC”) obiecuje potwierdzenie ochrony, którego quiz dać nie może – zakres ochrony wynika z OWU i oceny wniosku, a quiz jedynie przypisuje zabiegi do jednej z czterech grup ryzyka programu (01, pkt 3.1). Proponujemy sformułowanie „mieszczą się w programie”, a wariant „W której grupie ryzyka są Twoje zabiegi?” testujemy A/B. Wynik nigdy nie używa słów „jesteś objęta / masz ochronę”.
+Uwaga do nazwy: tytuł z zadania („…są objęte OC”) obiecuje potwierdzenie ochrony, którego quiz dać nie może – zakres ochrony wynika z OWU i oceny wniosku. Od D43 (00) taryfę wyznacza rodzaj działalności, a zabiegi z list programu nie zmieniają składki, więc quiz nie ocenia zabiegów: zadaje pytania jak kalkulator i pokazuje taryfę ze składką albo wycenę indywidualną. Tytuł „Sprawdź, ile kosztuje OC Twojego gabinetu”, wariant „Jaką działalność prowadzisz? Zobacz składkę OC w 60 sekund” testujemy A/B. Wynik nigdy nie używa słów „jesteś objęta / masz ochronę”.
 
 | Litera | Zastosowanie |
 |---|---|
-| M | Kosmetolog JDG wykonujący zabiegi z gr. 2, czasem z gr. 4; szybka wygrana: w 60 s wie, w której grupie jest i czy czeka go ocena indywidualna |
-| A | OC dla branży beauty (ERGO Hestia); góra lejka → wynik prowadzi do `/kalkulator/oc` z prewypełnioną grupą i liczbą osób (05, narzędzie 2) |
+| M | Kosmetolog JDG, czasem z zabiegami wymagającymi ankiety; szybka wygrana: w 60 s wie, jaka taryfa wynika z jego działalności, ile wynosi składka i czy czeka go wycena indywidualna |
+| A | OC dla branży beauty (ERGO Hestia); góra lejka → wynik prowadzi do `/kalkulator/oc` z zaznaczonym rodzajem działalności, liczbą osób i zabiegami wymagającymi ankiety (05, narzędzie 2) |
 | G | Wynik na ekranie natychmiast po ostatnim kroku; brak pola e-mail przed wynikiem |
-| N | „Sprawdź, czy Twoje zabiegi mieszczą się w programie OC dla beauty” (A) vs „W której grupie ryzyka są Twoje zabiegi?” (B) |
-| E | Landing → quiz (3 kroki) → wynik → opcjonalny e-mail (e-mail + imię) → strona sukcesu → E0 dostarczający → po potwierdzeniu seria E1–E4 (pkt 2) |
-| T | E1 szybka wygrana (co oznacza grupa), E2 dowód (jak wygląda roszczenie), E3 miękki krok (kalkulator), E4 zamknięcie (rozmowa albo cisza) |
+| N | „Sprawdź, ile kosztuje OC Twojego gabinetu” (A) vs „Jaką działalność prowadzisz? Zobacz składkę OC w 60 sekund” (B) |
+| E | Landing → quiz (3 kroki + zawód opcjonalnie) → wynik → opcjonalny e-mail (e-mail + imię) → strona sukcesu → E0 dostarczający → po potwierdzeniu seria E1–E4 (pkt 2) |
+| T | E1 szybka wygrana (co oznacza taryfa), E2 dowód (jak wygląda roszczenie), E3 miękki krok (kalkulator), E4 zamknięcie (rozmowa albo cisza) |
 
-**Obietnica:** „Zaznacz zabiegi, które wykonujesz. W 60 sekund zobaczysz, do której z 4 grup ryzyka programu trafiają, jaka jest składka roczna wg taryfy programu i czy potrzebna jest ocena indywidualna. Bez podawania e-maila.”
+**Obietnica:** „Zaznacz, jaką działalność prowadzisz i ile osób wykonuje zabiegi. W 60 sekund zobaczysz taryfę programu, składkę roczną dla każdej sumy gwarancyjnej i to, czy potrzebna jest wycena indywidualna. Bez podawania e-maila.”
 
 **Kroki quizu i pola:**
 
 | Krok | Pole | Typ | Źródło wartości |
 |---|---|---|---|
-| 1 | Zabiegi, które wykonujesz | wielokrotny wybór, lista alfabetyczna bez etykiet grup (żeby nie sugerować wyniku) | lista zabiegów gr. 1–4 z `snippets/zabiegi-oc-beauty.json` (00, D29) – jedyne źródło także dla quizu, bez osobnej kopii (w aplikacji `packages/content/oc/zabiegi.json`) |
-| 2 | Ile osób wykonuje zabiegi | 1 / 2–8 / 9 i więcej | próg „zespół powyżej 8 osób → wycena indywidualna” (01, pkt 3.1) |
-| 3 | Twój zawód (opcjonalnie) | lista: kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta, inny | enum `Profession` z 02; prewypełnione, gdy wejście z `/dla-kogo/<zawod>` |
+| 1 | Jaką działalność prowadzisz? (możesz zaznaczyć kilka) | wielokrotny wybór, bez wartości domyślnej | 6 rodzajów działalności z `snippets/taryfa-oc-beauty.json` (= CRM: gabinet kosmetyczny, salon fryzjerski, gabinet kosmetologiczny, gabinet podologiczny, salon masażu, salon tatuażu); przy wejściu z `/dla-kogo/<zawod>` zaznaczony rodzaj dla profilu (00, D43 g) |
+| 2 | Ile osób wykonuje zabiegi w gabinecie (łącznie z Tobą)? | do 5 osób / 6–8 osób / więcej niż 8 osób | `liczba_osob` z taryfy (= pytanie APK w CRM); więcej niż 8 → wycena indywidualna |
+| 3 | Czy wykonujesz zabiegi wymagające ankiety ERGO Hestii? | wielokrotny wybór pozycji a–h w brzmieniu Aneksu nr 5 albo „żadnego z nich” | lista „ankieta” z `snippets/zabiegi-oc-beauty.json` (00, D43) – jedyne źródło także dla quizu, bez osobnej kopii (w aplikacji `packages/content/oc/zabiegi.json`) |
+| 4 | Twój zawód (opcjonalnie) | lista: kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta, inny | enum `Profession` z 02; prewypełnione, gdy wejście z `/dla-kogo/<zawod>` |
 | wynik | – | – | – |
 | po wyniku | E-mail, imię (oba opcjonalne) + checkbox zgody marketingowej | formularz | `POST /api/magnets` (pkt 1.5) |
 
-**Wynik (reguła):** najwyższa grupa spośród zaznaczonych zabiegów. Gr. 1–3 → „Twoje zabiegi mieszczą się w grupie N programu. Składka roczna wg taryfy programu: od X zł przy sumie gwarancyjnej 100 000 zł; klauzula ochrony prawnej +92 zł”; X z aktywnej wersji cennika programu (02, pkt 2.3): gr. 1 – 400 zł, gr. 2 – 650 zł, gr. 3 – 850 zł. Gr. 4 lub 9+ osób → „Twoje zabiegi (lub wielkość zespołu) wymagają indywidualnej oceny” z listą powodów i CTA „Poproś o indywidualną ocenę”. Zawsze adnotacja: „Quiz nie potwierdza ochrony – zakres wynika z OWU i oceny wniosku”. Trzy przyciski: **Policz dokładną składkę** (→ `/kalkulator/oc?grupa=N&osoby=…`), **Lista zabiegów w mojej grupie** (→ artykuł A2.1 z 05), **Wyślij mi wynik na e-mail** (rozwija formularz).
+**Wynik (reguła):** ta sama czysta funkcja co kalkulator (`skladkaOc` z `snippets/oc-skladka.js`, taryfa `snippets/taryfa-oc-beauty.json`; 00, D43). Zabieg wymagający ankiety → „Składka do indywidualnej wyceny – zabiegi wymagające ankiety podlegają ocenie ubezpieczyciela” i CTA „Poproś o wycenę indywidualną”; więcej niż 8 osób → „Składka do indywidualnej wyceny – gabinet zatrudnia więcej niż 8 osób”. W pozostałych przypadkach: taryfa (np. „Gabinety kosmetologiczne”) i składka roczna wg taryfy programu dla każdej z trzech sum gwarancyjnych (100 / 200 / 300 tys. zł; przy 6–8 osobach z dopłatą 25 %, kwoty do grosza, np. 987,50 zł) – bez wyróżnionej sumy i bez rekomendacji; klauzula ochrony prawnej +92 zł rocznie jako informacja. Zawsze adnotacja: „Quiz nie potwierdza ochrony – zakres wynika z OWU i oceny wniosku”. Trzy przyciski: **Policz w kalkulatorze** (→ `/kalkulator/oc` z rodzajami działalności, liczbą osób i zaznaczonymi pozycjami ankiety), **Listy zabiegów programu** (→ `/ubezpieczenia/oc-beauty#zabiegi` i artykuł A2.1 z 05), **Wyślij mi wynik na e-mail** (rozwija formularz).
 
-**Mechanika (Next.js / Supabase, opis):** strona jest komponentem serwerowym, który – jak `/kalkulator/oc` w 02, pkt 2.3 – pobiera aktywną wersję cennika przez cache z rewalidacją 5 min oraz listę zabiegów z JSON w repozytorium i przekazuje je jako props do wyspy klienckiej. Quiz liczy w przeglądarce czystą funkcją z `packages/pricing` (ta sama, która zasila kalkulator), bez żądań sieciowych między krokami. Wynik jest zakodowany w adresie strony wyniku (`/baza-wiedzy/quiz-grupy-ryzyka/wynik?g=2&o=1&z=kosmetolog`) – bez danych osobowych, więc link z e-maila działa bezterminowo i nadaje się do udostępnienia. Podanie e-maila wywołuje `POST /api/magnets` (pkt 1.5); do bazy trafia subskrybent, zapis dostarczenia z ładunkiem `{group, teamBand, profession}` i wiersz outbox dla e-maila E0. Zdarzenia do kolektora przez Service Binding (02, pkt 7.1): `magnet_view`, `quiz_started`, `quiz_completed {group, individual}`, `quiz_to_calculator`, `magnet_email_submitted`.
+**Mechanika (Next.js / Supabase, opis):** strona jest komponentem serwerowym, który – jak `/kalkulator/oc` w 02, pkt 2.3 – pobiera aktywną wersję cennika przez cache z rewalidacją 5 min oraz listę zabiegów z JSON w repozytorium i przekazuje je jako props do wyspy klienckiej. Quiz liczy w przeglądarce czystą funkcją z `packages/pricing` (ta sama, która zasila kalkulator), bez żądań sieciowych między krokami. Wynik jest zakodowany w adresie strony wyniku (`/baza-wiedzy/quiz-skladka-oc/wynik?r=kosmetyczny,kosmetologiczny&o=1-5&a=&z=kosmetolog` – klucze CRM) – bez danych osobowych, więc link z e-maila działa bezterminowo i nadaje się do udostępnienia. Podanie e-maila wywołuje `POST /api/magnets` (pkt 1.5); do bazy trafia subskrybent, zapis dostarczenia z ładunkiem `{rodzaje, osoby, ankieta, profession}` i wiersz outbox dla e-maila E0. Zdarzenia do kolektora przez Service Binding (02, pkt 7.1): `magnet_view`, `quiz_started`, `quiz_completed {kategoria, individual}`, `quiz_to_calculator`, `magnet_email_submitted`.
 
 **KPI [hipoteza]:** start quizu 40–60 % odwiedzin landingu; ukończenie 60–80 % startów; przejście do kalkulatora 25–40 % ukończeń; podanie e-maila 10–25 % ukończeń; zgoda marketingowa wśród podających e-mail 40–60 %.
 
@@ -123,7 +124,7 @@ Uwaga do nazwy: tytuł z zadania („…są objęte OC”) obiecuje potwierdzeni
 
 **Obietnica:** „Wzór zgody na zabieg w wersji do edycji i checklista dokumentacji, którą prowadzi się przed zabiegiem, w trakcie i po. Do użycia od razu. Zweryfikowane prawnie [do czasu weryfikacji – nie publikować].”
 
-**Pola formularza:** e-mail (wymagane), imię (wymagane – personalizacja E0), zawód (opcjonalne, prewypełnione). Checkbox zgody marketingowej osobno, niezaznaczony. **Wynik:** strona sukcesu z zakładkami „Wzór zgody” (podgląd, pobranie PDF, pobranie DOCX [do decyzji – wersja edytowalna zwiększa użyteczność, ale wymaga utrzymania dwóch formatów]) i „Checklista” (interaktywne pola wyboru; stan zapamiętany w `localStorage` – wygoda per urządzenie, nie dane osobowe). Warianty wzoru wg zawodu to osobne pliki (np. makijaż permanentny, tatuaż, zabiegi z gr. 2) – treść do opracowania przez eksperta i zatwierdzenia przez prawnika (05, pytanie 9).
+**Pola formularza:** e-mail (wymagane), imię (wymagane – personalizacja E0), zawód (opcjonalne, prewypełnione). Checkbox zgody marketingowej osobno, niezaznaczony. **Wynik:** strona sukcesu z zakładkami „Wzór zgody” (podgląd, pobranie PDF, pobranie DOCX [do decyzji – wersja edytowalna zwiększa użyteczność, ale wymaga utrzymania dwóch formatów]) i „Checklista” (interaktywne pola wyboru; stan zapamiętany w `localStorage` – wygoda per urządzenie, nie dane osobowe). Warianty wzoru wg zawodu to osobne pliki (np. makijaż permanentny, tatuaż, zabiegi z listy nr 2) – treść do opracowania przez eksperta i zatwierdzenia przez prawnika (05, pytanie 9).
 
 **Mechanika:** pliki PDF powstają w CI z MDX w `packages/content/dokumenty/` (stempel wersji i daty w stopce, zgodnie z zasadą „treść w repozytorium” z 02, pkt 2.5) i są publikowane jako assety statyczne. Dokument jest treścią bezpłatną – bramka ma funkcję wymiany wartości, nie zabezpieczenia, więc adres pobrania nie musi być tajny; parametr `?src=email` służy tylko atrybucji. Zapis jak w pkt 1.5.
 
@@ -178,7 +179,7 @@ create table magnet_deliveries (
   id            uuid primary key default gen_random_uuid(),
   subscriber_id uuid not null references newsletter_subscribers(id) on delete cascade,
   magnet        text not null check (magnet in ('quiz-oc','zgoda-na-zabieg','checklista-kontroli','kalkulator-rotacji')),
-  payload       jsonb not null,            -- wynik bez PII, np. {"group":2,"teamBand":"1","profession":"kosmetolog"}
+  payload       jsonb not null,            -- wynik bez PII, np. {"rodzaje":["kosmetologiczny"],"osoby":"1-5","ankieta":[],"profession":"kosmetolog"}
   source_path   text, utm jsonb,
   created_at    timestamptz not null default now()
 );
@@ -204,29 +205,29 @@ create table nurture_enrollments (
 
 ---
 
-## 2. Pełny lejek magnesu nr 1 (quiz grup ryzyka)
+## 2. Pełny lejek magnesu nr 1 (quiz składki OC)
 
-### 2.1 Landing `/baza-wiedzy/quiz-grupy-ryzyka`
+### 2.1 Landing `/baza-wiedzy/quiz-skladka-oc`
 
 Układ od góry: nagłówek i podtytuł → widżet quizu (karta „glass” z fallbackiem, 01, pkt 8.6) → 3 korzyści → dowód → FAQ (z `FAQPage`, 04) → stopka z informacją dystrybutora. Formularz e-mail pojawia się dopiero na ekranie wyniku.
 
 | Element | Treść |
 |---|---|
-| H1 (wariant A) | Sprawdź, czy Twoje zabiegi mieszczą się w programie OC dla beauty |
-| H1 (wariant B, test A/B) | W której grupie ryzyka są Twoje zabiegi? |
-| Podtytuł | Zaznacz zabiegi, które wykonujesz. W 60 sekund zobaczysz, do której z 4 grup ryzyka programu ERGO Hestii trafiają, jaka jest składka roczna wg taryfy programu i czy potrzebna jest indywidualna ocena. Bez podawania e-maila. |
+| H1 (wariant A) | Sprawdź, ile kosztuje OC Twojego gabinetu |
+| H1 (wariant B, test A/B) | Jaką działalność prowadzisz? Zobacz składkę OC w 60 sekund |
+| Podtytuł | Zaznacz rodzaj działalności, liczbę osób wykonujących zabiegi i zabiegi wymagające ankiety, jeśli je wykonujesz. W 60 sekund zobaczysz taryfę programu ERGO Hestii i składkę roczną dla każdej sumy gwarancyjnej albo informację, że składkę ustala indywidualnie ubezpieczyciel. Bez podawania e-maila. |
 | Korzyść 1 | Wynik od razu na ekranie – bez PDF-a i czekania na skrzynkę. |
-| Korzyść 2 | Lista zabiegów z programu, nie ogólniki: od manicure i rzęs po HIFU, nici PDO i laser ablacyjny. |
-| Korzyść 3 | Składka roczna wg taryfy programu (od 400 zł/rok w grupie 1) i jasna informacja, kiedy potrzebna jest ocena indywidualna. |
-| Dowód (fakty, bez opinii) | Program OC dla branży beauty realizowany z Sopockim TU ERGO Hestia S.A. (nr WA50/003353/24/A) we współpracy z Fundacją Beauty Razem; dystrybutor: Aura Expert sp. z o.o., agent ubezpieczeniowy (RPU 11229690/A); 4 grupy ryzyka i 3 sumy gwarancyjne (100 000 / 200 000 / 300 000 zł). Opinie klientów pojawią się dopiero, gdy będą prawdziwe i za zgodą autorów – do tego czasu sekcja „dowód” zawiera wyłącznie fakty o programie. |
+| Korzyść 2 | Listy zabiegów programu w brzmieniu Aneksu nr 5, nie ogólniki: lista nr 1 (49 pozycji), lista nr 2 (63 pozycje) i 8 zabiegów wymagających ankiety. |
+| Korzyść 3 | Składka roczna wg taryfy programu, do grosza – tak samo jak we wniosku u doradcy – i jasna informacja, kiedy potrzebna jest wycena indywidualna. |
+| Dowód (fakty, bez opinii) | Program OC dla branży beauty realizowany z Sopockim TU ERGO Hestia S.A. (nr WA50/003353/24/A) we współpracy z Fundacją Beauty Razem; dystrybutor: Aura Expert sp. z o.o., agent ubezpieczeniowy (RPU 11229690/A); 3 taryfy według rodzaju działalności i 3 sumy gwarancyjne (100 000 / 200 000 / 300 000 zł). Opinie klientów pojawią się dopiero, gdy będą prawdziwe i za zgodą autorów – do tego czasu sekcja „dowód” zawiera wyłącznie fakty o programie. |
 | CTA główne | Zacznij quiz |
-| FAQ 1 | **Czy wynik quizu oznacza, że mam ochronę?** Nie. Quiz pokazuje, do której grupy ryzyka programu należą Twoje zabiegi i jaka jest składka roczna wg taryfy programu. Informacja nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU, a zawarcie umowy poprzedza ocena wniosku (ankieta pyta m.in. o NIP, REGON, datę rozpoczęcia działalności, liczbę zatrudnionych, szkodowość z 3 lat, zabiegi wysokiego ryzyka, formularze zgody i kwalifikacje personelu). |
-| FAQ 2 | **Co z zabiegami z grupy 4?** HIFU, toksyna botulinowa, PRP, PLASMA, kwas hialuronowy, nici PDO, lipoliza iniekcyjna i laser ablacyjny wymagają indywidualnej oceny. Quiz nie poda składki – przekieruje Cię do formularza „poproś o indywidualną ocenę”. |
+| FAQ 1 | **Czy wynik quizu oznacza, że mam ochronę?** Nie. Quiz pokazuje taryfę programu wynikającą z rodzaju działalności i składkę roczną wg taryfy programu. Informacja nie stanowi oferty w rozumieniu art. 66 Kodeksu cywilnego; zakres ochrony określają OWU, a zawarcie umowy poprzedza ocena wniosku (wniosek pyta m.in. o NIP, REGON, datę rozpoczęcia działalności, liczbę osób wykonujących zabiegi, szkodowość z 3 lat, zabiegi wymagające ankiety, formularze zgody i kwalifikacje personelu). |
+| FAQ 2 | **Co z zabiegami wymagającymi ankiety ERGO Hestii?** Aneks nr 5 wymienia osiem takich pozycji (a–h), m.in. „Zabiegi z użyciem toksyny botulinowej” i „Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego” – wszystkie są na stronie OC. Przy nich całą składkę wycenia indywidualnie ubezpieczyciel; quiz nie poda kwoty – przekieruje Cię do formularza „Poproś o wycenę indywidualną”. |
 | FAQ 3 | **Czy muszę podać e-mail?** Nie. E-mail jest opcjonalny – wyślemy kopię wyniku, a jeśli zaznaczysz osobną zgodę i potwierdzisz ją w wiadomości, dostaniesz 4 krótkie e-maile o OC. Rezygnacja jednym kliknięciem w każdej wiadomości. |
 
 ### 2.2 Strona sukcesu (po podaniu e-maila)
 
-Nagłówek: „Gotowe. Wynik masz poniżej, kopia leci na {e-mail}.” Pod nim powtórzona karta wyniku (grupa, składka roczna wg taryfy programu lub informacja o ocenie indywidualnej), CTA główne **Policz dokładną składkę** (kalkulator prewypełniony), CTA drugorzędne **Lista zabiegów w grupie {N}**. Jeśli zaznaczono zgodę marketingową: ramka „W e-mailu znajdziesz przycisk potwierdzenia – bez kliknięcia nie wyślemy nic więcej.” Jeśli nie zaznaczono: brak ponownej prośby o zgodę (bez „czy na pewno?”). Pod spodem: skrócona informacja dystrybutora i link do `/rodo`. Żadnego licznika, pop-upu ani komunikatu w stylu „nie, nie chcę chronić swojego salonu”.
+Nagłówek: „Gotowe. Wynik masz poniżej, kopia leci na {e-mail}.” Pod nim powtórzona karta wyniku (taryfa, składka roczna wg taryfy programu dla każdej sumy lub informacja o wycenie indywidualnej), CTA główne **Policz składkę w kalkulatorze** (kalkulator prewypełniony), CTA drugorzędne **Listy zabiegów programu** (link `/ubezpieczenia/oc-beauty#zabiegi`). Jeśli zaznaczono zgodę marketingową: ramka „W e-mailu znajdziesz przycisk potwierdzenia – bez kliknięcia nie wyślemy nic więcej.” Jeśli nie zaznaczono: brak ponownej prośby o zgodę (bez „czy na pewno?”). Pod spodem: skrócona informacja dystrybutora i link do `/rodo`. Żadnego licznika, pop-upu ani komunikatu w stylu „nie, nie chcę chronić swojego salonu”.
 
 ### 2.3 E-mail dostarczający (E0)
 
@@ -235,20 +236,20 @@ Wiadomość transakcyjna: dostarcza zamówiony wynik, nie zawiera oferty. Warian
 | Pole | Treść |
 |---|---|
 | Nadawca | Imię i nazwisko doradcy, BeautyPolisa (05, decyzja 6 – imienny nadawca) |
-| Temat (≤ 50) | Twój wynik quizu: grupa ryzyka i następny krok |
-| Preheader (≤ 90) | Grupa {N}, składka roczna od {X} zł wg taryfy programu. Pełna lista zabiegów w środku. |
+| Temat (≤ 50) | Twój wynik quizu: taryfa OC i następny krok |
+| Preheader (≤ 90) | Taryfa „{taryfa}” i składka dla każdej sumy gwarancyjnej. Listy zabiegów w środku. |
 
 Treść:
 
 > Cześć {imię},
 >
-> dziękuję za wypełnienie quizu. Oto wynik dla zabiegów, które zaznaczyłaś/eś:
+> dziękuję za wypełnienie quizu. Oto wynik dla odpowiedzi, które zaznaczyłaś/eś:
 >
-> **Grupa ryzyka {N} programu OC dla branży beauty (ERGO Hestia).** Składka roczna wg taryfy programu: od **{X} zł/rok** przy sumie gwarancyjnej 100 000 zł; klauzula ochrony prawnej +92 zł. Wyższe sumy: 200 000 i 300 000 zł. {Jeśli grupa 4 lub zespół 9+: Twoje zabiegi lub wielkość zespołu wymagają indywidualnej oceny – kalkulator nie poda składki, ale doradca może to policzyć po krótkiej rozmowie.}
+> **Taryfa „{taryfa}” programu OC dla branży beauty (ERGO Hestia)** – wynika z rodzaju działalności, który zaznaczyłaś/eś. Składka roczna wg taryfy programu{, gdy zabiegi wykonuje 6–8 osób – z dopłatą 25 %}: **{kwota przy 100 000 zł} / {kwota przy 200 000 zł} / {kwota przy 300 000 zł}** przy sumie gwarancyjnej 100 000 / 200 000 / 300 000 zł; klauzula ochrony prawnej +92 zł rocznie. {Jeśli zabiegi wymagające ankiety ERGO Hestii albo więcej niż 8 osób: Składka do indywidualnej wyceny – {powód}; doradca przygotuje wycenę po krótkiej rozmowie.}
 >
-> Wynik nie jest potwierdzeniem ochrony – zakres wynika z OWU i oceny wniosku. Pełną listę zabiegów w Twojej grupie i wynik masz pod tym linkiem: {link do strony wyniku}.
+> Wynik nie jest potwierdzeniem ochrony – zakres wynika z OWU i oceny wniosku. Listy zabiegów programu i wynik masz pod tym linkiem: {link do strony wyniku}.
 >
-> {Wariant ze zgodą:} Zaznaczyłaś/eś, że chcesz dostać 4 krótkie e-maile o OC w branży beauty (co oznacza grupa, jak wygląda roszczenie, jak policzyć składkę, co dalej). Żeby je wysłać, potrzebuję jednego kliknięcia:
+> {Wariant ze zgodą:} Zaznaczyłaś/eś, że chcesz dostać 4 krótkie e-maile o OC w branży beauty (co oznacza taryfa, jak wygląda roszczenie, jak policzyć składkę, co dalej). Żeby je wysłać, potrzebuję jednego kliknięcia:
 >
 > **[Tak, chcę serię 4 e-maili]**
 >
@@ -266,29 +267,29 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 | Gałąź | Sygnał | Działanie |
 |---|---|---|
 | Kliknął kalkulator | zdarzenie `nurture_clicked` z linku do `/kalkulator/oc` lub wejście na kalkulator z `?src=nurture` | E3 zastąpiony przez E3b („masz wycenę – co dalej?”), E4 bez zmian |
-| Nie otworzył | brak `email.opened` i `email.clicked` dla E1 przez 72 h (otwarcia są niewiarygodne przy ochronie prywatności w klientach pocztowych – traktujemy jako wskazówkę, decydują kliknięcia) | E1b – ten sam tekst, nowy temat „Grupa ryzyka: 3 rzeczy, które warto wiedzieć” (+3 dni); brak reakcji na E1b i E2 → seria przechodzi od razu do E4 i kończy się |
+| Nie otworzył | brak `email.opened` i `email.clicked` dla E1 przez 72 h (otwarcia są niewiarygodne przy ochronie prywatności w klientach pocztowych – traktujemy jako wskazówkę, decydują kliknięcia) | E1b – ten sam tekst, nowy temat „Taryfa OC: 3 rzeczy, które warto wiedzieć” (+3 dni); brak reakcji na E1b i E2 → seria przechodzi od razu do E4 i kończy się |
 | Odpowiedział | wiadomość przychodząca na adres nadawcy (skrzynka doradcy, M365) | `status='paused_replied'`; doradca odpowiada w ≤ 1 dzień roboczy; automat milczy |
 | Poprosił o kontakt | formularz leada (`/api/leads`) z tym samym adresem lub kliknięcie „Umów rozmowę” | `status='converted'`; dalej przepływ leada z 02, pkt 2.2 (zgoda telefoniczna zbierana w formularzu) |
 
 **E1 (+2 dni) – szybka wygrana**
 
-| Temat (≤ 50) | Co właściwie obejmuje OC w Twojej grupie |
+| Temat (≤ 50) | Co właściwie obejmuje OC Twojego gabinetu |
 |---|---|
-| Preheader (≤ 90) | Grupa to poziom składki, nie zakres ochrony. Trzy rzeczy, które warto sprawdzić. |
+| Preheader (≤ 90) | Taryfa to poziom składki, nie zakres ochrony. Trzy rzeczy, które warto sprawdzić. |
 
 > Cześć {imię},
 >
-> w quizie wyszła grupa {N}. Wyjaśnię, co to oznacza, bo często jest mylone.
+> w quizie wyszła taryfa „{taryfa}”. Wyjaśnię, co to oznacza, bo często jest mylone.
 >
-> **Grupa to poziom składki.** Program dzieli zabiegi na cztery grupy wg ryzyka – od fryzjerstwa, kosmetyki pielęgnacyjnej, manicure i rzęs (gr. 1), przez makijaż permanentny, mezoterapię, lasery nieablacyjne, IPL, tatuaż i peelingi chemiczne (gr. 2), po podologię (gr. 3). Gr. 4 to zabiegi oceniane indywidualnie.
+> **Taryfa to poziom składki i wynika z rodzaju działalności.** {reguła kategorii z `taryfa-oc-beauty.json`, jak na stronie OC}. Zabiegi z list programu (lista nr 1 i nr 2 w brzmieniu Aneksu nr 5) składki nie zmieniają; przy zabiegach wymagających ankiety ERGO Hestii całą składkę wycenia indywidualnie ubezpieczyciel.
 >
-> **Zakres ochrony to OWU, nie grupa.** OC zawodowe odpowiada za szkody wyrządzone klientce w związku z zabiegiem – granice, wyłączenia i obowiązki są w ogólnych warunkach, które znajdziesz na beautypolisa.eu/dokumenty.
+> **Zakres ochrony to OWU, nie taryfa.** OC zawodowe odpowiada za szkody wyrządzone klientce w związku z zabiegiem – granice, wyłączenia i obowiązki są w ogólnych warunkach, które znajdziesz na beautypolisa.eu/dokumenty.
 >
-> **Trzy parametry do wyboru:** suma gwarancyjna (100 000 / 200 000 / 300 000 zł), klauzula ochrony prawnej (+92 zł/rok) i liczba osób w zespole (powyżej 8 – wycena indywidualna).
+> **Trzy parametry do wyboru:** suma gwarancyjna (100 000 / 200 000 / 300 000 zł), klauzula ochrony prawnej (+92 zł/rok) i liczba osób wykonujących zabiegi (więcej niż 8 – wycena indywidualna).
 >
-> Jeśli któryś zabieg z Twojej listy budzi wątpliwość, do której grupy należy – odpisz, sprawdzę.
+> Jeśli nie wiesz, na której liście programu jest Twój zabieg – odpisz, sprawdzę.
 >
-> **[Zobacz pełną listę zabiegów w grupie {N}]**
+> **[Zobacz listy zabiegów programu]**
 >
 > {podpis, stopka dystrybutora, link rezygnacji}
 
@@ -321,17 +322,17 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 
 | Temat (≤ 50) | Policz składkę w 2 minuty (bez zobowiązań) |
 |---|---|
-| Preheader (≤ 90) | Kalkulator ma już Twoją grupę. Zobaczysz składkę wg taryfy i listę rzeczy do wniosku. |
+| Preheader (≤ 90) | Kalkulator ma już Twoje odpowiedzi. Zobaczysz składkę wg taryfy i listę rzeczy do wniosku. |
 
 > Cześć {imię},
 >
-> masz grupę ryzyka z quizu, więc kalkulator na beautypolisa.eu/kalkulator/oc wypełni się sam. Wybierasz sumę gwarancyjną, decydujesz o klauzuli ochrony prawnej, podajesz liczbę osób – i widzisz składkę roczną wg taryfy programu.
+> masz wynik quizu, więc kalkulator na beautypolisa.eu/kalkulator/oc zaznaczy za Ciebie rodzaj działalności i liczbę osób. Wybierasz sumę gwarancyjną, decydujesz o klauzuli ochrony prawnej – i widzisz składkę roczną wg taryfy programu, do grosza.
 >
-> Co dalej, jeśli kwota ma sens? Wniosek do ERGO Hestii wymaga kilku danych: NIP, REGON, data rozpoczęcia działalności, liczba zatrudnionych, szkodowość z ostatnich 3 lat, lista zabiegów wysokiego ryzyka, formularze zgody na zabieg i kwalifikacje personelu. Większość masz pod ręką, resztę pomogę skompletować.
+> Co dalej, jeśli kwota ma sens? Wniosek do ERGO Hestii wymaga kilku danych: NIP, REGON, data rozpoczęcia działalności, liczba osób wykonujących zabiegi, szkodowość z ostatnich 3 lat, zabiegi wymagające ankiety ERGO Hestii (jeśli je wykonujesz), formularze zgody na zabieg i kwalifikacje personelu. Większość masz pod ręką, resztę pomogę skompletować.
 >
 > Nie ma tu zakupu online – wynik kalkulatora możesz po prostu zapisać. Jeśli zostawisz kontakt, odezwę się w ciągu jednego dnia roboczego, nie wcześniej niż chcesz.
 >
-> **[Policz składkę dla grupy {N}]**
+> **[Policz składkę w kalkulatorze]**
 >
 > {podpis, stopka dystrybutora, link rezygnacji}
 
@@ -345,7 +346,7 @@ Harmonogram liczony od potwierdzenia zgody: E1 +2 dni, E2 +5, E3 +9, E4 +14. Jed
 
 > Cześć {imię},
 >
-> kalkulator pokazał Ci kwotę. Po tym kroku najczęściej słyszę trzy pytania: czy pracownice są objęte tą samą polisą (w programie liczy się liczba osób wykonujących zabiegi), czy warto brać wyższą sumę niż 100 000 zł (zależy od zabiegów i liczby klientek – to rozmowa, nie reguła) oraz co, jeśli robię też zabieg z grupy 4 (wtedy ocena indywidualna całego wniosku).
+> kalkulator pokazał Ci kwotę. Po tym kroku najczęściej słyszę trzy pytania: czy pracownice są objęte tą samą polisą (w programie liczy się liczba osób wykonujących zabiegi), czy warto brać wyższą sumę niż 100 000 zł (zależy od zabiegów i liczby klientek – to rozmowa, nie reguła) oraz co, jeśli wykonuję też zabieg wymagający ankiety ERGO Hestii (wtedy całą składkę wycenia indywidualnie ubezpieczyciel).
 >
 > Jeśli któreś z nich jest Twoje – odpisz albo zostaw numer, oddzwonię w dogodnej porze.
 >
@@ -385,7 +386,7 @@ Resend jest już skonfigurowany w strefie (`send.`/`links.`, DKIM – 01, pkt 6)
 
 | Element Resend | Użycie |
 |---|---|
-| Audience „BeautyPolisa – portal” | Lustro potwierdzonych subskrybentów (e-mail, imię, właściwości: `profession`, `risk_group`, `magnet_last`, `consent_version`, `stage`); flaga `unsubscribed` jest listą blokującą dla wszystkich wysyłek |
+| Audience „BeautyPolisa – portal” | Lustro potwierdzonych subskrybentów (e-mail, imię, właściwości: `profession`, `oc_rodzaje` (rodzaje działalności – klucze CRM, 00 D43), `magnet_last`, `consent_version`, `stage`); flaga `unsubscribed` jest listą blokującą dla wszystkich wysyłek |
 | Tematy / segmenty (jeśli dostępne w planie – [do weryfikacji]) | „Seria OC”, „Dokumentacja”, „Kontrola”, „Grupowe”, „Aktualizacje” – odbiorca wybiera zakres na stronie preferencji zamiast rezygnować ze wszystkiego |
 | Tagi na każdej wiadomości | `sequence`, `step`, `branch`, `magnet`, `variant` (A/B) – wracają w webhookach i pozwalają liczyć lejek bez PII |
 | Webhook `POST /api/webhooks/resend` | Weryfikacja podpisu (nagłówki Svix: id, timestamp, signature), zapis zdarzenia, decyzja o gałęzi |
@@ -399,7 +400,7 @@ Przykładowe wywołanie wysyłki (bez sekretów):
   "from": "Imię Nazwisko · BeautyPolisa <imie.nazwisko@send.beautypolisa.eu>",
   "to": ["subskrybent@example.com"],
   "reply_to": "imie.nazwisko@auraexpert.example",
-  "subject": "Co właściwie obejmuje OC w Twojej grupie",
+  "subject": "Co właściwie obejmuje OC Twojego gabinetu",
   "html": "<!-- szablon E1 z gałęzi default -->",
   "text": "…",
   "headers": {
@@ -476,7 +477,7 @@ Rama „Canva creator” ma sześć etapów: brief → kalendarz → inwentarz z
 |---|---|
 | Cel | (1) Uruchomić portal jako pierwotne źródło informacji o programie OC dla branży beauty (01, pkt 7 – brak publicznych źródeł); (2) zbudować bazę e-mail z potwierdzoną zgodą; (3) pierwsze leady OC przez kalkulator. Mierniki w pkt 4.1 |
 | Grupa | Persony z 05: właścicielka salonu 1–8 osób, kosmetolog JDG, fryzjer, linergistka, stylistka paznokci, tatuażysta; wtórnie manager sieci (LinkedIn) |
-| Przekaz główny | „Wiesz, w której grupie ryzyka są Twoje zabiegi? Sprawdź w 60 sekund.” |
+| Przekaz główny | „Wiesz, ile kosztuje OC Twojego gabinetu? Sprawdź w 60 sekund.” |
 | Przekazy wspierające | Program OC z ERGO Hestią we współpracy z Fundacją Beauty Razem; dokumenty, których używa się w salonie (zgoda, checklisty); bez sprzedaży online – rozmowa z doradcą wtedy, gdy klient chce |
 | Ton | Ekspercki, ciepły, konkretny. Mówimy „Ty”, unikamy form rodzajowych tam, gdzie się da („Twoje zabiegi”, „wykonujesz”). Zakaz straszenia („jedno roszczenie zrujnuje Twój salon”), pilności, wykrzykników, emoji w nadmiarze |
 | Elementy marki (01, pkt 2) | Granat `#2a3b69` – tła i typografia; róż `#e11d48` – akcent CTA, maks. ok. 10 % powierzchni; tło `#fafafa`; tekst `#1e293b`; tryb ciemny `#0f172a` (Stories); Montserrat Bold (nagłówki) / Regular i Medium (treść); logo poziome PNG z repo (`BeautyPolisa_logo_podstawowe_poziome.png`) – brak wersji białej i monochromatycznej [luka] |
@@ -495,25 +496,25 @@ Dzień 1 = dzień uruchomienia portalu (data nieznana – 05 zakłada styczeń).
 | 1 | Instagram feed | Canva (social) | Startujemy: portal BeautyPolisa | post 1080×1080 (szablon A) | dlaczego powstał – pierwotne źródło o programie OC | caption 1 |
 | 1 | Facebook | Canva (social) | j.w. (ten sam projekt) | post 1080×1080 | j.w. | reuse projektu |
 | 1 | LinkedIn | Tylko tekst | Start portalu z perspektywy doradcy | post tekstowy | branża bez publicznego źródła o programie | post LI 1 |
-| 2 | Instagram Stories | Canva (social) | Quiz: 4 grupy ryzyka | 3 klatki 1080×1920 + link | „zaznacz zabiegi, zobacz grupę” | tryb ciemny `#0f172a` |
+| 2 | Instagram Stories | Canva (social) | Quiz: składka OC w 60 sekund | 3 klatki 1080×1920 + link | „zaznacz rodzaj działalności, zobacz składkę” | tryb ciemny `#0f172a` |
 | 3 | E-mail | Tylko tekst | C1 „Startujemy…” | e-mail | quiz + co znajdziesz na portalu | **K:** tylko adresy ze zgodą; CRM po audycie |
-| 4 | Instagram feed | Canva (social) | Cztery grupy ryzyka zabiegów | karuzela 5 slajdów (szablon B) | edukacja, lista zabiegów per grupa | caption 2; **S:** ever-green |
+| 4 | Instagram feed | Canva (social) | Taryfa OC według rodzaju działalności | karuzela 5 slajdów (szablon B) | edukacja: trzy taryfy, listy zabiegów nr 1 i 2, zabiegi wymagające ankiety | caption 2; **S:** ever-green |
 | 5 | Facebook | Tylko tekst | „Czy stylistka paznokci musi mieć OC?” | post-pytanie | dyskusja, odpowiedź w komentarzu z linkiem do A1.1 | bez twierdzeń prawnych o obowiązku |
-| 6 | Instagram Reels | Tylko tekst (scenariusz) | Hook 1: mezoterapia vs fryzjerka | Reels 15 s, nagranie własne | grupa ryzyka to nie to samo OC | okładka z szablonu A |
+| 6 | Instagram Reels | Tylko tekst (scenariusz) | Hook 1: gabinet kosmetologiczny vs salon fryzjerski | Reels 15 s, nagranie własne | rodzaj działalności wyznacza taryfę OC | okładka z szablonu A |
 | 8 | Instagram feed | Canva (social) | Co przygotować do wniosku OC | post 1080×1080 | lista z ankiety (NIP, REGON, szkodowość 3 lat, zgody, kwalifikacje) | link do A3.1 |
 | 9 | LinkedIn | Tylko tekst | Odpowiedzialność karno-skarbowa właściciela | post tekstowy | Tax Protect sekcja 1 i 2 – składki wg taryfy na stronie produktu | post LI 2; **S:** I–II podatki |
 | 10 | Instagram Stories | Canva (social) | Pytanie dnia: uczulenie na farbę | 2 klatki z naklejką pytania | zbieramy pytania do FAQ | odpowiedzi tylko ogólne, bez oceny przypadków |
 | 11 | Facebook | Canva (social) | Co przygotować do wniosku OC | post 1080×1080 (reuse z dnia 8) | j.w. | reuse |
 | 12 | E-mail | Tylko tekst | C2 „Zgoda na zabieg…” | e-mail | magnes 2 | **K:** publikacja dopiero po zatwierdzeniu wzoru przez prawnika |
 | 13 | Instagram feed | Canva (social) | Zgoda na zabieg: 7 elementów | karuzela 5 slajdów | co powinna zawierać zgoda, dlaczego pyta o nią ankieta OC | caption 3; **K:** j.w. |
-| 14 | Instagram Reels | Tylko tekst (scenariusz) | Hook 2: trzy rzeczy, o które zapyta ubezpieczyciel | Reels 15 s | szkodowość, zabiegi wysokiego ryzyka, zgody | – |
+| 14 | Instagram Reels | Tylko tekst (scenariusz) | Hook 2: trzy rzeczy, o które zapyta ubezpieczyciel | Reels 15 s | szkodowość, zabiegi wymagające ankiety, zgody | – |
 | 15 | – | – | Przegląd KPI połowy kampanii | – | korekta dni 16–30 wg danych | wewnętrzne |
 | 16 | Instagram feed | Canva (social) | Jak zgłosić szkodę – 4 kroki | post 1080×1080 | proces, nie strach | caption 4; treść do weryfikacji z OWU |
 | 17 | Facebook | Canva (social) | j.w. (reuse) | post 1080×1080 | j.w. | reuse |
 | 18 | Instagram Stories | Canva (social) | Kto odpowiada na Wasze pytania | 3 klatki | doradca imiennie (E-E-A-T, 05) | **K:** wymaga zdjęcia zespołu – luka |
 | 19 | LinkedIn | Tylko tekst | Czego nauczyliśmy się po 2 tygodniach portalu | post tekstowy | tylko realne dane z lejka; bez liczb – bez posta | zależny od dnia 15 |
 | 20 | Instagram feed | Canva (social) | Kontrola w salonie: sanepid, ZUS, US | karuzela 5 slajdów | magnes 3; Tax Protect jako „co, jeśli spór” | caption 5; **K:** po weryfikacji prawnej listy; **S:** I–II, III–V |
-| 22 | Instagram Reels | Tylko tekst (scenariusz) | Hook 3: zespół do 8 osób – jedna polisa | Reels 15 s | próg 8 osób, wycena indywidualna | – |
+| 22 | Instagram Reels | Tylko tekst (scenariusz) | Hook 3: liczba osób wykonujących zabiegi | Reels 15 s | 6–8 osób +25%, więcej niż 8 – wycena indywidualna | – |
 | 23 | Facebook | Canva (social) | Zespół do 8 osób – jedna polisa OC | post 1080×1080 | właścicielki zatrudniające | – |
 | 24 | E-mail | Tylko tekst | C3 „Kontrola w salonie…” | e-mail | magnes 3 | **K:** jak dzień 20 |
 | 25 | Instagram feed | Canva (social) | Grupowe ERGO dla beauty – od 58 zł/os./mies. | post 1080×1080 | benefity w małym salonie, moduły MediOpieki | caption 6; cena „wg cennika programu”; **S:** priorytet XI–XII; przy starcie we IX zamienić na edukację NNW dzieci |
@@ -532,7 +533,7 @@ Razem: 17 pozycji Canva, 3 e-maile, 4 posty LinkedIn, 3 Reels, 3 posty tekstowe 
 | Slot | Typ | Specyfikacja | Treść przykładowa (dzień 1) |
 |---|---|---|---|
 | `Hero_Image` | obraz | 1080×1080, bezpieczny obszar tekstu 880×880; nakładka granat `#2a3b69` 55–65 % krycia | zdjęcie stanowiska pracy w salonie (dłonie, narzędzia) – brak w repo |
-| `Headline` | tekst | ≤ 40 znaków, Montserrat Bold 64–72 px, biały | „W której grupie są Twoje zabiegi?” |
+| `Headline` | tekst | ≤ 40 znaków, Montserrat Bold 64–72 px, biały | „Ile kosztuje OC Twojego gabinetu?” |
 | `Subline` | tekst | ≤ 90 znaków, Montserrat Regular 30–34 px, biały 90 % | „Quiz: 60 sekund, bez e-maila. beautypolisa.eu” |
 | `Logo` | obraz | wersja biała na granacie, wys. 72 px, prawy dolny róg | wymaga wersji białej – luka |
 
@@ -550,7 +551,7 @@ Razem: 17 pozycji Canva, 3 e-maile, 4 posty LinkedIn, 3 Reels, 3 posty tekstowe 
 |---|---|---|---|
 | Zdjęcia stanowisk pracy wg zawodu (kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta) | 6–8 | `Hero_Image`, okładki karuzel, OG strony `/dla-kogo/*` | sesja własna lub stock z licencją komercyjną; bez generowania osób |
 | Portret doradcy / zespołu | 2 | Stories dzień 18, nadawca e-maili, `/o-nas` | sesja własna |
-| Zestaw ikon liniowych (4 grupy ryzyka, dokument, tarcza, kontrola, zespół, kalkulator) | 10–12 | `Slide_Icon`, strony produktowe | biblioteka Canva lub własny zestaw SVG w repo |
+| Zestaw ikon liniowych (rodzaje działalności, dokument, tarcza, kontrola, zespół, kalkulator) | 10–12 | `Slide_Icon`, strony produktowe | biblioteka Canva lub własny zestaw SVG w repo |
 | Logo w wersji białej i monochromatycznej, plik wektorowy | 1 komplet | wszystkie szablony | od właściciela marki |
 | Logotypy partnerów (ERGO Hestia, Colonnade, ENEL-MED, LUX MED, Fundacja Beauty Razem) | 5 | dopiero po zgodzie umownej | partnerzy |
 | Ilustracja procesu „zgłoszenie szkody – 4 kroki” | 1 | dzień 16, `/szkoda` | własna, z ikon |
@@ -574,8 +575,8 @@ Wszystkie ceny wyłącznie z cennika programu, opisane jako „składka wg taryf
 
 **Sześć podpisów Instagram / Facebook** (hook → korzyść → CTA → hashtagi)
 
-1. (dzień 1) Manicure, mezoterapia i HIFU to nie ta sama grupa ryzyka. → W programie OC dla branży beauty (ERGO Hestia) zabiegi dzielą się na 4 grupy. Od grupy zależy składka i to, czy potrzebna jest indywidualna ocena. Quiz na portalu pokaże Ci wynik w 60 sekund – bez podawania e-maila. → Link w bio: quiz grup ryzyka. → #beautypolisa #ockosmetyczki #salonkosmetyczny #kosmetolog #beautybiznes
-2. (dzień 4) Grupa 1, 2, 3 czy 4? Przesuń, żeby sprawdzić, gdzie są Twoje zabiegi. → Gr. 1: fryzjerstwo, kosmetyka pielęgnacyjna, manicure, rzęsy. Gr. 2: makijaż permanentny, mezoterapia, lasery nieablacyjne, IPL, tatuaż, peelingi chemiczne. Gr. 3: podologia. Gr. 4: HIFU, toksyna botulinowa, PRP, kwas hialuronowy, nici PDO, lipoliza iniekcyjna, laser ablacyjny – indywidualna ocena. Składki od 400 zł/rok w gr. 1 – wg taryfy programu. → Zapisz post i policz składkę: beautypolisa.eu/kalkulator/oc → #ockosmetologa #makijazpermanentny #podolog #fryzjer #beautypolisa
+1. (dzień 1) Gabinet kosmetyczny, kosmetologiczny czy salon fryzjerski? W programie OC dla branży beauty (ERGO Hestia) składkę wyznacza rodzaj działalności, nie pojedynczy zabieg. → Trzy taryfy programu, a przy zabiegach wymagających ankiety ERGO Hestii – wycena indywidualna. Quiz na portalu pokaże Ci taryfę i składkę w 60 sekund – bez podawania e-maila. → Link w bio: quiz składki OC. → #beautypolisa #ockosmetyczki #salonkosmetyczny #kosmetolog #beautybiznes
+2. (dzień 4) Która taryfa OC jest Twoja? Przesuń, żeby sprawdzić. → „Gabinety kosmetyczne i fryzjerskie”: gabinet kosmetyczny, salon fryzjerski lub salon masażu – od 400 zł/rok. „Gabinety kosmetologiczne”: gabinet kosmetologiczny lub salon tatuażu, także z gabinetem kosmetycznym lub salonem masażu – od 650 zł/rok. „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”: gabinet podologiczny albo salon fryzjerski z gabinetem kosmetologicznym lub salonem tatuażu – od 850 zł/rok. Kwoty wg taryfy programu przy sumie gwarancyjnej 100 000 zł i do 5 osobach wykonujących zabiegi. Zabiegi wymagające ankiety ERGO Hestii (Aneks nr 5) – wycena indywidualna. → Zapisz post i policz składkę: beautypolisa.eu/kalkulator/oc → #ockosmetologa #makijazpermanentny #podolog #fryzjer #beautypolisa
 3. (dzień 13) Zgoda na zabieg to nie podpis na kolanie pięć minut przed laserem. → Przygotowaliśmy wzór zgody i checklistę dokumentacji – to dokumenty, o które pyta też ankieta do ubezpieczenia OC. Otwierasz od razu online, kopię dostajesz na e-mail. → Pobierz: beautypolisa.eu/baza-wiedzy/zgoda-na-zabieg-wzor → #zgodanazabieg #dokumentacjasalonu #linergistka #kosmetolog #beautypolisa
 4. (dzień 16) Klientka zgłasza powikłanie. Co robisz w pierwszych 24 godzinach? → Kolejność zamiast paniki: zabezpieczasz dokumentację (zgoda, karta zabiegu, zdjęcia), nie podejmujesz zobowiązań wobec klientki bez konsultacji z doradcą, zgłaszasz zdarzenie ubezpieczycielowi. Na portalu opisaliśmy cztery kroki zgłoszenia szkody z OC. → Zapisz na później: beautypolisa.eu/szkoda → #reklamacjazabiegu #ocbeauty #salonkosmetyczny #beautypolisa
 5. (dzień 20) Sanepid, ZUS, urząd skarbowy – trzy kontrole, jedna checklista. → Zaznaczasz, co masz, widzisz, czego brakuje. Online bez logowania, PDF na e-mail. A jeśli kontrola skończy się sporem podatkowym – Tax Protect (Colonnade) to ochrona karno-skarbowa właściciela i jeden pełny spór podatkowy w roku dla firmy. Zakres i składki wg taryfy programu – na stronie produktu. → Link w bio: checklista kontroli → #kontrolasanepidu #taxprotect #wlascicielkasalonu #beautybiznes #beautypolisa
@@ -587,9 +588,9 @@ Post 1 (dzień 1, profil doradcy / strona Aura Expert):
 
 > Od dziś działa beautypolisa.eu – portal o ubezpieczeniach dla branży beauty, który prowadzimy w Aura Expert.
 >
-> Powód jest prosty. Program OC dla branży beauty realizowany z ERGO Hestią we współpracy z Fundacją Beauty Razem nie ma dotąd żadnego publicznego opisu: ani listy zabiegów w czterech grupach ryzyka, ani zasad, kiedy potrzebna jest indywidualna ocena. Kosmetolożki pytają o to na grupach, a odpowiedzi są przypadkowe.
+> Powód jest prosty. Program OC dla branży beauty realizowany z ERGO Hestią we współpracy z Fundacją Beauty Razem nie ma dotąd żadnego publicznego opisu: ani list zabiegów programu, ani taryfy według rodzaju działalności, ani zasad, kiedy potrzebna jest wycena indywidualna. Kosmetolożki pytają o to na grupach, a odpowiedzi są przypadkowe.
 >
-> Na portalu znajdziesz: quiz, który przypisuje zabiegi do grupy ryzyka (bez podawania e-maila), kalkulator składki wg cennika programu, opis zgłoszenia szkody krok po kroku oraz dokumenty do użycia w salonie – wzór zgody na zabieg i checklistę kontroli (po weryfikacji prawnej).
+> Na portalu znajdziesz: quiz, który z rodzaju działalności i liczby osób pokazuje taryfę i składkę (bez podawania e-maila), kalkulator składki wg taryfy programu, opis zgłoszenia szkody krok po kroku oraz dokumenty do użycia w salonie – wzór zgody na zabieg i checklistę kontroli (po weryfikacji prawnej).
 >
 > Nie sprzedajemy polis online. Portal informuje, a rozmowa z doradcą jest wtedy, gdy ktoś o nią poprosi.
 >
@@ -609,15 +610,15 @@ Post 2 (dzień 9, sezon podatkowy):
 
 **Trzy hooki do Reels (15 s)**
 
-1. „Robisz mezoterapię i myślisz, że masz to samo OC co fryzjerka obok? To są dwie różne grupy ryzyka – i dwie różne składki. Sprawdź swoją w quizie, link w bio.” (tekst na ekranie: „Gr. 1 ≠ Gr. 2”)
-2. „Trzy rzeczy, o które zapyta Cię ubezpieczyciel, zanim wyceni OC salonu: szkodowość z trzech lat, lista zabiegów wysokiego ryzyka, formularze zgody na zabieg. Masz wszystkie? Lista na portalu.” (tekst: „1 · 2 · 3”)
-3. „Zespół do ośmiu osób – jedna polisa OC w programie. Dziewięć i więcej – wycena indywidualna. Pokazuję, co to zmienia w kalkulatorze.” (nagranie ekranu kalkulatora)
+1. „Prowadzisz gabinet kosmetologiczny i myślisz, że za OC płacisz tyle co salon fryzjerski obok? Składkę wyznacza rodzaj działalności – to dwie różne taryfy programu. Sprawdź swoją w quizie, link w bio.” (tekst na ekranie: „rodzaj działalności = taryfa”)
+2. „Trzy rzeczy, o które zapyta Cię ubezpieczyciel, zanim wyceni OC salonu: szkodowość z trzech lat, zabiegi wymagające ankiety ERGO Hestii, formularze zgody na zabieg. Masz wszystkie? Lista na portalu.” (tekst: „1 · 2 · 3”)
+3. „Do pięciu osób wykonujących zabiegi – składka z taryfy. Sześć do ośmiu – o 25% wyższa. Więcej niż osiem – wycena indywidualna. Pokazuję to w kalkulatorze.” (nagranie ekranu kalkulatora)
 
 **Trzy e-maile kampanii** (do subskrybentów z potwierdzoną zgodą)
 
 C1 (dzień 3)
 
-| Temat (≤ 50) | Startujemy. Sprawdź grupę ryzyka swoich zabiegów |
+| Temat (≤ 50) | Startujemy. Sprawdź składkę OC swojego gabinetu |
 |---|---|
 | Preheader (≤ 90) | Nowy portal o ubezpieczeniach dla beauty: quiz bez e-maila, kalkulator, dokumenty. |
 
@@ -625,13 +626,13 @@ C1 (dzień 3)
 >
 > piszę, bo od dziś działa beautypolisa.eu – portal, na którym zbieramy w jednym miejscu to, o co pytacie najczęściej.
 >
-> **Quiz grup ryzyka.** Zaznaczasz zabiegi, które wykonujesz, i w 60 sekund widzisz, do której z czterech grup programu OC (ERGO Hestia) trafiają oraz czy potrzebna jest indywidualna ocena. Bez podawania e-maila.
+> **Quiz składki OC.** Zaznaczasz rodzaj działalności i liczbę osób wykonujących zabiegi, a w 60 sekund widzisz taryfę programu OC (ERGO Hestia), składkę roczną dla każdej sumy gwarancyjnej i to, czy potrzebna jest wycena indywidualna. Bez podawania e-maila.
 >
-> **Kalkulator składki.** Suma gwarancyjna 100 000 / 200 000 / 300 000 zł, klauzula ochrony prawnej, liczba osób w zespole – i składka roczna wg taryfy programu (grupa 4 i zespoły od 9 osób – wycena indywidualna).
+> **Kalkulator składki.** Rodzaj działalności, liczba osób wykonujących zabiegi, suma gwarancyjna 100 000 / 200 000 / 300 000 zł i klauzula ochrony prawnej – i składka roczna wg taryfy programu, do grosza (zabiegi wymagające ankiety ERGO Hestii i więcej niż 8 osób – wycena indywidualna).
 >
 > **Zgłoszenie szkody krok po kroku** oraz – w kolejnych tygodniach – wzór zgody na zabieg i checklista kontroli, po weryfikacji prawnej.
 >
-> Portal nie sprzedaje polis. Jeśli po sprawdzeniu grupy i składki chcesz porozmawiać – zostawiasz kontakt, odzywam się w ciągu jednego dnia roboczego.
+> Portal nie sprzedaje polis. Jeśli po sprawdzeniu taryfy i składki chcesz porozmawiać – zostawiasz kontakt, odzywam się w ciągu jednego dnia roboczego.
 >
 > **[Zacznij od quizu]**
 >
@@ -649,7 +650,7 @@ C2 (dzień 12)
 >
 > ankieta do ubezpieczenia OC w programie pyta między innymi o formularze zgody na zabieg i kwalifikacje personelu. To nie przypadek – w razie roszczenia to właśnie te dokumenty są oglądane jako pierwsze.
 >
-> Na portalu udostępniliśmy dwa narzędzia, zweryfikowane prawnie: **wzór zgody na zabieg** (wersja ogólna oraz warianty dla makijażu permanentnego, tatuażu i zabiegów z grupy 2) i **checklistę dokumentacji** – co powinno powstać przed zabiegiem, w trakcie i po nim.
+> Na portalu udostępniliśmy dwa narzędzia, zweryfikowane prawnie: **wzór zgody na zabieg** (wersja ogólna oraz warianty dla makijażu permanentnego, tatuażu i zabiegów z listy nr 2) i **checklistę dokumentacji** – co powinno powstać przed zabiegiem, w trakcie i po nim.
 >
 > Wypełniasz krótki formularz (e-mail i imię), dokumenty otwierają się od razu na stronie, kopia trafia na skrzynkę. Checklistę możesz odhaczać online – stan zostaje na Twoim urządzeniu.
 >
@@ -711,8 +712,8 @@ Przydział wariantu po stronie serwera (hash losowego identyfikatora w ciasteczk
 
 | # | Test | Warianty | Metryka główna | Metryka ochronna | Próba [szacunek] |
 |---|---|---|---|---|---|
-| 1 | H1 landingu quizu | A „Sprawdź, czy Twoje zabiegi mieszczą się w programie OC dla beauty” vs B „W której grupie ryzyka są Twoje zabiegi?” | start quizu | ukończenie quizu | ok. 400 odwiedzin na wariant (różnica 10 p.p. przy bazie 50 %) |
-| 2 | Hierarchia CTA na ekranie wyniku | A „Policz dokładną składkę” jako główne, e-mail drugorzędne vs B „Wyślij mi wynik na e-mail” jako główne | przejścia do kalkulatora i podania e-maila (łącznie, ważone leadami) | leady z kalkulatora | ok. 350 ukończeń na wariant |
+| 1 | H1 landingu quizu | A „Sprawdź, ile kosztuje OC Twojego gabinetu” vs B „Jaką działalność prowadzisz? Zobacz składkę OC w 60 sekund” | start quizu | ukończenie quizu | ok. 400 odwiedzin na wariant (różnica 10 p.p. przy bazie 50 %) |
+| 2 | Hierarchia CTA na ekranie wyniku | A „Policz składkę w kalkulatorze” jako główne, e-mail drugorzędne vs B „Wyślij mi wynik na e-mail” jako główne | przejścia do kalkulatora i podania e-maila (łącznie, ważone leadami) | leady z kalkulatora | ok. 350 ukończeń na wariant |
 | 3 | Bramka magnesu 2 | A dostęp do dokumentów od razu na stronie sukcesu + kopia e-mailem vs B dostęp tylko z linku w e-mailu | pobrania PDF na 100 odwiedzin artykułu-nośnika | potwierdzone zgody, twarde odbicia | ok. 200 wysłanych formularzy na wariant |
 
 ### 4.3 Macierz odpowiedzialności

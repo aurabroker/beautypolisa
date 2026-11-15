@@ -267,13 +267,13 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <dl class="kv">
             <div><dt>Numer polisy</dt><dd>BP/2026/000123 (przykład)</dd></div>
             <div><dt>Okres ochrony</dt><dd><time datetime="2026-01-01">1&nbsp;stycznia</time> – <time datetime="2026-12-31">31&nbsp;grudnia 2026&nbsp;r.</time></dd></div>
-            <div><dt>Grupa ryzyka</dt><dd>Grupa 2&nbsp;– Kosmetologia i&nbsp;tatuaż</dd></div>
+            <div><dt>Zakres</dt><dd>Gabinety kosmetologiczne</dd></div>
             <div><dt>Suma gwarancyjna</dt><dd class="money">200&nbsp;000&nbsp;zł</dd></div>
             <div><dt>Klauzula ochrony prawnej</dt><dd>tak<br><a class="link-quiet js-klauzula" href="../oc-beauty.html#ochrona-prawna">Treść klauzuli<span class="sr-only"> ochrony prawnej</span></a></dd></div>
-            <div><dt>Zespół</dt><dd>1–5&nbsp;osób</dd></div>
+            <div><dt>Osoby wykonujące zabiegi</dt><dd>do 5&nbsp;osób</dd></div>
           </dl>
           <div class="premium">
-            <strong>882&nbsp;zł</strong>
+            <strong>882,00&nbsp;zł</strong>
             <span>składka roczna: 790&nbsp;zł z&nbsp;taryfy programu + 92&nbsp;zł klauzula ochrony prawnej</span>
           </div>
           <p class="xsmall muted">Zakres i&nbsp;<a class="bp-termin" href="../slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">wyłączenia</a> określają warunki ubezpieczenia programu. Dane polisy pochodzą z&nbsp;CRM Aura Expert.</p>
@@ -383,7 +383,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                   <th scope="row" data-label="Produkt">OC dla branży beauty<br><span class="muted small">ERGO Hestia</span></th>
                   <td data-label="Numer">BP/2026/000123 (przykład)</td>
                   <td data-label="Okres">1.01–31.12.2026</td>
-                  <td data-label="Składka" class="r money">882&nbsp;zł</td>
+                  <td data-label="Składka" class="r money">882,00&nbsp;zł</td>
                   <td data-label="Status"><span class="badge badge--warn">Kończy się za 49&nbsp;dni</span></td>
                   <td class="cell-actions"><a class="btn btn-ghost btn-sm js-drawer-open" href="#polisa-oc">Szczegóły<span class="sr-only"> polisy OC dla branży beauty</span></a></td>
                 </tr>
@@ -724,7 +724,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <button class="btn btn-danger btn-sm" type="button" id="logout-all">Wyloguj na wszystkich urządzeniach</button>
         </div>
         <p class="small js-logout-status" role="status" hidden>Wylogowano ze wszystkich urządzeń. Na tym urządzeniu zalogujesz się ponownie kodem z&nbsp;e-maila.</p>
-        <div class="table-wrap">
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Ostatnie logowania – tabela">
           <table class="data stack">
             <thead><tr><th scope="col">Urządzenie</th><th scope="col">Data</th><th scope="col">Stan</th></tr></thead>
             <tbody>
@@ -738,7 +738,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
       <section class="card surface" id="historia" aria-labelledby="t-hist">
         <div class="card-head"><div><h2 class="card-title" id="t-hist">Historia konta</h2><p class="card-sub">Zdarzenia w&nbsp;koncie salonu widoczne dla właściciela</p></div></div>
-        <div class="table-wrap">
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Historia konta – tabela">
           <table class="data stack">
             <thead><tr><th scope="col">Data</th><th scope="col">Zdarzenie</th><th scope="col">Osoba</th></tr></thead>
             <tbody>
@@ -771,7 +771,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <li>„Sprawy w&nbsp;toku” (11 §4.4a; 00, D32): tylko właściciel z&nbsp;sesją <code>aal2</code>, pracownik nie widzi. Etap 1&nbsp;– wyłącznie sprawy OC dla branży beauty. Stan: wysłano → otwarto → APK wypełniona → wniosek złożony. Warianty pokazane pod listą: po terminie <code>wazny_do</code> zamiast „Dokończ” przycisk „Poproś doradcę o&nbsp;nowy link”; po złożeniu wniosku – „Wniosek złożony. Polisa pojawi się tutaj po wystawieniu”; jeden neutralny komunikat dla każdej odmowy. Trasa <code>/strefa-klienta/sprawy</code> pokazuje tę samą listę co karta na pulpicie (w&nbsp;makiecie pozycja menu prowadzi do kotwicy <code>#sprawy</code>). „Dokończ APK i&nbsp;wniosek” to formularz POST <code>/strefa-klienta/sprawy/[id]/dokoncz</code> → 303 na <code>https://portal.beautypolisa.eu/w/XXXXXXXXXX</code>; kod nie trafia do HTML, a&nbsp;makieta nie otwiera tego adresu. Gdy sprawa odnowienia jest otwarta, baner i&nbsp;szuflada polisy prowadzą do „Spraw w&nbsp;toku” zamiast „Odnów z&nbsp;doradcą” (11 §4.5).</li>
         <li>Drugi składnik (00, D28a): bez kodów zapasowych&nbsp;– zapasem jest drugie zarejestrowane urządzenie z&nbsp;aplikacją uwierzytelniającą; po utracie wszystkich urządzeń reset przez doradcę po weryfikacji tożsamości (procedura – Q25, regulamin).</li>
         <li>Klauzula ochrony prawnej na karcie polisy OC i&nbsp;w&nbsp;szczegółach: „Treść klauzuli” otwiera natywny <code>&lt;dialog&gt;</code> z&nbsp;dosłowną treścią z&nbsp;<code>snippets/klauzula-ochrona-prawna.json</code> (znaczniki <code>gen:klauzula</code>); bez JS – odnośnik do <code>oc-beauty.html#ochrona-prawna</code>.</li>
-        <li>Kwoty OC wyłącznie z&nbsp;taryfy: grupa 2, suma 200&nbsp;tys.&nbsp;zł = 790&nbsp;zł, klauzula ochrony prawnej +92&nbsp;zł, razem 882&nbsp;zł (zespół 1–5&nbsp;osób). Grupowe ERGO i&nbsp;Tax Protect bez kwot.</li>
+        <li>Kwoty OC wyłącznie z&nbsp;taryfy (snippets/taryfa-oc-beauty.json, wycena jak w&nbsp;CRM): Gabinety kosmetologiczne, suma 200&nbsp;tys.&nbsp;zł: 790&nbsp;zł, +92&nbsp;zł ochrona prawna = 882,00&nbsp;zł (do 5&nbsp;osób wykonujących zabiegi). Zakres na karcie polisy = nazwa taryfy z&nbsp;certyfikatu (wynika z&nbsp;rodzaju działalności). Grupowe ERGO i&nbsp;Tax Protect bez kwot.</li>
         <li>Po wygaśnięciu ostatniej polisy konto zostaje, a&nbsp;polisy przechodzą do archiwum (D-B).</li>
         <li>„Szukam pracy” (P1a)&nbsp;– aktywne od startu: zakładka w&nbsp;„Dam pracę” (<code>dam-prace.html#szukam-pracy</code>) i&nbsp;podpunkt w&nbsp;menu bocznym, tylko dla właściciela konta (salon z&nbsp;polisą ma poziom&nbsp;2 z&nbsp;urzędu); pracownik ich nie widzi. Przełącznik <code>szukam_pracy</code> zostaje&nbsp;– wyłącza go tylko admin, a&nbsp;wtedy zakładka i&nbsp;linki znikają.</li>
         <li>Pierwsze wejście właściciela do „Dam pracę” (4.8): NIP salonu z&nbsp;konta → sprawdzenie w&nbsp;GUS → telefon z&nbsp;kodem SMS (<code>dam-prace.html#wlacz-dam-prace</code>). Potwierdzony numer widać w&nbsp;„Ustawieniach”. Pracodawca bez polisy ma własny kontekst w&nbsp;<code>dam-prace.html?konto=pracodawca</code>.</li>
@@ -799,11 +799,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <div><dt>Ubezpieczyciel</dt><dd>ERGO Hestia&nbsp;– program ERGO Hestii nr WA50/003353/24/A (z&nbsp;Fundacją Beauty Razem)</dd></div>
         <div><dt>Numer polisy</dt><dd>BP/2026/000123 (przykład)</dd></div>
         <div><dt>Okres ochrony</dt><dd>1&nbsp;stycznia – 31&nbsp;grudnia 2026&nbsp;r.</dd></div>
-        <div><dt>Grupa ryzyka</dt><dd>Grupa 2&nbsp;– Kosmetologia i&nbsp;tatuaż</dd></div>
+        <div><dt>Zakres</dt><dd>Gabinety kosmetologiczne</dd></div>
         <div><dt>Suma gwarancyjna</dt><dd>200&nbsp;000&nbsp;zł</dd></div>
         <div><dt>Klauzula ochrony prawnej</dt><dd>tak, +92&nbsp;zł<br><a class="link-quiet js-klauzula" href="../oc-beauty.html#ochrona-prawna">Treść klauzuli<span class="sr-only"> ochrony prawnej</span></a></dd></div>
-        <div><dt>Wielkość zespołu</dt><dd>1–5&nbsp;osób</dd></div>
-        <div><dt>Składka roczna</dt><dd><strong>882&nbsp;zł</strong> (790&nbsp;zł z&nbsp;taryfy + 92&nbsp;zł)</dd></div>
+        <div><dt>Osoby wykonujące zabiegi</dt><dd>do 5&nbsp;osób</dd></div>
+        <div><dt>Składka roczna</dt><dd><strong>882,00&nbsp;zł</strong> (790&nbsp;zł z&nbsp;taryfy + 92&nbsp;zł)</dd></div>
       </dl>
       <p class="xsmall muted">Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu. Dane polisy pochodzą z&nbsp;CRM Aura Expert; zmianę zgłoś doradcy.</p>
 
@@ -888,7 +888,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
 <footer class="app-footer">
   <div class="app-footer-inner">
-    <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html">Tax Protect</a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a></nav>
+    <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html">Tax Protect</a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="../opieka-medyczna.html">Opieka medyczna</a></nav>
     <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="../slownik.html">Słownik pojęć</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
     <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
     <p>Przy zamówieniu szkolenia płatnego dane kupującego przetwarzają także organizator szkolenia (sprzedawca) i&nbsp;operator płatności&nbsp;– role i&nbsp;okresy przechowywania pokazujemy w&nbsp;kroku zamówienia. <span class="mock-note">Q1&nbsp;– do weryfikacji IOD</span></p>

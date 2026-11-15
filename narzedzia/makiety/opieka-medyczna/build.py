@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """Buduje docs/koncepcja/design/v3/opieka-medyczna.html i snippets/schema-produkt-opieka-medyczna.json
 z data.py (przepisane z medical.html) + template.html. Uruchom: python3 -I build.py [--check]
---check: nic nie zapisuje, kończy się kodem 1, gdy strona albo snippet różnią się od wygenerowanych."""
+--check: nic nie zapisuje, kończy się kodem 1, gdy strona albo snippet różnią się od wygenerowanych.
+
+Bloki wspólne (menu „Ubezpieczenia”, szuflada, pasek akcji, wspólne CSS/JS) – z ../gen_wspolne.py (strona jest też na jego liście
+STRONY); stopka – kopia stopki z nnw-dzieci.html (bieżąca pozycja: „Opieka medyczna”); na końcu oznaczenia pojęć ze słownika
+z ../slownik/gen_terminy.py (strona jest na jego liście STRONY) – wynik jest więc od razu stroną końcową, a gen_wspolne.py
+i gen_terminy.py uruchomione później niczego w niej nie zmieniają."""
 import html, json, re, sys, unicodedata, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -388,29 +393,37 @@ def sprite():
 
 
 def footer():
-    f = open(HERE + '/footer.html', encoding='utf-8').read().rstrip()
-    a = '<a href="nnw-dzieci.html" aria-current="page">NNW dzieci</a>'
-    b = '<a href="/ubezpieczenia/opieka-medyczna">Opieka medyczna</a>'
-    assert a in f and b in f
-    f = f.replace(a, '<a href="nnw-dzieci.html">NNW dzieci</a>').replace(b, '<a href="opieka-medyczna.html" aria-current="page">Opieka medyczna</a>')
-    note = ('<!-- Stopka 1:1 z nnw-dzieci.html / oc-beauty.html (pełna formuła prawna Aura Expert, L1 12.11.2026; blok „Informacje o agencie ubezpieczeniowym (IDD)” identyczny\n'
-            '     jak na stronach publicznych). Jedyna różnica: aria-current na „Opieka medyczna” (w makiecie opieka-medyczna.html, produkcyjnie /ubezpieczenia/opieka-medyczna). -->\n')
+    """Stopka – kopia z nnw-dzieci.html (do 15.11.2026 ręczna kopia w footer.html, która rozjechała się z oryginałem:
+    „NNW dzieci”, „Grupowe ERGO”, brak „Słownik pojęć”); jedyna różnica – aria-current na „Opieka medyczna”."""
+    nnw = open(V3 + '/nnw-dzieci.html', encoding='utf-8').read()
+    m = re.search(r'<footer class="scene scene--silk scene--pos-rb site-footer dark">.*?</footer>', nnw, re.S)
+    assert m, 'brak stopki w nnw-dzieci.html'
+    f = m.group(0)
+    a = '<a href="nnw-dzieci.html" aria-current="page">NNW dla dzieci</a>'
+    b = '<a href="opieka-medyczna.html">Opieka medyczna</a>'
+    assert f.count(a) == 1 and f.count(b) == 1 and f.count('aria-current') == 1, 'stopka nnw-dzieci.html: zmienione odnośniki produktów'
+    f = f.replace(a, '<a href="nnw-dzieci.html">NNW dla dzieci</a>').replace(b, '<a href="opieka-medyczna.html" aria-current="page">Opieka medyczna</a>')
+    note = ('<!-- Stopka 1:1 z nnw-dzieci.html (pełna formuła prawna Aura Expert, L1 12.11.2026; blok „Informacje o agencie ubezpieczeniowym (IDD)” identyczny\n'
+            '     jak na stronach publicznych; kopiuje ją build.py). Jedyna różnica: aria-current na „Opieka medyczna” (w makiecie opieka-medyczna.html, produkcyjnie /ubezpieczenia/opieka-medyczna). -->\n')
     return note + f
 
 
-def gen_blocks():
-    """Bloki gen:* z narzedzia/makiety/gen_wspolne.py (bez zmian w tym pliku): strona opieka-medyczna.html jako „plik” produktu,
-    akcja paska na telefonie – „Zapytaj doradcę” do formularza na tej stronie (#zapytanie)."""
+def modul(nazwa, plik):
     import importlib.util
-    spec = importlib.util.spec_from_file_location('gen_wspolne', os.path.join(HERE, '..', 'gen_wspolne.py'))
-    g = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(g)
-    g.PRODUKTY = [dict(p, plik=PAGE) if p['id'] == 'opieka-medyczna' else p for p in g.PRODUKTY]
+    spec = importlib.util.spec_from_file_location(nazwa, os.path.join(HERE, '..', plik))
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
+
+
+def gen_blocks():
+    """Bloki gen:* z narzedzia/makiety/gen_wspolne.py: od 15.11.2026 opieka-medyczna.html jest w PRODUKTY (plik) i na liście STRONY,
+    akcję paska na telefonie („Zapytaj doradcę” do formularza na tej stronie, #zapytanie) zwraca gen_wspolne.akcja()."""
+    g = modul('gen_wspolne', 'gen_wspolne.py')
+    assert next(p for p in g.PRODUKTY if p['id'] == 'opieka-medyczna')['plik'] == PAGE and PAGE in g.STRONY
     H = g.HOME
     pasek = g.pasek(PAGE, H)
-    a = f'<a class="pa-glowny" href="{H}?produkt=opieka-medyczna#kontakt">Zapytaj doradcę</a>'
-    assert a in pasek
-    pasek = pasek.replace(a, '<a class="pa-glowny" href="#zapytanie">Zapytaj doradcę<span class="sr-only"> o&nbsp;opiekę medyczną</span></a>')
+    assert 'href="#zapytanie"' in pasek
     return {
         '%%GEN_MENU_PRODUKTY%%': g.menu_produkty(PAGE, H),
         '%%GEN_MENU_MOBILNE%%': g.menu_mobilne(PAGE, H),
@@ -444,13 +457,18 @@ def main():
         '%%SPRITE%%': sprite(),
         '%%FOOTER%%': footer(),
     }
-    rep.update(gen_blocks())
     for k, v in rep.items():
+        t = t.replace(k, v)
+    head, body = t.split('<body>', 1)
+    t = head + '<body>' + nbsp(body)
+    # bloki gen:* dopiero po nbsp() – bez zmian względem gen_wspolne.py (nbsp() wstawiał &nbsp; w komentarz bloku pasek-akcji)
+    for k, v in gen_blocks().items():
+        assert t.count(k) == 1, k
         t = t.replace(k, v)
     left = re.findall(r'%%[A-Z_]+%%', t)
     assert not left, left
-    head, body = t.split('<body>', 1)
-    t = head + '<body>' + nbsp(body)
+    # oznaczenia pojęć ze słownika (gen_terminy.py) – na końcu, jak w kolejności generatorów; elementy data-przyklad="tak" pomija
+    t, uzyte = modul('gen_terminy', 'slownik/gen_terminy.py').przetworz(PAGE, t)
     snippet = {'@context': 'https://schema.org'}
     snippet.update(schema_service())
     sj = json.dumps(snippet, ensure_ascii=False, indent=2) + '\n'
@@ -461,7 +479,7 @@ def main():
         sys.exit(0 if all(same) else 1)
     open(OUT_HTML, 'w', encoding='utf-8').write(t)
     open(OUT_SCHEMA, 'w', encoding='utf-8').write(sj)
-    print('ok', len(t), 'spec entries', len(spec_entries()), 'przykład low/high', LOW, HIGH)
+    print('ok', len(t), 'spec entries', len(spec_entries()), 'przykład low/high', LOW, HIGH, 'oznaczeń ze słownika', len(uzyte))
     for e in spec_entries():
         if e['conflicts']:
             print(' conflict:', e['key'], e['conflicts'])

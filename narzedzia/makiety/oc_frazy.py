@@ -25,6 +25,7 @@ FRAZY = [
     ('grupa ryzyka / grupa zabiegów', re.compile(r'\bgrup(?:a|ą|ę|i|y|ie|om|ach|ami)? (?:ryzyka|zabiegów)', re.I)),
     ('grupa 1–4', re.compile(r'\bgrup(?:a|ę|y|ie|ą)? [1-4]\b', re.I)),
     ('gr. 1–4', re.compile(r'\bgr\. ?[1-4]\b', re.I)),
+    ('grupa {N} (pole szablonu z numerem dawnej grupy)', re.compile(r'\bgrup(?:a|ę|y|ie|ą)? \{', re.I)),
     ('stawki grupy', re.compile(r'stawk\w* grupy', re.I)),
     ('Pakiet łączony', re.compile(r'pakiet łączony', re.I)),
     ('wieloprofilowy', re.compile(r'wieloprofilow', re.I)),

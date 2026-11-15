@@ -11,6 +11,9 @@ const EXP = JSON.parse(fs.readFileSync(__dirname + '/expect.json', 'utf8'));
 const ZJ = JSON.parse(fs.readFileSync(REPO + '/docs/koncepcja/snippets/zabiegi-oc-beauty.json', 'utf8'));
 const LISTY = Object.fromEntries(ZJ.zabiegi.map(z => [z.id, z.pozycje.map(p => p.lista)]));
 const N_POL = ZJ.zabiegi.reduce((n, z) => n + z.pozycje.length, 0);  // liczba checkboxów w oknie (pozycje list, z powtórzeniami)
+const N_ZAB = ZJ.zabiegi.length;                                        // zabiegi bez powtórzeń (100)
+const WYC = JSON.parse(fs.readFileSync(REPO + '/docs/koncepcja/snippets/zabiegi-oc-beauty-wycofane.json', 'utf8')).wycofane;
+const DOPISEK = ' (pozycja wycofana z listy)';
 const uniq = a => a.filter((v, i) => a.indexOf(v) === i);
 const VPS = [[1440, 900, false], [768, 1024, false], [390, 844, true], [360, 740, true], [320, 640, true]];
 const log = (...a) => console.log(...a);
@@ -134,7 +137,9 @@ async function jsOn(b, w, h, mobile, rm) {
   s = await p.evaluate(dlgState, 'zab-oferty'); log('po wyborze 2 ->', JSON.stringify({ count: s.count, done: s.done, grps: s.grps.map(g => g.sel), clearDisabled: s.clearDisabled }));
   let os = await p.evaluate(offersState);
   const expN = os.filter(o => o.ids.some(id => ['g1-17', 'g2-32'].includes(id))).length;
-  check(s.count === 'Wybrano: 2 zabiegi' && s.done === `Pokaż ogłoszenia (${expN})`, `${w}: licznik/przycisk: "${s.count}" "${s.done}" exp N=${expN}`);
+  // licznik od poprawki 13.11 (verify.js) dopisuje liczbę ogłoszeń: „Wybrano: 2 zabiegi · 2 ogłoszenia” (spacje twarde albo zwykłe)
+  const mN = /^Wybrano: 2[\s\u00a0]zabiegi[\s\u00a0]·[\s\u00a0](\d+)[\s\u00a0]ogłosze(?:ń|nia|nie)$/.exec(s.count);
+  check(mN && +mN[1] === expN && s.done === `Pokaż ogłoszenia (${expN})`, `${w}: licznik/przycisk: "${s.count}" "${s.done}" exp N=${expN}`);
   // Tab w oknie (pułapka natywnego modala)
   const tabOut = [];
   for (let i = 0; i < 25; i++) { await p.keyboard.press('Tab'); tabOut.push(await p.evaluate(() => { const a = document.activeElement; return a && a.closest ? !!a.closest('#zab-oferty-dlg') : false; })); }
@@ -156,7 +161,7 @@ async function jsOn(b, w, h, mobile, rm) {
   await p.keyboard.press('Space'); await p.waitForTimeout(80);
   const k2 = await p.evaluate(() => ({ chips: document.querySelectorAll('#zab-oferty .zab-chip').length, focusIsBtn: document.activeElement === document.querySelector('#zab-oferty .zab-open'), vis: [...document.querySelectorAll('#lista-ofert > .offer')].filter(o => o.getClientRects().length).length, btn: document.querySelector('#zab-oferty .zab-open').textContent.trim(), aktywne: document.getElementById('filtry-aktywne').textContent }));
   log('Spacja na chipie ->', JSON.stringify(k2));
-  check(k1.chips === 1 && /Usuń zabieg/.test(k1.focus) && k2.chips === 0 && k2.focusIsBtn && k2.vis === 6, `${w}: usuwanie chipów klawiaturą`);
+  check(k1.chips === 1 && /Usuń zabieg/.test(k1.focus) && k2.chips === 0 && k2.focusIsBtn && k2.vis === os.length, `${w}: usuwanie chipów klawiaturą`);
 
   // „Wyczyść” w oknie + zamknięcie X
   await openDlg(p, 'zab-oferty');
@@ -165,7 +170,7 @@ async function jsOn(b, w, h, mobile, rm) {
   s = await p.evaluate(dlgState, 'zab-oferty'); log('3 wybrane ->', s.count, '|', s.done);
   await p.click('#zab-oferty-dlg .zab-clear'); await p.waitForTimeout(60);
   s = await p.evaluate(dlgState, 'zab-oferty'); log('po Wyczyść ->', JSON.stringify({ count: s.count, done: s.done, clearDisabled: s.clearDisabled, active: s.active, q: s.q }));
-  check(s.count === 'Nie wybrano zabiegów' && s.clearDisabled && s.active === 'zab-oferty-q', `${w}: Wyczyść w oknie`);
+  check(/^Nie wybrano zabiegów[\s\u00a0]·[\s\u00a0]\d+[\s\u00a0]ogłosze(?:ń|nia|nie)$/.test(s.count) && s.clearDisabled && s.active === 'zab-oferty-q', `${w}: Wyczyść w oknie`);
   await p.click('#zab-oferty-dlg .drawer-close'); await p.waitForTimeout(100);
   const xr = await p.evaluate(() => ({ open: document.getElementById('zab-oferty-dlg').open, focusIsBtn: document.activeElement === document.querySelector('#zab-oferty .zab-open') }));
   log('Zamknij (X) ->', JSON.stringify(xr)); check(!xr.open && xr.focusIsBtn, `${w}: X – fokus`);
@@ -187,7 +192,7 @@ async function jsOn(b, w, h, mobile, rm) {
   await p.click('#wyczysc'); await p.waitForTimeout(100);
   const rs = await p.evaluate(() => ({ chips: document.querySelectorAll('#zab-oferty .zab-chip').length, checked: document.querySelectorAll('#zab-oferty input[name=zabieg]:checked').length, vis: [...document.querySelectorAll('#lista-ofert > .offer')].filter(o => o.getClientRects().length).length, btn: document.querySelector('#zab-oferty .zab-open').textContent.trim(), focus: document.activeElement.name }));
   log('„Wyczyść filtry” w pustym stanie ->', JSON.stringify(rs));
-  check(rs.chips === 0 && rs.checked === 0 && rs.vis === 6 && rs.btn === 'Wybierz zabiegi', `${w}: reset formularza`);
+  check(rs.chips === 0 && rs.checked === 0 && rs.vis === os.length && rs.btn === 'Wybierz zabiegi', `${w}: reset formularza`);
   if (errs.length) { log('BŁĘDY KONSOLI', errs); FAIL.push(`${w} konsola: ${errs.join(' | ')}`); } else log('konsola: brak błędów/ostrzeżeń');
   await ctx.close();
 }
@@ -200,13 +205,72 @@ async function urlGet(b) {
     await p.goto(BASE + '?zawod=&wojewodztwo=&umowa=&zabieg=g1-17&zabieg=g2-32&zabieg=nieznane#oferty', { waitUntil: 'load' }); await p.waitForTimeout(200);
     const r = await p.evaluate(() => ({ checked: [...document.querySelectorAll('#zab-oferty input:checked')].map(x => x.value), chips: [...document.querySelectorAll('#zab-oferty .zab-chip')].map(c => c.textContent), vis: [...document.querySelectorAll('#lista-ofert > .offer')].filter(o => o.getClientRects().length).length, liczba: document.getElementById('ofert-liczba').textContent, spChecked: document.querySelectorAll('#zab-sp input:checked').length, filtryOpen: document.getElementById('filtry-panel').open, aktywne: document.getElementById('filtry-aktywne').textContent }));
     log(w, JSON.stringify(r), errs);
-    check(r.checked.join() === 'g1-17,g2-32' && r.vis === 2, `GET ${w}: wybór z adresu`);
+    // pozycja z obu list (g1-17 – Manicure) ma checkbox w obu sekcjach z tym samym value – oba zaznaczone, liczona raz
+    check([...new Set(r.checked)].join() === 'g1-17,g2-32' && r.checked.filter((v) => v === 'g1-17').length === 2 && r.vis === 2, `GET ${w}: wybór z adresu`);
+    await ctx.close();
+  }
+}
+
+// Stary adres filtra z identyfikatorem wycofanym z listy (11 §11.10, scenariusz 9.6 pkt 26): filtr nadal działa, okno wyboru nie ma
+// checkboxa tej pozycji, chip z dopiskiem, ukryte pole zabieg (ponowne wysłanie GET), usunięcie chipa i „Wyczyść” je usuwają.
+// Karta ogłoszenia z wycofanym id: nazwa z dopiskiem (00, Q1), klasa zab-tag-wycofany.
+async function urlWycofane(b) {
+  log('\n=== GET ze starym (wycofanym) identyfikatorem: ?zabieg=g3-18 i ?zabieg=g3-18&zabieg=g1-17 (JS on, 1440 i 390)');
+  const nazwa = (id) => WYC.find((x) => x.id === id).nazwa + DOPISEK;
+  const stan = () => ({
+    vis: [...document.querySelectorAll('#lista-ofert > .offer')].map((o) => o.getClientRects().length > 0 && !document.getElementById('lista-ofert').hidden),
+    chips: [...document.querySelectorAll('#zab-oferty .zab-chip')].map((c) => c.textContent.trim()),
+    ukryte: [...document.querySelectorAll('#zab-oferty input[type=hidden][name=zabieg]')].map((i) => i.value),
+    btn: document.querySelector('#zab-oferty .zab-open').textContent.trim(),
+  });
+  for (const [w, h, m] of [[1440, 900, false], [390, 844, true]]) {
+    for (const ids of [['g3-18'], ['g3-18', 'g1-17']]) {
+      const ctx = await b.newContext({ viewport: { width: w, height: h }, isMobile: m, hasTouch: m });
+      const p = await ctx.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+      await p.goto(BASE + '?' + ids.map((i) => 'zabieg=' + i).join('&') + '#oferty', { waitUntil: 'load' }); await p.waitForTimeout(200);
+      const os = await p.evaluate(offersState);
+      const exp = os.map((o) => o.ids.some((id) => ids.includes(id)));
+      let r = await p.evaluate(stan);
+      log(w, ids.join('+'), JSON.stringify(r), errs);
+      check(exp.some(Boolean) && JSON.stringify(r.vis) === JSON.stringify(exp), `GET wycofane ${w} ${ids}: filtr (widoczne ${r.vis} ≠ ${exp})`);
+      check(r.chips.includes(nazwa('g3-18')) && r.chips.length === ids.length && r.btn === 'Zabiegi: wybrano ' + ids.length, `GET wycofane ${w} ${ids}: chipy/przycisk ${r.chips} ${r.btn}`);
+      check(JSON.stringify(r.ukryte) === '["g3-18"]', `GET wycofane ${w} ${ids}: ukryte pole zabieg ${r.ukryte}`);
+      check(await p.locator('#zab-oferty-dlg input[value="g3-18"]').count() === 0, `GET wycofane ${w} ${ids}: okno wyboru bez checkboxa wycofanej pozycji`);
+      if (ids.length === 2) {
+        // usunięcie chipa wycofanej pozycji: zostaje filtr g1-17
+        await openFilters(p); await p.click('#zab-oferty .zab-chip[data-id="g3-18"]'); await p.waitForTimeout(80);
+        r = await p.evaluate(stan);
+        const exp2 = os.map((o) => o.ids.includes('g1-17'));
+        check(JSON.stringify(r.vis) === JSON.stringify(exp2) && r.ukryte.length === 0 && r.chips.length === 1, `GET wycofane ${w}: usunięcie chipa wycofanej pozycji ${JSON.stringify(r)}`);
+      } else {
+        // „Wyczyść” w oknie usuwa także wycofaną pozycję
+        await openFilters(p); await openDlg(p, 'zab-oferty'); await p.click('#zab-oferty-dlg .zab-clear'); await p.waitForTimeout(60);
+        await p.click('#zab-oferty-dlg .drawer-close'); await p.waitForTimeout(100);
+        r = await p.evaluate(stan);
+        check(r.vis.every(Boolean) && r.ukryte.length === 0 && r.chips.length === 0 && r.btn === 'Wybierz zabiegi', `GET wycofane ${w}: „Wyczyść” ${JSON.stringify(r)}`);
+      }
+      check(errs.length === 0, `GET wycofane ${w} ${ids}: błędy JS ${errs}`);
+      await ctx.close();
+    }
+  }
+  // karta ogłoszenia z wycofanymi id – z JS i bez JS
+  for (const js of [true, false]) {
+    const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: js });
+    const p = await ctx.newPage();
+    await p.goto(BASE + '#oferty', { waitUntil: 'load' });
+    const k = await p.evaluate(() => [...document.querySelectorAll('#lista-ofert .zab-tags')].map((t) => ({
+      ids: t.getAttribute('data-ids').split(' '), wyc: [...t.querySelectorAll('li.zab-tag-wycofany')].map((l) => l.textContent),
+      kolor: (t.querySelector('li.zab-tag-wycofany') ? getComputedStyle(t.querySelector('li.zab-tag-wycofany')).color : null),
+      zwykly: getComputedStyle(t.querySelector('li')).color })).filter((x) => x.ids.some((id) => /^g3-/.test(id))));
+    log('karty z wycofanymi id (' + (js ? 'z JS' : 'bez JS') + '):', JSON.stringify(k));
+    check(k.length >= 1 && k.every((x) => JSON.stringify(x.wyc) === JSON.stringify(x.ids.filter((id) => /^g3-/.test(id)).map(nazwa)) && x.kolor && x.kolor !== x.zwykly),
+      `karta z wycofanymi id (${js ? 'z JS' : 'bez JS'}): nazwy z dopiskiem i osobny wygląd`);
     await ctx.close();
   }
 }
 
 async function exhaustive(b) {
-  log('\n=== Filtr – wszystkie 117 zabiegów pojedynczo + 300 losowych kombinacji z innymi filtrami (1440, JS on)');
+  log(`\n=== Filtr – wszystkie ${N_POL} pozycji (${N_ZAB} zabiegów) pojedynczo + 300 losowych kombinacji z innymi filtrami (1440, JS on)`);
   const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
   const p = await ctx.newPage();
   await p.goto(BASE + '#oferty', { waitUntil: 'load' }); await p.waitForTimeout(200);
@@ -264,7 +328,7 @@ async function exhaustive(b) {
     });
     return { n: boxes.length, cands: data, bad };
   });
-  log('Szukam pracy – 117 pojedynczo:', JSON.stringify(sp));
+  log(`Szukam pracy – ${N_POL} pozycji (${N_ZAB} zabiegów) pojedynczo:`, JSON.stringify(sp));
   check(sp.bad.length === 0, 'SP filtr rozbieżności');
   await ctx.close();
 }
@@ -325,6 +389,7 @@ async function jsOff(b, w, h, mobile) {
   for (const [w, h, m] of VPS) await jsOn(b, w, h, m, 'no-preference');
   for (const [w, h, m] of [[1440, 900, false], [390, 844, true], [320, 640, true]]) await jsOn(b, w, h, m, 'reduce');
   await urlGet(b);
+  await urlWycofane(b);
   await exhaustive(b);
   await spDialog(b);
   for (const [w, h, m] of VPS) await jsOff(b, w, h, m);

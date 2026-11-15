@@ -4,11 +4,12 @@ from bs4 import BeautifulSoup
 V3 = pathlib.Path(__file__).resolve().parents[4] / 'docs/koncepcja/design/v3'  # repozytorium/docs/koncepcja/design/v3
 SJ = json.loads((V3.parent.parent / 'snippets/slownik.json').read_text(encoding='utf-8'))
 H = {h['id']: h for h in SJ['hasla']}
-PAGES = ['makieta-v3.html','oc-beauty.html','tax-protect.html','utrata-dochodu.html','nnw-dzieci.html','grupowe-ergo.html','strefa/logowanie.html','strefa/panel.html','strefa/dam-prace.html','slownik.html']
+# strony z oznaczeniami (lista STRONY w gen_terminy.py; od 15.11.2026 także opieka-medyczna.html i strefa/szkolenia.html) + slownik.html na końcu
+PAGES = ['makieta-v3.html','oc-beauty.html','tax-protect.html','utrata-dochodu.html','nnw-dzieci.html','grupowe-ergo.html','opieka-medyczna.html','strefa/logowanie.html','strefa/panel.html','strefa/dam-prace.html','strefa/szkolenia.html','slownik.html']
 problemy = []
 def P(*a): problemy.append(' '.join(str(x) for x in a)); print('PROBLEM:', *a)
 soups = {}
-for p in PAGES + ['opieka-medyczna.html', 'strefa/szkolenia.html']:
+for p in PAGES:
     soups[p] = BeautifulSoup((V3 / p).read_text(encoding='utf-8'), 'lxml')
 # ---- JSON-LD na wszystkich stronach
 for p, s in soups.items():
@@ -89,7 +90,7 @@ for p in PAGES:
             else: zle[r] += 1
     if zle: print(p, 'linki nierozwiązane:', dict(zle))
     if p == 'slownik.html': print(p, 'linki absolutne (produkcyjne):', sorted(abs_))
-# ---- oznaczenia na 9 stronach
+# ---- oznaczenia na 11 stronach
 ZAK_ANC = {'a','button','label','h1','h2','h3','h4','h5','h6','summary','table','nav','header','footer','form','fieldset','legend','select','textarea','dialog','figcaption','dt','caption'}
 for p in PAGES[:-1]:
     s = soups[p]
@@ -109,6 +110,7 @@ for p in PAGES[:-1]:
         if m['data-termin'] not in H: P(p, 'nieznane hasło', m['data-termin'])
         for x in m.parents:
             if x.get('hidden') is not None or x.get('aria-hidden') == 'true' or x.get('aria-live'): P(p, m['data-termin'], 'w ukrytym/aria-live', x.name, x.get('class'))
+            if x.get('data-przyklad') == 'tak': P(p, m['data-termin'], 'w przykładzie (data-przyklad="tak")', x.name, x.get('class'))
     dj = s.find('script', id='slownik-dymki')
     if ms:
         D = json.loads(dj.string)
@@ -126,6 +128,4 @@ for p in PAGES[:-1]:
         if not s.select_one('nav.menu-panel a[href="slownik.html"]'): P(p, 'brak linku w szufladzie')
 s = soups['slownik.html']
 print('slownik.html aria-current:', [(a.find_parent(['nav','footer']).name if a.find_parent(['nav','footer']) else None, a.get_text(strip=True)) for a in s.select('[aria-current="page"]')])
-for p in ['opieka-medyczna.html', 'strefa/szkolenia.html']:
-    print(p, 'link do słownika:', bool(soups[p].find('a', href=re.compile(r'slownik\.html'))))
 print('\nPROBLEMÓW:', len(problemy))

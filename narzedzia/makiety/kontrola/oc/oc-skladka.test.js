@@ -44,6 +44,14 @@ for (const p of F.przypadki) {
   if (p.ankieta_zaznaczona !== (p.zabiegi_ankieta.length > 0) && !p.oczekiwane.komunikat_ankiety) {
     bledy.push(`${p.id}: ankieta_zaznaczona bez pozycji a–h wymaga oczekiwane.komunikat_ankiety`);
   }
+  // „Wykonuję…” bez pozycji a–h przy wyniku (kwota albo wycena indywidualna): przycisk portalu nieaktywny, fokus na pozycji a)
+  // (CRM zatrzymuje taki wniosek walidacją – stan.svelte.ts, sprawdzWniosek; weryfikacja, runda 2)
+  const bezPozycji = p.ankieta_zaznaczona && p.zabiegi_ankieta.length === 0 && p.oczekiwane.stan !== 'brak';
+  rowne(`${p.id} przycisk_portalu tylko przy „Wykonuję…” bez pozycji a–h`, !!p.oczekiwane.przycisk_portalu, bezPozycji);
+  if (p.oczekiwane.przycisk_portalu) {
+    rowne(`${p.id} przycisk_portalu`, p.oczekiwane.przycisk_portalu,
+      { tekst: 'Najpierw zaznacz zabiegi wymagające ankiety', nieaktywny: true, fokus: ankieta[0].id });
+  }
   const w = O.skladkaOc(
     { rodzaje: p.rodzaje, osoby: p.osoby, suma: p.suma, ochronaPrawna: p.ochrona_prawna, zabiegiAnkieta: p.zabiegi_ankieta },
     T

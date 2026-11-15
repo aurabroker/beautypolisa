@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Wspólne komponenty stron publicznych v3 (BeautyPolisa, design „old money glass”): 6 stron produktów/głównej + slownik.html.
+"""Wspólne komponenty stron publicznych v3 (BeautyPolisa, design „old money glass”): strona główna, 6 stron produktów + slownik.html.
 
 Jeden szablon -> bloki w każdej stronie (wstawiane/odświeżane między znacznikami):
   <!-- gen:menu-produkty -->  pozycja „Ubezpieczenia” w .main-nav: link (bez JS) -> przycisk disclosure + panel #menu-produkty
-  <!-- gen:menu-mobilne -->   góra szuflady <details class="menu">: „Oblicz składkę OC” + lista 6 produktów z ceną
+  <!-- gen:menu-mobilne -->   góra szuflady <details class="menu">: „Oblicz składkę OC” + lista 6 produktów z ceną (albo opisem ceny)
   <!-- gen:pasek-akcji -->    pasek akcji na telefonie (< 768 px): kontekstowa akcja + „Zadzwoń”
   <!-- gen:wspolne-css -->    style obu komponentów (koniec <head>)
   <!-- gen:wspolne-js -->     skrypt obu komponentów (koniec <body>)
@@ -37,10 +37,12 @@ PRODUKTY = [
          zdanie='Ubezpieczenie na życie dla zespołu (2–&#8288;100 osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.',
          # główna kwota: zespół (ERGO Życie w Biznesie) – jak kafelek i podstrona; 57 zł zawsze z nazwą ERGO Razem
          cena=['Zespół: od 58&nbsp;zł za osobę / mies.', 'ERGO Razem: od 57&nbsp;zł / mies.'], krotko='od 58&nbsp;zł za osobę / mies.'),
-    # brak podstrony: produkcyjnie /ubezpieczenia/opieka-medyczna; w makiecie formularz kontaktu z tematem
-    dict(id='opieka-medyczna', plik=None, ikona='lux-opieka-medyczna', nazwa='Opieka medyczna',
+    # podstrona od 15.11.2026 (decyzja zleceniodawcy, 10 §17.5 wariant b): w makiecie opieka-medyczna.html (strona budowana przez
+    # opieka-medyczna/build.py), produkcyjnie /ubezpieczenia/opieka-medyczna. Bez kwot: stawki na podstronie to wyłącznie przykłady
+    # (decyzja 13.11.2026 – cennika programu jeszcze nie ma), więc zamiast ceny – kto ją przygotuje.
+    dict(id='opieka-medyczna', plik='opieka-medyczna.html', ikona='lux-opieka-medyczna', nazwa='Opieka medyczna',
          zdanie='Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.',
-         cena=['Według cennika programu'], krotko='według cennika programu'),
+         cena=['Cenę przygotuje doradca'], krotko='cenę przygotuje doradca'),
 ]
 
 # akcja główna paska na telefonie (kontekstowo)
@@ -57,11 +59,16 @@ def akcja(strona, H):
     if strona == 'slownik.html':
         # słownik pojęć nie jest produktem – formularz kontaktu bez tematu
         return f'<a class="pa-glowny" href="{HOME}#kontakt">Zapytaj doradcę</a>'
+    if strona == 'opieka-medyczna.html':
+        # opieka medyczna ma własny formularz zapytania na podstronie (#zapytanie)
+        return '<a class="pa-glowny" href="#zapytanie">Zapytaj doradcę<span class="sr-only"> o&nbsp;opiekę medyczną</span></a>'
     slug = strona[:-5]
     return f'<a class="pa-glowny" href="{HOME}?produkt={slug}#kontakt">Zapytaj doradcę</a>'
 
-# slownik.html (słownik pojęć) – strona tworzona przez slownik/gen_strona.py, bloki jak na stronach produktów (bez bieżącego produktu)
-STRONY = ['makieta-v3.html', 'oc-beauty.html', 'tax-protect.html', 'utrata-dochodu.html', 'nnw-dzieci.html', 'grupowe-ergo.html', 'slownik.html']
+# slownik.html (słownik pojęć) – strona tworzona przez slownik/gen_strona.py, bloki jak na stronach produktów (bez bieżącego produktu);
+# opieka-medyczna.html – strona tworzona przez opieka-medyczna/build.py z tymi samymi funkcjami (tu: kontrola i odświeżenie bloków)
+STRONY = ['makieta-v3.html', 'oc-beauty.html', 'tax-protect.html', 'utrata-dochodu.html', 'nnw-dzieci.html', 'grupowe-ergo.html',
+          'opieka-medyczna.html', 'slownik.html']
 
 def href_produktu(p, strona, H):
     if p['plik']:

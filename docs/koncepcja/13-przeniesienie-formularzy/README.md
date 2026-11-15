@@ -8,7 +8,7 @@ Zawartość (13.11.2026; bez kluczy i danych osobowych). Najpierw inżynieria ws
 - `ergo-razem-grupa-otwarta.md` / `.json` – kalkulator i zgłoszenie ERGO Razem – Grupa Otwarta: wszystkie 6 kroków, ankieta, ekrany wykluczeń, 14 zgód, wysyłka 2 e-mailami (§ 9).
 - `utratadochodu-wniosek.md` / `.json` – wniosek o ubezpieczenie utraty dochodu (5 kroków, ankiety zdrowotne, szkic); `form-submit`, szkice, przypomnienia, e-maile, przekaz do CRM (§9–§10).
 - `tax-protect-wniosek.md` / `.json` – wnioski online Tax Protect (repozytorium `taxbp`): formularz, modal wyceny, funkcje, e-maile, dokumenty, IDD, bezpieczeństwo, braki T1–T15, porównanie z makietą.
-- `dokumenty-produktowe.md` – dokumenty przedumowne per produkt: co mamy, czego brakuje, spis plików, rozbieżności list zabiegów OC.
+- `dokumenty-produktowe.md` – dokumenty przedumowne per produkt: co mamy, czego brakuje, spis plików, rozbieżności list zabiegów OC (§4 – rozwiązane 15.11.2026 decyzją D43 w 00: lista w portalu = PDF Aneksu nr 5 = CRM; zapis rozbieżności zostaje jako historia).
 
 Powiązane poza tym katalogiem:
 - `../14-integracja-wnioskow-z-crm.md` – jak wnioski trafiają dziś do CRM Aura Expert, bezpieczeństwo (K1–K12), odpowiedź na W1 z kontraktem punktu przyjęcia.

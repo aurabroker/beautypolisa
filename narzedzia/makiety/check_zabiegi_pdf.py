@@ -22,7 +22,9 @@ import crm_tekst
 import zabiegi_model as zm
 
 DOKUMENTY = zm.SN / 'dokumenty-produktowe.json'
-PDF_ANKIETY = 'dokumenty/oc-beauty/ankieta-oceny-ryzyka-grupa-4-wa50-003353-24-a.pdf'
+# pusty formularz ankiety sprzed Aneksu nr 5 (do 15.11.2026: ankieta-oceny-ryzyka-grupa-4-wa50-003353-24-a.pdf – nazwa
+# zmieniona po D43 bez zmiany treści i sha256)
+PDF_ANKIETY = 'dokumenty/oc-beauty/ankieta-oceny-ryzyka-wa50-003353-24-a-sprzed-aneksu-5.pdf'
 OCZEKIWANE = {
     'pozycje': {'lista-1': 49, 'lista-2': 63, 'ankieta': 8, 'podologia': 0},
     'wspolne_1_2': 20, 'tylko_lista_1': 29, 'tylko_lista_2': 43, 'aktywne_id': 100, 'wycofane_id': 31,

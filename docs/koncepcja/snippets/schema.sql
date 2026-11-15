@@ -34,21 +34,34 @@ create table pricing_versions (
 );
 create unique index pricing_versions_one_active on pricing_versions (product) where is_active;
 
+-- OC beauty (00, D43): stałe = snippets/taryfa-oc-beauty.json = CRM (crmaura program.ts). Seed wersji – z tego pliku.
 -- Parametry wspólne dla całej wersji cennika OC – jedno miejsce zamiast powielania w 9 wierszach tierów
 create table pricing_oc_params (
   version_id             uuid primary key references pricing_versions(id) on delete cascade,
-  legal_protection_addon numeric(10,2) not null default 92.00,
-  max_team_size          smallint not null default 8        -- powyżej → wycena indywidualna
+  legal_protection_addon numeric(10,2) not null default 92.00,   -- klauzula ochrony prawnej, bez dopłaty za 6–8 osób
+  legal_protection_limit integer       not null default 100000,  -- limit klauzuli wg programu w CRM (informacja w kalkulatorze)
+  team_6_8_surcharge     numeric(4,2)  not null default 0.25,    -- 6–8 osób wykonujących zabiegi: stawka × (1 + 0,25)
+  max_team_size          smallint      not null default 8        -- więcej osób → wycena indywidualna
 );
 
+-- Taryfa = kategoria wyznaczona z rodzajów działalności (reguła kategoriaZRodzajow – kod w packages/pricing, nie dane);
+-- zabiegi z list nr 1 i 2 nie mają wierszy i nie zmieniają składki. Zabiegi wymagające ankiety (a–h) i więcej niż 8 osób
+-- – wycena indywidualna (bez wiersza). Kwota: round(annual_premium * (case when 6–8 osób then 1 + team_6_8_surcharge
+-- else 1 end) + case when ochrona prawna then legal_protection_addon else 0 end, 2) – do grosza, jak w CRM.
 create table pricing_oc_tiers (
   id             bigint generated always as identity primary key,
   version_id     uuid not null references pricing_versions(id) on delete cascade,
-  risk_group     smallint not null check (risk_group between 1 and 3), -- gr. 4 = brak wiersza, wycena indywidualna
+  category       text not null check (category in ('kosmetyczny_fryzjerski', 'kosmetologiczny', 'pelny')),
   sum_insured    integer  not null check (sum_insured in (100000, 200000, 300000)),
   annual_premium numeric(10,2) not null check (annual_premium > 0),
-  unique (version_id, risk_group, sum_insured)
+  unique (version_id, category, sum_insured)
 );
+-- Migracja z wcześniejszej wersji tego pliku (tabela z kolumną risk_group; 00, D43): bez przenoszenia grup na kategorie –
+-- grupa zabiegów to nie rodzaj działalności. Dawną tabelę zostawiamy do wglądu jako archiwum
+-- (alter table pricing_oc_tiers rename to pricing_oc_tiers_grupy_archiwum), tworzymy tabelę jak wyżej, dodajemy kolumny
+-- legal_protection_limit i team_6_8_surcharge w pricing_oc_params, a taryfę po Aneksie nr 5 wprowadzamy jako NOWĄ wersję
+-- cennika (pricing_versions, source_note z odwołaniem do taryfa-oc-beauty.json; aktywacja po zatwierdzeniu). Stare leady
+-- zachowują pricing_version_id i calc_result policzone wtedy na serwerze – nie przeliczamy ich.
 
 create table pricing_tax_variants (
   id             bigint generated always as identity primary key,
@@ -82,7 +95,9 @@ create table leads (
   privacy_notice_version     text not null,                 -- np. rodo-v1-2026-11
   distributor_notice_version text not null,                 -- np. idd-v1-2026-11
   -- kontekst kalkulatora (bez PII)
-  calc_input                 jsonb,                         -- {riskGroup,sumInsured,legalProtection,teamSize}
+  calc_input                 jsonb,                         -- OcCalcInput / TaxCalcInput (lead-schema.ts); OC od D43: {businessTypes,
+                                                            -- teamSize,sumInsured,legalProtection,surveyProcedureIds,procedureIds};
+                                                            -- zgłoszenia sprzed D43 mają dawny kształt (riskGroup…) – bez przeliczania
   calc_result                jsonb,                         -- wynik przeliczony NA SERWERZE
   pricing_version_id         uuid references pricing_versions(id),
   utm                        jsonb,

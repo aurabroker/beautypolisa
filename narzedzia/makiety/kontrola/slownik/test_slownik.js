@@ -1,4 +1,4 @@
-// Testy słownika (slownik.html) i dymków pojęć na 9 stronach. Uruchomienie: node test_slownik.js
+// Testy słownika (slownik.html) i dymków pojęć na 11 stronach. Uruchomienie: node test_slownik.js
 const REPO = require('path').resolve(__dirname, '../../../..');  // katalog główny repozytorium
 const WYNIKI = require('path').join(__dirname, '../wyniki/slownik') + '/';  // zrzuty i wyniki (poza gitem)
 const { chromium } = require('playwright');
@@ -6,9 +6,12 @@ const fs = require('fs');
 const V3 = 'file://' + REPO + '/docs/koncepcja/design/v3/';
 const OUT = WYNIKI;
 const AXE = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
+// liczba haseł z snippets/slownik.json (do 15.11.2026 na sztywno 95; po Aneksie nr 5: −„grupa-ryzyka”, +„rodzaj-dzialalnosci”, +„lista-zabiegow-programu”)
+const N_HASEL = (() => { const d = JSON.parse(fs.readFileSync(REPO + '/docs/koncepcja/snippets/slownik.json', 'utf8')); const h = d.hasla || d; return Array.isArray(h) ? h.length : Object.keys(h).length; })();
 fs.mkdirSync(OUT, { recursive: true });
+// strony z oznaczeniami = lista STRONY w slownik/gen_terminy.py (od 15.11.2026 także opieka-medyczna.html i strefa/szkolenia.html) + slownik.html
 const STRONY = ['makieta-v3.html', 'oc-beauty.html', 'tax-protect.html', 'utrata-dochodu.html', 'nnw-dzieci.html', 'grupowe-ergo.html',
-  'strefa/logowanie.html', 'strefa/panel.html', 'strefa/dam-prace.html', 'slownik.html'];
+  'opieka-medyczna.html', 'strefa/logowanie.html', 'strefa/panel.html', 'strefa/dam-prace.html', 'strefa/szkolenia.html', 'slownik.html'];
 const W = [320, 360, 390, 768, 1024, 1280, 1440];
 const wyniki = [], bledy = [];
 const ok = (c, m) => { if (!c) bledy.push(m); };
@@ -105,7 +108,7 @@ const tafle = () => [...document.querySelectorAll('body *')].filter(e => { const
     const p = await ctx.newPage();
     await p.goto(V3 + 'slownik.html', { waitUntil: 'load' }); await p.waitForTimeout(200);
     const vis = () => p.evaluate(() => [...document.querySelectorAll('.haslo')].filter(h => !h.hidden && !h.closest('.sl-litera').hidden).map(h => h.id));
-    ok((await vis()).length === 95, 'wszystkie 95 widoczne');
+    ok((await vis()).length === N_HASEL, 'wszystkie ' + N_HASEL + ' widoczne');
     await p.fill('#sl-q', 'skladka'); await p.waitForTimeout(450);
     let v = await vis(); let live = await p.textContent('#sl-licznik');
     ok(v.includes('haslo-skladka'), 'skladka -> Składka ' + v);
@@ -119,7 +122,7 @@ const tafle = () => [...document.querySelectorAll('body *')].filter(e => { const
     ok(off >= 20, 'litery nieaktywne przy braku wyników ' + off);
     await p.screenshot({ path: OUT + 'slownik-pusto-1440.png' });
     await p.click('#sl-pusto-reset'); await p.waitForTimeout(100);
-    ok((await vis()).length === 95, 'reset');
+    ok((await vis()).length === N_HASEL, 'reset');
     await p.click('#sl-kat > summary'); await p.waitForTimeout(100);   // kategorie w rozwijanym panelu (po kontroli 13.11)
     await p.locator('.sl-chip', { hasText: 'Tax Protect' }).click(); await p.waitForTimeout(450);
     v = await vis(); wyniki.push(`kategoria Tax Protect: ${v.join(', ')} | ${await p.textContent('#sl-licznik')}`);
@@ -164,7 +167,7 @@ const tafle = () => [...document.querySelectorAll('body *')].filter(e => { const
     const p = await ctx.newPage();
     await p.goto(V3 + 'slownik.html', { waitUntil: 'load' });
     const r = await p.evaluate(() => ({ hasla: [...document.querySelectorAll('.haslo')].filter(h => h.offsetParent).length, form: !!document.querySelector('#sl-szukaj').offsetParent, az: document.querySelectorAll('.sl-az a[href]').length, sw: document.documentElement.scrollWidth }));
-    ok(r.hasla === 95 && !r.form && r.az > 15 && r.sw <= 390, 'bez JS ' + JSON.stringify(r));
+    ok(r.hasla === N_HASEL && !r.form && r.az > 15 && r.sw <= 390, 'bez JS ' + JSON.stringify(r));
     wyniki.push('bez JS: ' + JSON.stringify(r));
     await p.click('.sl-az a[href="#litera-k"]');
     wyniki.push('bez JS klik K -> ' + await p.evaluate(() => location.hash));
