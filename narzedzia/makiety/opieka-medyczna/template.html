@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Opieka medyczna ENEL-MED i LUX MED dla salonu | BeautyPolisa</title>
+<meta name="description" content="%%DESCRIPTION%%">
+<link rel="canonical" href="https://beautypolisa.eu/ubezpieczenia/opieka-medyczna">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="BeautyPolisa">
+<meta property="og:url" content="https://beautypolisa.eu/ubezpieczenia/opieka-medyczna">
+<meta property="og:title" content="Opieka medyczna ENEL-MED i LUX MED dla salonu | BeautyPolisa">
+<meta property="og:description" content="%%DESCRIPTION%%">
+<meta name="theme-color" content="#141C33">
+<meta name="color-scheme" content="only light">
+<!-- Makieta strony produktu: docelowy adres https://beautypolisa.eu/ubezpieczenia/opieka-medyczna (04, mapa URL).
+     Blokadę indeksowania (meta robots) dokłada tylko podgląd makiet – nie ten plik. Tag Google – dopiero po zgodzie (decyzja G1), tu go nie ma.
+     Źródło faktów (jedyne): dotychczasowa strona zleceniodawcy /medical.html – cennik pData, zestawienie comparisonData,
+     mapa specjalizacji specializations_map, nota RODO, informacja o dystrybutorze, stopka („Pakiety dostarczane przez ENEL-MED S.A.
+     oraz LUX MED sp. z o.o. Pełne warunki w OWU.”). Porównania z cennikami pakietów w bazie (Supabase) nie wykonano –
+     narzędzie było niedostępne; ceny i zakresy wyłącznie z medical.html.
+     Celowo NIE publikujemy twierdzeń bez dowodu z medical.html: „do 5 dni” do specjalisty, „24–48 h” do POZ, „absencja niższa o 30%”,
+     „najbardziej pożądany benefit”, „błyskawiczna diagnostyka”, „od ręki”, „zysk podatkowy / w całości w koszty” (tylko jako
+     „do potwierdzenia z księgowym”), „konsultacja kosmetologa z zabiegiem w cenie” (ENEL) – oznaczone jako do potwierdzenia.
+     Numer „obsługi technicznej” z medical.html (500…) – nie używamy; kontakt: formularz i +48 504 400 901 (kontakt agenta).
+     Warianty i sieci równorzędne – bez rekomendacji i bez odznak (IDD).
+     Ceny (decyzja zleceniodawcy 13.11.2026): cennika programu jeszcze nie ma – kwoty z medical.html są tylko PRZYKŁADEM.
+     Kwoty wyłącznie w elementach data-przyklad="tak" ze znacznikiem „przykład”; bez kwot w meta, og:, JSON-LD, FAQ, otwarciu i CTA.
+     Opis kwot: wyłącznie „przykładowe” / „przykład” (makieta, brak cennika) – bez słów sugerujących przybliżony cennik. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   BeautyPolisa · makieta v3 · strona produktu „Opieka medyczna” (ENEL-MED · LUX MED)
+   System wizualny 1:1 z nnw-dzieci.html / grupowe-ergo.html / oc-beauty.html (tokeny, nagłówek, stopka, ruch).
+   Bez atrybutów style (CSP z nonce). Ruch wyłącznie jako ulepszenie.
+   Tafle z backdrop-filter: belka nagłówka, otwarcie, „jak to działa”, pytania, stopka – w jednym widoku najwyżej trzy.
+   Przykładowe stawki, porównanie, wyszukiwarka i formularz stoją na kryjących kartach / taflach bez rozmycia (glass--tint).
+   ========================================================= */
+%%COMMON_CSS%%
+
+/* ---------- otwarcie: dwa przyciski (jak nnw-dzieci.html), dopisek o zespołach 1–2 osób, adnotacja pod liczbami ---------- */
+.hero-note{font-size:var(--text-sm);line-height:1.6;color:var(--color-ink);max-width:40rem}
+.hero-note a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px;white-space:nowrap}
+.hero-note .mock-note,.figures-note .mock-note,.scope-solo .mock-note{white-space:normal;margin-left:0}
+.figures-note{margin-top:-8px;font-size:var(--text-xs)}
+.figures dt{text-wrap:balance}
+
+/* ---------- I · dla kogo: dwie kryjące karty (scope-card) ---------- */
+.scope-card{scroll-margin-top:110px}
+.scope-actions{display:flex;flex-wrap:wrap;gap:0 24px}
+.scope-solo{font-size:var(--text-sm);line-height:1.6;color:var(--color-ink)}
+.scope-solo a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
+
+/* ---------- przełączniki (radio/checkbox jako „żetony”) – cennik, porównanie, formularz ---------- */
+.seg{margin:0;padding:0;border:0;min-width:0}
+.seg legend{padding:0;margin-bottom:10px;font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-navy)}
+.seg legend span{font-family:var(--font-sans);font-weight:400;letter-spacing:0;text-transform:none;color:var(--color-ink)}
+.seg-opts{display:flex;flex-wrap:wrap;gap:8px}
+.seg-opt{position:relative;display:inline-flex}
+.seg-opt input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.seg-opt span{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 16px;border:1px solid var(--bp-line-field);border-radius:var(--radius-btn);background:rgba(255,255,255,.8);font:500 var(--text-sm)/1.2 var(--font-sans);color:var(--color-ink);white-space:nowrap;transition:background-color var(--bp-dur-1),color var(--bp-dur-1),border-color var(--bp-dur-1)}
+.seg-opt input:hover + span{border-color:var(--color-navy)}
+.seg-opt input:checked + span{background:var(--color-navy);border-color:var(--color-navy);color:var(--color-ivory)}
+.seg-opt input[type="checkbox"] + span::before{content:"";width:14px;height:14px;flex:none;border:1px solid currentColor;border-radius:2px}
+.seg-opt input[type="checkbox"]:checked + span::before{content:"✓";display:inline-flex;align-items:center;justify-content:center;font-size:var(--text-xs);line-height:1}
+.seg-opt input:focus-visible + span{outline:2px solid var(--color-navy);outline-offset:3px}
+.seg [aria-invalid="true"] + span{border-color:var(--bp-error);box-shadow:inset 0 0 0 1px var(--bp-error)}
+
+/* ---------- II · ceny: dwie równorzędne kryjące karty sieci ---------- */
+.price-panel{padding:clamp(20px,3vw,36px);display:grid;gap:clamp(22px,3vw,32px)}
+.price-controls{display:grid;gap:20px}
+@media (min-width:900px){.price-controls{grid-template-columns:auto auto;justify-content:start;column-gap:48px}}
+.scope-legend{margin:0;display:grid;gap:4px;font-size:var(--text-sm);color:var(--color-ink);max-width:62rem}
+.scope-legend strong{font-weight:500;color:var(--color-navy)}
+.scope-legend .mock-note,.price-note .mock-note,.cmp-note .mock-note,.spec-note .mock-note{white-space:normal}
+.prices{display:grid;gap:clamp(20px,3vw,32px)}
+@media (min-width:900px){.prices{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.op-card{position:relative;display:grid;gap:18px;align-content:start;padding:clamp(22px,3.5vw,40px);border-radius:var(--radius-card);background:var(--color-ivory);box-shadow:0 30px 60px -40px rgba(20,28,51,.4)}
+.op-card::before{content:"";position:absolute;inset:var(--bp-frame-inset);border:1px solid var(--bp-line-gold);border-radius:calc(var(--radius-card) - 3px);pointer-events:none}
+.op-head{display:grid;gap:6px}
+.op-legal{font:500 var(--text-xs)/1.5 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
+.op-card h3{font-size:clamp(1.6rem,1.3rem + 1vw,2.15rem)}
+.op-fig{display:grid;gap:6px;padding-block:16px;border-block:1px solid var(--bp-line-gold-soft)}
+.op-fig-num{font:600 var(--text-price)/1 var(--font-serif);color:var(--color-navy);font-variant-numeric:lining-nums tabular-nums}
+.op-fig-cap{font-size:var(--text-sm);color:var(--color-ink)}
+.op-card .btn{justify-self:start}
+.op-card .table-scroll{position:relative}
+.rate-table{width:100%;border-collapse:collapse;font-size:var(--text-sm)}
+.rate-table caption{text-align:left;padding-bottom:8px;font-size:var(--text-sm);color:var(--color-ink)}
+.rate-table th,.rate-table td{padding:10px 8px;border-bottom:1px solid var(--bp-line-gold-soft);text-align:right;vertical-align:top;font-variant-numeric:lining-nums tabular-nums}
+.rate-table thead th{font:500 var(--text-xs)/1.35 var(--font-caps);letter-spacing:.08em;text-transform:uppercase;color:var(--color-navy);vertical-align:bottom}
+.rate-table th:first-child{text-align:left;padding-left:0}
+.rate-table th[scope="row"]{font-weight:500;color:var(--color-navy);white-space:nowrap}
+.rate-table td{white-space:nowrap;color:var(--color-ink);font-size:var(--text-base)}
+.rate-table .row-ind th,.rate-table .row-ind td{border-bottom:0;color:var(--color-navy)}
+.rate-table .row-ind td{text-align:center;white-space:normal;font-size:var(--text-sm)}
+/* wybrany próg i zakres (tylko ze skryptem): tło wiersza + wypełniona komórka; tekst wyboru podaje też liczba nad tabelą */
+.rate-table tr.is-sel th,.rate-table tr.is-sel td{background:rgba(237,229,216,.85)}
+.rate-table tr.is-sel td.is-col{background:var(--color-navy);color:var(--color-ivory);font-weight:500}
+.rate-table thead th.is-col{text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:2px;text-underline-offset:6px}
+.price-note{display:grid;gap:8px;font-size:var(--text-sm);color:var(--color-ink);max-width:62rem}
+.price-note strong{font-weight:500;color:var(--color-navy)}
+/* przykładowe stawki (cennik w przygotowaniu): notka sekcji + plakietka „przykład” przy każdej kwocie */
+.przyklad-note{max-width:44rem;font-size:var(--text-sm);line-height:1.6;color:var(--color-navy)}
+.przyklad-note .mock-note{margin:0 6px 0 0}
+.op-fig .mock-note,.cmp-price .mock-note{margin:0;justify-self:start}
+.op-head .mock-note{margin:0;justify-self:start}
+.price-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px}
+
+/* ---------- III · porównanie: tabela od 1024 px, karty poniżej ---------- */
+.cmp-panel{padding:clamp(20px,3vw,36px);display:grid;gap:clamp(20px,3vw,28px)}
+.cmp-status{font-size:var(--text-sm);color:var(--color-navy);min-height:1.5em}
+.cmp-note{display:grid;gap:6px;font-size:var(--text-sm);color:var(--color-ink);max-width:62rem}
+.cmp-table-wrap{display:none}
+.cmp-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:var(--text-sm)}
+.cmp-table caption{text-align:left;padding-bottom:12px;font:600 var(--text-serif-sm)/1.25 var(--font-serif);color:var(--color-navy)}
+.cmp-table th,.cmp-table td{padding:14px 12px;border-bottom:1px solid var(--bp-line-gold-soft);text-align:left;vertical-align:top;line-height:1.55;overflow-wrap:anywhere}
+.cmp-table thead th{font:600 var(--text-serif-sm)/1.2 var(--font-serif);color:var(--color-navy);border-bottom:1px solid var(--bp-line-gold)}
+.cmp-table .cmp-corner{width:13rem;border-bottom:1px solid var(--bp-line-gold)}
+.cmp-table tbody th{font:500 var(--text-xs)/1.45 var(--font-caps);letter-spacing:.1em;text-transform:uppercase;color:var(--color-navy);padding-left:0}
+.cmp-table td{color:var(--color-ink)}
+.cmp-table a,.cmp-card a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
+.cmp-table .mock-note,.cmp-card .mock-note{white-space:normal;margin:4px 0 0}
+.row-diff th,.row-diff td,.row-diff dt,.row-diff dd{color:var(--bp-error)}
+.cmp-table tr.row-diff th,.cmp-table tr.row-diff td{border-top:1px solid var(--bp-line-gold);border-bottom:0}
+/* poniżej 1024 px: „najpierw atrybut” – blok atrybutu, pod nim jedna linia na wybrany pakiet (nazwa pogrubiona, wartość obok) */
+.cmp-attrs{display:grid;gap:12px}
+.cmp-attr{padding:16px 18px;border:1px solid var(--bp-line-gold);border-radius:var(--radius-card);background:var(--color-ivory)}
+.cmp-attr h3{font-size:1.3rem;line-height:1.25;padding-bottom:8px;border-bottom:1px solid var(--bp-line-gold-soft)}
+.cmp-attr dl{margin:0;display:grid}
+.cmp-attr dl > div{display:grid;gap:2px 16px;padding-block:10px;border-bottom:1px solid var(--bp-line-gold-soft)}
+.cmp-attr dl > div:last-child{border-bottom:0;padding-bottom:0}
+.cmp-attr dt{font-weight:500;font-size:var(--text-sm);line-height:1.45;color:var(--color-navy)}
+.cmp-attr dd{margin:0;font-size:var(--text-sm);line-height:1.55;color:var(--color-ink);overflow-wrap:anywhere}
+.cmp-attr a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
+.cmp-attr .mock-note{white-space:normal;margin:4px 0 0}
+.cmp-attr.row-diff h3,.cmp-attr.row-diff dd{color:var(--bp-error)}
+@media (min-width:560px){.cmp-attr dl > div{grid-template-columns:minmax(9rem,1fr) minmax(0,2.4fr)}}
+/* żetony wyboru pakietów: siatka 2 × 2 o równej szerokości na telefonie */
+@media (max-width:639px){.cmp-controls .seg-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.cmp-controls .seg-opt span{width:100%;white-space:normal;text-align:left;justify-content:flex-start;padding-inline:12px}}
+@media (min-width:1024px){.cmp-table-wrap{display:block}.cmp-attrs{display:none}}
+
+/* ---------- IV · wyszukiwarka specjalizacji ---------- */
+.spec-panel{padding:clamp(20px,3vw,36px);display:grid;gap:20px}
+.spec-search{display:grid;gap:8px;max-width:40rem}
+.spec-search label{font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-navy)}
+.spec-row{display:flex;flex-wrap:wrap;gap:10px}
+.spec-search input{flex:1 1 14rem;width:100%;min-width:0;min-height:52px;padding:10px 16px;border:1px solid var(--bp-line-field);border-radius:var(--radius-btn);background:rgba(255,255,255,.85);font:400 var(--text-base)/1.4 var(--font-sans);color:var(--color-ink);-webkit-appearance:none;appearance:none}
+.spec-search input::placeholder{color:var(--color-taupe);opacity:1}
+.spec-search input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+.spec-search input:focus-visible{outline:2px solid var(--color-navy);outline-offset:2px;border-color:var(--color-navy)}
+.spec-search .btn{min-height:52px;padding-inline:20px}
+.spec-count{font-size:var(--text-sm);line-height:1.5;color:var(--color-ink)}
+.spec-count strong{font-weight:500;color:var(--color-navy)}
+.spec-quick{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:var(--text-sm)}
+.spec-quick button{min-height:44px;padding:6px 14px;border:1px solid var(--bp-line-gold);border-radius:var(--radius-btn);background:var(--color-ivory);font:400 var(--text-sm)/1.2 var(--font-sans);color:var(--color-navy);cursor:pointer}
+.spec-quick button:hover{border-color:var(--color-navy)}
+.spec-legend{display:flex;flex-wrap:wrap;gap:6px 10px;margin:0;padding:0;list-style:none;font-size:var(--text-xs)}
+.spec-note{display:grid;gap:6px;font-size:var(--text-sm);color:var(--color-ink);max-width:62rem}
+.spec-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+@media (min-width:900px){.spec-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.spec-item{display:grid;gap:10px;align-content:start;padding:18px 20px;border:1px solid var(--bp-line-gold-soft);border-radius:var(--radius-card);background:rgba(255,255,255,.7);scroll-margin-top:120px}
+.spec-item:target{box-shadow:inset 3px 0 0 var(--color-navy)}
+.spec-kind{font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-taupe)}
+.spec-item h3{font-size:1.4rem;margin-top:-4px}
+.pk-list{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.pk{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:0 6px;padding:4px 10px;border:1px solid var(--bp-line-navy);border-radius:2px;font-size:var(--text-xs);line-height:1.5;color:var(--color-ink);background:var(--color-ivory)}
+.pk-mark{font-weight:500}
+.pk-name{font-weight:500}
+.pk-st{margin-left:-6px}
+.pk--tak{border-color:var(--color-navy);color:var(--color-navy);background:rgba(42,59,104,.08)}
+.pk--nie{color:var(--color-taupe);text-decoration:none}
+.pk--nie .pk-name{font-weight:400}
+.pk--rozb{border-style:dashed;border-color:var(--bp-error);color:var(--bp-error)}
+.pk--nw{border-style:dotted;color:var(--color-taupe)}
+.pk--nw .pk-name{font-weight:400}
+.spec-src{font-size:var(--text-sm);line-height:1.55;color:var(--color-ink)}
+.spec-conflict{font-size:var(--text-sm);line-height:1.55;color:var(--color-ink)}
+.spec-conflict .mock-note{margin-left:0;margin-right:4px;white-space:normal}
+.spec-empty{padding:16px 18px;border-left:2px solid var(--color-gold);background:rgba(237,229,216,.55);font-size:var(--text-sm)}
+.spec-empty a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
+
+/* ---------- V · jak to działa: jedwab, jedna ciemna tafla z czterema krokami (jak nnw-dzieci.html) ---------- */
+.step .mock-note{white-space:normal;margin-left:0;justify-self:start}
+.how-note a{white-space:nowrap}
+/* lead bezpośrednio na zdjęciu jedwabiu: ciemna poświata pod literami (jak w nnw-dzieci.html) */
+.scene--silk .section-head .lead{text-shadow:0 0 2px rgba(20,28,51,.95),0 1px 8px rgba(20,28,51,.95),0 1px 18px rgba(20,28,51,.9)}
+
+/* ---------- VI · formularz zapytania (pola 1:1 z formularza na stronie głównej) ---------- */
+.form-grid{display:grid;gap:clamp(24px,4vw,56px)}
+@media (min-width:1024px){.form-grid{grid-template-columns:minmax(0,4fr) minmax(0,7fr);align-items:start}}
+.form-aside{display:grid;gap:16px;align-content:start}
+.form-aside p{font-size:var(--text-body);color:var(--color-ink)}
+.form-aside a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
+.form-aside .tel{font:600 1.6rem/1.2 var(--font-serif);color:var(--color-navy);text-decoration:none;white-space:nowrap}
+.form-panel{padding:clamp(22px,3.5vw,44px)}
+.lead-form{display:grid;gap:20px}
+.form-pick{padding:12px 16px;border-left:2px solid var(--color-gold);background:rgba(237,229,216,.55);font-size:var(--text-sm);color:var(--color-ink)}
+.fields-2{display:grid;gap:16px}
+.field{display:grid;gap:6px;align-content:start}
+.field label{font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-navy)}
+.field label span{font-family:var(--font-sans);font-weight:400;letter-spacing:0;text-transform:none;color:var(--color-ink)}
+.field input{width:100%;min-height:48px;padding:10px 14px;border:1px solid var(--bp-line-field);border-radius:var(--radius-btn);background-color:rgba(255,255,255,.85);font:400 var(--text-base)/1.4 var(--font-sans);color:var(--color-ink)}
+.field input:focus-visible{outline:2px solid var(--color-navy);outline-offset:2px;border-color:var(--color-navy)}
+.field [aria-invalid="true"]{border-color:var(--bp-error);box-shadow:inset 0 0 0 1px var(--bp-error)}
+.field-hint{font-size:.8125rem;line-height:1.5;color:var(--color-ink)}
+.field-error{font-size:.8125rem;line-height:1.5;color:var(--bp-error);font-weight:500}
+.seg .field-error{margin:-4px 0 8px}
+.seg-hint{margin-top:8px}
+.seg-hint .mock-note{white-space:normal;margin-left:0}
+.form-again{margin-top:16px}
+.form-again[hidden]{display:none}
+.nip-status{font-size:.8125rem;line-height:1.5;color:var(--color-navy)}
+.nip-status .mock-note{margin-left:0;white-space:normal}
+.form-sep{height:1px;border:0;margin:4px 0;background:var(--bp-line-gold-soft)}
+.check-row{display:flex;align-items:flex-start;gap:12px;min-height:44px;font-size:var(--text-sm);line-height:1.55;color:var(--color-ink);cursor:pointer}
+.check-row input{width:20px;height:20px;accent-color:var(--color-navy);margin:2px 0 0;flex:none}
+.consents{display:grid;gap:8px;margin:0;padding:0;border:0;min-width:0}
+.consents legend{padding:0;margin-bottom:6px;font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-navy)}
+.consents legend span{font-family:var(--font-sans);font-weight:400;letter-spacing:0;text-transform:none;color:var(--color-ink)}
+.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.ts-slot{display:grid;gap:4px;max-width:300px;min-height:65px;padding:10px 14px;border:1px dashed rgba(42,59,104,.6);border-radius:var(--radius-btn);font-size:var(--text-xs);line-height:1.5;color:var(--color-navy);background:rgba(255,255,255,.6)}
+.lead-form .btn{justify-self:start}
+.lead-notice{font-size:var(--text-xs);line-height:1.65;color:var(--color-ink)}
+.lead-notice a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:3px}
+.lead-notice .mock-note{white-space:normal;margin-left:2px}
+.form-status{padding:16px 18px;border-left:2px solid var(--color-navy);background:rgba(255,255,255,.85);font-size:var(--text-body);color:var(--color-ink)}
+.form-status:empty{display:none}
+.form-status strong{font-weight:500;color:var(--color-navy)}
+.form-status .mock-note{white-space:normal}
+.form-errors{padding:12px 16px;border-left:2px solid var(--bp-error);background:rgba(255,255,255,.85);font-size:var(--text-sm);color:var(--bp-error)}
+.form-errors:empty{display:none}
+.form-errors ul{margin:6px 0 0;padding-left:1.2em}
+.form-errors a{color:var(--bp-error);text-underline-offset:3px}
+.form-errors li + li{margin-top:2px}
+@media (min-width:640px){.fields-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ---------- VII · pytania: adnotacja w nagłówku może się zawijać; kolumna nie rozpycha siatki ---------- */
+.faq-head .mock-note{white-space:normal;margin-left:0}
+@media (max-width:1023px){.faq-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- powiązane: pięć kart ---------- */
+.rel-card .rel-links{margin-top:auto}
+@media (min-width:1024px){.related{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+@media (max-width:767px){
+  .op-card{padding:26px 20px}
+  .op-card::before,.scope-card::before{inset:6px}
+}
+@media (max-width:479px){
+  .op-card .btn,.price-actions .btn,.lead-form .btn,.form-again .btn{width:100%;justify-self:stretch}
+  .cmp-attr{padding:14px}
+  .rate-table th,.rate-table td{padding-inline:4px}
+  .rate-table thead th{letter-spacing:.02em;font-size:var(--text-xs)}
+  .rate-table td{font-size:var(--text-sm)}
+  .seg-opt span{padding-inline:12px}
+  .spec-item{padding:16px}
+  .price-panel,.cmp-panel,.spec-panel{padding-inline:14px}
+}
+/* wąskie telefony: panel cennika bez własnego tła i wcięć – karty sieci dostają pełną szerokość kontenera, tabela mieści się bez przewijania */
+@media (max-width:479px){.price-panel{padding:0;background:transparent;border:0;box-shadow:none}}
+@media (max-width:399px){.rate-table thead th{letter-spacing:0}.op-card{padding-inline:16px}}
+@media (max-width:359px){.rate-table th,.rate-table td{padding-inline:3px}.op-card{padding-inline:12px}}
+@media (forced-colors:active){
+  .op-card,.cmp-attr,.spec-item,.rel-card{border:1px solid CanvasText}
+  .op-card::before{display:none}
+  .seg-opt input:checked + span{forced-color-adjust:none;background:Highlight;color:HighlightText;border-color:Highlight}
+  .rate-table tr.is-sel td.is-col{forced-color-adjust:none;background:Highlight;color:HighlightText}
+  .seg-opt input:focus-visible + span{outline:2px dashed CanvasText}
+}
+@media print{.price-controls,.cmp-controls,.spec-search,.spec-quick{display:none!important}}
+</style>
+<noscript><style>
+.scene--silk{background-image:url(img/tlo-jedwab.webp)}.scene--marble{background-image:url(img/tlo-marmur-len.webp)}
+@media (max-width:767px){.scene--silk{background-image:url(img/tlo-jedwab-1024.webp)}.scene--marble{background-image:url(img/tlo-marmur-len-1024.webp)}}
+</style></noscript>
+<!-- JSON-LD: WebPage, BreadcrumbList, Service (provider = ENEL-MED S.A. i LUX MED sp. z o.o. jako Organization – forma prawna do potwierdzenia;
+     offers = Offer bez ceny (cennik programu w przygotowaniu – cenę przygotuje doradca); offers.offeredBy = Aura Expert (#agency) – bez „broker”),
+     Organization i InsuranceAgency (węzły 1:1 z nnw-dzieci.html), FAQPage (= widoczne pytania, tekst bez znaczników).
+     Ten sam węzeł Service: snippets/schema-produkt-opieka-medyczna.json. -->
+<!-- Dla koordynatora: meta description / og:description i JSON-LD (Service, Offer, FAQPage) celowo BEZ kwot – cennika programu jeszcze nie ma
+     (decyzja 13.11.2026). Kwoty z medical.html zostają tylko w sekcji „Przykładowe stawki” (data-przyklad="tak"); po otrzymaniu cennika podmienić dane i usunąć oznaczenia. -->
+<script type="application/ld+json">
+%%JSONLD%%
+</script>
+%%GEN_CSS%%
+</head>
+<body>
+<a class="skip" href="#tresc">Przejdź do treści</a>
+
+<!-- Nagłówek 1:1 z nnw-dzieci.html (wspólne bloki gen:* z narzedzia/makiety/gen_wspolne.py); w makiecie odnośniki do strony głównej prowadzą do makieta-v3.html, produkcyjnie do / i /#….
+     „Zapytaj doradcę” prowadzi do formularza na tej stronie (#zapytanie) – zapytanie o opiekę medyczną wymaga NIP, sieci, liczby osób i zakresu. -->
+<header class="site-header" data-tone="light">
+  <div class="container">
+    <div class="header-bar glass glass--strong">
+      <a class="brand" href="makieta-v3.html" aria-label="BeautyPolisa – strona główna">
+        <img src="../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="160" height="24">
+        <small>created by Aura Expert</small>
+      </a>
+      <nav class="main-nav" aria-label="Menu główne">
+        <ul>
+          <!-- gen:menu-produkty -->
+%%GEN_MENU_PRODUKTY%%
+          <!-- /gen:menu-produkty -->
+          <li><a href="#ceny">Stawki</a></li>
+          <li><a href="#porownanie">Porównanie</a></li>
+          <li><a href="#specjalizacje">Specjalizacje</a></li>
+        </ul>
+      </nav>
+      <!-- Strefa Klienta: w makiecie strefa/logowanie.html, produkcyjnie /strefa-klienta/logowanie -->
+      <a class="client-link" href="strefa/logowanie.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Strefa Klienta</a>
+      <div class="header-cta"><a class="btn btn-ghost" href="#zapytanie">Zapytaj doradcę</a></div>
+      <details class="menu">
+        <summary><span class="menu-label">Menu</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></summary>
+        <nav class="menu-panel" aria-label="Menu główne">
+          <!-- gen:menu-mobilne -->
+%%GEN_MENU_MOBILNE%%
+          <!-- /gen:menu-mobilne -->
+          <a href="#dla-kogo"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg>Dla kogo</a>
+          <a href="#ceny"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kalkulator"/></svg>Przykładowe stawki</a>
+          <a href="#porownanie"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Porównanie pakietów</a>
+          <a href="#specjalizacje"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-szybka-wycena"/></svg>Wyszukiwarka specjalizacji</a>
+          <a href="#jak-to-dziala"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Jak to działa</a>
+          <a href="#faq"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Pytania</a>
+          <hr class="rule">
+          <a href="strefa/logowanie.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Strefa Klienta</a>
+          <a href="strefa/dam-prace.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Dam&nbsp;pracę</a>
+          <a href="strefa/logowanie.html#s-rs-email"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Szukam pracy</a>
+          <a href="strefa/szkolenia.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Szkolenia</a>
+          <a class="btn btn-navy" href="#zapytanie">Zapytaj o ofertę</a>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<main id="tresc">
+
+  <!-- PROLOG · otwarcie: dwa przyciski (wzorzec nnw-dzieci) – jeden produkt, bez „dróg”; zakresy Partner/Rodzina opisuje sekcja I.
+       Liczby w .figures: bez kwot (cennik w przygotowaniu) – dwie sieci, trzy zakresy, cztery pakiety w porównaniu; równorzędnie, bez rekomendacji. -->
+  <section class="scene scene--marble scene--pos-ct page-hero" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="hero-panel glass frame">
+        <nav class="crumbs" aria-label="Okruszki">
+          <!-- produkcyjnie: / › /ubezpieczenia › /ubezpieczenia/opieka-medyczna (BreadcrumbList w JSON-LD) -->
+          <ol>
+            <li><a href="makieta-v3.html">Strona główna</a></li>
+            <li><a href="makieta-v3.html#ubezpieczenia">Ubezpieczenia</a></li>
+            <li><span aria-current="page">Opieka medyczna</span></li>
+          </ol>
+        </nav>
+        <p class="eyebrow">ENEL-MED · LUX MED · abonamenty medyczne</p>
+        <h1 id="hero-title">Opieka medyczna <em>dla zespołu salonu</em></h1>
+        <p class="lead">Program dla branży beauty: abonamenty medyczne ENEL-MED i LUX MED dla pracowników salonu – w zakresie Partner albo Rodzina także dla ich bliskich. Porównaj pakiety, sprawdź specjalizacje i zapytaj doradcę Aura Expert o ofertę – cenę dla Twojego zespołu przygotuje doradca.</p>
+        <div class="hero-actions">
+          <a class="btn btn-navy" href="#porownanie">Porównaj pakiety</a>
+          <a class="btn btn-ghost" href="#zapytanie">Zapytaj doradcę</a>
+        </div>
+        <p class="hero-note">Pracujesz sama/sam albo w&nbsp;zespole 1–2 osób? <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a> o&nbsp;możliwość. <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
+        <dl class="figures">
+          <div><dt>Sieci medyczne: ENEL-MED i&nbsp;LUX MED</dt><dd>2</dd></div>
+          <div><dt>Zakresy: Singiel, Partner, Rodzina</dt><dd>3</dd></div>
+          <div><dt>Pakiety w&nbsp;porównaniu</dt><dd>4</dd></div>
+        </dl>
+        <p class="figures-note"><span class="mock-note">cennik programu w&nbsp;przygotowaniu – cenę dla zespołu przygotuje doradca po zapytaniu</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- I · DLA KOGO: fakty z medical.html („Dla Twojego Salonu” / „Dla Twoich Ludzi”) bez twierdzeń bez dowodu;
+       hasła źródła wymagające potwierdzenia – w „O czym pamiętać” z adnotacją. -->
+  <section class="section band" id="dla-kogo" aria-labelledby="dk-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="chapter-no" aria-hidden="true">I</span>
+        <p class="eyebrow">Dla kogo</p>
+        <h2 id="dk-title" class="rv-curtain">Dla zespołu <em>i dla bliskich pracowników</em></h2>
+        <p class="lead">Abonament wybierasz w jednej z dwóch sieci medycznych i w jednym z trzech zakresów: Singiel, Partner albo Rodzina. Cenę dla Twojego zespołu przygotuje doradca po zapytaniu.</p>
+      </div>
+      <div class="scope">
+        <article class="scope-card rv-rise" id="dla-zespolu" aria-labelledby="dz-title">
+          <header class="scope-head">
+            <p class="scope-label">Zakres Singiel</p>
+            <h3 id="dz-title">Dla zespołu salonu</h3>
+            <p class="scope-for">Dla salonów i firm z branży beauty, które chcą zapewnić pracownikom prywatną opiekę medyczną.</p>
+          </header>
+          <ul class="scope-list">
+            <li><strong>Dwie sieci do wyboru.</strong> ENEL-MED (pakiet Standard) albo LUX MED (pakiet Standard). Możesz też poprosić o porównanie obu.</li>
+            <li><strong>Cena dla zespołu.</strong> Cennik programu jest w&nbsp;przygotowaniu – ofertę dla Twojego zespołu przygotuje doradca po zapytaniu. Jak może wyglądać stawka według liczby osób, pokazują przykładowe stawki. <span class="mock-note">progi liczby osób – do potwierdzenia</span></li>
+            <li><strong>Zakres dla każdego pracownika.</strong> Singiel, Partner albo Rodzina – cenę każdego zakresu przygotuje doradca.</li>
+            <li><strong>Pakiety podstawowe.</strong> ENEL-MED Basic i LUX MED Podstawowa znajdziesz w porównaniu zakresów. <span class="mock-note">ceny pakietów – cennik programu w&nbsp;przygotowaniu</span></li>
+            <li><strong>Koszty w firmie.</strong> Sposób rozliczenia abonamentu w salonie (koszt, przychód pracownika) <span class="mock-note">do potwierdzenia z księgowym/prawnikiem</span></li>
+          </ul>
+          <p class="scope-solo">Pracujesz sama/sam albo w&nbsp;zespole 1–2 osób? <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a>. <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
+          <p class="scope-actions"><a class="link-lux" href="#ceny">Zobacz przykładowe stawki</a></p>
+        </article>
+        <article class="scope-card rv-rise" id="dla-rodziny" aria-labelledby="dr-title">
+          <header class="scope-head">
+            <p class="scope-label">Zakresy Partner i&nbsp;Rodzina</p>
+            <h3 id="dr-title">Dla bliskich pracowników</h3>
+            <p class="scope-for">Dla pracownika objętego programem, który chce, żeby abonament obejmował też partnera albo rodzinę.</p>
+          </header>
+          <ul class="scope-list">
+            <li><strong>Partner.</strong> Abonament obejmuje pracownika i jego partnera.</li>
+            <li><strong>Rodzina.</strong> Według dotychczasowej strony programu do abonamentu można dołączyć małżonka, dzieci i rodziców. <span class="mock-note">kogo dokładnie obejmuje zakres Rodzina (np. wiek dzieci, rodzice) – do potwierdzenia</span></li>
+            <li><strong>Te same sieci.</strong> Zakres Partner i&nbsp;Rodzina wybierasz w&nbsp;tej samej sieci co pracownik. Cenę przygotuje doradca. <span class="mock-note">czy cena Partner/Rodzina obejmuje pracownika (łączna) – do potwierdzenia</span></li>
+          </ul>
+          <p class="scope-actions"><a class="link-lux" href="#ceny" data-set-scope="rodzina">Zobacz przykładowe stawki w&nbsp;zakresie Rodzina</a></p>
+        </article>
+      </div>
+      <div class="mind">
+        <h3 id="mind-title">O czym pamiętać</h3>
+        <ul>
+          <li>Świadczenia medyczne zapewniają ENEL-MED S.A. oraz LUX MED sp. z o.o. Pełne warunki określają dokumenty operatora (w&nbsp;dotychczasowej stopce programu: OWU). <span class="mock-note">forma prawna produktu (abonament medyczny czy ubezpieczenie zdrowotne), nazwy dokumentów (regulamin / OWU) i rola Aura Expert przy tej sprzedaży – do potwierdzenia (obowiązki IDD)</span></li>
+          <li>Dotychczasowa strona wymienia też wizyty u ginekologa, dermatologa i okulisty bez skierowania, e-wizyty z e-receptą oraz stomatologię. <span class="mock-note">dostępność w poszczególnych pakietach i warunki – do potwierdzenia</span></li>
+          <li>Zakres pakietów na tej stronie pochodzi z zestawienia programu. Wiążący zakres podaje oferta i dokumenty operatora.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- II · PRZYKŁADOWE STAWKI: pData z medical.html (ENEL „Pakiet Standard”, LuxMed „Opieka Standard”) – wyłącznie PRZYKŁAD (cennika programu
+       jeszcze nie ma, decyzja 13.11.2026). Każda kwota w elemencie data-przyklad="tak" ze znacznikiem „przykład”; od 51 osób – wycena (max-staff-msg).
+       Bez JS: obie tabele w całości (wszystkie progi), przełączniki ukryte. Ze skryptem: przełącznik zespołu i zakresu aktualizuje
+       liczbę nad tabelą, wyróżnia wiersz/kolumnę i przenosi wybór do formularza (#zapytanie). Karty sieci równorzędne – bez wyróżnień. -->
+  <section class="section" id="ceny" aria-labelledby="ceny-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="chapter-no" aria-hidden="true">II</span>
+        <p class="eyebrow">Przykładowe stawki</p>
+        <h2 id="ceny-title" class="rv-curtain">Przykładowe stawki <em>według wielkości zespołu</em></h2>
+        <p class="lead">Wybierz liczbę osób w zespole i zakres – zobaczysz, jak działa wybór dla ENEL-MED Standard i LUX MED Standard. Kwoty są tylko przykładem.</p>
+        <p class="przyklad-note" id="ceny-przyklad"><span class="mock-note">przykład</span> Przykładowe stawki z&nbsp;makiety – cennik programu w&nbsp;przygotowaniu. Cenę dla Twojego zespołu przygotuje doradca po zapytaniu.</p>
+      </div>
+      <div class="price-panel glass glass--tint">
+        <div class="price-controls" id="ceny-wybor" hidden>
+          <fieldset class="seg">
+            <legend>Liczba osób w zespole</legend>
+            <div class="seg-opts">
+              <label class="seg-opt"><input type="radio" name="ceny-zespol" value="3-10" checked><span>3–10 osób</span></label>
+              <label class="seg-opt"><input type="radio" name="ceny-zespol" value="11-20"><span>11–20 osób</span></label>
+              <label class="seg-opt"><input type="radio" name="ceny-zespol" value="21-50"><span>21–50 osób</span></label>
+              <label class="seg-opt"><input type="radio" name="ceny-zespol" value="51+"><span>od 51 osób</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="seg">
+            <legend>Zakres</legend>
+            <div class="seg-opts">
+              <label class="seg-opt"><input type="radio" name="ceny-zakres" value="singiel" checked><span>Singiel</span></label>
+              <label class="seg-opt"><input type="radio" name="ceny-zakres" value="partner"><span>Partner</span></label>
+              <label class="seg-opt"><input type="radio" name="ceny-zakres" value="rodzina"><span>Rodzina</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <p class="sr-only" id="ceny-status" role="status" data-przyklad="tak"></p>
+        <div class="scope-legend">
+          <p><strong>Singiel</strong> – za pracownika. <strong>Partner</strong> – za pracownika z&nbsp;partnerem. <strong>Rodzina</strong> – za pracownika z&nbsp;rodziną. <span class="mock-note">czy cena Partner/Rodzina jest łączna z pracownikiem – do potwierdzenia</span></p>
+        </div>
+        <div class="prices">
+        %%PRICE_ENEL%%
+        %%PRICE_LUX%%
+        </div>
+        <div class="price-note">
+          <p><strong>Kwoty powyżej to przykład</strong> z&nbsp;makiety, nie cennik programu – ten jest w&nbsp;przygotowaniu. Cenę dla Twojego zespołu przygotuje doradca po zapytaniu.</p>
+          <p><strong>Od 51 osób</strong> – wycena indywidualna: doradca przygotuje ofertę dla większego zespołu.</p>
+          <p class="price-actions"><a class="btn btn-navy" href="#zapytanie" data-to-form data-op="porownanie">Zapytaj doradcę o&nbsp;cenę</a></p>
+          <p><strong>Mniej niż 3 osoby?</strong> <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a> o&nbsp;możliwość. <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
+                  </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- III · PORÓWNANIE: comparisonData z medical.html (4 pakiety). Niespójności źródła pokazane wprost:
+       „17 specjalności” przy 10 nazwach (ENEL Basic), „33” przy 20 (ENEL Standard), „11” przy 7 (LuxMed Podstawowa), „17” przy 15 (LuxMed Standard).
+       Wiersz „Różnice” = logika źródła („Czego brakuje?”): lekarze z list innych wybranych pakietów, których nie ma na liście danego pakietu.
+       Bez JS: wszystkie 4 pakiety (tabela ≥ 1024 px, poniżej układ „najpierw atrybut”); ze skryptem: wybór 2–4 pakietów,
+       domyślnie dwa pakiety z przykładowymi stawkami (ENEL-MED Standard, LUX MED Standard) – Basic i Podstawową dodajesz na żądanie. -->
+  <section class="section band" id="porownanie" aria-labelledby="por-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="chapter-no" aria-hidden="true">III</span>
+        <p class="eyebrow">Porównanie pakietów</p>
+        <h2 id="por-title" class="rv-curtain">Cztery pakiety <em>obok siebie</em></h2>
+        <p class="lead">Zestawienie ENEL-MED Basic i Standard oraz LUX MED Podstawowa i Standard: specjaliści, badania, diagnostyka, prowadzenie ciąży i zabiegi.</p>
+      </div>
+      <div class="cmp-panel glass glass--tint">
+        <div class="cmp-controls" id="por-wybor" hidden>
+          <fieldset class="seg">
+            <legend>Porównaj pakiety <span>(wybierz od 2 do 4)</span></legend>
+            <div class="seg-opts">
+              <label class="seg-opt"><input type="checkbox" name="porownaj" value="enel-basic"><span>ENEL-MED Basic</span></label>
+              <label class="seg-opt"><input type="checkbox" name="porownaj" value="enel-std" checked><span>ENEL-MED Standard</span></label>
+              <label class="seg-opt"><input type="checkbox" name="porownaj" value="lux-basic"><span>LUX MED Podstawowa</span></label>
+              <label class="seg-opt"><input type="checkbox" name="porownaj" value="lux-std" checked><span>LUX MED Standard</span></label>
+            </div>
+          </fieldset>
+          <p class="cmp-status" id="por-status" role="status"></p>
+        </div>
+        %%CMP_TABLE%%
+        %%CMP_ATTRS%%
+        <div class="cmp-note">
+          <p>Dane z zestawienia na dotychczasowej stronie programu. Liczby specjalności nie zgadzają się z listami nazw lekarzy w tym samym zestawieniu, dlatego wiersz „Różnice” opiera się tylko na wymienionych nazwach. <span class="mock-note">pełne listy specjalności i zakres badań – do potwierdzenia z regulaminem/OWU operatorów</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IV · WYSZUKIWARKA: specializations_map z medical.html (25 pozycji, także pakiety spoza tej strony: Premium, Prestige, VIP,
+       Rozszerzona, Kompleksowa) + nazwy z list lekarzy w comparisonData. Status w czterech pakietach strony liczy build:
+       mapa i lista zgodne → „jest” / „nie wskazano”; sprzeczne (także mapa vs wiersz „Zabiegi” zestawienia: ENEL-MED Standard =
+       „pełen zakres ambulatoryjny Basic”) → „do potwierdzenia” z opisem; brak danych → „nie wymieniono”.
+       Normalizacja: małe litery, bez polskich znaków (ł→l). Bez JS: pełna lista widoczna, pole wyszukiwania ukryte. -->
+  <section class="section" id="specjalizacje" aria-labelledby="spec-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="chapter-no" aria-hidden="true">IV</span>
+        <p class="eyebrow">Wyszukiwarka specjalizacji</p>
+        <h2 id="spec-title" class="rv-curtain">Lekarz albo zabieg – <em>w których pakietach?</em></h2>
+        <p class="lead">Wpisz specjalizację lub zabieg, np. kardiolog, dermatolog, biopsja. Polskie znaki możesz pominąć – „lekarz dyżurny” znajdziesz też, wpisując „dyzurny”.</p>
+      </div>
+      <div class="spec-panel glass glass--tint">
+        <form class="spec-search" id="spec-form" role="search" aria-label="Specjalizacje i zabiegi w pakietach" hidden>
+          <label for="spec-q">Specjalizacja lub zabieg</label>
+          <div class="spec-row">
+            <input type="search" id="spec-q" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. kardiolog, dermatolog, biopsja" aria-describedby="spec-count" aria-controls="spec-list">
+            <button class="btn btn-ghost" type="button" id="spec-all" aria-controls="spec-list" aria-expanded="false">Pokaż wszystkie (%%SPEC_COUNT%%)</button>
+          </div>
+          <p class="spec-count" id="spec-count" role="status">Pozycji w wyszukiwarce: <strong>%%SPEC_COUNT%%</strong></p>
+        </form>
+        <p class="spec-quick" id="spec-quick" hidden><span>Często szukane:</span> <button type="button" data-q="kardiolog">kardiolog</button> <button type="button" data-q="dermatolog">dermatolog</button> <button type="button" data-q="ginekolog">ginekolog</button> <button type="button" data-q="psycholog">psycholog</button> <button type="button" data-q="biopsja">biopsja</button></p>
+        <ul class="spec-legend" aria-label="Oznaczenia">
+          <li class="pk pk--tak"><span class="pk-mark" aria-hidden="true">✓</span><span class="pk-name">jest</span></li>
+          <li class="pk pk--nie"><span class="pk-mark" aria-hidden="true">–</span><span class="pk-name">nie wskazano w&nbsp;danych programu (mapa i&nbsp;lista nie wymieniają pakietu)</span></li>
+          <li class="pk pk--rozb"><span class="pk-mark" aria-hidden="true">?</span><span class="pk-name">do potwierdzenia – dane źródła się różnią</span></li>
+          <li class="pk pk--nw"><span class="pk-mark" aria-hidden="true">·</span><span class="pk-name">nie wymieniono w źródle</span></li>
+        </ul>
+        <p class="spec-empty" id="spec-empty" hidden></p>
+        <ul class="spec-list" id="spec-list">
+            %%SPEC_ITEMS%%
+        </ul>
+        <div class="spec-note">
+          <p>Wyszukiwarka łączy mapę specjalizacji i listy lekarzy z dotychczasowej strony programu. Mapa wymienia też pakiety spoza tej strony (np. ENEL-MED Premium, LUX MED Rozszerzona) – ich dostępność i ceny potwierdzi doradca. <span class="mock-note">mapa i listy częściowo się różnią – do potwierdzenia z operatorami</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V · JAK TO DZIAŁA: zapytanie → doradca → oferta → umowa. Bez e-commerce i bez przekierowań; terminów nie obiecujemy (brak w źródle). -->
+  <section class="scene scene--silk scene--pos-lt section dark" id="jak-to-dziala" aria-labelledby="jtd-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="chapter-no" aria-hidden="true">V</span>
+        <p class="eyebrow">Jak to działa</p>
+        <h2 id="jtd-title" class="rv-curtain">Od zapytania <em>do umowy</em></h2>
+        <p class="lead">Opieki medycznej nie kupujesz w koszyku. Wysyłasz zapytanie, a całą resztę prowadzi doradca Aura Expert.</p>
+      </div>
+      <div class="how glass glass--dark">
+        <ol class="steps">
+          <li class="step rv-rise">
+            <span class="numeral" aria-hidden="true">1</span>
+            <h3>Zapytanie</h3>
+            <span class="step-where">Formularz na tej stronie</span>
+            <p>Podaj NIP firmy, kontakt, wybraną sieć – albo prośbę o porównanie – liczbę osób i zakres.</p>
+            <p class="links"><a class="link-lux" href="#zapytanie">Przejdź do formularza</a></p>
+          </li>
+          <li class="step rv-rise">
+            <span class="numeral" aria-hidden="true">2</span>
+            <h3>Doradca</h3>
+            <span class="step-where">Telefon lub e-mail</span>
+            <p>Doradca Aura Expert kontaktuje się z Tobą, omawia potrzeby zespołu i różnice między pakietami.</p>
+          </li>
+          <li class="step rv-rise">
+            <span class="numeral" aria-hidden="true">3</span>
+            <h3>Oferta</h3>
+            <span class="step-where">ENEL-MED, LUX MED albo obie</span>
+            <p>Dostajesz ofertę wybranej sieci albo porównanie obu – z ceną dla Twojego zespołu.</p>
+          </li>
+          <li class="step rv-rise">
+            <span class="numeral" aria-hidden="true">4</span>
+            <h3>Umowa</h3>
+            <span class="step-where">Z operatorem medycznym</span>
+            <p>Po akceptacji oferty doradca przeprowadzi Cię przez podpisanie umowy i zgłoszenie osób.</p>
+            <span class="mock-note">strona umowy (ENEL-MED S.A. / LUX MED sp. z o.o.), forma i dokumenty – do potwierdzenia</span>
+          </li>
+        </ol>
+        <div class="how-note">
+          <p><strong>Bez zakupu online.</strong> Strona nie sprzedaje abonamentów i nie przekierowuje do serwisów operatorów – ofertę i umowę przygotowuje doradca.</p>
+          <p>Wolisz rozmowę? Zadzwoń: <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VI · ZAPYTANIE: produkcja – POST /api/leads (LeadInput z snippets/lead-schema.ts, product = opieka-medyczna), Turnstile + honeypot extraInfo.
+       Do 02: w LeadInput brak pól opieki medycznej – proponowane medInquiry {operator: enel|lux|porownanie, teamBand: 3-10|11-20|21-50|51+,
+       scope: singiel|partner|rodzina}; nip wymagany dla opieka-medyczna; phone wymagany (jak w medical.html).
+       NIP: serwer sprawdza w rejestrze REGON (GUS, API BIR Aura Expert) i podpowiada nazwę firmy – w makiecie tylko suma kontrolna, rejestr NIE jest odpytywany.
+       Zgody: treści i wersje 1:1 z snippets/legal-consents.json (marketing-email-v1-2026-11, marketing-phone-v1-2026-11), domyślnie niezaznaczone.
+       Wersja treści zgody = value zaznaczonego pola (działa bez JS → consents.text_version); ukryte pola textVersions wypełnia skrypt (ulepszenie).
+       Błędy: lista u góry (#form-errors, linki do pól) + komunikat przy polu/grupie (.field-error, dopisywany do aria-describedby).
+       Bez JS formularz działa natywnie (wymagane pola, typy). -->
+  <section class="section" id="zapytanie" aria-labelledby="zap-title">
+    <div class="container form-grid">
+      <div class="section-head form-aside">
+        <span class="chapter-no" aria-hidden="true">VI</span>
+        <p class="eyebrow">Zapytanie o ofertę</p>
+        <h2 id="zap-title" class="rv-curtain">Zapytaj <em>o abonament dla zespołu</em></h2>
+        <p>Wypełnij formularz – doradca Aura Expert odezwie się, żeby omówić ofertę ENEL-MED, LUX MED albo porównanie obu sieci.</p>
+        <p>Wolisz zadzwonić?<br><a class="tel" href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a></p>
+        <p>Nie podawaj w formularzu informacji o stanie zdrowia – nie są potrzebne do przygotowania oferty.</p>
+      </div>
+      <div class="form-panel glass glass--tint frame">
+        <form class="lead-form" id="med-form" action="/api/leads" method="post" aria-labelledby="zap-title">
+          <input type="hidden" name="product" value="opieka-medyczna">
+          <input type="hidden" name="legalVersions.privacyNotice" value="rodo-v1-2026-11">
+          <input type="hidden" name="legalVersions.distributorNotice" value="idd-v2-2026-11">
+          <p class="form-pick" id="form-pick" role="status" hidden></p>
+          <div class="form-errors" id="form-errors" tabindex="-1" role="alert"></div>
+
+          <div class="fields-2">
+            <div class="field">
+              <label for="m-nip">NIP firmy</label>
+              <input id="m-nip" name="nip" inputmode="numeric" autocomplete="off" required pattern="[0-9 \-]{10,13}" maxlength="13" aria-describedby="m-nip-hint m-nip-status">
+              <p class="field-hint" id="m-nip-hint">Sprawdzimy NIP w rejestrze REGON (GUS) i uzupełnimy nazwę firmy.</p>
+              <p class="nip-status" id="m-nip-status" aria-live="polite"></p>
+              <p class="field-error" id="m-nip-err" hidden></p>
+            </div>
+            <div class="field">
+              <label for="m-firma">Nazwa firmy <span>(opcjonalnie)</span></label>
+              <input id="m-firma" name="companyName" autocomplete="organization" maxlength="200">
+            </div>
+          </div>
+          <div class="field"><label for="m-imie">Imię i&nbsp;nazwisko</label><input id="m-imie" name="fullName" autocomplete="name" required minlength="2" maxlength="120"><p class="field-error" id="m-imie-err" hidden></p></div>
+          <div class="fields-2">
+            <div class="field"><label for="m-email">E-mail</label><input id="m-email" name="email" type="email" autocomplete="email" required maxlength="254"><p class="field-error" id="m-email-err" hidden></p></div>
+            <div class="field"><label for="m-tel">Telefon</label><input id="m-tel" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="20" aria-describedby="m-tel-hint"><p class="field-hint" id="m-tel-hint">Np. 600 000 000 albo z kierunkowym +48.</p><p class="field-error" id="m-tel-err" hidden></p></div>
+          </div>
+
+          <hr class="form-sep">
+          <fieldset class="seg" id="m-operator">
+            <legend>Sieć medyczna</legend>
+            <p class="field-error" id="m-operator-err" hidden></p>
+            <div class="seg-opts">
+              <label class="seg-opt"><input type="radio" name="medOperator" value="enel" required><span>ENEL-MED</span></label>
+              <label class="seg-opt"><input type="radio" name="medOperator" value="lux"><span>LUX MED</span></label>
+              <label class="seg-opt"><input type="radio" name="medOperator" value="porownanie"><span>Chcę porównać</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="seg" id="m-zespol">
+            <legend>Liczba osób w zespole</legend>
+            <p class="field-error" id="m-zespol-err" hidden></p>
+            <div class="seg-opts">
+              <label class="seg-opt"><input type="radio" name="medTeam" value="3-10" required><span>3–10</span></label>
+              <label class="seg-opt"><input type="radio" name="medTeam" value="11-20"><span>11–20</span></label>
+              <label class="seg-opt"><input type="radio" name="medTeam" value="21-50"><span>21–50</span></label>
+              <label class="seg-opt"><input type="radio" name="medTeam" value="51+"><span>od 51</span></label>
+              <label class="seg-opt"><input type="radio" name="medTeam" value="1-2"><span>mniej niż 3 – zapytam o&nbsp;możliwość</span></label>
+            </div>
+            <p class="field-hint seg-hint"><span class="mock-note">mniej niż 3 osoby – do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
+          </fieldset>
+          <fieldset class="seg" id="m-zakres">
+            <legend>Zakres</legend>
+            <p class="field-error" id="m-zakres-err" hidden></p>
+            <div class="seg-opts">
+              <label class="seg-opt"><input type="radio" name="medScope" value="singiel" required><span>Singiel</span></label>
+              <label class="seg-opt"><input type="radio" name="medScope" value="partner"><span>Partner</span></label>
+              <label class="seg-opt"><input type="radio" name="medScope" value="rodzina"><span>Rodzina</span></label>
+            </div>
+          </fieldset>
+
+          <hr class="form-sep">
+          <fieldset class="consents">
+            <legend>Zgody marketingowe <span>(dobrowolne – zapytanie wyślesz bez nich)</span></legend>
+            <label class="check-row"><input type="checkbox" name="consents.marketingEmail" value="marketing-email-v1-2026-11" data-version="marketing-email-v1-2026-11"><span>Chcę otrzymywać od Aura Expert sp. z&nbsp;o.o. informacje handlowe o&nbsp;ubezpieczeniach dla branży beauty na podany adres e-mail. Zgodę mogę wycofać w&nbsp;każdej chwili, klikając link w&nbsp;wiadomości.</span></label>
+            <label class="check-row"><input type="checkbox" name="consents.marketingPhone" value="marketing-phone-v1-2026-11" data-version="marketing-phone-v1-2026-11"><span>Zgadzam się na kontakt telefoniczny Aura Expert sp. z&nbsp;o.o. w&nbsp;celach marketingowych na podany numer. Zgodę mogę wycofać w&nbsp;każdej chwili.</span></label>
+          </fieldset>
+          <input type="hidden" name="consents.textVersions.marketingEmail" value="">
+          <input type="hidden" name="consents.textVersions.marketingPhone" value="">
+          <div class="hp" aria-hidden="true"><label for="m-extra">Nie wypełniaj tego pola</label><input id="m-extra" name="extraInfo" tabindex="-1" autocomplete="off"></div>
+          <!-- produkcja: widżet Cloudflare Turnstile (tryb zarządzany) w tym miejscu, przed przyciskiem; token → turnstileToken -->
+          <div class="ts-slot" aria-hidden="true"><strong>Turnstile</strong><span>Miejsce na weryfikację Cloudflare Turnstile (makieta).</span></div>
+          <button class="btn btn-navy" type="submit"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Wyślij zapytanie</button>
+          <p class="lead-notice">Administratorem danych podanych w&nbsp;formularzu jest Aura Expert sp. z&nbsp;o.o. Przetwarzamy je, aby przygotować ofertę abonamentu medycznego i&nbsp;odpowiedzieć na zapytanie (art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;b RODO). Kontakt z&nbsp;inspektorem ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Pełna informacja: <a href="/rodo">polityka prywatności</a>; informacje o&nbsp;agencie ubezpieczeniowym: <a href="/dokumenty">dokumenty</a>. <span class="mock-note">czy dane trafiają do ENEL-MED / LUX MED w celu wyceny – do potwierdzenia</span></p>
+        </form>
+        <div class="form-status" id="form-status" role="status" tabindex="-1"></div>
+        <p class="form-again" id="form-again" hidden><button class="btn btn-ghost" type="button">Wyślij kolejne zapytanie</button></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VII · PYTANIA: widoczne pytania = FAQPage w JSON-LD (ten sam tekst; linki tylko w HTML; bez twardych spacji w odpowiedziach). -->
+  <section class="section band" id="faq" aria-labelledby="faq-title">
+    <div class="container faq-grid">
+      <div class="section-head faq-head">
+        <span class="chapter-no" aria-hidden="true">VII</span>
+        <p class="eyebrow">Pytania</p>
+        <h2 id="faq-title" class="rv-curtain">Pytania <em>o opiekę medyczną</em></h2>
+        <p><span class="mock-note">odpowiedzi na podstawie dotychczasowej strony programu – do potwierdzenia przed publikacją</span></p>
+      </div>
+      <div class="faq glass">
+        <!--nb-off-->
+        %%FAQ%%
+        <!--nb-on-->
+      </div>
+    </div>
+  </section>
+
+  <!-- POWIĄZANE: opisy kart 1:1 z innych stron produktowych (bez nowych faktów). -->
+  <section class="section" id="powiazane" aria-labelledby="pow-title">
+    <div class="container">
+      <div class="related-head">
+        <p class="eyebrow">Dla Ciebie i&nbsp;Twojego salonu</p>
+        <h2 id="pow-title" class="rv-curtain">Inne ubezpieczenia <em>w&nbsp;BeautyPolisa</em></h2>
+      </div>
+      <div class="related">
+        <article class="rel-card rv-rise" aria-labelledby="rel-oc">
+          <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><h3 id="rel-oc">OC dla branży beauty</h3></div>
+          <p>Odpowiedzialność cywilna za szkody wyrządzone klientom podczas zabiegów – w&nbsp;programie z&nbsp;ERGO Hestią.</p>
+          <div class="rel-links"><a class="link-lux" href="oc-beauty.html">Poznaj OC<span class="sr-only"> dla branży beauty</span></a></div>
+        </article>
+        <article class="rel-card rv-rise" aria-labelledby="rel-tax">
+          <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><h3 id="rel-tax">Tax Protect</h3></div>
+          <p>Ochrona karnoskarbowa właściciela i&nbsp;zarządu oraz ochrona podatkowa firmy – ubezpieczenie Colonnade.</p>
+          <div class="rel-links"><a class="link-lux" href="tax-protect.html">Poznaj Tax Protect</a></div>
+        </article>
+        <article class="rel-card rv-rise" aria-labelledby="rel-ud">
+          <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><h3 id="rel-ud">Utrata dochodu</h3></div>
+          <p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią Ci pracę.</p>
+          <div class="rel-links"><a class="link-lux" href="utrata-dochodu.html">Poznaj ubezpieczenie<span class="sr-only">: utrata dochodu</span></a></div>
+        </article>
+        <article class="rel-card rv-rise" aria-labelledby="rel-nnw">
+          <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><h3 id="rel-nnw">NNW dzieci</h3></div>
+          <p>Ubezpieczenie następstw nieszczęśliwych wypadków dla dzieci w&nbsp;programie z&nbsp;Colonnade: ochrona 24&nbsp;godziny na dobę na całym świecie, jedna składka za rok – 40, 94 albo 175&nbsp;zł za osobę. Polisę kupujesz online na platformie ubezpieczyciela Colonnade.</p>
+          <div class="rel-links"><a class="link-lux" href="nnw-dzieci.html">Poznaj NNW dzieci</a></div>
+        </article>
+        <article class="rel-card rv-rise" aria-labelledby="rel-gr">
+          <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><h3 id="rel-gr">Grupowe ERGO dla beauty</h3></div>
+          <p>Ubezpieczenie na życie w&nbsp;ERGO Hestii – dwie drogi: ERGO Życie w&nbsp;Biznesie dla salonu z&nbsp;zespołem (od 2 do 100 osób) albo ERGO Razem dla Ciebie i&nbsp;Twojej rodziny.</p>
+          <div class="rel-links"><a class="link-lux" href="grupowe-ergo.html">Poznaj ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- EPILOG · CTA: kryjąca karta (bez nowej tafli szkła) -->
+  <section class="section section--flush-top" id="dalej" aria-labelledby="end-title">
+    <div class="container">
+      <div class="end-card dark">
+        <p class="eyebrow">Na koniec</p>
+        <h2 id="end-title" class="rv-curtain">Zapytaj o ofertę <em>dla swojego zespołu</em></h2>
+        <p>Podaj NIP, liczbę osób i zakres – doradca Aura Expert przygotuje ofertę ENEL-MED, LUX MED albo porównanie obu sieci. Możesz też zadzwonić.</p>
+        <div class="end-actions">
+          <a class="btn btn-ivory" href="#zapytanie">Zapytaj o ofertę</a>
+          <a class="btn btn-ghost-dark" href="tel:+48504400901">Zadzwoń: +48&nbsp;504&nbsp;400&nbsp;901</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+%%FOOTER%%
+
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false">
+  <!-- BeautyPolisa v3 – ikony old money (kopie symboli z nnw-dzieci.html / ikony-v3-sprite.svg, tylko używane tutaj). -->
+%%SPRITE%%
+</svg>
+%%GEN_PASEK%%
+<script type="application/json" id="med-data">%%DATA%%</script>
+<script>
+%%COMMON_JS%%
+
+/* ===== Opieka medyczna: dane (te same co tabele statyczne – generowane z medical.html) ===== */
+var MED=(function(){try{return JSON.parse(document.getElementById('med-data').textContent)}catch(e){return null}})();
+
+/* Przykładowe stawki: przełącznik zespołu i zakresu → liczba nad tabelą, wyróżnienie wiersza/kolumny, komunikat dla czytników */
+var MedPrices=(function(){
+  var sec=document.getElementById('ceny'); if(!sec||!MED) return null;
+  var ctl=document.getElementById('ceny-wybor'), live=document.getElementById('ceny-status');
+  ctl.hidden=false;
+  function val(n){var r=sec.querySelector('input[name="'+n+'"]:checked');return r?r.value:null}
+  function set(n,v){var r=sec.querySelector('input[name="'+n+'"][value="'+v+'"]');if(r){r.checked=true;render(true)}}
+  function render(announce){
+    var team=val('ceny-zespol'), scope=val('ceny-zakres'), idx=MED.scopes.indexOf(scope), parts=[];
+    var sl=MED.scopeLabels[scope], tl=MED.teams[team];
+    [].forEach.call(sec.querySelectorAll('.op-card'),function(card){
+      var op=card.getAttribute('data-op'), fig=card.querySelector('[data-fig]'), cap=card.querySelector('[data-fig-cap]');
+      if(team==='51+'){fig.textContent='Wycena indywidualna';cap.textContent='zespół od 51 osób – ofertę przygotuje doradca';parts.push(MED.ops[op].pkg+': wycena indywidualna')}
+      else{var p=MED.prices[team][op][idx];fig.textContent=p+' zł';cap.textContent=MED.scopeUnits[scope]+' miesięcznie · '+sl+' · zespół '+tl+' osób';parts.push(MED.ops[op].pkg+' '+p+' zł')}
+      [].forEach.call(card.querySelectorAll('tr[data-team]'),function(tr){tr.classList.toggle('is-sel',tr.getAttribute('data-team')===team)});
+      [].forEach.call(card.querySelectorAll('[data-scope]'),function(c){c.classList.toggle('is-col',team!=='51+'&&c.getAttribute('data-scope')===scope)});
+    });
+    if(announce) live.textContent='Przykładowe stawki (cennik w przygotowaniu) – zespół '+tl+' osób, zakres '+sl+': '+parts.join(', ')+(team==='51+'?'.':' miesięcznie '+MED.scopeUnits[scope]+'.');
+  }
+  sec.addEventListener('change',function(e){if(e.target.name==='ceny-zespol'||e.target.name==='ceny-zakres')render(true)});
+  render(false);
+  return {team:function(){return val('ceny-zespol')},scope:function(){return val('ceny-zakres')},setScope:function(v){set('ceny-zakres',v)}};
+})();
+
+/* „Zobacz przykładowe stawki w zakresie Rodzina”: ustawia zakres przed przewinięciem */
+document.addEventListener('click',function(e){
+  var a=e.target.closest('[data-set-scope]'); if(a&&MedPrices) MedPrices.setScope(a.getAttribute('data-set-scope'));
+});
+
+/* Formularz: przeniesienie wyboru z cennika (sieć / zespół / zakres) i z adresu (?operator=&zespol=&zakres=) */
+var MedForm=(function(){
+  var form=document.getElementById('med-form'); if(!form||!MED) return null;
+  var pick=document.getElementById('form-pick');
+  var opNames={enel:'ENEL-MED',lux:'LUX MED',porownanie:'porównanie ENEL-MED i LUX MED'};
+  function check(name,v){var r=form.querySelector('input[name="'+name+'"][value="'+v+'"]');if(r){r.checked=true;r.dispatchEvent(new Event('change',{bubbles:true}));return true}return false}
+  function apply(op,team,scope,fromPrices){
+    var ok=[];
+    if(op&&check('medOperator',op))ok.push('sieć: '+opNames[op]);
+    if(team&&check('medTeam',team))ok.push('zespół: '+MED.teams[team]+(team==='1-2'?' osoby':' osób'));
+    if(scope&&check('medScope',scope))ok.push('zakres: '+MED.scopeLabels[scope]);
+    if(!ok.length) return;
+    pick.textContent=(fromPrices?'Wybrano przy przykładowych stawkach – ':'Wstępnie wybrano – ')+ok.join(', ')+'. Możesz to zmienić poniżej.';
+    pick.hidden=false;
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('[data-to-form]'); if(!a) return;
+    var t=a.getAttribute('data-team');
+    if(t)apply(null,t,null,false);
+    else apply(a.getAttribute('data-op'),MedPrices?MedPrices.team():null,MedPrices?MedPrices.scope():null,true);
+  });
+  try{var q=new URLSearchParams(location.search);
+    var op=q.get('operator'),team=q.get('zespol'),scope=q.get('zakres');
+    if(op||team||scope)apply(op,team,scope,false);
+  }catch(err){}
+  return {apply:apply};
+})();
+
+/* Porównanie: wybór 2–4 pakietów, ukrywanie kolumn/kart, przeliczenie wiersza „Różnice” (logika źródła) */
+(function(){
+  var sec=document.getElementById('porownanie'); if(!sec||!MED) return;
+  var ctl=document.getElementById('por-wybor'), live=document.getElementById('por-status');
+  ctl.hidden=false;
+  var boxes=[].slice.call(ctl.querySelectorAll('input[name="porownaj"]'));
+  function selected(){return boxes.filter(function(b){return b.checked}).map(function(b){return b.value})}
+  function render(){
+    var sel=selected();
+    [].forEach.call(sec.querySelectorAll('[data-pkg]'),function(el){
+      if(el.tagName==='INPUT')return;
+      el.hidden=sel.indexOf(el.getAttribute('data-pkg'))<0;
+    });
+    [].forEach.call(sec.querySelectorAll('[data-diff]'),function(el){
+      var me=el.getAttribute('data-diff'), mine=MED.pkgs[me], miss=[];
+      sel.forEach(function(o){if(o===me)return;MED.pkgs[o].forEach(function(s){if(mine.indexOf(s)<0&&miss.indexOf(s)<0)miss.push(s)})});
+      el.textContent=miss.length?miss.join(', '):'–';
+    });
+  }
+  ctl.addEventListener('change',function(e){
+    var b=e.target; if(b.name!=='porownaj') return;
+    if(!b.checked&&selected().length<2){b.checked=true;live.textContent='Porównanie wymaga co najmniej dwóch pakietów.';return}
+    live.textContent='Porównujesz: '+selected().map(function(id){return MED.pkgNames[id]}).join(', ')+'.';
+    render();
+  });
+  render();
+})();
+
+/* Wyszukiwarka specjalizacji: normalizacja (małe litery, bez ogonków, ł→l), filtr listy, licznik w regionie statusu.
+   Ze skryptem lista startowo zwinięta (podpowiedzi + „Pokaż wszystkie”); bez skryptu – cała lista widoczna. */
+(function(){
+  var form=document.getElementById('spec-form'), list=document.getElementById('spec-list'); if(!form||!list) return;
+  var input=document.getElementById('spec-q'), count=document.getElementById('spec-count'), all=document.getElementById('spec-all');
+  var empty=document.getElementById('spec-empty'), quick=document.getElementById('spec-quick');
+  var items=[].slice.call(list.children), TOTAL=items.length, showAll=false, timer=null;
+  function norm(s){return s.toLowerCase().replace(/ł/g,'l').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim()}
+  function render(){
+    var q=norm(input.value), n=0;
+    items.forEach(function(li){
+      var hit=q?li.getAttribute('data-q').indexOf(q)>-1:showAll;
+      li.hidden=!hit; if(hit)n++;
+    });
+    all.setAttribute('aria-expanded',String(showAll&&!q));
+    all.textContent=(showAll&&!q)?'Zwiń listę':'Pokaż wszystkie ('+TOTAL+')';
+    if(q&&!n){
+      empty.hidden=false;
+      empty.innerHTML='';
+      empty.appendChild(document.createTextNode('Nie ma „'+input.value.trim()+'” w danych programu na tej stronie. '));
+      var a=document.createElement('a');a.href='#zapytanie';a.textContent='Zapytaj doradcę o tę specjalizację';empty.appendChild(a);
+      empty.appendChild(document.createTextNode('.'));
+    } else empty.hidden=true;
+    count.innerHTML=q?('Wyniki dla „'+escapeHtml(input.value.trim())+'”: <strong>'+n+'</strong> z '+TOTAL):(showAll?'Pokazano wszystkie pozycje: <strong>'+TOTAL+'</strong>':'Pozycji w wyszukiwarce: <strong>'+TOTAL+'</strong> – wpisz nazwę albo wybierz podpowiedź.');
+  }
+  function escapeHtml(s){return s.replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  form.hidden=false; quick.hidden=false;
+  form.addEventListener('submit',function(e){e.preventDefault();clearTimeout(timer);render()});
+  input.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(render,150)});
+  input.addEventListener('keydown',function(e){if(e.key==='Escape'&&input.value){input.value='';render()}});
+  all.addEventListener('click',function(){if(input.value){input.value='';showAll=true}else showAll=!showAll;render()});
+  quick.addEventListener('click',function(e){var b=e.target.closest('button[data-q]');if(!b)return;input.value=b.getAttribute('data-q');render();input.focus()});
+  /* głęboki link #spec-… pokazuje pozycję */
+  function fromHash(){var id=location.hash.slice(1);if(id.indexOf('spec-')===0&&document.getElementById(id)&&id!=='spec-list'&&id!=='spec-q'&&id!=='spec-form'&&id!=='spec-title'){showAll=true;input.value='';render()}}
+  window.addEventListener('hashchange',fromHash);
+  render(); fromHash();
+})();
+
+/* Formularz zapytania: walidacja – lista błędów u góry (linki do pól, fokus) + komunikat przy polu/grupie (.field-error,
+   id dopisywane do aria-describedby i usuwane po poprawieniu); NIP – suma kontrolna i opis sprawdzenia w REGON (makieta);
+   wersje treści zaznaczonych zgód; wysyłka zatrzymana (preventDefault) – komunikat bez obiecywania terminu, formularz chowany
+   (bez podwójnego wysłania), przycisk „Wyślij kolejne zapytanie”. */
+(function(){
+  var form=document.getElementById('med-form'); if(!form) return;
+  form.noValidate=true;
+  var nip=document.getElementById('m-nip'), nipSt=document.getElementById('m-nip-status');
+  var errs=document.getElementById('form-errors'), status=document.getElementById('form-status'), again=document.getElementById('form-again');
+  var submitted=false;
+  function digits(s){return s.replace(/[\s-]/g,'')}
+  function nipOk(s){var d=digits(s);if(!/^\d{10}$/.test(d))return false;var w=[6,5,7,2,3,4,5,6,7],sum=0;for(var i=0;i<9;i++)sum+=w[i]*+d[i];return sum%11===+d[9]}
+  function groupVal(n){var r=form.querySelector('input[name="'+n+'"]:checked');return r?r.value:''}
+  /* reguły: id pola/grupy → [sprawdzenie, komunikat] */
+  var RULES=[
+    {id:'m-nip',ok:function(){return nipOk(nip.value)},msg:function(){return digits(nip.value)?'NIP jest niepoprawny – sprawdź 10 cyfr numeru.':'Podaj NIP firmy (10 cyfr).'}},
+    {id:'m-imie',ok:function(){return document.getElementById('m-imie').value.trim().length>=2},msg:function(){return 'Podaj imię i nazwisko.'}},
+    {id:'m-email',ok:function(){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('m-email').value.trim())},msg:function(){return 'Podaj adres e-mail, np. salon@example.pl.'}},
+    {id:'m-tel',ok:function(){return /^(\+[1-9]\d{7,14}|\d{9})$/.test(document.getElementById('m-tel').value.replace(/[\s()-]/g,''))},msg:function(){return 'Podaj numer telefonu, np. 600 000 000 albo +48 600 000 000.'}},
+    {id:'m-operator',group:'medOperator',ok:function(){return !!groupVal('medOperator')},msg:function(){return 'Wybierz sieć medyczną albo „Chcę porównać”.'}},
+    {id:'m-zespol',group:'medTeam',ok:function(){return !!groupVal('medTeam')},msg:function(){return 'Wybierz liczbę osób w zespole.'}},
+    {id:'m-zakres',group:'medScope',ok:function(){return !!groupVal('medScope')},msg:function(){return 'Wybierz zakres: Singiel, Partner albo Rodzina.'}}
+  ];
+  function ruleFor(el){for(var i=0;i<RULES.length;i++){var r=RULES[i];if(r.group?el.name===r.group:el.id===r.id)return r}return null}
+  function radios(r){return [].slice.call(form.querySelectorAll('input[name="'+r.group+'"]'))}
+  function focusTarget(r){return r.group?(form.querySelector('input[name="'+r.group+'"]:checked')||radios(r)[0]):document.getElementById(r.id)}
+  function describe(el,id,on){
+    var ids=(el.getAttribute('aria-describedby')||'').split(/\s+/).filter(function(x){return x&&x!==id});
+    if(on)ids.push(id);
+    if(ids.length)el.setAttribute('aria-describedby',ids.join(' '));else el.removeAttribute('aria-describedby');
+  }
+  function setError(r,msg){
+    var box=document.getElementById(r.id), err=document.getElementById(r.id+'-err'), eid=r.id+'-err';
+    err.textContent=msg||''; err.hidden=!msg;
+    describe(box,eid,!!msg);
+    if(r.group)radios(r).forEach(function(x){if(msg)x.setAttribute('aria-invalid','true');else x.removeAttribute('aria-invalid')});
+    else if(msg)box.setAttribute('aria-invalid','true');else box.removeAttribute('aria-invalid');
+  }
+  function summary(list){
+    errs.innerHTML='';
+    if(!list.length)return;
+    var h=document.createElement('strong');h.textContent='Formularz wymaga poprawek – przejdź do pola:';
+    var ul=document.createElement('ul');
+    list.forEach(function(it){
+      var li=document.createElement('li'), a=document.createElement('a');
+      a.href='#'+it.r.id; a.textContent=it.msg; a.setAttribute('data-err-for',it.r.id);
+      li.appendChild(a); ul.appendChild(li);
+    });
+    errs.appendChild(h); errs.appendChild(ul);
+  }
+  /* link z listy błędów: fokus na polu albo na zaznaczonym/pierwszym przycisku w grupie (bez zmiany adresu) */
+  errs.addEventListener('click',function(e){
+    var a=e.target.closest('a[data-err-for]'); if(!a) return;
+    e.preventDefault();
+    var r=RULES.filter(function(x){return x.id===a.getAttribute('data-err-for')})[0], t=r&&focusTarget(r); if(!t) return;
+    var box=document.getElementById(r.id), lab=r.group?box:form.querySelector('label[for="'+r.id+'"]');
+    (lab||t).scrollIntoView({block:'center',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    t.focus({preventScroll:true});
+  });
+  /* po poprawieniu wartości komunikat przy polu znika (po pierwszej próbie wysyłki – wcześniej nie pokazujemy błędów w trakcie pisania) */
+  function recheck(el){
+    var r=ruleFor(el); if(!r) return;
+    var err=document.getElementById(r.id+'-err');
+    if(r.ok()){ if(!err.hidden)setError(r,''); }
+    else if(submitted&&!err.hidden) setError(r,r.msg());
+    /* poprawione pole znika z listy u góry (usuwanie węzła – region alert nie odczytuje go ponownie); bez przebudowy przy każdym znaku */
+    if(submitted&&err.hidden){
+      var link=errs.querySelector('a[data-err-for="'+r.id+'"]'); if(link)link.parentNode.parentNode.removeChild(link.parentNode);
+      if(!errs.querySelector('li'))errs.innerHTML='';
+    }
+  }
+  form.addEventListener('input',function(e){if(e.target.id!=='m-nip')recheck(e.target)});
+  form.addEventListener('focusout',function(e){if(e.target.matches&&e.target.matches('.field input'))recheck(e.target)});
+  nip.addEventListener('input',function(){
+    var d=digits(nip.value), r=RULES[0];
+    if(d.length<10){nipSt.textContent='';if(!submitted)setError(r,'');return}
+    if(!nipOk(nip.value)){nipSt.textContent='';setError(r,'Sprawdź NIP – to nie jest poprawny numer (suma kontrolna się nie zgadza).');return}
+    setError(r,'');
+    nipSt.innerHTML='NIP ma poprawny format. <span class="mock-note">makieta: rejestr REGON (GUS) nie jest tu odpytywany – w wersji produkcyjnej w tym miejscu pojawi się nazwa firmy z rejestru albo prośba o wpisanie jej ręcznie</span>';
+    recheck(nip);
+  });
+  form.addEventListener('change',function(e){
+    var t=e.target;
+    if(t.type==='radio')recheck(t);
+    if(t.type==='checkbox'&&t.getAttribute('data-version')){
+      var h=form.querySelector('input[name="consents.textVersions.'+t.name.split('.')[1]+'"]'); if(h)h.value=t.checked?t.getAttribute('data-version'):'';
+    }
+  });
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    submitted=true;
+    var problems=[];
+    RULES.forEach(function(r){var bad=!r.ok(), m=bad?r.msg():'';setError(r,m);if(bad)problems.push({r:r,msg:m})});
+    status.textContent='';
+    if(problems.length){summary(problems);errs.focus();return}
+    summary([]);
+    /* produkcja: fetch POST /api/leads z tokenem Turnstile i idempotencyKey; bez przekierowań */
+    form.hidden=true;
+    status.innerHTML='<strong>Dziękujemy – zapytanie gotowe do wysłania.</strong> Doradca Aura Expert skontaktuje się z Tobą telefonicznie lub e-mailem, żeby omówić ofertę. <span class="mock-note">makieta: dane nie zostały nigdzie wysłane</span>';
+    again.hidden=false;
+    status.focus();
+  });
+  again.querySelector('button').addEventListener('click',function(){
+    form.reset(); submitted=false; RULES.forEach(function(r){setError(r,'')}); summary([]);
+    nipSt.textContent=''; [].forEach.call(form.querySelectorAll('input[name^="consents.textVersions."]'),function(h){h.value=''});
+    var pick=document.getElementById('form-pick'); if(pick){pick.hidden=true;pick.textContent=''}
+    status.textContent=''; again.hidden=true; form.hidden=false; nip.focus();
+  });
+})();
+</script>
+%%GEN_JS%%
+</body>
+</html>

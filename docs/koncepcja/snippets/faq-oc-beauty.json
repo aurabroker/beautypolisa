@@ -1,0 +1,38 @@
+{
+ "$comment": "FAQ strony /ubezpieczenia/oc-beauty – jedno źródło dla widocznych pytań (blok GEN:faq w design/v3/oc-beauty.html), FAQPage w GEN:jsonld i snippets/schema-faq-oc-beauty.json (oba generuje narzedzia/makiety/gen_oc_beauty.py – nie edytować ich ręcznie). Odpowiedź = lista bloków: napis – akapit HTML; {\"crm\": klucz} – lista punktów z taryfa-oc-beauty.json → teksty_crm (zdania CRM przytaczane dosłownie). Liczby, nazwy list i taryf, stawki i pozycje ankiety wstawia generator z zabiegi-oc-beauty.json i taryfa-oc-beauty.json: {program.numer}; {lista-1.liczba}, {lista-1.pozycji} (np. „49 pozycji”), {lista-1.nazwa} – także lista-2, ankieta; {ankieta.a}…{ankieta.h} – brzmienie pozycji a–h; {wspolne} – liczba zabiegów na obu listach (sama liczba); {kategoria.K}, {stawka.K.S}, {kwota_6_8.K.S} (z groszami), {suma.S}, {doplata}, {op.skladka}, {reguly_kategorii}; K – klucz taryfy, S – suma. Przykłady zabiegów tylko dosłownie z list ({ankieta.x}) – bez własnych skrótów (plan, uwaga K14). Bez słów o niepewności kwoty i bez rekomendacji wariantów.",
+ "pytania": [
+  {
+   "pytanie": "Co obejmuje OC dla branży beauty w programie ERGO Hestia?",
+   "odpowiedz": [
+    "Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr {program.numer} realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi objęte programem wymieniają listy zabiegów nr 1 i nr 2 w brzmieniu Aneksu nr 5; zabiegi wymagające ankiety ERGO Hestii ({ankieta.pozycji}) podlegają ocenie ubezpieczyciela. Pełny zakres znajdziesz w dokumentach OWU na stronie <a href=\"/dokumenty\">beautypolisa.eu/dokumenty</a>."
+   ]
+  },
+  {
+   "pytanie": "Od czego zależy składka i co jest na listach zabiegów?",
+   "odpowiedz": [
+    "Składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i sumy gwarancyjnej. {reguly_kategorii}",
+    "Listy zabiegów programu: „{lista-1.nazwa}” ({lista-1.pozycji}) i „{lista-2.nazwa}” ({lista-2.pozycji}); część zabiegów ({wspolne}) jest na obu listach. Zabiegi wymagające ankiety ERGO Hestii ({ankieta.pozycji}) – wycena indywidualna. Lista zabiegów podologicznych jest w dokumentach programu. Wszystkie pozycje w brzmieniu Aneksu nr 5 znajdziesz w sekcji <a href=\"#zabiegi\">Listy zabiegów w programie</a>."
+   ]
+  },
+  {
+   "pytanie": "Ile kosztuje OC salonu kosmetycznego?",
+   "odpowiedz": [
+    "Według stałej taryfy programu, gdy zabiegi wykonuje do 5 osób, składka roczna wynosi od {stawka.kosmetyczny_fryzjerski.100000} (taryfa „{kategoria.kosmetyczny_fryzjerski}”, suma gwarancyjna {suma.100000}) do {stawka.pelny.300000} (taryfa „{kategoria.pelny}”, suma gwarancyjna {suma.300000}). Gdy zabiegi wykonuje 6–8 osób, składka z taryfy jest wyższa o {doplata} – np. {kwota_6_8.kosmetologiczny.200000} zamiast {stawka.kosmetologiczny.200000} w taryfie „{kategoria.kosmetologiczny}” przy sumie gwarancyjnej {suma.200000}. Klauzula ochrony prawnej kosztuje dodatkowo {op.skladka} rocznie, bez tej dopłaty. Więcej niż 8 osób wykonujących zabiegi oraz zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna."
+   ]
+  },
+  {
+   "pytanie": "Czym jest klauzula ochrony prawnej i ile kosztuje?",
+   "odpowiedz": [
+    "To rozszerzenie OC w programie o koszty ochrony prawnej w postępowaniach przed sądami polskimi, w których ubezpieczony występuje jako pozwany, podejrzany lub oskarżony, także w postępowaniu dyscyplinarnym. Postępowanie musi być wszczęte na terenie RP w okresie ubezpieczenia i dotyczyć czynności zawodowych objętych umową. Klauzula kosztuje dodatkowo {op.skladka} rocznie. Pełną treść, w tym wyłączenia, znajdziesz w sekcji <a href=\"#ochrona-prawna\">Klauzula ochrony prawnej</a>."
+   ]
+  },
+  {
+   "pytanie": "Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?",
+   "odpowiedz": [
+    "Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „{ankieta.h}”, „{ankieta.a}” i „{ankieta.d}” – wszystkie {ankieta.pozycji} znajdziesz w sekcji <a href=\"#ankieta\">Zabiegi wymagające ankiety ERGO Hestii</a>. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne:",
+    {"crm": "dokumenty_przy_zabiegach_z_ankiety"},
+    "Zostaw kontakt przez <a href=\"makieta-v3.html?produkt=oc-beauty#kontakt\">formularz</a> – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka."
+   ]
+  }
+ ]
+}

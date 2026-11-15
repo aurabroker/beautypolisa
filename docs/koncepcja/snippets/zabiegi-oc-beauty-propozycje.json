@@ -1,5 +1,5 @@
 {
- "$comment": "PROPOZYCJE do późniejszego ułożenia listy zabiegów (12.11.2026) – NIE są używane przez strony ani kalkulator. Decyzja zleceniodawcy 12.11.2026: na razie lista 1:1 jak w źródłach (zabiegi-oc-beauty.json); synonimy, uwagi, przypisanie zawodów, opisy grup i pytania o niejednoznaczności czekają na wspólne ułożenie listy.",
+ "$comment": "PROPOZYCJE do późniejszego ułożenia listy zabiegów (12.11.2026) – NIE są używane przez strony ani kalkulator. Decyzja zleceniodawcy 12.11.2026: na razie lista 1:1 jak w źródłach (zabiegi-oc-beauty.json); synonimy, uwagi, przypisanie zawodów, opisy grup i pytania o niejednoznaczności czekają na wspólne ułożenie listy. Stan wobec wersji 2 listy (14.11.2026, Aneks nr 5 – zabiegi-oc-beauty.json): plik dotyczy wersji 1 listy (117 pozycji w czterech dawnych grupach) – archiwum, nieużywane. Id z wersji 1 nadal wskazują te same zabiegi (id są stałe); pole nazwa to brzmienie z wersji 1, nazwa_v2 – obecne brzmienie (tylko gdy inne), wycofane: true – pozycja usunięta z listy (zabiegi-oc-beauty-wycofane.json), odwolania_wycofane – id wycofanych pozycji przywołane w uwagach. Opisy dawnych grup (opisy_grup) i pytania z do_potwierdzenia opisują podział z wersji 1 – nieaktualne jako opis listy; pytanie 10 dotyczy pozycji ankiety c) i g), których brzmienie zmienił Aneks nr 5 – do ponownej oceny przy ułożeniu listy. Nowe pozycje wersji 2 (14 id) nie mają tu wpisów.",
  "do_potwierdzenia": [
   "Pedicure w trzech grupach: „Pedicure kosmetyczny” (gr. 1), „Pedicure kosmetyczny (niezastrzeżony dla podologów)” (gr. 2) i „Pedicure podologiczny (medyczny) całościowy” (gr. 3) – czym różnią się pozycje z gr. 1 i gr. 2 i co oznacza dopisek „niezastrzeżony dla podologów”?",
   "Czy stylistka paznokci, która przy pedicure kosmetycznym usuwa zrogowacenia lub odciski, mieści się w gr. 1, czy wchodzi w pozycje podologiczne z gr. 3 („Usuwanie zrogowaciałego naskórka”, „Opracowanie modzeli, odcisków, nagniotków”)?",
@@ -186,7 +186,8 @@
    "zawody": [
     "fryzjer"
    ],
-   "uwagi": "Celowo bez synonimu „botoks na włosy”: to potoczna, marketingowa nazwa kuracji włosów (bez toksyny botulinowej), która myli się z „Zabiegi z użyciem toksyny botulinowej” (g4-02, grupa 4); nie wiadomo też, czy to ta pozycja, czy „Zabiegi keratynowe” (g1-37) – do potwierdzenia."
+   "uwagi": "Celowo bez synonimu „botoks na włosy”: to potoczna, marketingowa nazwa kuracji włosów (bez toksyny botulinowej), która myli się z „Zabiegi z użyciem toksyny botulinowej” (g4-02, grupa 4); nie wiadomo też, czy to ta pozycja, czy „Zabiegi keratynowe” (g1-37) – do potwierdzenia.",
+   "nazwa_v2": "Kuracje nawilżające, regenerujące i odbudowujące włosy"
   },
   {
    "id": "g1-14",
@@ -280,7 +281,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "„Masaż Kobido” (japoński masaż twarzy) jest w grupie 2 (g2-14)."
+   "uwagi": "„Masaż Kobido” (japoński masaż twarzy) jest w grupie 2 (g2-14).",
+   "nazwa_v2": "Masaż manualny ciała, w tym masaż głowy i twarzy"
   },
   {
    "id": "g1-22",
@@ -325,7 +327,13 @@
     "stylistka-paznokci",
     "kosmetolog"
    ],
-   "uwagi": "Ten sam rodzaj zabiegu występuje w grupie 2 jako „Pedicure kosmetyczny (niezastrzeżony dla podologów)” (g2-25), a pedicure podologiczny w grupie 3 (g3-23); usuwanie zrogowaceń i odcisków to pozycje grupy 3 (g3-19, g3-27, g3-30) – do potwierdzenia granice."
+   "uwagi": "Ten sam rodzaj zabiegu występuje w grupie 2 jako „Pedicure kosmetyczny (niezastrzeżony dla podologów)” (g2-25), a pedicure podologiczny w grupie 3 (g3-23); usuwanie zrogowaceń i odcisków to pozycje grupy 3 (g3-19, g3-27, g3-30) – do potwierdzenia granice.",
+   "odwolania_wycofane": [
+    "g3-19",
+    "g3-23",
+    "g3-27",
+    "g3-30"
+   ]
   },
   {
    "id": "g1-26",
@@ -337,7 +345,8 @@
    "zawody": [
     "tatuazysta"
    ],
-   "uwagi": "Przekłuwanie uszu ma osobną pozycję (g1-28) – też grupa 1."
+   "uwagi": "Przekłuwanie uszu ma osobną pozycję (g1-28) – też grupa 1.",
+   "nazwa_v2": "Piercing – przekłuwanie innych części ciała"
   },
   {
    "id": "g1-27",
@@ -429,7 +438,8 @@
    ],
    "zawody": [
     "fryzjer"
-   ]
+   ],
+   "nazwa_v2": "Strzyżenie nożyczkami, maszynką, brzytwą oraz metodą Split-ender i Hair-dusting; trymowanie"
   },
   {
    "id": "g1-35",
@@ -449,7 +459,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Nazwa ogólna – do potwierdzenia, gdzie przebiega granica z „Różnorodne peelingi chemiczne” (g2-29) i mezoterapią bezigłową (g2-15) w grupie 2; dlatego bez synonimów. Słowa „kwasy” nie ma w synonimach żadnej pozycji, dopóki granica nie zostanie potwierdzona."
+   "uwagi": "Nazwa ogólna – do potwierdzenia, gdzie przebiega granica z „Różnorodne peelingi chemiczne” (g2-29) i mezoterapią bezigłową (g2-15) w grupie 2; dlatego bez synonimów. Słowa „kwasy” nie ma w synonimach żadnej pozycji, dopóki granica nie zostanie potwierdzona.",
+   "nazwa_v2": "Wykonywanie zabiegów kosmetycznych z zastosowaniem składników aktywnych"
   },
   {
    "id": "g1-37",
@@ -483,7 +494,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Bez synonimu „lampa LED” – tak nazywa się też lampa do utwardzania lakieru hybrydowego i żelu (manicure), która nie jest tym zabiegiem."
+   "uwagi": "Bez synonimu „lampa LED” – tak nazywa się też lampa do utwardzania lakieru hybrydowego i żelu (manicure), która nie jest tym zabiegiem.",
+   "nazwa_v2": "Zabiegi wykorzystujące terapeutyczne działanie światła – światło LED i jego pochodnych"
   },
   {
    "id": "g1-40",
@@ -576,7 +588,10 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "„Terapia nadpotliwości stóp (jonoforeza)” jest w grupie 3 (g3-29) – ta pozycja dotyczy jonoforezy kosmetycznej; do potwierdzenia."
+   "uwagi": "„Terapia nadpotliwości stóp (jonoforeza)” jest w grupie 3 (g3-29) – ta pozycja dotyczy jonoforezy kosmetycznej; do potwierdzenia.",
+   "odwolania_wycofane": [
+    "g3-29"
+   ]
   },
   {
    "id": "g2-09",
@@ -585,7 +600,10 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Celowo bez synonimu „CO2”: CO2 występuje też w Cool Lifting (g2-02), krioterapii (g3-15) i laserze CO2 (ablacyjny, grupa 4)."
+   "uwagi": "Celowo bez synonimu „CO2”: CO2 występuje też w Cool Lifting (g2-02), krioterapii (g3-15) i laserze CO2 (ablacyjny, grupa 4).",
+   "odwolania_wycofane": [
+    "g3-15"
+   ]
   },
   {
    "id": "g2-10",
@@ -642,7 +660,8 @@
    ],
    "zawody": [
     "kosmetolog"
-   ]
+   ],
+   "nazwa_v2": "Masaż kobido"
   },
   {
    "id": "g2-15",
@@ -764,7 +783,8 @@
     "stylistka-paznokci",
     "kosmetolog"
    ],
-   "uwagi": "Ten sam rodzaj zabiegu co „Pedicure kosmetyczny” w grupie 1 (g1-25) – do potwierdzenia znaczenie dopisku „niezastrzeżony dla podologów” i różnica między pozycjami; bez synonimów, żeby wyszukiwarka nie kierowała pedicure do grupy 2."
+   "uwagi": "Ten sam rodzaj zabiegu co „Pedicure kosmetyczny” w grupie 1 (g1-25) – do potwierdzenia znaczenie dopisku „niezastrzeżony dla podologów” i różnica między pozycjami; bez synonimów, żeby wyszukiwarka nie kierowała pedicure do grupy 2.",
+   "nazwa_v2": "Pedicure kosmetyczny w zakresie zabiegów niezastrzeżonych dla podologów"
   },
   {
    "id": "g2-26",
@@ -852,7 +872,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Bez synonimu „termolifting” – nazwa marketingowa, używana też dla innych technologii (np. podczerwień, ultradźwięki skupione HIFU z grupy 4)."
+   "uwagi": "Bez synonimu „termolifting” – nazwa marketingowa, używana też dla innych technologii (np. podczerwień, ultradźwięki skupione HIFU z grupy 4).",
+   "nazwa_v2": "Zabiegi z zastosowaniem fali radiowej"
   },
   {
    "id": "g2-34",
@@ -863,7 +884,8 @@
    ],
    "zawody": [
     "kosmetolog"
-   ]
+   ],
+   "nazwa_v2": "Zabiegi wykorzystujące światło IPL: fotoodmładzanie, likwidowanie przebarwień, terapia trądziku, zamykanie naczyń – teleangiektazje, usuwanie zbędnego owłosienia"
   },
   {
    "id": "g2-35",
@@ -872,7 +894,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Celowo bez synonimu „laser frakcyjny”: lasery frakcyjne ablacyjne (np. frakcyjny CO2) to „Zabiegi laserem ablacyjnym” w grupie 4 (g4-08)."
+   "uwagi": "Celowo bez synonimu „laser frakcyjny”: lasery frakcyjne ablacyjne (np. frakcyjny CO2) to „Zabiegi laserem ablacyjnym” w grupie 4 (g4-08).",
+   "nazwa_v2": "Zabiegi z zastosowaniem lasera frakcyjnego nieablacyjnego, laser subablacyjny"
   },
   {
    "id": "g2-36",
@@ -886,7 +909,8 @@
    "zawody": [
     "kosmetolog",
     "linergistka"
-   ]
+   ],
+   "nazwa_v2": "Zabiegi z wykorzystaniem laserów nieablacyjnych, w tym laserowe zamykanie naczyń – teleangiektazje, usuwanie tatuażu i makijażu permanentnego, usuwanie zbędnego owłosienia"
   },
   {
    "id": "g2-37",
@@ -920,7 +944,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-02",
@@ -932,7 +957,11 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Pokrywa się z „Pobieranie próbek do badań” (g3-24) – obie w grupie 3."
+   "uwagi": "Pokrywa się z „Pobieranie próbek do badań” (g3-24) – obie w grupie 3.",
+   "wycofane": true,
+   "odwolania_wycofane": [
+    "g3-24"
+   ]
   },
   {
    "id": "g3-03",
@@ -942,7 +971,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-04",
@@ -951,7 +981,8 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Zabieg podologiczny (rekonstrukcja wyglądu paznokcia zmienionego chorobowo) – nie jest to manicure ani pedicure kosmetyczny z lakierem."
+   "uwagi": "Zabieg podologiczny (rekonstrukcja wyglądu paznokcia zmienionego chorobowo) – nie jest to manicure ani pedicure kosmetyczny z lakierem.",
+   "wycofane": true
   },
   {
    "id": "g3-05",
@@ -963,7 +994,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-06",
@@ -971,7 +1003,8 @@
    "synonimy": [],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-07",
@@ -982,7 +1015,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-08",
@@ -993,7 +1027,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-09",
@@ -1004,7 +1039,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-10",
@@ -1013,7 +1049,8 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Nazwa nie wskazuje okolicy – przyjęto, że dotyczy stóp (grupa podologiczna); kuracje włosów to g1-13. Do potwierdzenia. Bez synonimów typu „nawilżanie stóp” – nawilżanie i maski na stopy są też częścią pedicure kosmetycznego (g1-25, grupa 1), więc wyszukiwarka kierowałaby stylistki paznokci do grupy 3."
+   "uwagi": "Nazwa nie wskazuje okolicy – przyjęto, że dotyczy stóp (grupa podologiczna); kuracje włosów to g1-13. Do potwierdzenia. Bez synonimów typu „nawilżanie stóp” – nawilżanie i maski na stopy są też częścią pedicure kosmetycznego (g1-25, grupa 1), więc wyszukiwarka kierowałaby stylistki paznokci do grupy 3.",
+   "wycofane": true
   },
   {
    "id": "g3-11",
@@ -1026,7 +1063,12 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Bez synonimu „wrastające paznokcie” – to dolegliwość, nie zabieg; wrastający paznokieć opracowuje się też bez klamry (np. g3-21, g3-31)."
+   "uwagi": "Bez synonimu „wrastające paznokcie” – to dolegliwość, nie zabieg; wrastający paznokieć opracowuje się też bez klamry (np. g3-21, g3-31).",
+   "wycofane": true,
+   "odwolania_wycofane": [
+    "g3-21",
+    "g3-31"
+   ]
   },
   {
    "id": "g3-12",
@@ -1036,7 +1078,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-13",
@@ -1045,7 +1088,8 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Bez synonimu „wizyta kontrolna” – wizyty kontrolne są też po makijażu permanentnym (grupa 2) i po zabiegach z grupy 4."
+   "uwagi": "Bez synonimu „wizyta kontrolna” – wizyty kontrolne są też po makijażu permanentnym (grupa 2) i po zabiegach z grupy 4.",
+   "wycofane": true
   },
   {
    "id": "g3-14",
@@ -1057,7 +1101,8 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Synonimy ograniczone do tapingu i fiksatorów – sama nazwa dolegliwości („haluksy”) sugerowałaby leczenie, w tym operacyjne, którego ta pozycja nie obejmuje."
+   "uwagi": "Synonimy ograniczone do tapingu i fiksatorów – sama nazwa dolegliwości („haluksy”) sugerowałaby leczenie, w tym operacyjne, którego ta pozycja nie obejmuje.",
+   "wycofane": true
   },
   {
    "id": "g3-15",
@@ -1069,7 +1114,8 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Pozycja w grupie podologicznej – do potwierdzenia, czy obejmuje też krioterapię zmian skórnych poza stopami wykonywaną przez kosmetologa. Nie mylić z „Cool Lifting” (g2-02, grupa 2), w którym też używa się CO2."
+   "uwagi": "Pozycja w grupie podologicznej – do potwierdzenia, czy obejmuje też krioterapię zmian skórnych poza stopami wykonywaną przez kosmetologa. Nie mylić z „Cool Lifting” (g2-02, grupa 2), w którym też używa się CO2.",
+   "wycofane": true
   },
   {
    "id": "g3-16",
@@ -1080,7 +1126,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-17",
@@ -1090,7 +1137,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-18",
@@ -1101,7 +1149,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-19",
@@ -1114,7 +1163,12 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Pokrywa się z „Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin” (g3-27) i „Usuwanie zrogowaciałego naskórka” (g3-30) – wszystkie w grupie 3."
+   "uwagi": "Pokrywa się z „Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin” (g3-27) i „Usuwanie zrogowaciałego naskórka” (g3-30) – wszystkie w grupie 3.",
+   "wycofane": true,
+   "odwolania_wycofane": [
+    "g3-27",
+    "g3-30"
+   ]
   },
   {
    "id": "g3-20",
@@ -1125,7 +1179,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-21",
@@ -1135,7 +1190,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-22",
@@ -1146,7 +1202,8 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Pozycja w grupie podologicznej – do potwierdzenia, czy obejmuje wyłącznie ozonoterapię stóp."
+   "uwagi": "Pozycja w grupie podologicznej – do potwierdzenia, czy obejmuje wyłącznie ozonoterapię stóp.",
+   "wycofane": true
   },
   {
    "id": "g3-23",
@@ -1156,7 +1213,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-24",
@@ -1166,7 +1224,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-25",
@@ -1177,7 +1236,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-26",
@@ -1189,7 +1249,8 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Rekonstrukcja paznokcia zmienionego chorobowo – nie jest to przedłużanie ani stylizacja paznokci."
+   "uwagi": "Rekonstrukcja paznokcia zmienionego chorobowo – nie jest to przedłużanie ani stylizacja paznokci.",
+   "wycofane": true
   },
   {
    "id": "g3-27",
@@ -1198,7 +1259,11 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Pokrywa się z „Opracowanie modzeli, odcisków, nagniotków” (g3-19) – obie w grupie 3."
+   "uwagi": "Pokrywa się z „Opracowanie modzeli, odcisków, nagniotków” (g3-19) – obie w grupie 3.",
+   "wycofane": true,
+   "odwolania_wycofane": [
+    "g3-19"
+   ]
   },
   {
    "id": "g3-28",
@@ -1209,7 +1274,8 @@
    ],
    "zawody": [
     "podolog"
-   ]
+   ],
+   "wycofane": true
   },
   {
    "id": "g3-29",
@@ -1220,7 +1286,8 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "„Jonoforeza” (kosmetyczna) jest w grupie 2 (g2-08) – do potwierdzenia. Pozycja dotyczy jonoforezy; bez synonimów typu „nadpotliwość stóp”, bo nadpotliwość leczy się też toksyną botulinową (g4-02, grupa 4)."
+   "uwagi": "„Jonoforeza” (kosmetyczna) jest w grupie 2 (g2-08) – do potwierdzenia. Pozycja dotyczy jonoforezy; bez synonimów typu „nadpotliwość stóp”, bo nadpotliwość leczy się też toksyną botulinową (g4-02, grupa 4).",
+   "wycofane": true
   },
   {
    "id": "g3-30",
@@ -1232,7 +1299,8 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Usuwanie zrogowaceń bywa częścią pedicure kosmetycznego (g1-25, grupa 1) – do potwierdzenia, czy stylistka paznokci wykonująca pedicure z usuwaniem zrogowaceń mieści się w grupie 1."
+   "uwagi": "Usuwanie zrogowaceń bywa częścią pedicure kosmetycznego (g1-25, grupa 1) – do potwierdzenia, czy stylistka paznokci wykonująca pedicure z usuwaniem zrogowaceń mieści się w grupie 1.",
+   "wycofane": true
   },
   {
    "id": "g3-31",
@@ -1244,7 +1312,8 @@
    "zawody": [
     "podolog"
    ],
-   "uwagi": "Celowo bez synonimu „frezowanie”: frezarki używa się też w manicure i pedicure kosmetycznym (grupa 1)."
+   "uwagi": "Celowo bez synonimu „frezowanie”: frezarki używa się też w manicure i pedicure kosmetycznym (grupa 1).",
+   "wycofane": true
   },
   {
    "id": "g4-01",
@@ -1255,7 +1324,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Bez synonimu „lifting SMAS” – to nazwa marketingowa, a „lifting SMAS” oznacza też operację chirurgiczną. Granica z „Fala akustyczna i energia wysokiej częstotliwości” (g2-06) i „Kawitacja ultradźwiękowa” (g2-10) – do potwierdzenia, które urządzenia ultradźwiękowe (np. ultradźwięki mikroogniskowane) należą do grupy 4."
+   "uwagi": "Bez synonimu „lifting SMAS” – to nazwa marketingowa, a „lifting SMAS” oznacza też operację chirurgiczną. Granica z „Fala akustyczna i energia wysokiej częstotliwości” (g2-06) i „Kawitacja ultradźwiękowa” (g2-10) – do potwierdzenia, które urządzenia ultradźwiękowe (np. ultradźwięki mikroogniskowane) należą do grupy 4.",
+   "nazwa_v2": "Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)"
   },
   {
    "id": "g4-02",
@@ -1267,7 +1337,10 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "„Botoks na włosy” (potoczna nazwa kuracji włosów bez toksyny botulinowej) nie jest tą pozycją – to usługa fryzjerska, nie ma jej w synonimach (zob. g1-13). Leczenie nadpotliwości toksyną botulinową należy do tej pozycji, nie do „Terapia nadpotliwości stóp (jonoforeza)” (g3-29)."
+   "uwagi": "„Botoks na włosy” (potoczna nazwa kuracji włosów bez toksyny botulinowej) nie jest tą pozycją – to usługa fryzjerska, nie ma jej w synonimach (zob. g1-13). Leczenie nadpotliwości toksyną botulinową należy do tej pozycji, nie do „Terapia nadpotliwości stóp (jonoforeza)” (g3-29).",
+   "odwolania_wycofane": [
+    "g3-29"
+   ]
   },
   {
    "id": "g4-03",
@@ -1276,7 +1349,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Nie mylić z „Zabiegi technologią PLASMA” (g4-04) – angielskie „plasma” to też osocze. Bez synonimu „wampirzy lifting” (nazwa marketingowa). Fibryna bogatopłytkowa (PRF) nie ma własnej pozycji – do potwierdzenia, czy należy do tej pozycji."
+   "uwagi": "Nie mylić z „Zabiegi technologią PLASMA” (g4-04) – angielskie „plasma” to też osocze. Bez synonimu „wampirzy lifting” (nazwa marketingowa). Fibryna bogatopłytkowa (PRF) nie ma własnej pozycji – do potwierdzenia, czy należy do tej pozycji.",
+   "nazwa_v2": "Zabiegi z użyciem fibryny, osocza bogatopłytkowego i wypełniaczy autologicznych"
   },
   {
    "id": "g4-04",
@@ -1288,7 +1362,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Nie mylić z osoczem bogatopłytkowym (g4-03). Do potwierdzenia, czy pozycja obejmuje też głowice „zimnej plazmy” w urządzeniach wielofunkcyjnych (np. przy oczyszczaniu twarzy), czy tylko urządzenia typu plasma pen."
+   "uwagi": "Nie mylić z osoczem bogatopłytkowym (g4-03). Do potwierdzenia, czy pozycja obejmuje też głowice „zimnej plazmy” w urządzeniach wielofunkcyjnych (np. przy oczyszczaniu twarzy), czy tylko urządzenia typu plasma pen.",
+   "nazwa_v2": "Zabiegi z użyciem urządzeń wykorzystujących technologię PLASMA"
   },
   {
    "id": "g4-05",
@@ -1300,7 +1375,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Do potwierdzenia: czy biorewitalizacja i tzw. skin boostery na bazie kwasu hialuronowego należą do tej pozycji, czy do „Mezoterapia igłowa” (g2-16). Bez samego „kwas hialuronowy” (występuje też w mezoterapii i kosmetykach) ani samego „filler” – wypełniacze na innej bazie (np. hydroksyapatyt wapnia, kwas polimlekowy) nie mają pozycji na liście. Bez „modelowanie ust” – myli się z pigmentacją ust (g2-13)."
+   "uwagi": "Do potwierdzenia: czy biorewitalizacja i tzw. skin boostery na bazie kwasu hialuronowego należą do tej pozycji, czy do „Mezoterapia igłowa” (g2-16). Bez samego „kwas hialuronowy” (występuje też w mezoterapii i kosmetykach) ani samego „filler” – wypełniacze na innej bazie (np. hydroksyapatyt wapnia, kwas polimlekowy) nie mają pozycji na liście. Bez „modelowanie ust” – myli się z pigmentacją ust (g2-13).",
+   "nazwa_v2": "Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego"
   },
   {
    "id": "g4-06",
@@ -1312,7 +1388,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Synonimy ograniczone do nici PDO – nici z innych materiałów (np. PLLA, PCL) nie mają pozycji na liście; do potwierdzenia z ERGO Hestią (ankieta, pkt „Inny”)."
+   "uwagi": "Synonimy ograniczone do nici PDO – nici z innych materiałów (np. PLLA, PCL) nie mają pozycji na liście; do potwierdzenia z ERGO Hestią (ankieta, pkt „Inny”).",
+   "nazwa_v2": "Zabiegi z użyciem nici PDO, PLLA i PLA/CL"
   },
   {
    "id": "g4-07",
@@ -1324,7 +1401,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Nie mylić z „Kriolipoliza” (g2-11, grupa 2) – wyszukiwanie „lipoliza” zwróci obie pozycje."
+   "uwagi": "Nie mylić z „Kriolipoliza” (g2-11, grupa 2) – wyszukiwanie „lipoliza” zwróci obie pozycje.",
+   "nazwa_v2": "Zabiegi lipolizy iniekcyjnej"
   },
   {
    "id": "g4-08",
@@ -1336,7 +1414,8 @@
    "zawody": [
     "kosmetolog"
    ],
-   "uwagi": "Granica z „Zabiegi laserem frakcyjnym nieablacyjnym” (g2-35, grupa 2) – do potwierdzenia, że każdy laser frakcyjny ablacyjny (CO2, erbowy ablacyjny) należy do grupy 4."
+   "uwagi": "Granica z „Zabiegi laserem frakcyjnym nieablacyjnym” (g2-35, grupa 2) – do potwierdzenia, że każdy laser frakcyjny ablacyjny (CO2, erbowy ablacyjny) należy do grupy 4.",
+   "nazwa_v2": "Zabiegi laserami ablacyjnymi i frakcyjno-ablacyjnymi"
   }
  ]
 }

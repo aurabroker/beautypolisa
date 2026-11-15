@@ -1,0 +1,1898 @@
+{
+ "$comment": "Fixture kalkulatora OC (plan „OC beauty po Aneksie nr 5”, rozdz. 8) – wyniki według reguł CRM (crmaura/src/lib/renewals/program.ts: KATEGORIE, DOPLATA_6_8_OSOB, OCHRONA_PRAWNA_SKLADKA, kategoriaZRodzajow, skladkaProgramu, wycenaNowej). Grupy: A – rodzaje → kategoria, B – sumy, osoby, ochrona prawna, grosze, C – więcej niż 8 osób, D – zabiegi wymagające ankiety, E – wyszukiwarka, F – braki danych. tylko_portal = true (F1–F5): stany interfejsu portalu, których CRM nie wycenia (wycenaNowej bez sumy zwraca null, bez rodzaju – „brak danych do wyceny”) – porównanie z CRM obejmuje 44 przypadki A–E. zabiegi_ankieta – dosłowne nazwy z ZABIEGI_ANKIETA w CRM (mapa litera a–h ↔ id g4-xx ↔ nazwa: snippets/zabiegi-oc-beauty.json, pozycje listy „ankieta”). oczekiwane.tekst i opis – format portalu (kwota z groszami, spacje twarde U+00A0, sumy „200 tys. zł”); tekst_crm i opis_crm – dosłownie jak CRM (formatZl, opis skladkaProgramu). kombinacje_rodzajow – 64 kombinacje 6 rodzajów z wynikiem kategoriaZRodzajow; kwoty_taryfy – 36 kwot (3 kategorie × 3 sumy × 1–5/6–8 × ochrona prawna). Kontrole: kontrola/oc/oc-skladka.test.js (oc-skladka.js), check_zgodnosc_crm.py (niezależnie, ze stałymi i kodem CRM).",
+ "przypadki": [
+  {
+   "id": "A1",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 500.0,
+    "tekst": "500,00\u00a0zł",
+    "tekst_crm": "500,00 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 200\u00a0tys.\u00a0zł: 500\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 200.000 zł: 500 zł"
+   }
+  },
+  {
+   "id": "A2",
+   "tylko_portal": false,
+   "rodzaje": [
+    "fryzjerski"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 500.0,
+    "tekst": "500,00\u00a0zł",
+    "tekst_crm": "500,00 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 200\u00a0tys.\u00a0zł: 500\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 200.000 zł: 500 zł"
+   }
+  },
+  {
+   "id": "A3",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 790.0,
+    "tekst": "790,00\u00a0zł",
+    "tekst_crm": "790,00 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł"
+   }
+  },
+  {
+   "id": "A4",
+   "tylko_portal": false,
+   "rodzaje": [
+    "podologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 980.0,
+    "tekst": "980,00\u00a0zł",
+    "tekst_crm": "980,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200.000 zł: 980 zł"
+   }
+  },
+  {
+   "id": "A5",
+   "tylko_portal": false,
+   "rodzaje": [
+    "masaz"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 500.0,
+    "tekst": "500,00\u00a0zł",
+    "tekst_crm": "500,00 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 200\u00a0tys.\u00a0zł: 500\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 200.000 zł: 500 zł"
+   }
+  },
+  {
+   "id": "A6",
+   "tylko_portal": false,
+   "rodzaje": [
+    "tatuaz"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 790.0,
+    "tekst": "790,00\u00a0zł",
+    "tekst_crm": "790,00 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł"
+   }
+  },
+  {
+   "id": "A7",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 790.0,
+    "tekst": "790,00\u00a0zł",
+    "tekst_crm": "790,00 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł"
+   }
+  },
+  {
+   "id": "A8",
+   "tylko_portal": false,
+   "rodzaje": [
+    "fryzjerski",
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 980.0,
+    "tekst": "980,00\u00a0zł",
+    "tekst_crm": "980,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200.000 zł: 980 zł"
+   }
+  },
+  {
+   "id": "A9",
+   "tylko_portal": false,
+   "rodzaje": [
+    "fryzjerski",
+    "tatuaz"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 980.0,
+    "tekst": "980,00\u00a0zł",
+    "tekst_crm": "980,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200.000 zł: 980 zł"
+   }
+  },
+  {
+   "id": "A10",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 500.0,
+    "tekst": "500,00\u00a0zł",
+    "tekst_crm": "500,00 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 200\u00a0tys.\u00a0zł: 500\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 200.000 zł: 500 zł"
+   }
+  },
+  {
+   "id": "A11",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny",
+    "tatuaz",
+    "masaz"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 790.0,
+    "tekst": "790,00\u00a0zł",
+    "tekst_crm": "790,00 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł"
+   }
+  },
+  {
+   "id": "A12",
+   "tylko_portal": false,
+   "rodzaje": [
+    "masaz",
+    "podologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 980.0,
+    "tekst": "980,00\u00a0zł",
+    "tekst_crm": "980,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200.000 zł: 980 zł"
+   }
+  },
+  {
+   "id": "A13",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "kosmetologiczny",
+    "podologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 980.0,
+    "tekst": "980,00\u00a0zł",
+    "tekst_crm": "980,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200.000 zł: 980 zł"
+   }
+  },
+  {
+   "id": "A14",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny",
+    "tatuaz"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 790.0,
+    "tekst": "790,00\u00a0zł",
+    "tekst_crm": "790,00 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł"
+   }
+  },
+  {
+   "id": "A15",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny",
+    "podologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 980.0,
+    "tekst": "980,00\u00a0zł",
+    "tekst_crm": "980,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200.000 zł: 980 zł"
+   }
+  },
+  {
+   "id": "B1",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny"
+   ],
+   "osoby": "1-5",
+   "suma": 100000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 400.0,
+    "tekst": "400,00\u00a0zł",
+    "tekst_crm": "400,00 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 100\u00a0tys.\u00a0zł: 400\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 100.000 zł: 400 zł"
+   }
+  },
+  {
+   "id": "B2",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny"
+   ],
+   "osoby": "1-5",
+   "suma": 100000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 492.0,
+    "tekst": "492,00\u00a0zł",
+    "tekst_crm": "492,00 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 100\u00a0tys.\u00a0zł: 400\u00a0zł, +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 100.000 zł: 400 zł, +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "B3",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny"
+   ],
+   "osoby": "6-8",
+   "suma": 300000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 812.5,
+    "tekst": "812,50\u00a0zł",
+    "tekst_crm": "812,50 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 300\u00a0tys.\u00a0zł: 650\u00a0zł, +25% (6–8\u00a0osób)",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 300.000 zł: 650 zł, +25% (6–8 osób)"
+   }
+  },
+  {
+   "id": "B4",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny"
+   ],
+   "osoby": "6-8",
+   "suma": 300000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 904.5,
+    "tekst": "904,50\u00a0zł",
+    "tekst_crm": "904,50 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 300\u00a0tys.\u00a0zł: 650\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 300.000 zł: 650 zł, +25% (6–8 osób), +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "B5",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "6-8",
+   "suma": 100000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 812.5,
+    "tekst": "812,50\u00a0zł",
+    "tekst_crm": "812,50 zł",
+    "opis": "Gabinety kosmetologiczne, suma 100\u00a0tys.\u00a0zł: 650\u00a0zł, +25% (6–8\u00a0osób)",
+    "opis_crm": "Gabinety kosmetologiczne, suma 100.000 zł: 650 zł, +25% (6–8 osób)"
+   }
+  },
+  {
+   "id": "B6",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "6-8",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 987.5,
+    "tekst": "987,50\u00a0zł",
+    "tekst_crm": "987,50 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł, +25% (6–8\u00a0osób)",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł, +25% (6–8 osób)"
+   }
+  },
+  {
+   "id": "B7",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "6-8",
+   "suma": 200000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 1079.5,
+    "tekst": "1\u00a0079,50\u00a0zł",
+    "tekst_crm": "1079,50 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł, +25% (6–8 osób), +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "B8",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "6-8",
+   "suma": 300000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 1279.5,
+    "tekst": "1\u00a0279,50\u00a0zł",
+    "tekst_crm": "1279,50 zł",
+    "opis": "Gabinety kosmetologiczne, suma 300\u00a0tys.\u00a0zł: 950\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetologiczne, suma 300.000 zł: 950 zł, +25% (6–8 osób), +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "B9",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 882.0,
+    "tekst": "882,00\u00a0zł",
+    "tekst_crm": "882,00 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł, +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł, +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "B10",
+   "tylko_portal": false,
+   "rodzaje": [
+    "fryzjerski",
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 300000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 1250.0,
+    "tekst": "1\u00a0250,00\u00a0zł",
+    "tekst_crm": "1250,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300\u00a0tys.\u00a0zł: 1\u00a0250\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300.000 zł: 1250 zł"
+   }
+  },
+  {
+   "id": "B11",
+   "tylko_portal": false,
+   "rodzaje": [
+    "podologiczny"
+   ],
+   "osoby": "6-8",
+   "suma": 100000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 1062.5,
+    "tekst": "1\u00a0062,50\u00a0zł",
+    "tekst_crm": "1062,50 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 100\u00a0tys.\u00a0zł: 850\u00a0zł, +25% (6–8\u00a0osób)",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 100.000 zł: 850 zł, +25% (6–8 osób)"
+   }
+  },
+  {
+   "id": "B12",
+   "tylko_portal": false,
+   "rodzaje": [
+    "podologiczny"
+   ],
+   "osoby": "6-8",
+   "suma": 300000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 1654.5,
+    "tekst": "1\u00a0654,50\u00a0zł",
+    "tekst_crm": "1654,50 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300\u00a0tys.\u00a0zł: 1\u00a0250\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300.000 zł: 1250 zł, +25% (6–8 osób), +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "B13",
+   "tylko_portal": false,
+   "rodzaje": [
+    "podologiczny"
+   ],
+   "osoby": "6-8",
+   "suma": 200000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 1317.0,
+    "tekst": "1\u00a0317,00\u00a0zł",
+    "tekst_crm": "1317,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200.000 zł: 980 zł, +25% (6–8 osób), +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "B14",
+   "tylko_portal": false,
+   "rodzaje": [
+    "fryzjerski"
+   ],
+   "osoby": "6-8",
+   "suma": 200000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 717.0,
+    "tekst": "717,00\u00a0zł",
+    "tekst_crm": "717,00 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 200\u00a0tys.\u00a0zł: 500\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 200.000 zł: 500 zł, +25% (6–8 osób), +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "B15",
+   "tylko_portal": false,
+   "rodzaje": [
+    "tatuaz"
+   ],
+   "osoby": "1-5",
+   "suma": 100000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 650.0,
+    "tekst": "650,00\u00a0zł",
+    "tekst_crm": "650,00 zł",
+    "opis": "Gabinety kosmetologiczne, suma 100\u00a0tys.\u00a0zł: 650\u00a0zł",
+    "opis_crm": "Gabinety kosmetologiczne, suma 100.000 zł: 650 zł"
+   }
+  },
+  {
+   "id": "B16",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "kosmetologiczny",
+    "podologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "osoby": "1-5",
+   "suma": 300000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 1342.0,
+    "tekst": "1\u00a0342,00\u00a0zł",
+    "tekst_crm": "1342,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300\u00a0tys.\u00a0zł: 1\u00a0250\u00a0zł, +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300.000 zł: 1250 zł, +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "B17",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny"
+   ],
+   "osoby": "6-8",
+   "suma": 300000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 1279.5,
+    "tekst": "1\u00a0279,50\u00a0zł",
+    "tekst_crm": "1279,50 zł",
+    "opis": "Gabinety kosmetologiczne, suma 300\u00a0tys.\u00a0zł: 950\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetologiczne, suma 300.000 zł: 950 zł, +25% (6–8 osób), +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "B18",
+   "tylko_portal": false,
+   "rodzaje": [
+    "masaz"
+   ],
+   "osoby": "6-8",
+   "suma": 100000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 592.0,
+    "tekst": "592,00\u00a0zł",
+    "tekst_crm": "592,00 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 100\u00a0tys.\u00a0zł: 400\u00a0zł, +25% (6–8\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 100.000 zł: 400 zł, +25% (6–8 osób), +92 zł ochrona prawna"
+   }
+  },
+  {
+   "id": "C1",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny"
+   ],
+   "osoby": "9+",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "indywidualna",
+    "powod": "gabinet zatrudnia więcej niż 8 osób"
+   }
+  },
+  {
+   "id": "C2",
+   "tylko_portal": false,
+   "rodzaje": [
+    "podologiczny"
+   ],
+   "osoby": "9+",
+   "suma": 300000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "indywidualna",
+    "powod": "gabinet zatrudnia więcej niż 8 osób"
+   }
+  },
+  {
+   "id": "D1",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": true,
+   "zabiegi_ankieta": [
+    "Zabiegi z użyciem toksyny botulinowej"
+   ],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "indywidualna",
+    "powod": "zabiegi wymagające ankiety podlegają ocenie ubezpieczyciela"
+   }
+  },
+  {
+   "id": "D2",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny"
+   ],
+   "osoby": "9+",
+   "suma": 100000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": true,
+   "zabiegi_ankieta": [
+    "Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego"
+   ],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "indywidualna",
+    "powod": "zabiegi wymagające ankiety podlegają ocenie ubezpieczyciela"
+   }
+  },
+  {
+   "id": "D3",
+   "tylko_portal": false,
+   "rodzaje": [
+    "fryzjerski"
+   ],
+   "osoby": "6-8",
+   "suma": 300000,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": true,
+   "zabiegi_ankieta": [
+    "Zabiegi z użyciem fibryny, osocza bogatopłytkowego i wypełniaczy autologicznych",
+    "Zabiegi z użyciem nici PDO, PLLA i PLA/CL"
+   ],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "indywidualna",
+    "powod": "zabiegi wymagające ankiety podlegają ocenie ubezpieczyciela"
+   }
+  },
+  {
+   "id": "D4",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": true,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 790.0,
+    "tekst": "790,00\u00a0zł",
+    "tekst_crm": "790,00 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł",
+    "komunikat_ankiety": "Zaznacz zabiegi wymagające ankiety (albo odznacz tę pozycję)."
+   }
+  },
+  {
+   "id": "D5",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 100000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": true,
+   "zabiegi_ankieta": [
+    "Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego",
+    "Zabiegi lipolizy iniekcyjnej",
+    "Zabiegi z użyciem fibryny, osocza bogatopłytkowego i wypełniaczy autologicznych",
+    "Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)",
+    "Zabiegi z użyciem urządzeń wykorzystujących technologię PLASMA",
+    "Zabiegi laserami ablacyjnymi i frakcyjno-ablacyjnymi",
+    "Zabiegi z użyciem nici PDO, PLLA i PLA/CL",
+    "Zabiegi z użyciem toksyny botulinowej"
+   ],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "indywidualna",
+    "powod": "zabiegi wymagające ankiety podlegają ocenie ubezpieczyciela"
+   }
+  },
+  {
+   "id": "E1",
+   "tylko_portal": false,
+   "rodzaje": [
+    "fryzjerski"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": {
+    "fraza": "microblading",
+    "wybrano": "g2-18",
+    "listy": [
+     "lista-2"
+    ],
+    "opis": "wybrano „Microblading” (tylko lista nr 2)"
+   },
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetyczny_fryzjerski",
+    "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+    "kwota": 500.0,
+    "tekst": "500,00\u00a0zł",
+    "tekst_crm": "500,00 zł",
+    "opis": "Gabinety kosmetyczne i fryzjerskie, suma 200\u00a0tys.\u00a0zł: 500\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne i fryzjerskie, suma 200.000 zł: 500 zł"
+   }
+  },
+  {
+   "id": "E2",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": {
+    "fraza": "manicure",
+    "wybrano": "g1-17",
+    "listy": [
+     "lista-1",
+     "lista-2"
+    ],
+    "opis": "wybrano „Manicure” (listy nr 1 i 2)"
+   },
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 790.0,
+    "tekst": "790,00\u00a0zł",
+    "tekst_crm": "790,00 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł"
+   }
+  },
+  {
+   "id": "E3",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetyczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": true,
+   "zabiegi_ankieta": [
+    "Zabiegi z użyciem nici PDO, PLLA i PLA/CL"
+   ],
+   "wyszukiwarka": {
+    "fraza": "nici",
+    "wybrano": "g4-06",
+    "listy": [
+     "ankieta"
+    ],
+    "opis": "wybrano „Zabiegi z użyciem nici PDO, PLLA i PLA/CL” – zaznacza poz. g)"
+   },
+   "oczekiwane": {
+    "stan": "indywidualna",
+    "powod": "zabiegi wymagające ankiety podlegają ocenie ubezpieczyciela"
+   }
+  },
+  {
+   "id": "E4",
+   "tylko_portal": false,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": {
+    "fraza": "nici PDO",
+    "wybrano": null,
+    "podpowiedzi_zawieraja": [
+     "g4-06"
+    ],
+    "opis": "wpisano „nici PDO” – podpowiedź pokazuje poz. g) w brzmieniu Aneksu nr 5"
+   },
+   "oczekiwane": {
+    "stan": "kwota",
+    "kategoria": "kosmetologiczny",
+    "nazwa": "Gabinety kosmetologiczne",
+    "kwota": 790.0,
+    "tekst": "790,00\u00a0zł",
+    "tekst_crm": "790,00 zł",
+    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
+    "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł"
+   }
+  },
+  {
+   "id": "F1",
+   "tylko_portal": true,
+   "rodzaje": [],
+   "osoby": null,
+   "suma": null,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "brak",
+    "komunikat": "Zaznacz rodzaj działalności."
+   }
+  },
+  {
+   "id": "F2",
+   "tylko_portal": true,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": null,
+   "suma": null,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "brak",
+    "komunikat": "Podaj liczbę osób wykonujących zabiegi."
+   }
+  },
+  {
+   "id": "F3",
+   "tylko_portal": true,
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "osoby": "1-5",
+   "suma": null,
+   "ochrona_prawna": true,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "brak",
+    "komunikat": "Wybierz sumę gwarancyjną, żeby zobaczyć składkę.",
+    "kafelki": {
+     "100000": "742,00\u00a0zł",
+     "200000": "882,00\u00a0zł",
+     "300000": "1\u00a0042,00\u00a0zł"
+    }
+   }
+  },
+  {
+   "id": "F4",
+   "tylko_portal": true,
+   "rodzaje": [],
+   "osoby": "9+",
+   "suma": 200000,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": false,
+   "zabiegi_ankieta": [],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "brak",
+    "komunikat": "Zaznacz rodzaj działalności."
+   }
+  },
+  {
+   "id": "F5",
+   "tylko_portal": true,
+   "rodzaje": [],
+   "osoby": null,
+   "suma": null,
+   "ochrona_prawna": false,
+   "ankieta_zaznaczona": true,
+   "zabiegi_ankieta": [
+    "Zabiegi lipolizy iniekcyjnej"
+   ],
+   "wyszukiwarka": null,
+   "oczekiwane": {
+    "stan": "indywidualna",
+    "powod": "zabiegi wymagające ankiety podlegają ocenie ubezpieczyciela"
+   }
+  }
+ ],
+ "kombinacje_rodzajow": [
+  {
+   "rodzaje": [],
+   "kategoria": null
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny"
+   ],
+   "kategoria": "kosmetyczny_fryzjerski"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski"
+   ],
+   "kategoria": "kosmetyczny_fryzjerski"
+  },
+  {
+   "rodzaje": [
+    "kosmetologiczny"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "podologiczny"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "masaz"
+   ],
+   "kategoria": "kosmetyczny_fryzjerski"
+  },
+  {
+   "rodzaje": [
+    "tatuaz"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski"
+   ],
+   "kategoria": "kosmetyczny_fryzjerski"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "podologiczny"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "masaz"
+   ],
+   "kategoria": "kosmetyczny_fryzjerski"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "tatuaz"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "kosmetologiczny"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "podologiczny"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "masaz"
+   ],
+   "kategoria": "kosmetyczny_fryzjerski"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetologiczny",
+    "podologiczny"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetologiczny",
+    "masaz"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "kosmetologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "podologiczny",
+    "masaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "podologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "kosmetologiczny"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "podologiczny"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "masaz"
+   ],
+   "kategoria": "kosmetyczny_fryzjerski"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny",
+    "podologiczny"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny",
+    "masaz"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "podologiczny",
+    "masaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "podologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "kosmetologiczny",
+    "podologiczny"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "kosmetologiczny",
+    "masaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "kosmetologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "podologiczny",
+    "masaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "podologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetologiczny",
+    "podologiczny",
+    "masaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetologiczny",
+    "podologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "podologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "kosmetologiczny",
+    "podologiczny"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "kosmetologiczny",
+    "masaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "kosmetologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "podologiczny",
+    "masaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "podologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny",
+    "podologiczny",
+    "masaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny",
+    "podologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "kosmetologiczny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "podologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "kosmetologiczny",
+    "podologiczny",
+    "masaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "kosmetologiczny",
+    "podologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "kosmetologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "podologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetologiczny",
+    "podologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "kosmetologiczny",
+    "podologiczny",
+    "masaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "kosmetologiczny",
+    "podologiczny",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "kosmetologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "podologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "kosmetologiczny",
+    "podologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "fryzjerski",
+    "kosmetologiczny",
+    "podologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  },
+  {
+   "rodzaje": [
+    "kosmetyczny",
+    "fryzjerski",
+    "kosmetologiczny",
+    "podologiczny",
+    "masaz",
+    "tatuaz"
+   ],
+   "kategoria": "pelny"
+  }
+ ],
+ "kwoty_taryfy": [
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 100000,
+   "osoby": "1-5",
+   "ochrona_prawna": false,
+   "kwota": 400.0
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 100000,
+   "osoby": "1-5",
+   "ochrona_prawna": true,
+   "kwota": 492.0
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 100000,
+   "osoby": "6-8",
+   "ochrona_prawna": false,
+   "kwota": 500.0
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 100000,
+   "osoby": "6-8",
+   "ochrona_prawna": true,
+   "kwota": 592.0
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 200000,
+   "osoby": "1-5",
+   "ochrona_prawna": false,
+   "kwota": 500.0
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 200000,
+   "osoby": "1-5",
+   "ochrona_prawna": true,
+   "kwota": 592.0
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 200000,
+   "osoby": "6-8",
+   "ochrona_prawna": false,
+   "kwota": 625.0
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 200000,
+   "osoby": "6-8",
+   "ochrona_prawna": true,
+   "kwota": 717.0
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 300000,
+   "osoby": "1-5",
+   "ochrona_prawna": false,
+   "kwota": 650.0
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 300000,
+   "osoby": "1-5",
+   "ochrona_prawna": true,
+   "kwota": 742.0
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 300000,
+   "osoby": "6-8",
+   "ochrona_prawna": false,
+   "kwota": 812.5
+  },
+  {
+   "kategoria": "kosmetyczny_fryzjerski",
+   "suma": 300000,
+   "osoby": "6-8",
+   "ochrona_prawna": true,
+   "kwota": 904.5
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 100000,
+   "osoby": "1-5",
+   "ochrona_prawna": false,
+   "kwota": 650.0
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 100000,
+   "osoby": "1-5",
+   "ochrona_prawna": true,
+   "kwota": 742.0
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 100000,
+   "osoby": "6-8",
+   "ochrona_prawna": false,
+   "kwota": 812.5
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 100000,
+   "osoby": "6-8",
+   "ochrona_prawna": true,
+   "kwota": 904.5
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 200000,
+   "osoby": "1-5",
+   "ochrona_prawna": false,
+   "kwota": 790.0
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 200000,
+   "osoby": "1-5",
+   "ochrona_prawna": true,
+   "kwota": 882.0
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 200000,
+   "osoby": "6-8",
+   "ochrona_prawna": false,
+   "kwota": 987.5
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 200000,
+   "osoby": "6-8",
+   "ochrona_prawna": true,
+   "kwota": 1079.5
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 300000,
+   "osoby": "1-5",
+   "ochrona_prawna": false,
+   "kwota": 950.0
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 300000,
+   "osoby": "1-5",
+   "ochrona_prawna": true,
+   "kwota": 1042.0
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 300000,
+   "osoby": "6-8",
+   "ochrona_prawna": false,
+   "kwota": 1187.5
+  },
+  {
+   "kategoria": "kosmetologiczny",
+   "suma": 300000,
+   "osoby": "6-8",
+   "ochrona_prawna": true,
+   "kwota": 1279.5
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 100000,
+   "osoby": "1-5",
+   "ochrona_prawna": false,
+   "kwota": 850.0
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 100000,
+   "osoby": "1-5",
+   "ochrona_prawna": true,
+   "kwota": 942.0
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 100000,
+   "osoby": "6-8",
+   "ochrona_prawna": false,
+   "kwota": 1062.5
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 100000,
+   "osoby": "6-8",
+   "ochrona_prawna": true,
+   "kwota": 1154.5
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 200000,
+   "osoby": "1-5",
+   "ochrona_prawna": false,
+   "kwota": 980.0
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 200000,
+   "osoby": "1-5",
+   "ochrona_prawna": true,
+   "kwota": 1072.0
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 200000,
+   "osoby": "6-8",
+   "ochrona_prawna": false,
+   "kwota": 1225.0
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 200000,
+   "osoby": "6-8",
+   "ochrona_prawna": true,
+   "kwota": 1317.0
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 300000,
+   "osoby": "1-5",
+   "ochrona_prawna": false,
+   "kwota": 1250.0
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 300000,
+   "osoby": "1-5",
+   "ochrona_prawna": true,
+   "kwota": 1342.0
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 300000,
+   "osoby": "6-8",
+   "ochrona_prawna": false,
+   "kwota": 1562.5
+  },
+  {
+   "kategoria": "pelny",
+   "suma": 300000,
+   "osoby": "6-8",
+   "ochrona_prawna": true,
+   "kwota": 1654.5
+  }
+ ]
+}

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Paczka podglądu na Cloudflare Workers (statyczne pliki + hasło w Workerze).
-Wyjście: scratchpad/cf-podglad/public/ – pełne dokumenty HTML (z własnym <head>), linki przepięte na makiety."""
+Wyjście: public/ obok skryptu – pełne dokumenty HTML (z własnym <head>), linki przepięte na makiety."""
 import re, shutil, pathlib
 REPO = pathlib.Path(__file__).resolve().parents[2]
 V3 = REPO / 'docs/koncepcja/design/v3'

@@ -1,0 +1,10 @@
+{
+  "name": "beautypolisa-makiety-narzedzia",
+  "private": true,
+  "description": "Generatory i kontrole makiet BeautyPolisa (docs/koncepcja/design/v3, docs/koncepcja/snippets). Zależności tylko do kontroli w przeglądarce.",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "axe-core": "4.10.2",
+    "playwright": "1.63.0"
+  }
+}

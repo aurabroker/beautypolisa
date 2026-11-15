@@ -10,15 +10,15 @@
       "name": "Co obejmuje OC dla branży beauty w programie ERGO Hestia?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr WA50/003353/24/A realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi są przypisane do grup ryzyka, a zabiegi wysokiego ryzyka wymagają indywidualnej oceny. Pełny zakres znajdziesz w dokumentach OWU na stronie beautypolisa.eu/dokumenty."
+        "text": "Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr WA50/003353/24/A realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi objęte programem wymieniają listy zabiegów nr 1 i nr 2 w brzmieniu Aneksu nr 5; zabiegi wymagające ankiety ERGO Hestii (8 pozycji) podlegają ocenie ubezpieczyciela. Pełny zakres znajdziesz w dokumentach OWU na stronie beautypolisa.eu/dokumenty."
       }
     },
     {
       "@type": "Question",
-      "name": "Jakie są grupy ryzyka zabiegów i jak wpływają na składkę?",
+      "name": "Od czego zależy składka i co jest na listach zabiegów?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Zabiegi są przypisane do czterech grup ryzyka programu. Grupa 1 – Kosmetyka i fryzjerstwo: m.in. strzyżenie, koloryzacja włosów, manicure, przedłużanie rzęs. Grupa 2 – Kosmetologia i tatuaż: m.in. makijaż permanentny, mezoterapia, zabiegi IPL, tatuaż, peelingi chemiczne. Grupa 3 – Podologia medyczna: zabiegi podologiczne. Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko): m.in. HIFU, toksyna botulinowa, PRP, PLASMA, wypełniacze z kwasem hialuronowym, nici PDO, lipoliza iniekcyjna, laser ablacyjny – wymagają indywidualnej oceny ryzyka przez ERGO Hestię. Składkę wyznacza grupa ryzyka oraz wybrana suma gwarancyjna. Wszystkie 117 zabiegów z przypisaniem do grup znajdziesz w sekcji Lista zabiegów w programie."
+        "text": "Składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i sumy gwarancyjnej. Taryfę wyznacza rodzaj działalności: gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem) – „Gabinety kosmetyczne i fryzjerskie”; gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu – „Gabinety kosmetologiczne”; gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu – „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”. Listy zabiegów programu: „Lista zabiegów – gabinety kosmetyczne i fryzjerskie” (49 pozycji) i „Lista zabiegów – gabinety kosmetyczne i kosmetologiczne” (63 pozycje); część zabiegów (20) jest na obu listach. Zabiegi wymagające ankiety ERGO Hestii (8 pozycji) – wycena indywidualna. Lista zabiegów podologicznych jest w dokumentach programu. Wszystkie pozycje w brzmieniu Aneksu nr 5 znajdziesz w sekcji Listy zabiegów w programie."
       }
     },
     {
@@ -26,7 +26,7 @@
       "name": "Ile kosztuje OC salonu kosmetycznego?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Według stałej taryfy programu składka roczna wynosi od 400 zł (grupa 1, suma gwarancyjna 100 000 zł) do 1 250 zł (grupa 3, suma gwarancyjna 300 000 zł) dla zespołu do 5 osób. Dla zespołów 6–8 osób składka jest wyższa o 25%. Klauzula ochrony prawnej kosztuje dodatkowo 92 zł rocznie. Zespoły od 9 osób oraz zabiegi wysokiego ryzyka (grupa 4) są wyceniane indywidualnie."
+        "text": "Według stałej taryfy programu, gdy zabiegi wykonuje do 5 osób, składka roczna wynosi od 400 zł (taryfa „Gabinety kosmetyczne i fryzjerskie”, suma gwarancyjna 100 000 zł) do 1 250 zł (taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”, suma gwarancyjna 300 000 zł). Gdy zabiegi wykonuje 6–8 osób, składka z taryfy jest wyższa o 25% – np. 987,50 zł zamiast 790 zł w taryfie „Gabinety kosmetologiczne” przy sumie gwarancyjnej 200 000 zł. Klauzula ochrony prawnej kosztuje dodatkowo 92 zł rocznie, bez tej dopłaty. Więcej niż 8 osób wykonujących zabiegi oraz zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna."
       }
     },
     {
@@ -42,7 +42,7 @@
       "name": "Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Są to zabiegi wysokiego ryzyka (grupa 4), których nie wycenia kalkulator. Ich ubezpieczenie jest możliwe po indywidualnej ocenie ubezpieczyciela na podstawie ankiety: listy wykonywanych zabiegów, kwalifikacji personelu, stosowanych formularzy zgody na zabieg oraz szkodowości z ostatnich 3 lat. Zostaw kontakt przez formularz – doradca przekaże Ci ankietę ERGO Hestii. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka."
+        "text": "Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „Zabiegi z użyciem toksyny botulinowej”, „Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego” i „Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)” – wszystkie 8 pozycji znajdziesz w sekcji Zabiegi wymagające ankiety ERGO Hestii. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne: Dyplom kosmetologa dla każdej osoby — tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i szkół policealnych nie są dyplomem. Certyfikat ze szkolenia z każdego zabiegu, który wykonuje dana osoba — szkolenie ukończone co najmniej 12 miesięcy przed początkiem ochrony. Zostaw kontakt przez formularz – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka."
       }
     }
   ]

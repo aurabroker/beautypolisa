@@ -1,0 +1,173 @@
+#!/usr/bin/env python3
+"""Taryfa OC beauty (snippets/taryfa-oc-beauty.json) dla generatorów stron: formaty kwot, opis reguły kategorii słowami,
+tabela „Pełna taryfa OC” i nota pod nią – jedna implementacja dla oc-beauty.html (GEN:taryfa) i makieta-v3.html (gen:taryfa).
+
+Reguła kategorii jest kodem (jak w CRM: kategoriaZRodzajow; w portalu snippets/oc-skladka.js), nie danymi. Tu jest tylko jej
+opis słowami (OPIS_KATEGORII) i warunek (WARUNEK), który go wyraża; kontrola() sprawdza na wszystkich 63 niepustych
+połączeniach rodzajów, że warunek = kategoria() = fixture kontrola/kalkulator-przypadki.json (64 kombinacje, jak CRM).
+
+Formaty (decyzja Q9): tabele taryfy bez groszy („1 250 zł”), kwota z wyliczenia z groszami („987,50 zł”), sumy jak dotąd
+(„200 tys. zł” w tabelach, „200 000 zł” w zdaniach FAQ); separator tysięcy i spacja przed „zł” – twarde (U+00A0).
+
+Uruchom: python3 -I oc_taryfa.py – kontrola opisu reguły i podgląd tabeli.
+"""
+import html
+import itertools
+import json
+import pathlib
+import sys
+from decimal import Decimal, ROUND_HALF_UP
+
+REPO = pathlib.Path(__file__).resolve().parents[2]
+SN = REPO / 'docs/koncepcja/snippets'
+TARYFA = SN / 'taryfa-oc-beauty.json'
+FIXTURE = pathlib.Path(__file__).resolve().parent / 'kontrola/kalkulator-przypadki.json'
+NB = ' '
+
+T = json.loads(TARYFA.read_text(encoding='utf-8'))
+KAT = {k['klucz']: k for k in T['kategorie']}
+RODZAJE = [r['klucz'] for r in T['rodzaje_gabinetu']]
+NAZWA_RODZAJU = {r['klucz']: r['nazwa'] for r in T['rodzaje_gabinetu']}
+LISTA2 = {'kosmetologiczny', 'tatuaz'}
+
+# Opis słowami, które rodzaje działalności prowadzą do której taryfy (plan 2.3 i 3; = kategoriaZRodzajow w CRM).
+OPIS_KATEGORII = {
+    'kosmetyczny_fryzjerski': 'gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)',
+    'kosmetologiczny': 'gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu',
+    'pelny': 'gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu',
+}
+# Warunek, który opis wyraża (sprawdzany z kategoria() i z fixture).
+WARUNEK = {
+    'kosmetyczny_fryzjerski': lambda r: r <= {'kosmetyczny', 'fryzjerski', 'masaz'},
+    'kosmetologiczny': lambda r: bool(r & LISTA2) and 'podologiczny' not in r and 'fryzjerski' not in r,
+    'pelny': lambda r: 'podologiczny' in r or ('fryzjerski' in r and bool(r & LISTA2)),
+}
+
+
+def kategoria(rodzaje):
+    """= kategoriaZRodzajow (CRM) = OcSkladka.kategoria (snippets/oc-skladka.js)."""
+    r = set(rodzaje)
+    if not r:
+        return None
+    lista2 = bool(r & LISTA2)
+    if 'podologiczny' in r or (lista2 and 'fryzjerski' in r):
+        return 'pelny'
+    return 'kosmetologiczny' if lista2 else 'kosmetyczny_fryzjerski'
+
+
+def grupuj(n):
+    s = str(n)
+    out = ''
+    while len(s) > 3:
+        out = NB + s[-3:] + out
+        s = s[:-3]
+    return s + out
+
+
+def zl(n):
+    """Kwota całkowita: „400 zł”, „1 250 zł” (tabele taryfy, stawki)."""
+    assert int(n) == n, n
+    return grupuj(int(n)) + NB + 'zł'
+
+
+def zl_gr(kwota):
+    """Kwota z groszami: „987,50 zł”, „1 279,50 zł”, „1 250,00 zł”."""
+    d = Decimal(str(kwota)).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    calk, gr = divmod(int(d * 100), 100)
+    return '%s,%02d%szł' % (grupuj(calk), gr, NB)
+
+
+def suma_tys(s):
+    """Suma gwarancyjna w tabelach i kafelkach: „200 tys. zł”."""
+    assert s % 1000 == 0, s
+    return '%d%stys.%szł' % (s // 1000, NB, NB)
+
+
+def suma_pelna(s):
+    """Suma gwarancyjna w zdaniach: „200 000 zł”."""
+    return zl(s)
+
+
+def stawka(k, suma):
+    return KAT[k]['skladka'][str(suma)]
+
+
+def kwota(k, suma, osoby='1-5', ochrona_prawna=False):
+    """= skladkaProgramu (CRM): stawka × (1 + dopłata) przy 6–8 osobach, + ochrona prawna, zaokrąglenie do grosza."""
+    b = Decimal(stawka(k, suma))
+    if osoby == '6-8':
+        b = b * (1 + Decimal(str(T['doplata_6_8_osob'])))
+    elif osoby != '1-5':
+        raise ValueError(osoby)
+    if ochrona_prawna:
+        b += Decimal(T['ochrona_prawna']['skladka'])
+    return b.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+
+def doplata_proc():
+    return '%d%%' % round(T['doplata_6_8_osob'] * 100)
+
+
+def reguly_kategorii():
+    """Zdanie z regułą kategorii (strona OC: reguły pod listami, FAQ)."""
+    czesci = ['%s – „%s”' % (OPIS_KATEGORII[k['klucz']], k['nazwa']) for k in T['kategorie']]
+    return 'Taryfę wyznacza rodzaj działalności: ' + '; '.join(czesci) + '.'
+
+
+def nota_taryfy():
+    """Nota pod tabelą taryfy (tekst z encjami HTML)."""
+    return ('6–8&nbsp;osób wykonujących zabiegi – składka z&nbsp;taryfy wyższa o&nbsp;%s (klauzula ochrony prawnej +%d&nbsp;zł bez tej dopłaty). '
+            'Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.'
+            % (doplata_proc(), T['ochrona_prawna']['skladka']))
+
+
+def tabela_taryfy(aria_label):
+    """Linie HTML: przewijana tabela taryfy (bez groszy) + nota. Sumy jak dotąd („100 tys. zł”)."""
+    e = lambda s: html.escape(s, quote=True)
+    nb = lambda s: e(s).replace(NB, '&nbsp;')
+    out = ['<div class="table-scroll" role="region" tabindex="0" aria-label="%s">' % e(aria_label),
+           '<table>',
+           '  <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią – do 5&nbsp;osób wykonujących zabiegi</caption>',
+           '  <thead><tr><th scope="col">Taryfa (zakres na certyfikacie)</th>'
+           + ''.join('<th scope="col">%s</th>' % nb(suma_tys(s)) for s in T['sumy']) + '</tr></thead>',
+           '  <tbody>']
+    for k in T['kategorie']:
+        out.append('    <tr><th scope="row">%s<small>%s</small></th>%s</tr>'
+                   % (e(k['nazwa']), e(OPIS_KATEGORII[k['klucz']]),
+                      ''.join('<td>%s</td>' % nb(zl(k['skladka'][str(s)])) for s in T['sumy'])))
+    out += ['  </tbody>', '</table>', '</div>', '<p class="tariff-note">%s</p>' % nota_taryfy()]
+    return out
+
+
+def kontrola():
+    """Błędy: opis reguły (WARUNEK) ≠ kategoria() albo ≠ fixture; stawki niecałkowite."""
+    e = []
+    for n in range(1, len(RODZAJE) + 1):
+        for comb in itertools.combinations(RODZAJE, n):
+            r = set(comb)
+            k = kategoria(r)
+            pasuje = [kk for kk, w in WARUNEK.items() if w(r)]
+            if pasuje != [k]:
+                e.append('rodzaje %s: kategoria %s, opis słowami pasuje do %s' % (sorted(r), k, pasuje))
+    if FIXTURE.is_file():
+        F = json.loads(FIXTURE.read_text(encoding='utf-8'))
+        for x in F['kombinacje_rodzajow']:
+            if kategoria(x['rodzaje']) != x['kategoria']:
+                e.append('fixture %s: %s ≠ %s' % (x['rodzaje'], kategoria(x['rodzaje']), x['kategoria']))
+        for x in F['kwoty_taryfy']:
+            if kwota(x['kategoria'], x['suma'], x['osoby'], x['ochrona_prawna']) != Decimal(str(x['kwota'])).quantize(Decimal('0.01')):
+                e.append('fixture kwota %s' % x)
+    for k in T['kategorie']:
+        if set(k['skladka']) != {str(s) for s in T['sumy']} or any(int(v) != v for v in k['skladka'].values()):
+            e.append('kategoria %s: stawki ≠ sumy albo niecałkowite' % k['klucz'])
+    if set(OPIS_KATEGORII) != set(KAT):
+        e.append('OPIS_KATEGORII ≠ kategorie taryfy')
+    return e
+
+
+if __name__ == '__main__':
+    b = kontrola()
+    print('\n'.join('BŁĄD: ' + x for x in b) or 'OK – opis reguły = kategoria() = fixture (63 połączenia rodzajów)')
+    print(reguly_kategorii())
+    print('\n'.join(tabela_taryfy('Taryfa OC')))
+    sys.exit(1 if b else 0)

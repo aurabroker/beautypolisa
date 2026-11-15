@@ -1,0 +1,115 @@
+{
+ "$comment": "Taryfa programu OC nr WA50/003353/24/A dla branży beauty – 1:1 ze stałymi CRM (crmaura/src/lib/renewals/program.ts: SUMY, KATEGORIE, DOPLATA_6_8_OSOB, OCHRONA_PRAWNA_SKLADKA, OCHRONA_PRAWNA_LIMIT, RODZAJE_GABINETU, LICZBA_OSOB, APK_PYTANIA; powody wyceny indywidualnej i komunikaty – skladkaProgramu, wycenaNowej, waliduj_apk). Jedno źródło dla kalkulatora (oc-skladka.js), tabel taryfy na stronach i SQL. Taryfę (kategorię) wyznaczają rodzaje działalności – reguła kategoriaZRodzajow jest kodem w oc-skladka.js, nie danymi; zabiegi z list nr 1 i 2 nie zmieniają składki. Kwota: round2(stawka × (6–8 osób ? 1 + doplata_6_8_osob : 1) + (ochrona prawna ? ochrona_prawna.skladka : 0)); więcej niż 8 osób albo zabiegi wymagające ankiety – wycena indywidualna. Portal celowo nie wyróżnia żadnej sumy (CRM ma SUMA_NAJCZESCIEJ_WYBIERANA – tu jej nie ma) i nie używa słów o niepewności kwoty przy składce. Zmiana tylko razem z CRM; kontrola: narzedzia/makiety/check_zgodnosc_crm.py.",
+ "program": "WA50/003353/24/A",
+ "sumy": [
+  100000,
+  200000,
+  300000
+ ],
+ "kategorie": [
+  {
+   "klucz": "kosmetyczny_fryzjerski",
+   "nazwa": "Gabinety kosmetyczne i fryzjerskie",
+   "skladka": {
+    "100000": 400,
+    "200000": 500,
+    "300000": 650
+   }
+  },
+  {
+   "klucz": "kosmetologiczny",
+   "nazwa": "Gabinety kosmetologiczne",
+   "skladka": {
+    "100000": 650,
+    "200000": 790,
+    "300000": 950
+   }
+  },
+  {
+   "klucz": "pelny",
+   "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+   "skladka": {
+    "100000": 850,
+    "200000": 980,
+    "300000": 1250
+   }
+  }
+ ],
+ "doplata_6_8_osob": 0.25,
+ "ochrona_prawna": {
+  "skladka": 92,
+  "limit": 100000,
+  "limit_zrodlo": "program w CRM (OCHRONA_PRAWNA_LIMIT, KLAUZULA_OCHRONY_PRAWNEJ); treść klauzuli w klauzula-ochrona-prawna.json limitu nie podaje"
+ },
+ "rodzaje_gabinetu": [
+  {
+   "klucz": "kosmetyczny",
+   "nazwa": "Gabinet kosmetyczny"
+  },
+  {
+   "klucz": "fryzjerski",
+   "nazwa": "Salon fryzjerski"
+  },
+  {
+   "klucz": "kosmetologiczny",
+   "nazwa": "Gabinet kosmetologiczny"
+  },
+  {
+   "klucz": "podologiczny",
+   "nazwa": "Gabinet podologiczny"
+  },
+  {
+   "klucz": "masaz",
+   "nazwa": "Salon masażu"
+  },
+  {
+   "klucz": "tatuaz",
+   "nazwa": "Salon tatuażu"
+  }
+ ],
+ "liczba_osob": [
+  {
+   "klucz": "1-5",
+   "nazwa": "do 5 osób"
+  },
+  {
+   "klucz": "6-8",
+   "nazwa": "6–8 osób"
+  },
+  {
+   "klucz": "9+",
+   "nazwa": "więcej niż 8 osób"
+  }
+ ],
+ "pytania": {
+  "rodzaje": "Jaką działalność prowadzisz?",
+  "rodzaje_podpowiedz": "możesz zaznaczyć kilka",
+  "osoby": "Ile osób wykonuje zabiegi w gabinecie (łącznie z Tobą)?"
+ },
+ "powody_wyceny_indywidualnej": {
+  "ankieta": "zabiegi wymagające ankiety podlegają ocenie ubezpieczyciela",
+  "osoby": "gabinet zatrudnia więcej niż 8 osób"
+ },
+ "komunikaty_brakow": {
+  "$comment": "rodzaje, osoby – walidacja APK w CRM (waliduj_apk); ankieta_bez_pozycji – walidacja wniosku (stan.svelte.ts); suma – zdanie z CRM (KrokWniosekNowy.svelte) bez przymiotnika przy „składkę” (decyzja P8: stała taryfa, bez słów o niepewności kwoty).",
+  "rodzaje": "Zaznacz rodzaj działalności.",
+  "osoby": "Podaj liczbę osób wykonujących zabiegi.",
+  "suma": "Wybierz sumę gwarancyjną, żeby zobaczyć składkę.",
+  "ankieta_bez_pozycji": "Zaznacz zabiegi wymagające ankiety (albo odznacz tę pozycję)."
+ },
+ "teksty_crm": {
+  "$comment": "Zdania z CRM, które portal przytacza dosłownie. check_zgodnosc_crm.py porównuje je z kodem CRM (bez znaczników HTML, z białymi znakami złączonymi w jedną spację).",
+  "zabiegi_z_innej_listy": {
+   "tekst": "Dopisanie zabiegów z innej listy zmienia rodzaj działalności i składkę według taryfy programu — nową składkę widzisz niżej.",
+   "zrodlo": "crmaura/src/lib/components/renewal/KrokWniosek.svelte – komunikat przy pozycji „Zabiegi z innej listy programu”"
+  },
+  "dokumenty_przy_zabiegach_z_ankiety": {
+   "pozycje": [
+    "Dyplom kosmetologa dla każdej osoby — tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i szkół policealnych nie są dyplomem.",
+    "Certyfikat ze szkolenia z każdego zabiegu, który wykonuje dana osoba — szkolenie ukończone najpóźniej {termin} (co najmniej 12 miesięcy przed początkiem ochrony)."
+   ],
+   "termin": "{termin} – dzień początku ochrony minus 12 miesięcy (program.ts, terminSzkolenia)",
+   "zrodlo": "crmaura/src/lib/components/renewal/KrokKwalifikacje.svelte – „Jakie dokumenty są potrzebne”"
+  }
+ }
+}

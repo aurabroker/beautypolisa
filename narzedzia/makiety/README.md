@@ -1,0 +1,170 @@
+# Generatory i kontrole makiet BeautyPolisa
+
+Skrypty, które tworzą i sprawdzają bloki generowane w makietach (`docs/koncepcja/design/v3/`) i plikach
+pomocniczych (`docs/koncepcja/snippets/`). Do 14.11.2026 leżały tylko w katalogu roboczym sesji; przeniesione
+do repozytorium w kroku 0 planu „OC beauty po Aneksie nr 5” **bez zmiany logiki**. Zmieniło się tylko to:
+
+- ścieżki bezwzględne do repozytorium i do katalogu sesji są liczone względem położenia skryptu
+  (`Path(__file__).resolve().parents[n]`, w Node `path.resolve(__dirname, …)`), więc skrypty można uruchamiać z dowolnego katalogu;
+- `gen_oc_beauty.py`, `opieka-medyczna/build.py` i `gen_klauzula.py` dostały tryb `--check` (wcześniej go nie miały;
+  dla `gen_oc_beauty.py` zastępuje dawny suchy przebieg `kontrola/oc/gen_dry.py`);
+- komentarze, które generatory wstawiają do stron (np. `<!-- GEN:faq (wygenerowane – … ) -->`), wskazują nowe ścieżki;
+- zrzuty ekranu z kontroli trafiają do `kontrola/wyniki/` (poza gitem), a `axe-core` jest zależnością z `package.json`.
+
+## Wymagania
+
+- Python 3 (generatory: tylko biblioteka standardowa; `kontrola/slownik/e_static.py`: także `bs4` i `lxml`).
+  Zawsze `python3 -I …` – skrypty same dodają swój katalog do `sys.path` tam, gdzie trzeba.
+- Do kontroli w przeglądarce: Node.js ≥ 20 i `npm install` w tym katalogu (`axe-core` 4.10.2, `playwright` 1.63.0;
+  `node_modules/` jest w `.gitignore`). Przeglądarka: `npx playwright install chromium`, jeśli jeszcze jej nie ma.
+  Skrypty używają `chromium.launch()` bez opcji.
+
+## Generatory
+
+Ścieżki względem katalogu głównego repozytorium. Każdy generator podmienia wyłącznie treść między swoimi znacznikami
+(idempotentnie); `slownik/gen_strona.py` i `opieka-medyczna/build.py` budują całą stronę.
+
+| Skrypt | Źródło → wynik |
+|---|---|
+| `gen_kalkulator_dane.py` | `snippets/zabiegi-oc-beauty.json` (v2), `taryfa-oc-beauty.json`, `oc-skladka.js`, `klauzula-ochrona-prawna.json` → `design/v3/makieta-v3.html`: `gen:zabiegi-data` (dane wyszukiwarki: pozycje list nr 1 i 2 `{id, slug, nazwa, listy}` i ankiety `{id, slug, nazwa, ankieta: litera}`), `gen:taryfa-data` (taryfa bez `$comment`), `gen:oc-skladka` (treść `oc-skladka.js`, globalny `OcSkladka`), `gen:taryfa` (tabela „Pełna taryfa OC” + nota, `oc_taryfa.py`), `gen:klauzula` (dialog klauzuli); pola kalkulatora `gen:kalk-rodzaje`, `gen:kalk-osoby`, `gen:kalk-ankieta` – dopiero gdy w makiecie są ich znaczniki (krok 4; do tego czasu „tryb przejściowy” z komunikatem `uwaga: kalkulator OC w starym układzie`) |
+| `gen_oc_beauty.py` (+ `gen_oc_beauty.szablon.html` tylko dla `--init` – szablon sprzed Aneksu nr 5, dziś kończy się błędem „brak znacznika GEN:taryfa”) | `zabiegi-oc-beauty.json` (v2) i `zabiegi-oc-beauty-wycofane.json`, `taryfa-oc-beauty.json`, `faq-oc-beauty.json`, `klauzula-ochrona-prawna.json`, `schema-produkt-oc-beauty.json`, `schema-home.json` → `design/v3/oc-beauty.html`: bloki `GEN:jsonld`, `GEN:zabiegi-skok`, `GEN:zabiegi` (sekcje `#lista-1`, `#lista-2`, `#ankieta`, `#podologia`; `<li id="<slug>">` / `<slug>-lista-2`, numery z PDF, aliasy dawnych kotwic `span.z-alias` bez `hidden`), `GEN:zabiegi-reguly`, `GEN:taryfa`, `GEN:klauzula`, `GEN:faq`, liczby w `data-gen="liczba-lista-1"`, `"liczba-lista-2"`, `"liczba-ankieta"`; zapisuje też `snippets/schema-faq-oc-beauty.json` (FAQPage = widoczne pytania); sprawdza meta description = opis WebPage |
+| `gen_strefa_zabiegi.py` | `zabiegi-oc-beauty.json` (v2), `zabiegi-oc-beauty-wycofane.json` → `design/v3/strefa/dam-prace.html`: `gen:zabiegi-data` (`{listy, zabiegi, wycofane}`), 4 bloki `gen:zabiegi-checkboxy:*` (sekcje lista nr 1, lista nr 2, ankieta; pozycja z obu list w obu sekcjach z tym samym `value`; `data-lista`), treść `div.zab-tags` (wycofane id – nazwa z dopiskiem „pozycja wycofana z listy”, na końcu) |
+| `gen_zabiegi_sql.py` | `zabiegi-oc-beauty.json` (v2), `zabiegi-oc-beauty-wycofane.json` → `snippets/strefa-klienta.sql`: blok `gen:zabiegi-ids` (funkcja `zabiegi_ids()`: 100 aktywnych, 31 wycofanych; każde wycofane id musi mieć wpis w archiwum – inaczej błąd) |
+| `gen_klauzula.py JSON PLIK [WCIĘCIE]` | `klauzula-ochrona-prawna.json` → blok `gen:klauzula` w podanym pliku; dziś `design/v3/strefa/panel.html` (wcięcie domyślne) |
+| `gen_wspolne.py` | lista `PRODUKTY` w skrypcie → menu „Ubezpieczenia”, szuflada, pasek akcji na telefonie, wspólne CSS/JS (`gen:menu-produkty`, `gen:menu-mobilne`, `gen:pasek-akcji`, `gen:wspolne-css`, `gen:wspolne-js`) na 6 stronach publicznych i `slownik.html` |
+| `opieka-medyczna/build.py` (+ `data.py`, `template.html`, `common.css`, `common.js`, `footer.html`) | → cała `design/v3/opieka-medyczna.html` i `snippets/schema-produkt-opieka-medyczna.json`; bloki wspólne bierze z `gen_wspolne.py` |
+| `slownik/gen_strona.py` | `snippets/slownik.json` (+ szkielet z `tax-protect.html`, bloki z `gen_wspolne.py`) → cała `design/v3/slownik.html` |
+| `slownik/gen_terminy.py` | `snippets/slownik.json` → oznaczenia pojęć (`a.bp-termin`), bloki `gen:slownik-css` i `gen:slownik-js` na 9 stronach (lista `STRONY`); pomija bloki `gen:*`/`GEN:*`, nazwy zabiegów i klauzulę; klasy wykluczone z oznaczania obejmują listy zabiegów po Aneksie nr 5 (`zlista`, `z-nr`, `z-inna`, `z-alias`, `ankieta-lista`, `zab-groups`, `zab-tags` – uwaga K3) |
+| `check_zabiegi_1do1.py [--bez-pdf]` | kontrola (nic nie zapisuje): JSON v2 i archiwum (`zabiegi_model.py`), `#zabiegi-data` w `makieta-v3.html`, listy na `oc-beauty.html` (kolejność, numery/`value`, brzmienie, kotwice, odnośniki „także na liście nr …”, aliasy bez `hidden`, brak `a.bp-termin` w sekcjach list), dane i checkboxy w `dam-prace.html`, `zabiegi_ids()` w SQL; na końcu uruchamia `check_zabiegi_pdf.py` (JSON = PDF i CRM) |
+
+`dane/ankieta.txt` = `pdftotext -layout AnkietaBPEH.pdf` (pusty formularz ankiety z katalogu głównego repozytorium).
+
+Moduły wspólne generatorów OC (krok 3 planu): `zabiegi_model.py` (odczyt i walidacja listy v2), `oc_taryfa.py` (formaty kwot – tabele bez groszy,
+kwota z wyliczenia z groszami, sumy „200 tys. zł”; opis reguły kategorii słowami z kontrolą na 63 połączeniach rodzajów i fixture; tabela
+„Pełna taryfa OC” i nota – jedna dla obu stron; `python3 -I oc_taryfa.py` – kontrola i podgląd), `oc_frazy.py` (zakazane frazy z planu 6.8
+z poprawkami K7: sprawdzane tylko w blokach generatorów OC, wyjątki – dawne brzmienia ankiety, nazwy z archiwum wycofanych, „podgrupa N”,
+zwroty przeczące; `python3 -I oc_frazy.py PLIK…` – raport dla całych plików). FAQ strony OC: `snippets/faq-oc-beauty.json` (pola `{…}`
+wypełnia `gen_oc_beauty.py` z danych; zdania CRM z `taryfa-oc-beauty.json` → `teksty_crm`).
+
+### Dane OC po Aneksie nr 5 (kroki 1–2 planu, 14.11.2026)
+
+Nowe źródła w `docs/koncepcja/snippets/`. Od kroku 3 (15.11.2026) wszystkie generatory OC, `check_zabiegi_1do1.py` i kontrole
+`kontrola/dam-prace/*` czytają wersję 2; `dane/ankieta.txt` i `bp-app.js` nie są już źródłem żadnej kontroli.
+
+| Plik | Co to jest |
+|---|---|
+| `snippets/taryfa-oc-beauty.json` | stałe programu 1:1 z CRM: sumy, 3 kategorie ze stawkami, dopłata 6–8 osób, ochrona prawna (92 zł, limit ze źródłem), 6 rodzajów działalności, 3 przedziały osób, pytania APK, powody wyceny indywidualnej, komunikaty braków, zdania CRM przytaczane dosłownie (`teksty_crm`) |
+| `snippets/oc-skladka.js` | czysta funkcja wyceny (`kategoria`, `skladkaOc`) i formaty portalu (`formatKwota` – zawsze z groszami, spacje twarde; `formatKwotaCalkowita`; `formatSuma` – „200 tys. zł”); w przeglądarce globalny `OcSkladka`, w Node moduł CommonJS; wynik `opisCrm` = opis wyceny z CRM |
+| `snippets/zabiegi-oc-beauty.json` (wersja 2) | listy nr 1 (49) i nr 2 (63) z PDF Aneksu nr 5, ankieta a–h (8) z CRM, podologia bez pozycji; rekord = zabieg z `pozycje[]`; 100 aktywnych id, 18 aliasów `dawne_slugi` |
+| `snippets/zabiegi-oc-beauty-wycofane.json` | archiwum 31 wycofanych pozycji (g3-01…g3-31): id, slug, nazwa – do starych ogłoszeń i aliasów kotwic `#podologia` |
+| `snippets/zabiegi-oc-beauty-propozycje.json` | bez zmiany treści propozycji; oznaczenia względem wersji 2: `nazwa_v2`, `wycofane`, `odwolania_wycofane` i dopisek w `$comment` |
+
+| Skrypt | Co robi |
+|---|---|
+| `zabiegi_model.py` | wspólny odczyt i walidacja wersji 2 (pola, id, slugi, numeracja list, kolejność, kotwice bez kolizji, archiwum); `python3 -I zabiegi_model.py` – walidacja i podsumowanie |
+| `crm_tekst.py` | odczyt stałych z `crmaura/src/lib/renewals/program.ts` jako tekstu (bez uruchamiania kodu CRM); katalog CRM: `--crm`, `CRMAURA_DIR` albo `<katalog nadrzędny repozytorium>/aurabroker/crmaura` |
+| `migruj_zabiegi_v2.py [--check]` | jednorazowa migracja v1 (z gita, commit `687654f`) + PDF + CRM → plik v2 i archiwum; `--check` odtwarza wynik i porównuje z plikami (wymaga CRM) |
+| `check_zabiegi_pdf.py [--crm K] [--wymagaj-crm]` | JSON ↔ PDF list (nagłówki, brzmienie co do znaku, numery, tylko półpauza U+2013, sha256 = `dokumenty-produktowe.json`), PDF ankiety (dawne brzmienia), CRM (`ZABIEGI_LISTA_1/2`, `ZABIEGI_ANKIETA`, `_DAWNE`, `_PODSTAWA`, `ZABIEGI_LISTY`), liczby z planu; bez CRM część CRM pominięta |
+| `check_zgodnosc_crm.py [--crm K]` | taryfa i reguła = CRM: stałe, treść `kategoriaZRodzajow`/`skladkaProgramu`/`wycenaNowej`/formatów = wzorzec w skrypcie, powody i komunikaty, `teksty_crm` dosłownie w komponentach CRM; fixture przeliczony niezależnie (Decimal) – 44 przypadki jak CRM + 5 `tylko_portal`, 64 kombinacje, 36 kwot; kod 2 bez CRM |
+
+### Kolejność uruchamiania
+
+Po zmianie danych w `snippets/`:
+
+```bash
+python3 -I narzedzia/makiety/gen_kalkulator_dane.py
+python3 -I narzedzia/makiety/gen_oc_beauty.py
+python3 -I narzedzia/makiety/gen_strefa_zabiegi.py
+python3 -I narzedzia/makiety/gen_zabiegi_sql.py
+python3 -I narzedzia/makiety/gen_klauzula.py docs/koncepcja/snippets/klauzula-ochrona-prawna.json docs/koncepcja/design/v3/strefa/panel.html
+python3 -I narzedzia/makiety/gen_wspolne.py
+python3 -I narzedzia/makiety/opieka-medyczna/build.py      # po każdej zmianie gen_wspolne.py
+python3 -I narzedzia/makiety/slownik/gen_strona.py          # po każdej zmianie gen_wspolne.py albo slownik.json
+python3 -I narzedzia/makiety/slownik/gen_terminy.py         # na końcu: po każdej zmianie treści stron albo slownik.json
+python3 -I narzedzia/makiety/check_zabiegi_1do1.py
+```
+
+Na końcu przebudowa paczki podglądu: `narzedzia/podglad-cloudflare/README.md`.
+
+### `--check`
+
+Każdy generator przyjmuje `--check`: buduje wynik w pamięci, porównuje z plikiem i **niczego nie zapisuje**. Kod wyjścia 0 –
+pliki aktualne (komunikat `OK`, „Bez zmian”, „slownik.html aktualny”), 1 – różnica („RÓŻNICA – uruchom bez --check”;
+`gen_oc_beauty.py` wypisuje też do 40 linii różnicy). Asercje generatora (np. liczba pozycji listy, klauzula słowo w słowo,
+zakazane frazy) działają także w trybie `--check`. Wszystkie naraz:
+
+```bash
+for g in gen_kalkulator_dane gen_oc_beauty gen_strefa_zabiegi gen_zabiegi_sql gen_wspolne opieka-medyczna/build slownik/gen_strona slownik/gen_terminy; do
+  python3 -I narzedzia/makiety/$g.py --check || echo "!! $g"
+done
+python3 -I narzedzia/makiety/gen_klauzula.py docs/koncepcja/snippets/klauzula-ochrona-prawna.json docs/koncepcja/design/v3/strefa/panel.html --check
+python3 -I narzedzia/makiety/check_zabiegi_1do1.py
+```
+
+Stan po kroku 3 (15.11.2026): wszystkie `OK`. `gen_kalkulator_dane.py` wypisuje dodatkowo „uwaga: kalkulator OC w starym układzie” –
+bloki pól kalkulatora powstaną po wstawieniu znaczników w kroku 4. Uruchomienie `gen_oc_beauty.py` przeniosło do `oc-beauty.html` opis
+`Organization` z `snippets/schema-home.json` („NNW dzieci”; pozostałe strony mają w swoim JSON-LD „NNW dla dzieci”) – zmiana spoza OC,
+przewidziana w planie (6.2).
+
+## Kontrole (`kontrola/`)
+
+Uruchamiane z dowolnego katalogu: `node narzedzia/makiety/kontrola/<grupa>/<plik>.js`, `python3 -I narzedzia/makiety/kontrola/<grupa>/<plik>.py`.
+Czytają makiety z repozytorium (`file://`), niczego w nich nie zapisują. Zrzuty – `kontrola/wyniki/<grupa>/`.
+W kolumnie „Stan” – wynik na `687654f` (14.11.2026), a przy kontrolach list zabiegów – po kroku 3 (15.11.2026); „raport” = skrypt wypisuje pomiary bez werdyktu, ocenia człowiek.
+
+| Plik | Dawniej (katalog sesji) | Co sprawdza | Stan |
+|---|---|---|---|
+| `oc/oc-skladka.test.js` (+ `kalkulator-przypadki.json`) | `oc-aneks5/kalkulator-przypadki.json` (fixture; nowy test 14.11) | `snippets/oc-skladka.js` na fixture: 49 przypadków (stan, kategoria, kwota, tekst i opis portalu, `opisCrm`, powód, komunikat, kafelki sum), 64 kombinacje rodzajów, 36 kwot, formaty, spójność fixture z `zabiegi-oc-beauty.json` (a–h, listy E1–E4) | `OK` (409 asercji) |
+| `slownik/test_slownik.js [szer]` | `slownik/test_slownik.js` | słownik i dymki pojęć na 9 stronach (rola, Enter/Esc, położenie, bez JS, axe); `szer` – 10 stron × 7 szerokości: przewijanie w poziomie, błędy JS, tekst < 12 px, tafle | `BŁĘDY (0)` |
+| `slownik/test_poprawki.js [kontrast\|dymek\|slownik\|wszystko]` | `slownik/test_poprawki.js` | poprawki po kontroli 13.11: kontrast podkreślenia i fokusu, położenie dymka, kategorie, indeks A–Z, WCAG 1.4.12 | `BŁĘDY (0)` |
+| `slownik/anchors.py` | `slownik-review/anchors.py` | odnośniki `gdzie`/`zrodlo` w `slownik.json` → istniejące pliki i kotwice; `zobacz_tez`, kategorie | `BRAKI:` puste |
+| `oc/calc_search_check.js <bezwzględna ścieżka makieta-v3.html>` | `tools/calc_search_check.js` | kalkulator OC: wyszukiwarka „mezo”, zaznaczenie `#g2`, dialog klauzuli (12 punktów), fokus po Esc | raport; od kroku 3 `g2: false` i plakietki „Grupa undefined” (stary kod kalkulatora na danych v2 – bez błędów JS; do przepisania w kroku 4), `dlg: [12, true]` |
+| `oc/test_zab.js` | `zab/test_zab.js` | kalkulator OC: wyszukiwarka, chipy, kafelki grup, przekazanie do formularza, dialog klauzuli słowo w słowo, bez JS | **czerwony od kroku 3**: czeka na zaznaczenie kafelka grupy po wyborze zabiegu (dane v2 nie mają grup); do przepisania w kroku 4 razem z kalkulatorem |
+| `oc/t_fix.js` | `zab/t_fix.js` | `oc-beauty.html`: filtr listy („klamra”, „manicure”, „kobido”…), skok do `#lista-2`, tabela taryfy, < 12 px, przewijanie w poziomie | raport (krok 3: „klamra” 0 – podologia bez pozycji, „manicure” i „kobido” po 2 pozycje, `overflow 0`, `errors []`) |
+| `oc/t_func.js` | `kontrola/oc/t_func.js` | `oc-beauty.html`: bez JS, lista vs JSON (grupy, slugi, nazwy), frazy filtra, kotwice | **czerwony**: przerywa się na `.sticky-cta` – elementu nie ma na stronie od `9601ad6`; do przepisania w kroku 4 planu razem z sekcjami `.zlista` |
+| `oc/t_deeplink.js` | `kontrola/oc/t_deeplink.js` | `oc-beauty.html`: odnośnik `#slug` przy aktywnym filtrze – przewinięcie, czyszczenie filtra; od kroku 3 oba przypadki to aliasy (slug wycofanej pozycji → `#podologia`, `zabiegi-z-uzyciem-nici-pdo` → g4-06) | raport, element w widoku (po płynnym przewinięciu) |
+| `oc/t_main.js` | `kontrola/oc/t_main.js` | `oc-beauty.html` × szerokości × ruch: przewijanie w poziomie, konsola, zasoby, < 12 px, tafle, nagłówki, cele | `errs`, `fails`, `bad` puste |
+| `oc/t_sweep.js` | `kontrola/oc/t_sweep.js` | `oc-beauty.html` 360–1440 px co 20 px, z JS i bez: przewijanie w poziomie, tekst < 12 px | `problemy: []` |
+| `oc/cmp_klauzula.py` | `kontrola/cmp_klauzula.py` | klauzula na `oc-beauty.html` = `klauzula-ochrona-prawna.json` (tytuł, 12 punktów, wyliczenia, bez encji i NBSP) | `ROZNIC: 0` |
+| `oc/links_faq.py` | `kontrola/links_faq.py` | linki między 4 stronami, FAQPage `oc-beauty.html` vs `snippets/schema-faq-oc-beauty.json` | FAQ zgodne od kroku 3 (snippet generuje `gen_oc_beauty.py`); „złe linki” to fałszywe trafienia (`?produkt=…`, szablon JS) |
+| `dam-prace/run.js` (+ `expect.json`) | `kontrola-zab-1311/run.js` | filtr i pole „Zabiegi” w „Dam pracę”: wyniki wyszukiwania vs `expect.json` (bez powtórzeń – zabieg z obu list ma dwa checkboxy), sekcje list, chipy, licznik, okno, bez JS, 5 szerokości | **czerwony (znane)**: 16 niepowodzeń = 2 asercje × 8 konfiguracji oczekują licznika „Wybrano: 2 zabiegi” / „Nie wybrano zabiegów”, a strona po poprawce z 13.11 (sprawdzanej przez `verify.js`) dopisuje „· N ogłoszeń”; pozostałe asercje przechodzą (krok 3: selektory `data-lista`, fraza „lipoliz”) |
+| `dam-prace/expect.py` | `kontrola-zab-1311/expect.py` | tworzy `expect.json` z `zabiegi-oc-beauty.json` (zapis obok skryptu) | `expect.json` odtworzony z wersji 2 (krok 3) |
+| `dam-prace/cmp_data.py` | `kontrola-zab-1311/cmp_data.py` | dane i checkboxy w `dam-prace.html` = JSON v2 i archiwum (listy, zabiegi, wycofane; sekcje lista-1, lista-2, ankieta; `checked` w każdym wystąpieniu; chipy z wycofanymi na końcu) | `OK: dane 1:1` |
+| `dam-prace/axe.js`, `contrast.js`, `keyboard.js`, `misc.js` | `kontrola-zab-1311/…` | axe (WCAG 2.2 AA), kontrast, ścieżka klawiatury, duplikaty `id` i limit 30 zabiegów | raport |
+| `dam-prace/verify.js`, `foot.js` | `kontrola-zab-1311b/…` | komunikaty filtra, stopka okna przy niskim oknie (fokus niezasłonięty) | raport, `errors: []` |
+| `strony/k4_seo_links.js` | `kontrola/tech/k4_seo_links.js` | 4 strony: JSON-LD, FAQPage = widoczne FAQ, linki i kotwice, odwołania `id`, brak adresów `/w/` | raport; 1 uwaga na stronę: pusty `#` „Więcej w słowniku” (szablon dymka) |
+
+Kontrole do przepisania w kroku 4 (rozdz. 7): `oc/t_func.js` (sekcje `.zlista` vs `listy`, 18 aliasów, `#grupa-1…4` także bez JS),
+`oc/calc_search_check.js` i `oc/test_zab.js` (nowy kalkulator), nowy `oc/t_kalkulator.js` (49 przypadków). W kroku 3 dostosowane do list
+w wersji 2: `dam-prace/*` (selektory `data-lista`, `expect.json`, `cmp_data.py`, `run.js`), `oc/t_fix.js`.
+
+`slownik/e_static.py` (dawniej `kontrola-slownik-tech2/e_static.py`) – statyczna kontrola słownika i oznaczeń na 9 stronach:
+JSON-LD wszystkich stron się parsuje, `DefinedTerm` = `slownik.json`, dane dymków = oznaczenia, oznaczenia tylko w `<p>`/`<li>` w `<main>`,
+poza zakazanymi przodkami i elementami ukrytymi; linki i kotwice. Stan: `PROBLEMÓW: 0`. Wymaga `bs4` i `lxml` (pakiety systemowe Pythona).
+
+### Nieprzeniesione (wycofane 14.11.2026)
+
+Kryterium: przenoszone są kontrole, które działają na dzisiejszych stronach i są potrzebne w kolejnych krokach planu
+(rozdz. 7 i uwaga K18) albo dają werdykt (lista błędów) dla stron, których plan dotyczy. Pozostałe zostały w katalogu sesji:
+
+- `tools/check_zabiegi.py` – starszy schemat danych, 356 błędów na obecnym JSON, plan (rozdz. 7) przewiduje usunięcie;
+  `tools/build_cf.py` – to samo co `narzedzia/podglad-cloudflare/build.py` (różnią się tylko ścieżki `REPO`/`OUT`);
+  `tools/build_preview.py` i `tools/check_preview.js` – dawny podgląd jako Artifact (3 produkty), zastąpiony podglądem na Cloudflare;
+  `tools/header_shot.js`, `ledger_shot.js`, `logo_check.js` – zrzuty.
+- `slownik/test_szer_slownik.js` – starsza kopia `test_slownik.js` (przegląd szerokości to dziś `test_slownik.js szer`).
+- Kalkulator OC na `makieta-v3.html` (przegląd 12.11, przed `a82d8b1`): `kontrola/a_combobox.js` (czerwony: po Tab fokus przechodzi
+  do „Wszystkie zabiegi”, lista zostaje otwarta), `kontrola/b_dialog.js` (czerwony: Tab z ostatniego elementu natywnego `<dialog>` wychodzi
+  do przeglądarki – zachowanie Chromium), `kontrola/tech/t_fix_search.js`, `kontrola/tech/t_all.js` i pozostałe sondy z `kontrola/`
+  i `kontrola/tech/` (zrzuty, piksele, pomiary, wersje `k4_all`/`k4_nojs` – część nojs się przerywa). Kalkulator przebudowuje krok 4;
+  dialog klauzuli i wyszukiwarkę sprawdzają `oc/test_zab.js` i `oc/calc_search_check.js`, szerokości i błędy JS – `slownik/test_slownik.js szer`.
+- `oc-beauty.html`: `kontrola/oc/gen_dry.py` (zastąpiony przez `gen_oc_beauty.py --check`), `t_shots.js`, `fonts_probe.js`, `t_perf.js`,
+  `t_contrast.js` + `contrast.py`, `t_menu.js` (raporty, zrzuty), `t_obscured.js`/`t_obscured2.js` (fałszywe trafienia przy płynnym przewijaniu),
+  `kontrola/klauzula_obie.py` (zawsze „różne” przez podpisy wokół klauzuli; klauzulę pilnują asercje generatorów i `oc/cmp_klauzula.py`),
+  `kontrola/cmp_ld.py`, `html2txt.py` (pomocnicze), `zab/t_head.js`, `measure.js`, `opt.js`, `overflow.js`, `turbo/*.js`
+  (`test_oc.js` powiela `oc/t_func.js` i `oc/t_deeplink.js`; reszta to pomiary i zrzuty; `script-backup.js` to skrypt przepływu, nie test).
+- `kontrola-zab-1311/short*.js`, `shot2.js`, `wide.js` – zrzuty i próby poprawek CSS.
+- `slownik-review/*.py` poza `anchors.py` – raporty z przeglądu treści słownika (część na zrzucie tekstów `texts.json`).
+- `kontrola-slownik-tech/`, `kontrola-slownik-tech2/` (poza `e_static.py`) – przegląd dostępności słownika 13.11; wnioski są w
+  `slownik/test_poprawki.js`, część skryptów działa na kopiach stron (`sb/`, `sb_base/`, `sb_nojs/`).
+- `kontrola-om/` (opieka medyczna), `kontrola-szkpay2/` (płatności za szkolenia), `kontrola123/`, `kontrola123fix/` (ulepszenia 1+2+3) –
+  przeglądy z raportami do oceny ręcznej, część wymaga serwera HTTP na stałym porcie; `kontrola-om/k1.js` przerywa się na dzisiejszej stronie.

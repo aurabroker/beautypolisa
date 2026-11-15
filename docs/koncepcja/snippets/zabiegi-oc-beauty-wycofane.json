@@ -1,0 +1,253 @@
+{
+ "$comment": "Archiwum pozycji usuniętych z listy zabiegów OC (zabiegi-oc-beauty.json). Pozycja wycofana zostaje dozwolona tylko w ogłoszeniach, które już ją mają (zabiegi_ids() – lista wycofanych; strefa klienta 11.10): strona pokazuje nazwę z dopiskiem o wycofaniu, nie można jej dodać do nowego ogłoszenia, filtr ze starym adresem działa. Id nie wraca do użycia; slug – alias kotwicy sekcji #podologia na stronie OC. wersja_listy – ostatnia wersja listy z tą pozycją; wycofano_w_wersji – wersja listy bez niej. Zbudowane przez narzedzia/makiety/migruj_zabiegi_v2.py.",
+ "wycofane": [
+  {
+   "id": "g3-01",
+   "slug": "analiza-chodu-ocena-dynamiczna-wideoanaliza",
+   "nazwa": "Analiza chodu (ocena dynamiczna, wideoanaliza)",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-02",
+   "slug": "badanie-grzybicze-paznokcia",
+   "nazwa": "Badanie grzybicze paznokcia",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-03",
+   "slug": "badanie-podoskopowe-podoskanerem",
+   "nazwa": "Badanie podoskopowe / podoskanerem",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-04",
+   "slug": "delikatna-koloryzacja-rekonstrukcyjna-paznokci",
+   "nazwa": "Delikatna koloryzacja rekonstrukcyjna paznokci",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-05",
+   "slug": "diagnostyka-i-leczenie-brodawek",
+   "nazwa": "Diagnostyka i leczenie brodawek",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-06",
+   "slug": "diagnostyka-roznicowa-brodawka-vs-odcisk",
+   "nazwa": "Diagnostyka różnicowa brodawka vs odcisk",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-07",
+   "slug": "dobor-indywidualnych-wkladek-korygujacych",
+   "nazwa": "Dobór indywidualnych wkładek korygujących",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-08",
+   "slug": "dobor-ortez-i-separatorow-zelowych",
+   "nazwa": "Dobór ortez i separatorów żelowych",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-09",
+   "slug": "instruktaz-ochrony-mechanicznej-i-modyfikacji-obuwia",
+   "nazwa": "Instruktaż ochrony mechanicznej i modyfikacji obuwia",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-10",
+   "slug": "intensywne-kuracje-nawilzajaco-regenerujace",
+   "nazwa": "Intensywne kuracje nawilżająco-regenerujące",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-11",
+   "slug": "klamry-ortonyksyjne-aplikacja-i-aktywacje",
+   "nazwa": "Klamry ortonyksyjne – aplikacja i aktywacje",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-12",
+   "slug": "konsultacja-podologiczna",
+   "nazwa": "Konsultacja podologiczna",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-13",
+   "slug": "kontrola-po-klamrze-rekonstrukcji-opatrunku",
+   "nazwa": "Kontrola po klamrze / rekonstrukcji / opatrunku",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-14",
+   "slug": "korekty-ustawienia-palucha-taping-fiksatory",
+   "nazwa": "Korekty ustawienia palucha: taping / fiksatory",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-15",
+   "slug": "krioterapia-zmian-skornych-co2-punktowa",
+   "nazwa": "Krioterapia zmian skórnych (CO2, punktowa)",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-16",
+   "slug": "odciazanie-miejsc-bolesnych-taping",
+   "nazwa": "Odciążanie miejsc bolesnych (taping)",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-17",
+   "slug": "opatrunki-specjalistyczne",
+   "nazwa": "Opatrunki specjalistyczne",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-18",
+   "slug": "opracowanie-lozyska-przy-onycholizie",
+   "nazwa": "Opracowanie łożyska przy onycholizie",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-19",
+   "slug": "opracowanie-modzeli-odciskow-nagniotkow",
+   "nazwa": "Opracowanie modzeli, odcisków, nagniotków",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-20",
+   "slug": "opracowanie-pekniec-i-rozpadlin-piet",
+   "nazwa": "Opracowanie pęknięć i rozpadlin pięt",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-21",
+   "slug": "opracowanie-walow-z-ziarnina",
+   "nazwa": "Opracowanie wałów z ziarniną",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-22",
+   "slug": "ozonoterapia",
+   "nazwa": "Ozonoterapia",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-23",
+   "slug": "pedicure-podologiczny-medyczny-calosciowy",
+   "nazwa": "Pedicure podologiczny (medyczny) całościowy",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-24",
+   "slug": "pobieranie-probek-do-badan",
+   "nazwa": "Pobieranie próbek do badań",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-25",
+   "slug": "profilaktyka-i-zabiegi-u-osob-z-grup-ryzyka",
+   "nazwa": "Profilaktyka i zabiegi u osób z grup ryzyka",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-26",
+   "slug": "protetyka-rekonstrukcja-paznokcia",
+   "nazwa": "Protetyka / rekonstrukcja paznokcia",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-27",
+   "slug": "rozpoznanie-i-usuwanie-modzeli-odciskow-rozpadlin",
+   "nazwa": "Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-28",
+   "slug": "skrocenie-i-wyrownanie-paznokci-zmienionych-chorobowo",
+   "nazwa": "Skrócenie i wyrównanie paznokci (zmienionych chorobowo)",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-29",
+   "slug": "terapia-nadpotliwosci-stop-jonoforeza",
+   "nazwa": "Terapia nadpotliwości stóp (jonoforeza)",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-30",
+   "slug": "usuwanie-zrogowacialego-naskorka",
+   "nazwa": "Usuwanie zrogowaciałego naskórka",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  },
+  {
+   "id": "g3-31",
+   "slug": "zabiegi-skalpelem-dlutem-i-frezami",
+   "nazwa": "Zabiegi skalpelem, dłutem i frezami",
+   "wersja_listy": 1,
+   "wycofano_w_wersji": 2,
+   "powod": "Lista zabiegów podologicznych nie jest częścią danych portalu – jest w dokumentach programu (w CRM tylko odnośnik do dokumentu „Lista zabiegów – podologiczne”); pozycja dawnej listy podologicznej portalu (wersja 1)."
+  }
+ ]
+}

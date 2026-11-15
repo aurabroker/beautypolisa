@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>OC dla branży beauty (ERGO Hestia) | BeautyPolisa</title>
-<meta name="description" content="OC zawodowe dla salonów kosmetycznych, fryzjerów, podologów i linergistek. Program ERGO Hestia, sumy 100–300 tys. zł, 4 grupy ryzyka. Policz składkę.">
+<meta name="description" content="OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Policz składkę.">
 <link rel="canonical" href="https://beautypolisa.eu/ubezpieczenia/oc-beauty">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:site_name" content="BeautyPolisa">
 <meta property="og:url" content="https://beautypolisa.eu/ubezpieczenia/oc-beauty">
 <meta property="og:title" content="OC dla branży beauty (ERGO Hestia) | BeautyPolisa">
-<meta property="og:description" content="OC zawodowe dla salonów kosmetycznych, fryzjerów, podologów i linergistek. Program ERGO Hestia, sumy 100–300 tys. zł, 4 grupy ryzyka. Policz składkę.">
+<meta property="og:description" content="OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Policz składkę.">
 <meta name="theme-color" content="#141C33">
 <meta name="color-scheme" content="only light">
 <!-- Makieta strony produktu: docelowy adres https://beautypolisa.eu/ubezpieczenia/oc-beauty (04, mapa URL).
@@ -255,29 +255,31 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .zjump a{display:inline-flex;align-items:baseline;gap:10px;min-height:44px;padding:12px 16px;border:1px solid rgba(42,59,104,.35);border-radius:var(--radius-btn);background:rgba(255,255,255,.55);text-decoration:none;color:var(--color-navy);font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;transition:border-color var(--bp-dur-1),background-color var(--bp-dur-1)}
 .zjump a span{font:italic 500 1.05rem/1 var(--font-serif);letter-spacing:0;text-transform:none;color:var(--color-taupe);font-variant-numeric:lining-nums}
 .zjump a:hover{border-color:var(--color-navy);background:rgba(255,255,255,.9)}
-.zgroups{display:grid;gap:clamp(20px,3vw,32px)}
-.zgroup{padding:clamp(22px,3.5vw,44px);scroll-margin-top:104px}
-.zgroup-head{display:grid;gap:20px;padding-bottom:24px;border-bottom:1px solid var(--bp-line-gold)}
-.zgroup-title{display:grid;gap:12px;max-width:46rem}
-.zgroup h3{font-size:clamp(1.6rem,1.3rem + 1vw,2.15rem)}
-.zgroup-desc{font-size:var(--text-body);color:var(--color-ink)}
-.zrates-box{display:grid;gap:10px;align-content:end}
-.zrates-cap{font-size:var(--text-sm);line-height:1.5;color:var(--color-ink)}
-.zrates{display:flex;flex-wrap:wrap;gap:12px 0;margin:0}
-.zrates > div{display:flex;flex-direction:column;gap:6px;padding:0 20px;border-left:1px solid var(--bp-line-gold-soft)}
-.zrates > div:first-child{padding-left:0;border-left:0}
-.zrates dt{font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:.12em;text-transform:uppercase;color:var(--color-taupe)}
-.zrates dd{margin:0;font:600 1.5rem/1.1 var(--font-serif);color:var(--color-navy);white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
-.zrates--ind dd{font-size:1.3rem;line-height:1.25;white-space:normal}
+.zlisty{display:grid;gap:clamp(20px,3vw,32px)}
+.zlista{position:relative;padding:clamp(22px,3.5vw,44px);scroll-margin-top:104px}
+.zlista-head{display:grid;gap:20px;padding-bottom:24px;border-bottom:1px solid var(--bp-line-gold)}
+.zlista--dokument .zlista-head{padding-bottom:0;border-bottom:0}
+.zlista-title{display:grid;gap:12px;max-width:46rem}
+.zlista h3{font-size:clamp(1.6rem,1.3rem + 1vw,2.15rem)}
+.zlista-desc{font-size:var(--text-body);color:var(--color-ink)}
+.zlista-desc a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
+.zlista-doc{align-self:end;font-size:var(--text-sm)}
+/* aliasy dawnych kotwic (#grupa-N, dawne slugi, slugi wycofanych pozycji): puste elementy BEZ hidden – cel przewinięcia do #fragmentu */
+.z-alias{position:absolute;top:0;left:0;width:0;height:0;overflow:hidden;scroll-margin-top:104px}
+.zlist .z-alias{scroll-margin-top:120px}
 .zdetails summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:56px;padding-block:14px;cursor:pointer;color:var(--color-navy);font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase}
 .zdetails summary::-webkit-details-marker{display:none}
 .zdetails summary::after{content:"";flex:none;width:16px;height:16px;background:linear-gradient(currentColor,currentColor) center/100% 1px no-repeat,linear-gradient(currentColor,currentColor) center/1px 100% no-repeat;transition:transform var(--bp-dur-2) var(--ease-lux)}
 .zdetails[open] summary::after{transform:rotate(45deg)}
 .zdetails summary:hover{text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:1px;text-underline-offset:6px}
 .zlist{margin:0;padding:0;list-style:none;columns:3 16rem;column-gap:40px}
-.zlist > li{break-inside:avoid;position:relative;padding:9px 8px 9px 22px;border-bottom:1px solid var(--bp-line-gold-soft);font-size:var(--text-body);line-height:1.45;color:var(--color-ink);scroll-margin-top:120px}
-.zlist > li::before{content:"";position:absolute;left:5px;top:calc(9px + .62em);width:5px;height:5px;background:var(--color-gold);transform:rotate(45deg)}
-.zlist > li:target{background:rgba(255,255,255,.92);box-shadow:inset 3px 0 0 var(--color-navy);color:var(--color-navy);font-weight:500}
+/* pozycja listy: numer z PDF (lista nr 1 i 2) albo litera a–h (ankieta), brzmienie 1:1; przy zabiegu z obu list – odnośnik do drugiego wystąpienia */
+.zlist > li{break-inside:avoid;position:relative;display:grid;grid-template-columns:2.4em minmax(0,1fr);column-gap:6px;padding:9px 8px 9px 4px;border-bottom:1px solid var(--bp-line-gold-soft);font-size:var(--text-body);line-height:1.45;color:var(--color-ink);scroll-margin-top:120px}
+.z-nr{grid-column:1;color:var(--color-taupe);font-variant-numeric:lining-nums tabular-nums}
+.z-name{grid-column:2}
+.z-inna{grid-column:2;justify-self:start;display:inline-flex;align-items:center;min-height:24px;font-size:var(--text-xs);line-height:1.4;color:var(--color-taupe);text-decoration-color:var(--color-gold);text-underline-offset:3px}
+.z-inna:hover{color:var(--color-navy)}
+.zlist > li:target,.zlist > li:has(> .z-alias:target){background:rgba(255,255,255,.92);box-shadow:inset 3px 0 0 var(--color-navy);color:var(--color-navy);font-weight:500}
 .zempty{padding:22px 24px;border-left:2px solid var(--color-gold);background:rgba(255,255,255,.6);font-size:var(--text-body);color:var(--color-ink)}
 .zempty a,.zrules p a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
 .zback{margin-top:14px}
@@ -288,13 +290,8 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .zrules p{font-size:var(--text-body);color:var(--color-ink)}
 .zrules .cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding-top:6px}
 @media (max-width:539px){
-  .zrates{flex-direction:column;gap:0}
-  .zrates > div,.zrates > div:first-child{flex-direction:row;align-items:baseline;justify-content:space-between;gap:16px;padding:9px 0;border-left:0}
-  .zrates > div + div{border-top:1px solid var(--bp-line-gold-soft)}
-  .zrates dd{font-size:1.3rem}
-  .zrates--ind dd{text-align:right}
 }
-@media (min-width:1024px){.zgroup-head{grid-template-columns:minmax(0,1fr) auto;align-items:end;column-gap:48px}}
+@media (min-width:1024px){.zlista-head{grid-template-columns:minmax(0,1fr) auto;align-items:end;column-gap:48px}}
 
 /* ---------- II · klauzula ochrony prawnej: kryjąca karta, kolumna ~70 znaków ---------- */
 .clause-grid{display:grid;gap:clamp(32px,5vw,64px)}
@@ -368,6 +365,9 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .faq details[open] summary::after{transform:rotate(45deg)}
 .faq summary:hover{text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:1px;text-underline-offset:6px}
 .faq details p{padding-bottom:24px;font-size:var(--text-body);color:var(--color-ink)}
+.faq details p:has(+ ul){padding-bottom:10px}
+.faq details ul{margin:0;padding:0 0 24px 1.2em;display:grid;gap:8px;font-size:var(--text-body);color:var(--color-ink)}
+.faq details ul li::marker{color:var(--color-taupe)}
 .faq details a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
 @media (min-width:1024px){.faq-grid{grid-template-columns:minmax(0,4fr) minmax(0,7fr);column-gap:clamp(40px,5vw,72px);align-items:start}.faq-head{margin-bottom:0}}
 @media (min-width:1024px) and (min-height:700px){.faq-head{position:sticky;top:120px}}
@@ -434,7 +434,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   /* sekcja „Jak kupić” na jedwabiu (jak na stronie Tax Protect): margin-bottom oddaje odjęty padding sceny, treść nie podjeżdża pod górną krawędź */
   .scene--silk.section{--scene-pt:72px}
   .scene--silk.section.bg-on::before{margin-bottom:calc(var(--scene-pt,0px) - 100lvh)}
-  .zgroup{padding-inline:18px}
+  .zlista{padding-inline:18px}
   .clause{padding:28px 20px}
   .clause-text{padding-left:1.7em}
   .zlist > li{padding-block:8px}
@@ -534,8 +534,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   .glass,.clause,.end-card,.rel-card{border:1px solid CanvasText}
   .frame::before,.clause::before,.end-card::before{display:none}
   .faq summary::after,.zdetails summary::after{content:"+" / "";width:auto;height:auto;background:none;line-height:1}
-  .zlist > li::before{background:CanvasText}
-  .zlist > li:target{outline:2px solid Highlight;outline-offset:-2px}
+  .zlist > li:target,.zlist > li:has(> .z-alias:target){outline:2px solid Highlight;outline-offset:-2px}
   .chapter-no{display:none}
 }
 @media print{
@@ -550,8 +549,8 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .scene--silk{background-image:url(img/tlo-jedwab.webp)}.scene--marble{background-image:url(img/tlo-marmur-len.webp)}
 @media (max-width:767px){.scene--silk{background-image:url(img/tlo-jedwab-1024.webp)}.scene--marble{background-image:url(img/tlo-marmur-len-1024.webp)}}
 </style></noscript>
-<!-- GEN:jsonld (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
-<!-- JSON-LD: WebPage, BreadcrumbList, Service (= snippets/schema-produkt-oc-beauty.json, bez „broker”), Organization i InsuranceAgency (minimalne węzły z snippets/schema-home.json – cel odwołań publisher/offeredBy), FAQPage (= widoczne pytania) -->
+<!-- GEN:jsonld (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
+<!-- JSON-LD: WebPage, BreadcrumbList, Service (= snippets/schema-produkt-oc-beauty.json, bez „broker”), Organization i InsuranceAgency (minimalne węzły z snippets/schema-home.json – cel odwołań publisher/offeredBy), FAQPage (= widoczne pytania = snippets/schema-faq-oc-beauty.json, oba z snippets/faq-oc-beauty.json) -->
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -562,7 +561,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    "url": "https://beautypolisa.eu/ubezpieczenia/oc-beauty",
    "inLanguage": "pl-PL",
    "name": "OC dla branży beauty (ERGO Hestia) | BeautyPolisa",
-   "description": "OC zawodowe dla salonów kosmetycznych, fryzjerów, podologów i linergistek. Program ERGO Hestia, sumy 100–300 tys. zł, 4 grupy ryzyka. Policz składkę.",
+   "description": "OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Policz składkę.",
    "breadcrumb": {
     "@id": "https://beautypolisa.eu/ubezpieczenia/oc-beauty#breadcrumb"
    },
@@ -601,10 +600,10 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    "@type": "Service",
    "@id": "https://beautypolisa.eu/ubezpieczenia/oc-beauty#service",
    "name": "OC dla branży beauty (ERGO Hestia)",
-   "alternateName": "Ubezpieczenie OC zawodowe dla salonów kosmetycznych, fryzjerskich i podologicznych",
+   "alternateName": "Ubezpieczenie OC zawodowe dla gabinetów kosmetycznych, kosmetologicznych, fryzjerskich i podologicznych",
    "serviceType": "Ubezpieczenie odpowiedzialności cywilnej zawodowej",
    "category": "Ubezpieczenia dla firm – OC zawodowe",
-   "description": "Program ubezpieczenia OC dla branży beauty realizowany z Sopockim Towarzystwem Ubezpieczeń ERGO Hestia S.A. we współpracy z Fundacją Beauty Razem. Zabiegi są przypisane do czterech grup ryzyka: od fryzjerstwa, kosmetyki pielęgnacyjnej, manicure i stylizacji rzęs (grupa 1), przez makijaż permanentny, mezoterapię, lasery nieablacyjne, IPL, tatuaż i peelingi chemiczne (grupa 2) oraz podologię (grupa 3), po zabiegi wysokiego ryzyka oceniane indywidualnie (grupa 4). Suma gwarancyjna do wyboru: 100 000, 200 000 lub 300 000 zł. Składka zależy od grupy ryzyka i sumy gwarancyjnej; zespoły powyżej 8 osób są wyceniane indywidualnie.",
+   "description": "Program ubezpieczenia OC dla branży beauty realizowany z Sopockim Towarzystwem Ubezpieczeń ERGO Hestia S.A. we współpracy z Fundacją Beauty Razem. Składka wynika ze stałej taryfy programu i zależy od rodzaju działalności gabinetu (taryfy: gabinety kosmetyczne i fryzjerskie; gabinety kosmetologiczne; gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne), sumy gwarancyjnej (100 000, 200 000 lub 300 000 zł) i liczby osób wykonujących zabiegi. Zabiegi objęte programem wymieniają listy zabiegów nr 1 i nr 2 w brzmieniu Aneksu nr 5. Zabiegi wymagające ankiety ERGO Hestii i gabinety, w których zabiegi wykonuje więcej niż 8 osób, są wyceniane indywidualnie.",
    "url": "https://beautypolisa.eu/ubezpieczenia/oc-beauty",
    "provider": {
     "@type": "Organization",
@@ -617,7 +616,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    },
    "audience": {
     "@type": "Audience",
-    "audienceType": "salony kosmetyczne, kosmetolodzy, fryzjerzy, podolodzy, linergistki, stylistki paznokci, tatuażyści"
+    "audienceType": "salony kosmetyczne, kosmetolodzy, fryzjerzy, podolodzy, linergistki, stylistki paznokci, tatuażyści, salony masażu"
    },
    "termsOfService": "https://beautypolisa.eu/dokumenty/owu-oc-beauty-ergo-hestia",
    "availableChannel": {
@@ -634,7 +633,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     "offerCount": 9,
     "url": "https://beautypolisa.eu/kalkulator/oc",
     "eligibleRegion": "PL",
-    "description": "Składka roczna według stałej taryfy programu dla grup ryzyka 1–3, sum gwarancyjnych 100 000–300 000 zł i zespołu do 5 osób; zespół 6–8 osób +25%; klauzula ochrony prawnej dodatkowo 92 zł rocznie. Zabiegi wysokiego ryzyka (grupa 4) i zespoły od 9 osób – wycena indywidualna.",
+    "description": "Składka roczna według stałej taryfy programu: trzy taryfy według rodzaju działalności, sumy gwarancyjne 100 000–300 000 zł, do 5 osób wykonujących zabiegi; 6–8 osób – składka z taryfy wyższa o 25%; klauzula ochrony prawnej dodatkowo 92 zł rocznie. Zabiegi wymagające ankiety ERGO Hestii i więcej niż 8 osób wykonujących zabiegi – wycena indywidualna.",
     "offeredBy": {
      "@id": "https://beautypolisa.eu/#agency"
     }
@@ -685,7 +684,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    "@id": "https://beautypolisa.eu/#agency",
    "name": "BeautyPolisa",
    "alternateName": "BeautyPolisa created by Aura Expert",
-   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dla dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
+   "description": "BeautyPolisa to portal informacyjny Aura Expert sp. z o.o., agenta ubezpieczeniowego, o ubezpieczeniach dla branży beauty – OC zawodowe (ERGO Hestia), Tax Protect (Colonnade), utrata dochodu, NNW dzieci, ubezpieczenia grupowe i opieka medyczna – który edukuje i umawia kontakt z doradcą; przy OC doradca wysyła e-mailem osobisty link do analizy potrzeb i wniosku w serwisie portal.beautypolisa.eu. Portal nie sprzedaje polis w koszyku, ale tam, gdzie istnieje zakup online, wskazuje go: NNW dzieci – na platformie ubezpieczyciela Colonnade, okresowa niezdolność do pracy – u Leadenhall Insurance S.A. (coverholder Lloyd’s).",
    "url": "https://beautypolisa.eu/",
    "address": {
     "@type": "PostalAddress",
@@ -709,15 +708,15 @@ h1,h2,h3{font-variant-numeric:lining-nums}
      "name": "Co obejmuje OC dla branży beauty w programie ERGO Hestia?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr WA50/003353/24/A realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi są przypisane do grup ryzyka, a zabiegi wysokiego ryzyka wymagają indywidualnej oceny. Pełny zakres znajdziesz w dokumentach OWU na stronie beautypolisa.eu/dokumenty."
+      "text": "Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr WA50/003353/24/A realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi objęte programem wymieniają listy zabiegów nr 1 i nr 2 w brzmieniu Aneksu nr 5; zabiegi wymagające ankiety ERGO Hestii (8 pozycji) podlegają ocenie ubezpieczyciela. Pełny zakres znajdziesz w dokumentach OWU na stronie beautypolisa.eu/dokumenty."
      }
     },
     {
      "@type": "Question",
-     "name": "Jakie są grupy ryzyka zabiegów i jak wpływają na składkę?",
+     "name": "Od czego zależy składka i co jest na listach zabiegów?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Zabiegi są przypisane do czterech grup ryzyka programu. Grupa 1 – Kosmetyka i fryzjerstwo: m.in. strzyżenie, koloryzacja włosów, manicure, przedłużanie rzęs. Grupa 2 – Kosmetologia i tatuaż: m.in. makijaż permanentny, mezoterapia, zabiegi IPL, tatuaż, peelingi chemiczne. Grupa 3 – Podologia medyczna: zabiegi podologiczne. Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko): m.in. HIFU, toksyna botulinowa, PRP, PLASMA, wypełniacze z kwasem hialuronowym, nici PDO, lipoliza iniekcyjna, laser ablacyjny – wymagają indywidualnej oceny ryzyka przez ERGO Hestię. Składkę wyznacza grupa ryzyka oraz wybrana suma gwarancyjna. Wszystkie 117 zabiegów z przypisaniem do grup znajdziesz w sekcji Lista zabiegów w programie."
+      "text": "Składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i sumy gwarancyjnej. Taryfę wyznacza rodzaj działalności: gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem) – „Gabinety kosmetyczne i fryzjerskie”; gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu – „Gabinety kosmetologiczne”; gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu – „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”. Listy zabiegów programu: „Lista zabiegów – gabinety kosmetyczne i fryzjerskie” (49 pozycji) i „Lista zabiegów – gabinety kosmetyczne i kosmetologiczne” (63 pozycje); część zabiegów (20) jest na obu listach. Zabiegi wymagające ankiety ERGO Hestii (8 pozycji) – wycena indywidualna. Lista zabiegów podologicznych jest w dokumentach programu. Wszystkie pozycje w brzmieniu Aneksu nr 5 znajdziesz w sekcji Listy zabiegów w programie."
      }
     },
     {
@@ -725,7 +724,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
      "name": "Ile kosztuje OC salonu kosmetycznego?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Według stałej taryfy programu składka roczna wynosi od 400 zł (grupa 1, suma gwarancyjna 100 000 zł) do 1 250 zł (grupa 3, suma gwarancyjna 300 000 zł) dla zespołu do 5 osób. Dla zespołów 6–8 osób składka jest wyższa o 25%. Klauzula ochrony prawnej kosztuje dodatkowo 92 zł rocznie. Zespoły od 9 osób oraz zabiegi wysokiego ryzyka (grupa 4) są wyceniane indywidualnie."
+      "text": "Według stałej taryfy programu, gdy zabiegi wykonuje do 5 osób, składka roczna wynosi od 400 zł (taryfa „Gabinety kosmetyczne i fryzjerskie”, suma gwarancyjna 100 000 zł) do 1 250 zł (taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”, suma gwarancyjna 300 000 zł). Gdy zabiegi wykonuje 6–8 osób, składka z taryfy jest wyższa o 25% – np. 987,50 zł zamiast 790 zł w taryfie „Gabinety kosmetologiczne” przy sumie gwarancyjnej 200 000 zł. Klauzula ochrony prawnej kosztuje dodatkowo 92 zł rocznie, bez tej dopłaty. Więcej niż 8 osób wykonujących zabiegi oraz zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna."
      }
     },
     {
@@ -741,7 +740,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
      "name": "Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Są to zabiegi wysokiego ryzyka (grupa 4), których nie wycenia kalkulator. Ich ubezpieczenie jest możliwe po indywidualnej ocenie ubezpieczyciela na podstawie ankiety: listy wykonywanych zabiegów, kwalifikacji personelu, stosowanych formularzy zgody na zabieg oraz szkodowości z ostatnich 3 lat. Zostaw kontakt przez formularz – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę indywidualnej oceny ryzyka ERGO Hestii razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka."
+      "text": "Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „Zabiegi z użyciem toksyny botulinowej”, „Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego” i „Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)” – wszystkie 8 pozycji znajdziesz w sekcji Zabiegi wymagające ankiety ERGO Hestii. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne: Dyplom kosmetologa dla każdej osoby — tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i szkół policealnych nie są dyplomem. Certyfikat ze szkolenia z każdego zabiegu, który wykonuje dana osoba — szkolenie ukończone co najmniej 12 miesięcy przed początkiem ochrony. Zostaw kontakt przez formularz – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka."
      }
     }
    ]
@@ -952,7 +951,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <dl class="figures">
           <div><dt>Składka OC rocznie</dt><dd>od 400&nbsp;zł</dd></div>
           <div><dt>Sumy gwarancyjne</dt><dd>100–300&nbsp;tys.&nbsp;zł</dd></div>
-          <div><dt>Zabiegi w&nbsp;programie</dt><dd data-gen="liczba-zabiegow">117</dd></div>
+          <div><dt>Listy zabiegów nr&nbsp;1 i&nbsp;2</dt><dd><span data-gen="liczba-lista-1">49</span> + <span data-gen="liczba-lista-2">63</span><span class="sr-only"> pozycji</span></dd></div>
         </dl>
       </div>
     </div>
@@ -961,13 +960,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <!-- I · LISTA ZABIEGÓW. W Next.js ta sekcja renderuje się statycznie (SSG) z docs/koncepcja/snippets/zabiegi-oc-beauty.json
        – jednego źródła prawdy dla kalkulatora, schema.org i llms.txt. W makiecie blok między znacznikami GEN:zabiegi
        jest wygenerowany skryptem z tego pliku (nie edytować ręcznie). Bez JS cała lista jest widoczna; wyszukiwarka
-       pojawia się dopiero ze skryptem. id elementu = slug zabiegu (głębokie linki ze stron /dla-kogo/<zawod>). -->
+       pojawia się dopiero ze skryptem. id elementu = slug zabiegu (głębokie linki ze stron /dla-kogo/<zawod>); drugie wystąpienie
+       zabiegu z obu list – <slug>-lista-2; dawne kotwice (#grupa-1…4, slugi sprzed Aneksu nr 5, slugi wycofanych pozycji
+       podologicznych → #podologia) – puste elementy-aliasy span.z-alias bez hidden. -->
   <section class="section" id="zabiegi" aria-labelledby="zab-title">
     <div class="container">
       <div class="section-head">
         <span class="chapter-no" aria-hidden="true">I</span>
-        <p class="eyebrow">Grupy ryzyka</p>
-        <h2 id="zab-title" class="rv-curtain">Lista zabiegów w&nbsp;programie <em>(<span data-gen="liczba-zabiegow">117</span>)</em></h2>
+        <p class="eyebrow">Listy zabiegów</p>
+        <h2 id="zab-title" class="rv-curtain">Listy zabiegów w&nbsp;programie</h2>
         <p class="lead">Sprawdź, w&nbsp;której grupie jest Twój zabieg. Grupa decyduje o&nbsp;stawce z&nbsp;<a class="bp-termin" href="slownik.html#haslo-stala-taryfa" data-termin="stala-taryfa">taryfy programu</a>.</p>
         <p>Lista pokazuje, do której <a class="bp-termin" href="slownik.html#haslo-grupa-ryzyka" data-termin="grupa-ryzyka">grupy ryzyka</a> program przypisuje zabieg. Zakres ochrony i&nbsp;wyłączenia określają <a class="bp-termin" href="slownik.html#haslo-owu" data-termin="owu">warunki ubezpieczenia programu</a>.</p>
       </div>
@@ -976,19 +977,19 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <form class="zsearch" id="z-szukaj-form" role="search" aria-label="Zabiegi w programie" hidden>
           <label for="z-szukaj">Wpisz nazwę zabiegu</label>
           <div class="zsearch-row">
-            <input type="search" id="z-szukaj" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. mezoterapia, henna, klamry" aria-describedby="z-licznik">
+            <input type="search" id="z-szukaj" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. mezoterapia, henna, manicure" aria-describedby="z-licznik">
             <button class="btn btn-ghost" type="reset" id="z-wyczysc" hidden>Wyczyść</button>
           </div>
-          <p class="zcount" id="z-licznik" aria-live="polite" aria-atomic="true">Wszystkie zabiegi w&nbsp;programie: <strong data-gen="liczba-zabiegow">117</strong></p>
+          <p class="zcount" id="z-licznik" aria-live="polite" aria-atomic="true">Lista nr&nbsp;1: <strong data-gen="liczba-lista-1">49</strong> · lista nr&nbsp;2: <strong data-gen="liczba-lista-2">63</strong> · ankieta: <strong data-gen="liczba-ankieta">8</strong></p>
         </form>
-        <!-- GEN:zabiegi-skok (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
+        <!-- GEN:zabiegi-skok (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
         <nav class="zjump" aria-labelledby="z-skok-tytul">
-          <p id="z-skok-tytul">Przejdź do grupy</p>
+          <p id="z-skok-tytul">Przejdź do listy</p>
           <ul>
-            <li><a href="#grupa-1">Grupa 1 <span>40</span><span class="sr-only"> zabiegów</span></a></li>
-            <li><a href="#grupa-2">Grupa 2 <span>38</span><span class="sr-only"> zabiegów</span></a></li>
-            <li><a href="#grupa-3">Grupa 3 <span>31</span><span class="sr-only"> zabiegów</span></a></li>
-            <li><a href="#grupa-4">Grupa 4 <span>8</span><span class="sr-only"> zabiegów</span></a></li>
+            <li><a href="#lista-1">Lista nr 1 <span>49</span><span class="sr-only"> pozycji</span></a></li>
+            <li><a href="#lista-2">Lista nr 2 <span>63</span><span class="sr-only"> pozycje</span></a></li>
+            <li><a href="#ankieta">Ankieta <span>8</span><span class="sr-only"> pozycji</span></a></li>
+            <li><a href="#podologia">Podologia</a></li>
           </ul>
         </nav>
         <!-- /GEN:zabiegi-skok -->
@@ -996,222 +997,228 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
       <p class="zempty" id="z-brak" hidden></p>
 
-      <div class="zgroups">
-        <!-- GEN:zabiegi (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
-        <section class="zgroup glass glass--tint" id="grupa-1" aria-labelledby="grupa-1-tytul">
-          <div class="zgroup-head">
-            <div class="zgroup-title">
-              <p class="eyebrow">40 zabiegów</p>
-              <h3 id="grupa-1-tytul">Grupa 1 – Kosmetyka i fryzjerstwo</h3>
+      <div class="zlisty">
+        <!-- GEN:zabiegi (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
+        <section class="zlista glass glass--tint" id="lista-1" aria-labelledby="lista-1-tytul" data-z-lista="lista nr 1">
+          <span class="z-alias" id="grupa-1"></span>
+          <div class="zlista-head">
+            <div class="zlista-title">
+              <p class="eyebrow">Załącznik nr 1 · 49 pozycji</p>
+              <h3 id="lista-1-tytul">Lista zabiegów – gabinety kosmetyczne i fryzjerskie</h3>
             </div>
-            <div class="zrates-box">
-              <p class="zrates-cap">Składka roczna, zespół do 5 osób</p>
-              <dl class="zrates">
-                <div><dt>Suma 100 tys. zł</dt><dd>400 zł</dd></div>
-                <div><dt>Suma 200 tys. zł</dt><dd>500 zł</dd></div>
-                <div><dt>Suma 300 tys. zł</dt><dd>650 zł</dd></div>
-              </dl>
-            </div>
+            <p class="zlista-doc"><a class="link-lux" href="dokumenty/oc-beauty/lista-zabiegow-nr-1-kosmetyczne-fryzjerskie-aneks-5.pdf">Pobierz listę nr 1 (PDF, Aneks nr 5)</a></p>
           </div>
           <details class="zdetails" open>
-            <summary><span>Zabiegi w grupie 1 (<span data-z-ile>40</span>)</span></summary>
-            <ul class="zlist">
-              <li id="barbering"><span class="z-name">Barbering</span></li>
-              <li id="depilacja-pasta-cukrowa"><span class="z-name">Depilacja pastą cukrową</span></li>
-              <li id="depilacja-woskiem"><span class="z-name">Depilacja woskiem</span></li>
-              <li id="dermabrazja-i-peeling-skory-glowy"><span class="z-name">Dermabrazja i peeling skóry głowy</span></li>
-              <li id="diagnoza-skory-glowy-i-usg-wlosa"><span class="z-name">Diagnoza skóry głowy i USG włosa</span></li>
-              <li id="elektrostymulacja"><span class="z-name">Elektrostymulacja</span></li>
-              <li id="endermologia-masaz-podcisnieniowy"><span class="z-name">Endermologia – masaż podciśnieniowy</span></li>
-              <li id="golenie-glowy"><span class="z-name">Golenie głowy</span></li>
-              <li id="henna"><span class="z-name">Henna</span></li>
-              <li id="koloryzacja-i-dekoloryzacja-wlosow"><span class="z-name">Koloryzacja i dekoloryzacja włosów</span></li>
-              <li id="kosmetyczna-diagnostyka-trychologiczna"><span class="z-name">Kosmetyczna diagnostyka trychologiczna</span></li>
-              <li id="kosmetyczny-zabieg-trychologiczny"><span class="z-name">Kosmetyczny zabieg trychologiczny</span></li>
-              <li id="kuracje-nawilzajace-i-odbudowujace-wlosy"><span class="z-name">Kuracje nawilżające i odbudowujące włosy</span></li>
-              <li id="laminowanie-brwi-i-rzes"><span class="z-name">Laminowanie brwi i rzęs</span></li>
-              <li id="laminowanie-wlosow"><span class="z-name">Laminowanie włosów</span></li>
-              <li id="makijaz"><span class="z-name">Makijaż</span></li>
-              <li id="manicure"><span class="z-name">Manicure</span></li>
-              <li id="manualne-oczyszczanie-twarzy"><span class="z-name">Manualne oczyszczanie twarzy</span></li>
-              <li id="masaz-banka-chinska"><span class="z-name">Masaż bańką chińską</span></li>
-              <li id="masaz-endodermiczny-i-drenaz-limfatyczny"><span class="z-name">Masaż endodermiczny i drenaż limfatyczny</span></li>
-              <li id="masaz-manualny-ciala-i-twarzy"><span class="z-name">Masaż manualny ciała i twarzy</span></li>
-              <li id="mycie-i-suszenie-wlosow"><span class="z-name">Mycie i suszenie włosów</span></li>
-              <li id="oczyszczanie-wlosow"><span class="z-name">Oczyszczanie włosów</span></li>
-              <li id="pasemka-i-baleyage"><span class="z-name">Pasemka i baleyage</span></li>
-              <li id="pedicure-kosmetyczny"><span class="z-name">Pedicure kosmetyczny</span></li>
-              <li id="piercing-przekluwanie"><span class="z-name">Piercing – przekłuwanie</span></li>
-              <li id="presoterapia"><span class="z-name">Presoterapia</span></li>
-              <li id="przekluwanie-uszu"><span class="z-name">Przekłuwanie uszu</span></li>
-              <li id="przedluzanie-i-zageszczanie-rzes"><span class="z-name">Przedłużanie i zagęszczanie rzęs</span></li>
-              <li id="przedluzanie-wlosow"><span class="z-name">Przedłużanie włosów</span></li>
-              <li id="prostowanie-wlosow-na-stale"><span class="z-name">Prostowanie włosów na stałe</span></li>
-              <li id="retusz-siwizny"><span class="z-name">Retusz siwizny</span></li>
-              <li id="sauna-na-wlosy"><span class="z-name">Sauna na włosy</span></li>
-              <li id="strzyzenie-nozyczki-maszynka-brzytwa-split-ender"><span class="z-name">Strzyżenie (nożyczki, maszynka, brzytwa, Split-ender)</span></li>
-              <li id="trwala-ondulacja"><span class="z-name">Trwała ondulacja</span></li>
-              <li id="zabiegi-z-zastosowaniem-skladnikow-aktywnych"><span class="z-name">Zabiegi z zastosowaniem składników aktywnych</span></li>
-              <li id="zabiegi-keratynowe"><span class="z-name">Zabiegi keratynowe</span></li>
-              <li id="zabiegi-przeciwlupiezowe"><span class="z-name">Zabiegi przeciwłupieżowe</span></li>
-              <li id="zabiegi-led-terapeutyczne"><span class="z-name">Zabiegi LED – terapeutyczne</span></li>
-              <li id="zageszczanie-wlosow"><span class="z-name">Zagęszczanie włosów</span></li>
-            </ul>
+            <summary><span>Pozycje listy nr 1 (<span data-z-ile>49</span>)</span></summary>
+            <ol class="zlist">
+              <li id="barbering" value="1"><span class="z-nr">1.</span> <span class="z-name">Barbering</span></li>
+              <li id="depilacja-pasta-cukrowa" value="2"><span class="z-nr">2.</span> <span class="z-name">Depilacja pastą cukrową</span> <a class="z-inna" href="#depilacja-pasta-cukrowa-lista-2">także na liście nr 2, poz.&nbsp;3</a></li>
+              <li id="depilacja-woskiem" value="3"><span class="z-nr">3.</span> <span class="z-name">Depilacja woskiem</span> <a class="z-inna" href="#depilacja-woskiem-lista-2">także na liście nr 2, poz.&nbsp;4</a></li>
+              <li id="dermabrazja-i-peeling-skory-glowy" value="4"><span class="z-nr">4.</span> <span class="z-name">Dermabrazja i peeling skóry głowy</span></li>
+              <li id="diagnoza-skory-glowy-i-usg-wlosa" value="5"><span class="z-nr">5.</span> <span class="z-name">Diagnoza skóry głowy i USG włosa</span></li>
+              <li id="elektrostymulacja" value="6"><span class="z-nr">6.</span> <span class="z-name">Elektrostymulacja</span> <a class="z-inna" href="#elektrostymulacja-lista-2">także na liście nr 2, poz.&nbsp;8</a></li>
+              <li id="endermologia-masaz-podcisnieniowy" value="7"><span class="z-nr">7.</span> <span class="z-name">Endermologia – masaż podciśnieniowy</span></li>
+              <li id="golenie-glowy" value="8"><span class="z-nr">8.</span> <span class="z-name">Golenie głowy</span></li>
+              <li id="henna" value="9"><span class="z-nr">9.</span> <span class="z-name">Henna</span> <a class="z-inna" href="#henna-lista-2">także na liście nr 2, poz.&nbsp;10</a></li>
+              <li id="koloryzacja-i-dekoloryzacja-wlosow" value="10"><span class="z-nr">10.</span> <span class="z-name">Koloryzacja i dekoloryzacja włosów</span></li>
+              <li id="kosmetyczna-diagnostyka-trychologiczna" value="11"><span class="z-nr">11.</span> <span class="z-name">Kosmetyczna diagnostyka trychologiczna</span> <a class="z-inna" href="#kosmetyczna-diagnostyka-trychologiczna-lista-2">także na liście nr 2, poz.&nbsp;59</a></li>
+              <li id="kosmetyczny-zabieg-trychologiczny" value="12"><span class="z-nr">12.</span> <span class="z-name">Kosmetyczny zabieg trychologiczny</span> <a class="z-inna" href="#kosmetyczny-zabieg-trychologiczny-lista-2">także na liście nr 2, poz.&nbsp;58</a></li>
+              <li id="kuracje-nawilzajace-regenerujace-i-odbudowujace-wlosy" value="13"><span class="z-alias" id="kuracje-nawilzajace-i-odbudowujace-wlosy"></span><span class="z-nr">13.</span> <span class="z-name">Kuracje nawilżające, regenerujące i odbudowujące włosy</span></li>
+              <li id="laminowanie-brwi-i-rzes" value="14"><span class="z-nr">14.</span> <span class="z-name">Laminowanie brwi i rzęs</span> <a class="z-inna" href="#laminowanie-brwi-i-rzes-lista-2">także na liście nr 2, poz.&nbsp;16</a></li>
+              <li id="laminowanie-wlosow" value="15"><span class="z-nr">15.</span> <span class="z-name">Laminowanie włosów</span></li>
+              <li id="makijaz" value="16"><span class="z-nr">16.</span> <span class="z-name">Makijaż</span></li>
+              <li id="manicure" value="17"><span class="z-nr">17.</span> <span class="z-name">Manicure</span> <a class="z-inna" href="#manicure-lista-2">także na liście nr 2, poz.&nbsp;19</a></li>
+              <li id="manualne-oczyszczanie-twarzy" value="18"><span class="z-nr">18.</span> <span class="z-name">Manualne oczyszczanie twarzy</span> <a class="z-inna" href="#manualne-oczyszczanie-twarzy-lista-2">także na liście nr 2, poz.&nbsp;23</a></li>
+              <li id="masaz-banka-chinska" value="19"><span class="z-nr">19.</span> <span class="z-name">Masaż bańką chińską</span> <a class="z-inna" href="#masaz-banka-chinska-lista-2">także na liście nr 2, poz.&nbsp;20</a></li>
+              <li id="masaz-endodermiczny-i-drenaz-limfatyczny" value="20"><span class="z-nr">20.</span> <span class="z-name">Masaż endodermiczny i drenaż limfatyczny</span></li>
+              <li id="masaz-manualny-ciala-w-tym-masaz-glowy-i-twarzy" value="21"><span class="z-alias" id="masaz-manualny-ciala-i-twarzy"></span><span class="z-nr">21.</span> <span class="z-name">Masaż manualny ciała, w tym masaż głowy i twarzy</span></li>
+              <li id="mycie-i-suszenie-wlosow" value="22"><span class="z-nr">22.</span> <span class="z-name">Mycie i suszenie włosów</span></li>
+              <li id="oczyszczanie-wlosow" value="23"><span class="z-nr">23.</span> <span class="z-name">Oczyszczanie włosów</span></li>
+              <li id="pasemka-i-baleyage" value="24"><span class="z-nr">24.</span> <span class="z-name">Pasemka i baleyage</span></li>
+              <li id="pedicure-kosmetyczny" value="25"><span class="z-nr">25.</span> <span class="z-name">Pedicure kosmetyczny</span></li>
+              <li id="piercing-przekluwanie-innych-czesci-ciala" value="26"><span class="z-alias" id="piercing-przekluwanie"></span><span class="z-nr">26.</span> <span class="z-name">Piercing – przekłuwanie innych części ciała</span> <a class="z-inna" href="#piercing-przekluwanie-innych-czesci-ciala-lista-2">także na liście nr 2, poz.&nbsp;39</a></li>
+              <li id="presoterapia" value="27"><span class="z-nr">27.</span> <span class="z-name">Presoterapia</span> <a class="z-inna" href="#presoterapia-lista-2">także na liście nr 2, poz.&nbsp;41</a></li>
+              <li id="przekluwanie-uszu" value="28"><span class="z-nr">28.</span> <span class="z-name">Przekłuwanie uszu</span> <a class="z-inna" href="#przekluwanie-uszu-lista-2">także na liście nr 2, poz.&nbsp;42</a></li>
+              <li id="przedluzanie-i-zageszczanie-rzes" value="29"><span class="z-nr">29.</span> <span class="z-name">Przedłużanie i zagęszczanie rzęs</span> <a class="z-inna" href="#przedluzanie-i-zageszczanie-rzes-lista-2">także na liście nr 2, poz.&nbsp;40</a></li>
+              <li id="przedluzanie-wlosow" value="30"><span class="z-nr">30.</span> <span class="z-name">Przedłużanie włosów</span></li>
+              <li id="prostowanie-wlosow-na-stale" value="31"><span class="z-nr">31.</span> <span class="z-name">Prostowanie włosów na stałe</span></li>
+              <li id="retusz-siwizny" value="32"><span class="z-nr">32.</span> <span class="z-name">Retusz siwizny</span></li>
+              <li id="sauna-na-wlosy" value="33"><span class="z-nr">33.</span> <span class="z-name">Sauna na włosy</span></li>
+              <li id="strzyzenie-nozyczkami-maszynka-brzytwa-oraz-metoda-split-ender-i-hair-dusting" value="34"><span class="z-alias" id="strzyzenie-nozyczki-maszynka-brzytwa-split-ender"></span><span class="z-nr">34.</span> <span class="z-name">Strzyżenie nożyczkami, maszynką, brzytwą oraz metodą Split-ender i Hair-dusting; trymowanie</span></li>
+              <li id="trwala-ondulacja" value="35"><span class="z-nr">35.</span> <span class="z-name">Trwała ondulacja</span></li>
+              <li id="wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych" value="36"><span class="z-alias" id="zabiegi-z-zastosowaniem-skladnikow-aktywnych"></span><span class="z-nr">36.</span> <span class="z-name">Wykonywanie zabiegów kosmetycznych z zastosowaniem składników aktywnych</span> <a class="z-inna" href="#wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych-lista-2">także na liście nr 2, poz.&nbsp;49</a></li>
+              <li id="zabieg-pielegnacyjny-wlosow-z-uzyciem-fal-ultradzwiekowych" value="37"><span class="z-nr">37.</span> <span class="z-name">Zabieg pielęgnacyjny włosów z użyciem fal ultradźwiękowych</span></li>
+              <li id="zabieg-rekonstrukcji-wlosow" value="38"><span class="z-nr">38.</span> <span class="z-name">Zabieg rekonstrukcji włosów</span></li>
+              <li id="zabieg-regeneracyjny-wlosow-z-uzyciem-podczerwieni" value="39"><span class="z-nr">39.</span> <span class="z-name">Zabieg regeneracyjny włosów z użyciem podczerwieni</span></li>
+              <li id="zabiegi-keratynowe" value="40"><span class="z-nr">40.</span> <span class="z-name">Zabiegi keratynowe</span></li>
+              <li id="zabiegi-przeciwlupiezowe" value="41"><span class="z-nr">41.</span> <span class="z-name">Zabiegi przeciwłupieżowe</span></li>
+              <li id="zabiegi-wykorzystujace-terapeutyczne-dzialanie-swiatla-swiatlo-led-i-jego" value="42"><span class="z-alias" id="zabiegi-led-terapeutyczne"></span><span class="z-nr">42.</span> <span class="z-name">Zabiegi wykorzystujące terapeutyczne działanie światła – światło LED i jego pochodnych</span></li>
+              <li id="zageszczanie-wlosow" value="43"><span class="z-nr">43.</span> <span class="z-name">Zagęszczanie włosów</span></li>
+              <li id="warkocze-syntetyczne" value="44"><span class="z-nr">44.</span> <span class="z-name">Warkocze syntetyczne</span></li>
+              <li id="masaz-kobido" value="45"><span class="z-nr">45.</span> <span class="z-name">Masaż kobido</span> <a class="z-inna" href="#masaz-kobido-lista-2">także na liście nr 2, poz.&nbsp;25</a></li>
+              <li id="masaz-miesniowo-powieziowy" value="46"><span class="z-nr">46.</span> <span class="z-name">Masaż mięśniowo-powięziowy</span> <a class="z-inna" href="#masaz-miesniowo-powieziowy-lista-2">także na liście nr 2, poz.&nbsp;61</a></li>
+              <li id="masaz-transbukalny" value="47"><span class="z-nr">47.</span> <span class="z-name">Masaż transbukalny</span> <a class="z-inna" href="#masaz-transbukalny-lista-2">także na liście nr 2, poz.&nbsp;60</a></li>
+              <li id="suche-iglowanie" value="48"><span class="z-nr">48.</span> <span class="z-name">Suche igłowanie</span> <a class="z-inna" href="#suche-iglowanie-lista-2">także na liście nr 2, poz.&nbsp;62</a></li>
+              <li id="opalanie-natryskowe" value="49"><span class="z-nr">49.</span> <span class="z-name">Opalanie natryskowe</span> <a class="z-inna" href="#opalanie-natryskowe-lista-2">także na liście nr 2, poz.&nbsp;35</a></li>
+            </ol>
             <p class="zback"><a class="link-quiet" href="#zabiegi">Wróć na początek listy</a></p>
           </details>
         </section>
-        <section class="zgroup glass glass--tint" id="grupa-2" aria-labelledby="grupa-2-tytul">
-          <div class="zgroup-head">
-            <div class="zgroup-title">
-              <p class="eyebrow">38 zabiegów</p>
-              <h3 id="grupa-2-tytul">Grupa 2 – Kosmetologia i tatuaż</h3>
+        <section class="zlista glass glass--tint" id="lista-2" aria-labelledby="lista-2-tytul" data-z-lista="lista nr 2">
+          <span class="z-alias" id="grupa-2"></span>
+          <div class="zlista-head">
+            <div class="zlista-title">
+              <p class="eyebrow">Załącznik nr 2 · 63 pozycje</p>
+              <h3 id="lista-2-tytul">Lista zabiegów – gabinety kosmetyczne i kosmetologiczne</h3>
             </div>
-            <div class="zrates-box">
-              <p class="zrates-cap">Składka roczna, zespół do 5 osób</p>
-              <dl class="zrates">
-                <div><dt>Suma 100 tys. zł</dt><dd>650 zł</dd></div>
-                <div><dt>Suma 200 tys. zł</dt><dd>790 zł</dd></div>
-                <div><dt>Suma 300 tys. zł</dt><dd>950 zł</dd></div>
-              </dl>
-            </div>
+            <p class="zlista-doc"><a class="link-lux" href="dokumenty/oc-beauty/lista-zabiegow-nr-2-kosmetyczne-kosmetologiczne-aneks-5.pdf">Pobierz listę nr 2 (PDF, Aneks nr 5)</a></p>
           </div>
           <details class="zdetails" open>
-            <summary><span>Zabiegi w grupie 2 (<span data-z-ile>38</span>)</span></summary>
-            <ul class="zlist">
-              <li id="chemiczne-usuwanie-makijazu-permanentnego"><span class="z-name">Chemiczne usuwanie makijażu permanentnego</span></li>
-              <li id="cool-lifting"><span class="z-name">Cool Lifting</span></li>
-              <li id="elektroliza"><span class="z-name">Elektroliza</span></li>
-              <li id="elektrokoagulacja"><span class="z-name">Elektrokoagulacja</span></li>
-              <li id="elektroporacja"><span class="z-name">Elektroporacja</span></li>
-              <li id="fala-akustyczna-i-energia-wysokiej-czestotliwosci"><span class="z-name">Fala akustyczna i energia wysokiej częstotliwości</span></li>
-              <li id="infuzja-tlenowa"><span class="z-name">Infuzja tlenowa</span></li>
-              <li id="jonoforeza"><span class="z-name">Jonoforeza</span></li>
-              <li id="karboksyterapia"><span class="z-name">Karboksyterapia</span></li>
-              <li id="kawitacja-ultradzwiekowa"><span class="z-name">Kawitacja ultradźwiękowa</span></li>
-              <li id="kriolipoliza"><span class="z-name">Kriolipoliza</span></li>
-              <li id="makijaz-okolicznosciowy"><span class="z-name">Makijaż okolicznościowy</span></li>
-              <li id="makijaz-permanentny"><span class="z-name">Makijaż permanentny</span></li>
-              <li id="masaz-kobido"><span class="z-name">Masaż Kobido</span></li>
-              <li id="mezoterapia-beziglowa"><span class="z-name">Mezoterapia bezigłowa</span></li>
-              <li id="mezoterapia-iglowa"><span class="z-name">Mezoterapia igłowa</span></li>
-              <li id="mezoterapia-mikroiglowa"><span class="z-name">Mezoterapia mikroigłowa</span></li>
-              <li id="microblading"><span class="z-name">Microblading</span></li>
-              <li id="mikronakluwanie"><span class="z-name">Mikronakłuwanie</span></li>
-              <li id="mikropigmentacja-rekonstrukcyjna"><span class="z-name">Mikropigmentacja rekonstrukcyjna</span></li>
-              <li id="mikrodermabrazja-korundowa-i-diamentowa"><span class="z-name">Mikrodermabrazja korundowa i diamentowa</span></li>
-              <li id="oczyszczanie-wodorowo-tlenowe"><span class="z-name">Oczyszczanie wodorowo-tlenowe</span></li>
-              <li id="opalanie-natryskowe"><span class="z-name">Opalanie natryskowe</span></li>
-              <li id="oxybrazja"><span class="z-name">Oxybrazja</span></li>
-              <li id="pedicure-kosmetyczny-niezastrzezony-dla-podologow"><span class="z-name">Pedicure kosmetyczny (niezastrzeżony dla podologów)</span></li>
-              <li id="peeling-weglowy"><span class="z-name">Peeling węglowy</span></li>
-              <li id="radiofrekwencja-mikroiglowa"><span class="z-name">Radiofrekwencja mikroigłowa</span></li>
-              <li id="radiotermoliza-zmian-skornych"><span class="z-name">Radiotermoliza zmian skórnych</span></li>
-              <li id="roznorodne-peelingi-chemiczne"><span class="z-name">Różnorodne peelingi chemiczne</span></li>
-              <li id="sauny-infrared"><span class="z-name">Sauny infrared</span></li>
-              <li id="sonoforeza"><span class="z-name">Sonoforeza</span></li>
-              <li id="tatuaz"><span class="z-name">Tatuaż</span></li>
-              <li id="zabiegi-fala-radiowa"><span class="z-name">Zabiegi falą radiową</span></li>
-              <li id="zabiegi-ipl-fotoodmladzanie-przebarwienia-teleangiektazje-depilacja"><span class="z-name">Zabiegi IPL (fotoodmładzanie, przebarwienia, teleangiektazje, depilacja)</span></li>
-              <li id="zabiegi-laserem-frakcyjnym-nieablacyjnym"><span class="z-name">Zabiegi laserem frakcyjnym nieablacyjnym</span></li>
-              <li id="zabiegi-laserem-nieablacyjnym-naczynia-tatuaz-depilacja"><span class="z-name">Zabiegi laserem nieablacyjnym (naczynia, tatuaż, depilacja)</span></li>
-              <li id="zabiegi-z-zastosowaniem-podczerwieni"><span class="z-name">Zabiegi z zastosowaniem podczerwieni</span></li>
-              <li id="zastosowanie-pradow-malej-i-duzej-czestotliwosci"><span class="z-name">Zastosowanie prądów małej i dużej częstotliwości</span></li>
-            </ul>
+            <summary><span>Pozycje listy nr 2 (<span data-z-ile>63</span>)</span></summary>
+            <ol class="zlist">
+              <li id="chemiczne-usuwanie-makijazu-permanentnego" value="1"><span class="z-nr">1.</span> <span class="z-name">Chemiczne usuwanie makijażu permanentnego</span></li>
+              <li id="cool-lifting" value="2"><span class="z-nr">2.</span> <span class="z-name">Cool Lifting</span></li>
+              <li id="depilacja-pasta-cukrowa-lista-2" value="3"><span class="z-nr">3.</span> <span class="z-name">Depilacja pastą cukrową</span> <a class="z-inna" href="#depilacja-pasta-cukrowa">także na liście nr 1, poz.&nbsp;2</a></li>
+              <li id="depilacja-woskiem-lista-2" value="4"><span class="z-nr">4.</span> <span class="z-name">Depilacja woskiem</span> <a class="z-inna" href="#depilacja-woskiem">także na liście nr 1, poz.&nbsp;3</a></li>
+              <li id="elektroliza" value="5"><span class="z-nr">5.</span> <span class="z-name">Elektroliza</span></li>
+              <li id="elektrokoagulacja" value="6"><span class="z-nr">6.</span> <span class="z-name">Elektrokoagulacja</span></li>
+              <li id="elektroporacja" value="7"><span class="z-nr">7.</span> <span class="z-name">Elektroporacja</span></li>
+              <li id="elektrostymulacja-lista-2" value="8"><span class="z-nr">8.</span> <span class="z-name">Elektrostymulacja</span> <a class="z-inna" href="#elektrostymulacja">także na liście nr 1, poz.&nbsp;6</a></li>
+              <li id="fala-akustyczna-i-energia-wysokiej-czestotliwosci" value="9"><span class="z-nr">9.</span> <span class="z-name">Fala akustyczna i energia wysokiej częstotliwości</span></li>
+              <li id="henna-lista-2" value="10"><span class="z-nr">10.</span> <span class="z-name">Henna</span> <a class="z-inna" href="#henna">także na liście nr 1, poz.&nbsp;9</a></li>
+              <li id="infuzja-tlenowa" value="11"><span class="z-nr">11.</span> <span class="z-name">Infuzja tlenowa</span></li>
+              <li id="jonoforeza" value="12"><span class="z-nr">12.</span> <span class="z-name">Jonoforeza</span></li>
+              <li id="karboksyterapia" value="13"><span class="z-nr">13.</span> <span class="z-name">Karboksyterapia</span></li>
+              <li id="kawitacja-ultradzwiekowa" value="14"><span class="z-nr">14.</span> <span class="z-name">Kawitacja ultradźwiękowa</span></li>
+              <li id="kriolipoliza" value="15"><span class="z-nr">15.</span> <span class="z-name">Kriolipoliza</span></li>
+              <li id="laminowanie-brwi-i-rzes-lista-2" value="16"><span class="z-nr">16.</span> <span class="z-name">Laminowanie brwi i rzęs</span> <a class="z-inna" href="#laminowanie-brwi-i-rzes">także na liście nr 1, poz.&nbsp;14</a></li>
+              <li id="makijaz-okolicznosciowy" value="17"><span class="z-nr">17.</span> <span class="z-name">Makijaż okolicznościowy</span></li>
+              <li id="makijaz-permanentny" value="18"><span class="z-nr">18.</span> <span class="z-name">Makijaż permanentny</span></li>
+              <li id="manicure-lista-2" value="19"><span class="z-nr">19.</span> <span class="z-name">Manicure</span> <a class="z-inna" href="#manicure">także na liście nr 1, poz.&nbsp;17</a></li>
+              <li id="masaz-banka-chinska-lista-2" value="20"><span class="z-nr">20.</span> <span class="z-name">Masaż bańką chińską</span> <a class="z-inna" href="#masaz-banka-chinska">także na liście nr 1, poz.&nbsp;19</a></li>
+              <li id="masaz-endodermiczny" value="21"><span class="z-nr">21.</span> <span class="z-name">Masaż endodermiczny</span></li>
+              <li id="masaz-podcisnieniowy" value="22"><span class="z-nr">22.</span> <span class="z-name">Masaż podciśnieniowy</span></li>
+              <li id="manualne-oczyszczanie-twarzy-lista-2" value="23"><span class="z-nr">23.</span> <span class="z-name">Manualne oczyszczanie twarzy</span> <a class="z-inna" href="#manualne-oczyszczanie-twarzy">także na liście nr 1, poz.&nbsp;18</a></li>
+              <li id="masaz-manualny-ciala" value="24"><span class="z-nr">24.</span> <span class="z-name">Masaż manualny ciała</span></li>
+              <li id="masaz-kobido-lista-2" value="25"><span class="z-nr">25.</span> <span class="z-name">Masaż Kobido</span> <a class="z-inna" href="#masaz-kobido">także na liście nr 1, poz.&nbsp;45</a></li>
+              <li id="mezoterapia-beziglowa" value="26"><span class="z-nr">26.</span> <span class="z-name">Mezoterapia bezigłowa</span></li>
+              <li id="mezoterapia-iglowa" value="27"><span class="z-nr">27.</span> <span class="z-name">Mezoterapia igłowa</span></li>
+              <li id="mezoterapia-mikroiglowa" value="28"><span class="z-nr">28.</span> <span class="z-name">Mezoterapia mikroigłowa</span></li>
+              <li id="metaterapia" value="29"><span class="z-nr">29.</span> <span class="z-name">Metaterapia</span></li>
+              <li id="microblading" value="30"><span class="z-nr">30.</span> <span class="z-name">Microblading</span></li>
+              <li id="mikronakluwanie" value="31"><span class="z-nr">31.</span> <span class="z-name">Mikronakłuwanie</span></li>
+              <li id="mikropigmentacja-rekonstrukcyjna" value="32"><span class="z-nr">32.</span> <span class="z-name">Mikropigmentacja rekonstrukcyjna</span></li>
+              <li id="mikrodermabrazja-korundowa-i-diamentowa" value="33"><span class="z-nr">33.</span> <span class="z-name">Mikrodermabrazja korundowa i diamentowa</span></li>
+              <li id="oczyszczanie-wodorowo-tlenowe" value="34"><span class="z-nr">34.</span> <span class="z-name">Oczyszczanie wodorowo-tlenowe</span></li>
+              <li id="opalanie-natryskowe-lista-2" value="35"><span class="z-nr">35.</span> <span class="z-name">Opalanie natryskowe</span> <a class="z-inna" href="#opalanie-natryskowe">także na liście nr 1, poz.&nbsp;49</a></li>
+              <li id="oxybrazja" value="36"><span class="z-nr">36.</span> <span class="z-name">Oxybrazja</span></li>
+              <li id="pedicure-kosmetyczny-w-zakresie-zabiegow-niezastrzezonych-dla-podologow" value="37"><span class="z-alias" id="pedicure-kosmetyczny-niezastrzezony-dla-podologow"></span><span class="z-nr">37.</span> <span class="z-name">Pedicure kosmetyczny w zakresie zabiegów niezastrzeżonych dla podologów</span></li>
+              <li id="peeling-weglowy" value="38"><span class="z-nr">38.</span> <span class="z-name">Peeling węglowy</span></li>
+              <li id="piercing-przekluwanie-innych-czesci-ciala-lista-2" value="39"><span class="z-nr">39.</span> <span class="z-name">Piercing – przekłuwanie innych części ciała</span> <a class="z-inna" href="#piercing-przekluwanie-innych-czesci-ciala">także na liście nr 1, poz.&nbsp;26</a></li>
+              <li id="przedluzanie-i-zageszczanie-rzes-lista-2" value="40"><span class="z-nr">40.</span> <span class="z-name">Przedłużanie i zagęszczanie rzęs</span> <a class="z-inna" href="#przedluzanie-i-zageszczanie-rzes">także na liście nr 1, poz.&nbsp;29</a></li>
+              <li id="presoterapia-lista-2" value="41"><span class="z-nr">41.</span> <span class="z-name">Presoterapia</span> <a class="z-inna" href="#presoterapia">także na liście nr 1, poz.&nbsp;27</a></li>
+              <li id="przekluwanie-uszu-lista-2" value="42"><span class="z-nr">42.</span> <span class="z-name">Przekłuwanie uszu</span> <a class="z-inna" href="#przekluwanie-uszu">także na liście nr 1, poz.&nbsp;28</a></li>
+              <li id="radiofrekwencja-mikroiglowa" value="43"><span class="z-nr">43.</span> <span class="z-name">Radiofrekwencja mikroigłowa</span></li>
+              <li id="radiotermoliza-zmian-skornych" value="44"><span class="z-nr">44.</span> <span class="z-name">Radiotermoliza zmian skórnych</span></li>
+              <li id="roznorodne-peelingi-chemiczne" value="45"><span class="z-nr">45.</span> <span class="z-name">Różnorodne peelingi chemiczne</span></li>
+              <li id="sauny-infrared" value="46"><span class="z-nr">46.</span> <span class="z-name">Sauny infrared</span></li>
+              <li id="sonoforeza" value="47"><span class="z-nr">47.</span> <span class="z-name">Sonoforeza</span></li>
+              <li id="tatuaz" value="48"><span class="z-nr">48.</span> <span class="z-name">Tatuaż</span></li>
+              <li id="wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych-lista-2" value="49"><span class="z-nr">49.</span> <span class="z-name">Wykonywanie zabiegów kosmetycznych z zastosowaniem składników aktywnych</span> <a class="z-inna" href="#wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych">także na liście nr 1, poz.&nbsp;36</a></li>
+              <li id="wykonywanie-zabiegow-na-twarz-i-cialo-z-zastosowaniem-fali-radiowej" value="50"><span class="z-nr">50.</span> <span class="z-name">Wykonywanie zabiegów na twarz i ciało z zastosowaniem fali radiowej</span></li>
+              <li id="zabiegi-wykorzystujace-swiatlo-ipl-fotoodmladzanie-likwidowanie-przebarwien" value="51"><span class="z-alias" id="zabiegi-ipl-fotoodmladzanie-przebarwienia-teleangiektazje-depilacja"></span><span class="z-nr">51.</span> <span class="z-name">Zabiegi wykorzystujące światło IPL: fotoodmładzanie, likwidowanie przebarwień, terapia trądziku, zamykanie naczyń – teleangiektazje, usuwanie zbędnego owłosienia</span></li>
+              <li id="zabiegi-wykorzystujace-terapeutyczne-dzialanie-swiatla-swiatlo-led" value="52"><span class="z-nr">52.</span> <span class="z-name">Zabiegi wykorzystujące terapeutyczne działanie światła – światło LED</span></li>
+              <li id="zabiegi-z-zastosowaniem-fali-radiowej" value="53"><span class="z-alias" id="zabiegi-fala-radiowa"></span><span class="z-nr">53.</span> <span class="z-name">Zabiegi z zastosowaniem fali radiowej</span></li>
+              <li id="zabiegi-z-zastosowaniem-lasera-frakcyjnego-nieablacyjnego-laser-subablacyjny" value="54"><span class="z-alias" id="zabiegi-laserem-frakcyjnym-nieablacyjnym"></span><span class="z-nr">54.</span> <span class="z-name">Zabiegi z zastosowaniem lasera frakcyjnego nieablacyjnego, laser subablacyjny</span></li>
+              <li id="zabiegi-z-wykorzystaniem-laserow-nieablacyjnych-w-tym-laserowe-zamykanie-naczyn" value="55"><span class="z-alias" id="zabiegi-laserem-nieablacyjnym-naczynia-tatuaz-depilacja"></span><span class="z-nr">55.</span> <span class="z-name">Zabiegi z wykorzystaniem laserów nieablacyjnych, w tym laserowe zamykanie naczyń – teleangiektazje, usuwanie tatuażu i makijażu permanentnego, usuwanie zbędnego owłosienia</span></li>
+              <li id="zabiegi-z-zastosowaniem-podczerwieni" value="56"><span class="z-nr">56.</span> <span class="z-name">Zabiegi z zastosowaniem podczerwieni</span></li>
+              <li id="zastosowanie-pradow-malej-i-duzej-czestotliwosci" value="57"><span class="z-nr">57.</span> <span class="z-name">Zastosowanie prądów małej i dużej częstotliwości</span></li>
+              <li id="kosmetyczny-zabieg-trychologiczny-lista-2" value="58"><span class="z-nr">58.</span> <span class="z-name">Kosmetyczny zabieg trychologiczny</span> <a class="z-inna" href="#kosmetyczny-zabieg-trychologiczny">także na liście nr 1, poz.&nbsp;12</a></li>
+              <li id="kosmetyczna-diagnostyka-trychologiczna-lista-2" value="59"><span class="z-nr">59.</span> <span class="z-name">Kosmetyczna diagnostyka trychologiczna</span> <a class="z-inna" href="#kosmetyczna-diagnostyka-trychologiczna">także na liście nr 1, poz.&nbsp;11</a></li>
+              <li id="masaz-transbukalny-lista-2" value="60"><span class="z-nr">60.</span> <span class="z-name">Masaż transbukalny</span> <a class="z-inna" href="#masaz-transbukalny">także na liście nr 1, poz.&nbsp;47</a></li>
+              <li id="masaz-miesniowo-powieziowy-lista-2" value="61"><span class="z-nr">61.</span> <span class="z-name">Masaż mięśniowo-powięziowy</span> <a class="z-inna" href="#masaz-miesniowo-powieziowy">także na liście nr 1, poz.&nbsp;46</a></li>
+              <li id="suche-iglowanie-lista-2" value="62"><span class="z-nr">62.</span> <span class="z-name">Suche igłowanie</span> <a class="z-inna" href="#suche-iglowanie">także na liście nr 1, poz.&nbsp;48</a></li>
+              <li id="needle-shaping" value="63"><span class="z-nr">63.</span> <span class="z-name">Needle shaping</span></li>
+            </ol>
             <p class="zback"><a class="link-quiet" href="#zabiegi">Wróć na początek listy</a></p>
           </details>
         </section>
-        <section class="zgroup glass glass--tint" id="grupa-3" aria-labelledby="grupa-3-tytul">
-          <div class="zgroup-head">
-            <div class="zgroup-title">
-              <p class="eyebrow">31 zabiegów</p>
-              <h3 id="grupa-3-tytul">Grupa 3 – Podologia medyczna</h3>
-            </div>
-            <div class="zrates-box">
-              <p class="zrates-cap">Składka roczna, zespół do 5 osób</p>
-              <dl class="zrates">
-                <div><dt>Suma 100 tys. zł</dt><dd>850 zł</dd></div>
-                <div><dt>Suma 200 tys. zł</dt><dd>980 zł</dd></div>
-                <div><dt>Suma 300 tys. zł</dt><dd>1 250 zł</dd></div>
-              </dl>
+        <section class="zlista glass glass--tint" id="ankieta" aria-labelledby="ankieta-tytul">
+          <span class="z-alias" id="grupa-4"></span>
+          <div class="zlista-head">
+            <div class="zlista-title">
+              <p class="eyebrow">Brzmienie Aneksu nr 5 · 8 pozycji</p>
+              <h3 id="ankieta-tytul">Zabiegi wymagające ankiety ERGO Hestii</h3>
+              <p class="zlista-desc">Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel na podstawie ankiety.</p>
             </div>
           </div>
           <details class="zdetails" open>
-            <summary><span>Zabiegi w grupie 3 (<span data-z-ile>31</span>)</span></summary>
-            <ul class="zlist">
-              <li id="analiza-chodu-ocena-dynamiczna-wideoanaliza"><span class="z-name">Analiza chodu (ocena dynamiczna, wideoanaliza)</span></li>
-              <li id="badanie-grzybicze-paznokcia"><span class="z-name">Badanie grzybicze paznokcia</span></li>
-              <li id="badanie-podoskopowe-podoskanerem"><span class="z-name">Badanie podoskopowe / podoskanerem</span></li>
-              <li id="delikatna-koloryzacja-rekonstrukcyjna-paznokci"><span class="z-name">Delikatna koloryzacja rekonstrukcyjna paznokci</span></li>
-              <li id="diagnostyka-i-leczenie-brodawek"><span class="z-name">Diagnostyka i leczenie brodawek</span></li>
-              <li id="diagnostyka-roznicowa-brodawka-vs-odcisk"><span class="z-name">Diagnostyka różnicowa brodawka vs odcisk</span></li>
-              <li id="dobor-indywidualnych-wkladek-korygujacych"><span class="z-name">Dobór indywidualnych wkładek korygujących</span></li>
-              <li id="dobor-ortez-i-separatorow-zelowych"><span class="z-name">Dobór ortez i separatorów żelowych</span></li>
-              <li id="instruktaz-ochrony-mechanicznej-i-modyfikacji-obuwia"><span class="z-name">Instruktaż ochrony mechanicznej i modyfikacji obuwia</span></li>
-              <li id="intensywne-kuracje-nawilzajaco-regenerujace"><span class="z-name">Intensywne kuracje nawilżająco-regenerujące</span></li>
-              <li id="klamry-ortonyksyjne-aplikacja-i-aktywacje"><span class="z-name">Klamry ortonyksyjne – aplikacja i aktywacje</span></li>
-              <li id="konsultacja-podologiczna"><span class="z-name">Konsultacja podologiczna</span></li>
-              <li id="kontrola-po-klamrze-rekonstrukcji-opatrunku"><span class="z-name">Kontrola po klamrze / rekonstrukcji / opatrunku</span></li>
-              <li id="korekty-ustawienia-palucha-taping-fiksatory"><span class="z-name">Korekty ustawienia palucha: taping / fiksatory</span></li>
-              <li id="krioterapia-zmian-skornych-co2-punktowa"><span class="z-name">Krioterapia zmian skórnych (CO2, punktowa)</span></li>
-              <li id="odciazanie-miejsc-bolesnych-taping"><span class="z-name">Odciążanie miejsc bolesnych (taping)</span></li>
-              <li id="opatrunki-specjalistyczne"><span class="z-name">Opatrunki specjalistyczne</span></li>
-              <li id="opracowanie-lozyska-przy-onycholizie"><span class="z-name">Opracowanie łożyska przy onycholizie</span></li>
-              <li id="opracowanie-modzeli-odciskow-nagniotkow"><span class="z-name">Opracowanie modzeli, odcisków, nagniotków</span></li>
-              <li id="opracowanie-pekniec-i-rozpadlin-piet"><span class="z-name">Opracowanie pęknięć i rozpadlin pięt</span></li>
-              <li id="opracowanie-walow-z-ziarnina"><span class="z-name">Opracowanie wałów z ziarniną</span></li>
-              <li id="ozonoterapia"><span class="z-name">Ozonoterapia</span></li>
-              <li id="pedicure-podologiczny-medyczny-calosciowy"><span class="z-name">Pedicure podologiczny (medyczny) całościowy</span></li>
-              <li id="pobieranie-probek-do-badan"><span class="z-name">Pobieranie próbek do badań</span></li>
-              <li id="profilaktyka-i-zabiegi-u-osob-z-grup-ryzyka"><span class="z-name">Profilaktyka i zabiegi u osób z grup ryzyka</span></li>
-              <li id="protetyka-rekonstrukcja-paznokcia"><span class="z-name">Protetyka / rekonstrukcja paznokcia</span></li>
-              <li id="rozpoznanie-i-usuwanie-modzeli-odciskow-rozpadlin"><span class="z-name">Rozpoznanie i usuwanie modzeli, odcisków, rozpadlin</span></li>
-              <li id="skrocenie-i-wyrownanie-paznokci-zmienionych-chorobowo"><span class="z-name">Skrócenie i wyrównanie paznokci (zmienionych chorobowo)</span></li>
-              <li id="terapia-nadpotliwosci-stop-jonoforeza"><span class="z-name">Terapia nadpotliwości stóp (jonoforeza)</span></li>
-              <li id="usuwanie-zrogowacialego-naskorka"><span class="z-name">Usuwanie zrogowaciałego naskórka</span></li>
-              <li id="zabiegi-skalpelem-dlutem-i-frezami"><span class="z-name">Zabiegi skalpelem, dłutem i frezami</span></li>
-            </ul>
+            <summary><span>Pozycje a–h (<span data-z-ile>8</span>)</span></summary>
+            <ol class="zlist" type="a">
+              <li id="zabiegi-z-uzyciem-wypelniaczy-na-bazie-kwasu-hialuronowego" value="1"><span class="z-alias" id="wypelniacze-kwas-hialuronowy"></span><span class="z-nr">a)</span> <span class="z-name">Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego</span></li>
+              <li id="zabiegi-lipolizy-iniekcyjnej" value="2"><span class="z-alias" id="lipoliza-iniekcyjna"></span><span class="z-nr">b)</span> <span class="z-name">Zabiegi lipolizy iniekcyjnej</span></li>
+              <li id="zabiegi-z-uzyciem-fibryny-osocza-bogatoplytkowego-i-wypelniaczy-autologicznych" value="3"><span class="z-alias" id="zabiegi-osoczem-bogatoplytkowym-prp"></span><span class="z-nr">c)</span> <span class="z-name">Zabiegi z użyciem fibryny, osocza bogatopłytkowego i wypełniaczy autologicznych</span></li>
+              <li id="zabiegi-urzadzeniami-opartymi-na-technologii-hifu-skupiona-wiazka-fal" value="4"><span class="z-alias" id="zabiegi-technologia-hifu"></span><span class="z-nr">d)</span> <span class="z-name">Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)</span></li>
+              <li id="zabiegi-z-uzyciem-urzadzen-wykorzystujacych-technologie-plasma" value="5"><span class="z-alias" id="zabiegi-technologia-plasma"></span><span class="z-nr">e)</span> <span class="z-name">Zabiegi z użyciem urządzeń wykorzystujących technologię PLASMA</span></li>
+              <li id="zabiegi-laserami-ablacyjnymi-i-frakcyjno-ablacyjnymi" value="6"><span class="z-alias" id="zabiegi-laserem-ablacyjnym"></span><span class="z-nr">f)</span> <span class="z-name">Zabiegi laserami ablacyjnymi i frakcyjno-ablacyjnymi</span></li>
+              <li id="zabiegi-z-uzyciem-nici-pdo-plla-i-pla-cl" value="7"><span class="z-alias" id="zabiegi-z-uzyciem-nici-pdo"></span><span class="z-nr">g)</span> <span class="z-name">Zabiegi z użyciem nici PDO, PLLA i PLA/CL</span></li>
+              <li id="zabiegi-z-uzyciem-toksyny-botulinowej" value="8"><span class="z-nr">h)</span> <span class="z-name">Zabiegi z użyciem toksyny botulinowej</span></li>
+            </ol>
             <p class="zback"><a class="link-quiet" href="#zabiegi">Wróć na początek listy</a></p>
           </details>
         </section>
-        <section class="zgroup glass glass--tint" id="grupa-4" aria-labelledby="grupa-4-tytul">
-          <div class="zgroup-head">
-            <div class="zgroup-title">
-              <p class="eyebrow">8 zabiegów</p>
-              <h3 id="grupa-4-tytul">Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko)</h3>
-              <p class="zgroup-desc">Wymagają indywidualnej oceny ryzyka przez ERGO Hestia.</p>
-            </div>
-            <div class="zrates-box">
-              <p class="zrates-cap">Bez stawki w taryfie programu</p>
-              <dl class="zrates zrates--ind">
-                <div><dt>Składka</dt><dd>wycena indywidualna – ankieta indywidualnej oceny ryzyka (online, w osobistym linku od doradcy)</dd></div>
-              </dl>
+        <section class="zlista zlista--dokument glass glass--tint" id="podologia" aria-labelledby="podologia-tytul">
+          <span class="z-alias" id="grupa-3"></span>
+          <span class="z-alias" id="analiza-chodu-ocena-dynamiczna-wideoanaliza"></span>
+          <span class="z-alias" id="badanie-grzybicze-paznokcia"></span>
+          <span class="z-alias" id="badanie-podoskopowe-podoskanerem"></span>
+          <span class="z-alias" id="delikatna-koloryzacja-rekonstrukcyjna-paznokci"></span>
+          <span class="z-alias" id="diagnostyka-i-leczenie-brodawek"></span>
+          <span class="z-alias" id="diagnostyka-roznicowa-brodawka-vs-odcisk"></span>
+          <span class="z-alias" id="dobor-indywidualnych-wkladek-korygujacych"></span>
+          <span class="z-alias" id="dobor-ortez-i-separatorow-zelowych"></span>
+          <span class="z-alias" id="instruktaz-ochrony-mechanicznej-i-modyfikacji-obuwia"></span>
+          <span class="z-alias" id="intensywne-kuracje-nawilzajaco-regenerujace"></span>
+          <span class="z-alias" id="klamry-ortonyksyjne-aplikacja-i-aktywacje"></span>
+          <span class="z-alias" id="konsultacja-podologiczna"></span>
+          <span class="z-alias" id="kontrola-po-klamrze-rekonstrukcji-opatrunku"></span>
+          <span class="z-alias" id="korekty-ustawienia-palucha-taping-fiksatory"></span>
+          <span class="z-alias" id="krioterapia-zmian-skornych-co2-punktowa"></span>
+          <span class="z-alias" id="odciazanie-miejsc-bolesnych-taping"></span>
+          <span class="z-alias" id="opatrunki-specjalistyczne"></span>
+          <span class="z-alias" id="opracowanie-lozyska-przy-onycholizie"></span>
+          <span class="z-alias" id="opracowanie-modzeli-odciskow-nagniotkow"></span>
+          <span class="z-alias" id="opracowanie-pekniec-i-rozpadlin-piet"></span>
+          <span class="z-alias" id="opracowanie-walow-z-ziarnina"></span>
+          <span class="z-alias" id="ozonoterapia"></span>
+          <span class="z-alias" id="pedicure-podologiczny-medyczny-calosciowy"></span>
+          <span class="z-alias" id="pobieranie-probek-do-badan"></span>
+          <span class="z-alias" id="profilaktyka-i-zabiegi-u-osob-z-grup-ryzyka"></span>
+          <span class="z-alias" id="protetyka-rekonstrukcja-paznokcia"></span>
+          <span class="z-alias" id="rozpoznanie-i-usuwanie-modzeli-odciskow-rozpadlin"></span>
+          <span class="z-alias" id="skrocenie-i-wyrownanie-paznokci-zmienionych-chorobowo"></span>
+          <span class="z-alias" id="terapia-nadpotliwosci-stop-jonoforeza"></span>
+          <span class="z-alias" id="usuwanie-zrogowacialego-naskorka"></span>
+          <span class="z-alias" id="zabiegi-skalpelem-dlutem-i-frezami"></span>
+          <div class="zlista-head">
+            <div class="zlista-title">
+              <p class="eyebrow">Dokumenty programu</p>
+              <h3 id="podologia-tytul">Lista zabiegów – podologiczne</h3>
+              <p class="zlista-desc">Lista zabiegów podologicznych jest w&nbsp;dokumentach programu. <a href="makieta-v3.html?produkt=oc-beauty#kontakt">Zapytaj doradcę o&nbsp;listę zabiegów podologicznych</a>.</p>
             </div>
           </div>
-          <details class="zdetails" open>
-            <summary><span>Zabiegi w grupie 4 (<span data-z-ile>8</span>)</span></summary>
-            <ul class="zlist">
-              <li id="zabiegi-technologia-hifu"><span class="z-name">Zabiegi technologią HIFU</span></li>
-              <li id="zabiegi-z-uzyciem-toksyny-botulinowej"><span class="z-name">Zabiegi z użyciem toksyny botulinowej</span></li>
-              <li id="zabiegi-osoczem-bogatoplytkowym-prp"><span class="z-name">Zabiegi osoczem bogatopłytkowym (PRP)</span></li>
-              <li id="zabiegi-technologia-plasma"><span class="z-name">Zabiegi technologią PLASMA</span></li>
-              <li id="wypelniacze-kwas-hialuronowy"><span class="z-name">Wypełniacze – kwas hialuronowy</span></li>
-              <li id="zabiegi-z-uzyciem-nici-pdo"><span class="z-name">Zabiegi z użyciem nici PDO</span></li>
-              <li id="lipoliza-iniekcyjna"><span class="z-name">Lipoliza iniekcyjna</span></li>
-              <li id="zabiegi-laserem-ablacyjnym"><span class="z-name">Zabiegi laserem ablacyjnym</span></li>
-            </ul>
-            <p class="zback"><a class="link-quiet" href="#zabiegi">Wróć na początek listy</a></p>
-          </details>
         </section>
         <!-- /GEN:zabiegi -->
       </div>
 
       <div class="zrules glass glass--tint">
-        <h3>Kilka grup zabiegów lub większy zespół</h3>
-        <!-- GEN:zabiegi-reguly (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
+        <h3>Rodzaj działalności, zespół i&nbsp;ankieta</h3>
+        <!-- GEN:zabiegi-reguly (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
         <ul>
-          <li>Grupy 1 i 2 razem oraz grupa 3 z grupą 1 lub 2 – stawki grupy 3.</li>
-          <li>Zespół 6–8 osób – składka z taryfy wyższa o 25% (ochrona prawna +92 zł bez zmian).</li>
-          <li>Grupa 4 lub zespół od 9 osób – wycena indywidualna (ankieta ERGO Hestii).</li>
+          <li>Taryfę wyznacza rodzaj działalności: gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem) – „Gabinety kosmetyczne i fryzjerskie”; gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu – „Gabinety kosmetologiczne”; gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu – „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”.</li>
+          <li>6–8&nbsp;osób wykonujących zabiegi – składka z&nbsp;taryfy wyższa o&nbsp;25% (ochrona prawna +92&nbsp;zł bez tej dopłaty).</li>
+          <li>Więcej niż 8&nbsp;osób wykonujących zabiegi – wycena indywidualna.</li>
+          <li>Zabiegi wymagające ankiety ERGO Hestii – cała składka do indywidualnej wyceny.</li>
         </ul>
         <!-- /GEN:zabiegi-reguly -->
         <p>Lista przypisuje zabiegi do grup ryzyka programu. <a class="bp-termin" href="slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">Zakres ochrony i&nbsp;wyłączenia</a> określają warunki ubezpieczenia programu. Zabiegi z&nbsp;grupy 4 wymagają ankiety ERGO Hestii i&nbsp;oceny ryzyka przez ubezpieczyciela.</p>
@@ -1244,7 +1251,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </dl>
       </div>
       <article class="clause" aria-labelledby="klauzula-tytul">
-        <!-- GEN:klauzula (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
+        <!-- GEN:klauzula (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
         <header class="clause-head">
           <p class="clause-label">Pełna treść klauzuli</p>
           <h3 id="klauzula-tytul">Rozszerzenie zakresu ubezpieczenia o koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgodą Ubezpieczyciela ochroną zgodnie z § 6 ust. 3</h3>
@@ -1294,7 +1301,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     </div>
   </section>
 
-  <!-- III · TARYFA: ta sama tabela co pod kalkulatorem na stronie głównej (produkcyjnie z aktywnej wersji cennika) -->
+  <!-- III · TARYFA: ta sama tabela co pod kalkulatorem na stronie głównej – blok GEN:taryfa z snippets/taryfa-oc-beauty.json
+       (narzedzia/makiety/oc_taryfa.py; produkcyjnie z aktywnej wersji cennika) -->
   <section class="section" id="taryfa" aria-labelledby="tar-title">
     <div class="container">
       <div class="section-head">
@@ -1304,18 +1312,20 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <p class="lead">Składki dla grup 1–3 są stałe – wynikają z&nbsp;taryfy programu. Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – <a class="bp-termin" href="slownik.html#haslo-wycena-indywidualna" data-termin="wycena-indywidualna">wycena indywidualna</a>.</p>
       </div>
       <div class="tariff-table glass glass--tint">
+        <!-- GEN:taryfa (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
         <div class="table-scroll" role="region" tabindex="0" aria-label="Taryfa OC dla branży beauty">
         <table>
-          <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią – zespół do 5&nbsp;osób</caption>
-          <thead><tr><th scope="col">Grupa zabiegów</th><th scope="col">100&nbsp;tys.&nbsp;zł</th><th scope="col">200&nbsp;tys.&nbsp;zł</th><th scope="col">300&nbsp;tys.&nbsp;zł</th></tr></thead>
+          <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią – do 5&nbsp;osób wykonujących zabiegi</caption>
+          <thead><tr><th scope="col">Taryfa (zakres na certyfikacie)</th><th scope="col">100&nbsp;tys.&nbsp;zł</th><th scope="col">200&nbsp;tys.&nbsp;zł</th><th scope="col">300&nbsp;tys.&nbsp;zł</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Grupa 1<small>m.in. fryzjerstwo, manicure, rzęsy</small></th><td>400&nbsp;zł</td><td>500&nbsp;zł</td><td>650&nbsp;zł</td></tr>
-            <tr><th scope="row">Grupa 2<small>m.in. makijaż permanentny, mezoterapia, tatuaż</small></th><td>650&nbsp;zł</td><td>790&nbsp;zł</td><td>950&nbsp;zł</td></tr>
-            <tr><th scope="row">Grupa 3<small>podologia</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1&nbsp;250&nbsp;zł</td></tr>
+            <tr><th scope="row">Gabinety kosmetyczne i fryzjerskie<small>gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)</small></th><td>400&nbsp;zł</td><td>500&nbsp;zł</td><td>650&nbsp;zł</td></tr>
+            <tr><th scope="row">Gabinety kosmetologiczne<small>gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu</small></th><td>650&nbsp;zł</td><td>790&nbsp;zł</td><td>950&nbsp;zł</td></tr>
+            <tr><th scope="row">Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne<small>gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1&nbsp;250&nbsp;zł</td></tr>
           </tbody>
         </table>
         </div>
-        <p class="tariff-note">Grupy 1 i&nbsp;2 razem oraz grupa 3 z&nbsp;grupą 1 lub 2 – stawki grupy 3. Ochrona prawna +92&nbsp;zł. Zespół 6–8&nbsp;osób – składka z&nbsp;taryfy wyższa o&nbsp;25% (ochrona prawna bez zmian). Grupa 4 i&nbsp;zespoły od 9&nbsp;osób – wycena indywidualna.</p>
+        <p class="tariff-note">6–8&nbsp;osób wykonujących zabiegi – składka z&nbsp;taryfy wyższa o&nbsp;25% (klauzula ochrony prawnej +92&nbsp;zł bez tej dopłaty). Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.</p>
+        <!-- /GEN:taryfa -->
       </div>
       <div class="tariff-actions">
         <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Policz składkę</a>
@@ -1382,12 +1392,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <h2 id="faq-title" class="rv-curtain">Pytania <em>o&nbsp;OC beauty</em></h2>
       </div>
       <div class="faq glass">
-        <!-- GEN:faq (wygenerowane – gen_oc_beauty.py; nie edytować ręcznie) -->
-        <details id="pytanie-1"><summary>Co obejmuje OC dla branży beauty w programie ERGO Hestia?</summary><p>Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr WA50/003353/24/A realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi są przypisane do grup ryzyka, a zabiegi wysokiego ryzyka wymagają indywidualnej oceny. Pełny zakres znajdziesz w dokumentach OWU na stronie <a href="/dokumenty">beautypolisa.eu/dokumenty</a>.</p></details>
-        <details id="pytanie-2"><summary>Jakie są grupy ryzyka zabiegów i jak wpływają na składkę?</summary><p>Zabiegi są przypisane do czterech grup ryzyka programu. Grupa 1 – Kosmetyka i fryzjerstwo: m.in. strzyżenie, koloryzacja włosów, manicure, przedłużanie rzęs. Grupa 2 – Kosmetologia i tatuaż: m.in. makijaż permanentny, mezoterapia, zabiegi IPL, tatuaż, peelingi chemiczne. Grupa 3 – Podologia medyczna: zabiegi podologiczne. Grupa 4 – Zabiegi specjalistyczne (wysokie ryzyko): m.in. HIFU, toksyna botulinowa, PRP, PLASMA, wypełniacze z kwasem hialuronowym, nici PDO, lipoliza iniekcyjna, laser ablacyjny – wymagają indywidualnej oceny ryzyka przez ERGO Hestię. Składkę wyznacza grupa ryzyka oraz wybrana suma gwarancyjna. Wszystkie 117 zabiegów z przypisaniem do grup znajdziesz w sekcji <a href="#zabiegi">Lista zabiegów w programie</a>.</p></details>
-        <details id="pytanie-3"><summary>Ile kosztuje OC salonu kosmetycznego?</summary><p>Według stałej taryfy programu składka roczna wynosi od 400 zł (grupa 1, suma gwarancyjna 100 000 zł) do 1 250 zł (grupa 3, suma gwarancyjna 300 000 zł) dla zespołu do 5 osób. Dla zespołów 6–8 osób składka jest wyższa o 25%. Klauzula ochrony prawnej kosztuje dodatkowo 92 zł rocznie. Zespoły od 9 osób oraz zabiegi wysokiego ryzyka (grupa 4) są wyceniane indywidualnie.</p></details>
-        <details id="pytanie-4"><summary>Czym jest klauzula ochrony prawnej i ile kosztuje?</summary><p>To rozszerzenie OC w programie o koszty ochrony prawnej w postępowaniach przed sądami polskimi, w których ubezpieczony występuje jako pozwany, podejrzany lub oskarżony, także w postępowaniu dyscyplinarnym. Postępowanie musi być wszczęte na terenie RP w okresie ubezpieczenia i dotyczyć czynności zawodowych objętych umową. Klauzula kosztuje dodatkowo 92 zł rocznie. Pełną treść, w tym wyłączenia, znajdziesz w sekcji <a href="#ochrona-prawna">Klauzula ochrony prawnej</a>.</p></details>
-        <details id="pytanie-5"><summary>Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?</summary><p>Są to zabiegi wysokiego ryzyka (grupa 4), których nie wycenia kalkulator. Ich ubezpieczenie jest możliwe po indywidualnej ocenie ubezpieczyciela na podstawie ankiety: listy wykonywanych zabiegów, kwalifikacji personelu, stosowanych formularzy zgody na zabieg oraz szkodowości z ostatnich 3 lat. Zostaw kontakt przez <a href="makieta-v3.html?produkt=oc-beauty#kontakt">formularz</a> – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę indywidualnej oceny ryzyka ERGO Hestii razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka.</p></details>
+        <!-- GEN:faq (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
+        <details id="pytanie-1"><summary>Co obejmuje OC dla branży beauty w programie ERGO Hestia?</summary><p>Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr WA50/003353/24/A realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi objęte programem wymieniają listy zabiegów nr 1 i nr 2 w brzmieniu Aneksu nr 5; zabiegi wymagające ankiety ERGO Hestii (8 pozycji) podlegają ocenie ubezpieczyciela. Pełny zakres znajdziesz w dokumentach OWU na stronie <a href="/dokumenty">beautypolisa.eu/dokumenty</a>.</p></details>
+        <details id="pytanie-2"><summary>Od czego zależy składka i co jest na listach zabiegów?</summary><p>Składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i sumy gwarancyjnej. Taryfę wyznacza rodzaj działalności: gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem) – „Gabinety kosmetyczne i fryzjerskie”; gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu – „Gabinety kosmetologiczne”; gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu – „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”.</p> <p>Listy zabiegów programu: „Lista zabiegów – gabinety kosmetyczne i fryzjerskie” (49 pozycji) i „Lista zabiegów – gabinety kosmetyczne i kosmetologiczne” (63 pozycje); część zabiegów (20) jest na obu listach. Zabiegi wymagające ankiety ERGO Hestii (8 pozycji) – wycena indywidualna. Lista zabiegów podologicznych jest w dokumentach programu. Wszystkie pozycje w brzmieniu Aneksu nr 5 znajdziesz w sekcji <a href="#zabiegi">Listy zabiegów w programie</a>.</p></details>
+        <details id="pytanie-3"><summary>Ile kosztuje OC salonu kosmetycznego?</summary><p>Według stałej taryfy programu, gdy zabiegi wykonuje do 5 osób, składka roczna wynosi od 400&nbsp;zł (taryfa „Gabinety kosmetyczne i fryzjerskie”, suma gwarancyjna 100&nbsp;000&nbsp;zł) do 1&nbsp;250&nbsp;zł (taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”, suma gwarancyjna 300&nbsp;000&nbsp;zł). Gdy zabiegi wykonuje 6–8 osób, składka z taryfy jest wyższa o 25% – np. 987,50&nbsp;zł zamiast 790&nbsp;zł w taryfie „Gabinety kosmetologiczne” przy sumie gwarancyjnej 200&nbsp;000&nbsp;zł. Klauzula ochrony prawnej kosztuje dodatkowo 92&nbsp;zł rocznie, bez tej dopłaty. Więcej niż 8 osób wykonujących zabiegi oraz zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.</p></details>
+        <details id="pytanie-4"><summary>Czym jest klauzula ochrony prawnej i ile kosztuje?</summary><p>To rozszerzenie OC w programie o koszty ochrony prawnej w postępowaniach przed sądami polskimi, w których ubezpieczony występuje jako pozwany, podejrzany lub oskarżony, także w postępowaniu dyscyplinarnym. Postępowanie musi być wszczęte na terenie RP w okresie ubezpieczenia i dotyczyć czynności zawodowych objętych umową. Klauzula kosztuje dodatkowo 92&nbsp;zł rocznie. Pełną treść, w tym wyłączenia, znajdziesz w sekcji <a href="#ochrona-prawna">Klauzula ochrony prawnej</a>.</p></details>
+        <details id="pytanie-5"><summary>Czy zabiegi z toksyną botulinową, kwasem hialuronowym lub HIFU można ubezpieczyć?</summary><p>Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „Zabiegi z użyciem toksyny botulinowej”, „Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego” i „Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)” – wszystkie 8 pozycji znajdziesz w sekcji <a href="#ankieta">Zabiegi wymagające ankiety ERGO Hestii</a>. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne:</p> <ul><li>Dyplom kosmetologa dla każdej osoby — tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i szkół policealnych nie są dyplomem.</li> <li>Certyfikat ze szkolenia z każdego zabiegu, który wykonuje dana osoba — szkolenie ukończone co najmniej 12 miesięcy przed początkiem ochrony.</li></ul> <p>Zostaw kontakt przez <a href="makieta-v3.html?produkt=oc-beauty#kontakt">formularz</a> – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka.</p></details>
         <!-- /GEN:faq -->
       </div>
     </div>
@@ -1517,19 +1527,21 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 </svg>
 <!-- /gen:pasek-akcji -->
 <script>
-/* Lista zabiegów: wyszukiwarka (bez JS ukryta – lista i tak jest cała widoczna).
-   Szuka w nazwach zabiegów z listy programu (1:1), bez polskich znaków i wielkości liter; każde wpisane słowo musi
-   pasować do początku jakiegoś wyrazu nazwy. Słowa od 5 znaków porównuje bez ostatniej litery (klamra → klamry). */
+/* Listy zabiegów: wyszukiwarka (bez JS ukryta – listy i tak są całe widoczne).
+   Szuka w brzmieniu pozycji list programu (1:1: listy nr 1 i 2, zabiegi wymagające ankiety), bez polskich znaków i wielkości
+   liter; każde wpisane słowo musi pasować do początku jakiegoś wyrazu nazwy. Słowa od 5 znaków porównuje bez ostatniej litery
+   (henna → henny). Zabieg z obu list ma dwie pozycje (po jednej na liście) – licznik liczy pozycje. Sekcja „Podologia” nie ma
+   pozycji (lista w dokumentach programu) – przy wyszukiwaniu jest ukryta. */
 (function(){
   var root=document.getElementById('zabiegi'), form=document.getElementById('z-szukaj-form'); if(!root||!form) return;
   var input=document.getElementById('z-szukaj'), clear=document.getElementById('z-wyczysc'), count=document.getElementById('z-licznik'), empty=document.getElementById('z-brak'), jumpNav=document.querySelector('.zjump');
-  var groups=[].slice.call(root.querySelectorAll('.zgroup')), TOTAL=0, saved=null, timer=null, lastQ='';
+  var groups=[].slice.call(root.querySelectorAll('.zlista')), START=count.innerHTML, saved=null, timer=null, lastQ='';
   function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ł/g,'l').replace(/[^a-z0-9]+/g,' ').trim()}
-  function plural(n){var d=n%10,h=n%100;return n===1?'zabieg':(d>=2&&d<=4&&(h<12||h>14))?'zabiegi':'zabiegów'}
+  function plural(n){var d=n%10,h=n%100;return n===1?'pozycja':(d>=2&&d<=4&&(h<12||h>14))?'pozycje':'pozycji'}
   var data=groups.map(function(g){
-    return {g:g,det:g.querySelector('details'),sumN:g.querySelector('[data-z-ile]'),jump:document.querySelector('.zjump a[href="#'+g.id+'"]'),
+    var jump=document.querySelector('.zjump a[href="#'+g.id+'"]');
+    return {g:g,det:g.querySelector('details'),sumN:g.querySelector('[data-z-ile]'),jump:jump,jumpN:jump&&jump.querySelector('span'),
       items:[].slice.call(g.querySelectorAll('.zlist > li')).map(function(li){
-        TOTAL++;
         return {li:li,name:' '+norm(li.querySelector('.z-name').textContent)};
       })};
   });
@@ -1539,30 +1551,29 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   function apply(){
     var raw=input.value, q=norm(raw), toks=q?q.split(' '):[], found=0;
     if(q===lastQ&&arguments.length===0) return; lastQ=q;
-    if(toks.length&&!saved) saved=data.map(function(d){return d.det.open});
+    if(toks.length&&!saved) saved=data.map(function(d){return !!(d.det&&d.det.open)});
     data.forEach(function(d,i){
       var n=0;
       d.items.forEach(function(it){var hit=!toks.length||match(it,toks);it.li.hidden=!hit;if(hit)n++});
       found+=n;
       d.g.hidden=toks.length>0&&n===0;
-      if(d.jump){d.jump.parentNode.hidden=d.g.hidden;d.jump.querySelector('span').textContent=toks.length?n+' z '+d.items.length:String(d.items.length)}
+      if(d.jump){d.jump.parentNode.hidden=d.g.hidden;if(d.jumpN)d.jumpN.textContent=toks.length?n+' z '+d.items.length:String(d.items.length)}
       if(d.sumN)d.sumN.textContent=toks.length?n+' z '+d.items.length:String(d.items.length);
-      if(toks.length){if(n)d.det.open=true}else if(saved){d.det.open=saved[i]}
+      if(d.det){if(toks.length){if(n)d.det.open=true}else if(saved){d.det.open=saved[i]}}
     });
     if(!toks.length) saved=null;
     if(jumpNav) jumpNav.hidden=toks.length>0&&!found;
     clear.hidden=!raw;
     if(toks.length&&!found){
       empty.textContent='';
-      empty.append('Nie znaleźliśmy zabiegu „'+raw.trim()+'”. Sprawdź pisownię albo ');
+      empty.append('Nie znaleźliśmy zabiegu „'+raw.trim()+'” na listach programu. Sprawdź pisownię albo ');
       var a=document.createElement('a');a.href='makieta-v3.html?produkt=oc-beauty#kontakt';a.textContent='zapytaj doradcę';empty.append(a,' – sprawdzi, czy i jak program obejmuje Twój zabieg.');
       empty.hidden=false;
     } else empty.hidden=true;
     clearTimeout(timer);
     timer=setTimeout(function(){
-      count.textContent='';
-      if(!toks.length){count.append('Wszystkie zabiegi w programie: ');var s=document.createElement('strong');s.textContent=TOTAL;count.append(s)}
-      else{count.append('Znaleziono ');var b=document.createElement('strong');b.textContent=found;count.append(b,' '+plural(found))}
+      if(!toks.length){count.innerHTML=START}
+      else{count.textContent='';count.append('Znaleziono ');var b=document.createElement('strong');b.textContent=found;count.append(b,' '+plural(found))}
     },toks.length?350:0);
   }
   input.addEventListener('input',function(){apply()});
@@ -1579,7 +1590,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   if(input.value)apply(true);
 })();
 
-/* Odnośniki do pozycji w <details> (zabieg z /dla-kogo, grupa, pytanie): rozwijają ją przed przewinięciem */
+/* Odnośniki do pozycji w <details> (zabieg z /dla-kogo, lista, alias dawnej kotwicy, pytanie): rozwijają ją przed przewinięciem */
 (function(){
   function target(id){var t=id&&document.getElementById(id);if(!t)return null;return t.tagName==='DETAILS'?t:(t.closest('details')||t.querySelector('.zdetails'))}
   function open(id){
@@ -1587,7 +1598,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     for(var p=d;p;p=p.parentElement&&p.parentElement.closest('details'))p.open=true;
     return true;
   }
-  function fromHash(){try{var id=decodeURIComponent(location.hash.slice(1));if(open(id)){var t=document.getElementById(id);if(t&&t.scrollIntoView)t.scrollIntoView()}}catch(e){}}
+  /* alias dawnej kotwicy (span.z-alias, np. slug wycofanej pozycji → sekcja #podologia) też przewijamy: przy aktywnym filtrze
+     sekcja była ukryta, więc przeglądarka nie przewinęła do niej sama (filtr czyści wyszukiwanie wcześniej, w swoim hashchange) */
+  function fromHash(){try{var id=decodeURIComponent(location.hash.slice(1)),t=document.getElementById(id);if(open(id)||(t&&t.classList.contains('z-alias'))){if(t&&t.scrollIntoView)t.scrollIntoView()}}catch(e){}}
   window.addEventListener('hashchange',fromHash);fromHash();
   document.addEventListener('click',function(e){
     var a=e.target.closest('a[href^="#"]');if(!a)return;
