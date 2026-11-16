@@ -101,6 +101,53 @@ wyscigi() {
   wait "${pids[@]}"; pids=()
   sprawdz "R4 dwie zakładki naraz: stan końcowy" "$("${Q[@]}" -c "select ukryte_zakladki from client_accounts where id='$A'")" "{praca,szkolenia}"
   sprawdz "R4 wpisy w dzienniku" "$("${Q[@]}" -c "select count(*) from client_audit_log where action='account_tab_visibility_changed' and account_id='$A'")" 2
+  # R5 (00, D44): personel zawiesza salon (transakcja trzyma wiersz konta 1 s), a właścicielka w tym czasie pokazuje
+  # „Pracę”. Funkcja blokuje wiersz konta PRZED sprawdzeniem stanu konta i roli, więc czeka i widzi zawieszenie →
+  # odmowa; stan i dziennik bez zmian (przy sprawdzeniu przed blokadą zmiana przeszłaby po zawieszeniu)
+  "${Q[@]}" -c "begin" -c "update client_accounts set status='suspended', suspended_at=now() where id='$A'" -c "select pg_sleep(1)" -c "commit" >"$W/r5_1.out" 2>&1 & pids+=($!)
+  sleep 0.3
+  "${Q[@]}" -c "set role service_role" -c "select public.app_client_set_tab_visibility('$A','$UA','praca',true)" >"$W/r5_2.out" 2>&1 & pids+=($!)
+  wait "${pids[@]}"; pids=()
+  sprawdz "R5 zawieszenie w trakcie zmiany: odmowa" "$(grep -c 'tabs: brak uprawnień' "$W/r5_2.out")" 1
+  sprawdz "R5 stan i dziennik bez zmian" "$("${Q[@]}" -c "select status||' '||ukryte_zakladki::text||' '||(select count(*) from client_audit_log where action='account_tab_visibility_changed' and account_id='$A') from client_accounts where id='$A'")" "suspended {praca,szkolenia} 2"
+  # R6 (00, D44): salon znowu aktywny; członkostwo właścicielki odebrane w transakcji trzymanej 1 s, a ona w tym czasie
+  # pokazuje „Pracę”. Funkcja blokuje wiersz właściciela (FOR SHARE), więc czeka i widzi odebraną rolę → odmowa
+  "${Q[@]}" -c "update client_accounts set status='active', suspended_at=null where id='$A'" >/dev/null
+  "${Q[@]}" -c "begin" -c "update client_members set status='revoked', revoked_at=now() where account_id='$A' and user_id='$UA'" -c "select pg_sleep(1)" -c "commit" >"$W/r6_1.out" 2>&1 & pids+=($!)
+  sleep 0.3
+  "${Q[@]}" -c "set role service_role" -c "select public.app_client_set_tab_visibility('$A','$UA','praca',true)" >"$W/r6_2.out" 2>&1 & pids+=($!)
+  wait "${pids[@]}"; pids=()
+  sprawdz "R6 odebranie roli w trakcie zmiany: odmowa" "$(grep -c 'tabs: brak uprawnień' "$W/r6_2.out")" 1
+  sprawdz "R6 stan i dziennik bez zmian" "$("${Q[@]}" -c "select ukryte_zakladki::text||' '||(select count(*) from client_audit_log where action='account_tab_visibility_changed' and account_id='$A') from client_accounts where id='$A'")" "{praca,szkolenia} 2"
+  # R7 i R8 (00, D44, runda 2): PRAWDZIWE funkcje, które blokują wiersz członka, a potem dopisują wpis do client_audit_log –
+  # klucz obcy client_audit_log.account_id zakłada FOR KEY SHARE na wierszu konta. Funkcja zakładek blokuje wiersz konta
+  # FOR NO KEY UPDATE (zgodny z FOR KEY SHARE), więc nie ma cyklu blokad; przy FOR UPDATE obie sesje czekałyby na siebie
+  # (40P01 deadlock detected). Pauzę między blokadą członka a wpisem do dziennika daje wyzwalacz TYLKO W BAZIE TESTOWEJ
+  # (działa w sesji z ustawieniem testy.pauza_s). Stan wyjściowy: właścicielka znowu aktywna, drugi właściciel (u9) –
+  # personel nie może odebrać roli ostatniemu właścicielowi.
+  local U9=00000000-0000-0000-0000-000000000109 F1=00000000-0000-0000-0000-0000000000f1
+  "${Q[@]}" -c "update client_members set status='active', revoked_at=null, revoked_by=null where account_id='$A' and user_id='$UA'" \
+            -c "update client_members set role='owner' where account_id='$A' and user_id='$U9'" \
+            -c "create function public.testy_pauza() returns trigger language plpgsql as \$f\$ begin perform pg_sleep(coalesce(nullif(current_setting('testy.pauza_s', true), ''), '0')::numeric); return null; end \$f\$" \
+            -c "create trigger testy_pauza after update on client_members for each row execute function public.testy_pauza()" >/dev/null
+  # R7: personel odbiera rolę właścicielce (app_revoke_member: blokada członka, pauza 1 s, wpis do dziennika), a ona
+  # w tym czasie pokazuje „Pracę” → bez zakleszczenia; odebranie roli wykonane, zmiana zakładki – odmowa
+  "${Q[@]}" -c "set role service_role" -c "set testy.pauza_s = '1'" -c "select public.app_revoke_member('$A','$UA','$F1')" >"$W/r7_1.out" 2>&1 & pids+=($!)
+  sleep 0.3
+  "${Q[@]}" -c "set role service_role" -c "select public.app_client_set_tab_visibility('$A','$UA','praca',true)" >"$W/r7_2.out" 2>&1 & pids+=($!)
+  wait "${pids[@]}"; pids=()
+  sprawdz "R7 odebranie roli (app_revoke_member) w trakcie zmiany: bez zakleszczenia" "$(cat "$W"/r7_*.out | grep -c 'deadlock')" 0
+  sprawdz "R7 odebranie roli wykonane, wpis member_revoked" "$("${Q[@]}" -c "select m.status||' '||(select count(*) from client_audit_log where action='member_revoked' and account_id='$A' and entity_id='$UA') from client_members m where m.account_id='$A' and m.user_id='$UA'")" "revoked 1"
+  sprawdz "R7 zmiana zakładki: odmowa" "$(grep -c 'tabs: brak uprawnień' "$W/r7_2.out")" 1
+  sprawdz "R7 stan i dziennik zakładek bez zmian" "$("${Q[@]}" -c "select ukryte_zakladki::text||' '||(select count(*) from client_audit_log where action='account_tab_visibility_changed' and account_id='$A') from client_accounts where id='$A'")" "{praca,szkolenia} 2"
+  # R8: drugi właściciel akceptuje regulamin (app_accept_terms: UPDATE członka, pauza 1 s, wpis do dziennika) i w tym
+  # czasie pokazuje „Pracę” → bez zakleszczenia; oba zapisy przechodzą (rola bez zmian), w dzienniku oba wpisy
+  "${Q[@]}" -c "set role service_role" -c "set testy.pauza_s = '1'" -c "select public.app_accept_terms('$A','$U9','reg-v2')" >"$W/r8_1.out" 2>&1 & pids+=($!)
+  sleep 0.3
+  "${Q[@]}" -c "set role service_role" -c "select public.app_client_set_tab_visibility('$A','$U9','praca',true)" >"$W/r8_2.out" 2>&1 & pids+=($!)
+  wait "${pids[@]}"; pids=()
+  sprawdz "R8 akceptacja regulaminu (app_accept_terms) w trakcie zmiany: bez zakleszczenia" "$(cat "$W"/r8_*.out | grep -c 'deadlock')" 0
+  sprawdz "R8 oba zapisy: regulamin, zakładki, dziennik" "$("${Q[@]}" -c "select (select terms_version from client_members where account_id='$A' and user_id='$U9')||' '||ukryte_zakladki::text||' '||(select count(*) from client_audit_log where action in ('terms_accepted','account_tab_visibility_changed') and account_id='$A' and actor='user:$U9') from client_accounts where id='$A'")" "reg-v2 {szkolenia} 2"
 }
 
 KOD=0

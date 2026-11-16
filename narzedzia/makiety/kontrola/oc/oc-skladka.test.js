@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 // Test czystej funkcji wyceny OC (snippets/oc-skladka.js) na fixture kontrola/kalkulator-przypadki.json – bez frameworka.
-//   * 49 przypadków (44 porównywalne z CRM + 5 stanów interfejsu portalu, tylko_portal): stan, kategoria, nazwa, kwota,
-//     tekst i opis w formacie portalu, opis jak w CRM (opisCrm), powód wyceny indywidualnej, komunikat braku, kafelki sum;
-//   * 64 kombinacje rodzajów działalności → kategoria (= kategoriaZRodzajow w CRM);
+//   * 49 przypadków (44 porównywalne z CRM, w tym 3 z odstępstwem D45, + 5 stanów interfejsu portalu, tylko_portal): stan,
+//     kategoria, nazwa, kwota, tekst i opis w formacie portalu, opis w formacie CRM (opisCrm), powód wyceny indywidualnej,
+//     komunikat braku, kafelki sum; pole odstepstwo_D45 – kwota portalu = wynik funkcji, kwota CRM inna, tylko przy połączeniu D45;
+//   * 64 kombinacje rodzajów działalności → kategoria według reguły D45 (decyzja zleceniodawcy 16.11.2026; reguła zapisana
+//     niżej wprost, niezależnie od oc-skladka.js) = fixture = OcSkladka.kategoria; odstepstwo_D45 dokładnie w 9 połączeniach,
+//     w których CRM (kategoriaZRodzajow) daje taryfę kosmetologiczną; grupy T.regula_kategorii – każdy rodzaj w jednej grupie;
 //   * 36 kwot taryfy (3 kategorie × 3 sumy × 1–5/6–8 osób × ochrona prawna);
 //   * spójność fixture z danymi: nazwy zabiegów z ankiety = pozycje a–h w zabiegi-oc-beauty.json, zabiegi z wyszukiwarki
 //     (E1–E4) na wskazanych listach, stałe taryfy-oc-beauty.json użyte przez funkcję.
@@ -36,8 +39,37 @@ const naListach = (id) => {
   return z ? z.pozycje.map((p) => p.lista) : null;
 };
 
+// --- reguła kategorii D45 (decyzja zleceniodawcy 16.11.2026) – zapisana tu wprost, bez T.regula_kategorii ---
+const LISTA_1 = ['kosmetyczny', 'fryzjerski', 'masaz'], LISTA_2 = ['kosmetologiczny', 'tatuaz'];
+function kategoriaD45(rodzaje) {
+  if (!rodzaje.length) return null;
+  const l1 = rodzaje.some((r) => LISTA_1.includes(r)), l2 = rodzaje.some((r) => LISTA_2.includes(r));
+  if (rodzaje.includes('podologiczny') || (l1 && l2)) return 'pelny';
+  return l2 ? 'kosmetologiczny' : 'kosmetyczny_fryzjerski';
+}
+// = kategoriaZRodzajow w CRM (stan przed zmianą D45) – tylko do sprawdzenia oznaczeń odstepstwo_D45
+function kategoriaCrm(rodzaje) {
+  if (!rodzaje.length) return null;
+  const l2 = rodzaje.some((r) => LISTA_2.includes(r));
+  if (rodzaje.includes('podologiczny') || (l2 && rodzaje.includes('fryzjerski'))) return 'pelny';
+  return l2 ? 'kosmetologiczny' : 'kosmetyczny_fryzjerski';
+}
+const D45 = (rodzaje) => kategoriaD45(rodzaje) !== kategoriaCrm(rodzaje);
+// połączenia D45 słowami: kosmetyczny lub masaż, bez fryzjerskiego i podologicznego, razem z kosmetologicznym lub tatuażem
+const D45slowami = (r) => !r.includes('fryzjerski') && !r.includes('podologiczny')
+  && (r.includes('kosmetyczny') || r.includes('masaz')) && r.some((x) => LISTA_2.includes(x));
+const R = T.regula_kategorii;
+rowne('regula_kategorii: grupy = reguła D45', [R.lista_1, R.lista_2, R.zawsze_pelna], [LISTA_1, LISTA_2, ['podologiczny']]);
+rowne('regula_kategorii: każdy rodzaj w dokładnie jednej grupie', [...R.lista_1, ...R.lista_2, ...R.zawsze_pelna].sort(),
+  T.rodzaje_gabinetu.map((r) => r.klucz).sort());
+{
+  liczba++;
+  try { O.kategoria(['kosmetyczny'], { rodzaje_gabinetu: T.rodzaje_gabinetu }); bledy.push('kategoria bez T.regula_kategorii: brak TypeError'); }
+  catch (e) { if (!(e instanceof TypeError)) bledy.push(`kategoria bez T.regula_kategorii: ${e}`); }
+}
+
 // --- 49 przypadków ---
-let crm = 0, portal = 0;
+let crm = 0, portal = 0, odstepstwa = [];
 for (const p of F.przypadki) {
   p.tylko_portal ? portal++ : crm++;
   for (const n of p.zabiegi_ankieta) if (!nazwyAnkiety.has(n)) bledy.push(`${p.id}: „${n}” nie jest pozycją a–h w zabiegi-oc-beauty.json`);
@@ -58,7 +90,20 @@ for (const p of F.przypadki) {
   );
   const o = p.oczekiwane;
   rowne(`${p.id} stan`, w.stan, o.stan);
+  // odstępstwo od CRM (D45): tylko przy wyniku z kwotą i połączeniu rodzajów, w którym reguły się różnią
+  const odst = p.odstepstwo_D45;
+  rowne(`${p.id} odstepstwo_D45 tylko przy kwocie i połączeniu D45`, !!odst, !p.tylko_portal && o.stan === 'kwota' && D45(p.rodzaje));
+  if (odst) {
+    odstepstwa.push(p.id);
+    rowne(`${p.id} odstepstwo_D45: kwota portalu = wynik funkcji`, [odst.kwota_portalu, w.kwota], [o.kwota, o.kwota]);
+    rowne(`${p.id} odstepstwo_D45: kategoria CRM`, [odst.kategoria_crm, odst.nazwa_crm],
+      [kategoriaCrm(p.rodzaje), T.kategorie.find((k) => k.klucz === kategoriaCrm(p.rodzaje)).nazwa]);
+    rowne(`${p.id} odstepstwo_D45: kwota CRM ≠ kwota portalu`, odst.kwota_crm !== odst.kwota_portalu, true);
+    const wCrm = O.skladkaOc({ rodzaje: ['kosmetologiczny'], osoby: p.osoby, suma: p.suma, ochronaPrawna: p.ochrona_prawna, zabiegiAnkieta: [] }, T);
+    rowne(`${p.id} odstepstwo_D45: kwota i opis CRM = taryfa „${odst.nazwa_crm}”`, [odst.kwota_crm, odst.opis_crm], [wCrm.kwota, wCrm.opisCrm]);
+  }
   if (o.stan === 'kwota') {
+    rowne(`${p.id} kategoria = reguła D45`, w.kategoria, kategoriaD45(p.rodzaje));
     rowne(`${p.id} kategoria`, w.kategoria, o.kategoria);
     rowne(`${p.id} nazwa`, w.nazwa, o.nazwa);
     rowne(`${p.id} kwota`, w.kwota, o.kwota);
@@ -97,18 +142,31 @@ for (const p of F.przypadki) {
 }
 rowne('przypadki: porównywalne z CRM / tylko portal', [crm, portal], [44, 5]);
 rowne('przypadki tylko_portal = F1–F5', F.przypadki.filter((p) => p.tylko_portal).map((p) => p.id), ['F1', 'F2', 'F3', 'F4', 'F5']);
+rowne('przypadki z odstepstwo_D45 (w tym kosmetyczny + kosmetologiczny – uwaga zleceniodawcy 16.11.2026)', odstepstwa, ['A7', 'A11', 'B17']);
 
-// --- 64 kombinacje rodzajów ---
+// --- 64 kombinacje rodzajów (reguła D45) ---
 const klucze = T.rodzaje_gabinetu.map((r) => r.klucz);
 const kombinacje = new Set();
 const licz = {};
+let d45 = 0;
 for (const k of F.kombinacje_rodzajow) {
+  const opis = k.rodzaje.join('+') || '—';
   kombinacje.add(klucze.map((r) => (k.rodzaje.includes(r) ? 1 : 0)).join(''));
-  rowne(`kategoria(${k.rodzaje.join('+') || '—'})`, O.kategoria(k.rodzaje), k.kategoria);
+  rowne(`kategoria(${opis}) = reguła D45`, k.kategoria, kategoriaD45(k.rodzaje));
+  rowne(`kategoria(${opis})`, O.kategoria(k.rodzaje, T), k.kategoria);
+  rowne(`kombinacja ${opis}: odstepstwo_D45 = połączenie D45`, [!!k.odstepstwo_D45, D45(k.rodzaje), D45slowami(k.rodzaje)],
+    Array(3).fill(D45(k.rodzaje)));
+  if (k.odstepstwo_D45) {
+    d45++;
+    rowne(`kombinacja ${opis}: CRM – taryfa kosmetologiczna, portal – pełna`, [k.odstepstwo_D45.kategoria_crm, k.kategoria], ['kosmetologiczny', 'pelny']);
+  }
   licz[k.kategoria] = (licz[k.kategoria] || 0) + 1;
 }
 rowne('kombinacje: 64 różne', kombinacje.size, 64);
-rowne('kombinacje: liczebność kategorii', licz, { null: 1, kosmetyczny_fryzjerski: 7, kosmetologiczny: 12, pelny: 44 });
+rowne('kombinacje: liczebność kategorii (D45)', licz, { null: 1, kosmetyczny_fryzjerski: 7, kosmetologiczny: 3, pelny: 53 });
+rowne('kombinacje z odstepstwo_D45', d45, 9);
+rowne('kosmetyczny + kosmetologiczny → pełna taryfa (decyzja zleceniodawcy 16.11.2026)',
+  O.skladkaOc({ rodzaje: ['kosmetyczny', 'kosmetologiczny'], osoby: '1-5', suma: 200000, ochronaPrawna: false, zabiegiAnkieta: [] }, T).kwota, 980);
 
 // --- 36 kwot taryfy ---
 const RODZAJ_KAT = { kosmetyczny_fryzjerski: ['kosmetyczny'], kosmetologiczny: ['kosmetologiczny'], pelny: ['podologiczny'] };
@@ -143,5 +201,5 @@ for (const [opis, odp] of [
 }
 
 console.log(bledy.length ? bledy.map((b) => 'BŁĄD: ' + b).join('\n') : 'OK');
-console.log(`asercji: ${liczba}; przypadki: ${F.przypadki.length} (CRM ${crm}, tylko portal ${portal}); kombinacje: ${F.kombinacje_rodzajow.length}; kwoty: ${F.kwoty_taryfy.length}`);
+console.log(`asercji: ${liczba}; przypadki: ${F.przypadki.length} (CRM ${crm}, w tym odstępstwo D45: ${odstepstwa.length}; tylko portal ${portal}); kombinacje: ${F.kombinacje_rodzajow.length} (odstępstwo D45: ${d45}); kwoty: ${F.kwoty_taryfy.length}`);
 process.exit(bledy.length ? 1 : 0);

@@ -493,6 +493,12 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
 .ledger--light .link-lux{color:var(--color-navy)}
 .ledger--light .link-quiet{color:var(--color-navy);text-decoration-color:var(--color-gold)}
 .ledger--light :focus-visible{outline-color:var(--color-navy)}
+/* sześć osobnych kafli (uwaga zleceniodawcy 16.11.2026: „kafelki … nie dotykały się, rogi zaoblone”): odstęp 16–24 px i promień 10 px
+   (skala promieni DESIGN.md – jak karta członkowska) zamiast jednej tafli z liniami włoskowymi. Kafle bez backdrop-filter – sześć w widoku
+   przekroczyłoby limit 3 tafli; tło z krycia .glass--strong (--bp-glass-ivory-strong), krawędź, cień i błysk jasnej tafli. */
+.ledger--kafle{gap:clamp(16px,2vw,24px);overflow:visible}
+.ledger--kafle .product{border-radius:10px;background:var(--bp-glass-ivory-strong);border:1px solid rgba(255,255,255,.6);box-shadow:var(--shadow-glass),inset 0 1px 0 rgba(255,255,255,.75)}
+.ledger--kafle .product:target{box-shadow:var(--shadow-glass),inset 0 0 0 1px var(--color-gold)}
 /* kafelek klikalny w całości („stretched link”): ::after linku z nazwy produktu kryje kafelek, akcje w .product-actions leżą nad nim (z-index 2).
    Wiersz opisu rośnie (1fr), więc linia ceny i akcja stoją na jednej wysokości we wszystkich kafelkach rzędu. */
 .product{position:relative;grid-template-rows:auto auto 1fr auto auto}
@@ -516,6 +522,8 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
   .product:has(.product-link:focus-visible){outline:2px solid var(--color-navy);outline-offset:-6px;background-color:rgba(255,255,255,.55)}
   .product-link:focus-visible{outline:0}
   .product:has(.product-link:focus-visible) .product-link{text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:1px;text-underline-offset:6px}
+
+  .ledger--kafle .product:has(.product-link:focus-visible){background-color:var(--color-ivory)}
 }
 
 /* ---------- III · kalkulator ---------- */
@@ -541,6 +549,37 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
 .opt--check input:checked + label::after{background:var(--color-navy);box-shadow:inset 0 0 0 3px var(--color-ivory)}
 .check-row{display:flex;align-items:center;gap:12px;min-height:44px;font-size:var(--text-sm);cursor:pointer}
 .check-row input{width:20px;height:20px;accent-color:var(--color-navy);margin:0;flex:none}
+/* przewodnik po krokach kalkulatora OC (uwaga zleceniodawcy 16.11.2026: „podświetlanie (jakiś przewodnik) tego, co teraz należałoby
+   zaznaczyć”). Klasy nadaje skrypt: .kroki-on na .calc-form, .krok i data-krok-stan (teraz / gotowe / dalej) na polach 1–3,
+   aria-current="step" na bieżącym; numer w kółku (.krok-nr, aria-hidden) i wiersz stanu (.krok-stan – opis grupy, aria-describedby)
+   wstawia skrypt. Bez JS nic z tego nie działa: pola jak dotąd, bez podświetlenia. Kolejność dowolna – pola nie są blokowane, bieżący
+   = pierwszy brakujący. Dalsze kroki przygaszone kolorem taupe (kontrast ≥ 4,5:1), nie przezroczystością. Wiersz stanu zawsze w jednej
+   linii (< 640 px bez dopisku „zaznacz …”, który zostaje dla czytnika), więc zmiana kroku nie przesuwa kafelków, w które się klika. */
+.kroki-on{--krok-p:clamp(10px,1.6vw,18px)}
+.kroki-on > .krok{position:relative;padding:14px var(--krok-p) 18px;border:1px solid transparent;border-radius:var(--radius-card);transition:background-color var(--bp-dur-2),border-color var(--bp-dur-2),box-shadow var(--bp-dur-2)}
+.kroki-on > :is(.zab-search,.zakres){padding-inline:var(--krok-p)}
+.kroki-on > .krok[aria-current="step"]{border-color:var(--color-gold);background:rgba(255,255,255,.6);box-shadow:0 0 0 1px var(--color-gold),0 18px 40px -28px rgba(20,28,51,.45)}
+/* legenda w ramce, nie na jej krawędzi: float wyłącza „rendered legend” (w siatce float nie działa – legenda jest zwykłym elementem siatki) */
+.krok > legend{float:left;width:100%;position:relative;min-height:32px;margin-bottom:0;padding-left:44px;line-height:1.3}
+.krok[data-krok-stan="dalej"] > legend{color:var(--color-taupe)}
+.krok-nr{position:absolute;left:0;top:-2px;display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--color-navy);border-radius:50%;background:rgba(255,255,255,.85);font:600 1rem/1 var(--font-sans);font-variant-numeric:lining-nums;color:var(--color-navy)}
+.krok[data-krok-stan="teraz"] .krok-nr{background:var(--color-navy);color:var(--color-ivory);box-shadow:0 0 0 3px rgba(217,192,137,.55)}
+.krok[data-krok-stan="dalej"] .krok-nr{border-style:dashed;border-color:var(--color-taupe);background:transparent;color:var(--color-taupe)}
+.krok-stan{margin:-6px 0 0 44px;font:400 var(--text-sm)/1.45 var(--font-sans);color:var(--color-taupe)}
+.krok[data-krok-stan="gotowe"] .krok-stan{color:var(--color-navy)}
+.krok[data-krok-stan="teraz"] .krok-stan{font-weight:600;color:var(--color-navy)}
+@media (max-width:639px){.krok-wiecej{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}}
+/* jednorazowy puls obwódki przy zmianie kroku – warstwa nad ramką (opacity + transform), tylko przy prefers-reduced-motion: no-preference */
+.kroki-on > .krok::after{content:"";position:absolute;inset:-6px;border:2px solid var(--color-gold);border-radius:10px;opacity:0;pointer-events:none}
+@keyframes krok-puls{0%{opacity:0;transform:scale(.985)}30%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.012)}}
+@media screen and (prefers-reduced-motion:no-preference){.kroki-on > .krok.krok-puls::after{animation:krok-puls 1.2s var(--ease-lux) 1 both}}
+/* ta sama wskazówka pod polem wyniku: pasek trzech kroków (dekoracja) i „Krok N z 3: …” */
+.result-krok{display:grid;gap:10px;margin-top:-4px}
+.rk-pasek{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.rk-pasek span{height:3px;border-radius:2px;background:rgba(217,192,137,.3)}
+.rk-pasek .is-done{background:var(--color-gold-light)}
+.rk-pasek .is-now{background:var(--color-ivory)}
+.rk-tekst{font:500 var(--text-xs)/1.5 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-gold-light)}
 .calc-peek{display:none}
 .result{display:grid;gap:18px;align-content:start;padding:clamp(26px,3vw,40px);border-radius:var(--radius-card);background:var(--color-navy);color:var(--color-parchment);position:relative}
 .result::before{content:"";position:absolute;inset:var(--bp-frame-inset);border:1px solid rgba(217,192,137,.4);border-radius:var(--radius-btn);pointer-events:none}
@@ -577,17 +616,20 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
 .tariff-table th[scope="row"] small{display:block;font-weight:400;font-size:var(--text-xs);color:var(--color-ink)}
 .tariff-table td{white-space:nowrap;color:var(--color-ink)}
 .tariff-note{padding-bottom:22px;font-size:var(--text-sm);color:var(--color-ink)}
-/* przełącznik kalkulatorów (zakładki ARIA; bez JS ukryty, oba kalkulatory widoczne jeden pod drugim) */
-.calc-switch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:min(100%,560px);margin:0 auto clamp(22px,3vw,34px);padding:6px}
-.calc-tab{position:relative;display:grid;justify-items:center;gap:4px;min-height:64px;padding:12px 16px;border:0;border-radius:var(--radius-btn);background:transparent;color:var(--color-ink);font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;text-align:center;cursor:pointer;transition:background-color var(--bp-dur-2),color var(--bp-dur-2)}
-.calc-tab + .calc-tab{box-shadow:-1px 0 0 var(--bp-line-gold-soft)}
-.calc-tab small{font:italic 500 1.05rem/1.1 var(--font-serif);font-variant-numeric:lining-nums;letter-spacing:0;text-transform:none;color:var(--color-taupe)}
-.calc-tab::after{content:"";position:absolute;left:18%;right:18%;bottom:6px;height:1px;background:var(--color-gold);transform:scaleX(0);transition:transform .6s var(--ease-lux)}
-.calc-tab[aria-selected="true"]{background:rgba(255,255,255,.7);color:var(--color-navy)}
+/* przełącznik kalkulatorów (zakładki ARIA; bez JS ukryty, oba kalkulatory widoczne jeden pod drugim). Uwaga zleceniodawcy 16.11.2026
+   („te dwa prostokąty … muszą być większe”): dwa duże kafle obok siebie – szersze (do 800 px; na telefonie cała szerokość), wysokość
+   ≥ 88 px (76 px < 480 px), nazwa szeryfowa jak w kafelkach produktów, większa kwota „od … zł”; wybrany: obrys i obwódka navy jak
+   zaznaczony kafelek wyboru, jaśniejsze tło i złota linia; niewybrany – obrys --bp-line-navy na jasnym tle (cel kliknięcia widoczny) */
+.calc-switch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:min(100%,800px);margin:0 auto clamp(26px,3.5vw,40px);padding:8px}
+.calc-tab{position:relative;display:grid;align-content:center;justify-items:center;gap:6px;min-height:88px;padding:16px clamp(12px,2vw,24px) 20px;border:1px solid var(--bp-line-navy);border-radius:var(--radius-btn);background:rgba(255,255,255,.45);color:var(--color-ink);font:600 clamp(1.2rem,1.05rem + .75vw,1.65rem)/1.15 var(--font-serif);text-align:center;cursor:pointer;transition:background-color var(--bp-dur-2),color var(--bp-dur-2),border-color var(--bp-dur-2)}
+.calc-tab small{font:italic 500 clamp(1.05rem,.98rem + .35vw,1.3rem)/1.2 var(--font-serif);font-variant-numeric:lining-nums;color:var(--color-taupe)}
+.calc-tab::after{content:"";position:absolute;left:18%;right:18%;bottom:8px;height:1px;background:var(--color-gold);transform:scaleX(0);transition:transform .6s var(--ease-lux)}
+.calc-tab[aria-selected="true"]{border-color:var(--color-navy);background:rgba(255,255,255,.85);box-shadow:inset 0 0 0 1px var(--color-navy);color:var(--color-navy)}
 .calc-tab[aria-selected="true"] small{color:var(--color-navy)}
 .calc-tab[aria-selected="true"]::after{transform:scaleX(1)}
-.calc-tab:hover{color:var(--color-navy)}
-.calc-tab:focus-visible{outline-offset:-3px}
+.calc-tab:hover{color:var(--color-navy);border-color:var(--color-navy)}
+.calc-tab:focus-visible{outline-offset:-5px}
+@media (max-width:479px){.calc-switch{gap:6px;padding:6px}.calc-tab{min-height:76px;padding:12px 8px 16px;font-size:1.15rem}.calc-tab small{font-size:1rem}}
 .calc-panel + .calc-panel{margin-top:clamp(48px,7vw,96px)}
 .calc-panel-title{margin-bottom:22px;text-align:center;font-size:var(--text-h3)}
 .tabs-on .calc-panel + .calc-panel{margin-top:0}
@@ -854,6 +896,10 @@ html:has(.klauzula[open]){overflow:hidden}
   .calc-peek[data-state="individual"] strong{font-size:1.15rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   #calc .calc-peek[data-state="empty"]{visibility:hidden}
   #calc .calc-peek[data-state="empty"] strong{min-width:0;overflow:hidden;text-overflow:ellipsis}
+  /* przewodnik: dopóki brakuje kroku, pasek pokazuje wskazówkę („Krok N z 3 · Teraz” + „Zaznacz …”) – także w stanie „empty”;
+     dwie krótkie linie, wysokość ≤ 72 px (jak wyżej) */
+  #calc .calc-peek[data-krok]{visibility:visible;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}
+  #calc .calc-peek[data-krok] strong{max-width:100%;font-size:1.1rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .ledger{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pros{grid-template-columns:repeat(2,minmax(0,1fr))}
   .steps{grid-template-columns:minmax(0,1fr)}
@@ -919,6 +965,7 @@ html:has(.klauzula[open]){overflow:hidden}
   .btn-navy:hover,.btn-navy:focus-visible{background-size:calc(100% - 56px) 1px}
   .product:hover{background-color:rgba(217,192,137,.06)}
   .ledger--light .product:hover{background-color:rgba(255,255,255,.55)}
+  .ledger--kafle .product:hover{background-color:var(--color-ivory)}
   .product:hover .product-link{text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:1px;text-underline-offset:6px}
   .product:hover .product-go{transform:translate(.15em,-.08em) rotate(45deg)}
   .product:has(.product-actions a:hover) .product-link{text-decoration:none}
@@ -1048,11 +1095,14 @@ html:has(.klauzula[open]){overflow:hidden}
 @media (prefers-reduced-transparency:reduce){
   .glass,.glass.glass--strong,.glass.glass--tint,.site-header .header-bar,.site-header[data-tone="dark"] .header-bar{background:var(--color-ivory);-webkit-backdrop-filter:none;backdrop-filter:none}
   .glass--dark,.glass--dark.glass--tint{background:var(--color-midnight)}
+  .ledger--kafle .product{background:var(--color-ivory)}
 }
 @media (prefers-contrast:more){
   :root{--color-taupe:#3F3A33;--bp-line-field:var(--color-navy)}
   .glass,.glass.glass--strong,.glass.glass--tint,.site-header .header-bar,.site-header[data-tone="dark"] .header-bar{background:var(--color-ivory);border-color:var(--color-navy)}
   .glass--dark,.glass--dark.glass--tint{background:var(--color-midnight);border-color:var(--color-gold-light)}
+  .ledger--kafle .product{background:var(--color-ivory);border-color:var(--color-navy)}
+  .kroki-on > .krok[aria-current="step"]{border-color:var(--color-navy);box-shadow:0 0 0 1px var(--color-navy)}
   /* duże cyfry rozdziałów to dekoracja (aria-hidden) – przy zwiększonym kontraście nie konkurują z tekstem */
   .chapter-no{display:none}
 }
@@ -1063,7 +1113,7 @@ html:has(.klauzula[open]){overflow:hidden}
 }
 @media (forced-colors:active){
   :focus-visible,.opt input:focus-visible + label{outline:2px dashed CanvasText}
-  .glass{border:1px solid CanvasText}
+  .glass,.ledger--kafle .product{border:1px solid CanvasText}
   .frame::before,.result::before,.member-card::before{display:none}
   .opt input:checked + label{border:3px solid Highlight}
   .opt--check label::after{forced-color-adjust:none;border-color:CanvasText;background:Canvas}
@@ -1071,6 +1121,9 @@ html:has(.klauzula[open]){overflow:hidden}
   .faq summary::after,.tariff-table summary::after{content:"+" / "";width:auto;height:auto;background:none;line-height:1}
   .tag::before,.day-clock-fill,.clues::before{background:CanvasText}
   .calc-tab[aria-selected="true"]{outline:2px solid Highlight;outline-offset:-4px}
+  .kroki-on > .krok[aria-current="step"]{border:2px solid Highlight}
+  .krok-nr{forced-color-adjust:none;border-color:CanvasText;background:Canvas;color:CanvasText}
+  .krok[data-krok-stan="teraz"] .krok-nr{background:Highlight;color:HighlightText;box-shadow:none}
   .promo::before{display:none}
   .promo{border:1px solid CanvasText}
   /* cyfry rozdziałów w kolorach wymuszonych stają się pełnymi plamami na nagłówkach – dekoracja (aria-hidden), więc ukryta */
@@ -1343,7 +1396,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <h2 id="prod-title" class="rv-curtain">Sześć rozwiązań. <em>Jeden doradca.</em></h2>
         <p class="lead rv-rise">Każde rozwiązanie ma własnego partnera i&nbsp;własne warunki, a&nbsp;Ty – jednego doradcę w&nbsp;Aura Expert.</p>
       </div>
-      <div class="ledger ledger--light glass glass--strong">
+      <div class="ledger ledger--light ledger--kafle">
         <article class="product rv-rise" id="oc-beauty"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="tag">ERGO Hestia</span></div><h3><a class="product-link" href="oc-beauty.html">OC dla branży beauty<span class="product-go" aria-hidden="true"></span></a></h3><p>OC za szkody wyrządzone klientom podczas zabiegów. Składka ze stałej taryfy – według rodzaju działalności i&nbsp;sumy.</p><p class="product-price"><span class="pp-pre">od</span> <strong>400</strong> <span class="pp-unit">zł rocznie</span></p><div class="product-actions"><a class="link-lux" href="#kalkulator" data-calc="oc">Oblicz składkę<span class="sr-only"> OC</span></a></div></article>
         <article class="product rv-rise" id="tax-protect"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="tag">Colonnade</span></div><h3><a class="product-link" href="tax-protect.html">Tax Protect<span class="product-go" aria-hidden="true"></span></a></h3><p>Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu – jeden pełny spór podatkowy w&nbsp;roku.</p><p class="product-price"><span class="pp-pre">od</span> <strong>1&nbsp;532</strong> <span class="pp-unit">zł rocznie</span></p><div class="product-actions"><a class="link-lux" href="#kalkulator-tax" data-calc="tax">Oblicz składkę<span class="sr-only"> Tax Protect</span></a></div></article>
         <article class="product rv-rise" id="utrata-dochodu"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="tag">Oferta indywidualna</span></div><h3><a class="product-link" href="utrata-dochodu.html">Utrata dochodu<span class="product-go" aria-hidden="true"></span></a></h3><p>Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy – przy działalności, B2B i&nbsp;na etacie.</p><p class="product-price product-price--text"><strong>Składkę wylicza ubezpieczyciel</strong> <span class="pp-unit">po ocenie ryzyka</span></p><div class="product-actions"><a class="link-lux" href="#kontakt" data-produkt="utrata-dochodu">Zapytaj doradcę<span class="sr-only"> o&nbsp;ubezpieczenie utraty dochodu</span></a></div></article>
@@ -1378,7 +1431,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <!-- Pola i kolejność jak we wniosku w CRM Aura Expert: rodzaj działalności i liczba osób (pytania analizy potrzeb), suma gwarancyjna
                z kwotą przy każdym wariancie, zakres dodatkowy. Żadne pole nie ma wartości domyślnej i żaden wariant nie jest wyróżniony.
                Bloki gen:kalk-* (legendy, etykiety i klucze = snippets/taryfa-oc-beauty.json = CRM; pozycje a–h = snippets/zabiegi-oc-beauty.json)
-               generuje narzedzia/makiety/gen_kalkulator_dane.py. Taryfę wyznacza rodzaj działalności (reguła kategoriaZRodzajow z CRM);
+               generuje narzedzia/makiety/gen_kalkulator_dane.py. Taryfę wyznacza rodzaj działalności (reguła D45 z 00 – rodzaj z listy nr 1
+               razem z rodzajem z listy nr 2 daje pełną taryfę; odstępstwo od kategoriaZRodzajow w CRM, do zmiany w CRM);
                zabiegi z list nr 1 i 2 nie zmieniają składki; zabieg wymagający ankiety (a–h) zamienia całą składkę w wycenę indywidualną. -->
           <fieldset id="kalk-rodzaje">
 <!-- gen:kalk-rodzaje -->
@@ -1494,6 +1548,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <hr class="rule">
           <p class="label">Składka roczna</p>
           <p class="price"><strong id="cena">Zaznacz rodzaj działalności.</strong><span id="cena-dop"></span></p>
+          <!-- przewodnik po krokach: „Krok N z 3: …” pod polem wyniku, dopóki brakuje kroku (wypełnia skrypt; bez JS ukryte) -->
+          <p class="result-krok" id="wynik-krok" hidden></p>
           <p class="price-opis" id="cena-opis" hidden></p>
           <noscript><p class="note">Bez JavaScriptu kalkulator nie przelicza wyboru – składki znajdziesz w&nbsp;tabeli „Pełna taryfa OC”.</p></noscript>
           <a class="btn btn-ivory" href="#kontakt" id="cta-oferta" data-produkt="oc-beauty">Poproś o&nbsp;polisę</a>
@@ -1514,9 +1570,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią – do 5&nbsp;osób wykonujących zabiegi</caption>
           <thead><tr><th scope="col">Taryfa (zakres na certyfikacie)</th><th scope="col">100&nbsp;tys.&nbsp;zł</th><th scope="col">200&nbsp;tys.&nbsp;zł</th><th scope="col">300&nbsp;tys.&nbsp;zł</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Gabinety kosmetyczne i fryzjerskie<small>gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)</small></th><td>400&nbsp;zł</td><td>500&nbsp;zł</td><td>650&nbsp;zł</td></tr>
-            <tr><th scope="row">Gabinety kosmetologiczne<small>gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu</small></th><td>650&nbsp;zł</td><td>790&nbsp;zł</td><td>950&nbsp;zł</td></tr>
-            <tr><th scope="row">Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne<small>gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1&nbsp;250&nbsp;zł</td></tr>
+            <tr><th scope="row">Gabinety kosmetyczne i fryzjerskie<small>tylko gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)</small></th><td>400&nbsp;zł</td><td>500&nbsp;zł</td><td>650&nbsp;zł</td></tr>
+            <tr><th scope="row">Gabinety kosmetologiczne<small>tylko gabinet kosmetologiczny lub salon tatuażu (także razem)</small></th><td>650&nbsp;zł</td><td>790&nbsp;zł</td><td>950&nbsp;zł</td></tr>
+            <tr><th scope="row">Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne<small>gabinet podologiczny (z innymi rodzajami lub bez) albo gabinet kosmetyczny, salon fryzjerski lub salon masażu razem z gabinetem kosmetologicznym lub salonem tatuażu</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1&nbsp;250&nbsp;zł</td></tr>
           </tbody>
         </table>
         </div>
@@ -1979,21 +2035,24 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
      Przed skryptem kalkulatora, żeby były dostępne od razu. Skrypt kalkulatora poniżej liczy wyłącznie przez OcSkladka.skladkaOc na danych #taryfa-data. -->
 <!-- gen:taryfa-data -->
 <script type="application/json" id="taryfa-data">
-{"program":"WA50/003353/24/A","sumy":[100000,200000,300000],"kategorie":[{"klucz":"kosmetyczny_fryzjerski","nazwa":"Gabinety kosmetyczne i fryzjerskie","skladka":{"100000":400,"200000":500,"300000":650}},{"klucz":"kosmetologiczny","nazwa":"Gabinety kosmetologiczne","skladka":{"100000":650,"200000":790,"300000":950}},{"klucz":"pelny","nazwa":"Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne","skladka":{"100000":850,"200000":980,"300000":1250}}],"doplata_6_8_osob":0.25,"ochrona_prawna":{"skladka":92,"limit":100000},"rodzaje_gabinetu":[{"klucz":"kosmetyczny","nazwa":"Gabinet kosmetyczny"},{"klucz":"fryzjerski","nazwa":"Salon fryzjerski"},{"klucz":"kosmetologiczny","nazwa":"Gabinet kosmetologiczny"},{"klucz":"podologiczny","nazwa":"Gabinet podologiczny"},{"klucz":"masaz","nazwa":"Salon masażu"},{"klucz":"tatuaz","nazwa":"Salon tatuażu"}],"liczba_osob":[{"klucz":"1-5","nazwa":"do 5 osób"},{"klucz":"6-8","nazwa":"6–8 osób"},{"klucz":"9+","nazwa":"więcej niż 8 osób"}],"pytania":{"rodzaje":"Jaką działalność prowadzisz?","rodzaje_podpowiedz":"możesz zaznaczyć kilka","osoby":"Ile osób wykonuje zabiegi w gabinecie (łącznie z Tobą)?"},"powody_wyceny_indywidualnej":{"ankieta":"zabiegi wymagające ankiety podlegają ocenie ubezpieczyciela","osoby":"gabinet zatrudnia więcej niż 8 osób"},"komunikaty_brakow":{"rodzaje":"Zaznacz rodzaj działalności.","osoby":"Podaj liczbę osób wykonujących zabiegi.","suma":"Wybierz sumę gwarancyjną, żeby zobaczyć składkę.","ankieta_bez_pozycji":"Zaznacz zabiegi wymagające ankiety (albo odznacz tę pozycję)."}}
+{"program":"WA50/003353/24/A","sumy":[100000,200000,300000],"kategorie":[{"klucz":"kosmetyczny_fryzjerski","nazwa":"Gabinety kosmetyczne i fryzjerskie","skladka":{"100000":400,"200000":500,"300000":650}},{"klucz":"kosmetologiczny","nazwa":"Gabinety kosmetologiczne","skladka":{"100000":650,"200000":790,"300000":950}},{"klucz":"pelny","nazwa":"Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne","skladka":{"100000":850,"200000":980,"300000":1250}}],"regula_kategorii":{"lista_1":["kosmetyczny","fryzjerski","masaz"],"lista_2":["kosmetologiczny","tatuaz"],"zawsze_pelna":["podologiczny"]},"doplata_6_8_osob":0.25,"ochrona_prawna":{"skladka":92,"limit":100000},"rodzaje_gabinetu":[{"klucz":"kosmetyczny","nazwa":"Gabinet kosmetyczny"},{"klucz":"fryzjerski","nazwa":"Salon fryzjerski"},{"klucz":"kosmetologiczny","nazwa":"Gabinet kosmetologiczny"},{"klucz":"podologiczny","nazwa":"Gabinet podologiczny"},{"klucz":"masaz","nazwa":"Salon masażu"},{"klucz":"tatuaz","nazwa":"Salon tatuażu"}],"liczba_osob":[{"klucz":"1-5","nazwa":"do 5 osób"},{"klucz":"6-8","nazwa":"6–8 osób"},{"klucz":"9+","nazwa":"więcej niż 8 osób"}],"pytania":{"rodzaje":"Jaką działalność prowadzisz?","rodzaje_podpowiedz":"możesz zaznaczyć kilka","osoby":"Ile osób wykonuje zabiegi w gabinecie (łącznie z Tobą)?"},"powody_wyceny_indywidualnej":{"ankieta":"zabiegi wymagające ankiety podlegają ocenie ubezpieczyciela","osoby":"gabinet zatrudnia więcej niż 8 osób"},"komunikaty_brakow":{"rodzaje":"Zaznacz rodzaj działalności.","osoby":"Podaj liczbę osób wykonujących zabiegi.","suma":"Wybierz sumę gwarancyjną, żeby zobaczyć składkę.","ankieta_bez_pozycji":"Zaznacz zabiegi wymagające ankiety (albo odznacz tę pozycję)."}}
 </script>
 <!-- /gen:taryfa-data -->
 <!-- gen:oc-skladka -->
-<!-- = snippets/oc-skladka.js (wycena jak w CRM: kategoriaZRodzajow, skladkaProgramu, wycenaNowej) – globalny OcSkladka -->
+<!-- = snippets/oc-skladka.js (wycena jak w CRM: skladkaProgramu, wycenaNowej; kategoria taryfy – reguła D45, odstępstwo od kategoriaZRodzajow) – globalny OcSkladka -->
 <script>
 /*
  * Wycena OC beauty (program WA50/003353/24/A) – czysta funkcja wspólna dla makiety, aplikacji i testów.
- * Przepisanie reguł CRM (crmaura/src/lib/renewals/program.ts): kategoriaZRodzajow i skladkaProgramu – ta sama kolejność
- * działań i zaokrąglenie; wycenaNowej – ten sam wynik dla kompletu odpowiedzi. Stałe nie są tu wpisane: przychodzą jako
- * T = snippets/taryfa-oc-beauty.json.
+ * Przepisanie reguł CRM (crmaura/src/lib/renewals/program.ts): skladkaProgramu – ta sama kolejność działań i zaokrąglenie;
+ * wycenaNowej – ten sam wynik dla kompletu odpowiedzi. Kategoria taryfy – reguła portalu według decyzji zleceniodawcy D45
+ * (16.11.2026; 00), ODSTĘPSTWO od kategoriaZRodzajow w CRM (opis przy funkcji kategoria). Stałe nie są tu wpisane:
+ * przychodzą jako T = snippets/taryfa-oc-beauty.json (grupy rodzajów działalności – T.regula_kategorii).
  *
- * Dla kompletu odpowiedzi (rodzaje, osoby, suma) wynik jest taki sam jak w CRM: ta sama kategoria, kwota do grosza,
- * ten sam powód wyceny indywidualnej i ten sam opis (pole opisCrm). Przy brakach – stany interfejsu portalu (fixture
- * F1–F5, tylko_portal): w CRM bez sumy nie ma wyceny (wycenaNowej zwraca null), a taki wniosek zatrzymuje walidacja.
+ * Dla kompletu odpowiedzi (rodzaje, osoby, suma) wynik jest taki sam jak w CRM – kwota do grosza, powód wyceny
+ * indywidualnej, opis (pole opisCrm) – z wyjątkiem 9 połączeń rodzajów z D45: tam portal liczy pełną taryfę, a CRM do czasu
+ * zmiany kategoriaZRodzajow – taryfę „Gabinety kosmetologiczne” (fixture: pole odstepstwo_D45 z kwotą CRM; opisCrm = opis
+ * w formacie CRM dla kategorii portalu). Przy brakach – stany interfejsu portalu (fixture F1–F5, tylko_portal): w CRM bez
+ * sumy nie ma wyceny (wycenaNowej zwraca null), a taki wniosek zatrzymuje walidacja.
  * Kolejność sprawdzeń w portalu: zabiegi wymagające ankiety (cała składka do wyceny indywidualnej), rodzaje, osoby,
  * więcej niż 8 osób, suma – wycenaNowej w CRM najpierw sprawdza sumę.
  *
@@ -2011,14 +2070,21 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   'use strict';
   var NB = ' ', WJ = '\u2060';
 
-  // = kategoriaZRodzajow (program.ts): podologia albo fryzjerstwo razem z kosmetologią lub tatuażem – pełna;
-  // kosmetologia albo tatuaż – kosmetologiczna; pozostałe – kosmetyczna i fryzjerska; brak rodzaju – null.
-  function kategoria(rodzaje) {
+  // Kategoria taryfy z rodzajów działalności – decyzja zleceniodawcy D45 (16.11.2026): podologia – zawsze pełna; rodzaj
+  // z listy nr 1 (kosmetyczny, fryzjerski, masaż) razem z rodzajem z listy nr 2 (kosmetologiczny, tatuaż) – pełna; same
+  // rodzaje z listy nr 2 – kosmetologiczna; same rodzaje z listy nr 1 – kosmetyczna i fryzjerska; brak rodzaju – null.
+  // Grupy rodzajów: T.regula_kategorii. ODSTĘPSTWO od CRM (kategoriaZRodzajow w program.ts): tam pełną taryfę z listą nr 2
+  // daje tylko salon fryzjerski, więc gabinet kosmetyczny lub salon masażu razem z gabinetem kosmetologicznym lub salonem
+  // tatuażu (9 połączeń) ma w CRM taryfę kosmetologiczną – do zmiany w CRM (docs/koncepcja/do-crm/, 14 §4.7).
+  function kategoria(rodzaje, T) {
     if (!rodzaje.length) return null;
-    var r = new Set(rodzaje);
-    var lista2 = r.has('kosmetologiczny') || r.has('tatuaz');
-    if (r.has('podologiczny') || (lista2 && r.has('fryzjerski'))) return 'pelny';
-    if (lista2) return 'kosmetologiczny';
+    var R = T && T.regula_kategorii;
+    if (!R) throw new TypeError('Brak T.regula_kategorii (snippets/taryfa-oc-beauty.json)');
+    var ma = function (grupa) {
+      return grupa.some(function (x) { return rodzaje.indexOf(x) >= 0; });
+    };
+    if (ma(R.zawsze_pelna) || (ma(R.lista_1) && ma(R.lista_2))) return 'pelny';
+    if (ma(R.lista_2)) return 'kosmetologiczny';
     return 'kosmetyczny_fryzjerski';
   }
 
@@ -2083,7 +2149,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if (ankieta.length) {
       return { stan: 'indywidualna', powodKlucz: 'ankieta', powod: T.powody_wyceny_indywidualnej.ankieta, kategoria: null, nazwa: null };
     }
-    var k = kategoria(rodzaje);
+    var k = kategoria(rodzaje, T);
     if (!k) return { stan: 'brak', pole: 'rodzaje', komunikat: T.komunikaty_brakow.rodzaje };
     var kat = kategoriaT(T, k);
     if (!osoby) return { stan: 'brak', pole: 'osoby', komunikat: T.komunikaty_brakow.osoby, kategoria: k, nazwa: kat.nazwa };
@@ -2141,6 +2207,72 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   T.liczba_osob.forEach(function(o){OSOBY[o.klucz]=o.nazwa});
   var CTA_BRAK={rodzaje:'Najpierw zaznacz rodzaj działalności',osoby:'Najpierw podaj liczbę osób',suma:'Najpierw wybierz sumę gwarancyjną',
     ankieta:'Najpierw zaznacz zabiegi wymagające ankiety'};
+  /* Przewodnik po krokach (uwaga zleceniodawcy 16.11.2026): 1 rodzaj działalności → 2 liczba osób → 3 suma gwarancyjna (zakres dodatkowy
+     – opcjonalnie, bez kroku). Bieżący krok = pierwszy brakujący (kolejność dowolna, nic nie jest blokowane): aria-current="step",
+     złota obwódka i jasne tło, numer w kółku, wiersz „Krok N z 3 · Teraz: zaznacz …” (opis grupy – aria-describedby); wykonane – „✓”
+     i „Gotowe”; dalsze – przygaszone. Ta sama wskazówka pod polem wyniku (#wynik-krok) i na pasku ceny na telefonie. Jednorazowy puls
+     obwódki przy zmianie kroku (bez niego przy ograniczonym ruchu). Komunikat #calc-status z numerem kroku – tylko przy zmianie kroku;
+     bez przewijania i bez przenoszenia fokusu. Kroki odpowiadają brakom z OcSkladka (rodzaje → osoby → suma; CRM wymaga wszystkich trzech
+     także przy wycenie indywidualnej). Bez JS nic z tego nie działa – pola bez podświetlenia, jak dotąd. */
+  var KROKI=[
+    {fs:'kalk-rodzaje',nazwa:'rodzaj działalności',teraz:'zaznacz rodzaj działalności',jest:function(o){return o.rodzaje.length>0}},
+    {fs:'kalk-osoby',nazwa:'liczba osób',teraz:'zaznacz liczbę osób',jest:function(o){return !!o.osoby}},
+    {fs:'kalk-sumy',nazwa:'suma gwarancyjna',teraz:'wybierz sumę gwarancyjną',jest:function(o){return !!o.suma}}];
+  var krokTeraz=null, ostatniKlucz=null, mqRuch=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var peekEtyk=peekEl&&peekEl.querySelector('span'), PEEK_ETYK=peekEtyk?peekEtyk.textContent:'';
+  function krokNz(n){return 'Krok '+n+' z'+NB+KROKI.length}
+  function wielka(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+  var przewodnik=KROKI.every(function(k){var f=el(k.fs);return f&&f.querySelector('legend')});
+  if(przewodnik){
+    KROKI.forEach(function(k,i){
+      var f=el(k.fs), lg=f.querySelector('legend'), nr=document.createElement('span'), st=document.createElement('p'), d=f.getAttribute('aria-describedby');
+      nr.className='krok-nr';nr.setAttribute('aria-hidden','true');lg.insertBefore(nr,lg.firstChild);
+      st.className='krok-stan';st.id='krok-stan-'+(i+1);lg.insertAdjacentElement('afterend',st);
+      f.classList.add('krok');f.setAttribute('aria-describedby',st.id+(d?' '+d:''));
+      k.el=f;k.nr=nr;k.st=st;
+    });
+    form.querySelector('.calc-form').classList.add('kroki-on');
+  }
+  /* stan kroków z odpowiedzi; zwraca numer bieżącego kroku (0 – wszystkie trzy zaznaczone) i to, czy się zmienił */
+  function kroki(odp){
+    var n=0;
+    if(!przewodnik)return {nr:0,zmiana:false};
+    KROKI.forEach(function(k,i){if(!n&&!k.jest(odp))n=i+1});
+    KROKI.forEach(function(k,i){
+      var stan=k.jest(odp)?'gotowe':i+1===n?'teraz':'dalej';
+      k.el.dataset.krokStan=stan;
+      if(stan==='teraz')k.el.setAttribute('aria-current','step');else k.el.removeAttribute('aria-current');
+      k.nr.textContent=stan==='gotowe'?'✓':String(i+1);
+      k.st.textContent=krokNz(i+1)+(stan==='gotowe'?' · Gotowe':stan==='teraz'?' · Teraz':'');
+      if(stan==='teraz'){var w=document.createElement('span');w.className='krok-wiecej';w.textContent=': '+k.teraz;k.st.appendChild(w)}
+    });
+    var zmiana=krokTeraz!==null&&n!==krokTeraz;krokTeraz=n;
+    /* jednorazowy puls obwódki nowego bieżącego kroku – bez przewijania i bez fokusu */
+    if(zmiana&&n&&!mqRuch.matches){
+      var f=KROKI[n-1].el;f.classList.remove('krok-puls');void f.offsetWidth;f.classList.add('krok-puls');
+      setTimeout(function(){f.classList.remove('krok-puls')},1400);
+    }
+    var wk=el('wynik-krok');
+    if(wk){
+      wk.hidden=!n;wk.textContent='';
+      if(n){
+        var pas=document.createElement('span');pas.className='rk-pasek';pas.setAttribute('aria-hidden','true');
+        KROKI.forEach(function(k,i){var x=document.createElement('span');x.className=k.el.dataset.krokStan==='gotowe'?'is-done':i+1===n?'is-now':'';pas.appendChild(x)});
+        var t=document.createElement('span');t.className='rk-tekst';t.textContent=krokNz(n)+': '+KROKI[n-1].nazwa;
+        wk.appendChild(pas);wk.appendChild(t);
+      }
+    }
+    return {nr:n,zmiana:zmiana};
+  }
+  /* komunikat #calc-status: tylko gdy zmienia się krok albo treść wyniku (kwota, powód, braki) – ponowny klik bez zmiany nic nie ogłasza;
+     numer kroku tylko przy zmianie kroku */
+  function ogloszenie(k,silent){
+    var s=summary(), klucz=k.nr+'|'+s;
+    if(silent||klucz===ostatniKlucz){ostatniKlucz=klucz;return}
+    ostatniKlucz=klucz;
+    if(k.zmiana&&k.nr)s=wynik.stan==='brak'?krokNz(k.nr)+'. '+s:s+' '+krokNz(k.nr)+': '+KROKI[k.nr-1].teraz+'.';
+    say(s);
+  }
   /* twarde spacje: po jednoliterowych wyrazach i między liczbą a „osób”/„zł” */
   function tw(s){return String(s).replace(/(^|[\s(])([aiouwzAIOUWZ]) /g,'$1$2'+NB).replace(/(\d) (osób|zł)/g,'$1'+NB+'$2')}
   function zdanie(s){return s.charAt(0).toUpperCase()+s.slice(1)+'.'}
@@ -2165,7 +2297,19 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     return t;
   }
   /* pasek ceny na telefonie (aria-hidden): kwota albo krótkie „do wyceny” – jedna linia; bez kwoty pasek jest ukryty (CSS) */
-  function peek(){if(!peekEl)return;var st=el('wynik').dataset.state;el('calc-peek-cena').textContent=st==='individual'?'do wyceny':el('cena').textContent;peekEl.dataset.state=st}
+  function peek(n){
+    if(!peekEl)return;
+    var st=el('wynik').dataset.state;
+    if(n){
+      /* przewodnik: dopóki brakuje kroku – „Krok N z 3 · Teraz” i „Zaznacz …”; dotknięcie paska prowadzi do tego kroku */
+      peekEl.dataset.krok=n;if(peekEtyk)peekEtyk.textContent=krokNz(n)+' · Teraz';
+      el('calc-peek-cena').textContent=wielka(KROKI[n-1].teraz);peekEl.setAttribute('href','#'+KROKI[n-1].fs);
+    }else{
+      delete peekEl.dataset.krok;if(peekEtyk)peekEtyk.textContent=PEEK_ETYK;
+      el('calc-peek-cena').textContent=st==='individual'?'do wyceny':el('cena').textContent;peekEl.setAttribute('href','#wynik');
+    }
+    peekEl.dataset.state=st;
+  }
   /* „tyknięcie” ceny: tylko opacity i transform, pomijane przy pierwszym liczeniu i ograniczonym ruchu */
   function tick(){
     var c=el('cena');
@@ -2216,10 +2360,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if(r.stan!=='brak'&&ankietaBezPozycji()){cta.setAttribute('aria-disabled','true');cta.textContent=CTA_BRAK.ankieta}
     var o=el('cena-opis');o.textContent=opis;o.hidden=!opis;
     el('calc-ankieta').hidden=r.powodKlucz!=='ankieta';
-    peek();
+    var k=kroki(odp);
+    peek(k.nr);
     var now=el('cena').textContent;if(prevPrice!==null&&now!==prevPrice)tick();prevPrice=now;
     odswiezFormularz();
-    if(!silent)say(summary());
+    ogloszenie(k,silent);
   }
   /* pierwsze brakujące pole (fokus po kliknięciu nieaktywnego przycisku); przy „Wykonuję…” bez pozycji – pozycja a) */
   function poleBraku(){

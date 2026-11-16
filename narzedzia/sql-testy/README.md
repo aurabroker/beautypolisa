@@ -56,17 +56,25 @@ prywatnym nadaj prawo przejścia (np. `chmod 711`) każdemu katalogowi nadrzędn
 | `zabiegi` | pole i filtr „Zabiegi” (00, D41) w ofertach i „Szukam pracy” | ok 211, FAIL 6, ERROR 4 (znane) |
 | `platnosci` | płatności za szkolenia (00, D42; dok. 11 §12a.15 pkt 20) | ok 149 |
 | `platnosci-redteam` | przegląd red team płatności (pkt 21) | ok 86 |
-| `zakladki` | zakładki w Strefie salonu (00, D44; snippet 10.7a; TEST-21 pkt 22) | ok 84 |
-| `wyscigi` | równoległe sesje: 5 osób o 1 miejsce, ten sam klucz idempotencji, webhook 3 × naraz, dwie zakładki naraz (R4) | ok 13 |
+| `zakladki` | zakładki w Strefie salonu (00, D44; snippet 10.7a; TEST-21 pkt 22) | ok 86 |
+| `wyscigi` | równoległe sesje: 5 osób o 1 miejsce, ten sam klucz idempotencji, webhook 3 × naraz, dwie zakładki naraz (R4), zawieszenie salonu (R5) i odebranie roli właściciela (R6) w trakcie zmiany zakładki, `app_revoke_member()` (R7) i `app_accept_terms()` (R8) w trakcie zmiany zakładki – bez zakleszczenia | ok 23 |
 
 `zakladki` sprawdza: domyślne `{}`; właściciel ukrywa i pokazuje „Pracę” i „Szkolenia” (powtórzenie – ten sam stan,
 bez drugiego wpisu w dzienniku); pracownik, właściciel innego salonu, personel, organizator, pracodawca z rejestracji,
 właściciel zawieszonego salonu – odmowa; nieznana zakładka i `NULL` – `BP422` bez wartości w komunikacie; brak
-`EXECUTE` dla `anon` i `authenticated`; `CHECK` przy zapisie z pominięciem funkcji; odczyt przez członków salonu
+`EXECUTE` dla `anon` i `authenticated`; `CHECK` przy zapisie z pominięciem funkcji (nazwa ograniczenia z D44 stała, nazwy
+automatyczne sprzed D44 bez przesunięcia – SEC-02 nadal `client_accounts_check5`); odczyt przez członków salonu
 istniejącymi politykami i brak `UPDATE` przez Data API; przy ukrytych zakładkach moduły działają tak samo (zapis
 pracownika na szkolenie bezpłatne, zamówienie i płatność szkolenia płatnego, publikacja oferty, publiczna tablica,
 `app_job_offers_page()`, wiadomość kandydata, „Szukam pracy” zależne tylko od globalnego przełącznika); żadna funkcja
-modułu ani polityka RLS nie czyta `ukryte_zakladki`. R4 w `wyscigi` wykrywa zgubioną zmianę bez blokady wiersza.
+modułu ani polityka RLS nie czyta `ukryte_zakladki`. R4 w `wyscigi` wykrywa zgubioną zmianę bez blokady wiersza, a R5 i R6 –
+zmianę przepuszczoną po zawieszeniu salonu albo po odebraniu roli właściciela, gdy funkcja sprawdza stan konta i rolę
+przed założeniem blokad (wiersz konta FOR NO KEY UPDATE, wiersz właściciela FOR SHARE). R7 i R8 wykrywają zakleszczenie
+(`40P01`) z prawdziwymi `app_revoke_member()` i `app_accept_terms()`: blokują one wiersz członka, a potem dopisują wpis
+do `client_audit_log`, którego klucz obcy zakłada `FOR KEY SHARE` na wierszu konta – przy blokadzie konta `FOR UPDATE`
+powstaje cykl. Oczekiwane: R7 – odebranie roli wykonane, zmiana zakładki odrzucona (P0001), stan i dziennik zakładek bez
+zmian; R8 – oba zapisy przechodzą. Pauzę między blokadą członka a wpisem do dziennika daje wyzwalacz `testy_pauza`
+tworzony tylko w bazie testowej (działa w sesji z ustawieniem `testy.pauza_s`).
 
 ### Znane błędy we wzorcach (sprzed zmiany 16.11.2026, do odświeżenia osobno)
 

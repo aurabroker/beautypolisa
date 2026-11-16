@@ -18,11 +18,13 @@
 <link rel="stylesheet" href="strefa.css">
 <script>document.documentElement.classList.add('js')</script>
 <!-- Zakładki w Strefie salonu – preferencja widoku, nie kontrola dostępu (zakladki.js): ukryte zakładki z ?zakladki=… (makieta;
-     zapisuje stan) albo z localStorage → html[data-ukryte] jeszcze przed pierwszym malowaniem. Bez JS atrybutu nie ma – wszystko
-     widoczne. Ten sam skrypt w panel.html, dam-prace.html i szkolenia.html. -->
+     zapisuje stan i usuwa parametr z adresu – history.replaceState z zachowaniem ?rola i #kotwicy – więc odświeżenie pokazuje stan
+     zapisany, np. po „Pokaż zakładkę”) albo z localStorage → html[data-ukryte] jeszcze przed pierwszym malowaniem. Bez JS atrybutu
+     nie ma – wszystko widoczne. Ten sam skrypt w panel.html, dam-prace.html i szkolenia.html. -->
 <script>(function(d){var K='bp-strefa-zakladki',Z=['praca','szkolenia'],P={'bez-pracy':'praca','bez-szkolen':'szkolenia'},u=[],s=null,m=/[?&]zakladki=([^&#]*)/.exec(location.search);
 try{s=JSON.parse(localStorage.getItem(K))}catch(e){}if(!s||typeof s!=='object'){s={}}
-if(m){try{decodeURIComponent(m[1]).split(',').forEach(function(t){t=P[t];if(t&&u.indexOf(t)<0){u.push(t)}})}catch(e){}u.sort(function(a,b){return Z.indexOf(a)-Z.indexOf(b)});s.ukryte=u;try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}}
+if(m){try{decodeURIComponent(m[1]).split(',').forEach(function(t){t=P[t];if(t&&u.indexOf(t)<0){u.push(t)}})}catch(e){}u.sort(function(a,b){return Z.indexOf(a)-Z.indexOf(b)});s.ukryte=u;try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}
+try{history.replaceState(history.state,'',location.pathname+location.search.replace(/([?&])zakladki=[^&#]*(&|$)/,function(x,a,b){return b?a:''})+location.hash)}catch(e){}}
 else if(Array.isArray(s.ukryte)){s.ukryte.forEach(function(t){if(Z.indexOf(t)>-1&&u.indexOf(t)<0){u.push(t)}})}
 d.setAttribute('data-ukryte',u.join(' '))})(document.documentElement)</script>
 <!-- gen:slownik-css -->
@@ -91,6 +93,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <a href="panel.html?zakladki=bez-pracy,bez-szkolen#pracownik">Pracownik: obie ukryte</a>
     <a href="panel.html?rola=pracownik#zakladki">Zakładki – widok pracownika</a>
     <a href="panel.html?zakladki=wszystkie#zakladki">Wszystkie widoczne</a>
+    <a href="panel.html?szukam=wylaczone#zakladki">„Szukam pracy” wyłączone (admin)</a>
   </nav>
 </div>
 
@@ -131,7 +134,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <!-- „Szukam pracy” (P1a) – aktywne od startu: podpunkt pod „Dam pracę” tylko dla właściciela konta (salon z polisą ma poziom 2 z urzędu).
        Przełącznik szukam_pracy zostaje – wyłącza go tylko admin; wtedy podpunkt, zakładka i linki znikają. Pracownik go nie widzi.
        „Zakładki w Strefie” (#zakladki): data-zakladka="praca" / "szkolenia" – pozycja znika, gdy salon ukryje zakładkę (preferencja widoku
-       dla wszystkich członków salonu, nie kontrola dostępu; w produkcji serwer nie renderuje pozycji). Przełącznik szukam_pracy ma pierwszeństwo. -->
+       dla wszystkich członków salonu, nie kontrola dostępu; w produkcji serwer nie renderuje pozycji). Przełącznik szukam_pracy ma pierwszeństwo
+       (makieta: ?szukam=wylaczone – [data-szukam-pracy] znika). -->
   <nav class="sidenav glass glass--strong" id="sidenav" aria-label="Strefa Klienta">
     <button class="drawer-close nav-close" type="button" aria-label="Zamknij menu"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <p class="sidenav-title label-caps">Salon Przykładowy</p>
@@ -144,7 +148,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <a href="dam-prace.html#moje-ogloszenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Dam&nbsp;pracę</a>
         <ul class="sub owner-only">
           <li><a href="dam-prace.html#moje-ogloszenia">Moje ogłoszenia</a></li>
-          <li><a href="dam-prace.html#szukam-pracy">Szukam pracy</a></li>
+          <li data-szukam-pracy><a href="dam-prace.html#szukam-pracy">Szukam pracy</a></li>
         </ul>
       </li>
       <li data-zakladka="szkolenia"><a href="szkolenia.html#moje-szkolenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Szkolenia</a></li>
@@ -326,13 +330,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </div>
       </div>
 
-      <!-- kafle modułów: data-zakladka – znikają, gdy salon ukryje zakładkę w „Ustawieniach” (#zakladki); moduł działa dalej pod swoim adresem -->
+      <!-- kafle modułów: data-zakladka – znikają, gdy salon ukryje zakładkę w „Ustawieniach” (#zakladki); moduł działa dalej pod swoim adresem.
+           .grid-skroty (auto-fit): pozostałe kafle dzielą cały wiersz – bez pustych kolumn po ukrytym kaflu -->
       <div class="section-title"><h2>Na skróty</h2></div>
-      <div class="grid grid-3">
+      <div class="grid grid-skroty">
         <a class="shortcut surface" href="dam-prace.html#moje-ogloszenia" data-zakladka="praca">
           <svg class="lux-icon" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>
           <strong>Dam&nbsp;pracę</strong>
-          <span>1 ogłoszenie opublikowane, 1&nbsp;czeka na akceptację. W&nbsp;zakładce „Szukam pracy”&nbsp;– ogłoszenia osób szukających pracy.</span>
+          <span>1 ogłoszenie opublikowane, 1&nbsp;czeka na akceptację.<span data-szukam-pracy> W&nbsp;zakładce „Szukam pracy”&nbsp;– ogłoszenia osób szukających pracy.</span></span>
           <span class="link-lux" aria-hidden="true">Ogłoszenia</span>
         </a>
         <a class="shortcut surface" href="szkolenia.html#moje-szkolenia" data-zakladka="szkolenia">
@@ -694,12 +699,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <a class="link-lux" href="dam-prace.html">Tablica „Dam pracę”</a>
         </section>
       </div>
-      <!-- pusty pulpit pracownika, gdy salon ukrył obie zakładki (z JS tylko wtedy; bez JS – wzór) -->
+      <!-- podpowiedź, gdy salon ukrył JEDNĄ zakładkę (przy obu – pusty stan niżej); link do Ustawień z rolą pracownika (tylko do odczytu) -->
+      <p class="small zak-hint zak-hint--jedna">Niektóre zakładki są ukryte w&nbsp;ustawieniach salonu&nbsp;– pokazać je może Anna Przykładowa. Moduły działają bez zmian, także Twoje zapisy na szkolenia i&nbsp;<span class="nowrap">e-maile</span> od organizatorów. <a href="?rola=pracownik#zakladki">Zakładki w&nbsp;Strefie</a></p>
+      <!-- pusty pulpit pracownika, gdy salon ukrył obie zakładki (z JS tylko wtedy; bez JS – wzór). Preferencja widoku: nic nie jest
+           zablokowane – adresy modułów i e-maile działają, więc tekst nie każe „prosić o dostęp”, tylko mówi, kto pokaże zakładki -->
       <div class="empty zak-pusto">
         <p class="no-js-only"><span class="mock-note">Wzór: salon ukrył obie zakładki</span></p>
         <svg class="lux-icon" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>
         <strong>Zakładki Praca i&nbsp;Szkolenia są ukryte</strong>
-        <p>Salon ukrył je w&nbsp;ustawieniach Strefy. Jeśli chcesz zapisać się na szkolenie albo zobaczyć ogłoszenia salonu, poproś Annę Przykładową o&nbsp;ich pokazanie.</p>
+        <p>Ukryto je w&nbsp;ustawieniach salonu&nbsp;– pokazać je może Anna Przykładowa. Twoje zapisy na szkolenia i&nbsp;<span class="nowrap">e-maile</span> od organizatorów działają bez zmian.</p>
       </div>
     </section>
 
@@ -748,31 +756,43 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
       <!-- ================= Zakładki w Strefie (prośba zleceniodawcy 16.11.2026) =================
            PREFERENCJA WIDOKU, NIE KONTROLA DOSTĘPU. Ukryta zakładka znika w Strefie tego salonu – dla wszystkich jego członków – tylko jako
-           wejście do modułu: pozycja menu (pasek boczny i szuflada), kafel i skróty na pulpicie. Moduły „Dam pracę”, „Szukam pracy”
+           wejście do modułu: pozycja menu (menu boczne i szuflada), kafel i skróty na pulpicie. Moduły „Dam pracę”, „Szukam pracy”
            i „Szkolenia” działają dalej pod swoimi adresami (u góry informacja „Zakładka … jest ukryta w ustawieniach salonu”, właściciel
            ma „Pokaż zakładkę”); ogłoszenia, kontakty od kandydatów, zapisy, opłacone zamówienia i e-maile modułów – bez zmian;
            publiczne /dam-prace i katalog /szkolenia – bez zmian.
-           Produkcja: client_accounts.ukryte_zakladki; zmiana POST /strefa-klienta/ustawienia/zakladki → app_client_set_tab_visibility(
-           p_account, p_tab, p_visible) – tylko właściciel, idempotentna, wpis w client_audit_log („Historia konta”); odczyt dla członków
-           salonu przez istniejące polityki; RLS i funkcje modułów bez zmian. Serwer renderuje menu i pulpit już bez ukrytych wejść.
-           Z JS zmiana zapisuje się od razu, bez okna potwierdzenia (to nie jest operacja niebezpieczna), komunikat w aria-live;
-           bez JS – przycisk „Zapisz”. Pracownik widzi stan tylko do odczytu.
+           Produkcja: client_accounts.ukryte_zakladki; zmiana → app_client_set_tab_visibility(p_account, p_actor, p_tab, p_visible) – tylko
+           właściciel, idempotentna, wpis w client_audit_log („Historia konta”); odczyt dla członków salonu przez istniejące polityki; RLS
+           i funkcje modułów bez zmian. Serwer renderuje menu i pulpit już bez ukrytych wejść.
+           Trasa POST /strefa-klienta/ustawienia/zakladki (11 §5.1, §6.1a) przyjmuje dwa warianty żądania:
+           (a) jedna zakładka – pola zakladka (praca | szkolenia) i widoczna (tak | nie): przełącznik z JS (zmiana od razu, bez okna
+               potwierdzenia – to nie jest operacja niebezpieczna; komunikat w aria-live) i „Pokaż zakładkę” na stronie modułu;
+           (b) ten formularz bez JS („Zapisz”) – znacznik formularz=zakladki i zbiór widoczne (zaznaczone przełączniki; niezaznaczony
+               checkbox nie jest wysyłany, więc brak pola widoczne = obie zakładki ukryte – jednoznacznie dzięki znacznikowi). Serwer
+               woła funkcję kolejno dla każdej zakładki – dwa osobne wywołania (Data API: każde to osobna transakcja), idempotentne,
+               więc wpis w dzienniku powstaje tylko dla zmienionej – i odpowiada 303 na /strefa-klienta/ustawienia#zakladki. Błąd
+               drugiego wywołania nie cofa pierwszego: serwer pokazuje komunikat i stan odczytany z bazy, a ponowne „Zapisz” jest
+               bezpieczne. Żądanie z oboma wariantami albo bez żadnego – 422.
+           W makiecie oba formularze mają action="panel.html#zakladki". Pracownik widzi stan tylko do odczytu.
+           Zdanie pod opisem (aktywne ogłoszenia / nadchodzące zapisy) – tylko gdy salon je ma; mały salon zwykle go nie zobaczy.
            Globalny przełącznik szukam_pracy (11 §11.9.6) jest osobny i ma pierwszeństwo: wyłączony – etykieta „Praca – Dam pracę”,
-           bez wzmianki o „Szukam pracy”. Makieta: stan w localStorage (zakladki.js), wspólny dla panel.html, dam-prace.html i szkolenia.html. -->
+           bez wzmianki o „Szukam pracy” (makieta: ?szukam=wylaczone). Makieta: stan w localStorage (zakladki.js), wspólny dla panel.html,
+           dam-prace.html i szkolenia.html. -->
       <section class="card surface" id="zakladki" aria-labelledby="t-zakladki">
         <div class="card-head">
           <div><h2 class="card-title" id="t-zakladki">Zakładki w&nbsp;Strefie</h2><p class="card-sub">Ukryj zakładki, z&nbsp;których salon nie korzysta – menu i&nbsp;pulpit będą prostsze dla wszystkich osób z&nbsp;dostępem do Strefy salonu.</p></div>
         </div>
-        <form class="toggles" id="f-zakladki" action="#zakladki" method="post" data-zakladki-form aria-labelledby="t-zakladki">
+        <form class="toggles" id="f-zakladki" action="panel.html#zakladki" method="post" data-zakladki-form aria-labelledby="t-zakladki">
+          <input type="hidden" name="formularz" value="zakladki">
           <p class="small employee-only" id="zak-ro">Zakładki ustawia właścicielka konta – Anna Przykładowa. Zmiana dotyczy wszystkich osób w&nbsp;salonie.</p>
           <div class="toggle-row">
-            <label class="toggle-label" for="zak-praca">Praca – Dam pracę i&nbsp;Szukam pracy</label>
+            <label class="toggle-label" for="zak-praca">Praca – Dam pracę<span data-szukam-pracy> i&nbsp;Szukam pracy</span></label>
             <div class="toggle-ctrl">
               <input class="toggle" type="checkbox" role="switch" id="zak-praca" name="widoczne" value="praca" checked data-zakladka-przelacznik aria-describedby="zak-praca-opis zak-praca-info">
               <span class="toggle-state" id="zak-praca-stan">Widoczna</span>
             </div>
             <p class="small toggle-opis" id="zak-praca-opis">Wyłącz, jeśli nie zatrudniasz i&nbsp;nie szukasz pracowników. Zakładkę włączysz tu w&nbsp;każdej chwili.</p>
-            <p class="small toggle-info" id="zak-praca-info">Salon ma 2&nbsp;aktywne ogłoszenia (1&nbsp;opublikowane, 1&nbsp;w&nbsp;moderacji) – zostają bez zmian, a&nbsp;wiadomości od kandydatów dochodzą jak dotąd; <span class="owner-only">zarządzisz nimi</span><span class="employee-only">zobaczysz je</span> pod adresem <a href="dam-prace.html#moje-ogloszenia">/strefa-klienta/dam-prace</a>.</p>
+            <p class="small toggle-info" id="zak-praca-info"><span class="owner-only">Masz</span><span class="employee-only">Salon ma</span> 1&nbsp;aktywne ogłoszenie i&nbsp;1&nbsp;w&nbsp;moderacji&nbsp;– zostają bez zmian, a&nbsp;wiadomości od kandydatów dochodzą jak dotąd; <span class="owner-only">zarządzisz nimi</span><span class="employee-only">zobaczysz je</span> pod adresem <a href="dam-prace.html#moje-ogloszenia">/strefa-klienta/dam-prace</a>.</p>
+            <p class="xsmall toggle-mock"><span class="mock-note">Makieta: zdanie tylko wtedy, gdy salon ma aktywne ogłoszenie albo ogłoszenie w&nbsp;moderacji</span></p>
           </div>
           <div class="toggle-row">
             <label class="toggle-label" for="zak-szkolenia">Szkolenia</label>
@@ -781,12 +801,13 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <span class="toggle-state" id="zak-szkolenia-stan">Widoczna</span>
             </div>
             <p class="small toggle-opis" id="zak-szkolenia-opis">Wyłącz, jeśli salon nie korzysta ze szkoleń. Zakładkę włączysz tu w&nbsp;każdej chwili.</p>
-            <p class="small toggle-info" id="zak-szkolenia-info"><span class="owner-only">Masz 3&nbsp;nadchodzące zapisy, w&nbsp;tym 1&nbsp;opłacone zamówienie</span><span class="employee-only">Masz 1&nbsp;nadchodzący zapis i&nbsp;1&nbsp;miejsce na liście rezerwowej</span> – zostają bez zmian, a&nbsp;przypomnienia i&nbsp;<span class="nowrap">e-maile</span> od organizatorów przychodzą jak dotąd; znajdziesz je pod adresem <a href="szkolenia.html#moje-szkolenia">/strefa-klienta/szkolenia</a>.</p>
+            <p class="small toggle-info" id="zak-szkolenia-info"><span class="owner-only">Salon ma 6&nbsp;nadchodzących zapisów, w&nbsp;tym 2&nbsp;na listach rezerwowych i&nbsp;1&nbsp;opłacone zamówienie</span><span class="employee-only">Masz 1&nbsp;nadchodzący zapis i&nbsp;1&nbsp;miejsce na liście rezerwowej</span>&nbsp;– zostają bez zmian; znajdziesz je pod adresem <a href="szkolenia.html#moje-szkolenia">/strefa-klienta/szkolenia</a>.</p>
+            <p class="xsmall toggle-mock"><span class="mock-note">Makieta: zdanie tylko wtedy, gdy salon ma nadchodzący zapis (u&nbsp;właściciela – zapisy salonu, u&nbsp;pracownika – własne)</span></p>
           </div>
           <div class="toggles-foot">
             <p class="small" id="zak-live" role="status"></p>
             <div class="no-js-only"><button class="btn btn-navy btn-sm" type="submit">Zapisz</button></div>
-            <p class="xsmall"><span class="mock-note" data-zakladki-adnotacja>Makieta: preferencja widoku, nie kontrola dostępu</span> Ukrycie zmienia tylko menu, pulpit i&nbsp;skróty w&nbsp;Strefie salonu&nbsp;– moduły działają pod swoimi adresami, a&nbsp;uprawnienia i&nbsp;dane są bez zmian. Stan zapisuje przeglądarka i&nbsp;widzą go wszystkie strony Strefy; stany z&nbsp;adresu: ?zakladki=bez-pracy, bez-szkolen, wszystkie; widok pracownika: ?rola=pracownik.</p>
+            <p class="xsmall"><span class="mock-note" data-zakladki-adnotacja>Makieta: preferencja widoku, nie kontrola dostępu</span> Ukrycie zmienia tylko menu, pulpit i&nbsp;skróty w&nbsp;Strefie salonu&nbsp;– moduły działają pod swoimi adresami, a&nbsp;uprawnienia i&nbsp;dane są bez zmian. Stan zapisuje przeglądarka i&nbsp;widzą go wszystkie strony Strefy; stany z&nbsp;adresu: ?zakladki=bez-pracy, bez-szkolen, wszystkie (parametr zapisuje stan i&nbsp;znika z&nbsp;adresu); widok pracownika: ?rola=pracownik; globalny przełącznik „Szukam pracy” wyłączony: ?szukam=wylaczone (etykieta „Praca – Dam pracę”).</p>
           </div>
         </form>
       </section>
@@ -816,7 +837,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <table class="data stack">
             <thead><tr><th scope="col">Data</th><th scope="col">Zdarzenie</th><th scope="col">Osoba</th></tr></thead>
             <tbody>
-              <tr class="hist-wzor"><td data-label="Data"><time datetime="2026-11-12">12.11.2026</time></td><td data-label="Zdarzenie"><span class="mock-note">Wzór wpisu</span> Ukryto zakładkę Praca (Dam pracę i&nbsp;Szukam pracy) w&nbsp;Strefie salonu</td><td data-label="Osoba">Anna Przykładowa</td></tr>
+              <tr class="hist-wzor"><td data-label="Data"><time datetime="2026-11-12">12.11.2026</time></td><td data-label="Zdarzenie"><span class="mock-note">Wzór wpisu</span> Ukryto zakładkę Praca (Dam pracę<span data-szukam-pracy> i&nbsp;Szukam pracy</span>) w&nbsp;Strefie salonu</td><td data-label="Osoba">Anna Przykładowa</td></tr>
               <tr><td data-label="Data"><time datetime="2026-11-11">11.11.2026</time></td><td data-label="Zdarzenie">Ogłoszenie wysłane do akceptacji: „Recepcjonistka / recepcjonista (przykład)”</td><td data-label="Osoba">Anna Przykładowa</td></tr>
               <tr><td data-label="Data"><time datetime="2026-11-10">10.11.2026</time></td><td data-label="Zdarzenie">Pobrano dokument: OWU – OC dla branży beauty</td><td data-label="Osoba">Anna Przykładowa</td></tr>
               <tr><td data-label="Data"><time datetime="2026-11-09">9.11.2026</time></td><td data-label="Zdarzenie">Wysłano zaproszenie: kasia@salon-przykladowy.example</td><td data-label="Osoba">Anna Przykładowa</td></tr>
@@ -849,7 +870,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <li>Kwoty OC wyłącznie z&nbsp;taryfy (snippets/taryfa-oc-beauty.json, wycena jak w&nbsp;CRM): Gabinety kosmetologiczne, suma 200&nbsp;tys.&nbsp;zł: 790&nbsp;zł, +92&nbsp;zł ochrona prawna = 882,00&nbsp;zł (do 5&nbsp;osób wykonujących zabiegi). Zakres na karcie polisy = nazwa taryfy z&nbsp;certyfikatu (wynika z&nbsp;rodzaju działalności). Grupowe ERGO i&nbsp;Tax Protect bez kwot.</li>
         <li>Po wygaśnięciu ostatniej polisy konto zostaje, a&nbsp;polisy przechodzą do archiwum (D-B).</li>
         <li>„Szukam pracy” (P1a)&nbsp;– aktywne od startu: zakładka w&nbsp;„Dam pracę” (<code>dam-prace.html#szukam-pracy</code>) i&nbsp;podpunkt w&nbsp;menu bocznym, tylko dla właściciela konta (salon z&nbsp;polisą ma poziom&nbsp;2 z&nbsp;urzędu); pracownik ich nie widzi. Przełącznik <code>szukam_pracy</code> zostaje&nbsp;– wyłącza go tylko admin, a&nbsp;wtedy zakładka i&nbsp;linki znikają.</li>
-        <li><strong>Zakładki w&nbsp;Strefie (prośba zleceniodawcy 16.11.2026):</strong> w&nbsp;„Ustawieniach” (<code>#zakladki</code>) właściciel ukrywa zakładki „Praca – Dam pracę i&nbsp;Szukam pracy” i&nbsp;„Szkolenia”, np. gdy salon prowadzą jedna lub dwie osoby. To <strong>preferencja widoku, nie kontrola dostępu</strong>: znikają tylko wejścia do modułu w&nbsp;Strefie tego salonu (menu: pasek boczny i&nbsp;szuflada, kafle i&nbsp;skróty na pulpicie) – dla wszystkich jego członków. Moduły zostają w&nbsp;pełni wdrożone: bezpośredni adres działa i&nbsp;pokazuje u&nbsp;góry „Zakładka … jest ukryta w&nbsp;ustawieniach salonu” (właściciel: „Pokaż zakładkę”), ogłoszenia zostają opublikowane, wiadomości od kandydatów dochodzą, zapisy i&nbsp;opłacone zamówienia są bez zmian, e-maile modułów wychodzą; publiczne <code>/dam-prace</code> i&nbsp;katalog <code>/szkolenia</code>&nbsp;– bez zmian. Zmiana od razu, bez okna potwierdzenia, z&nbsp;komunikatem w&nbsp;aria-live i&nbsp;wpisem w&nbsp;„Historii konta”; pracownik widzi stan tylko do odczytu. Produkcja: <code>client_accounts.ukryte_zakladki</code>, <code>app_client_set_tab_visibility()</code> (tylko właściciel, wpis w&nbsp;<code>client_audit_log</code>); RLS i&nbsp;funkcje modułów bez zmian. Globalny przełącznik <code>szukam_pracy</code> (11.9.6) ma pierwszeństwo. Makieta: stan w&nbsp;localStorage (<code>zakladki.js</code>), stany z&nbsp;adresu <code>?zakladki=bez-pracy</code>, <code>bez-szkolen</code>, <code>bez-pracy,bez-szkolen</code>, <code>wszystkie</code>; wariant pracownika: <code>?rola=pracownik</code> albo „Pulpit pracownika”.</li>
+        <li><strong>Zakładki w&nbsp;Strefie (prośba zleceniodawcy 16.11.2026):</strong> w&nbsp;„Ustawieniach” (<code>#zakladki</code>) właściciel ukrywa zakładki „Praca – Dam pracę i&nbsp;Szukam pracy” i&nbsp;„Szkolenia”, np. gdy salon prowadzą jedna lub dwie osoby. To <strong>preferencja widoku, nie kontrola dostępu</strong>: znikają tylko wejścia do modułu w&nbsp;Strefie tego salonu (menu boczne i&nbsp;szuflada, kafle i&nbsp;skróty na pulpicie; pozostałe kafle „Na skróty” dzielą cały wiersz) – dla wszystkich jego członków. Moduły zostają w&nbsp;pełni wdrożone: bezpośredni adres działa i&nbsp;pokazuje u&nbsp;góry „Zakładka … jest ukryta w&nbsp;ustawieniach salonu” (właściciel: „Pokaż zakładkę”), ogłoszenia zostają opublikowane, wiadomości od kandydatów dochodzą, zapisy i&nbsp;opłacone zamówienia są bez zmian, e-maile modułów wychodzą; publiczne <code>/dam-prace</code> i&nbsp;katalog <code>/szkolenia</code>&nbsp;– bez zmian. Zmiana od razu, bez okna potwierdzenia, z&nbsp;komunikatem w&nbsp;aria-live i&nbsp;wpisem w&nbsp;„Historii konta”; pracownik widzi stan tylko do odczytu, a&nbsp;na swoim pulpicie&nbsp;– podpowiedź (jedna zakładka ukryta) albo pusty stan (obie). Zdanie o&nbsp;aktywnych ogłoszeniach albo nadchodzących zapisach pod opisem przełącznika pokazujemy tylko wtedy, gdy salon je ma. Bez JS formularz wysyła <code>formularz=zakladki</code> i&nbsp;zbiór <code>widoczne</code> (brak pola = obie ukryte), a&nbsp;„Pokaż zakładkę”&nbsp;– <code>zakladka</code> i&nbsp;<code>widoczna</code> (11 §5.1). Produkcja: <code>client_accounts.ukryte_zakladki</code>, <code>app_client_set_tab_visibility()</code> (tylko właściciel, wpis w&nbsp;<code>client_audit_log</code>); RLS i&nbsp;funkcje modułów bez zmian. Globalny przełącznik <code>szukam_pracy</code> (11.9.6) ma pierwszeństwo: wyłączony&nbsp;– przełącznik nazywa się „Praca – Dam pracę”, wpis w&nbsp;historii „Ukryto zakładkę Praca (Dam pracę) w&nbsp;Strefie salonu”, a&nbsp;„Szukam pracy” znika z&nbsp;menu i&nbsp;kafla (stan <a href="panel.html?szukam=wylaczone#zakladki"><code>?szukam=wylaczone</code></a>). Makieta: stan w&nbsp;localStorage (<code>zakladki.js</code>), stany z&nbsp;adresu <code>?zakladki=bez-pracy</code>, <code>bez-szkolen</code>, <code>bez-pracy,bez-szkolen</code>, <code>wszystkie</code>; wariant pracownika: <code>?rola=pracownik</code> albo „Pulpit pracownika”.</li>
         <li>Pierwsze wejście właściciela do „Dam pracę” (4.8): NIP salonu z&nbsp;konta → sprawdzenie w&nbsp;GUS → telefon z&nbsp;kodem SMS (<code>dam-prace.html#wlacz-dam-prace</code>). Potwierdzony numer widać w&nbsp;„Ustawieniach”. Pracodawca bez polisy ma własny kontekst w&nbsp;<code>dam-prace.html?konto=pracodawca</code>.</li>
         <li>Szkło: pasek górny, menu boczne i&nbsp;nagłówek strony – najwyżej 3&nbsp;tafle w&nbsp;widoku; dane i&nbsp;formularze na kryjących powierzchniach.</li>
         <li>Bez JavaScriptu wszystkie ekrany są widoczne pod sobą, zakładki jako sekcje, a&nbsp;szczegóły polisy otwierają się przez <code>:target</code>.</li>

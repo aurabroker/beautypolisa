@@ -41,6 +41,12 @@ html[data-ctx="zone"] :is(.ctx-public,.ctx-employer,.ctx-seeker),
 html[data-ctx="employer"] :is(.ctx-public,.ctx-zone,.ctx-seeker),
 html[data-ctx="seeker"] :is(.ctx-public,.ctx-zone,.ctx-employer){display:none!important}
 html[data-ctx="public"] .app{grid-template-columns:minmax(0,1fr)}
+/* stopka menu bocznego (i szuflady): w Strefie salonu z ukrytą zakładką „Praca” (00, D44; 11 §6.1a reguła 2) skrót do tablicy
+   publicznej znika razem z zakładką, a menu ma standardową stopkę „Opiekun” jak panel.html i szkolenia.html. Konto pracodawcy
+   z rejestracji i osoby szukającej pracy – bez zmian (ta preferencja ich nie dotyczy); bez JS – stopka „Tablica publiczna”. */
+.sidenav-foot--opiekun{display:none}
+html[data-ctx="zone"][data-ukryte~="praca"] .sidenav-foot[data-stopka-praca]{display:none}
+html[data-ctx="zone"][data-ukryte~="praca"] .sidenav-foot--opiekun{display:grid}
 /* pracownik salonu (?rola=pracownik – wariant makiety): podgląd ogłoszeń salonu bez akcji (11 §3) */
 [data-role="employee"] .table-owner :is(thead th:last-child,.cell-actions){display:none!important}
 .crumbs li > a + a{margin-left:10px}
@@ -313,11 +319,13 @@ html:has(.zab-sheet[open]){overflow:hidden}
 </style>
 <script>(function(d){d.classList.add('js');var h=location.hash.slice(1),e=/[?&]konto=pracodawca(&|$)/.test(location.search);d.setAttribute('data-ctx',/^(szukam-(dodaj|moje|konto)|sa-)/.test(h)?'seeker':(/^(pulpit-pracodawcy|konto-studio)$/.test(h)?'employer':(/^(moje-ogloszenia|ogloszenie-wyslane|nowe-ogloszenie|podglad|konto-pracodawcy|szukam-pracy|sp-|wlacz-)/.test(h)?(e?'employer':'zone'):'public')))})(document.documentElement)</script>
 <!-- Zakładki w Strefie salonu – preferencja widoku, nie kontrola dostępu (zakladki.js): ukryte zakładki z ?zakladki=… (makieta;
-     zapisuje stan) albo z localStorage → html[data-ukryte] jeszcze przed pierwszym malowaniem. Bez JS atrybutu nie ma – wszystko
-     widoczne. Ten sam skrypt w panel.html, dam-prace.html i szkolenia.html. -->
+     zapisuje stan i usuwa parametr z adresu – history.replaceState z zachowaniem ?rola i #kotwicy – więc odświeżenie pokazuje stan
+     zapisany, np. po „Pokaż zakładkę”) albo z localStorage → html[data-ukryte] jeszcze przed pierwszym malowaniem. Bez JS atrybutu
+     nie ma – wszystko widoczne. Ten sam skrypt w panel.html, dam-prace.html i szkolenia.html. -->
 <script>(function(d){var K='bp-strefa-zakladki',Z=['praca','szkolenia'],P={'bez-pracy':'praca','bez-szkolen':'szkolenia'},u=[],s=null,m=/[?&]zakladki=([^&#]*)/.exec(location.search);
 try{s=JSON.parse(localStorage.getItem(K))}catch(e){}if(!s||typeof s!=='object'){s={}}
-if(m){try{decodeURIComponent(m[1]).split(',').forEach(function(t){t=P[t];if(t&&u.indexOf(t)<0){u.push(t)}})}catch(e){}u.sort(function(a,b){return Z.indexOf(a)-Z.indexOf(b)});s.ukryte=u;try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}}
+if(m){try{decodeURIComponent(m[1]).split(',').forEach(function(t){t=P[t];if(t&&u.indexOf(t)<0){u.push(t)}})}catch(e){}u.sort(function(a,b){return Z.indexOf(a)-Z.indexOf(b)});s.ukryte=u;try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}
+try{history.replaceState(history.state,'',location.pathname+location.search.replace(/([?&])zakladki=[^&#]*(&|$)/,function(x,a,b){return b?a:''})+location.hash)}catch(e){}}
 else if(Array.isArray(s.ukryte)){s.ukryte.forEach(function(t){if(Z.indexOf(t)>-1&&u.indexOf(t)<0){u.push(t)}})}
 d.setAttribute('data-ukryte',u.join(' '))})(document.documentElement)</script>
 <!-- gen:slownik-css -->
@@ -533,9 +541,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       </ul>
     </div>
     <hr>
-    <div class="sidenav-foot">
+    <!-- stopka: link do publicznej tablicy /dam-prace; w Strefie salonu z ukrytą zakładką „Praca” – zamiast niego „Opiekun” (style wyżej) -->
+    <div class="sidenav-foot" data-stopka-praca>
       <span class="label-caps">Tablica publiczna</span>
       <a class="link-quiet" href="#oferty">Zobacz oferty na stronie</a>
+    </div>
+    <div class="sidenav-foot sidenav-foot--opiekun">
+      <span class="label-caps">Opiekun</span>
+      <span>Doradca Aura Expert</span>
+      <a class="link-quiet" href="../makieta-v3.html#kontakt">Napisz do doradcy</a>
     </div>
   </nav>
 
@@ -1080,17 +1094,26 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <!-- ================================================================
          ZAKŁADKA „PRACA” UKRYTA W USTAWIENIACH SALONU (panel.html#zakladki) – wejście pod adres modułu w Strefie salonu.
          Preferencja widoku, nie kontrola dostępu: ekrany poniżej działają normalnie, dane i procesy bez zmian. Informacja tylko
-         w kontekście salonu (.ctx-zone) – nie na publicznej tablicy /dam-prace i nie na koncie pracodawcy z rejestracji. Stoi przed
-         pierwszym ekranem strefy, więc jest u góry każdego z nich. Z JS – tylko przy ukrytej zakładce; bez JS – wzór.
+         w kontekście salonu (.ctx-zone) – nie na publicznej tablicy /dam-prace i nie na koncie pracodawcy z rejestracji. Z JS
+         – tylko przy ukrytej zakładce; zakladki.js przenosi ją na początek aktywnego ekranu (przed nagłówek), więc wejście pod adres
+         z kotwicą ekranu (np. #szukam-pracy) pokazuje ją u góry, pod paskiem. Stany po wysłaniu formularza ([data-trasa]:
+         #ogloszenie-wyslane, #sp-wyslano, #sp-wstrzymano, #wlacz-gotowe – w produkcji strona po 303, wczytywana od początku,
+         z informacją na górze) – informacja tuż przed kartą stanu, w oknie. Zwykły fragment strony (np. #f-nowe, #sp-lista) –
+         przeglądarka pokazuje wskazane miejsce, informacja stoi na początku ekranu, nad nim (tak samo w produkcji).
+         Bez JS – wzór przed pierwszym ekranem.
+         Treść: jedno zdanie, prawdziwe w każdym salonie (także bez ogłoszeń i przy wyłączonym „Szukam pracy” – 11.9.6);
+         liczby ogłoszeń – przy przełączniku w „Ustawieniach”. Przy ukrytej „Pracy” menu salonu ma stopkę „Opiekun” zamiast linku
+         do tablicy publicznej (skrót do modułu znika razem z zakładką – 11 §6.1a reguła 2).
          „Pokaż zakładkę” (właściciel): w produkcji POST /strefa-klienta/ustawienia/zakladki (app_client_set_tab_visibility,
-         wpis w „Historii konta”) i 303 z powrotem na ten adres; w makiecie bez JS – przejście do Ustawień.
+         wpis w „Historii konta”) i 303 z powrotem na ten adres z jednorazowym potwierdzeniem (na kolejnych ekranach go nie ma);
+         w makiecie bez JS – przejście do Ustawień.
          ================================================================ -->
     <div class="tab-note ctx-zone" data-zakladka-uwaga="praca">
       <form class="alert alert--info" action="panel.html#zakladki" method="post">
         <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
         <p class="no-js-only"><span class="mock-note">Wzór: tylko gdy zakładka jest ukryta</span></p>
         <strong class="alert-title">Zakładka Praca jest ukryta w&nbsp;ustawieniach salonu</strong>
-        <p class="small">„Dam pracę”<span class="owner-only"> i&nbsp;„Szukam pracy” działają</span><span class="employee-only"> działa</span> normalnie: ogłoszenia salonu są opublikowane, a&nbsp;wiadomości od kandydatów dochodzą jak dotąd. Ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.</p>
+        <p class="small">Moduł działa normalnie&nbsp;– ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.</p>
         <input type="hidden" name="zakladka" value="praca"><input type="hidden" name="widoczna" value="tak">
         <div class="actions owner-only"><button class="btn btn-navy btn-sm" type="submit">Pokaż zakładkę</button></div>
         <p class="small employee-only">Zakładkę może pokazać właścicielka konta – Anna Przykładowa – w&nbsp;ustawieniach salonu.</p>
@@ -1147,7 +1170,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </div>
 
           <!-- stan po potwierdzeniu telefonu (powrót z logowanie.html?dla=salon#s-sms); bez JS widoczny jako wzór -->
-          <div class="alert alert--success is-pending js-state" id="wlacz-gotowe" data-hide="wlacz-kroki" role="status" tabindex="-1">
+          <div class="alert alert--success is-pending js-state" id="wlacz-gotowe" data-hide="wlacz-kroki" data-trasa="stan po potwierdzeniu telefonu" role="status" tabindex="-1">
             <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
             <strong class="alert-title">„Dam pracę” jest włączone</strong>
             <p class="small">NIP salonu jest aktywny w&nbsp;rejestrze, a&nbsp;numer telefonu&nbsp;– potwierdzony. Możesz dodawać oferty pracy i&nbsp;czytać ogłoszenia „Szukam pracy”: firmę salonu z&nbsp;polisą Aura Expert zna, więc nie trzeba jej dodatkowo potwierdzać.</p>
@@ -1192,7 +1215,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       </header>
 
       <!-- stan po wysłaniu nowego ogłoszenia do akceptacji (bez JS widoczny jako wzór) -->
-      <div class="alert alert--success is-pending js-state" id="ogloszenie-wyslane" role="status" tabindex="-1">
+      <div class="alert alert--success is-pending js-state" id="ogloszenie-wyslane" data-trasa="/strefa-klienta/dam-prace – stan po wysłaniu ogłoszenia (303)" role="status" tabindex="-1">
         <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
         <strong class="alert-title">Ogłoszenie czeka na akceptację</strong>
         <p class="small">„<span id="nowe-tytul-ok">Tatuażysta / tatuażystka (przykład)</span>” trafiło do moderacji. Do decyzji nie można zmieniać treści ani kontaktu. Po akceptacji ogłoszenie będzie widoczne bezpłatnie przez 21&nbsp;dni&nbsp;– wyślemy <span class="nowrap">e-mail</span>.</p>
@@ -2109,13 +2132,13 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             </div>
           </form>
 
-          <div class="alert alert--success is-pending js-state" id="sp-wyslano" data-hide="f-sp-msg" role="status" tabindex="-1">
+          <div class="alert alert--success is-pending js-state" id="sp-wyslano" data-hide="f-sp-msg" data-trasa="stan po wysłaniu wiadomości (303)" role="status" tabindex="-1">
             <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
             <strong class="alert-title">Wiadomość wysłana</strong>
             <p class="small">Odpowiedź, jeśli autor zechce odpisać, przyjdzie na podany adres. Do tego ogłoszenia nie wyślesz już kolejnej wiadomości.</p>
             <div class="actions"><a class="link-lux" href="#szukam-pracy">Wróć do ogłoszeń</a></div>
           </div>
-          <div class="alert alert--warn is-pending js-state" id="sp-wstrzymano" data-hide="f-sp-msg" role="status" tabindex="-1">
+          <div class="alert alert--warn is-pending js-state" id="sp-wstrzymano" data-hide="f-sp-msg" data-trasa="stan po wysłaniu wiadomości (303)" role="status" tabindex="-1">
             <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
             <strong class="alert-title">Wiadomość czeka na sprawdzenie przez moderatora</strong>
             <p class="small">Treść zawiera słowa typowe dla oszustw, dlatego przed wysyłką sprawdzi ją moderator Aura Expert&nbsp;– najwyżej 72&nbsp;godziny. Po tym czasie niewysłaną treść usuwamy. Decyzję podjęto z&nbsp;użyciem środków automatycznych (oznaczanie fraz).</p>
@@ -2624,7 +2647,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <ul>
         <li><strong>„Dam pracę” i&nbsp;„Szukam pracy” to wyłącznie tablica (D-C, P1).</strong> Zasada tablicy jest widoczna w&nbsp;nagłówku listy ofert, w&nbsp;„Szukam pracy” i&nbsp;w&nbsp;formularzu ogłoszenia osoby szukającej pracy. Bez aplikacji, CV, statusów rekrutacji, list kandydatów, „polecanych”, rankingów i&nbsp;wyróżnień.</li>
         <li><strong>Promocja na otwarcie (P1c):</strong> ogłoszenia bezpłatne, widoczne 21&nbsp;dni (CHECK w&nbsp;bazie); bez przedłużeń&nbsp;– po wygaśnięciu „Opublikuj ponownie” i&nbsp;nowa moderacja.</li>
-        <li><strong>Zakładka „Praca” ukryta w&nbsp;ustawieniach salonu</strong> (<a href="panel.html#zakladki">panel.html#zakladki</a>; prośba zleceniodawcy 16.11.2026): to <strong>preferencja widoku, nie kontrola dostępu</strong>. W&nbsp;Strefie salonu znikają pozycja „Dam pracę” w&nbsp;menu i&nbsp;kafel na pulpicie (dla wszystkich członków salonu), a&nbsp;ekrany strefy działają dalej pod swoimi adresami&nbsp;– u&nbsp;góry informacja „Zakładka Praca jest ukryta w&nbsp;ustawieniach salonu”; właściciel ma „Pokaż zakładkę” (zakładka wraca od razu, wpis w&nbsp;„Historii konta”), pracownik&nbsp;– informację, kto może ją pokazać. Ogłoszenia salonu zostają opublikowane, wiadomości od kandydatów i&nbsp;e-maile modułu wychodzą jak dotąd. Publiczna tablica (<code>#oferty</code>, <code>#oferta</code>) i&nbsp;konto pracodawcy z&nbsp;rejestracji (<code>?konto=pracodawca</code>)&nbsp;– bez zmian. Globalny przełącznik <code>szukam_pracy</code> (11.9.6) ma pierwszeństwo. Stany: <a href="dam-prace.html?zakladki=bez-pracy#moje-ogloszenia">?zakladki=bez-pracy</a>, wariant pracownika&nbsp;– <a href="dam-prace.html?rola=pracownik&amp;zakladki=bez-pracy#moje-ogloszenia">?rola=pracownik</a> (podgląd ogłoszeń salonu bez akcji, „Szukam pracy” i&nbsp;nowego ogłoszenia; menu: Pulpit, Dam pracę, Szkolenia).</li>
+        <li><strong>Zakładka „Praca” ukryta w&nbsp;ustawieniach salonu</strong> (<a href="panel.html#zakladki">panel.html#zakladki</a>; prośba zleceniodawcy 16.11.2026): to <strong>preferencja widoku, nie kontrola dostępu</strong>. W&nbsp;Strefie salonu znikają pozycja „Dam pracę” w&nbsp;menu i&nbsp;kafel na pulpicie (dla wszystkich członków salonu), a&nbsp;ekrany strefy działają dalej pod swoimi adresami&nbsp;– u&nbsp;góry ekranu (także przy wejściu z&nbsp;kotwicą, np. z&nbsp;linku w&nbsp;„Ustawieniach”) krótka informacja „Zakładka Praca jest ukryta w&nbsp;ustawieniach salonu” ze zdaniem „Moduł działa normalnie – ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.”; właściciel ma „Pokaż zakładkę” (zakładka wraca od razu, wpis w&nbsp;„Historii konta”), pracownik&nbsp;– informację, kto może ją pokazać. Ogłoszenia salonu zostają opublikowane, wiadomości od kandydatów i&nbsp;e-maile modułu wychodzą jak dotąd. Publiczna tablica (<code>#oferty</code>, <code>#oferta</code>) i&nbsp;konto pracodawcy z&nbsp;rejestracji (<code>?konto=pracodawca</code>)&nbsp;– bez zmian. Globalny przełącznik <code>szukam_pracy</code> (11.9.6) ma pierwszeństwo (stan w&nbsp;<a href="panel.html?szukam=wylaczone#zakladki">panel.html?szukam=wylaczone</a>). Stany: <a href="dam-prace.html?zakladki=bez-pracy#moje-ogloszenia">?zakladki=bez-pracy</a>, wariant pracownika&nbsp;– <a href="dam-prace.html?rola=pracownik&amp;zakladki=bez-pracy#moje-ogloszenia">?rola=pracownik</a> (podgląd ogłoszeń salonu bez akcji, „Szukam pracy” i&nbsp;nowego ogłoszenia; menu: Pulpit, Dam pracę, Szkolenia).</li>
         <li><strong>Pracodawca (P1b):</strong> dowolna firma; rejestracja w&nbsp;<a href="logowanie.html#s-rej">logowanie.html</a> (NIP → GUS → telefon SMS → TOTP). Dwa konta w&nbsp;makiecie: salon z&nbsp;polisą (firma potwierdzona z&nbsp;urzędu; pierwsze wejście&nbsp;– <a href="dam-prace.html#wlacz-dam-prace">„Włącz Dam pracę”</a>: NIP z&nbsp;konta → GUS → SMS) i&nbsp;pracodawca z&nbsp;rejestracji „Studio Przykładowe” (<a href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy">?konto=pracodawca</a>: pulpit pracodawcy, moje ogłoszenia, „Szukam pracy” w&nbsp;stanie „czeka na potwierdzenie firmy”; menu z&nbsp;11 §5.2, bez polis, zespołu i&nbsp;szkoleń).</li>
         <li><strong>„Szukam pracy” (P1a, aktywne):</strong> karty widzi tylko pracodawca z&nbsp;potwierdzoną firmą; wiadomość przez formularz przekazujący, bez ujawniania kontaktu. Widoczność wyłącznie dla zalogowanych pracodawców i&nbsp;noindex&nbsp;– <span class="mock-note">Założenie</span>.</li>
         <li><strong>Założenia:</strong> najwyżej 5&nbsp;ogłoszeń w&nbsp;szkicu lub moderacji, usunięcie kontaktu 30&nbsp;dni po zakończeniu, limity formularzy i&nbsp;wiadomości, kwota 200&nbsp;kart dziennie, retencja. Widełki i&nbsp;treści ogłoszeń są przykładowe.</li>

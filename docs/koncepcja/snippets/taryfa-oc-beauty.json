@@ -1,5 +1,5 @@
 {
- "$comment": "Taryfa programu OC nr WA50/003353/24/A dla branży beauty – 1:1 ze stałymi CRM (crmaura/src/lib/renewals/program.ts: SUMY, KATEGORIE, DOPLATA_6_8_OSOB, OCHRONA_PRAWNA_SKLADKA, OCHRONA_PRAWNA_LIMIT, RODZAJE_GABINETU, LICZBA_OSOB, APK_PYTANIA; powody wyceny indywidualnej i komunikaty – skladkaProgramu, wycenaNowej, waliduj_apk). Jedno źródło dla kalkulatora (oc-skladka.js), tabel taryfy na stronach i SQL. Taryfę (kategorię) wyznaczają rodzaje działalności – reguła kategoriaZRodzajow jest kodem w oc-skladka.js, nie danymi; zabiegi z list nr 1 i 2 nie zmieniają składki. Kwota: round2(stawka × (6–8 osób ? 1 + doplata_6_8_osob : 1) + (ochrona prawna ? ochrona_prawna.skladka : 0)); więcej niż 8 osób albo zabiegi wymagające ankiety – wycena indywidualna. Portal celowo nie wyróżnia żadnej sumy (CRM ma SUMA_NAJCZESCIEJ_WYBIERANA – tu jej nie ma) i nie używa słów o niepewności kwoty przy składce. Zmiana tylko razem z CRM; kontrola: narzedzia/makiety/check_zgodnosc_crm.py.",
+ "$comment": "Taryfa programu OC nr WA50/003353/24/A dla branży beauty – stałe 1:1 z CRM (crmaura/src/lib/renewals/program.ts: SUMY, KATEGORIE, DOPLATA_6_8_OSOB, OCHRONA_PRAWNA_SKLADKA, OCHRONA_PRAWNA_LIMIT, RODZAJE_GABINETU, LICZBA_OSOB, APK_PYTANIA; powody wyceny indywidualnej i komunikaty – skladkaProgramu, wycenaNowej, waliduj_apk). Jedno źródło dla kalkulatora (oc-skladka.js), tabel taryfy na stronach i SQL. Taryfę (kategorię) wyznaczają rodzaje działalności: przynależność rodzajów do grup – regula_kategorii (dane), sama reguła – funkcja kategoria() w oc-skladka.js (kod); zabiegi z list nr 1 i 2 nie zmieniają składki. Reguła kategorii portalu to decyzja zleceniodawcy D45 z 16.11.2026 (00) i jedyne zamierzone ODSTĘPSTWO od CRM: CRM (kategoriaZRodzajow) daje taryfę „Gabinety kosmetologiczne” także dla gabinetu kosmetycznego lub salonu masażu razem z gabinetem kosmetologicznym lub salonem tatuażu (9 połączeń rodzajów), portal – pełną taryfę; do zmiany w CRM (docs/koncepcja/do-crm/2026-11-16-D45-kategoria-taryfy-oc.md, 14 §4.7). Kwota: round2(stawka × (6–8 osób ? 1 + doplata_6_8_osob : 1) + (ochrona prawna ? ochrona_prawna.skladka : 0)); więcej niż 8 osób albo zabiegi wymagające ankiety – wycena indywidualna. Portal celowo nie wyróżnia żadnej sumy (CRM ma SUMA_NAJCZESCIEJ_WYBIERANA – tu jej nie ma) i nie używa słów o niepewności kwoty przy składce. Stałe zmieniamy tylko razem z CRM; kontrola: narzedzia/makiety/check_zgodnosc_crm.py (różnicę kategorii przyjmuje wyłącznie dla połączeń D45 i ją wypisuje).",
  "program": "WA50/003353/24/A",
  "sumy": [
   100000,
@@ -35,6 +35,21 @@
    }
   }
  ],
+ "regula_kategorii": {
+  "$comment": "Decyzja zleceniodawcy D45 (16.11.2026): rodzaj z listy nr 1 (gabinet kosmetyczny, salon fryzjerski, salon masażu) razem z rodzajem z listy nr 2 (gabinet kosmetologiczny, salon tatuażu) – taryfa pełna; gabinet podologiczny – zawsze pełna; same rodzaje z listy nr 2 – „Gabinety kosmetologiczne”; same rodzaje z listy nr 1 – „Gabinety kosmetyczne i fryzjerskie”. Każdy rodzaj z rodzaje_gabinetu jest dokładnie w jednej grupie (kontrola: oc_taryfa.py, oc-skladka.test.js). W CRM (kategoriaZRodzajow) pełną taryfę z listą nr 2 daje tylko salon fryzjerski – odstępstwo opisane w $comment wyżej.",
+  "lista_1": [
+   "kosmetyczny",
+   "fryzjerski",
+   "masaz"
+  ],
+  "lista_2": [
+   "kosmetologiczny",
+   "tatuaz"
+  ],
+  "zawsze_pelna": [
+   "podologiczny"
+  ]
+ },
  "doplata_6_8_osob": 0.25,
  "ochrona_prawna": {
   "skladka": 92,

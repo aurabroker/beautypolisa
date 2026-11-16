@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Spójność treści OC beauty po Aneksie nr 5 w snippets/ i w dokumentach koncepcji (plan „OC beauty po Aneksie nr 5”,
-6.7–6.8, z poprawkami z krytyki K7, K10, K12, K14, K16, K17; decyzja D43 w 00).
+6.7–6.8, z poprawkami z krytyki K7, K10, K12, K14, K16, K17; decyzje D43 i D45 w 00).
 
 Nic nie zapisuje. Kod wyjścia: 0 – brak trafień i niezgodności, 1 – są, 2 – błąd wejścia (brak pliku, zły JSON).
 
@@ -31,7 +31,10 @@ C. Dane i liczby (źródło: zabiegi-oc-beauty.json, taryfa-oc-beauty.json):
    (dawne_id grupa-ryzyka) i lista-zabiegow-programu (liczby), brak hasła grupa-ryzyka i kotwic #grupa-N; lead-schema.ts –
    enumy = klucze CRM z taryfy, sumy, powody wyceny indywidualnej, pola opcjonalne przy wycenie indywidualnej (K10);
    schema.sql i strefa-klienta.sql – klucze w CHECK i wartości domyślne = taryfa, opis migracji (K17); dokument 02 – bloki
-   kodu z lead-schema.ts i schema.sql identyczne z plikami; 00 – decyzja D43 i pytania Q1–Q13 (Q3 rozstrzygnięte).
+   kodu z lead-schema.ts i schema.sql identyczne z plikami; 00 – decyzja D43 (z oznaczeniem zmiany przez D45), decyzja D45
+   (reguła kategorii, odstępstwo od kategoriaZRodzajow w CRM) i pytania Q1–Q13 (Q3 rozstrzygnięte); teksty publikowane
+   (llms.txt, schema-faq-oc-beauty.json, slownik.json, makieta-v3, oc-beauty, slownik.html, design-preview) – bez opisów
+   reguły kategorii sprzed D45, a „gabinet kosmetyczny razem z gabinetem kosmetologicznym” zawsze z taryfą z oc_taryfa.kategoria().
 D. Cytaty z CRM: zdanie o zabiegach z innej listy (K12) – tylko pierwsze zdanie CRM (oc_taryfa.zdanie_z_innej_listy()), bez
    końcówki o ekranie CRM; tekst publikowany (llms.txt – wiersze OC, FAQ OC, hasła OC słownika), który mówi, że zabieg nie zmienia
    składki, zawiera też to zdanie (weryfikacja, runda 2); wymagania dokumentów przy zabiegach z ankiety (K16) – bez skrótu „dyplom kosmetologa oraz
@@ -135,6 +138,17 @@ NAZWY_POZYCJI = {z['nazwa'] for z in Z['zabiegi']} | {p['nazwa'] for z in Z['zab
 DOZWOLONE = (NAZWY_POZYCJI | {l['nazwa'] for l in Z['listy']} | {k['nazwa'] for k in T['kategorie']}
              | {r['nazwa'] for r in T['rodzaje_gabinetu']} | {v for k, v in T['pytania'].items()} | DOZWOLONE_CYTATY
              | {ot.zdanie_z_innej_listy()} | set(ot.teksty_crm('dokumenty_przy_zabiegach_z_ankiety')))
+
+
+KAT_NAZWA = {k['klucz']: k['nazwa'] for k in T['kategorie']}
+
+
+def TEKSTY_PUBLIKOWANE():
+    """[(nazwa, tekst)] – teksty publikowane z opisem taryfy OC (D45): snippets i strony v3 (bez strefa/*)."""
+    out = [(n, czytaj(SN / n)) for n in ('llms.txt', 'schema-faq-oc-beauty.json', 'slownik.json')]
+    v3 = K / 'design/v3'
+    out += [('design/v3/' + n, czytaj(v3 / n)) for n in ('makieta-v3.html', 'oc-beauty.html', 'slownik.html', 'design-preview.html')]
+    return out
 
 
 def pozycji(n):
@@ -495,10 +509,30 @@ def dane():
             blad('02: brak bloku ```%s z kopią snippets/%s' % (jezyk, plik))
         elif m.group(1).rstrip('\n') != czytaj(SN / plik).rstrip('\n'):
             blad('02: blok ```%s ≠ snippets/%s (kopia w dokumencie nieaktualna)' % (jezyk, plik))
-    # 00 – D43 i rejestr Q1–Q13
+    # reguła kategorii D45 (decyzja zleceniodawcy 16.11.2026): bez opisów reguły sprzed D45 w tekstach publikowanych, a przykład
+    # „gabinet kosmetyczny razem z gabinetem kosmetologicznym” zawsze z taryfą, którą daje reguła (oc_taryfa.kategoria)
+    stare_opisy = ('także razem z gabinetem kosmetycznym lub salonem masażu',
+                   'albo salon fryzjerski razem z gabinetem kosmetologicznym')
+    taryfa_pary = KAT_NAZWA[ot.kategoria(['kosmetyczny', 'kosmetologiczny'])]
+    para = re.compile(r'gabinet\w* kosmetyczn\w*,? (?:razem z|i|oraz) gabinet\w* kosmetologiczn\w*[^.„]*„([^”]+)”', re.I)
+    for nazwa, tekst in TEKSTY_PUBLIKOWANE():
+        t = re.sub(r'\s+', ' ', norm(re.sub(r'<[^>]+>', '', tekst)))
+        for s in stare_opisy:
+            if s in t:
+                blad('%s: opis reguły kategorii sprzed D45 („%s”) – reguła: oc_taryfa.OPIS_KATEGORII' % (nazwa, s))
+        for m in para.finditer(t):
+            if m.group(1) in KAT_NAZWA.values() and m.group(1) != taryfa_pary:
+                blad('%s: gabinet kosmetyczny z kosmetologicznym – „%s”, według reguły D45 „%s”' % (nazwa, m.group(1), taryfa_pary))
+    # 00 – D43, D45 i rejestr Q1–Q13
     d00 = czytaj(K / '00-koncepcja-portalu-beautypolisa.md')
     if not re.search(r'^\| D43 \|', d00, re.M):
         blad('00: brak decyzji D43 w tabeli decyzji')
+    m45 = re.search(r'^\| D45 \|.*$', d00, re.M)
+    if not m45 or 'kategoriaZRodzajow' not in m45.group(0) or 'odstępstw' not in m45.group(0).lower():
+        blad('00: brak decyzji D45 (reguła kategorii, odstępstwo od kategoriaZRodzajow w CRM) w tabeli decyzji')
+    m43 = re.search(r'^\| D43 \|.*$', d00, re.M)
+    if m43 and 'D45' not in m43.group(0):
+        blad('00: D43 lit. d (reguła kategorii) bez oznaczenia, że zmieniła ją D45')
     for q in range(1, 14):
         if not re.search(r'^\| Q%d \|' % q, d00, re.M):
             blad('00: brak pytania Q%d (OC po Aneksie nr 5) w rejestrze otwartych spraw (wiersz „| Q%d |”)' % (q, q))

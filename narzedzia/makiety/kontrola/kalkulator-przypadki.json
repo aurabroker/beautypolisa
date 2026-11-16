@@ -1,5 +1,5 @@
 {
- "$comment": "Fixture kalkulatora OC (plan „OC beauty po Aneksie nr 5”, rozdz. 8) – wyniki według reguł CRM (crmaura/src/lib/renewals/program.ts: KATEGORIE, DOPLATA_6_8_OSOB, OCHRONA_PRAWNA_SKLADKA, kategoriaZRodzajow, skladkaProgramu, wycenaNowej). Grupy: A – rodzaje → kategoria, B – sumy, osoby, ochrona prawna, grosze, C – więcej niż 8 osób, D – zabiegi wymagające ankiety, E – wyszukiwarka, F – braki danych. tylko_portal = true (F1–F5): stany interfejsu portalu, których CRM nie wycenia (wycenaNowej bez sumy zwraca null, bez rodzaju – „brak danych do wyceny”) – porównanie z CRM obejmuje 44 przypadki A–E. zabiegi_ankieta – dosłowne nazwy z ZABIEGI_ANKIETA w CRM (mapa litera a–h ↔ id g4-xx ↔ nazwa: snippets/zabiegi-oc-beauty.json, pozycje listy „ankieta”). oczekiwane.tekst i opis – format portalu (kwota z groszami, spacje twarde U+00A0, sumy „200 tys. zł”); tekst_crm i opis_crm – dosłownie jak CRM (formatZl, opis skladkaProgramu). kombinacje_rodzajow – 64 kombinacje 6 rodzajów z wynikiem kategoriaZRodzajow; kwoty_taryfy – 36 kwot (3 kategorie × 3 sumy × 1–5/6–8 × ochrona prawna). Kontrole: kontrola/oc/oc-skladka.test.js (oc-skladka.js), check_zgodnosc_crm.py (niezależnie, ze stałymi i kodem CRM). oczekiwane.przycisk_portalu (D4) – stan przycisku kalkulatora w portalu, gdy zaznaczono „Wykonuję zabiegi wymagające ankiety…” bez pozycji a–h: kwota bez zmian (jak w CRM), przycisk nieaktywny (aria-disabled), po kliknięciu fokus na pozycji a) – CRM taki wniosek zatrzymuje walidacją (stan.svelte.ts, sprawdzWniosek); bez tego pola przycisk aktywny („Poproś o polisę” / „Poproś o wycenę indywidualną”).",
+ "$comment": "Fixture kalkulatora OC (plan „OC beauty po Aneksie nr 5”, rozdz. 8) – wyniki według reguł CRM (crmaura/src/lib/renewals/program.ts: KATEGORIE, DOPLATA_6_8_OSOB, OCHRONA_PRAWNA_SKLADKA, skladkaProgramu, wycenaNowej) i reguły kategorii portalu według decyzji zleceniodawcy D45 z 16.11.2026 (00): rodzaj z listy nr 1 (kosmetyczny, fryzjerski, masaz) razem z rodzajem z listy nr 2 (kosmetologiczny, tatuaz) – pełna taryfa; podologia zawsze pełna; same rodzaje z listy nr 2 – kosmetologiczna; same rodzaje z listy nr 1 – kosmetyczna i fryzjerska. D45 to ODSTĘPSTWO od kategoriaZRodzajow w CRM (tam z listą nr 2 pełną taryfę daje tylko fryzjerski): w 9 połączeniach rodzajów (kosmetyczny lub masaz, bez fryzjerskiego i podologicznego, razem z kosmetologicznym lub tatuażem) CRM liczy taryfę „Gabinety kosmetologiczne”. Pole odstepstwo_D45: w przypadku – kwota_portalu (= oczekiwane.kwota), kwota_crm i wynik CRM dosłownie (kategoria_crm, nazwa_crm, tekst_crm, opis_crm – formatZl i opis skladkaProgramu dla kategorii z kategoriaZRodzajow); w kombinacjach – kategoria_crm. check_zgodnosc_crm.py przyjmuje różnicę z CRM tylko w przypadkach i kombinacjach z tym polem i tylko dla połączeń D45 (wypisuje je); po zmianie reguły w CRM pola odstepstwo_D45 usuwamy. Grupy: A – rodzaje → kategoria, B – sumy, osoby, ochrona prawna, grosze, C – więcej niż 8 osób, D – zabiegi wymagające ankiety, E – wyszukiwarka, F – braki danych. tylko_portal = true (F1–F5): stany interfejsu portalu, których CRM nie wycenia (wycenaNowej bez sumy zwraca null, bez rodzaju – „brak danych do wyceny”) – porównanie z CRM obejmuje 44 przypadki A–E (41 z wynikiem jak w CRM, 3 z odstępstwem D45: A7, A11, B17). zabiegi_ankieta – dosłowne nazwy z ZABIEGI_ANKIETA w CRM (mapa litera a–h ↔ id g4-xx ↔ nazwa: snippets/zabiegi-oc-beauty.json, pozycje listy „ankieta”). oczekiwane.tekst i opis – format portalu (kwota z groszami, spacje twarde U+00A0, sumy „200 tys. zł”); oczekiwane.tekst_crm i opis_crm – w formacie CRM (formatZl, opis skladkaProgramu) dla wyniku portalu, czyli dosłownie jak CRM poza odstępstwem D45 (tam – jak CRM po zmianie reguły; obecny CRM – w odstepstwo_D45). kombinacje_rodzajow – 64 kombinacje 6 rodzajów z kategorią portalu (D45); kwoty_taryfy – 36 kwot (3 kategorie × 3 sumy × 1–5/6–8 × ochrona prawna). Kontrole: kontrola/oc/oc-skladka.test.js (oc-skladka.js), check_zgodnosc_crm.py (niezależnie, ze stałymi i kodem CRM), kontrola/oc/t_kalkulator.js (makieta przez interfejs). oczekiwane.przycisk_portalu (D4) – stan przycisku kalkulatora w portalu, gdy zaznaczono „Wykonuję zabiegi wymagające ankiety…” bez pozycji a–h: kwota bez zmian (jak w CRM), przycisk nieaktywny (aria-disabled), po kliknięciu fokus na pozycji a) – CRM taki wniosek zatrzymuje walidacją (stan.svelte.ts, sprawdzWniosek); bez tego pola przycisk aktywny („Poproś o polisę” / „Poproś o wycenę indywidualną”).",
  "przypadki": [
   {
    "id": "A1",
@@ -154,12 +154,20 @@
    "wyszukiwarka": null,
    "oczekiwane": {
     "stan": "kwota",
-    "kategoria": "kosmetologiczny",
-    "nazwa": "Gabinety kosmetologiczne",
-    "kwota": 790.0,
-    "tekst": "790,00\u00a0zł",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 980.0,
+    "tekst": "980,00\u00a0zł",
+    "tekst_crm": "980,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200.000 zł: 980 zł"
+   },
+   "odstepstwo_D45": {
+    "kwota_portalu": 980.0,
+    "kwota_crm": 790.0,
+    "kategoria_crm": "kosmetologiczny",
+    "nazwa_crm": "Gabinety kosmetologiczne",
     "tekst_crm": "790,00 zł",
-    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
     "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł"
    }
   },
@@ -251,12 +259,20 @@
    "wyszukiwarka": null,
    "oczekiwane": {
     "stan": "kwota",
-    "kategoria": "kosmetologiczny",
-    "nazwa": "Gabinety kosmetologiczne",
-    "kwota": 790.0,
-    "tekst": "790,00\u00a0zł",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 980.0,
+    "tekst": "980,00\u00a0zł",
+    "tekst_crm": "980,00 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200\u00a0tys.\u00a0zł: 980\u00a0zł",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 200.000 zł: 980 zł"
+   },
+   "odstepstwo_D45": {
+    "kwota_portalu": 980.0,
+    "kwota_crm": 790.0,
+    "kategoria_crm": "kosmetologiczny",
+    "nazwa_crm": "Gabinety kosmetologiczne",
     "tekst_crm": "790,00 zł",
-    "opis": "Gabinety kosmetologiczne, suma 200\u00a0tys.\u00a0zł: 790\u00a0zł",
     "opis_crm": "Gabinety kosmetologiczne, suma 200.000 zł: 790 zł"
    }
   },
@@ -749,12 +765,20 @@
    "wyszukiwarka": null,
    "oczekiwane": {
     "stan": "kwota",
-    "kategoria": "kosmetologiczny",
-    "nazwa": "Gabinety kosmetologiczne",
-    "kwota": 1279.5,
-    "tekst": "1\u00a0279,50\u00a0zł",
+    "kategoria": "pelny",
+    "nazwa": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne",
+    "kwota": 1654.5,
+    "tekst": "1\u00a0654,50\u00a0zł",
+    "tekst_crm": "1654,50 zł",
+    "opis": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300\u00a0tys.\u00a0zł: 1\u00a0250\u00a0zł, +25% (6–\u20608\u00a0osób), +92\u00a0zł ochrona prawna",
+    "opis_crm": "Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne, suma 300.000 zł: 1250 zł, +25% (6–8 osób), +92 zł ochrona prawna"
+   },
+   "odstepstwo_D45": {
+    "kwota_portalu": 1654.5,
+    "kwota_crm": 1279.5,
+    "kategoria_crm": "kosmetologiczny",
+    "nazwa_crm": "Gabinety kosmetologiczne",
     "tekst_crm": "1279,50 zł",
-    "opis": "Gabinety kosmetologiczne, suma 300\u00a0tys.\u00a0zł: 950\u00a0zł, +25% (6–\u20608\u00a0osób), +92\u00a0zł ochrona prawna",
     "opis_crm": "Gabinety kosmetologiczne, suma 300.000 zł: 950 zł, +25% (6–8 osób), +92 zł ochrona prawna"
    }
   },
@@ -1186,7 +1210,10 @@
     "kosmetyczny",
     "kosmetologiczny"
    ],
-   "kategoria": "kosmetologiczny"
+   "kategoria": "pelny",
+   "odstepstwo_D45": {
+    "kategoria_crm": "kosmetologiczny"
+   }
   },
   {
    "rodzaje": [
@@ -1207,7 +1234,10 @@
     "kosmetyczny",
     "tatuaz"
    ],
-   "kategoria": "kosmetologiczny"
+   "kategoria": "pelny",
+   "odstepstwo_D45": {
+    "kategoria_crm": "kosmetologiczny"
+   }
   },
   {
    "rodzaje": [
@@ -1249,7 +1279,10 @@
     "kosmetologiczny",
     "masaz"
    ],
-   "kategoria": "kosmetologiczny"
+   "kategoria": "pelny",
+   "odstepstwo_D45": {
+    "kategoria_crm": "kosmetologiczny"
+   }
   },
   {
    "rodzaje": [
@@ -1277,7 +1310,10 @@
     "masaz",
     "tatuaz"
    ],
-   "kategoria": "kosmetologiczny"
+   "kategoria": "pelny",
+   "odstepstwo_D45": {
+    "kategoria_crm": "kosmetologiczny"
+   }
   },
   {
    "rodzaje": [
@@ -1325,7 +1361,10 @@
     "kosmetologiczny",
     "masaz"
    ],
-   "kategoria": "kosmetologiczny"
+   "kategoria": "pelny",
+   "odstepstwo_D45": {
+    "kategoria_crm": "kosmetologiczny"
+   }
   },
   {
    "rodzaje": [
@@ -1333,7 +1372,10 @@
     "kosmetologiczny",
     "tatuaz"
    ],
-   "kategoria": "kosmetologiczny"
+   "kategoria": "pelny",
+   "odstepstwo_D45": {
+    "kategoria_crm": "kosmetologiczny"
+   }
   },
   {
    "rodzaje": [
@@ -1357,7 +1399,10 @@
     "masaz",
     "tatuaz"
    ],
-   "kategoria": "kosmetologiczny"
+   "kategoria": "pelny",
+   "odstepstwo_D45": {
+    "kategoria_crm": "kosmetologiczny"
+   }
   },
   {
    "rodzaje": [
@@ -1429,7 +1474,10 @@
     "masaz",
     "tatuaz"
    ],
-   "kategoria": "kosmetologiczny"
+   "kategoria": "pelny",
+   "odstepstwo_D45": {
+    "kategoria_crm": "kosmetologiczny"
+   }
   },
   {
    "rodzaje": [
@@ -1518,7 +1566,10 @@
     "masaz",
     "tatuaz"
    ],
-   "kategoria": "kosmetologiczny"
+   "kategoria": "pelny",
+   "odstepstwo_D45": {
+    "kategoria_crm": "kosmetologiczny"
+   }
   },
   {
    "rodzaje": [

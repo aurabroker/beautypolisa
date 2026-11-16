@@ -5,6 +5,16 @@
 // ukrycie pozycji menu (pasek boczny i szuflada) i kafli na trzech stronach, informację i „Pokaż zakładkę”, synchronizację
 // między kartami, ?zakladki=…, wariant pracownika (tylko do odczytu), strony publiczne bez zmian, bez JS (wszystko widoczne),
 // brak dostępu do localStorage, przewijanie w poziomie 320–1440 px, tekst ≥ 12 px, cele ≥ 24 px, fokus, axe (WCAG 2.2 AA).
+// Runda 1 weryfikacji (16.11.2026): informacja u góry aktywnego ekranu także przy wejściu pod adres z kotwicą (390 i 1280 px,
+// położenie w oknie pod paskiem, nie tylko checkVisibility) i po zmianie ekranu na przewiniętej stronie; jedno zdanie w informacji;
+// zdania przy przełącznikach (ogłoszenie w moderacji nie jest „aktywne”, zapisy salonu = „Zapisy zespołu”) z adnotacją „tylko gdy…”;
+// kontrakt formularzy bez JS (wariant zbioru ze znacznikiem i wariant jednej zakładki); pusty stan i podpowiedź pracownika;
+// kafle „Na skróty” bez pustych kolumn; globalny przełącznik „Szukam pracy” wyłączony (?szukam=wylaczone) – pierwszeństwo.
+// Runda 2 weryfikacji (16.11.2026): kotwice stanów w głębi ekranu ([data-trasa] – „Zamówienia i faktury”, kroki zamówienia
+// i zapisu, stany po wysłaniu formularza) – informacja tuż przed kartą z celem, w oknie pod paskiem, cel pod nią (wejście
+// i zmiana ekranu); zwykłe fragmenty (#f-nowe, #sp-lista) – informacja na początku ekranu, jak w produkcji; potwierdzenie
+// „… jest znowu widoczna” znika po zmianie ekranu; ?zakladki= działa raz (usunięty z adresu, ?rola i #kotwica zostają);
+// stopka menu dam-prace w Strefie salonu z ukrytą „Pracą” – „Opiekun” zamiast skrótu do tablicy; krótsze zdanie przy „Szkoleniach”.
 // Tylko odczyt makiet (file://), nic nie zapisuje w repozytorium; zrzuty – kontrola/wyniki/strefa/.
 // Uruchomienie: node narzedzia/makiety/kontrola/strefa/zakladki.js   (kod wyjścia 1 przy błędach)
 const path = require('path');
@@ -67,6 +77,27 @@ async function axe(p, label, include) {
   ok(!r.length, `axe ${label}: ${JSON.stringify(r)}`);
   return r;
 }
+// położenie tytułu informacji o ukrytej zakładce względem okna i widocznego paska (topbar albo nagłówek publiczny)
+const pozycja = t => {
+  const n = document.querySelector(`[data-zakladka-uwaga="${t}"]`), tt = n.querySelector('.alert-title');
+  const bar = [...document.querySelectorAll('.topbar, .pub-header')].find(e => e.getClientRects().length);
+  const r = tt.getBoundingClientRect(), v = document.querySelector('.view.is-active'), h1 = v && v.querySelector('h1');
+  return { vis: n.checkVisibility(), top: Math.round(r.top), bottom: Math.round(r.bottom), bar: bar ? Math.round(bar.getBoundingClientRect().bottom) : 0, vh: innerHeight,
+           wEkranie: !!v && v.firstElementChild === n, h1: h1 ? Math.round(h1.getBoundingClientRect().top) : null };
+};
+// kotwica stanu ([data-trasa]): informacja tuż przed kartą z celem; cel (przy panelu zakładki – jej przycisk) widoczny pod informacją
+const pozycjaStanu = ([t, id]) => {
+  const n = document.querySelector(`[data-zakladka-uwaga="${t}"]`), tt = n.querySelector('.alert-title').getBoundingClientRect();
+  const bar = [...document.querySelectorAll('.topbar, .pub-header')].find(e => e.getClientRects().length);
+  const el = document.getElementById(id), st = el.closest('[data-trasa]'), karta = st && (st.closest('.card') || st);
+  const cel = el.getAttribute('role') === 'tabpanel' ? document.getElementById(el.getAttribute('aria-labelledby')) : el, c = cel.getBoundingClientRect();
+  return { vis: n.checkVisibility(), top: Math.round(tt.top), bottom: Math.round(tt.bottom), bar: bar ? Math.round(bar.getBoundingClientRect().bottom) : 0, vh: innerHeight,
+           przed: !!karta && n.nextElementSibling === karta, cel: Math.round(c.top), celVis: cel.checkVisibility() };
+};
+const okStanu = r => r.vis && r.przed && r.top >= r.bar && r.bottom <= r.vh && r.celVis && r.cel > r.bottom && r.cel < r.vh;
+// widoczne stopki menu bocznego (etykiety)
+const stopki = () => [...document.querySelectorAll('#sidenav .sidenav-foot')].filter(e => e.checkVisibility()).map(e => e.querySelector('.label-caps').textContent.trim());
+const TRESC_UWAGI = 'Moduł działa normalnie – ukrycie zmienia tylko menu i pulpit w Strefie salonu.';
 const isVis = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); return !!e && e.checkVisibility(); }, sel);
 const txt = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); return e ? e.textContent.replace(/\s+/g, ' ').trim() : null; }, sel);
 const vtxt = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); return e ? e.innerText.replace(/\s+/g, ' ').trim() : null; }, sel);   // tylko widoczny tekst
@@ -108,6 +139,15 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     ok(/Wyłącz, jeśli nie zatrudniasz/.test(desc) && /Zakładkę włączysz tu w każdej chwili/.test(nb(desc)), 'opis przełącznika (aria-describedby): ' + desc.slice(0, 120));
     ok(/zostają bez zmian/.test(nb(desc)) && /\/strefa-klienta\/dam-prace/.test(desc), 'informacja o aktywnych ogłoszeniach (aria-describedby)');
     ok(/zapis/.test(await p.$eval('#zak-szkolenia', e => (e.getAttribute('aria-describedby') || '').split(' ').map(id => (document.getElementById(id) || {}).textContent || '').join(' '))), 'informacja o nadchodzących zapisach przy „Szkolenia”');
+    // zdania przy przełącznikach (11 §6.1a): aktywne = opublikowane i nieprzeterminowane (moderacja obok); u właściciela – zapisy salonu
+    ok(nb(await vtxt(p, '#zak-praca-info')) === 'Masz 1 aktywne ogłoszenie i 1 w moderacji – zostają bez zmian, a wiadomości od kandydatów dochodzą jak dotąd; zarządzisz nimi pod adresem /strefa-klienta/dam-prace.', 'zdanie przy „Pracy” (właściciel): ' + await vtxt(p, '#zak-praca-info'));
+    ok(nb(await vtxt(p, '#zak-szkolenia-info')) === 'Salon ma 6 nadchodzących zapisów, w tym 2 na listach rezerwowych i 1 opłacone zamówienie – zostają bez zmian; znajdziesz je pod adresem /strefa-klienta/szkolenia.', 'zdanie przy „Szkoleniach” (właściciel – zapisy salonu): ' + await vtxt(p, '#zak-szkolenia-info'));
+    const adn = await p.$$eval('#zakladki .toggle-mock .mock-note', l => l.filter(e => e.checkVisibility()).map(e => e.textContent.replace(/\s+/g, ' ')));
+    ok(adn.length === 2 && /tylko wtedy, gdy salon ma aktywne ogłoszenie/.test(adn[0]) && /tylko wtedy, gdy salon ma nadchodzący zapis/.test(adn[1]), 'adnotacje „zdanie tylko wtedy, gdy…”: ' + JSON.stringify(adn));
+    ok(!/Makieta/.test(desc), 'adnotacja makiety poza opisem przełącznika (aria-describedby)');
+    // kontrakt bez JS (11 §5.1): wariant (b) – znacznik formularz=zakladki + zbiór widoczne; ta sama trasa co „Pokaż zakładkę”
+    const fz = await p.evaluate(() => { const f = document.getElementById('f-zakladki'); return { action: f.getAttribute('action'), method: f.method, znacznik: (f.querySelector('input[type=hidden][name=formularz]') || {}).value, pola: [...f.querySelectorAll('input[data-zakladka-przelacznik]')].map(i => i.name + '=' + i.value).join(',') }; });
+    ok(fz.action === 'panel.html#zakladki' && fz.method === 'post' && fz.znacznik === 'zakladki' && fz.pola === 'widoczne=praca,widoczne=szkolenia', 'formularz „Zakładki w Strefie” (wariant zbioru): ' + JSON.stringify(fz));
     ok(await p.$eval('#zak-live', e => e.getAttribute('role') === 'status' || e.getAttribute('aria-live') === 'polite'), 'region aria-live');
     ok(await isVis(p, '.mock-note[data-zakladki-adnotacja]') && /nie kontrola dostępu/.test(nb(await txt(p, '[data-zakladki-adnotacja]'))), 'adnotacja makiety: preferencja widoku, nie kontrola dostępu');
     ok(!(await isVis(p, 'form[data-zakladki-form] .no-js-only')), 'z JS: bez przycisku „Zapisz”');
@@ -136,6 +176,8 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     // pulpit: kafel „Dam pracę” znika, „Szkolenia” zostaje, podpowiedź o ukrytych zakładkach, „Ostatnie zdarzenia”
     await p.evaluate(() => { location.hash = 'pulpit'; }); await p.waitForTimeout(80);
     ok(!(await isVis(p, '#pulpit a.shortcut[href^="dam-prace.html"]')) && await isVis(p, '#pulpit a.shortcut[href^="szkolenia.html"]'), 'pulpit: kafel Dam pracę ukryty, Szkolenia widoczny');
+    const k2 = await p.evaluate(() => { const g = document.querySelector('#pulpit a.shortcut[href="#szkoda"]').parentElement; const v = [...g.children].filter(e => e.checkVisibility()).map(e => Math.round(e.getBoundingClientRect().width)); return { g: Math.round(g.getBoundingClientRect().width), v, gap: parseFloat(getComputedStyle(g).columnGap) }; });
+    ok(k2.v.length === 2 && Math.abs(k2.v[0] + k2.v[1] + k2.gap - k2.g) <= 2, '„Na skróty” (Praca ukryta): dwa kafle dzielą cały wiersz ' + JSON.stringify(k2));
     ok(await isVis(p, '#pulpit .zak-hint') && await p.$eval('#pulpit .zak-hint a', a => a.getAttribute('href')) === '#zakladki', 'pulpit: podpowiedź z linkiem do #zakladki');
     ok(/^Ukryto zakładkę Praca/.test(nb(await txt(p, '[data-historia-mini] > li:first-child strong'))), 'pulpit: „Ostatnie zdarzenia” z wpisem');
     ok(await p.$$eval('[data-historia-mini] > li', l => l.filter(x => x.checkVisibility()).length) === 3, 'pulpit: „Ostatnie zdarzenia” – 3 wpisy');
@@ -168,15 +210,20 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     ok(await isVis(d, '[data-zakladka-uwaga="praca"]'), 'dam-prace: informacja o ukrytej zakładce przy wejściu pod adres');
     ok(nb(await txt(d, '[data-zakladka-uwaga="praca"] .alert-title')) === 'Zakładka Praca jest ukryta w ustawieniach salonu', 'dam-prace: tytuł informacji');
     ok(await isVis(d, '#moje-ogloszenia h1') && await isVis(d, '#moje-ogloszenia table'), 'dam-prace: moduł działa normalnie (lista ogłoszeń)');
-    ok(await d.evaluate(() => { const n = document.querySelector('[data-zakladka-uwaga="praca"]'), v = document.getElementById('moje-ogloszenia'); return !!(n.compareDocumentPosition(v) & Node.DOCUMENT_POSITION_FOLLOWING) && n.getBoundingClientRect().top < v.getBoundingClientRect().top; }), 'dam-prace: informacja u góry, nad widokiem');
+    ok(await d.evaluate(() => { const n = document.querySelector('[data-zakladka-uwaga="praca"]'), v = document.getElementById('moje-ogloszenia'); return v.firstElementChild === n && n.getBoundingClientRect().top < v.querySelector('h1').getBoundingClientRect().top; }), 'dam-prace: informacja u góry aktywnego ekranu (pierwszy element, nad nagłówkiem)');
+    ok(nb(await vtxt(d, '[data-zakladka-uwaga="praca"] form > p.small:not(.employee-only)')) === TRESC_UWAGI, 'dam-prace: informacja – jedno zdanie, prawdziwe w każdym salonie: ' + await vtxt(d, '[data-zakladka-uwaga="praca"] form > p.small:not(.employee-only)'));
+    const fp = await d.evaluate(() => { const f = document.querySelector('[data-zakladka-uwaga="praca"] form'); return f.getAttribute('action') + ' ' + f.method + ' ' + [...f.querySelectorAll('input[type=hidden]')].map(i => i.name + '=' + i.value).join('&'); });
+    ok(fp === 'panel.html#zakladki post zakladka=praca&widoczna=tak', '„Pokaż zakładkę” – wariant jednej zakładki, ta sama trasa co Ustawienia: ' + fp);
     const btn = d.getByRole('button', { name: 'Pokaż zakładkę', exact: true });
     ok(await btn.count() === 1 && await btn.isVisible(), 'dam-prace: przycisk „Pokaż zakładkę” (właściciel)');
     const bb = await btn.boundingBox(); ok(bb && bb.width >= 24 && bb.height >= 24, 'dam-prace: cel „Pokaż zakładkę” ≥ 24 px ' + JSON.stringify(bb));
     ok(!(await isVis(d, '[data-zakladka-uwaga="praca"] p.employee-only')), 'dam-prace: tekst dla pracownika ukryty u właściciela');
+    ok(JSON.stringify(await d.evaluate(stopki)) === '["Opiekun"]', 'dam-prace (Praca ukryta): stopka menu „Opiekun”, bez skrótu do tablicy: ' + JSON.stringify(await d.evaluate(stopki)));
     await axe(d, 'dam-prace #moje-ogloszenia z informacją', [['#tresc'], ['#sidenav']]);
     for (const h of ['nowe-ogloszenie', 'szukam-pracy']) {
       await d.evaluate(h => { location.hash = h; }, h); await d.waitForTimeout(60);
       ok(await isVis(d, '[data-zakladka-uwaga="praca"]') && await isVis(d, '#' + h + ' h1'), `dam-prace #${h}: informacja i moduł`);
+      ok(await d.evaluate(h => document.getElementById(h).firstElementChild === document.querySelector('[data-zakladka-uwaga="praca"]'), h), `dam-prace #${h}: informacja na początku ekranu`);
     }
     for (const h of ['oferty', 'oferta']) {   // publiczna tablica /dam-prace – bez zmian
       await d.evaluate(h => { location.hash = h; }, h); await d.waitForTimeout(60);
@@ -185,6 +232,7 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     }
     const dp = await open(c, 'dam-prace.html?konto=pracodawca#moje-ogloszenia', errs);   // konto pracodawcy z rejestracji – bez tej preferencji
     ok(!(await isVis(dp, '[data-zakladka-uwaga="praca"]')) && (await dp.evaluate(navTexts)).includes('Moje ogłoszenia'), 'konto pracodawcy z rejestracji: bez informacji, menu bez zmian');
+    ok(JSON.stringify(await dp.evaluate(stopki)) === '["Tablica publiczna"]', 'konto pracodawcy z rejestracji: stopka „Tablica publiczna” bez zmian');
     await dp.close();
 
     const sz = await open(c, 'szkolenia.html#moje-szkolenia', errs);
@@ -205,6 +253,14 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     nav = await d.evaluate(navTexts);
     ok(nav.includes('Dam pracę'), 'dam-prace: menu z Dam pracę po „Pokaż zakładkę”: ' + nav.join('|'));
     ok(JSON.stringify((await d.evaluate(lsGet, KLUCZ) || {}).ukryte) === '[]', 'localStorage po „Pokaż zakładkę”: []');
+    ok(JSON.stringify(await d.evaluate(stopki)) === '["Tablica publiczna"]', 'dam-prace (Praca widoczna): stopka „Tablica publiczna”: ' + JSON.stringify(await d.evaluate(stopki)));
+    // potwierdzenie jest jednorazowe (w produkcji – komunikat po 303): zmiana ekranu je kończy, w tym samym ekranie zostaje
+    await d.evaluate(() => { location.hash = 'ogloszenie-wyslane'; }); await d.waitForTimeout(80);
+    ok(await isVis(d, '[data-zakladka-uwaga="praca"] .tab-note-ok'), 'potwierdzenie zostaje przy zmianie stanu w tym samym ekranie');
+    await d.evaluate(() => { location.hash = 'szukam-pracy'; }); await d.waitForTimeout(80);
+    ok(!(await isVis(d, '[data-zakladka-uwaga="praca"]')) && !(await isVis(d, '.tab-note-ok')), 'po zmianie ekranu: bez potwierdzenia „… jest znowu widoczna” i bez informacji');
+    await d.evaluate(() => { location.hash = 'moje-ogloszenia'; }); await d.waitForTimeout(60);
+    ok(!(await isVis(d, '[data-zakladka-uwaga="praca"]')), 'powrót do ekranu: potwierdzenie nie wraca');
     // synchronizacja z inną kartą (zdarzenie storage)
     await pp.waitForTimeout(150);
     ok(await isVis(pp, '#pulpit a.shortcut[href^="dam-prace.html"]'), 'druga karta (panel): kafel wraca bez przeładowania');
@@ -215,6 +271,106 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     await p.bringToFront();
     await p.focus('#zak-praca'); await p.keyboard.press('Space'); await p.waitForTimeout(150);
     ok(await isVis(d, '[data-zakladka-uwaga="praca"] form') && !(await isVis(d, '.tab-note-ok')), 'dam-prace (druga karta): informacja wraca po ponownym ukryciu');
+    await c.close();
+  }
+
+  // ---------- 2b. wejście pod adres z kotwicą ekranu: informacja u góry, w oknie pod paskiem (nie nad krawędzią) ----------
+  log('\n== 2b. Informacja u góry przy wejściu pod adres z kotwicą (390 i 1280 px) i po zmianie ekranu');
+  {
+    const adresy = [
+      ['dam-prace.html?zakladki=bez-pracy#moje-ogloszenia', 'praca'],      // link z „Ustawień” (/strefa-klienta/dam-prace)
+      ['dam-prace.html?zakladki=bez-pracy#szukam-pracy', 'praca'],
+      ['dam-prace.html?zakladki=bez-pracy#nowe-ogloszenie', 'praca'],
+      ['dam-prace.html?zakladki=bez-pracy#wlacz-dam-prace', 'praca'],
+      ['dam-prace.html?rola=pracownik&zakladki=bez-pracy#moje-ogloszenia', 'praca'],
+      ['szkolenia.html?zakladki=bez-szkolen#moje-szkolenia', 'szkolenia'],
+      ['szkolenia.html?zakladki=bez-szkolen#szkolenie', 'szkolenia'],
+      ['szkolenia.html?zakladki=bez-szkolen#zamowienie', 'szkolenia'],
+      ['szkolenia.html?rola=pracownik&zakladki=bez-szkolen#moje-szkolenia', 'szkolenia'],
+    ];
+    for (const w of [390, 1280]) {
+      const c = await newCtx(b, { w, h: w === 390 ? 844 : 860 });
+      for (const [u, t] of adresy) {
+        const p = await open(c, u, errs);
+        const r = await p.evaluate(pozycja, t);
+        ok(r.vis && r.wEkranie && r.top >= r.bar && r.bottom <= r.vh, `${u}@${w}: tytuł informacji w oknie, pod paskiem, na początku ekranu ${JSON.stringify(r)}`);
+        if (/#szukam-pracy$|\?zakladki=bez-szkolen#moje-szkolenia$/.test(u)) await p.screenshot({ path: OUT + 'informacja-z-kotwicy-' + u.replace(/[^a-z0-9]+/gi, '_') + '-' + w + '.png' });
+        await p.close();
+      }
+      // zmiana ekranu na przewiniętej stronie (hashchange): informacja znowu u góry, fokus na nagłówku ekranu (render strony)
+      for (const [u, h, t] of [['dam-prace.html?zakladki=bez-pracy#moje-ogloszenia', 'nowe-ogloszenie', 'praca'], ['szkolenia.html?zakladki=bez-szkolen#katalog', 'moje-szkolenia', 'szkolenia']]) {
+        const p = await open(c, u, errs);
+        await p.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight)); await p.waitForTimeout(60);
+        await p.evaluate(h => { location.hash = h; }, h); await p.waitForTimeout(150);
+        const r = await p.evaluate(pozycja, t);
+        const fok = await p.evaluate(h => document.activeElement === document.querySelector('#' + h + ' h1'), h);
+        ok(r.vis && r.wEkranie && r.top >= r.bar && r.bottom <= r.vh && r.h1 !== null && r.h1 < r.vh && fok, `${u} → #${h}@${w} (po przewinięciu): informacja u góry, nagłówek w oknie z fokusem ${JSON.stringify(r)} fokus=${fok}`);
+        await p.close();
+      }
+      // kotwice stanów w głębi ekranu ([data-trasa]) – w produkcji osobne trasy albo stany po 303 wczytywane od początku
+      // (11 §6.1a reguła 2: /strefa-klienta/zamowienia*, kroki zapisu i stany po wysłaniu): informacja tuż przed kartą z celem
+      for (const [u, t, id] of [
+        ['szkolenia.html?zakladki=bez-szkolen#p-zam', 'szkolenia', 'p-zam'],                 // „Zamówienia i faktury” = /strefa-klienta/zamowienia
+        ['szkolenia.html?rola=pracownik&zakladki=bez-szkolen#p-zam', 'szkolenia', 'p-zam'],
+        ['szkolenia.html?zakladki=bez-szkolen#p-zespol', 'szkolenia', 'p-zespol'],
+        ['szkolenia.html?zakladki=bez-szkolen#zam-platnosc', 'szkolenia', 'zam-platnosc'],   // /strefa-klienta/szkolenia/[slug]/zamowienie
+        ['szkolenia.html?zakladki=bez-szkolen#zam-oplacone', 'szkolenia', 'zam-oplacone'],   // powrót z płatności = /strefa-klienta/zamowienia/[ref]
+        ['szkolenia.html?zakladki=bez-szkolen#zam-nieudane', 'szkolenia', 'zam-nieudane'],
+        ['szkolenia.html?zakladki=bez-szkolen#zapisano', 'szkolenia', 'zapisano'],
+        ['szkolenia.html?zakladki=bez-szkolen#rezerwowa', 'szkolenia', 'rezerwowa'],
+        ['dam-prace.html?zakladki=bez-pracy#ogloszenie-wyslane', 'praca', 'ogloszenie-wyslane'],
+        ['dam-prace.html?zakladki=bez-pracy#sp-wyslano', 'praca', 'sp-wyslano'],
+        ['dam-prace.html?zakladki=bez-pracy#wlacz-gotowe', 'praca', 'wlacz-gotowe'],
+      ]) {
+        const p = await open(c, u, errs);
+        const r = await p.evaluate(pozycjaStanu, [t, id]);
+        ok(okStanu(r), `${u}@${w}: informacja tuż przed kartą z celem, w oknie pod paskiem, cel pod nią ${JSON.stringify(r)}`);
+        if (/#(p-zam|zam-oplacone)$/.test(u) && !/rola/.test(u)) await p.screenshot({ path: OUT + 'informacja-stan-' + u.replace(/[^a-z0-9]+/gi, '_') + '-' + w + '.png' });
+        await p.close();
+      }
+      // zmiana ekranu na przewiniętej stronie → kotwica stanu; potem inny stan w tym samym ekranie (zamówienie: płatność → opłacone)
+      {
+        const p = await open(c, 'szkolenia.html?zakladki=bez-szkolen#katalog', errs);
+        for (const id of ['p-zam', 'zam-platnosc', 'zam-oplacone', 'zapisano']) {
+          await p.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight)); await p.waitForTimeout(60);
+          await p.evaluate(h => { location.hash = h; }, id); await p.waitForTimeout(150);
+          const r = await p.evaluate(pozycjaStanu, ['szkolenia', id]);
+          const fok = await p.evaluate(h => { const e = document.getElementById(h), a = document.activeElement; return a === e || (e.getAttribute('role') === 'tabpanel' && a.id === e.getAttribute('aria-labelledby')); }, id);
+          ok(okStanu(r) && fok, `szkolenia #katalog → #${id}@${w} (po przewinięciu): informacja przed kartą z celem, cel w oknie z fokusem ${JSON.stringify(r)} fokus=${fok}`);
+        }
+        await p.close();
+      }
+      // zwykłe fragmenty strony (bez [data-trasa]) – jak w produkcji: przeglądarka pokazuje wskazane miejsce, informacja stoi
+      // na początku ekranu, nad nim (11 §6.1a reguła 2)
+      for (const [u, id] of [['dam-prace.html?zakladki=bez-pracy#f-nowe', 'f-nowe'], ['dam-prace.html?zakladki=bez-pracy#sp-lista', 'sp-lista']]) {
+        const p = await open(c, u, errs);
+        const r = await p.evaluate(pozycja, 'praca');
+        const cel = await p.evaluate(h => { const b = document.getElementById(h).getBoundingClientRect(); return b.top >= 0 && b.top < innerHeight; }, id);
+        ok(r.vis && r.wEkranie && cel, `${u}@${w}: fragment strony – informacja na początku ekranu, wskazane miejsce w oknie ${JSON.stringify(r)} cel=${cel}`);
+        await p.close();
+      }
+      await c.close();
+    }
+  }
+
+  // ---------- 2c. ?zakladki= działa raz: stan zapisany, parametr usunięty z adresu (?rola i #kotwica zostają) ----------
+  log('\n== 2c. ?zakladki= jednorazowo');
+  {
+    const c = await newCtx(b);
+    const loc = p => p.evaluate(() => location.search + location.hash);
+    const e = await open(c, 'dam-prace.html?rola=pracownik&zakladki=bez-pracy#moje-ogloszenia', errs);
+    ok(await loc(e) === '?rola=pracownik#moje-ogloszenia' && await e.evaluate(() => document.body.getAttribute('data-role')) === 'employee', 'adres po wczytaniu: bez ?zakladki, z ?rola i kotwicą: ' + await loc(e));
+    await e.close();
+    const d = await open(c, 'dam-prace.html?zakladki=bez-pracy#szukam-pracy', errs);
+    ok(await loc(d) === '#szukam-pracy' && await isVis(d, '[data-zakladka-uwaga="praca"]'), 'dam-prace: stan z ?zakladki, adres bez parametru: ' + await loc(d));
+    await d.getByRole('button', { name: 'Pokaż zakładkę', exact: true }).click(); await d.waitForTimeout(80);
+    await d.reload(); await d.waitForTimeout(100);
+    ok(!(await isVis(d, '[data-zakladka-uwaga="praca"]')) && (await d.evaluate(navTexts)).includes('Dam pracę'), '„Pokaż zakładkę” → F5: zakładka zostaje widoczna (parametr nie wraca)');
+    const p = await open(c, 'panel.html?szukam=wylaczone&zakladki=bez-szkolen#zakladki', errs);
+    ok(await loc(p) === '?szukam=wylaczone#zakladki' && !(await p.getByRole('switch', { name: 'Szkolenia', exact: true }).isChecked()), 'panel: ?szukam zostaje, ?zakladki usunięty: ' + await loc(p));
+    await p.focus('#zak-szkolenia'); await p.keyboard.press('Space'); await p.waitForTimeout(60);
+    await p.reload(); await p.waitForTimeout(100);
+    ok(await p.getByRole('switch', { name: 'Szkolenia', exact: true }).isChecked() && await p.getByRole('switch', { name: 'Praca – Dam pracę', exact: true }).isChecked(), 'Ustawienia → przełączenie → F5: stan z przełącznika, nie z linku');
     await c.close();
   }
 
@@ -229,6 +385,11 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     ok(await isVis(sz, '#moje-szkolenia h1') && await isVis(sz, '#p-nad'), 'szkolenia: moduł działa (zapisy widoczne)');
     ok(await sz.getByRole('button', { name: 'Pokaż zakładkę', exact: true }).isVisible(), 'szkolenia: „Pokaż zakładkę” (właściciel)');
     await axe(sz, 'szkolenia #moje-szkolenia z informacją', [['#tresc'], ['#sidenav']]);
+    for (const h of ['p-zam', 'zam-oplacone']) {   // informacja przed kartą z celem (kotwica stanu)
+      await sz.evaluate(h => { location.hash = h; }, h); await sz.waitForTimeout(80);
+      await axe(sz, `szkolenia #${h} z informacją przed kartą`, [['#tresc']]);
+    }
+    await sz.evaluate(() => { location.hash = 'moje-szkolenia'; }); await sz.waitForTimeout(60);
     await sz.evaluate(() => { location.hash = 'katalog'; }); await sz.waitForTimeout(60);
     ok(await isVis(sz, '[data-zakladka-uwaga="szkolenia"]'), 'szkolenia #katalog w Strefie: informacja');
     await sz.evaluate(() => { location.hash = 'organizator'; }); await sz.waitForTimeout(60);
@@ -243,8 +404,14 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     ok(!nav.some(t => RE_PRACA.test(t) || RE_SZK.test(t)), 'panel (oba ukryte): menu: ' + nav.join('|'));
     ok(!(await isVis(p, '#pulpit a.shortcut[href^="dam-prace.html"]')) && !(await isVis(p, '#pulpit a.shortcut[href^="szkolenia.html"]')) && await isVis(p, '#pulpit a.shortcut[href="#szkoda"]'), 'pulpit (oba ukryte): zostaje tylko „Zgłoś szkodę”');
     ok(nb(await vtxt(p, '#pulpit .lead')) === 'Polisy i dokumenty salonu – w jednym miejscu.', 'pulpit (oba ukryte): lead bez modułów: ' + await vtxt(p, '#pulpit .lead'));
+    const k1 = await p.evaluate(() => { const t = document.querySelector('#pulpit a.shortcut[href="#szkoda"]'); return [Math.round(t.getBoundingClientRect().width), Math.round(t.parentElement.getBoundingClientRect().width)]; });
+    ok(Math.abs(k1[0] - k1[1]) <= 1, '„Na skróty” (oba ukryte): „Zgłoś szkodę” na cały wiersz, bez pustych kolumn ' + JSON.stringify(k1));
+    await p.screenshot({ path: OUT + 'pulpit-skroty-oba-ukryte-1280.png' });
     await p.evaluate(() => { location.hash = 'pracownik'; }); await p.waitForTimeout(80);
     ok(await isVis(p, '#pracownik .zak-pusto') && !(await isVis(p, '#pracownik [data-zakladka="praca"]')) && !(await isVis(p, '#pracownik [data-zakladka="szkolenia"]')), 'pulpit pracownika (oba ukryte): pusty stan, bez kart');
+    // preferencja widoku: pusty stan nie sugeruje blokady („poproś o pokazanie”), mówi, kto pokaże zakładki i że zapisy działają
+    ok(nb(await vtxt(p, '#pracownik .zak-pusto > p:not(.no-js-only)')) === 'Ukryto je w ustawieniach salonu – pokazać je może Anna Przykładowa. Twoje zapisy na szkolenia i e-maile od organizatorów działają bez zmian.', 'pusty stan pracownika – treść: ' + await vtxt(p, '#pracownik .zak-pusto > p:not(.no-js-only)'));
+    ok(!(await isVis(p, '#pracownik .zak-hint')), 'pulpit pracownika (oba ukryte): bez podpowiedzi – jest pusty stan');
     await axe(p, 'panel #pracownik (oba ukryte)', [['#pracownik']]);
     // szuflada menu na telefonie
     await p.setViewportSize({ width: 390, height: 844 });
@@ -258,6 +425,36 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     const p2 = await open(c, 'panel.html?zakladki=wszystkie#pulpit', errs);
     ok(await isVis(p2, '#pulpit a.shortcut[href^="dam-prace.html"]') && await isVis(p2, '#pulpit a.shortcut[href^="szkolenia.html"]') && !(await isVis(p2, '#pulpit .zak-hint')), '?zakladki=wszystkie: wszystko widoczne');
     ok(JSON.stringify((await p2.evaluate(lsGet, KLUCZ) || {}).ukryte) === '[]', '?zakladki=wszystkie: zapisany stan []');
+    const k3 = await p2.evaluate(() => [...document.querySelector('#pulpit a.shortcut[href="#szkoda"]').parentElement.children].map(e => { const r = e.getBoundingClientRect(); return [Math.round(r.top), Math.round(r.width)]; }));
+    ok(k3.length === 3 && k3.every(([t, w]) => t === k3[0][0] && Math.abs(w - k3[0][1]) <= 1), '„Na skróty” (wszystkie widoczne, 1280 px): trzy kafle w jednym wierszu ' + JSON.stringify(k3));
+    // zdanie właściciela przy „Szkoleniach” = zapisy salonu w „Zapisach zespołu” (registered + waitlisted na szkolenia po „dziś” makiety)
+    const zs = await open(c, 'szkolenia.html?zakladki=wszystkie#p-zespol', errs);
+    const zz = await zs.evaluate(() => { const r = [...document.querySelectorAll('#p-zespol tbody tr')].filter(tr => tr.querySelector('time').getAttribute('datetime') > '2026-11-12'); const st = r.map(tr => tr.querySelector('td[data-label="Status"]').textContent.replace(/\s+/g, ' ')); return { n: r.length, rez: st.filter(t => /Lista rezerwowa/.test(t)).length, opl: st.filter(t => /Opłacone/.test(t)).length, licznik: document.querySelector('#t-zespol .count').textContent }; });
+    ok(zz.n === 6 && zz.rez === 2 && zz.opl === 1 && zz.licznik === '(6)', '„Zapisy zespołu” zgodne ze zdaniem „Salon ma 6 nadchodzących zapisów, w tym 2 na listach rezerwowych i 1 opłacone zamówienie”: ' + JSON.stringify(zz));
+    await zs.close();
+    await c.close();
+  }
+
+  // ---------- 3b. globalny przełącznik „Szukam pracy” wyłączony (11.9.6) – ma pierwszeństwo przed preferencją salonu ----------
+  log('\n== 3b. ?szukam=wylaczone');
+  {
+    const c = await newCtx(b);
+    const p = await open(c, 'panel.html?szukam=wylaczone&zakladki=wszystkie#zakladki', errs);
+    ok(await p.getByRole('switch', { name: 'Praca – Dam pracę', exact: true }).count() === 1 && await p.getByRole('switch', { name: NAZWA_PRACA, exact: true }).count() === 0, 'szukam wyłączone: przełącznik „Praca – Dam pracę”');
+    ok(nb(await vtxt(p, 'label[for="zak-praca"]')) === 'Praca – Dam pracę', 'szukam wyłączone: etykieta bez „Szukam pracy”: ' + await vtxt(p, 'label[for="zak-praca"]'));
+    let nav = await p.evaluate(navTexts);
+    ok(nav.includes('Dam pracę') && nav.includes('Moje ogłoszenia') && !nav.includes('Szukam pracy'), 'szukam wyłączone: menu bez „Szukam pracy”: ' + nav.join('|'));
+    await p.focus('#zak-praca'); await p.keyboard.press('Space'); await p.waitForTimeout(80);
+    ok(nb(await txt(p, '#zak-live')) === MSG_UKRYTA, 'szukam wyłączone: aria-live bez „Szukam pracy”');
+    ok(nb(await txt(p, '#historia tbody tr:first-child td:nth-child(2)')) === 'Ukryto zakładkę Praca (Dam pracę) w Strefie salonu', 'szukam wyłączone: wpis w historii: ' + await txt(p, '#historia tbody tr:first-child td:nth-child(2)'));
+    await p.keyboard.press('Space'); await p.waitForTimeout(80);
+    nav = await p.evaluate(navTexts);
+    ok(nav.includes('Dam pracę') && !nav.includes('Szukam pracy'), 'szukam wyłączone: pokazanie „Pracy” nie włącza „Szukam pracy”: ' + nav.join('|'));
+    await axe(p, 'panel #ustawienia (?szukam=wylaczone)', [['#ustawienia'], ['#sidenav']]);
+    await p.evaluate(() => { location.hash = 'pulpit'; }); await p.waitForTimeout(80);
+    ok(!/Szukam pracy/.test(await vtxt(p, '#pulpit a.shortcut[href^="dam-prace.html"]')), 'szukam wyłączone: kafel „Dam pracę” bez zdania o „Szukam pracy”');
+    const q = await open(c, 'panel.html?zakladki=wszystkie#zakladki', errs);   // bez parametru – pełna nazwa
+    ok(await q.getByRole('switch', { name: NAZWA_PRACA, exact: true }).count() === 1 && (await q.evaluate(navTexts)).includes('Szukam pracy'), 'szukam włączone: „Praca – Dam pracę i Szukam pracy”, podpunkt w menu');
     await c.close();
   }
 
@@ -273,6 +470,7 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     ok(await isVis(p, '#zak-ro') && /właścicielka konta/.test(nb(await txt(p, '#zak-ro'))), 'pracownik: informacja, że zmienia właściciel');
     ok((await p.$eval('#zak-praca', e => e.getAttribute('aria-describedby'))).split(' ').includes('zak-ro'), 'pracownik: aria-describedby z informacją');
     ok(!(await isVis(p, '#historia')), 'pracownik: bez „Historii konta” (dziennik – tylko właściciel)');
+    ok(/^Salon ma 1 aktywne ogłoszenie i 1 w moderacji – zostają bez zmian/.test(nb(await vtxt(p, '#zak-praca-info'))) && /^Masz 1 nadchodzący zapis i 1 miejsce na liście rezerwowej – /.test(nb(await vtxt(p, '#zak-szkolenia-info'))), 'pracownik: zdania przy przełącznikach (ogłoszenia salonu, własne zapisy)');
     await p.click('label[for="zak-praca"]', { force: true }); await p.waitForTimeout(60);
     ok(!(await sw.isChecked()) && JSON.stringify((await p.evaluate(lsGet, KLUCZ) || {}).ukryte) === '["praca"]', 'pracownik: klik w etykietę nic nie zmienia');
     let nav = await p.evaluate(navTexts);
@@ -282,6 +480,11 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     await p.evaluate(() => { location.hash = 'pracownik'; }); await p.waitForTimeout(80);
     ok(!(await isVis(p, '#pracownik [data-zakladka="praca"]')) && await isVis(p, '#pracownik [data-zakladka="szkolenia"]'), 'pulpit pracownika: bez „Ogłoszeń salonu”, „Moje szkolenia” zostaje');
     ok(!(await isVis(p, '#pracownik .zak-pusto')), 'pulpit pracownika: bez pustego stanu (Szkolenia widoczne)');
+    ok(await isVis(p, '#pracownik .zak-hint') && /^Niektóre zakładki są ukryte w ustawieniach salonu – pokazać je może Anna Przykładowa\./.test(nb(await vtxt(p, '#pracownik .zak-hint'))), 'pulpit pracownika (jedna ukryta): podpowiedź, kto pokaże zakładkę');
+    ok(await p.$eval('#pracownik .zak-hint a', a => a.getAttribute('href')) === '?rola=pracownik#zakladki', 'podpowiedź pracownika: link do Ustawień z rolą');
+    await axe(p, 'panel #pracownik (Praca ukryta, podpowiedź)', [['#pracownik']]);
+    await p.click('#pracownik .zak-hint a'); await p.waitForLoadState('load'); await p.waitForTimeout(80);
+    ok(await p.getByRole('switch', { name: NAZWA_PRACA, exact: true }).isDisabled() && await p.evaluate(() => document.body.getAttribute('data-role')) === 'employee', 'podpowiedź pracownika → Ustawienia tylko do odczytu');
     // z „Pulpitu pracownika” (bez parametru) do Ustawień – rola zostaje
     const q = await open(c, 'panel.html#pracownik', errs);
     ok(await q.$eval('#sidenav a[data-view="ustawienia"]', a => a.getAttribute('href')) === '?rola=pracownik#ustawienia', 'pulpit pracownika: link Ustawienia z rolą');
@@ -323,9 +526,15 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
       if (f === 'panel.html') {
         ok(st.sw.length === 2 && st.sw.every(([c1, d1, v]) => c1 && !d1 && v), `bez JS panel: przełączniki włączone i aktywne ${JSON.stringify(st.sw)}`);
         ok(st.zapisz, 'bez JS panel: przycisk „Zapisz”');
+        if (w === 1440) {
+          // wariant (b) trasy: znacznik + zbiór widocznych; oba odznaczone → tylko znacznik (= obie ukryte, jednoznacznie)
+          const fd = await p.evaluate(() => { const f = document.getElementById('f-zakladki'), q = () => [...new FormData(f)].map(([k, v]) => k + '=' + v).join('&'); const a1 = q(); f.querySelectorAll('input[data-zakladka-przelacznik]').forEach(i => { i.checked = false; }); const a2 = q(); f.reset(); return [a1, a2]; });
+          ok(fd[0] === 'formularz=zakladki&widoczne=praca&widoczne=szkolenia' && fd[1] === 'formularz=zakladki', 'bez JS panel: dane formularza ' + JSON.stringify(fd));
+        }
         ok(await isVis(p, '#pracownik .zak-pusto .mock-note'), 'bez JS panel: wzór pustego pulpitu pracownika z adnotacją');
       } else {
         ok(st.uwaga.length === 1 && st.uwaga[0], `bez JS ${f}: informacja jako wzór z adnotacją ${JSON.stringify(st.uwaga)}`);
+        ok(await p.evaluate(() => { const n = document.querySelector('[data-zakladka-uwaga]'), x = n.nextElementSibling; return !n.closest('.view') && !!x && x.classList.contains('view') && x.getAttribute('data-ctx') !== 'public'; }), `bez JS ${f}: wzór informacji poza ekranami, przed pierwszym ekranem Strefy`);
       }
       const a = await p.evaluate(audit);
       ok(a.sw <= a.cw, `bez JS ${f}@${w}: przewijanie w poziomie ${a.sw}/${a.cw} ${JSON.stringify(a.wide)}`);
@@ -360,9 +569,16 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
       ['panel.html?rola=pracownik&zakladki=bez-szkolen#zakladki', '#zakladki'],
       ['panel.html?zakladki=bez-pracy#pulpit', '#pulpit .zak-hint'],
       ['panel.html?zakladki=bez-pracy,bez-szkolen#pracownik', '#pracownik .zak-pusto'],
+      ['panel.html?zakladki=bez-szkolen#pracownik', '#pracownik .zak-hint'],
+      ['panel.html?szukam=wylaczone&zakladki=bez-pracy#zakladki', '#zakladki'],
+      ['panel.html?zakladki=bez-pracy,bez-szkolen#pulpit', '#pulpit .grid-skroty'],
       ['dam-prace.html?zakladki=bez-pracy#moje-ogloszenia', '[data-zakladka-uwaga="praca"]'],
       ['dam-prace.html?rola=pracownik&zakladki=bez-pracy#moje-ogloszenia', '[data-zakladka-uwaga="praca"]'],
       ['szkolenia.html?zakladki=bez-szkolen#moje-szkolenia', '[data-zakladka-uwaga="szkolenia"]'],
+      ['szkolenia.html?zakladki=bez-szkolen#p-zam', '[data-zakladka-uwaga="szkolenia"]'],          // informacja przed kartą z celem
+      ['szkolenia.html?zakladki=bez-szkolen#zam-oplacone', '[data-zakladka-uwaga="szkolenia"]'],
+      ['szkolenia.html?zakladki=bez-szkolen#zapisano', '[data-zakladka-uwaga="szkolenia"]'],
+      ['dam-prace.html?zakladki=bez-pracy#sp-wyslano', '[data-zakladka-uwaga="praca"]'],
     ];
     for (const w of W) {
       const c = await newCtx(b, { w, h: 860 });

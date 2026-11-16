@@ -1,6 +1,6 @@
 # Dokumenty produktowe: OWU, karty produktu, informacja o dystrybutorze
 
-Stan na 2026-11-13. Zebrano dokumenty przedumowne i pomocnicze dla produktów portalu. Źródła to płytkie klony publicznych repozytoriów zleceniodawcy (tylko odczyt, bez uruchamiania kodu) oraz publiczny serwis `utratadochodu.pl`. Pominięto wszystkie pliki z danymi klientów: polisy, wnioski, skany i pliki z nazwiskami.
+Stan na 2026-11-13 (§4a – kategoria taryfy OC według D45 – 2026-11-16). Zebrano dokumenty przedumowne i pomocnicze dla produktów portalu. Źródła to płytkie klony publicznych repozytoriów zleceniodawcy (tylko odczyt, bez uruchamiania kodu) oraz publiczny serwis `utratadochodu.pl`. Pominięto wszystkie pliki z danymi klientów: polisy, wnioski, skany i pliki z nazwiskami.
 
 - **Pliki:** `docs/koncepcja/design/v3/dokumenty/<produkt>/`, nazwy ASCII. Każda kopia jest bajt w bajt identyczna ze źródłem (sprawdzone sha256).
 - **Manifest:** `docs/koncepcja/snippets/dokumenty-produktowe.json` zawiera dla każdego pliku produkt, typ, tytuł z dokumentu, kod lub wersję, ubezpieczyciela, datę „obowiązuje od”, ścieżkę, źródło, rozmiar, sha256, liczbę stron i uwagi. Ma też listę `brakujace` oraz `linki_zewnetrzne` (dokumenty, których nie kopiujemy, np. OWU NNW – tylko adres strony).
@@ -196,6 +196,28 @@ CRM utrzymuje mapę dawnych nazw na nowe (`program.ts:105-111`). Portal powinien
 1. czy JSON przejść na 49 + 63 pozycje z PDF, z dopuszczeniem tego samego zabiegu w dwóch grupach;
 2. lista podologiczna w aktualnym brzmieniu;
 3. tekst Aneksu nr 5, czyli źródło gr. 4 i daty 06.11.2026.
+
+---
+
+## 4a. Kategoria taryfy OC przy kilku rodzajach działalności (D45) – zmiana dla zespołu CRM
+
+Zleceniodawca zdecydował 16.11.2026 (00, D45): gabinet kosmetyczny razem z gabinetem kosmetologicznym płaci według pełnej taryfy – 850 / 980 / 1 250 zł przy sumie 100 / 200 / 300 tys. zł i do 5 osobach wykonujących zabiegi. Portal stosuje to jako zasadę ogólną: rodzaj z listy nr 1 (gabinet kosmetyczny, salon fryzjerski, salon masażu) razem z rodzajem z listy nr 2 (gabinet kosmetologiczny, salon tatuażu) – pełna taryfa; gabinet podologiczny – zawsze pełna; same rodzaje z listy nr 2 – „Gabinety kosmetologiczne”; same rodzaje z listy nr 1 – „Gabinety kosmetyczne i fryzjerskie”. CRM (`kategoriaZRodzajow`, `crmaura/src/lib/renewals/program.ts`) daje dziś z listą nr 2 pełną taryfę tylko salonowi fryzjerskiemu.
+
+**Dopóki CRM nie zmieni `kategoriaZRodzajow`, portal i CRM pokazują różne kwoty** w 9 połączeniach rodzajów (pozostałe 54 z 63 – bez różnic). W każdym z nich: 650 / 790 / 950 zł w CRM wobec 850 / 980 / 1 250 zł w portalu (do 5 osób); dopłata 25% przy 6–8 osobach i ochrona prawna +92 zł działają tak samo, np. gabinet kosmetyczny + gabinet kosmetologiczny, 200 000 zł: 790,00 → 980,00 zł; 6–8 osób: 987,50 → 1 225,00 zł; 6–8 osób, 300 000 zł i ochrona prawna: 1 279,50 → 1 654,50 zł.
+
+| Rodzaje działalności | Taryfa w CRM dziś | Taryfa w portalu (D45) |
+|---|---|---|
+| gabinet kosmetyczny + gabinet kosmetologiczny | Gabinety kosmetologiczne | Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne |
+| gabinet kosmetyczny + salon tatuażu | Gabinety kosmetologiczne | Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne |
+| gabinet kosmetyczny + gabinet kosmetologiczny + salon tatuażu | Gabinety kosmetologiczne | Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne |
+| salon masażu + gabinet kosmetologiczny | Gabinety kosmetologiczne | Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne |
+| salon masażu + salon tatuażu | Gabinety kosmetologiczne | Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne |
+| salon masażu + gabinet kosmetologiczny + salon tatuażu | Gabinety kosmetologiczne | Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne |
+| gabinet kosmetyczny + salon masażu + gabinet kosmetologiczny | Gabinety kosmetologiczne | Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne |
+| gabinet kosmetyczny + salon masażu + salon tatuażu | Gabinety kosmetologiczne | Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne |
+| gabinet kosmetyczny + salon masażu + gabinet kosmetologiczny + salon tatuażu | Gabinety kosmetologiczne | Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne |
+
+Związek z dokumentami produktowymi: nazwa taryfy to zakres na certyfikacie. Po zmianie w CRM certyfikat dla tych połączeń dostanie zakres „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne” – przed wdrożeniem warto, żeby ERGO Hestia potwierdziła ten zakres dla tych połączeń w programie WA50/003353/24/A z Aneksem nr 5 (dokument programu – brakujący dokument nr 3 w §5). Certyfikaty wystawione wcześniej mają zakres „Gabinety kosmetologiczne” – sposób ich traktowania przy imporcie polis i w Strefie Klienta to pytanie C16 w 14. Zadanie dla zespołu CRM (kod, testy, skutki, kryteria odbioru): `docs/koncepcja/do-crm/2026-11-16-D45-kategoria-taryfy-oc.md`; pozycja P1-11 w 14 §4.7. Po wdrożeniu w CRM portal usuwa oznaczenia `odstepstwo_D45` z fixture kalkulatora i wyjątek z `narzedzia/makiety/check_zgodnosc_crm.py`.
 
 ---
 

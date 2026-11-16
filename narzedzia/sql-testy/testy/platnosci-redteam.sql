@@ -334,4 +334,4 @@ select t.eq('RT6b cron run', public.app_expire_training_orders() >= 1, true);
 select t.eq('RT6b cron closes reservation of suspended organiser', (select status from training_orders where id = :'r6c'), 'cancelled');
 reset role;
 select t.eq('RT6b seat counters consistent', (select n from public.app_payment_health() where check_name = 'seat_counter'), 0::bigint);
-\i /tmp/claude-0/-home-user-beautypolisa/02bc7ecd-7d14-594f-829e-bcbe3ff0c238/scratchpad/payfix/fncheck.sql
+\ir kontrola-funkcji.sql

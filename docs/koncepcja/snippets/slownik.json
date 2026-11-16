@@ -2410,7 +2410,7 @@
       ],
       "kategoria": "oc",
       "definicja": "Odpowiedź na pytanie „Jaką działalność prowadzisz?” w kalkulatorze OC i w analizie potrzeb: gabinet kosmetyczny, salon fryzjerski, gabinet kosmetologiczny, gabinet podologiczny, salon masażu, salon tatuażu – można zaznaczyć kilka. Z rodzajów działalności wynika taryfa programu, czyli zakres na certyfikacie; sam zabieg z list programu składki nie zmienia. Dopisanie zabiegów z innej listy zmienia rodzaj działalności i składkę według taryfy programu.",
-      "przyklad": "Gabinet kosmetyczny i gabinet kosmetologiczny w jednym lokalu: taryfa „Gabinety kosmetologiczne” – 790 zł rocznie przy sumie gwarancyjnej 200 000 zł, gdy zabiegi wykonuje do 5 osób.",
+      "przyklad": "Gabinet kosmetyczny i gabinet kosmetologiczny w jednym lokalu: taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne” – 980 zł rocznie przy sumie gwarancyjnej 200 000 zł, gdy zabiegi wykonuje do 5 osób. Sam gabinet kosmetologiczny: taryfa „Gabinety kosmetologiczne” – 790 zł.",
       "gdzie": [
         {
           "strona": "makieta-v3.html#kalkulator-oc",
@@ -2437,7 +2437,7 @@
         },
         {
           "typ": "koncepcja",
-          "opis": "snippets/taryfa-oc-beauty.json – rodzaje działalności i taryfa programu jak w CRM Aura Expert (00, D43)"
+          "opis": "snippets/taryfa-oc-beauty.json – rodzaje działalności i taryfa programu jak w CRM Aura Expert (00, D43); reguła kategorii przy kilku rodzajach działalności – decyzja zleceniodawcy z 16.11.2026 (00, D45)"
         }
       ],
       "dawne_id": [

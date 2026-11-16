@@ -1,0 +1,5 @@
+select 'definer', string_agg(p.proname, ',') from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef;
+select 'no search_path', string_agg(p.proname, ',') from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname ~ '(payment|training_order|payout|sales_terms|platform_fee|training_refund|invoice)' and coalesce(array_to_string(p.proconfig,','),'') not like '%search_path%';
+select 'exec authenticated', string_agg(p.proname, ',') from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and has_function_privilege('authenticated', p.oid, 'execute') and p.prokind='f';
+select 'exec anon', string_agg(p.proname, ',') from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and has_function_privilege('anon', p.oid, 'execute');
+select 'payment fns w/o service_role', string_agg(p.proname, ',') from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname ~ '(payment|training_order|payout|sales_terms|platform_fee|training_refund|invoice_)' and not has_function_privilege('service_role', p.oid, 'execute');

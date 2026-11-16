@@ -62,9 +62,9 @@
 7. **Wszystkie strony mają `viewport-fit=cover` bez `env(safe-area-inset-*)`** (średnia). W poziomie na iPhonie treść, nagłówek i szuflady wchodzą pod wycięcie ekranu.
 8. **Generatory nie mają wspólnej typografii** (niska, ale największy zasięg). Twardych spacji brakuje w dymkach słownika, klauzuli, taryfie, listach zabiegów, ankiecie, FAQ i menu. Jeden wspólny moduł usunie ok. 10 pozycji z generatorów naraz i ułatwi poprawki ręczne.
 
-**Istotne dla przełączników modułów w Ustawieniach salonu (Szkolenia, Praca):**
+**Istotne dla przełączników zakładek w Ustawieniach salonu (Szkolenia, Praca – preferencja widoku, nie przełączniki modułów; 00, D44):**
 
-- Stary `.switch` w `strefa.css:145–149` nie ma `:hover`, a jego gałka przeskakuje bez animacji (rozdz. 3.3, `strefa.css`). Nowy `input.toggle` z commitu `e07585f` był poza zakresem przeglądu. Animuje już `transform`, ale w chwili pisania też nie ma `:hover`.
+- Stary `.switch` w `strefa.css:145–149` nie ma `:hover`, a jego gałka przeskakuje bez animacji (rozdz. 3.3, `strefa.css`). Nowy `input.toggle` z commitu `e07585f` był poza zakresem przeglądu. Animuje już `transform`, ale w chwili pisania też nie ma `:hover`. *Uzupełnienie 16.11.2026 (weryfikacja D44, runda 1): przełączniki zakładek używają `input.toggle` (natywny checkbox z `role="switch"`), nie `.switch`; `:hover` dodany w `(hover:hover) and (pointer:fine)`; wzorzec opisany w `DESIGN.md` (4.10).*
 - Obwódka fokusu w jasnym menu konta (`strefa.css:72`) ma kontrast 1,6:1. To droga klawiaturą do „Ustawień”.
 - Ukrycie zakładki da się cofnąć, więc nie wymaga potwierdzenia z reguły „Destructive actions” (inaczej niż usunięcie konta z punktu 3).
 
@@ -253,7 +253,7 @@ Bazowy CSS i `<head>` stron publicznych są kopiowane ręcznie. Wzorem jest `tax
 
 - docs/koncepcja/design/v3/strefa/strefa.css:72 - `.topbar :focus-visible{outline-color:gold-light}` obejmuje też jasne menu konta `.account-panel` (panel.html:92–111, tak samo w dam-prace i szkoleniach). Obwódka #D9C089 na #F7F3EC ma kontrast 1,6:1 na linkach z nazwą salonu, „Ustawienia” i „Wyloguj” → `.topbar .account-panel :focus-visible{outline-color:var(--color-navy)}` albo zawężenie złotej reguły do `.topbar-inner > :focus-visible` [Focus States · średnia]
 - docs/koncepcja/design/v3/strefa/strefa.css:134, :180, :236, :382, :461, :554 - Po najechaniu nic się nie zmienia w `.link-quiet` („Wyślij kod ponownie”, „Anuluj”, „Wyczyść filtry”), `.nav-toggle`, `.crumbs a`, karcie `.radio-card`, `.app-footer a` i `.legal-idd > summary` → `.link-quiet:hover,.crumbs a:hover,.app-footer a:hover{text-decoration-thickness:2px}`, `.nav-toggle:hover{border-color:var(--color-gold-light)}`, `.radio-card input:hover + label{border-color:var(--color-navy)}` (pole leży nad etykietą), `.legal-idd > summary:hover{text-decoration:underline}` [Hover & Interactive States · niska]
-- docs/koncepcja/design/v3/strefa/strefa.css:145–149 - `.switch` nie ma `:hover`. Dziś jedyny `.switch` (panel.html:706) jest wyłączony, ale z tego wzorca mają korzystać przełączniki modułów w Ustawieniach salonu → `.switch:not([disabled]):hover::before{box-shadow:0 0 0 3px rgba(42,59,104,.15)}` [Hover & Interactive States · niska]
+- docs/koncepcja/design/v3/strefa/strefa.css:145–149 - `.switch` nie ma `:hover`. Dziś jedyny `.switch` (panel.html:706) jest wyłączony. Przełączniki zakładek w Ustawieniach salonu (preferencja widoku, 00 D44) używają innego wzorca – `input.toggle` (uzupełnienie 16.11.2026), więc uwaga dotyczy tylko starego `.switch` → `.switch:not([disabled]):hover::before{box-shadow:0 0 0 3px rgba(42,59,104,.15)}` [Hover & Interactive States · niska]
 - docs/koncepcja/design/v3/strefa/strefa.css:146–147 - `transition:background-position` w `.switch::before` nic nie animuje, bo zmiana stanu podmienia cały `background` (obraz `radial-gradient`). Gałka przeskakuje → gałka jako osobny `::after` z `transform:translateX(20px)` dla `[aria-checked=true]` i `transition:transform` [Animation · niska]
 - docs/koncepcja/design/v3/strefa/strefa.css:621 - Menu boczne na telefonie (`.js .sidenav.is-open`, fixed, `overflow-y:auto`) nie ma `overscroll-behavior:contain`. Jego otwarcie nie blokuje przewijania strony (`closeNav` i `toggle` w panel.html:1068–1083 nie dodają `drawer-lock`), więc przewijanie przechodzi z końca listy na stronę → `contain` i `drawer-lock` przy otwarciu [Touch & Interaction · niska]
 - docs/koncepcja/design/v3/strefa/strefa.css:334 - E-mail od użytkownika w `.alert` się nie łamie (logowanie.html:144, :453; panel.html:607). Adres z 47 znaków przy 320 px wystaje 41 px poza ramkę → `.alert strong,.who,.notice-box,.private{overflow-wrap:anywhere}` [Content Handling · niska]
@@ -409,5 +409,5 @@ Bazowy CSS i `<head>` stron publicznych są kopiowane ręcznie. Wzorem jest `tax
    - OC: `overflow-clip-margin` dla fokusu, fraza w URL.
    - Słownik: fraza i kategoria w URL.
    - Opieka: stan wysyłania formularza.
-5. **Przełączniki modułów w Ustawieniach salonu.** Przy dokończeniu `input.toggle` dodać `:hover` i sprawdzić fokus w menu konta (rozdz. 2). Stary `.switch` poprawić albo usunąć.
+5. **Przełączniki zakładek w Ustawieniach salonu (preferencja widoku, 00 D44).** Przy dokończeniu `input.toggle` dodać `:hover` (zrobione 16.11.2026) i sprawdzić fokus w menu konta (rozdz. 2). Stary `.switch` poprawić albo usunąć.
 6. **Niskie:** przy okazji edycji danego pliku. Treści (pierwsza osoba, strona bierna, liczebniki, placeholdery) najlepiej poprawić w jednej rundzie redakcyjnej dla wszystkich stron.

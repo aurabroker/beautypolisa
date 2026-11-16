@@ -231,6 +231,15 @@ select t.expect('CHECK: NULL w tablicy', format($q$update client_accounts set uk
 select t.expect('CHECK: NULL obok wartości', format($q$update client_accounts set ukryte_zakladki = array['praca', null] where id = %L$q$, :B), '23514');
 select t.expect('NOT NULL', format($q$update client_accounts set ukryte_zakladki = null where id = %L$q$, :B), '23502');
 select t.expect('CHECK: preferencja konta pracodawcy', format($q$update client_accounts set ukryte_zakladki = '{praca}' where id = %L$q$, :D), '23514');
+-- nazwy ograniczeń: CHECK z D44 nazwany, więc automatyczne nazwy sprzed D44 się nie przesuwają (serwer tłumaczy błędy po nazwie)
+select t.eq('CHECK pracodawcy: nazwa ograniczenia', t.err(format($q$update client_accounts set ukryte_zakladki = '{praca}' where id = %L$q$, :D)),
+  '23514: new row for relation "client_accounts" violates check constraint "client_accounts_ukryte_zakladki_kind_check"');
+select t.eq('nazwy automatyczne sprzed D44 bez zmian (SEC-02 = client_accounts_check5)',
+  (select string_agg(conname, ',' order by conname) from pg_constraint
+    where conrelid = 'public.client_accounts'::regclass and contype = 'c' and conname ~ '^client_accounts_check[0-9]*$')
+   || ' / ' || (select conname from pg_constraint where conrelid = 'public.client_accounts'::regclass and contype = 'c'
+                 and pg_get_constraintdef(oid) like '%beautypolisa%'),
+  'client_accounts_check,client_accounts_check1,client_accounts_check2,client_accounts_check3,client_accounts_check4,client_accounts_check5 / client_accounts_check5');
 
 -- ===================== 6. Szkolenia działają przy ukrytej zakładce =====================
 select '--- 6. szkolenia przy ukrytej zakładce ---';

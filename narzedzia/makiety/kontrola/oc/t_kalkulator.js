@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 // Kalkulator OC na makieta-v3.html przez interfejs (Playwright) – fixture kontrola/kalkulator-przypadki.json (plan „OC beauty
 // po Aneksie nr 5”, rozdz. 7 i 8; krok 4).
-//   * 49 przypadków: 44 porównywalne z CRM (A–E, wynik policzony regułami CRM) + 5 stanów interfejsu portalu (F1–F5, tylko_portal).
+//   * 49 przypadków: 44 porównywalne z CRM (A–E, wynik policzony regułami CRM z kategorią taryfy według decyzji D45 – w A7, A11
+//     i B17 odstępstwo od CRM oznaczone odstepstwo_D45: strona pokazuje kwotę portalu, nie kwotę CRM) + 5 stanów interfejsu
+//     portalu (F1–F5, tylko_portal).
 //     Dla każdego: świeża strona, pola ustawione kliknięciami (rodzaje, osoby, suma, ochrona prawna, „Wykonuję zabiegi wymagające
 //     ankiety…” i pozycje a–h, wyszukiwarka), potem porównanie: #taryfa, #cena (tekst z twardymi spacjami, jak w fixture), #cena-dop,
 //     #cena-opis, druga linia kafelków sum, zdanie pod kafelkami, przycisk (tekst, aria-disabled), komunikat przy pozycjach a–h,
@@ -9,7 +11,8 @@
 //     Kwoty kafelków i opis wyceny indywidualnej liczone tu niezależnie od snippets/oc-skladka.js – z kwot taryfy w fixture.
 //   * „Dla kogo” (decyzja zleceniodawcy 14.11.2026): kafelek profilu zaznacza rodzaj działalności – linergistka i kosmetolog →
 //     Gabinet kosmetologiczny, stylistka paznokci → Gabinet kosmetyczny, fryzjer i barber → Salon fryzjerski, podolog → Gabinet
-//     podologiczny, tatuażysta → Salon tatuażu; kwota przy do 5 osobach i 200 tys. zł z fixture; dwa profile – rodzaje się sumują.
+//     podologiczny, tatuażysta → Salon tatuażu; kwota przy do 5 osobach i 200 tys. zł z fixture; dwa profile – rodzaje się sumują;
+//     kosmetolog + stylistka paznokci (gabinet kosmetologiczny + gabinet kosmetyczny) → pełna taryfa, 980,00 zł (D45, 16.11.2026).
 //   * stan startowy (z JS i bez JS): żadne pole kalkulatora nie jest zaznaczone, brak kwoty, brak plakietek przy sumach.
 //   * zmiany po kliknięciu przycisku (weryfikacja, runda 1): pola #lead i zdanie #kontakt-wynik idą za kalkulatorem (ankieta, suma,
 //     ochrona prawna, chip w wyszukiwarce), stan „brak” je czyści i wyłącza; bez przycisku kalkulatora pola OC nie idą z formularzem
@@ -163,6 +166,12 @@ async function przypadek(b, c) {
   rowne(`${id}: komunikat przy pozycjach a–h`, s.ankietaBrak, o.komunikat_ankiety || null);
   rowne(`${id}: dokumenty przy pozycjach a–h`, s.ankietaInfo, c.ankieta_zaznaczona && c.zabiegi_ankieta.length > 0);
   rowne(`${id}: bez plakietek przy wariantach`, s.plakietka, false);
+  if (c.odstepstwo_D45) {
+    // D45: strona liczy według decyzji zleceniodawcy, nie według obecnej reguły CRM (kategoriaZRodzajow)
+    const od = c.odstepstwo_D45;
+    rowne(`${id}: odstępstwo D45 – kwota portalu, nie CRM`, [s.cena === zl(od.kwota_portalu), s.cena === zl(od.kwota_crm), s.taryfa === od.nazwa_crm],
+      [true, false, false]);
+  }
   if (o.stan === 'kwota') {
     rowne(`${id}: taryfa`, s.taryfa, o.nazwa);
     rowne(`${id}: kwota (tekst z twardymi spacjami)`, s.cena, o.tekst);
@@ -241,6 +250,18 @@ async function dlaKogo(b) {
   rowne('Dla kogo – dwa profile: taryfa i kwota', [s.taryfa, s.cena], [NAZWA_KAT[kat], zl(kwotaTaryfy(kat, 200000, '1-5', false))]);
   rowne('Dla kogo – liczba profili z rodzajem', await p.locator('.pro[data-rodzaj]').count(), DLA_KOGO.length);
   await p.close();
+  // D45 (decyzja zleceniodawcy 16.11.2026): kosmetolog + stylistka paznokci = gabinet kosmetologiczny + gabinet kosmetyczny → pełna
+  // taryfa; oczekiwania wpisane wprost (nie z fixture), żeby test pilnował samej decyzji
+  const q = await b.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+  await q.goto(PAGE, { waitUntil: 'load' });
+  await q.click('.pro[data-rodzaj] >> text="Kosmetolog"');
+  await q.click('.pro[data-rodzaj] >> text="Stylistka paznokci"');
+  await q.check('#o-1-5'); await q.check('#s-200000');
+  const d = await stan(q);
+  rowne('D45 – kosmetolog + stylistka paznokci: rodzaje, taryfa i kwota', [d.rodzaje, d.taryfa, d.cena],
+    [['kosmetyczny', 'kosmetologiczny'], NAZWA_KAT.pelny, `980,00${NB}zł`]);
+  rowne('D45 – kafelki sum: pełna taryfa', d.kafelki, { 100000: `850,00${NB}zł rocznie`, 200000: `980,00${NB}zł rocznie`, 300000: `1${NB}250,00${NB}zł rocznie` });
+  await q.close();
 }
 
 async function poPrzycisku(b) {
@@ -375,7 +396,7 @@ async function startowy(b) {
   await startowy(b);
   await b.close();
   const wszystkie = F.przypadki.length, crmMax = F.przypadki.filter((c) => !c.tylko_portal).length;
-  console.log(`przypadki fixture: ${crm}/${crmMax} porównywalnych z CRM + ${portal}/${wszystkie - crmMax} stanów interfejsu portalu (tylko_portal); „Dla kogo”: ${DLA_KOGO.length} profili + 2 profile razem; zmiany po przycisku; asercje: ${asercje}`);
+  console.log(`przypadki fixture: ${crm}/${crmMax} porównywalnych z CRM + ${portal}/${wszystkie - crmMax} stanów interfejsu portalu (tylko_portal); „Dla kogo”: ${DLA_KOGO.length} profili + 2 profile razem + D45 (kosmetolog + stylistka paznokci); zmiany po przycisku; asercje: ${asercje}`);
   if (bledy.length) {
     console.log('BŁĘDY (' + bledy.length + '):\n' + bledy.join('\n'));
     process.exit(1);

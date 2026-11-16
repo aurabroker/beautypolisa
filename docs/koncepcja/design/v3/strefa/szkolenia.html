@@ -207,11 +207,13 @@
 </style>
 <script>document.documentElement.classList.add('js')</script>
 <!-- Zakładki w Strefie salonu – preferencja widoku, nie kontrola dostępu (zakladki.js): ukryte zakładki z ?zakladki=… (makieta;
-     zapisuje stan) albo z localStorage → html[data-ukryte] jeszcze przed pierwszym malowaniem. Bez JS atrybutu nie ma – wszystko
-     widoczne. Ten sam skrypt w panel.html, dam-prace.html i szkolenia.html. -->
+     zapisuje stan i usuwa parametr z adresu – history.replaceState z zachowaniem ?rola i #kotwicy – więc odświeżenie pokazuje stan
+     zapisany, np. po „Pokaż zakładkę”) albo z localStorage → html[data-ukryte] jeszcze przed pierwszym malowaniem. Bez JS atrybutu
+     nie ma – wszystko widoczne. Ten sam skrypt w panel.html, dam-prace.html i szkolenia.html. -->
 <script>(function(d){var K='bp-strefa-zakladki',Z=['praca','szkolenia'],P={'bez-pracy':'praca','bez-szkolen':'szkolenia'},u=[],s=null,m=/[?&]zakladki=([^&#]*)/.exec(location.search);
 try{s=JSON.parse(localStorage.getItem(K))}catch(e){}if(!s||typeof s!=='object'){s={}}
-if(m){try{decodeURIComponent(m[1]).split(',').forEach(function(t){t=P[t];if(t&&u.indexOf(t)<0){u.push(t)}})}catch(e){}u.sort(function(a,b){return Z.indexOf(a)-Z.indexOf(b)});s.ukryte=u;try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}}
+if(m){try{decodeURIComponent(m[1]).split(',').forEach(function(t){t=P[t];if(t&&u.indexOf(t)<0){u.push(t)}})}catch(e){}u.sort(function(a,b){return Z.indexOf(a)-Z.indexOf(b)});s.ukryte=u;try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}
+try{history.replaceState(history.state,'',location.pathname+location.search.replace(/([?&])zakladki=[^&#]*(&|$)/,function(x,a,b){return b?a:''})+location.hash)}catch(e){}}
 else if(Array.isArray(s.ukryte)){s.ukryte.forEach(function(t){if(Z.indexOf(t)>-1&&u.indexOf(t)<0){u.push(t)}})}
 d.setAttribute('data-ukryte',u.join(' '))})(document.documentElement)</script>
 <!-- gen:slownik-css -->
@@ -371,16 +373,24 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
          ZAKŁADKA „SZKOLENIA” UKRYTA W USTAWIENIACH SALONU (panel.html#zakladki) – wejście pod adres modułu w Strefie salonu.
          Preferencja widoku, nie kontrola dostępu: ekrany poniżej działają normalnie – zapisy, lista rezerwowa, opłacone zamówienia,
          faktury i e-maile organizatorów bez zmian. Informacja tylko w kontekście salonu (.salon-only) – nie w profilu organizatora
-         (osobne konto). Publiczny katalog /szkolenia dla gościa – bez zmian. Z JS – tylko przy ukrytej zakładce; bez JS – wzór.
+         (osobne konto). Publiczny katalog /szkolenia dla gościa – bez zmian. Z JS – tylko przy ukrytej zakładce; zakladki.js
+         przenosi ją na początek aktywnego ekranu (przed nagłówek), więc wejście pod adres z kotwicą ekranu (np. #moje-szkolenia)
+         pokazuje ją u góry, pod paskiem. W produkcji osobne trasy i stany – /strefa-klienta/zamowienia („Zamówienia i faktury”),
+         /strefa-klienta/szkolenia/[slug]/zamowienie, /strefa-klienta/zamowienia/[ref] (powrót z płatności), stan po zapisie (303) –
+         serwer wczytuje od początku, z informacją na górze. W makiecie to kotwice w głębi ekranów „Moje szkolenia”, „Zamówienie”
+         i strony szkolenia (atrybut data-trasa: #p-zam i pozostałe zakładki, #zam-*, #zapis, #zapisano, #rezerwowa), więc
+         zakladki.js stawia informację tuż przed kartą z celem i przewija do niej. Bez JS – wzór przed pierwszym ekranem.
+         Treść: jedno zdanie, prawdziwe w każdym salonie (także bez zapisów); liczby zapisów – przy przełączniku w „Ustawieniach”.
          „Pokaż zakładkę” (właściciel): w produkcji POST /strefa-klienta/ustawienia/zakladki (app_client_set_tab_visibility,
-         wpis w „Historii konta”) i 303 z powrotem na ten adres; w makiecie bez JS – przejście do Ustawień.
+         wpis w „Historii konta”) i 303 z powrotem na ten adres z jednorazowym potwierdzeniem (na kolejnych ekranach go nie ma);
+         w makiecie bez JS – przejście do Ustawień.
          ================================================================ -->
     <div class="tab-note salon-only" data-zakladka-uwaga="szkolenia">
       <form class="alert alert--info" action="panel.html#zakladki" method="post">
         <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
         <p class="no-js-only"><span class="mock-note">Wzór: tylko gdy zakładka jest ukryta</span></p>
         <strong class="alert-title">Zakładka Szkolenia jest ukryta w&nbsp;ustawieniach salonu</strong>
-        <p class="small">Szkolenia działają normalnie: zapisy i&nbsp;opłacone zamówienia są bez zmian, a&nbsp;przypomnienia i&nbsp;<span class="nowrap">e-maile</span> od organizatorów przychodzą jak dotąd. Ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.</p>
+        <p class="small">Moduł działa normalnie&nbsp;– ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.</p>
         <input type="hidden" name="zakladka" value="szkolenia"><input type="hidden" name="widoczna" value="tak">
         <div class="actions owner-only"><button class="btn btn-navy btn-sm" type="submit">Pokaż zakładkę</button></div>
         <p class="small employee-only">Zakładkę może pokazać właścicielka konta – Anna Przykładowa – w&nbsp;ustawieniach salonu.</p>
@@ -670,7 +680,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </section>
 
           <!-- krok 1: informacja o przekazaniu danych organizatorowi -->
-          <section class="card surface reg-step" id="zapis" data-step="zapis" aria-labelledby="t-info" tabindex="-1">
+          <section class="card surface reg-step" id="zapis" data-step="zapis" data-trasa="strona szkolenia: krok informacyjny" aria-labelledby="t-info" tabindex="-1">
             <span class="mock-note step-label">Krok informacyjny</span>
             <h2 class="card-title" id="t-info">Zanim się zapiszesz</h2>
             <div class="notice-box">
@@ -706,7 +716,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </section>
 
           <!-- krok 2: zapisano -->
-          <section class="card surface reg-step" id="zapisano" data-step="zapisano" data-reg aria-labelledby="t-zapisano" tabindex="-1">
+          <section class="card surface reg-step" id="zapisano" data-step="zapisano" data-trasa="strona szkolenia: stan po zapisie (303)" data-reg aria-labelledby="t-zapisano" tabindex="-1">
             <span class="mock-note step-label">Stan po zapisie</span>
             <div class="alert alert--success">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
@@ -731,7 +741,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </section>
 
           <!-- wariant: brak wolnych miejsc → lista rezerwowa -->
-          <section class="card surface reg-step" id="rezerwowa" data-step="rezerwowa" data-reg aria-labelledby="t-rez" tabindex="-1">
+          <section class="card surface reg-step" id="rezerwowa" data-step="rezerwowa" data-trasa="strona szkolenia: stan po zapisie na listę rezerwową (303)" data-reg aria-labelledby="t-rez" tabindex="-1">
             <span class="mock-note step-label">Wariant: brak wolnych miejsc</span>
             <p class="small muted">Przykład: „Pierwsza pomoc w&nbsp;salonie beauty (przykład)”, <time datetime="2027-01-22">22&nbsp;stycznia 2027&nbsp;r.</time>, 0 z&nbsp;14 wolnych miejsc.</p>
             <h2 class="card-title" id="t-rez">Jesteś na liście rezerwowej</h2>
@@ -891,7 +901,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <div class="grid">
 
           <!-- krok 1: dane uczestnika, dane do faktury, zgody -->
-          <form class="card surface form pay-step" id="zam-dane" data-pay="dane" action="#zam-platnosc" method="post" novalidate aria-labelledby="t-zam-dane" tabindex="-1">
+          <form class="card surface form pay-step" id="zam-dane" data-pay="dane" data-trasa="/strefa-klienta/szkolenia/[slug]/zamowienie" action="#zam-platnosc" method="post" novalidate aria-labelledby="t-zam-dane" tabindex="-1">
             <span class="mock-note step-label">Krok 1: dane i&nbsp;zgody</span>
             <h2 class="card-title" id="t-zam-dane">Dane uczestnika i&nbsp;do faktury</h2>
             <div class="alert alert--error" id="zam-err" role="alert" tabindex="-1" hidden>
@@ -1009,7 +1019,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </form>
 
           <!-- krok 2: rezerwacja 15 min + podsumowanie + metoda płatności -->
-          <section class="card surface pay-step" id="zam-platnosc" data-pay="platnosc" aria-labelledby="t-zam-pl" tabindex="-1">
+          <section class="card surface pay-step" id="zam-platnosc" data-pay="platnosc" data-trasa="/strefa-klienta/szkolenia/[slug]/zamowienie" aria-labelledby="t-zam-pl" tabindex="-1">
             <span class="mock-note step-label">Krok 2: płatność (miejsce zarezerwowane)</span>
             <h2 class="card-title" id="t-zam-pl">Płatność</h2>
             <div class="hold" role="group" aria-label="Rezerwacja miejsca">
@@ -1056,7 +1066,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </section>
 
           <!-- stan: płatność w toku (powrót od operatora bez potwierdzenia webhookiem) -->
-          <section class="card surface pay-step" id="zam-w-toku" data-pay="w-toku" aria-labelledby="t-zam-wt" tabindex="-1">
+          <section class="card surface pay-step" id="zam-w-toku" data-pay="w-toku" data-trasa="/strefa-klienta/zamowienia/[ref]" aria-labelledby="t-zam-wt" tabindex="-1">
             <span class="mock-note step-label">Stan: płatność w&nbsp;toku</span>
             <div class="alert alert--info">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
@@ -1072,7 +1082,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </section>
 
           <!-- stan: opłacone (po podpisanym webhooku: zgodne zamówienie, kwota i waluta) -->
-          <section class="card surface pay-step" id="zam-oplacone" data-pay="oplacone" aria-labelledby="t-zam-ok" tabindex="-1">
+          <section class="card surface pay-step" id="zam-oplacone" data-pay="oplacone" data-trasa="/strefa-klienta/zamowienia/[ref]" aria-labelledby="t-zam-ok" tabindex="-1">
             <span class="mock-note step-label">Stan: opłacone</span>
             <div class="alert alert--success">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
@@ -1094,7 +1104,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </section>
 
           <!-- stan: płatność nieudana (rezerwacja trwa; ponowna próba w ramach tego samego zamówienia) -->
-          <section class="card surface pay-step" id="zam-nieudane" data-pay="nieudane" aria-labelledby="t-zam-nu" tabindex="-1">
+          <section class="card surface pay-step" id="zam-nieudane" data-pay="nieudane" data-trasa="/strefa-klienta/zamowienia/[ref]" aria-labelledby="t-zam-nu" tabindex="-1">
             <span class="mock-note step-label">Stan: płatność nieudana</span>
             <div class="alert alert--error">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>
@@ -1109,7 +1119,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </section>
 
           <!-- stan: rezerwacja wygasła (miejsce wróciło do puli; dane zachowane) -->
-          <section class="card surface pay-step" id="zam-wygasla" data-pay="wygasla" aria-labelledby="t-zam-wy" tabindex="-1">
+          <section class="card surface pay-step" id="zam-wygasla" data-pay="wygasla" data-trasa="/strefa-klienta/zamowienia/[ref]" aria-labelledby="t-zam-wy" tabindex="-1">
             <span class="mock-note step-label">Stan: rezerwacja wygasła</span>
             <div class="alert alert--warn">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
@@ -1158,7 +1168,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <button role="tab" id="t-rez-tab" aria-controls="p-rez" aria-selected="false" tabindex="-1">Lista rezerwowa <span class="count">(1)</span></button>
           <button role="tab" id="t-zak" aria-controls="p-zak" aria-selected="false" tabindex="-1">Zakończone <span class="count">(2)</span></button>
           <button role="tab" id="t-zam-tab" aria-controls="p-zam" aria-selected="false" tabindex="-1">Zamówienia i&nbsp;faktury <span class="count">(5)</span></button>
-          <button role="tab" id="t-zespol" aria-controls="p-zespol" aria-selected="false" tabindex="-1" class="owner-only">Zapisy zespołu <span class="count">(5)</span></button>
+          <button role="tab" id="t-zespol" aria-controls="p-zespol" aria-selected="false" tabindex="-1" class="owner-only">Zapisy zespołu <span class="count">(6)</span></button>
         </div>
 
         <div class="alert alert--info js-live" role="status" tabindex="-1" hidden>
@@ -1166,7 +1176,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <p class="small">–</p>
         </div>
 
-        <div class="tabpanel" role="tabpanel" id="p-nad" aria-labelledby="t-nad" tabindex="0">
+        <div class="tabpanel" role="tabpanel" id="p-nad" data-trasa="/strefa-klienta/szkolenia" aria-labelledby="t-nad" tabindex="0">
           <h2 class="sr-only">Nadchodzące szkolenia</h2>
           <ul class="list">
             <li data-reg>
@@ -1210,7 +1220,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </ul>
         </div>
 
-        <div class="tabpanel" role="tabpanel" id="p-rez" aria-labelledby="t-rez-tab" tabindex="0" hidden>
+        <div class="tabpanel" role="tabpanel" id="p-rez" data-trasa="/strefa-klienta/szkolenia" aria-labelledby="t-rez-tab" tabindex="0" hidden>
           <h2 class="sr-only">Lista rezerwowa</h2>
           <ul class="list">
             <li data-reg>
@@ -1229,7 +1239,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <p class="small muted">Gdy zwolni się miejsce, zapiszemy Cię automatycznie i&nbsp;wyślemy <span class="nowrap">e-mail</span> „Zwolniło się miejsce”.</p>
         </div>
 
-        <div class="tabpanel" role="tabpanel" id="p-zak" aria-labelledby="t-zak" tabindex="0" hidden>
+        <div class="tabpanel" role="tabpanel" id="p-zak" data-trasa="/strefa-klienta/szkolenia" aria-labelledby="t-zak" tabindex="0" hidden>
           <h2 class="sr-only">Zakończone i&nbsp;odwołane szkolenia</h2>
           <ul class="list">
             <li>
@@ -1253,7 +1263,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </ul>
         </div>
 
-        <div class="tabpanel" role="tabpanel" id="p-zam" aria-labelledby="t-zam-tab" tabindex="0" hidden>
+        <div class="tabpanel" role="tabpanel" id="p-zam" data-trasa="/strefa-klienta/zamowienia" aria-labelledby="t-zam-tab" tabindex="0" hidden>
           <h2 class="sr-only">Zamówienia i&nbsp;faktury</h2>
           <ul class="list">
             <li data-reg>
@@ -1330,7 +1340,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <p class="xsmall muted">Fakturę wystawia organizator (sprzedawca)&nbsp;– BeautyPolisa nie wystawia faktur za szkolenia. Plik faktury pokazujemy, jeśli organizator go doda. Reklamacje i&nbsp;pytania o&nbsp;fakturę kieruj do organizatora. Swoje zamówienia, faktury i&nbsp;odstąpienie widzisz tutaj także wtedy, gdy stracisz dostęp do konta salonu. Dane kupującego usuwamy z&nbsp;portalu 90&nbsp;dni po szkoleniu&nbsp;– pobierz plik faktury i&nbsp;zachowaj go u&nbsp;siebie; okres przechowywania pliku faktury w&nbsp;portalu&nbsp;– do decyzji. <span class="mock-note">Założenie Z-46&nbsp;– Q35</span></p>
         </div>
 
-        <div class="tabpanel owner-only" role="tabpanel" id="p-zespol" aria-labelledby="t-zespol" tabindex="0" hidden>
+        <div class="tabpanel owner-only" role="tabpanel" id="p-zespol" data-trasa="/strefa-klienta/szkolenia" aria-labelledby="t-zespol" tabindex="0" hidden>
           <h2 class="sr-only">Zapisy zespołu</h2>
           <div class="table-wrap">
             <table class="data stack">
@@ -1366,6 +1376,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                   <td data-label="Szkolenie">Pierwsza pomoc w&nbsp;salonie beauty (przykład)</td>
                   <td data-label="Termin"><time datetime="2027-01-22">22.01.2027</time></td>
                   <td data-label="Status"><span class="badge badge--info">Lista rezerwowa&nbsp;– pozycja 2</span></td>
+                </tr>
+                <tr>
+                  <th scope="row" data-label="Osoba"><div class="person"><span class="monogram" aria-hidden="true">AP</span><div><strong>Anna Przykładowa</strong><span>właścicielka</span></div></div></th>
+                  <td data-label="Szkolenie">Stylizacja rzęs&nbsp;– lifting i&nbsp;laminacja (przykład)</td>
+                  <td data-label="Termin"><time datetime="2027-01-28">28.01.2027</time></td>
+                  <td data-label="Status"><span class="badge badge--ok">Opłacone&nbsp;· zapisano</span></td>
                 </tr>
               </tbody>
             </table>
@@ -2097,7 +2113,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <li><strong>Decyzja <span class="nowrap">P1d</span> (12.11.2026):</strong> organizator płaci za plan&nbsp;– promocja na otwarcie portalu: 10&nbsp;000&nbsp;zł netto za 12&nbsp;miesięcy albo 1&nbsp;000&nbsp;zł netto za miesiąc; pozostałe warunki&nbsp;– do ustalenia (Q16). Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy tylko przy aktywnym planie (11 §12.4, S12, O5); po końcu planu zapisani zachowują miejsca i&nbsp;szczegóły, a&nbsp;organizator&nbsp;– listę uczestników. Ekrany: blok „Dla organizatorów szkoleń” w&nbsp;katalogu, stan planu w&nbsp;„Moich szkoleniach” organizatora, widok „Profil i&nbsp;plan” z&nbsp;wariantami „kończy się” i&nbsp;„brak aktywnego planu” oraz kontrola terminu w&nbsp;„Dodaj szkolenie”.</li>
         <li><strong>Założenia <span class="nowrap">Z-22</span> i&nbsp;<span class="nowrap">Z-41</span>:</strong> plan ustawia, przedłuża i&nbsp;anuluje wyłącznie personel w&nbsp;<code>/panel</code>; fakturę wystawia Aura Expert poza portalem (bez płatności online); plan nie limituje liczby szkoleń; plan obejmuje szkolenia zaczynające się w&nbsp;jego okresie; plan bez numeru faktury wygasa po 14&nbsp;dniach (Q22). Daty planu i&nbsp;numer faktury w&nbsp;makiecie są fikcyjne.</li>
         <li><strong>Decyzja <span class="nowrap">L1</span>:</strong> stopka ma pełną formułę Aura Expert sp.&nbsp;z&nbsp;o.o. (agent ubezpieczeniowy, wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych nr 11229690/A, link do <code>rpu.knf.gov.pl</code>) i&nbsp;kontakt do IOD. Pod formułą rozwijany blok „Informacje o&nbsp;agencie ubezpieczeniowym (IDD)”: 10&nbsp;zakładów ubezpieczeń, wynagrodzenie, brak udziałów ≥&nbsp;10%, reklamacje i&nbsp;Rzecznik Finansowy, kontakt do agenta (ustalenia 13.11.2026).</li>
-        <li><strong>Zakładka „Szkolenia” ukryta w&nbsp;ustawieniach salonu</strong> (<a href="panel.html#zakladki">panel.html#zakladki</a>; prośba zleceniodawcy 16.11.2026): to <strong>preferencja widoku, nie kontrola dostępu</strong>. W&nbsp;Strefie salonu znikają pozycja „Szkolenia” w&nbsp;menu i&nbsp;kafel na pulpicie (dla wszystkich członków salonu), a&nbsp;ekrany działają dalej pod swoimi adresami&nbsp;– u&nbsp;góry informacja „Zakładka Szkolenia jest ukryta w&nbsp;ustawieniach salonu”; właściciel ma „Pokaż zakładkę”, pracownik&nbsp;– informację, kto może ją pokazać. Zapisy, lista rezerwowa, opłacone zamówienia, faktury, przypomnienia i&nbsp;e-maile organizatorów&nbsp;– bez zmian. Katalog jest tu pokazany w&nbsp;koncie salonu, więc też ma informację; publiczny katalog <code>/szkolenia</code> dla gościa i&nbsp;profil organizatora (osobne konto)&nbsp;– bez zmian. Stany: <a href="szkolenia.html?zakladki=bez-szkolen#moje-szkolenia">?zakladki=bez-szkolen</a>, wariant pracownika&nbsp;– <a href="szkolenia.html?rola=pracownik&amp;zakladki=bez-szkolen#moje-szkolenia">?rola=pracownik</a> (menu: Pulpit, Dam pracę, Szkolenia; bez „Zapisów zespołu”).</li>
+        <li><strong>Zakładka „Szkolenia” ukryta w&nbsp;ustawieniach salonu</strong> (<a href="panel.html#zakladki">panel.html#zakladki</a>; prośba zleceniodawcy 16.11.2026): to <strong>preferencja widoku, nie kontrola dostępu</strong>. W&nbsp;Strefie salonu znikają pozycja „Szkolenia” w&nbsp;menu i&nbsp;kafel na pulpicie (dla wszystkich członków salonu), a&nbsp;ekrany działają dalej pod swoimi adresami&nbsp;– u&nbsp;góry ekranu (także przy wejściu z&nbsp;kotwicą, np. <code>#moje-szkolenia</code>) krótka informacja „Zakładka Szkolenia jest ukryta w&nbsp;ustawieniach salonu” ze zdaniem „Moduł działa normalnie – ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.”; właściciel ma „Pokaż zakładkę”, pracownik&nbsp;– informację, kto może ją pokazać. Zapisy, lista rezerwowa, opłacone zamówienia, faktury, przypomnienia i&nbsp;e-maile organizatorów&nbsp;– bez zmian. Katalog jest tu pokazany w&nbsp;koncie salonu, więc też ma informację; publiczny katalog <code>/szkolenia</code> dla gościa i&nbsp;profil organizatora (osobne konto)&nbsp;– bez zmian. Stany: <a href="szkolenia.html?zakladki=bez-szkolen#moje-szkolenia">?zakladki=bez-szkolen</a>, wariant pracownika&nbsp;– <a href="szkolenia.html?rola=pracownik&amp;zakladki=bez-szkolen#moje-szkolenia">?rola=pracownik</a> (menu: Pulpit, Dam pracę, Szkolenia; bez „Zapisów zespołu”).</li>
         <li><strong>Założenie <span class="nowrap">Z-6</span>:</strong> katalog jest publiczny, zapis tylko z&nbsp;konta salonu (gość widzi „Zaloguj się, aby się zapisać”). Czy katalog ma być publiczny&nbsp;– pytanie Q10.</li>
         <li><strong>Decyzja <span class="nowrap">D-D</span>:</strong> szkolenia dodają salony i&nbsp;firmy szkoleniowe. Organizator nie potrzebuje polisy; konto dostaje z&nbsp;zaproszenia po weryfikacji przez Aura Expert (<strong>Założenie Z-16</strong>). Salon-organizator ma osobny profil i&nbsp;przełącza się w&nbsp;menu konta&nbsp;– ten sam widok ma firma szkoleniowa, np. „Organizator przykładowy”.</li>
         <li>RODO: organizator jest administratorem danych uczestników swoich szkoleń; rola Aura Expert (odrębny administrator albo podmiot przetwarzający)&nbsp;– do decyzji prawnika i&nbsp;IOD (Q1). Organizator widzi tylko imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status, nazwę salonu tylko przy szkoleniu płatnym; dane usuwane 30&nbsp;dni po szkoleniu (<strong>Założenie Z-17</strong>).</li>

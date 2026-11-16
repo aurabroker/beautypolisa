@@ -10,7 +10,7 @@
   {
    "pytanie": "Od czego zależy składka i co jest na listach zabiegów?",
    "odpowiedz": [
-    "Składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i sumy gwarancyjnej. {reguly_kategorii}",
+    "Składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i sumy gwarancyjnej. {reguly_kategorii} Na przykład gabinet kosmetyczny razem z gabinetem kosmetologicznym to taryfa „{kategoria.pelny}”.",
     "Listy zabiegów programu: „{lista-1.nazwa}” ({lista-1.pozycji}) i „{lista-2.nazwa}” ({lista-2.pozycji}); część zabiegów ({wspolne}) jest na obu listach. Zabiegi wymagające ankiety ERGO Hestii ({ankieta.pozycji}) – wycena indywidualna. Lista zabiegów podologicznych jest w dokumentach programu. Wszystkie pozycje w brzmieniu Aneksu nr 5 znajdziesz w sekcji <a href=\"#zabiegi\">Listy zabiegów w programie</a>."
    ]
   },

@@ -2,9 +2,14 @@
 """Taryfa OC beauty (snippets/taryfa-oc-beauty.json) dla generatorów stron: formaty kwot, opis reguły kategorii słowami,
 tabela „Pełna taryfa OC” i nota pod nią – jedna implementacja dla oc-beauty.html (GEN:taryfa) i makieta-v3.html (gen:taryfa).
 
-Reguła kategorii jest kodem (jak w CRM: kategoriaZRodzajow; w portalu snippets/oc-skladka.js), nie danymi. Tu jest tylko jej
-opis słowami (OPIS_KATEGORII) i warunek (WARUNEK), który go wyraża; kontrola() sprawdza na wszystkich 63 niepustych
-połączeniach rodzajów, że warunek = kategoria() = fixture kontrola/kalkulator-przypadki.json (64 kombinacje, jak CRM).
+Reguła kategorii portalu – decyzja zleceniodawcy D45 z 16.11.2026 (00): rodzaj z listy nr 1 (kosmetyczny, fryzjerski, masaż)
+razem z rodzajem z listy nr 2 (kosmetologiczny, tatuaż) – pełna taryfa; podologia zawsze pełna; same rodzaje z listy nr 2 –
+kosmetologiczna; same z listy nr 1 – kosmetyczna i fryzjerska. Grupy rodzajów są danymi (taryfa-oc-beauty.json → regula_kategorii),
+sama reguła – kodem (snippets/oc-skladka.js: kategoria; tu – kategoria()). To ODSTĘPSTWO od CRM (kategoriaZRodzajow: z listą nr 2
+pełną taryfę daje tylko salon fryzjerski) w 9 połączeniach rodzajów – check_zgodnosc_crm.py przyjmuje je tylko z oznaczeniem
+odstepstwo_D45 w fixture. Tu jest też opis reguły słowami (OPIS_KATEGORII) i warunek (WARUNEK), który go wyraża; kontrola()
+sprawdza na wszystkich 63 niepustych połączeniach rodzajów, że warunek = kategoria() = fixture kontrola/kalkulator-przypadki.json
+(64 kombinacje) i że każdy rodzaj działalności jest w dokładnie jednej grupie regula_kategorii.
 
 Formaty (decyzja Q9): tabele taryfy bez groszy („1 250 zł”), kwota z wyliczenia z groszami („987,50 zł”), sumy jak dotąd
 („200 tys. zł” w tabelach, „200 000 zł” w zdaniach FAQ); separator tysięcy i spacja przed „zł” – twarde (U+00A0).
@@ -29,31 +34,33 @@ T = json.loads(TARYFA.read_text(encoding='utf-8'))
 KAT = {k['klucz']: k for k in T['kategorie']}
 RODZAJE = [r['klucz'] for r in T['rodzaje_gabinetu']]
 NAZWA_RODZAJU = {r['klucz']: r['nazwa'] for r in T['rodzaje_gabinetu']}
-LISTA2 = {'kosmetologiczny', 'tatuaz'}
+REGULA = T['regula_kategorii']
+LISTA1, LISTA2, ZAWSZE_PELNA = set(REGULA['lista_1']), set(REGULA['lista_2']), set(REGULA['zawsze_pelna'])
 
-# Opis słowami, które rodzaje działalności prowadzą do której taryfy (plan 2.3 i 3; = kategoriaZRodzajow w CRM).
+# Opis słowami, które rodzaje działalności prowadzą do której taryfy (plan 2.3 i 3; reguła D45 – odstępstwo od CRM).
 OPIS_KATEGORII = {
-    'kosmetyczny_fryzjerski': 'gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)',
-    'kosmetologiczny': 'gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu',
-    'pelny': 'gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu',
+    'kosmetyczny_fryzjerski': 'tylko gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)',
+    'kosmetologiczny': 'tylko gabinet kosmetologiczny lub salon tatuażu (także razem)',
+    'pelny': ('gabinet podologiczny (z innymi rodzajami lub bez) albo gabinet kosmetyczny, salon fryzjerski lub salon masażu '
+              'razem z gabinetem kosmetologicznym lub salonem tatuażu'),
 }
-# Warunek, który opis wyraża (sprawdzany z kategoria() i z fixture).
+# Warunek, który opis wyraża (sprawdzany z kategoria() i z fixture) – zapisany nazwami rodzajów, bez grup z JSON.
+_L1_SLOWAMI, _L2_SLOWAMI = {'kosmetyczny', 'fryzjerski', 'masaz'}, {'kosmetologiczny', 'tatuaz'}
 WARUNEK = {
-    'kosmetyczny_fryzjerski': lambda r: r <= {'kosmetyczny', 'fryzjerski', 'masaz'},
-    'kosmetologiczny': lambda r: bool(r & LISTA2) and 'podologiczny' not in r and 'fryzjerski' not in r,
-    'pelny': lambda r: 'podologiczny' in r or ('fryzjerski' in r and bool(r & LISTA2)),
+    'kosmetyczny_fryzjerski': lambda r: r <= _L1_SLOWAMI,
+    'kosmetologiczny': lambda r: r <= _L2_SLOWAMI,
+    'pelny': lambda r: 'podologiczny' in r or (bool(r & _L1_SLOWAMI) and bool(r & _L2_SLOWAMI)),
 }
 
 
 def kategoria(rodzaje):
-    """= kategoriaZRodzajow (CRM) = OcSkladka.kategoria (snippets/oc-skladka.js)."""
+    """Reguła D45 = OcSkladka.kategoria (snippets/oc-skladka.js); grupy z taryfa-oc-beauty.json (regula_kategorii)."""
     r = set(rodzaje)
     if not r:
         return None
-    lista2 = bool(r & LISTA2)
-    if 'podologiczny' in r or (lista2 and 'fryzjerski' in r):
+    if r & ZAWSZE_PELNA or (r & LISTA1 and r & LISTA2):
         return 'pelny'
-    return 'kosmetologiczny' if lista2 else 'kosmetyczny_fryzjerski'
+    return 'kosmetologiczny' if r & LISTA2 else 'kosmetyczny_fryzjerski'
 
 
 def grupuj(n):
@@ -185,12 +192,15 @@ def kontrola():
             e.append('kategoria %s: stawki ≠ sumy albo niecałkowite' % k['klucz'])
     if set(OPIS_KATEGORII) != set(KAT):
         e.append('OPIS_KATEGORII ≠ kategorie taryfy')
+    grupy = REGULA['lista_1'] + REGULA['lista_2'] + REGULA['zawsze_pelna']
+    if sorted(grupy) != sorted(RODZAJE):
+        e.append('regula_kategorii: rodzaj działalności poza grupami albo w kilku grupach (%s)' % sorted(grupy))
     return e
 
 
 if __name__ == '__main__':
     b = kontrola()
-    print('\n'.join('BŁĄD: ' + x for x in b) or 'OK – opis reguły = kategoria() = fixture (63 połączenia rodzajów)')
+    print('\n'.join('BŁĄD: ' + x for x in b) or 'OK – opis reguły = kategoria() (D45) = fixture (63 połączenia rodzajów)')
     print(reguly_kategorii())
     print('\n'.join(tabela_taryfy('Taryfa OC')))
     sys.exit(1 if b else 0)

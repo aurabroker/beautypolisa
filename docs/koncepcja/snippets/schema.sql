@@ -44,7 +44,8 @@ create table pricing_oc_params (
   max_team_size          smallint      not null default 8        -- więcej osób → wycena indywidualna
 );
 
--- Taryfa = kategoria wyznaczona z rodzajów działalności (reguła kategoriaZRodzajow – kod w packages/pricing, nie dane);
+-- Taryfa = kategoria wyznaczona z rodzajów działalności (reguła D45 z 00 – kod w packages/pricing, grupy rodzajów z taryfy;
+-- w CRM kategoriaZRodzajow, do zmiany według D45);
 -- zabiegi z list nr 1 i 2 nie mają wierszy i nie zmieniają składki. Zabiegi wymagające ankiety (a–h) i więcej niż 8 osób
 -- – wycena indywidualna (bez wiersza). Kwota: round(annual_premium * (case when 6–8 osób then 1 + team_6_8_surcharge
 -- else 1 end) + case when ochrona prawna then legal_protection_addon else 0 end, 2) – do grosza, jak w CRM.

@@ -1,12 +1,15 @@
 /*
  * Wycena OC beauty (program WA50/003353/24/A) – czysta funkcja wspólna dla makiety, aplikacji i testów.
- * Przepisanie reguł CRM (crmaura/src/lib/renewals/program.ts): kategoriaZRodzajow i skladkaProgramu – ta sama kolejność
- * działań i zaokrąglenie; wycenaNowej – ten sam wynik dla kompletu odpowiedzi. Stałe nie są tu wpisane: przychodzą jako
- * T = snippets/taryfa-oc-beauty.json.
+ * Przepisanie reguł CRM (crmaura/src/lib/renewals/program.ts): skladkaProgramu – ta sama kolejność działań i zaokrąglenie;
+ * wycenaNowej – ten sam wynik dla kompletu odpowiedzi. Kategoria taryfy – reguła portalu według decyzji zleceniodawcy D45
+ * (16.11.2026; 00), ODSTĘPSTWO od kategoriaZRodzajow w CRM (opis przy funkcji kategoria). Stałe nie są tu wpisane:
+ * przychodzą jako T = snippets/taryfa-oc-beauty.json (grupy rodzajów działalności – T.regula_kategorii).
  *
- * Dla kompletu odpowiedzi (rodzaje, osoby, suma) wynik jest taki sam jak w CRM: ta sama kategoria, kwota do grosza,
- * ten sam powód wyceny indywidualnej i ten sam opis (pole opisCrm). Przy brakach – stany interfejsu portalu (fixture
- * F1–F5, tylko_portal): w CRM bez sumy nie ma wyceny (wycenaNowej zwraca null), a taki wniosek zatrzymuje walidacja.
+ * Dla kompletu odpowiedzi (rodzaje, osoby, suma) wynik jest taki sam jak w CRM – kwota do grosza, powód wyceny
+ * indywidualnej, opis (pole opisCrm) – z wyjątkiem 9 połączeń rodzajów z D45: tam portal liczy pełną taryfę, a CRM do czasu
+ * zmiany kategoriaZRodzajow – taryfę „Gabinety kosmetologiczne” (fixture: pole odstepstwo_D45 z kwotą CRM; opisCrm = opis
+ * w formacie CRM dla kategorii portalu). Przy brakach – stany interfejsu portalu (fixture F1–F5, tylko_portal): w CRM bez
+ * sumy nie ma wyceny (wycenaNowej zwraca null), a taki wniosek zatrzymuje walidacja.
  * Kolejność sprawdzeń w portalu: zabiegi wymagające ankiety (cała składka do wyceny indywidualnej), rodzaje, osoby,
  * więcej niż 8 osób, suma – wycenaNowej w CRM najpierw sprawdza sumę.
  *
@@ -24,14 +27,21 @@
   'use strict';
   var NB = ' ', WJ = '\u2060';
 
-  // = kategoriaZRodzajow (program.ts): podologia albo fryzjerstwo razem z kosmetologią lub tatuażem – pełna;
-  // kosmetologia albo tatuaż – kosmetologiczna; pozostałe – kosmetyczna i fryzjerska; brak rodzaju – null.
-  function kategoria(rodzaje) {
+  // Kategoria taryfy z rodzajów działalności – decyzja zleceniodawcy D45 (16.11.2026): podologia – zawsze pełna; rodzaj
+  // z listy nr 1 (kosmetyczny, fryzjerski, masaż) razem z rodzajem z listy nr 2 (kosmetologiczny, tatuaż) – pełna; same
+  // rodzaje z listy nr 2 – kosmetologiczna; same rodzaje z listy nr 1 – kosmetyczna i fryzjerska; brak rodzaju – null.
+  // Grupy rodzajów: T.regula_kategorii. ODSTĘPSTWO od CRM (kategoriaZRodzajow w program.ts): tam pełną taryfę z listą nr 2
+  // daje tylko salon fryzjerski, więc gabinet kosmetyczny lub salon masażu razem z gabinetem kosmetologicznym lub salonem
+  // tatuażu (9 połączeń) ma w CRM taryfę kosmetologiczną – do zmiany w CRM (docs/koncepcja/do-crm/, 14 §4.7).
+  function kategoria(rodzaje, T) {
     if (!rodzaje.length) return null;
-    var r = new Set(rodzaje);
-    var lista2 = r.has('kosmetologiczny') || r.has('tatuaz');
-    if (r.has('podologiczny') || (lista2 && r.has('fryzjerski'))) return 'pelny';
-    if (lista2) return 'kosmetologiczny';
+    var R = T && T.regula_kategorii;
+    if (!R) throw new TypeError('Brak T.regula_kategorii (snippets/taryfa-oc-beauty.json)');
+    var ma = function (grupa) {
+      return grupa.some(function (x) { return rodzaje.indexOf(x) >= 0; });
+    };
+    if (ma(R.zawsze_pelna) || (ma(R.lista_1) && ma(R.lista_2))) return 'pelny';
+    if (ma(R.lista_2)) return 'kosmetologiczny';
     return 'kosmetyczny_fryzjerski';
   }
 
@@ -96,7 +106,7 @@
     if (ankieta.length) {
       return { stan: 'indywidualna', powodKlucz: 'ankieta', powod: T.powody_wyceny_indywidualnej.ankieta, kategoria: null, nazwa: null };
     }
-    var k = kategoria(rodzaje);
+    var k = kategoria(rodzaje, T);
     if (!k) return { stan: 'brak', pole: 'rodzaje', komunikat: T.komunikaty_brakow.rodzaje };
     var kat = kategoriaT(T, k);
     if (!osoby) return { stan: 'brak', pole: 'osoby', komunikat: T.komunikaty_brakow.osoby, kategoria: k, nazwa: kat.nazwa };

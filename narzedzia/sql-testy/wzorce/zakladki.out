@@ -234,6 +234,10 @@ RESET
 
  ok   CHECK: preferencja konta pracodawcy [23514]
 
+ ok   CHECK pracodawcy: nazwa ograniczenia = 23514: new row for relation "client_accounts" violates check constraint "client_accounts_ukryte_zakladki_kind_check"
+
+ ok   nazwy automatyczne sprzed D44 bez zmian (SEC-02 = client_accounts_check5) = client_accounts_check,client_accounts_check1,client_accounts_check2,client_accounts_check3,client_accounts_check4,client_accounts_check5 / client_accounts_check5
+
  --- 6. szkolenia przy ukrytej zakładce ---
 
 SET

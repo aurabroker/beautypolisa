@@ -114,8 +114,11 @@ create table client_accounts (
   -- 00, D44: zakładki ukryte w Strefie TEGO salonu ('praca' = „Dam pracę” + „Szukam pracy”, 'szkolenia').
   -- Preferencja widoku, nie uprawnienie: czyta ją serwer renderujący nawigację, pulpit i skróty (10.7a);
   -- RLS i funkcje modułów jej nie sprawdzają. Pusta tablica = wszystkie zakładki widoczne (domyślnie).
-  -- Postać kanoniczna (posortowana, bez powtórzeń i NULL) – jedyna droga zapisu to funkcja 10.7a.
-  -- Nowa zakładka = nowa migracja: ten CHECK + walidacja w funkcji.
+  -- Postać kanoniczna (posortowana, bez powtórzeń i NULL). Zapis wyłącznie funkcją 10.7a: role klienckie
+  -- (anon, authenticated – także personel) nie mają grantu UPDATE tej kolumny; service_role (Worker) ma
+  -- w Supabase domyślne UPDATE na tabeli – jak przy team_confirmed_at i employer_trusted_*, Worker zmienia
+  -- kolumnę tylko przez app_client_set_tab_visibility() (przegląd kodu i test e2e), bo inaczej zmiana
+  -- ominęłaby dziennik. Nowa zakładka = nowa migracja: ten CHECK + walidacja w funkcji.
   ukryte_zakladki   text[] not null default '{}'
                       check (ukryte_zakladki in ('{}', '{praca}', '{szkolenia}', '{praca,szkolenia}')),
   activated_at      timestamptz,
@@ -130,9 +133,11 @@ create table client_accounts (
   check (kind <> 'employer' or status in ('pending','closed','suspended') or employer_verified_at is not null),
   check (employer_trusted_at is null or employer_trust_method is not null),
   check ((crm_tenant is null) = (crm_ref is null)),   -- odwołanie do CRM tylko jako para
-  check (kind = 'client' or ukryte_zakladki = '{}'),  -- 00, D44: preferencja tylko salonów (pracodawca ma wyłącznie „Pracę”)
   -- nazwy zastrzeżone nie mogą być nazwą wyświetlaną pracodawcy z rejestracji (podszywanie się – SEC-02)
-  check (kind <> 'employer' or display_name !~* '(\m(aura|beautypolisa|ergo|hestia|colonnade)\M|beauty[ -]?polisa|lux[ -]?med|enel[ -]?med)')
+  check (kind <> 'employer' or display_name !~* '(\m(aura|beautypolisa|ergo|hestia|colonnade)\M|beauty[ -]?polisa|lux[ -]?med|enel[ -]?med)'),
+  -- 00, D44: preferencja tylko salonów (pracodawca ma wyłącznie „Pracę”). Nazwany i na końcu listy, żeby nie
+  -- przesuwać automatycznych nazw ograniczeń sprzed D44 (client_accounts_check … client_accounts_check5 = SEC-02)
+  constraint client_accounts_ukryte_zakladki_kind_check check (kind = 'client' or ukryte_zakladki = '{}')
 );
 -- Jedno AKTYWNE (albo zawieszone) konto na NIP (SEC-03): rejestracja w toku nie rezerwuje NIP, więc nikt
 -- nie zablokuje firmie rejestracji ani nie sprawdzi odpowiedzią HTTP, czy NIP ma konto. Konflikt
@@ -2814,8 +2819,8 @@ end $$;
 --      KONTROLA DOSTĘPU. Właściciel salonu ukrywa w Strefie SWOJEGO salonu zakładkę „Praca” („Dam pracę”
 --      i „Szukam pracy”) albo „Szkolenia” – np. salon prowadzony przez 1–2 osoby, który nie zatrudnia.
 --      Skutek wyłącznie w interfejsie Strefy tego salonu, dla wszystkich jego członków: serwer renderujący
---      Strefę czyta client_accounts.ukryte_zakladki i nie pokazuje pozycji w nawigacji (górny pasek
---      i szuflada), kafla na pulpicie ani skrótów do modułu. Bezpośredni adres modułu nadal działa –
+--      Strefę czyta client_accounts.ukryte_zakladki i nie pokazuje pozycji w nawigacji (menu boczne
+--      na komputerze i szuflada na telefonie), kafla na pulpicie ani skrótów do modułu. Bezpośredni adres modułu nadal działa –
 --      serwer pokazuje u góry informację „Zakładka jest ukryta w ustawieniach salonu” (właścicielowi
 --      z przyciskiem „Pokaż zakładkę”), a moduł działa normalnie.
 --      CELOWO BEZ ZMIAN (to nie jest blokada ani wyłączenie funkcji): polityki RLS, granty i funkcje modułów
@@ -2824,10 +2829,17 @@ end $$;
 --      czytają tej kolumny i nie wolno jej do nich dodawać. Aktywne ogłoszenia salonu zostają opublikowane,
 --      wiadomości od kandydatów dochodzą, zapisy i opłacone zamówienia na szkolenia trwają, e-maile modułów
 --      (outbox) wychodzą, Cron działa; publiczne /dam-prace i katalog /szkolenia – bez zmian.
---      Informacja przy przełączniku („Masz 1 aktywne ogłoszenie – zostaje opublikowane …”) to zwykły odczyt
---      istniejących tabel przez serwer: job_offers salonu (status 'published', expires_at > now()) oraz
---      training_registrations salonu ('registered'/'waitlisted') na szkolenia, które się jeszcze nie
---      zaczęły (starts_at > now()).
+--      Informacja przy przełączniku („Masz 1 aktywne ogłoszenie – zostaje opublikowane …”; 11 §6.1a reguła 1)
+--      to zwykły odczyt istniejących tabel przez serwer – bez nowych funkcji i grantów:
+--        • „Praca”: job_offers salonu – aktywne = status 'published' i expires_at > now(); ogłoszenia
+--          'pending_review' podawane osobno („i 1 w moderacji”), nieliczone jako aktywne;
+--        • „Szkolenia” u właściciela: training_registrations salonu (account_id, jak w „Zapisach zespołu”)
+--          ze statusem 'registered' albo 'waitlisted' na szkolenia, które się jeszcze nie zaczęły
+--          (starts_at > now()); w tym osobno rezerwowe ('waitlisted') i opłacone zamówienia – training_orders
+--          salonu ze statusem 'paid' na te szkolenia (zapis z opłaconego zamówienia jest już wśród zapisów);
+--        • „Szkolenia” u pracownika: tylko jego własne zapisy i zamówienia – training_registrations
+--          i training_orders z user_id = pracownik (te same statusy i warunek terminu).
+--      Salon bez ogłoszeń i zapisów – zdania nie ma.
 --      Przełącznik globalny app_feature_flags('szukam_pracy') (11.9.6) zostaje OSOBNY i ma pierwszeństwo:
 --      wyłączony – „Szukam pracy” znika wszędzie niezależnie od tej preferencji; pokazanie zakładki „Praca”
 --      go nie włącza. Ukrycie „Pracy” ukrywa w Strefie salonu także „Szukam pracy” (część tej zakładki).
@@ -2836,7 +2848,17 @@ end $$;
 --      go nie zmienia; personel Aura, pracodawca z rejestracji i obcy – odmowa (P0001). Nieznana zakładka
 --      albo brak stanu → BP422 bez wartości. Idempotentna: stan bez zmian → bez UPDATE i bez wpisu
 --      w dzienniku (podwójne kliknięcie nie zaśmieca „Historii konta”); zwraca bieżącą listę ukrytych.
---      Blokada wiersza konta: dwie równoległe zmiany różnych zakładek nie gubią się nawzajem.
+--      Kolejność: NAJPIERW blokada wiersza konta (FOR NO KEY UPDATE), potem sprawdzenie stanu konta na
+--      zablokowanym wierszu i członkostwa (FOR SHARE na wierszu właściciela). Dwie równoległe zmiany różnych
+--      zakładek nie gubią się (R4 w narzedzia/sql-testy, zestaw wyscigi), a równoległe zawieszenie konta albo
+--      odebranie roli właściciela nie przepuści zmiany „w szczelinie” między sprawdzeniem a blokadą (R5, R6).
+--      FOR NO KEY UPDATE, a nie FOR UPDATE: ukryte_zakladki nie jest kluczem, a ta blokada nie koliduje
+--      z FOR KEY SHARE, które Postgres zakłada na wierszu konta przy sprawdzaniu kluczy obcych. Dzięki temu:
+--      (1) brak zakleszczenia z funkcjami, które blokują wiersz członka, a potem dopisują wpis z account_id
+--      (app_revoke_member, app_accept_terms: członek → client_audit_log → FOR KEY SHARE konta) – przy FOR UPDATE
+--      powstawał cykl i 40P01 (R7, R8); (2) zmiana zakładki nie wstrzymuje zapisów modułów z kluczem obcym
+--      do client_accounts (outbox, zapisy i zamówienia szkoleń, oferty, dziennik). Nadal koliduje z równoległą
+--      zmianą zakładki (R4) i z UPDATE przy zawieszeniu konta (R5).
 create or replace function public.app_client_set_tab_visibility(
   p_account uuid, p_actor uuid, p_tab text, p_visible boolean)
 returns text[]
@@ -2848,13 +2870,18 @@ begin
   if p_tab is null or p_tab not in ('praca', 'szkolenia') or p_visible is null then
     raise exception 'tabs: nieprawidłowe pole zakladka albo widoczna' using errcode = 'BP422';
   end if;
-  if not exists (select 1 from public.client_members m
-                 join public.client_accounts a on a.id = m.account_id and a.status = 'active' and a.kind = 'client'
-                  where m.account_id = p_account and m.user_id = p_actor
-                    and m.role = 'owner' and m.status = 'active') then
+  select a.ukryte_zakladki into v_old from public.client_accounts a
+   where a.id = p_account and a.status = 'active' and a.kind = 'client'
+   for no key update;
+  if not found then
     raise exception 'tabs: brak uprawnień';
   end if;
-  select a.ukryte_zakladki into v_old from public.client_accounts a where a.id = p_account for update;
+  perform 1 from public.client_members m
+   where m.account_id = p_account and m.user_id = p_actor and m.role = 'owner' and m.status = 'active'
+   for share;
+  if not found then
+    raise exception 'tabs: brak uprawnień';
+  end if;
   v_new := case when p_visible then array_remove(v_old, p_tab)
                 else array(select distinct z from unnest(v_old || p_tab) as z order by z) end;
   if v_new is distinct from v_old then
@@ -7312,7 +7339,10 @@ grant execute on function
 --       wpis account_tab_visibility_changed bez PII; pracownik, właściciel innego salonu, personel, pracodawca
 --       z rejestracji i właściciel konta zawieszonego → odmowa; nieznana zakładka i NULL → BP422; zapis
 --       z pominięciem funkcji (wartość spoza listy, powtórzenie, NULL w tablicy, preferencja konta pracodawcy)
---       → naruszenie CHECK; authenticated: brak EXECUTE i brak UPDATE kolumny; członkowie salonu (także
+--       → naruszenie CHECK (nazwa client_accounts_ukryte_zakladki_kind_check; SEC-02 nadal client_accounts_check5);
+--       authenticated: brak EXECUTE i brak UPDATE kolumny; członkowie salonu (także
 --       pracownik bez TOTP) czytają stan, salon B – 0 wierszy salonu A; przy ukrytych zakładkach moduły bez
 --       zmian: zapis pracownika na szkolenie, ogłoszenie opublikowane (anon i app_job_offers_page()),
 --       wiadomość kandydata przekazana (app_relay_job_message), „Szukam pracy” zależne tylko od przełącznika.
+--       Równolegle (zestaw wyscigi): R4 – dwie zakładki naraz, obie zmiany zapisane; R5 – zawieszenie konta,
+--       R6 – odebranie roli właściciela w trakcie zmiany → odmowa po zwolnieniu blokady, stan i dziennik bez zmian.

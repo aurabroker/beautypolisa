@@ -11,3 +11,13 @@
  ok   R3 wiersze webhooków pi_RACE = 2
  ok   R4 dwie zakładki naraz: stan końcowy = {praca,szkolenia}
  ok   R4 wpisy w dzienniku = 2
+ ok   R5 zawieszenie w trakcie zmiany: odmowa = 1
+ ok   R5 stan i dziennik bez zmian = suspended {praca,szkolenia} 2
+ ok   R6 odebranie roli w trakcie zmiany: odmowa = 1
+ ok   R6 stan i dziennik bez zmian = {praca,szkolenia} 2
+ ok   R7 odebranie roli (app_revoke_member) w trakcie zmiany: bez zakleszczenia = 0
+ ok   R7 odebranie roli wykonane, wpis member_revoked = revoked 1
+ ok   R7 zmiana zakładki: odmowa = 1
+ ok   R7 stan i dziennik zakładek bez zmian = {praca,szkolenia} 2
+ ok   R8 akceptacja regulaminu (app_accept_terms) w trakcie zmiany: bez zakleszczenia = 0
+ ok   R8 oba zapisy: regulamin, zakładki, dziennik = reg-v2 {szkolenia} 2

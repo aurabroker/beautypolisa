@@ -118,7 +118,7 @@ def taryfa_data_block():
 def oc_skladka_block():
     src = open(SKLADKA_JS, encoding='utf-8').read().rstrip('\n')
     assert '</script' not in src.lower()
-    return ('<!-- = snippets/oc-skladka.js (wycena jak w CRM: kategoriaZRodzajow, skladkaProgramu, wycenaNowej) – globalny OcSkladka -->\n'
+    return ('<!-- = snippets/oc-skladka.js (wycena jak w CRM: skladkaProgramu, wycenaNowej; kategoria taryfy – reguła D45, odstępstwo od kategoriaZRodzajow) – globalny OcSkladka -->\n'
             '<script>\n' + src + '\n</script>')
 
 
