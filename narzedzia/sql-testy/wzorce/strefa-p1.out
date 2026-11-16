@@ -960,7 +960,7 @@ RESET
 
  zone fns exec authenticated | admin_users_guard,app_is_staff,client_account_ids,employer_account_ids,organizer_ids,zabiegi_ids
 
- P1 fns exec service_role |    93
+ P1 fns exec service_role |    94
 
  P1 fns NOT exec by service_role (expect app_purge_audit_log? none) | app_is_staff
 

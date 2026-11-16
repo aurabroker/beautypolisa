@@ -206,6 +206,14 @@
 @media print{.filters,.mini{display:none!important}}
 </style>
 <script>document.documentElement.classList.add('js')</script>
+<!-- Zakładki w Strefie salonu – preferencja widoku, nie kontrola dostępu (zakladki.js): ukryte zakładki z ?zakladki=… (makieta;
+     zapisuje stan) albo z localStorage → html[data-ukryte] jeszcze przed pierwszym malowaniem. Bez JS atrybutu nie ma – wszystko
+     widoczne. Ten sam skrypt w panel.html, dam-prace.html i szkolenia.html. -->
+<script>(function(d){var K='bp-strefa-zakladki',Z=['praca','szkolenia'],P={'bez-pracy':'praca','bez-szkolen':'szkolenia'},u=[],s=null,m=/[?&]zakladki=([^&#]*)/.exec(location.search);
+try{s=JSON.parse(localStorage.getItem(K))}catch(e){}if(!s||typeof s!=='object'){s={}}
+if(m){try{decodeURIComponent(m[1]).split(',').forEach(function(t){t=P[t];if(t&&u.indexOf(t)<0){u.push(t)}})}catch(e){}u.sort(function(a,b){return Z.indexOf(a)-Z.indexOf(b)});s.ukryte=u;try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}}
+else if(Array.isArray(s.ukryte)){s.ukryte.forEach(function(t){if(Z.indexOf(t)>-1&&u.indexOf(t)<0){u.push(t)}})}
+d.setAttribute('data-ukryte',u.join(' '))})(document.documentElement)</script>
 <!-- gen:slownik-css -->
 <style>
 /* ===== Pojęcia ze słownika w treści + dymek z definicją (gen_terminy.py – nie edytuj ręcznie) ===== */

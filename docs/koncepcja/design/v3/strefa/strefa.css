@@ -154,6 +154,57 @@ ul,ol{margin:0}
 .js .is-pending{display:none}
 .badges{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
 
+/* ---------- „Zakładki w Strefie” – preferencja widoku salonu, nie kontrola dostępu (zakladki.js) ----------
+   html[data-ukryte] ustawia skrypt w <head> (localStorage albo ?zakladki=…); bez JS atrybutu nie ma – wszystko widoczne.
+   Ukrywane są tylko wejścia do modułu w Strefie salonu: pozycje menu, kafle i skróty oznaczone [data-zakladka]. */
+html[data-ukryte~="praca"] [data-zakladka="praca"],
+html[data-ukryte~="szkolenia"] [data-zakladka="szkolenia"]{display:none!important}
+/* informacja przy wejściu pod adres ukrytego modułu: z JS tylko przy ukrytej zakładce (i po „Pokaż zakładkę” – potwierdzenie),
+   bez JS – jako wzór z adnotacją */
+.tab-note{display:grid;gap:12px}
+.js [data-zakladka-uwaga]{display:none}
+html.js[data-ukryte~="praca"] [data-zakladka-uwaga="praca"],
+html.js[data-ukryte~="szkolenia"] [data-zakladka-uwaga="szkolenia"],
+.js [data-zakladka-uwaga].is-done{display:grid}
+.tab-note .alert > :not(svg){grid-column:2}
+.tab-note .alert .actions{margin-top:6px}
+.tab-note-ok:focus{outline:none}
+.tab-note-ok:focus-visible{outline:2px solid var(--color-navy);outline-offset:3px}
+/* pulpit: podpowiedź o ukrytych zakładkach (właściciel); pusty pulpit pracownika, gdy obie są ukryte (bez JS – wzór) */
+.zak-hint{display:none}
+html[data-ukryte~="praca"] .zak-hint,html[data-ukryte~="szkolenia"] .zak-hint{display:block}
+.js .zak-pusto{display:none}
+html.js[data-ukryte~="praca"][data-ukryte~="szkolenia"] .zak-pusto{display:grid}
+/* karty modułów obok siebie: ukryta karta nie zostawia pustej kolumny */
+.grid-fit{grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr))}
+/* historia: wzór wpisu tylko bez JS; „Ostatnie zdarzenia” na pulpicie – 3 najnowsze */
+.js .hist-wzor{display:none}
+[data-historia-mini] > li:nth-child(n+4){display:none}
+/* przełącznik: natywny checkbox z role="switch", etykieta obok, stan także tekstem („Widoczna” / „Ukryta”); cel 48 × 28 px */
+.toggles{display:grid}
+.toggle-row{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"label ctrl" "opis ctrl" "info ctrl";gap:4px 28px;align-items:start;padding:16px 0;border-top:1px solid var(--bp-line-gold-soft)}
+.toggle-row:first-child{border-top:0;padding-top:4px}
+.toggle-label{grid-area:label;justify-self:start;font:600 1.25rem/1.3 var(--font-serif);color:var(--color-navy);cursor:pointer}
+.toggle-ctrl{grid-area:ctrl;display:flex;align-items:center;gap:12px;min-height:44px}
+.toggle-opis{grid-area:opis}
+.toggle-info{grid-area:info;color:var(--color-taupe)}
+input.toggle{-webkit-appearance:none;appearance:none;position:relative;flex:none;width:48px;height:28px;margin:0;border:1px solid var(--color-navy);border-radius:14px;background:#fff;cursor:pointer;transition:background-color var(--bp-dur)}
+input.toggle::before{content:"";position:absolute;top:4px;left:4px;width:18px;height:18px;border-radius:50%;background:var(--color-navy);transition:transform var(--bp-dur),background-color var(--bp-dur)}
+input.toggle:checked{background:var(--color-navy)}
+input.toggle:checked::before{background:var(--color-ivory);transform:translateX(20px)}
+input.toggle:disabled{cursor:not-allowed;opacity:.55}
+input.toggle:disabled ~ .toggle-state{color:var(--color-taupe)}
+.toggle-state{min-width:5.5em;font:500 var(--text-sm)/1.3 var(--font-sans);color:var(--color-ink)}
+.toggles-foot{display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--bp-line-gold-soft)}
+@media (max-width:599px){.toggle-row{grid-template-columns:minmax(0,1fr);grid-template-areas:"label" "ctrl" "opis" "info";gap:6px}}
+@media (forced-colors:active){
+  input.toggle{forced-color-adjust:none;border-color:CanvasText;background:Canvas}
+  input.toggle::before{background:CanvasText}
+  input.toggle:checked{border-color:Highlight;background:Highlight}
+  input.toggle:checked::before{background:HighlightText}
+  input.toggle:focus-visible{outline-color:CanvasText}
+}
+
 /* ---------- adnotacje makiety (w produkcji usuwane) ---------- */
 .mock-bar{position:relative;z-index:calc(var(--bp-z-topbar) + 1);display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:8px var(--bp-gutter);background:var(--color-ivory);border-bottom:1px dashed rgba(42,59,104,.55);font-size:var(--text-xs);line-height:1.5;color:var(--color-ink)}
 .mock-bar strong{font:500 var(--text-xs)/1.5 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-navy)}

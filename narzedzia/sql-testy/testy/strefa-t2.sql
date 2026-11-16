@@ -137,9 +137,9 @@ insert into job_offers(account_id, status, title, profession, employment_type, w
  values ('aaaaaaaa-0000-0000-0000-000000000001','pending_review','Kosmetolog (przykład)','kosmetolog','umowa-o-prace','pelny-etat','Kraków','malopolskie',6000,7500,'MONTH',repeat('Opis ogłoszenia przykładowego. ',10));
 select 'A offer', slug ~ '^kosmetolog-krakow-[0-9a-f]{8}$', employer_name, status, content_version from job_offers;
 select 'ERR expected: A edit during review (bait-and-switch)'; update job_offers set description = repeat('Praca za granicą, wpłać zaliczkę. ',10);
-select 'ERR expected: A contacts during review'; insert into job_offer_contacts(offer_id, method, email) select id,'formularz','rekrutacja@salon-przyklad.pl' from job_offers;
+select 'ERR expected: A contacts during review'; insert into job_offer_contacts(offer_id, method, email) select id,'formularz','rekrutacja@salon-przyklad.example' from job_offers;
 update job_offers set status='draft';
-insert into job_offer_contacts(offer_id, method, email) select id,'formularz','rekrutacja@salon-przyklad.pl' from job_offers;
+insert into job_offer_contacts(offer_id, method, email) select id,'formularz','rekrutacja@salon-przyklad.example' from job_offers;
 update job_offers set status='pending_review';
 select 'A version (2)', content_version from job_offers;
 select 'ERR expected: A set published'; update job_offers set status='published';
@@ -147,7 +147,7 @@ select 'ERR expected: A set published_at'; update job_offers set published_at=no
 select 'ERR expected: A call app fn'; select public.app_expire_job_offers();
 reset role;
 -- v1.4 (SEC-05): adres rekrutacyjny potwierdzony linkiem przed moderacją
-select public.app_reply_address_request('aaaaaaaa-0000-0000-0000-000000000001','00000000-0000-0000-0000-00000000000a','rekrutacja@salon-przyklad.pl', encode(digest('tokRA','sha256'),'hex'));
+select public.app_reply_address_request('aaaaaaaa-0000-0000-0000-000000000001','00000000-0000-0000-0000-00000000000a','rekrutacja@salon-przyklad.example', encode(digest('tokRA','sha256'),'hex'));
 select 'reply address confirmed', public.app_reply_address_confirm(encode(digest('tokRA','sha256'),'hex'));
 select 'ERR expected: moderate stale version'; select public.app_moderate_job_offer((select id from job_offers limit 1),'00000000-0000-0000-0000-0000000000f1','publish',1);
 select 'moderate ok', public.app_moderate_job_offer((select id from job_offers limit 1),'00000000-0000-0000-0000-0000000000f1','publish',2);
