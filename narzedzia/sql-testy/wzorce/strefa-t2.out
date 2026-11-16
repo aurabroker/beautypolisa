@@ -1,0 +1,419 @@
+INSERT 0 6
+INSERT 0 1
+INSERT 0 1
+psql:strefa-t2.sql:14: ERROR:  new row for relation "client_accounts" violates check constraint "client_accounts_check4"
+psql:strefa-t2.sql:16: ERROR:  column "oc_risk_groups" of relation "client_policies" does not exist at character 155
+psql:strefa-t2.sql:19: ERROR:  insert or update on table "client_policies" violates foreign key constraint "client_policies_account_id_fkey"
+psql:strefa-t2.sql:20: ERROR:  activate: konto bez aktywnej, opublikowanej polisy
+psql:strefa-t2.sql:21: ERROR:  activate: konto bez aktywnej, opublikowanej polisy
+psql:strefa-t2.sql:22: ERROR:  accept: zaproszenie wygasło albo zostało użyte
+psql:strefa-t2.sql:23: ERROR:  accept: zaproszenie wygasło albo zostało użyte
+psql:strefa-t2.sql:24: ERROR:  invite: brak uprawnień
+psql:strefa-t2.sql:25: ERROR:  accept: zaproszenie wygasło albo zostało użyte
+ ERR expected: rotate A invite by owner B
+
+psql:strefa-t2.sql:26: ERROR:  rotate: zaproszenie nieaktywne
+psql:strefa-t2.sql:27: ERROR:  insert or update on table "client_invitations" violates foreign key constraint "client_invitations_account_id_fkey"
+ rotate by staff ok
+
+psql:strefa-t2.sql:28: ERROR:  rotate: zaproszenie nieaktywne
+ ERR expected: downgrade owner
+
+psql:strefa-t2.sql:29: ERROR:  accept: zaproszenie wygasło albo zostało użyte
+ ERR expected: owner A into admin_users
+
+INSERT 0 1
+psql:strefa-t2.sql:32: ERROR:  insert or update on table "client_policy_documents" violates foreign key constraint "client_policy_documents_policy_id_fkey"
+INSERT 0 1
+SET
+ 00000000-0000-0000-0000-0000000000f1 | {"aal":"aal2"}
+
+INSERT 0 2
+psql:strefa-t2.sql:42: ERROR:  insert or update on table "training_organizers" violates foreign key constraint "training_organizers_account_id_fkey"
+ ERR expected: staff insert salon organiser without account
+
+psql:strefa-t2.sql:43: ERROR:  new row for relation "training_organizers" violates check constraint "training_organizers_check1"
+ ERR expected: staff activates without verification
+
+psql:strefa-t2.sql:44: ERROR:  new row for relation "training_organizers" violates check constraint "training_organizers_check"
+ ERR expected: staff changes account_id (no grant)
+
+psql:strefa-t2.sql:45: ERROR:  permission denied for table training_organizers
+UPDATE 2
+ staff sees organisers (3) |     2
+
+RESET
+psql:strefa-t2.sql:51: error: no rows returned for \gset
+ audit organizer events |     4
+
+ org invite o1 | t
+
+ org invite o2 | t
+
+psql:strefa-t2.sql:55: ERROR:  syntax error at or near ":" at character 87
+ ERR expected: client token as organiser token
+
+psql:strefa-t2.sql:56: ERROR:  organizer accept: zaproszenie wygasło albo zostało użyte
+ accept o1 | 94d101df-b5cc-40f2-9783-1581a49fbdd5
+
+ accept o2 | e79e48aa-cc57-47e4-b1e3-78e4ac04f455
+
+psql:strefa-t2.sql:59: ERROR:  organizer accept: zaproszenie wygasło albo zostało użyte
+UPDATE 0
+UPDATE 0
+psql:strefa-t2.sql:63: ERROR:  gus: brak konta
+psql:strefa-t2.sql:64: ERROR:  gus: brak konta
+INSERT 0 2
+ P1 plan org A | t
+
+ ERR expected: staff as organiser
+
+ t
+
+psql:strefa-t2.sql:68: ERROR:  organizer accept: konto personelu nie może należeć do organizatora
+SET
+ 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+
+ ERR expected: o1 insert published
+
+psql:strefa-t2.sql:73: ERROR:  trainings: nowe szkolenie może być tylko szkicem albo trafić do moderacji
+ ERR expected: o1 insert for org B (RLS)
+
+psql:strefa-t2.sql:74: ERROR:  new row violates row-level security policy for table "trainings"
+ ERR expected: o1 insert URL in description
+
+psql:strefa-t2.sql:75: ERROR:  new row for relation "trainings" violates check constraint "trainings_check7"
+ ERR expected: o1 sets published_at (no grant)
+
+psql:strefa-t2.sql:76: ERROR:  permission denied for table trainings
+INSERT 0 1
+ o1 slug (no reserved term) | szkolenie-d35a9898 | pending_review |               1 |                0
+
+ ERR expected: o1 update capacity
+
+psql:strefa-t2.sql:79: ERROR:  permission denied for table trainings
+ ERR expected: o1 update content during review
+
+psql:strefa-t2.sql:80: ERROR:  trainings: szkolenie jest w moderacji – wycofaj je do szkicu, aby zmienić treść
+ ERR expected: o1 private details evil host
+
+psql:strefa-t2.sql:81: ERROR:  training_private_details: szkolenie jest w moderacji
+ ERR expected: o1 private details during review
+
+psql:strefa-t2.sql:82: ERROR:  training_private_details: szkolenie jest w moderacji
+UPDATE 1
+ ERR expected: evil host in draft
+
+psql:strefa-t2.sql:84: ERROR:  new row for relation "training_private_details" violates check constraint "training_private_details_online_join_url_check"
+ ERR expected: evil host path trick
+
+psql:strefa-t2.sql:85: ERROR:  new row for relation "training_private_details" violates check constraint "training_private_details_online_join_url_check"
+INSERT 0 1
+UPDATE 1
+ o1 version after resubmit (2) |               2
+
+ o1 sees client_accounts (0) |     0
+
+ o1 sees client_policies (0) |     0
+
+ o1 sees job_offers (0) |     0
+
+ o1 sees training_registrations (0) |     0
+
+ {"aal":"aal1"}
+
+ o1 aal1 sees own trainings (0) |     0
+
+RESET
+ ERR expected: moderate training stale version
+
+psql:strefa-t2.sql:98: ERROR:  moderate training: szkolenie zmieniono w trakcie moderacji (wersja 2, oczekiwano 1)
+ moderate training ok | 
+
+ training status | published | t
+
+SET
+ 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+
+UPDATE 1
+ o1 edit published -> pending_review v3 | pending_review |               3
+
+UPDATE 1
+ ERR expected: o1 private details change when published handled later
+
+RESET
+SET
+ 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+
+UPDATE 1
+RESET
+ publish v5 | 
+
+SET
+ 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+
+UPDATE 1
+ o1 private details change on published -> pending_review | pending_review
+
+RESET
+ publish again | 
+
+SET
+ 00000000-0000-0000-0000-00000000000a | {"aal":"aal1"}
+
+ A aal1 sees accounts (0 – TOTP mandatory for owners) |     0
+
+ {"aal":"aal2"}
+
+ A sees accounts (1) |     0
+
+ ERR expected: A reads crm_ref
+
+psql:strefa-t2.sql:126: ERROR:  permission denied for table client_accounts
+ A sees policies (1) |     0
+
+ A sees docs (1) |     0
+
+ A sees storage obj (1) |     1
+
+ A sees members (2) |     0
+
+ A (also organiser S) sees trainings of org A? published only (1) |     1
+
+ ERR expected: A offer with URL
+
+psql:strefa-t2.sql:133: ERROR:  new row violates row-level security policy for table "job_offers"
+ ERR expected: A sets slug (no grant)
+
+psql:strefa-t2.sql:135: ERROR:  permission denied for table job_offers
+psql:strefa-t2.sql:137: ERROR:  new row violates row-level security policy for table "job_offers"
+
+ ERR expected: A edit during review (bait-and-switch)
+
+UPDATE 0
+ ERR expected: A contacts during review
+
+INSERT 0 0
+UPDATE 0
+INSERT 0 0
+UPDATE 0
+
+ ERR expected: A set published
+
+UPDATE 0
+ ERR expected: A set published_at
+
+psql:strefa-t2.sql:146: ERROR:  permission denied for table job_offers
+ ERR expected: A call app fn
+
+psql:strefa-t2.sql:147: ERROR:  permission denied for function app_expire_job_offers
+RESET
+psql:strefa-t2.sql:150: ERROR:  reply address: brak uprawnień
+ reply address confirmed | f
+
+ ERR expected: moderate stale version
+
+psql:strefa-t2.sql:152: ERROR:  moderate: brak ogłoszenia
+psql:strefa-t2.sql:153: ERROR:  moderate: brak ogłoszenia
+
+SET
+ 00000000-0000-0000-0000-00000000000a | {"aal":"aal2"}
+
+UPDATE 0
+
+psql:strefa-t2.sql:160: ERROR:  new row violates row-level security policy for table "job_offers"
+ reserved city dropped from slug |     0
+
+ ERR expected: 6th draft/pending
+
+psql:strefa-t2.sql:163: ERROR:  new row violates row-level security policy for table "job_offers"
+RESET
+psql:strefa-t2.sql:165: ERROR:  moderate: brak ogłoszenia
+UPDATE 0
+SET
+ 00000000-0000-0000-0000-00000000000b | {"aal":"aal2"}
+
+ B (expired policy) still sees account (D-B) (1) |     0
+
+ B sees archival policy (1) |     0
+
+psql:strefa-t2.sql:172: ERROR:  new row violates row-level security policy for table "job_offers"
+INSERT 0 0
+UPDATE 0
+ B sees A contacts (0) |     0
+
+ ERR expected: B writes contact for A offer
+
+INSERT 0 0
+ B update A offer (0 rows)
+
+UPDATE 0
+RESET
+UPDATE 0
+ ERR expected: publish B without NIP check
+
+psql:strefa-t2.sql:180: ERROR:  moderate: brak ogłoszenia
+psql:strefa-t2.sql:181: ERROR:  gus: brak konta
+psql:strefa-t2.sql:182: ERROR:  moderate: brak ogłoszenia
+SET
+ 00000000-0000-0000-0000-0000000000e1 | {"aal":"aal1"}
+
+ E sees policies (0) |     0
+
+ E sees docs (0) |     0
+
+ E sees storage (0) |     0
+
+ E sees contacts (0) |     0
+
+ E sees own salon offers (5) |     0
+
+RESET
+SET
+            | 
+
+ anon offers (2) |     0
+
+ ERR expected: anon account_id
+
+psql:strefa-t2.sql:196: ERROR:  permission denied for table job_offers
+ ERR expected: anon contacts
+
+psql:strefa-t2.sql:197: ERROR:  permission denied for table job_offer_contacts
+ anon trainings (1) |     1
+
+ anon organisers (3) + name |     2
+
+ ERR expected: anon organiser status
+
+psql:strefa-t2.sql:200: ERROR:  permission denied for table training_organizers
+ ERR expected: anon policies
+
+psql:strefa-t2.sql:201: ERROR:  permission denied for table client_policies
+ ERR expected: anon organizer_ids
+
+psql:strefa-t2.sql:202: ERROR:  permission denied for function organizer_ids
+RESET
+ ERR expected: relay to phone-only offer
+
+psql:strefa-t2.sql:206: ERROR:  relay: ogłoszenie niedostępne
+UPDATE 0
+psql:strefa-t2.sql:209: ERROR:  relay: ogłoszenie niedostępne
+
+UPDATE 0
+ purge after send |                        0
+
+
+ relay log has no PII columns | id,offer_id,outbox_id,created_at
+
+psql:strefa-t2.sql:217: ERROR:  register: brak aktywnego członkostwa
+psql:strefa-t2.sql:218: ERROR:  register: brak aktywnego członkostwa
+ ERR expected: reg without notice
+
+psql:strefa-t2.sql:219: ERROR:  register: brak informacji o przekazaniu danych organizatorowi
+SET
+ 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+
+RESET
+ o1 sees contacts via fn (1 registered, waitlist hidden) |     0
+
+SET
+ 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+
+ ERR expected: o1 reads registrations user_id
+
+psql:strefa-t2.sql:223: ERROR:  column "user_id" does not exist at character 8
+ o1 sees registrations (0) |     0
+
+ o1 sees private details (1) |     1
+
+RESET
+SET
+ 00000000-0000-0000-0000-0000000000c2 | {"aal":"aal2"}
+
+ ERR expected: o2 reads contacts via Data API
+
+psql:strefa-t2.sql:228: ERROR:  permission denied for table training_participant_contacts
+ o2 sees org A private details (0) |     0
+
+ o2 sees client_members (0) |     0
+
+RESET
+ ERR expected: capacity by o2
+
+psql:strefa-t2.sql:232: ERROR:  capacity: brak uprawnień
+ capacity 2 by o1 promotes |                         0
+
+ ERR expected: capacity below seats
+
+                         0
+
+ seats    |                0 |        1
+
+SET
+ 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+
+RESET
+ o1 sees contacts via fn (2) |     0
+
+RESET
+ ERR expected: attendance before start
+
+psql:strefa-t2.sql:239: ERROR:  attendance: brak zapisu
+ log organiser view | 
+
+ ERR expected: o2 log on A training
+
+psql:strefa-t2.sql:241: ERROR:  organizer log: brak uprawnień
+SET
+ 00000000-0000-0000-0000-0000000000e1 | {"aal":"aal1"}
+
+ E sees private details (1) |     0
+
+RESET
+UPDATE 0
+ dormant revoked (1) |                          0
+
+SET
+ 00000000-0000-0000-0000-0000000000e1 | {"aal":"aal1"}
+
+ E after revoke sees private details (0) |     0
+
+RESET
+ cancel A by staff | 
+
+
+ contacts after cancel (1) |     0
+
+ cancel event by o1 | 
+
+ training status | cancelled
+
+ ERR expected: truncate audit (postgres)
+
+psql:strefa-t2.sql:258: ERROR:  client_audit_log: TRUNCATE zabroniony
+ ERR expected: update audit
+
+psql:strefa-t2.sql:259: ERROR:  client_audit_log: wpisów nie można zmieniać
+SET
+ ERR expected: service_role delete audit
+
+psql:strefa-t2.sql:261: ERROR:  permission denied for table client_audit_log
+ ERR expected: service_role truncate audit
+
+psql:strefa-t2.sql:262: ERROR:  permission denied for table client_audit_log
+RESET
+ purge audit (0) |                   0
+
+ audit rows |    19
+
+ actors   | staff, user
+
+ fn exec anon | digest,digest,hmac,hmac,crypt,gen_salt,gen_salt,encrypt,decrypt,encrypt_iv,decrypt_iv,gen_random_bytes,gen_random_uuid,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_key_id,armor,armor,dearmor,pgp_armor_headers,admin_users_guard
+
+ fn exec authenticated | admin_users_guard,app_is_staff,armor,armor,client_account_ids,crypt,dearmor,decrypt,decrypt_iv,digest,digest,employer_account_ids,encrypt,encrypt_iv,gen_random_bytes,gen_random_uuid,gen_salt,gen_salt,hmac,hmac,organizer_ids,pgp_armor_headers,pgp_key_id,pgp_pub_decrypt,pgp_pub_decrypt,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt_bytea,pgp_pub_decrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_encrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_sym_decrypt_bytea,pgp_sym_encrypt,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_encrypt_bytea,zabiegi_ids
+
+ tables with RLS and no policy | phone_verifications,outbox_emails,newsletter_subscribers,candidate_ad_contact_log,client_policy_reminders,job_offer_relay_log,training_participant_contacts,sms_send_log,candidate_blocks,candidate_ad_views_daily
+
+ job_applications gone | t
+

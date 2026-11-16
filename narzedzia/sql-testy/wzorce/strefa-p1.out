@@ -1,0 +1,1053 @@
+CREATE SCHEMA
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+GRANT
+GRANT
+REVOKE
+INSERT 0 15
+INSERT 0 2
+INSERT 0 2
+INSERT 0 2
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+INSERT 0 2
+ t
+
+ t
+
+ t
+
+ t
+
+ --- 0. defaults ---
+
+ ok   flag szukam_pracy on at launch (P1a) = true
+
+ ok   promotion on, 21 days, 10000/1000 = true/21/10000.00/1000.00
+
+ ok   nip checksum Aura Expert NIP from L1 = true
+
+ ok   nip checksum wrong digit = false
+
+ ok   nip checksum letters = false
+
+ --- 1. employer registration ---
+
+SET
+ ok   invalid NIP (BP422, no value in message) [BP422]
+
+ ok   staff cannot register employer [P0001]
+
+ ok   display name with URL [BP422]
+
+ ok   SEC-02 reserved display name (ERGO Hestia) [BP422]
+
+ ok   D1 registers = true
+
+ ok   D1 second pending registration [P0001]
+
+ ok   SEC-03 same NIP as pending D1: neutral (pending account, no error) = true
+
+ ok   SEC-03 NIP of active client salon A: neutral (pending account, no error) = true
+
+ ok   D2 registers own NIP = true
+
+RESET
+ ok   SEC-03 pending accounts do not reserve NIP (2 pending for D1 NIP) = 2
+
+SET
+ ok   GUS result for other NIP [P0001]
+
+ ok   GUS bad actor [P0001]
+
+ ok   GUS manual by client user [P0001]
+
+ ok   GUS active without REGON (CHECK) [23514]
+
+ ok   GUS service error -> no change = false
+
+ ok   activate D1 before GUS [P0001]
+
+ ok   GUS active D1 = true
+
+RESET
+ ok   D1 legal name prefilled from GUS = Studio Przykładowe sp. z o.o. / Poznań
+
+SET
+ ok   activate D1 without phone [P0001]
+
+RESET
+ --- 2. SMS ---
+
+SET
+ ok   second code within 60 s [BP429]
+
+ ok   wrong code -> false (attempt counted) = false
+
+RESET
+ ok   attempts after wrong code = 1
+
+SET
+ ok   other user uses my verification id [P0001]
+
+ ok   correct code = true
+
+ ok   code reuse [P0001]
+
+ f
+ f
+ f
+ f
+ f
+
+ ok   6th attempt after 5 wrong [P0001]
+
+RESET
+UPDATE 1
+SET
+ t
+
+ t
+
+ ok   4th send to same number in 24 h [BP429]
+
+RESET
+INSERT 0 1
+SET
+ ok   3rd account on same number (neutral BP429, SEC-11) [BP429]
+
+RESET
+DELETE 1
+UPDATE 4
+UPDATE 4
+SET
+ ok   d3 send #1 = true
+
+RESET
+INSERT 0 4
+SET
+ ok   6th send per user per day [BP429]
+
+RESET
+UPDATE 1
+SET
+ ok   global daily SMS cap [BP429]
+
+RESET
+UPDATE 1
+INSERT 0 1
+SET
+ t
+
+RESET
+DELETE 1
+ ok   SEC-04 phone_verifications cascade-deleted with user = 0
+
+ ok   SEC-04 global count unchanged after user deletion = 10
+
+SET
+ t
+
+RESET
+UPDATE 2
+SET
+ t
+
+ ok   SEC-04 per-number limit still counts the deleted user's send [BP429]
+
+RESET
+UPDATE 1
+SET
+ ok   SEC-11 hourly cap [BP429]
+
+RESET
+UPDATE 1
+INSERT 0 10
+SET
+ ok   SEC-11 per-prefix hourly limit [BP429]
+
+RESET
+INSERT 0 12
+SET
+ ok   SEC-11 conversion breaker (>=20 settled sends, <30% verified) [BP429]
+
+RESET
+DELETE 22
+ ok   no phone number or code stored in clear = 0
+
+ --- 3. employer activation & RLS ---
+
+SET
+ active
+
+ ok   activate D1 = active
+
+ ok   SEC-03 other pending registration for D1 NIP closed on activation = closed
+
+ ok   activate D2 without GUS [P0001]
+
+ ok   activate client salon via employer fn [P0001]
+
+ ok   client activation fn on employer account [P0001]
+
+ ok   D1 owner invites employee (MVP: no team) [P0001]
+
+ ok   GUS A = true
+
+ ok   GUS B = true
+
+RESET
+ ok   client A legal name kept from staff/GUS only if empty = Salon Przykładowy A sp. z o.o.
+
+INSERT 0 1
+INSERT 0 1
+SET
+ t
+
+ ok   SEC-03 activation with NIP of active account -> conflict = conflict
+
+RESET
+DELETE 1
+ ok   SEC-03 conflict: pending account stays pending = pending
+
+ ok   SEC-03 conflict: e-mail to owner of existing account + team = employer_nip_attempt>user:00000000-0000-0000-0000-00000000000a,employer_nip_conflict_team>team:pracodawcy
+
+SET
+ ok   SEC-02 D1 (GUS only) cannot read Szukam pracy = false
+
+ ok   SEC-02 trust set by employer user [P0001]
+
+ ok   SEC-02 unknown trust method (CHECK) [23514]
+
+ 
+
+ ok   SEC-02 D1 trusted after staff callback = true
+
+ ok   SEC-02 client salon A trusted ex officio (owner with phone) = true
+
+RESET
+ ok   SEC-02 trust approves display name = true
+
+SET
+ 
+
+ ok   D1 employer_account_ids (1) = 1
+
+ ok   D1 client_account_ids owner (1) = 1
+
+ ok   D1 sees own account only = employer:Studio Przykładowe
+
+ ok   D1 sees 0 policies of salons = 0
+
+ ok   D1 sees own GUS record (2 rows: error + active) = 2
+
+ ok   D1 sees own phone last3 = 001
+
+ ok   D1 reads phone_hmac [42501]
+
+ ok   D1 reads phone_verifications [42501]
+
+ ok   D1 writes user_phones [42501]
+
+ ok   D1 sets employer_verified_at [42501]
+
+ ok   D1 reads app_settings (0, staff only) = 0
+
+ ok   D1 promotions (staff only) 0 = 0
+
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+ ok   D1 sees own offer = 1
+
+ 
+
+ ok   D1 aal1 employer_account_ids (0) = 0
+
+ ok   D1 aal1 inserts offer (RLS) [42501]
+
+ 
+
+ ok   D2 pending sees own account (0 – not active) = 0
+
+ ok   D2 pending inserts offer [42501]
+
+ 
+
+ ok   owner B (GUS ok, no phone) employer ids (0) = 0
+
+ ok   owner B without phone inserts offer [42501]
+
+ ok   owner B sees D1 draft offer (0) = 0
+
+ 
+
+ ok   owner A (GUS + phone) employer ids (1) = 1
+
+INSERT 0 1
+ ok   owner A sees own offer only (D1 offer in review hidden) = 1
+
+ ok   owner A inserts offer for D1 [42501]
+
+ ok   owner A sees D1 GUS records (0) = 0
+
+ 
+
+ ok   employee A employer ids (0) = 0
+
+ 
+
+ ok   organiser employer ids (0) = 0
+
+RESET
+ --- 4. offers: 21 days, GUS freshness, promotion ---
+
+SET
+ ok   SEC-05 publish with unconfirmed recruitment address [P0001]
+
+ 
+
+ ok   SEC-05 wrong token does not confirm = false
+
+ ok   SEC-05 confirm link = true
+
+ ok   SEC-05 token single use = false
+
+RESET
+UPDATE 1
+SET
+ ok   publish with stale GUS check [P0001]
+
+ t
+
+ 
+
+ ok   publish without active promotion [BP409]
+
+ ok   agent changes promotion [P0001]
+
+ ok   admin enables promotion without decision ref [P0001]
+
+ 
+
+ 
+
+ ok   publish D1 offer = published
+
+RESET
+ ok   offer valid exactly 21 days = 21 days
+
+ ok   CHECK: offer longer than 21 days [23514]
+
+SET
+ 
+
+ ok   anon sees published D1 offer (1) = 1
+
+ ok   anon sees employer name snapshot = Studio Przykładowe
+
+RESET
+SET
+ ok   SEC-19 relay message with URL (BP422) [BP422]
+
+ ok   relay to confirmed address = true
+
+RESET
+UPDATE 1
+SET
+ ok   SEC-05 relay refused when address not confirmed [P0001]
+
+RESET
+UPDATE 1
+ ok   SEC-19 CHECK: phone number in offer text [23514]
+
+ ok   SEC-19 CHECK: e-mail in offer text [23514]
+
+ ok   SEC-19 salary range and date are not a phone number = true
+
+UPDATE 1
+SET
+ ok   expiry job (1) = 1
+
+RESET
+ ok   offer expired = expired
+
+SET
+ ok   GUS inactive D1 = false
+
+ ok   GUS inactive salon B = false
+
+RESET
+ ok   D1 suspended, B active without employer verification = suspended:null,active:null
+
+SET
+ t
+
+ ok   manual verification by agent when GUS down = true
+
+RESET
+ ok   manual record source = personel
+
+UPDATE 1
+ --- 5. job seekers ---
+
+CREATE FUNCTION
+GRANT
+SET
+ ok   seeker without phone [P0001]
+
+RESET
+INSERT 0 3
+SET
+ ok   seeker under 18 [P0001]
+
+ ok   staff as seeker [P0001]
+
+ ok   ad before seeker account [P0001]
+
+ 
+
+ 
+
+ ok   URL in description (BP422, validated before write) [BP422]
+
+ ok   phone in description (BP422, validated before write) [BP422]
+
+ ok   surname in first_name (BP422, validated before write) [BP422]
+
+ ok   PRIV-12 error message without the value = BP422 szukam-pracy: nieprawidłowe pole description
+
+ ok   one ad per seeker: save again updates same row = true
+
+RESET
+ ok   ads total (2) = 2
+
+ ok   ad1 version 2 after edit = 2
+
+ ok   PRIV-07 city optional (voivodeship only) = true
+
+SET
+ 
+
+ ok   seeker 1 sees own ad only (cross-tenant) = Łucja
+
+ ok   seeker reads seeker_id [42501]
+
+ ok   seeker reads moderation_note [42501]
+
+ ok   seeker inserts ad directly [42501]
+
+ ok   seeker updates own ad directly [42501]
+
+ ok   seeker sees own seeker row = 1
+
+ ok   seeker employer ids (0) = 0
+
+ ok   seeker sees client accounts (0) = 0
+
+ 
+
+ ok   employer sees pending ads (0) = 0
+
+RESET
+SET
+ ok   moderate stale version [P0001]
+
+ ok   moderate by employer [P0001]
+
+ 
+
+RESET
+ ok   seeker ad valid exactly 21 days = 21 days
+
+ ok   CHECK: seeker ad longer than 21 days [23514]
+
+SET
+ 
+
+ ok   SEC-01 employer token + Data API: 0 rows (no employer policy) = 0
+
+ ok   employer reads seeker_id [42501]
+
+ ok   SEC-01 employer calls page function directly [42501]
+
+ ok   employer sees job_seekers (0) = 0
+
+ ok   employer sees seekers phones (0) = 0
+
+RESET
+SET
+ ok   trusted employer D1 page: 1 card (pending ad2 hidden) = 1
+
+ ok   card fields, ad_ref not row id = Łucja/Wieliczka/stylistka-paznokci/true
+
+ ok   filter by voivodeship (pomorskie: 0) = 0
+
+ ok   cursor after last card: 0 = 0
+
+ ok   salon A owner (client, phone) page: 1 = 1
+
+ ok   salon B owner without phone [P0001]
+
+ ok   employee A [P0001]
+
+ ok   pending employer D2 [P0001]
+
+ ok   D1 user for salon A account [P0001]
+
+RESET
+UPDATE 1
+INSERT 0 1
+SET
+ ok   quota: last card of the day = 1
+
+ ok   quota exhausted -> BP429 [BP429]
+
+RESET
+ ok   alert to team once = 1
+
+UPDATE 1
+DELETE 2
+SET
+ ok   hide invalid NIP [BP422]
+
+                             1
+
+ ok   PRIV-07 D1 (hidden NIP) page: 0 = 0
+
+ ok   PRIV-07 salon A still sees: 1 = 1
+
+                             0
+
+RESET
+SET
+ 
+
+ ok   seeker 2 sees only own pending ad = Ewa:pending_review
+
+ 
+
+ ok   staff sees moderation queue (2) = 2
+
+RESET
+SET
+ 
+
+ ok   anon reads candidate_ads [42501]
+
+ ok   anon reads job_seekers [42501]
+
+ ok   anon reads user_phones [42501]
+
+ ok   anon reads employer_verifications [42501]
+
+ ok   anon calls employer_account_ids [42501]
+
+RESET
+SET
+ ok   owner B (no phone) contacts [P0001]
+
+ ok   employee contacts [P0001]
+
+ ok   D1 contacts as salon A [P0001]
+
+ ok   contact by row id instead of ad_ref [P0001]
+
+ ok   contact to pending ad [P0001]
+
+ ok   SEC-06 phone number in message [BP422]
+
+ ok   SEC-06 messenger in message [BP422]
+
+ ok   SEC-05 reply_to not confirmed for account [BP422]
+
+ ok   D1 contacts seeker 1 = true
+
+ ok   D1 second message to same ad [P0001]
+
+ 
+
+RESET
+ ok   SEC-06 risk phrase: message held (not sent) = true/true
+
+SET
+ ok   release by employer user [P0001]
+
+ 
+
+RESET
+ ok   SEC-06 rejected held message anonymised = anonymizedfailed
+
+ ok   outbox recipient is marker, no e-mail = user:00000000-0000-0000-0000-0000000000a1
+
+ ok   outbox payload keys = contact_id,employer_city,employer_legal_name,employer_name,employer_nip,held,message,reply_to,reply_to_domain
+
+ ok   employer name in e-mail = approved display name = Studio Przykładowe
+
+UPDATE 1
+SET
+ ok   purge after send (1) = 1
+
+RESET
+ ok   outbox anonymised = anonymized{},anonymized{}
+
+SET
+ ok   DSA-13 report without good-faith statement [BP422]
+
+ ok   DSA-13 report with too short justification [BP422]
+
+ ok   seeker reports message (good faith, optional e-mail and name) = true
+
+ ok   employer reports ad (by ad_ref) = true
+
+ ok   report bad reason [BP422]
+
+ ok   SEC-06 seeker blocks D1 via contact link = true
+
+ ok   SEC-06 other user cannot use the link = false
+
+ ok   SEC-06 blocked employer page: 0 = 0
+
+RESET
+ ok   report points to employer D1 = true
+
+ ok   DSA-13 good_faith stored = true
+
+UPDATE 2
+INSERT 0 2
+SET
+ ok   SEC-06 messaging paused after 2 justified reports [P0001]
+
+RESET
+DELETE 2
+UPDATE 2
+ --- 5b. flag off ---
+
+SET
+ ok   agent disables flag [P0001]
+
+ 
+
+ ok   OFF save [BP404]
+
+ ok   OFF contact [BP404]
+
+ ok   OFF moderate [BP404]
+
+ ok   OFF register seeker [BP404]
+
+ ok   OFF employer page [BP404]
+
+RESET
+SET
+ 
+
+ ok   OFF employer sees (0) = 0
+
+ 
+
+ ok   OFF staff sees (0) = 0
+
+ 
+
+ ok   OFF author still sees own ad (1) = 1
+
+RESET
+SET
+ ok   OFF author deletes ad = true
+
+ 
+
+ 
+
+RESET
+ ok   seeker 2 gone = 0
+
+UPDATE 1
+SET
+ ok   purge: expire only (0 deleted) = 0
+
+RESET
+ ok   ad1 expired = expired
+
+SET
+ ok   employer page: expired ad hidden (0) = 0
+
+RESET
+SET
+ ok   renew expired ad = save -> moderation = true
+
+ 
+
+RESET
+ ok   PRIV-07 new ad_ref after re-publication = true
+
+SET
+ ok   remove without reasons [P0001]
+
+ 
+
+ ok   save after removal (appeal via staff) [P0001]
+
+RESET
+ --- 6. organiser plans ---
+
+SET
+ 
+
+INSERT 0 1
+ ok   organiser sets plan_valid_until (no grant) [42501]
+
+ ok   organiser inserts own plan [42501]
+
+RESET
+SET
+ ok   publish training without plan [P0001]
+
+ ok   plan set by organiser user [P0001]
+
+ ok   unknown plan code [P0001]
+
+ ok   plan start in the past [P0001]
+
+RESET
+SET
+ 
+
+INSERT 0 1
+RESET
+SET
+ ok   BIZ-15 publish training starting after plan end [P0001]
+
+RESET
+ ok   1-month plan price 1000 net = 1000.00
+
+ ok   CHECK: 12m plan with wrong period [23514]
+
+SET
+ 
+
+RESET
+ ok   training plan_valid_until = plan end = true
+
+SET
+ 
+
+ ok   anon sees training with active plan (1) = 1
+
+ ok   anon reads plan_valid_until [42501]
+
+ ok   anon reads organizer_plans [42501]
+
+RESET
+SET
+RESET
+ ok   12-month plan price 10000 net = 10000.00
+
+ ok   contiguous plans: visible until end of 12m plan = true
+
+SET
+ 
+
+ ok   organiser 1 sees own plans (2) = 2
+
+ 
+
+ ok   organiser 2 sees org 1 plans (0) = 0
+
+ 
+
+ ok   salon owner sees plans (0) = 0
+
+ 
+
+ ok   staff sees plans (2) = 2
+
+RESET
+INSERT 0 1
+SET
+ ok   employer account registers for training [P0001]
+
+ ok   salon owner registers = registered
+
+ 
+
+ 
+
+ ok   register after plan cancelled [P0001]
+
+RESET
+SET
+ 
+
+ ok   anon sees training after plan cancelled (0) = 0
+
+RESET
+SET
+ 
+
+ ok   organiser still sees own trainings (2, incl. pending tr2) = 2
+
+ ok   SEC-01 organiser reads participants via Data API [42501]
+
+RESET
+SET
+ ok   organiser sees participant via logged function (1) = 1
+
+ ok   organiser 2 reads participants of org 1 [P0001]
+
+ ok   staff reads participants (minimisation) [P0001]
+
+RESET
+ ok   participants view logged = 1
+
+SET
+RESET
+SET
+ 
+
+ ok   anon sees training with new plan (1) = 1
+
+RESET
+UPDATE 1
+SET
+ 
+
+ ok   anon after plan_valid_until passed (0) = 0
+
+RESET
+SET
+ ok   daily sync restores from active plan = true
+
+ 
+
+ ok   plan without active promotion [BP409]
+
+ 
+
+RESET
+SET
+ 
+
+ ok   anon sees training after sync (1) = 1
+
+RESET
+ --- 7. retention ---
+
+UPDATE 1
+UPDATE 2
+UPDATE 1
+SET
+ ok   purge verification data > 0 = true
+
+RESET
+ ok   D2 unfinished registration closed, GUS name cleared = closed:null
+
+ ok   NIP of closed registration free again = 0
+
+ ok   reporter e-mails cleared = 0
+
+ ok   old SMS rows gone = 0
+
+UPDATE 2
+SET
+                           2
+
+RESET
+ ok   PRIV-14 report details anonymised 12 months after handling = 2
+
+INSERT 0 1
+SET
+ 
+
+RESET
+UPDATE 1
+SET
+                       0
+
+RESET
+ ok   PRIV-14 pending ad without decision 30 days deleted = 0
+
+ ok   PRIV-14 author informed = 1
+
+UPDATE 1
+SET
+                     0
+
+RESET
+ ok   PRIV-14 offer row deleted 12 months after end = 0
+
+UPDATE 1
+SET
+                           0
+
+RESET
+ ok   PRIV-14 inactive seeker warned = 1
+
+UPDATE 1
+SET
+ ok   PRIV-14 inactive seeker closed after 30 days = 1
+
+RESET
+ ok   PRIV-14 seeker row gone = 0
+
+INSERT 0 1
+UPDATE 1
+SET
+                           1
+
+RESET
+ ok   PRIV-14 GUS rows of account closed > 12 months deleted = 0
+
+SET
+ 
+
+ ok   SEC-16 staff changes legal_name of employer account [P0001]
+
+RESET
+UPDATE 1
+SET
+ 
+
+UPDATE 1
+RESET
+ ok   SEC-16 NIP change resets GUS and trust = true
+
+ ok   SEC-16 identity change logged without values = {"nip": true, "legal_name": false, "display_name": false}
+
+SET
+RESET
+UPDATE 1
+SET
+                        2
+
+RESET
+ ok   BIZ-15 plan without invoice cancelled after 14 days = cancelled
+
+SET
+ ok   BIZ-15 invoice by organiser user [P0001]
+
+ 
+
+RESET
+UPDATE 1
+SET
+ ok   BIZ-15 register for training starting after plan end [P0001]
+
+                        2
+
+RESET
+ --- 8. privileges ---
+
+ FAIL fn exec anon (none) = admin_users_guard
+
+ zone fns exec authenticated | admin_users_guard,app_is_staff,client_account_ids,employer_account_ids,organizer_ids,zabiegi_ids
+
+ P1 fns exec service_role |    93
+
+ P1 fns NOT exec by service_role (expect app_purge_audit_log? none) | app_is_staff
+
+ SECURITY DEFINER in zone | app_is_staff,app_purge_audit_log,client_account_ids,client_audit_staff_change,employer_account_ids,organizer_ids
+
+ functions without search_path | anonymize_lead,admin_users_guard,app_create_lead
+
+ tables with RLS and no policy | candidate_ad_contact_log,candidate_ad_views_daily,candidate_blocks,client_policy_reminders,job_offer_relay_log,newsletter_subscribers,outbox_emails,phone_verifications,sms_send_log,training_participant_contacts
+
+ tables without RLS | (none)
+
+ ok   anon column grants on P1 tables (0) = 0
+
+ ok   authenticated grant on secrets columns (0) = 0
+
+ ok   policies for public role (0) = 0
+
+ ok   no candidate profile/CV/application tables = 0
+
+ TEST-21 owners of SECURITY DEFINER helpers (rolsuper/bypassrls) | postgres:true/true
+
+ --- 9. suspension ---
+
+SET
+ 
+
+UPDATE 1
+INSERT 0 1
+UPDATE 1
+RESET
+SET
+ 
+
+ t
+
+RESET
+SET
+ 
+
+ ok   before suspension anon sees salon A offer (1) = 1
+
+RESET
+SET
+ ok   suspend without reason [BP422]
+
+ 
+
+RESET
+SET
+ 
+
+ ok   SEC-08 after suspension anon sees 0 offers of salon A = 0
+
+RESET
+ ok   SEC-08 pending relay to suspended account cleared = 0
+
+ ok   SEC-08 owner informed with reason = 1
+
+ ok   SEC-08 suspension logged with staff actor = staff:00000000-0000-0000-0000-0000000000f2
+
+UPDATE 1
+SET
+ 
+
+RESET
+ ok   SEC-08 seeker suspended, ad removed with reason = suspended/removed/true
+
+ --- 10. NIP takeover ---
+
+SET
+ t
+
+RESET
+INSERT 0 1
+SET
+ 
+
+ ok   untrusted pending account vs active untrusted D1 -> conflict = conflict
+
+ 
+
+ ok   trusted firm takes NIP over from untrusted account = active
+
+RESET
+ ok   previous untrusted D1 account closed = closed
+
+ ok   one active account per NIP = 1
+
+ audit P1 actions | account_activated,candidate_ad_deleted,candidate_ad_submitted,employer_gus_checked,employer_registered,job_seeker_closed,job_seeker_registered,organizer_plan_cancelled,organizer_plan_set,phone_verified,promotion_changed
+
