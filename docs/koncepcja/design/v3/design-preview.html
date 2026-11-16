@@ -274,6 +274,15 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
 .tariff-table td{white-space:nowrap;color:var(--color-ink)}
 .tariff-note{padding-bottom:22px;font-size:var(--text-sm);color:var(--color-ink)}
 
+/* [makieta-v3.html:771, 773–778] nagłówek tabeli taryfy (details.tariff-table > summary) – selektory .faq jak w źródle */
+.faq summary,.tariff-table summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:18px;cursor:pointer;color:var(--color-navy)}
+.tariff-table summary{min-height:56px;font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase}
+.faq summary::-webkit-details-marker,.tariff-table summary::-webkit-details-marker{display:none}
+/* krzyżyk z dwóch linii – nie trafia do nazwy dostępnej */
+.faq summary::after,.tariff-table summary::after{content:"";flex:none;width:16px;height:16px;background:linear-gradient(currentColor,currentColor) center/100% 1px no-repeat,linear-gradient(currentColor,currentColor) center/1px 100% no-repeat;transition:transform var(--bp-dur-2) var(--ease-lux)}
+.faq details[open] summary::after,.tariff-table[open] summary::after{transform:rotate(45deg)}
+.faq summary:hover,.tariff-table summary:hover{text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:1px;text-underline-offset:6px}
+
 /* [makieta-v3.html:601–647] wyszukiwarka zabiegów, chipy, sumy, zakres dodatkowy */
 /* wyszukiwarka zabiegów (ARIA 1.2 combobox + listbox): lista wyników na nieprzezroczystym ivory – nie jest taflą szkła */
 .zab-search{display:grid;gap:8px;margin-bottom:8px}
@@ -412,10 +421,11 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
   .steps{grid-template-columns:minmax(0,1fr)}
 }
 
-/* [makieta-v3.html:861, 865–866] szkło na telefonie */
+/* [makieta-v3.html:861, 865–866, 882] szkło na telefonie, słowo rozdziału („Epilog”) w eyebrow ukryte */
 @media (max-width:767px){
   .glass{-webkit-backdrop-filter:blur(var(--blur-glass-mobile)) saturate(140%);backdrop-filter:blur(var(--blur-glass-mobile)) saturate(140%)}
   .glass--dark{-webkit-backdrop-filter:blur(var(--blur-glass-mobile)) saturate(120%);backdrop-filter:blur(var(--blur-glass-mobile)) saturate(120%)}
+  .eyebrow .no--wide{display:none}
 }
 
 /* [makieta-v3.html:886–915] responsywność < 640 / 480 / 400 / 360, pointer:coarse */
@@ -688,7 +698,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <li class="kat-probka"><span class="kat-kolor kat-k--navy"></span><div class="kat-opis"><strong>Navy</strong><code>--color-navy</code><span>#2A3B68</span><span>Nagłówki, przyciski, ikony na jasnym, obwódka fokusu.</span><span class="kat-kontrast">Na ivory 9,87:1 · na parchment 8,73:1</span></div></li>
       <li class="kat-probka"><span class="kat-kolor kat-k--navy-deep"></span><div class="kat-opis"><strong>Navy deep</strong><code>--color-navy-deep</code><span>#1E2B4F</span><span>Najechanie na <code>.btn-navy</code>.</span><span class="kat-kontrast">Ivory na navy deep 12,54:1</span></div></li>
       <li class="kat-probka"><span class="kat-kolor kat-k--ink"></span><div class="kat-opis"><strong>Ink</strong><code>--color-ink</code><span>#1B2233</span><span>Tekst akapitów.</span><span class="kat-kontrast">Na ivory 14,35:1 · na parchment 12,70:1</span></div></li>
-      <li class="kat-probka"><span class="kat-kolor kat-k--taupe"></span><div class="kat-opis"><strong>Taupe</strong><code>--color-taupe</code><span>#5F574D</span><span>Podpisy, etykiety, eyebrow na kryjącym tle.</span><span class="kat-kontrast">Na ivory 6,42:1 · na parchment 5,68:1</span></div></li>
+      <li class="kat-probka"><span class="kat-kolor kat-k--taupe"></span><div class="kat-opis"><strong>Taupe</strong><code>--color-taupe</code><span>#5F574D</span><span>Eyebrow i&nbsp;etykiety sekcji tylko na kryjącym tle; podpisy drugorzędne także na szkle (kontrast ≥&nbsp;4,5:1 na wyrenderowanym tle).</span><span class="kat-kontrast">Na ivory 6,42:1 · na parchment 5,68:1</span></div></li>
       <li class="kat-probka"><span class="kat-kolor kat-k--ivory"></span><div class="kat-opis"><strong>Ivory</strong><code>--color-ivory</code><span>#F7F3EC</span><span>Tło bazowe, kryjące panele, tekst na ciemnym.</span><span class="kat-kontrast">Na navy 9,87:1 · na midnight 15,27:1</span></div></li>
       <li class="kat-probka"><span class="kat-kolor kat-k--parchment"></span><div class="kat-opis"><strong>Parchment</strong><code>--color-parchment</code><span>#EDE5D8</span><span>Tła scen bez zdjęcia, najechanie, bieżąca pozycja menu, akapity na ciemnym.</span><span class="kat-kontrast">Na midnight 13,51:1 · na navy 8,73:1</span></div></li>
       <li class="kat-probka"><span class="kat-kolor kat-k--gold"></span><div class="kat-opis"><strong>Gold</strong><code>--color-gold</code><span>#B8975A</span><span>Tylko linie, ramy i&nbsp;ozdobniki na jasnym.</span><span class="kat-kontrast">Na ivory 2,49:1 – tylko dekor, nigdy tekst</span></div></li>
@@ -759,20 +769,20 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span><strong>Opieka medyczna</strong><code>lux-opieka-medyczna</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-kalkulator"/></svg><span><strong>Kalkulator składki</strong><code>lux-kalkulator</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-kosmetolog"/></svg><span><strong>Kosmetolog</strong><code>lux-kosmetolog</code></span></li>
-      <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-fryzjer"/></svg><span><strong>Fryzjer i barber</strong><code>lux-fryzjer</code></span></li>
+      <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-fryzjer"/></svg><span><strong>Fryzjer i&nbsp;barber</strong><code>lux-fryzjer</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-podolog"/></svg><span><strong>Podolog</strong><code>lux-podolog</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-linergistka"/></svg><span><strong>Linergistka – makijaż permanentny</strong><code>lux-linergistka</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-stylistka-paznokci"/></svg><span><strong>Stylistka paznokci</strong><code>lux-stylistka-paznokci</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-tatuazysta"/></svg><span><strong>Tatuażysta</strong><code>lux-tatuazysta</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-gabinet-kosmetyczny"/></svg><span><strong>Gabinet kosmetyczny</strong><code>lux-gabinet-kosmetyczny</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-salon-masazu"/></svg><span><strong>Salon masażu</strong><code>lux-salon-masazu</code></span></li>
-      <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg><span><strong>Dokumenty i OWU</strong><code>lux-dokumenty</code></span></li>
-      <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-doradca"/></svg><span><strong>Rozmowa z doradcą</strong><code>lux-doradca</code></span></li>
+      <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg><span><strong>Dokumenty i&nbsp;OWU</strong><code>lux-dokumenty</code></span></li>
+      <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-doradca"/></svg><span><strong>Rozmowa z&nbsp;doradcą</strong><code>lux-doradca</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-szkoda"/></svg><span><strong>Zgłoszenie szkody</strong><code>lux-szkoda</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-szybka-wycena"/></svg><span><strong>Szybka wycena</strong><code>lux-szybka-wycena</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg><span><strong>Bezpieczeństwo danych</strong><code>lux-bezpieczenstwo</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-wskaznik"/></svg><span><strong>Wskaźnik</strong><code>lux-wskaznik</code></span></li>
-      <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-w-zakresie"/></svg><span><strong>W zakresie ochrony</strong><code>lux-w-zakresie</code></span></li>
+      <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-w-zakresie"/></svg><span><strong>W&nbsp;zakresie ochrony</strong><code>lux-w-zakresie</code></span></li>
       <li><svg class="lux-icon" aria-hidden="true"><use href="#lux-serce"/></svg><span><strong>Serce BeautyPolisa</strong><code>lux-serce</code></span></li>
     </ul>
     <h3 class="kat-podtytul">Rozmiary i&nbsp;grubość kreski</h3>
@@ -829,13 +839,13 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <div class="kat-stan"><button type="button" class="btn btn-ghost-dark is-focus">Zgłoś szkodę</button><span class="kat-stan-opis">fokus</span></div>
         <div class="kat-stan"><a class="link-lux" href="#ciemne">Jak to działa</a><span class="kat-stan-opis">link na ciemnym – gold light</span></div>
       </div>
-      <p class="kat-stan-opis">Stan nieaktywny (<code>aria-disabled="true"</code>) – w&nbsp;panelu wyniku kalkulatora, sekcja V.</p>
+      <p class="kat-stan-opis">Stan nieaktywny (<code>aria-disabled="true"</code>) – w&nbsp;panelu wyniku kalkulatora, sekcja VI.</p>
     </div>
   </div>
 </section>
 
-<!-- V · SZKŁO, KARTY, FORMULARZE (jedna scena marmuru) -->
-<div class="scene scene--marble">
+<!-- V · SZKŁO NA JEDWABIU – jasna księga produktów na ciemnym jedwabiu, jak w makiecie (decyzja zleceniodawcy 12.11.2026, makieta-v3.html:483) -->
+<div class="scene scene--silk dark">
 <section class="kat-sekcja" id="szklo" aria-labelledby="szklo-t">
   <div class="container kat-stos">
     <div class="section-head">
@@ -844,41 +854,29 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <p class="lead">Szkło leży zawsze na zdjęciu. W&nbsp;widoku są najwyżej 3&nbsp;tafle z&nbsp;rozmyciem (2 na telefonie); kafelki w&nbsp;tafli rozdzielają linie włoskowe, nie osobne karty.</p>
     </div>
     <div>
-      <p class="kat-podpis">Księga produktów · <code>.ledger.ledger--light.glass.glass--strong</code></p>
+      <p class="kat-podpis">Księga produktów · <code>.ledger.ledger--light.glass.glass--strong</code> na jedwabiu <code>.scene--silk</code></p>
       <div class="ledger ledger--light glass glass--strong">
         <article class="product" id="oc-beauty"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="tag">ERGO Hestia</span></div><h3><a class="product-link" href="oc-beauty.html">OC dla branży beauty<span class="product-go" aria-hidden="true"></span></a></h3><p>OC za szkody wyrządzone klientom podczas zabiegów. Składka ze stałej taryfy – według rodzaju działalności i&nbsp;sumy.</p><p class="product-price"><span class="pp-pre">od</span> <strong>400</strong> <span class="pp-unit">zł rocznie</span></p><div class="product-actions"><a class="link-lux" href="#kat-kalkulator">Oblicz składkę<span class="sr-only"> OC</span></a></div></article>
         <article class="product" id="tax-protect"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="tag">Colonnade</span></div><h3><a class="product-link" href="tax-protect.html">Tax Protect<span class="product-go" aria-hidden="true"></span></a></h3><p>Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu – jeden pełny spór podatkowy w&nbsp;roku.</p><p class="product-price"><span class="pp-pre">od</span> <strong>1&nbsp;532</strong> <span class="pp-unit">zł rocznie</span></p><div class="product-actions"><a class="link-lux" href="tax-protect.html">Oblicz składkę<span class="sr-only"> Tax Protect</span></a></div></article>
         <article class="product" id="utrata-dochodu"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="tag">Oferta indywidualna</span></div><h3><a class="product-link" href="utrata-dochodu.html">Utrata dochodu<span class="product-go" aria-hidden="true"></span></a></h3><p>Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy – przy działalności, B2B i&nbsp;na etacie.</p><p class="product-price product-price--text"><strong>Składkę wylicza ubezpieczyciel</strong> <span class="pp-unit">po ocenie ryzyka</span></p><div class="product-actions"><a class="link-lux" href="#kat-kontakt">Zapytaj doradcę<span class="sr-only"> o&nbsp;ubezpieczenie utraty dochodu</span></a></div></article>
+        <article class="product" id="nnw-dzieci"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="tag">Colonnade</span></div><h3><a class="product-link" href="nnw-dzieci.html">NNW dla dzieci<span class="product-go" aria-hidden="true"></span></a></h3><p>Ochrona dziecka od następstw nieszczęśliwych wypadków – przez całą dobę, na całym świecie.</p><p class="product-price"><span class="pp-pre">od</span> <strong>40</strong> <span class="pp-unit">zł rocznie za dziecko</span></p><div class="product-actions"><a class="link-lux" href="https://bit.ly/szkolneNNW2026" target="_blank" rel="noopener">Kup online u&nbsp;Colonnade<svg class="pa-zewn-k" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h10v10M19 5 6 18"/></svg><span class="sr-only"> – NNW dla dzieci, strona ubezpieczyciela otworzy się w&nbsp;nowej karcie</span></a></div></article>
+        <article class="product" id="grupowe-ergo"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="tag">ERGO Hestia</span></div><h3><a class="product-link" href="grupowe-ergo.html">Grupowe ERGO dla beauty<span class="product-go" aria-hidden="true"></span></a></h3><p>Ubezpieczenie na życie dla zespołu (2–&#8288;100&nbsp;osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</p><p class="product-price"><span class="pp-pre">od</span> <strong>58</strong> <span class="pp-unit">zł za osobę / mies.</span><span class="pp-unit pp-dop">ERGO Razem: od&nbsp;57&nbsp;zł / mies.</span></p><div class="product-actions"><a class="link-lux" href="#kat-kontakt">Zapytaj doradcę<span class="sr-only"> o&nbsp;grupowe ERGO</span></a></div></article>
+        <article class="product" id="opieka-medyczna"><div class="product-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="tag">ENEL-MED · LUX&nbsp;MED</span></div><h3><a class="product-link" href="opieka-medyczna.html">Opieka medyczna<span class="product-go" aria-hidden="true"></span></a></h3><p>Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin – zakres zależy od sieci i&nbsp;pakietu.</p><p class="product-price product-price--text"><strong>Cenę przygotuje doradca</strong></p><div class="product-actions"><a class="link-lux" href="#kat-kontakt">Zapytaj doradcę<span class="sr-only"> o&nbsp;opiekę medyczną</span></a></div></article>
       </div>
-      <p class="kat-stan-opis">Cały kafelek jest klikalny (link z&nbsp;nazwy rozciągnięty na kafelek). Najechanie myszą: tło rgba(255,255,255,.55), złote podkreślenie nazwy, szewron przesuwa się o&nbsp;.15em. Żaden kafelek nie jest wyróżniony.</p>
-    </div>
-    <div>
-      <p class="kat-podpis">Tabela taryfy · <code>details.tariff-table.glass.glass--tint</code> (bez rozmycia)</p>
-      <details class="tariff-table glass glass--tint" open>
-        <summary>Pełna taryfa OC</summary>
-        <div class="table-scroll" role="region" tabindex="0" aria-label="Pełna taryfa OC">
-        <table>
-          <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią – do 5&nbsp;osób wykonujących zabiegi</caption>
-          <thead><tr><th scope="col">Taryfa (zakres na certyfikacie)</th><th scope="col">100&nbsp;tys.&nbsp;zł</th><th scope="col">200&nbsp;tys.&nbsp;zł</th><th scope="col">300&nbsp;tys.&nbsp;zł</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">Gabinety kosmetyczne i fryzjerskie<small>gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)</small></th><td>400&nbsp;zł</td><td>500&nbsp;zł</td><td>650&nbsp;zł</td></tr>
-            <tr><th scope="row">Gabinety kosmetologiczne<small>gabinet kosmetologiczny lub salon tatuażu, także razem z gabinetem kosmetycznym lub salonem masażu</small></th><td>650&nbsp;zł</td><td>790&nbsp;zł</td><td>950&nbsp;zł</td></tr>
-            <tr><th scope="row">Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne<small>gabinet podologiczny (z innymi rodzajami lub bez) albo salon fryzjerski razem z gabinetem kosmetologicznym lub salonem tatuażu</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1&nbsp;250&nbsp;zł</td></tr>
-          </tbody>
-        </table>
-        </div>
-        <p class="tariff-note">6–&#8288;8&nbsp;osób wykonujących zabiegi – składka z&nbsp;taryfy wyższa o&nbsp;25% (klauzula ochrony prawnej +92&nbsp;zł bez tej dopłaty). Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.</p>
-      </details>
+      <p class="kat-stan-opis">Sześć kafelków jak w&nbsp;makiecie – siatka 3 → 2 (&lt;&nbsp;1024&nbsp;px) → 1 (&lt;&nbsp;640&nbsp;px) kolumna bez pustych komórek. Cały kafelek jest klikalny (link z&nbsp;nazwy rozciągnięty na kafelek). Najechanie myszą: tło rgba(255,255,255,.55), złote podkreślenie nazwy, szewron przesuwa się o&nbsp;.15em. Żaden kafelek nie jest wyróżniony.</p>
     </div>
   </div>
 </section>
+</div>
 
+<!-- VI · FORMULARZE, TABELA TARYFY, PANEL KONTAKTU (scena marmuru – jak kalkulator w makiecie) -->
+<div class="scene scene--marble">
 <section class="kat-sekcja" id="formularze" aria-labelledby="formularze-t">
   <div class="container kat-stos">
     <div class="section-head">
       <p class="eyebrow"><span class="no" aria-hidden="true">VI</span>Formularze</p>
       <h2 id="formularze-t">Kafelki, pola <em>i&nbsp;błędy</em></h2>
-      <p class="lead">Kafelki wyboru bez wartości domyślnych i&nbsp;bez plakietek. Kliknij kafelek, żeby zobaczyć stan zaznaczony; klawiszem Tab – stan fokusu.</p>
+      <p class="lead">Kafelki wyboru bez wartości domyślnych i&nbsp;bez plakietek. Kliknij kafelek, żeby zobaczyć stan zaznaczony; klawiszem Tab – stan fokusu. Pod kalkulatorem – pełna taryfa, jak w&nbsp;makiecie.</p>
     </div>
     <div>
       <p class="kat-podpis">Kalkulator · <code>.calc.glass.frame</code> + <code>.result</code> (kryjący granat, nie szkło)</p>
@@ -894,7 +892,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             </div>
             <p class="zab-full"><a class="link-quiet" href="oc-beauty.html#zabiegi">Listy zabiegów programu<span aria-hidden="true">&nbsp;→</span></a></p>
           </fieldset>
-          <fieldset>
+          <fieldset id="kalk-osoby">
             <legend>Ile osób wykonuje zabiegi w&nbsp;gabinecie (łącznie z&nbsp;Tobą)?</legend>
             <div class="opt-grid opt-grid--3">
               <div class="opt opt--center"><input type="radio" id="k-o-1-5" name="osoby" value="1-5"><label for="k-o-1-5">do 5&nbsp;osób</label></div>
@@ -902,7 +900,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <div class="opt opt--center"><input type="radio" id="k-o-9-plus" name="osoby" value="9+"><label for="k-o-9-plus">więcej niż 8&nbsp;osób</label></div>
             </div>
           </fieldset>
-          <fieldset aria-describedby="k-suma-nota">
+          <fieldset id="kalk-sumy" aria-describedby="k-suma-nota">
             <legend>Suma gwarancyjna</legend>
             <div class="opt-grid opt-grid--3">
               <div class="opt opt--center opt--suma"><input type="radio" id="k-s-100000" name="suma" value="100000"><label for="k-s-100000"><span class="opt-suma">100&nbsp;tys.&nbsp;zł</span><span class="opt-kwota"></span></label></div>
@@ -923,20 +921,38 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <hr class="rule">
           <p class="label">Składka roczna</p>
           <p class="price"><strong>Zaznacz rodzaj działalności.</strong></p>
-          <button type="button" class="btn btn-ivory" aria-disabled="true">Poproś o&nbsp;polisę</button>
+          <button type="button" class="btn btn-ivory" aria-disabled="true">Najpierw zaznacz rodzaj działalności</button>
           <div class="next">
             <p class="label">Co dalej?</p>
-            <p>Stan pusty: bez kwoty wybranej za klienta, przycisk nieaktywny (<code>aria-disabled="true"</code>, obrys gold light .5). Próbka nie przelicza wyboru – kwota z&nbsp;taryfy jest w&nbsp;sekcji VII.</p>
+            <p>Stan pusty: bez kwoty wybranej za klienta, przycisk nieaktywny (<code>aria-disabled="true"</code>, obrys gold light .5). Nieaktywny przycisk zawsze podaje brakujące pole – teksty <code>CTA_BRAK</code> z&nbsp;makiety („Najpierw zaznacz rodzaj działalności”, „Najpierw podaj liczbę osób”, „Najpierw wybierz sumę gwarancyjną”); po wyborze wraca „Poproś o&nbsp;polisę”. Próbka nie przelicza wyboru – kwota z&nbsp;taryfy jest w&nbsp;sekcji VII.</p>
           </div>
           <p class="note">Stała taryfa programu OC z&nbsp;ERGO Hestią dla branży beauty. Składka zależy od rodzaju działalności, liczby osób wykonujących zabiegi i&nbsp;sumy gwarancyjnej.</p>
         </div>
       </div>
     </div>
     <div>
+      <p class="kat-podpis">Tabela taryfy · <code>details.tariff-table.glass.glass--tint</code> (bez rozmycia)</p>
+      <details class="tariff-table glass glass--tint" open>
+        <summary>Pełna taryfa OC</summary>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Pełna taryfa OC">
+        <table>
+          <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią – do 5&nbsp;osób wykonujących zabiegi</caption>
+          <thead><tr><th scope="col">Taryfa (zakres na certyfikacie)</th><th scope="col">100&nbsp;tys.&nbsp;zł</th><th scope="col">200&nbsp;tys.&nbsp;zł</th><th scope="col">300&nbsp;tys.&nbsp;zł</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Gabinety kosmetyczne i&nbsp;fryzjerskie<small>gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)</small></th><td>400&nbsp;zł</td><td>500&nbsp;zł</td><td>650&nbsp;zł</td></tr>
+            <tr><th scope="row">Gabinety kosmetologiczne<small>gabinet kosmetologiczny lub salon tatuażu, także razem z&nbsp;gabinetem kosmetycznym lub salonem masażu</small></th><td>650&nbsp;zł</td><td>790&nbsp;zł</td><td>950&nbsp;zł</td></tr>
+            <tr><th scope="row">Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i&nbsp;podologiczne<small>gabinet podologiczny (z&nbsp;innymi rodzajami lub bez) albo salon fryzjerski razem z&nbsp;gabinetem kosmetologicznym lub salonem tatuażu</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1&nbsp;250&nbsp;zł</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="tariff-note">6–&#8288;8&nbsp;osób wykonujących zabiegi – składka z&nbsp;taryfy wyższa o&nbsp;25% (klauzula ochrony prawnej +92&nbsp;zł bez tej dopłaty). Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.</p>
+      </details>
+    </div>
+    <div>
       <p class="kat-podpis">Panel kontaktu · <code>.cta-panel.glass.frame</code> – pole w&nbsp;fokusie i&nbsp;pole z&nbsp;błędem</p>
       <div class="cta-panel glass frame" id="kat-kontakt">
-        <p class="eyebrow">Na koniec dnia</p>
-        <h3>Porozmawiajmy o&nbsp;ochronie Twojego salonu</h3>
+        <p class="eyebrow"><span class="no no--wide" aria-hidden="true">Epilog</span>Na koniec dnia</p>
+        <h2>Porozmawiajmy o&nbsp;ochronie <em>Twojego salonu</em></h2>
         <div class="lead-form">
           <div class="field">
             <label for="k-produkt">Czego dotyczy rozmowa?</label>
@@ -1020,7 +1036,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <p class="zab-chosen-label" id="k-wybrane" tabindex="-1">Wybrane zabiegi <span>– dołączymy je do zgłoszenia</span></p>
         <ul class="zab-chips" aria-labelledby="k-wybrane">
           <li class="zab-chip"><span>Microblading <small>lista nr 2</small></span><button type="button" class="zab-chip-x" aria-label="Usuń z wybranych: Microblading"><span aria-hidden="true">×</span></button></li>
-          <li class="zab-chip"><span>Depilacja woskiem <small>listy nr 1 i 2</small></span><button type="button" class="zab-chip-x" aria-label="Usuń z wybranych: Depilacja woskiem"><span aria-hidden="true">×</span></button></li>
+          <li class="zab-chip"><span>Depilacja woskiem <small>listy nr 1 i&nbsp;2</small></span><button type="button" class="zab-chip-x" aria-label="Usuń z wybranych: Depilacja woskiem"><span aria-hidden="true">×</span></button></li>
         </ul>
       </div>
     </div>
@@ -1028,7 +1044,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <p class="kat-podpis">Pozycje wyszukiwarki zabiegów · <code>.zab-opt</code> i&nbsp;plakietka <code>.zab-badge</code></p>
       <div class="kat-lista">
         <ul class="zab-list">
-          <li class="zab-opt"><span>Depilacja woskiem</span><span class="zab-badge">Listy nr 1 i 2</span></li>
+          <li class="zab-opt"><span>Depilacja woskiem</span><span class="zab-badge">Listy nr 1 i&nbsp;2</span></li>
           <li class="zab-opt is-active"><span>Microblading</span><span class="zab-badge">Lista nr 2</span></li>
           <li class="zab-opt"><span>Zabiegi z&nbsp;użyciem toksyny botulinowej</span><span class="zab-badge">Ankieta, poz. h)</span></li>
         </ul>
