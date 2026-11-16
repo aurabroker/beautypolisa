@@ -1,0 +1,490 @@
+CREATE SCHEMA
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+GRANT
+GRANT
+REVOKE
+INSERT 0 8
+INSERT 0 9
+INSERT 0 2
+INSERT 0 2
+INSERT 0 2
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+INSERT 0 9
+INSERT 0 2
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+SET
+ 
+
+INSERT 0 2
+RESET
+ --- 1. payouts, sales terms, publish ---
+
+SET
+ ok   publish online training without payouts and terms [P0001]
+
+ ok   payout register by organiser member (not owner) [P0001]
+
+ ok   payout register bad provider [BP422]
+
+ ok   payout register idempotent = <uuid>
+
+ ok   payout account of org 1 claimed by org 2 [P0001]
+
+ ok   payout status from operator: requirements due -> onboarding = onboarding
+
+ ok   sales terms by member [P0001]
+
+ ok   sales terms NIP other than verified profile (DSA art. 30) [BP422]
+
+ ok   sales terms with URL [BP422]
+
+ ok   second terms version while first pending [BP409]
+
+ ok   terms approved by organiser [P0001]
+
+ 
+
+ ok   publish with payouts still onboarding [P0001]
+
+ ok   payout status from operator: active = active
+
+ ok   publish during payout cooldown (karencja 72 h) [P0001]
+
+RESET
+ ok   cooldown: usable_from = activation + 72 h = 3 days
+
+UPDATE 1
+SET
+ 
+
+ 
+
+RESET
+ ok   training published = published
+
+ ok   audit: payout_account_status_changed x2 = 1
+
+ --- 2. order create ---
+
+SET
+ 
+
+ ok   authenticated cannot EXECUTE app_training_order_create [42501]
+
+ ok   authenticated cannot EXECUTE app_payment_webhook [42501]
+
+RESET
+SET
+ ok   order by non-member (organiser c2 for salon A) [P0001]
+
+ ok   firma with invalid NIP (BP422, no value) [BP422]
+
+ ok   firma without address [BP422]
+
+ ok   stale sales terms version [BP409]
+
+ ok   free-style register on online training (app_training_register) [BP409]
+
+ ok   amount from DB (450.00 zł -> 45000 gr) = 45000
+
+ ok   platform fee 0 during promotion (00, D42) = 0
+
+ ok   order created = true
+
+ ok   idempotent: same key -> same order, created=false = <uuid>/false
+
+ ok   second tab (new key, active reservation) -> same order = <uuid>
+
+ ok   same key reused for other training [BP409]
+
+ ok   amount ignores client-supplied fields = 45000
+
+RESET
+ ok   seats_held = 2 (two reservations), seats_registered = 0 = 2/0
+
+SET
+ ok   third buyer – no seats (no oversell) [BP409]
+
+RESET
+SET
+ 
+
+ ok   organiser changes price with open reservations [P0001]
+
+ ok   organiser cannot touch seats_held (no grant) [42501]
+
+RESET
+ ok   audit: training_order_created x2 = 2
+
+ --- 3. reservation expiry ---
+
+UPDATE 1
+SET
+ ok   cron: 1 reservation expired = 1
+
+RESET
+ ok   expired order + seat released = expired/1
+
+ ok   audit: reserved -> expired (system actor) = system:reservation-expiry
+
+SET
+ ok   freed seat can be ordered again = reserved
+
+ ok   attach payment to someone else's order [P0001]
+
+RESET
+UPDATE 1
+SET
+RESET
+ ok   lazy expiry inside order_create (u1 expired, u2 reserved) = expired,reserved
+
+ ok   seats_held after lazy expiry = 2
+
+SET
+ ok   attach payment after reservation expired [BP409]
+
+RESET
+ --- 4. webhook ---
+
+SET
+ ok   payment attach idempotent = <uuid>
+
+ ok   webhook: invalid event type [BP422]
+
+ ok   webhook: unknown payment ref = unknown_ref
+
+ ok   webhook: amount mismatch rejected = rejected_mismatch
+
+ ok   webhook: currency mismatch rejected = rejected_mismatch
+
+ ok   webhook: order id in metadata mismatch rejected = rejected_mismatch
+
+RESET
+ ok   order still reserved after rejected events = reserved
+
+ ok   discrepancies opened (unknown, amount, currency, order) = amount_mismatch,currency_mismatch,order_mismatch,unknown_payment
+
+SET
+ ok   webhook: payment.succeeded -> paid = paid
+
+ ok   webhook: same event again -> duplicate = duplicate
+
+ ok   webhook: same success, new event id -> ignored_stale = ignored_stale
+
+ ok   webhook: failed after succeeded (out of order) -> ignored_stale = ignored_stale
+
+RESET
+ ok   order paid, payment succeeded (blik) = paid/succeeded/blik
+
+ ok   registration registered + contact snapshot (salon name for firma) = registered/Salon Przykładowy A sp. z o.o.
+
+ ok   counters: held 1 (u2), registered 1 = 1/1
+
+ ok   audit reserved->paid by system:webhook:stripe = system:webhook:stripe
+
+ ok   outbox training_order_paid to user:<uuid> = user:00000000-0000-0000-0000-00000000000a
+
+ ok   webhook events stored without raw payload (columns) = 0
+
+SET
+RESET
+UPDATE 1
+SET
+ t
+
+ t
+
+ ok   u3 paid (training now full) = paid
+
+ ok   late payment of expired u2, no seat -> refund_required = refund_required
+
+RESET
+ ok   u2 order refund_pending (spozniona-platnosc) + refund requested = refund_pending/spozniona-platnosc/requested/45000
+
+ ok   no oversell after late payment = 2/2
+
+ ok   discrepancy late_payment_no_seat = 1
+
+SET
+ ok   capacity 2 -> 4 by organiser = 0
+
+ t
+
+RESET
+UPDATE 1
+SET
+ t
+
+ ok   late payment with free seat -> paid_late = paid_late
+
+ t
+
+ t
+
+ ok   u5 first session paid = paid
+
+ ok   u5 second session also paid -> refund_required (double) = refund_required
+
+RESET
+ ok   u5 stays paid, duplicate refund requested = paid/podwojna-platnosc
+
+ ok   counters after paid/late/double: held 0, registered 4 = 0/4
+
+SET
+ ok   u5 orders again after paying (already paid) [BP409]
+
+RESET
+ --- 5. refunds ---
+
+SET
+ ok   refund by organiser member (not owner) [P0001]
+
+ ok   refund by other organiser [P0001]
+
+ ok   refund by staff (money of organiser) [P0001]
+
+ ok   refund above paid amount [BP422]
+
+ ok   second refund while first in progress [BP409]
+
+ ok   refund attach -> submitted = submitted
+
+ ok   refund attach repeated -> idempotent = submitted
+
+ ok   refund.succeeded wrong amount -> rejected = rejected_mismatch
+
+ ok   refund.succeeded partial = partially_refunded
+
+ ok   refund event duplicate = duplicate
+
+RESET
+ ok   partial refund keeps seat = partially_refunded/10000/registered
+
+SET
+RESET
+ ok   full refund with cancellation releases seat at once = 3
+
+SET
+ ok   refund webhook faster than attach -> matched to pending refund = refunded
+
+ ok   attach after webhook -> idempotent status = succeeded
+
+RESET
+ ok   order refunded 45000 = refunded/45000
+
+SET
+ ok   duplicate payment refund attach = submitted
+
+ ok   duplicate payment refunded, order stays paid = refunded_duplicate
+
+ ok   refund.failed unknown ref = unknown_ref
+
+ ok   external refund from operator panel recorded = partially_refunded
+
+RESET
+ ok   u5 status after duplicate refund = paid
+
+ ok   discrepancy external_refund = 1
+
+ --- 6. cancel request, event cancelled ---
+
+SET
+ ok   paid seat cannot be cancelled by app_training_cancel [BP409]
+
+ ok   cancel request for someone else's order [P0001]
+
+ 
+
+ 
+
+RESET
+ ok   cancel request recorded once = 1
+
+ ok   outbox to organizer:<uuid> = 1
+
+SET
+ 
+
+RESET
+ ok   cancel event: open reservation cancelled = cancelled
+
+ ok   cancel event: refunds odwolanie for u3, u4 (rest), u5 = true:40000,true:45000,true:45000
+
+ ok   cancel event: counters zeroed = 0/0
+
+ ok   cancel event: orders refund_pending = 4
+
+ ok   cancel event: e-mails training_cancelled_refund = 3
+
+SET
+ ok   order on cancelled training [BP409]
+
+RESET
+ --- 7. RLS ---
+
+SET
+ 
+
+ ok   buyer A sees own orders only = 1
+
+ ok   buyer A sees own buyer data = 1
+
+ ok   buyer cannot read user_id [42501]
+
+ ok   buyer cannot read idempotency_key [42501]
+
+ ok   buyer cannot insert order (no grant) [42501]
+
+ ok   buyer cannot update amount [42501]
+
+ ok   buyer sees 0 payments/refunds/webhooks = 0
+
+ 
+
+ ok   buyer u3 sees own order = 1
+
+ 
+
+ ok   owner B sees 0 orders = 0
+
+ 
+
+ ok   organiser: 0 orders, 0 buyer data via Data API (only functions) = 0
+
+ ok   organiser sees own payout account status = active
+
+ ok   organiser cannot read provider_account_ref [42501]
+
+ ok   organiser sees fee setting 0 = 0
+
+ 
+
+ ok   other organiser: 0 payout accounts = 0
+
+ 
+
+ ok   staff (aal2) sees all orders = true
+
+ ok   staff sees 0 buyer data (minimisation) = 0
+
+ ok   staff sees webhook events and discrepancies = true
+
+ 
+
+ ok   staff with aal1 sees 0 orders = 0
+
+RESET
+SET
+ ok   anon: training_orders [42501]
+
+ ok   anon: platform_fee_settings [42501]
+
+ ok   anon: active sales terms public (seller data, DSA art. 30) = 5556667776
+
+ ok   anon: catalogue shows payment_mode = online
+
+RESET
+SET
+ ok   organiser order list via function (paid/refund states only: A, u2..u5) = 5
+
+ ok   other organiser order list [P0001]
+
+ ok   invoice data via function (firma NIP) = 9876543210
+
+ ok   invoice data for unpaid (expired) order [P0001]
+
+ ok   invoice path outside order folder [BP422]
+
+ 
+
+ ok   buyer gets invoice path = true
+
+ ok   other user cannot get invoice path [P0001]
+
+RESET
+ ok   audit: organizer_orders_viewed + invoice_data_viewed = 2
+
+ --- 8. platform fee ---
+
+SET
+ ok   fee changed by agent [P0001]
+
+ ok   fee > 0 during promotion (00, D42) [BP409]
+
+ ok   fee backdated [BP422]
+
+RESET
+UPDATE 1
+SET
+ ok   fee 5 % after promotion end accepted = true
+
+ ok   order now still 0 fee (snapshot, promotion active) = 0
+
+ ok   fee in effect at +4 days = 500 bps = 500
+
+RESET
+UPDATE 1
+ --- 9. health, retention ---
+
+SET
+ ok   health: seat counters consistent = 0
+
+ ok   health: paid without registration = 0
+
+RESET
+UPDATE 1
+UPDATE 4
+UPDATE 4
+SET
+ ok   retention runs = true
+
+RESET
+ ok   buyer data of paid t1 orders removed 90 days after training = 0
+
+ ok   buyer data of unpaid orders kept < 7 days = 3
+
+UPDATE 3
+SET
+ t
+
+RESET
+ ok   buyer data of unpaid orders removed after 7 days = 0
+
+ ok   t1 orders anonymised (no user/account) = 0
+
+ ok   financial record kept (amounts) = 8
+

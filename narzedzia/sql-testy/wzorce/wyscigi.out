@@ -1,0 +1,11 @@
+ ok   fixture: szkolenie opublikowane, 1 miejsce = published/1
+ ok   R1 5 sesji o 1 miejsce: rezerwacje = 1
+ ok   R1 seats_held/capacity = 1/1
+ ok   R1 odmowy BP409 brak wolnych miejsc = 4
+ ok   R2 ten sam klucz idempotencji 3 × naraz: zamówienia = 1
+ ok   R2 zwrócone identyfikatory (różne) = 1
+ ok   R2 seats_held = 2
+ ok   R3 webhook 3 × naraz + inne zdarzenie = 2xduplicate 1xignored_stale 1xpaid 
+ ok   R3 zapisy u6 = 1
+ ok   R3 liczniki held/registered = 1/1
+ ok   R3 wiersze webhooków pi_RACE = 2

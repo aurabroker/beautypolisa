@@ -46,7 +46,7 @@ PSQL=(psql -X -h 127.0.0.1 -p "$PORT" -U postgres)
 # świeża baza z migracjami w kolejności wdrożenia (zaślepki → schema → app_is_staff → RLS → strefa)
 wczytaj() {
   local db=$1
-  "${PSQL[@]}" -q -c "drop database if exists $db" -c "create database $db" >/dev/null || return 1
+  "${PSQL[@]}" -q -c "drop database if exists $db" -c "create database $db" >/dev/null 2>&1 || return 1
   "${PSQL[@]}" -q -v ON_ERROR_STOP=1 -d "$db" -f "$TU/zaslepki-supabase.sql" >/dev/null 2>&1 || return 1
   "${PSQL[@]}" -q -v ON_ERROR_STOP=1 -d "$db" -f "$SNIP/schema.sql" >/dev/null || return 1
   "${PSQL[@]}" -q -v ON_ERROR_STOP=1 -d "$db" -f "$TU/app-is-staff-przed-rls.sql" >/dev/null || return 1
@@ -107,6 +107,10 @@ for z in "${ZESTAWY[@]}"; do
     # ścieżka względna: komunikaty psql zawierają nazwę pliku, a nie katalog maszyny (wzorce są przenośne)
     (cd "$TU/testy" && "${PSQL[@]}" -d "$db" -f "$z.sql" >"$WYNIKI/$z.out" 2>&1)
   fi
+  # wartości losowe (gen_random_uuid w identyfikatorach, końcówki slugów, numery zamówień) → stałe znaczniki,
+  # żeby porównanie ze wzorcem pokazywało tylko zmiany wyników; identyfikatory z fikstur zostają
+  sed -E -i 's/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/<uuid>/g;
+             s/([a-z0-9])-[0-9a-f]{8}\b/\1-<hex8>/g; s/SZ-[0-9]{4}-[0-9A-F]{8}/SZ-<nr>/g' "$WYNIKI/$z.out"
   ok=$(grep -c '^ ok ' "$WYNIKI/$z.out"); fail=$(grep -c 'FAIL' "$WYNIKI/$z.out"); err=$(grep -c 'ERROR' "$WYNIKI/$z.out")
   wzor=$TU/wzorce/$z.out
   if [ $AKTUALIZUJ = 1 ]; then

@@ -1,0 +1,372 @@
+CREATE SCHEMA
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+GRANT
+GRANT
+REVOKE
+INSERT 0 8
+INSERT 0 9
+INSERT 0 2
+INSERT 0 2
+INSERT 0 2
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+INSERT 0 9
+INSERT 0 2
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+SET
+ 
+
+INSERT 0 2
+RESET
+ --- 1. payouts, sales terms, publish ---
+
+SET
+ ok   publish online training without payouts and terms [P0001]
+
+ ok   payout register by organiser member (not owner) [P0001]
+
+ ok   payout register bad provider [BP422]
+
+ ok   payout register idempotent = <uuid>
+
+ ok   payout account of org 1 claimed by org 2 [P0001]
+
+ ok   payout status from operator: requirements due -> onboarding = onboarding
+
+ ok   sales terms by member [P0001]
+
+ ok   sales terms NIP other than verified profile (DSA art. 30) [BP422]
+
+ ok   sales terms with URL [BP422]
+
+ ok   second terms version while first pending [BP409]
+
+ ok   terms approved by organiser [P0001]
+
+ 
+
+ ok   publish with payouts still onboarding [P0001]
+
+ ok   payout status from operator: active = active
+
+RESET
+UPDATE 1
+SET
+ 
+
+ 
+
+RESET
+ ok   training published = published
+
+ ok   audit: payout_account_status_changed x2 = 1
+
+SET
+ 
+
+INSERT 0 5
+RESET
+SET
+     5
+
+ --- RT1: zwrot przed płatnością (zła kolejność) ---
+
+ ok   RT10 reservation = 30 min for Stripe (min session) = 00:30:00
+
+ t
+
+ ok   RT1 refund before payment -> deferred = deferred_out_of_order
+
+ ok   RT1 nothing recorded (order, refunds, seats) = reserved/0/1
+
+ ok   RT1 payment -> = paid
+
+ ok   RT1 refund redelivered -> = refunded
+
+ ok   RT1 final: order/payment/refunds/seats = refunded/refunded/inne:succeeded/0/0
+
+ --- RT2: spory (wynik sporu) ---
+
+ t
+
+ paid
+
+ dispute_opened
+
+ ok   RT2 refund during dispute [BP409]
+
+ ok   RT2 dispute.closed without outcome [BP422]
+
+ ok   RT2 dispute lost -> = dispute_lost
+
+ ok   RT2 lost: order/reason/disputed/payment/registration/refund rows = refunded/chargeback/true/refunded/cancelled/0
+
+ ok   RT2 lost: e-mail to participant and organizer = 2
+
+ t
+
+ paid
+
+ dispute_opened
+
+ ok   RT2 dispute won -> = dispute_won
+
+ ok   RT2 won: order paid, disputed_at cleared, payment succeeded = paid/true/succeeded
+
+ ok   RT2 won: organiser can refund again = true
+
+ --- RT3: odwołanie szkolenia z opłaconymi zamówieniami (uprawnienia, spór) ---
+
+ t
+
+ paid
+
+ t
+
+ paid
+
+ dispute_opened
+
+ ok   RT3 member (not owner) cancels paid training [P0001]
+
+ ok   RT3 agent cancels paid training [P0001]
+
+ ok   RT3 admin cancels paid training, short reason [BP422]
+
+ ok   RT3 agent removes paid training (moderation) [P0001]
+
+ 
+
+ ok   RT3 member cancels training WITHOUT paid orders = cancelled
+
+ 
+
+ ok   RT3 owner cancel: refund only for non-disputed order = true:true
+
+ ok   RT3 disputed order: no refund, team alert, buyer e-mail = 2
+
+ ok   RT3 counters zeroed = 0/0
+
+ --- RT4: faktura na NIP – widoczność dla właściciela salonu ---
+
+ ok   RT4 employee JDG order: bill_to_account = false
+
+ ok   RT4 employee orders on salon NIP [BP409]
+
+ t
+
+ paid
+
+ 
+
+ ok   RT4 owner cannot get invoice of employee JDG order [P0001]
+
+ ok   RT4 employee gets own invoice = true
+
+RESET
+SET
+ 
+
+ ok   RT4 owner sees only salon-NIP orders via RLS = true
+
+ ok   RT4 owner does not see employee JDG order = 0
+
+RESET
+ --- RT7: płatność bez referencji (nasz UUID), druga referencja, nieznana płatność, uzgadnianie ---
+
+SET
+ ok   RT7 payment by our UUID (no ref stored) -> = paid
+
+ ok   RT7 refs filled (session + charge) = cs_RT7/pi_RT7
+
+ ok   RT7 refund webhook with charge ref only -> = refunded
+
+ ok   RT7 unknown payment -> = unknown_ref
+
+ ok   RT7 unknown payment redelivered (not duplicate) -> = unknown_ref
+
+RESET
+UPDATE 1
+SET
+ ok   RT7 pending payment without ref goes to reconciliation = 1
+
+ t
+
+ 
+
+ ok   RT11 abandoned order: session to cancel (claimed once) = cs_RT7B
+
+ ok   RT11 second claim within 15 min: nothing = 0
+
+ --- RT8: prawa konsumenta (odstąpienie, żądanie wcześniejszego rozpoczęcia) ---
+
+ ok   RT8 training in 5 days without early-start request [BP422]
+
+ ok   RT8 early start recorded with version = wczesny-start-v1
+
+ t
+
+ paid
+
+ ok   RT8 withdrawal by someone else [P0001]
+
+ 
+
+ 
+
+ ok   RT8 withdrawal: declared, seat released, e-mails (buyer + organiser), audit once = true/cancelled/2/1
+
+RESET
+UPDATE 1
+SET
+ ok   RT8 health: withdrawal without refund after 3 days = 1
+
+ ok   RT8 organiser refunds (odstapienie) = true
+
+ ok   RT8 health after refund = 0
+
+RESET
+UPDATE 1
+SET
+ ok   RT8 withdrawal after 14 days [BP409]
+
+ --- RT9: limity sprzedaży nowego organizatora ---
+
+RESET
+UPDATE 1
+SET
+ ok   RT9 new organiser over sales limit [BP409]
+
+RESET
+UPDATE 1
+UPDATE 1
+UPDATE 1
+SET
+ ok   RT9 organiser after 60 days: no limit = true
+
+RESET
+UPDATE 1
+SET
+ --- RT5: zmiana konta wypłat (karencja, alerty, TOTP, KYB) ---
+
+ ok   RT5 payout link without fresh TOTP [BP409]
+
+ 
+
+ ok   RT5 link for active account: audit + alert (owner, verified address, team) = 1/organizer-verified,team,user
+
+ disabled
+
+ t
+
+ ok   RT5 new account alert (2 accounts x owner, verified address, team) = 6
+
+ ok   RT5 new account active = active
+
+ ok   RT5 order during cooldown (karencja) [BP409]
+
+RESET
+UPDATE 1
+SET
+ ok   RT5 operator: payout destination changed -> cooldown again = active
+
+ ok   RT5 destination change: usable_from in future, audit, discrepancy = true/1/1
+
+ ok   RT5 KYB tax id of another company -> restricted = restricted
+
+ ok   RT5 KYB mismatch discrepancy = 1
+
+ ok   RT5 KYB tax id = profile NIP -> active = active
+
+ ok   RT5 owner MFA reset by adviser = 1
+
+ ok   RT5 refund within 72 h after MFA reset [P0001]
+
+ ok   RT5 payout link within 72 h after MFA reset [P0001]
+
+ ok   RT5 MFA reset alert = 3
+
+RESET
+UPDATE 1
+UPDATE 1
+SET
+ --- RT6: zawieszony organizator ---
+
+ t
+
+ t
+
+ ok   RT6 suspension by organiser [P0001]
+
+ ok   RT6 suspension closes all reservations of organiser = 5
+
+ ok   RT6 no reservations left = 0
+
+ ok   RT6 new payment session after suspension [BP409]
+
+ ok   RT6 payment after suspension -> automatic refund = refund_required
+
+ ok   RT6 refund reason = refund_pending/organizator-zawieszony/system:webhook:stripe
+
+ ok   RT6 open session of closed reservation goes to cancelCheckout = cs_RT6B
+
+RESET
+ ok   RT6 seat counters consistent = 0
+
+ --- RT6b: zawieszenie bezpośrednio w /panel (RLS) – rezerwacje zamyka cron ---
+
+UPDATE 1
+SET
+RESET
+UPDATE 1
+SET
+ ok   RT6b cron run = true
+
+ ok   RT6b cron closes reservation of suspended organiser = cancelled
+
+RESET
+ ok   RT6b seat counters consistent = 0
+
+ definer  | employer_account_ids,app_is_staff,client_account_ids,organizer_ids,client_audit_staff_change,app_purge_audit_log
+
+ no search_path | 
+
+ exec authenticated | digest,digest,hmac,hmac,crypt,gen_salt,gen_salt,encrypt,decrypt,encrypt_iv,decrypt_iv,gen_random_bytes,gen_random_uuid,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_key_id,armor,armor,dearmor,pgp_armor_headers,employer_account_ids,admin_users_guard,app_is_staff,zabiegi_ids,client_account_ids,organizer_ids
+
+ exec anon | digest,digest,hmac,hmac,crypt,gen_salt,gen_salt,encrypt,decrypt,encrypt_iv,decrypt_iv,gen_random_bytes,gen_random_uuid,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_key_id,armor,armor,dearmor,pgp_armor_headers,admin_users_guard
+
+ payment fns w/o service_role | training_orders_status_audit
+

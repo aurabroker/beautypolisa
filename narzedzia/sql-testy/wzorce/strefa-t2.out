@@ -54,9 +54,9 @@ psql:strefa-t2.sql:55: ERROR:  syntax error at or near ":" at character 87
  ERR expected: client token as organiser token
 
 psql:strefa-t2.sql:56: ERROR:  organizer accept: zaproszenie wygasło albo zostało użyte
- accept o1 | 94d101df-b5cc-40f2-9783-1581a49fbdd5
+ accept o1 | <uuid>
 
- accept o2 | e79e48aa-cc57-47e4-b1e3-78e4ac04f455
+ accept o2 | <uuid>
 
 psql:strefa-t2.sql:59: ERROR:  organizer accept: zaproszenie wygasło albo zostało użyte
 UPDATE 0
@@ -87,7 +87,7 @@ psql:strefa-t2.sql:75: ERROR:  new row for relation "trainings" violates check c
 
 psql:strefa-t2.sql:76: ERROR:  permission denied for table trainings
 INSERT 0 1
- o1 slug (no reserved term) | szkolenie-d35a9898 | pending_review |               1 |                0
+ o1 slug (no reserved term) | szkolenie-<hex8> | pending_review |               1 |                0
 
  ERR expected: o1 update capacity
 

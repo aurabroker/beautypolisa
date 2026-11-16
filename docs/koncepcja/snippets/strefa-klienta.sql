@@ -42,6 +42,11 @@
 --       wyłącznie z bazy, rezerwacja miejsca na 15 minut bez nadsprzedaży (seats_held + blokada wiersza),
 --       idempotentna obsługa podpisanych webhooków (podpis sprawdza Worker – sekret nie trafia do bazy),
 --       zwroty inicjowane przez organizatora, audyt zmian statusów, retencja (dok. 11 §12a).
+--   00, D44 (prośba zleceniodawcy 16.11.2026): w Ustawieniach salonu właściciel może UKRYĆ zakładkę
+--       „Praca” („Dam pracę” i „Szukam pracy”) albo „Szkolenia” – np. salon prowadzony przez 1–2 osoby.
+--       To PREFERENCJA WIDOKU Strefy tego salonu (client_accounts.ukryte_zakladki, zmiana wyłącznie
+--       app_client_set_tab_visibility() – tylko właściciel, wpis w dzienniku), a NIE kontrola dostępu:
+--       moduły pozostają w pełni wdrożone, RLS, granty i funkcje modułów bez zmian (szczegóły: 10.7a).
 --
 -- Konwencje (jak w schema.sql / rls-policies.sql):
 --  * domyślne granty odebrane w schema.sql (ALTER DEFAULT PRIVILEGES … FROM public, anon, authenticated);
