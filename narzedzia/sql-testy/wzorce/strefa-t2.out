@@ -1,419 +1,411 @@
+CREATE SCHEMA
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
 INSERT 0 6
 INSERT 0 1
 INSERT 0 1
-psql:strefa-t2.sql:14: ERROR:  new row for relation "client_accounts" violates check constraint "client_accounts_check4"
-psql:strefa-t2.sql:16: ERROR:  column "oc_risk_groups" of relation "client_policies" does not exist at character 155
-psql:strefa-t2.sql:19: ERROR:  insert or update on table "client_policies" violates foreign key constraint "client_policies_account_id_fkey"
-psql:strefa-t2.sql:20: ERROR:  activate: konto bez aktywnej, opublikowanej polisy
-psql:strefa-t2.sql:21: ERROR:  activate: konto bez aktywnej, opublikowanej polisy
-psql:strefa-t2.sql:22: ERROR:  accept: zaproszenie wygasło albo zostało użyte
-psql:strefa-t2.sql:23: ERROR:  accept: zaproszenie wygasło albo zostało użyte
-psql:strefa-t2.sql:24: ERROR:  invite: brak uprawnień
-psql:strefa-t2.sql:25: ERROR:  accept: zaproszenie wygasło albo zostało użyte
- ERR expected: rotate A invite by owner B
+INSERT 0 2
+INSERT 0 1
+INSERT 0 1
+ ok   activate A = true
 
-psql:strefa-t2.sql:26: ERROR:  rotate: zaproszenie nieaktywne
-psql:strefa-t2.sql:27: ERROR:  insert or update on table "client_invitations" violates foreign key constraint "client_invitations_account_id_fkey"
- rotate by staff ok
+ ok   activate B (Tax Protect only, D-A) = true
 
-psql:strefa-t2.sql:28: ERROR:  rotate: zaproszenie nieaktywne
- ERR expected: downgrade owner
+ ok   accept A (e-mail in other case) = aaaaaaaa-0000-0000-0000-000000000001
 
-psql:strefa-t2.sql:29: ERROR:  accept: zaproszenie wygasło albo zostało użyte
- ERR expected: owner A into admin_users
+ ok   accept B = bbbbbbbb-0000-0000-0000-000000000001
+
+ ok   invite emp = true
+
+ ok   accept emp = aaaaaaaa-0000-0000-0000-000000000001
+
+ ok   ERR rotate accepted invitation of A (by owner B) = P0001 rotate: zaproszenie nieaktywne
+
+ ok   staff invites owner A as employee = true
+
+ ok   ERR rotate active A invite by owner B (not a member of A) = P0001 rotate: brak uprawnień
+
+ ok   rotate by staff ok = (no error)
+
+ ok   ERR downgrade owner (rotated token) = P0001 accept: ta osoba jest już właścicielem salonu – zaproszenie obniżyłoby jej rolę
+
+ ok   ERR owner A into admin_users = P0001 admin_users: konto klienta, pracodawcy, organizatora lub osoby szukającej pracy nie może być kontem personelu
 
 INSERT 0 1
-psql:strefa-t2.sql:32: ERROR:  insert or update on table "client_policy_documents" violates foreign key constraint "client_policy_documents_policy_id_fkey"
 INSERT 0 1
 SET
- 00000000-0000-0000-0000-0000000000f1 | {"aal":"aal2"}
+ 
 
 INSERT 0 2
-psql:strefa-t2.sql:42: ERROR:  insert or update on table "training_organizers" violates foreign key constraint "training_organizers_account_id_fkey"
- ERR expected: staff insert salon organiser without account
+INSERT 0 1
+ ok   ERR staff insert salon organiser without account [23514]
 
-psql:strefa-t2.sql:43: ERROR:  new row for relation "training_organizers" violates check constraint "training_organizers_check1"
- ERR expected: staff activates without verification
+ ok   ERR staff activates without verification [23514]
 
-psql:strefa-t2.sql:44: ERROR:  new row for relation "training_organizers" violates check constraint "training_organizers_check"
- ERR expected: staff changes account_id (no grant)
+ ok   ERR staff changes account_id (no grant) [42501]
 
-psql:strefa-t2.sql:45: ERROR:  permission denied for table training_organizers
-UPDATE 2
- staff sees organisers (3) |     2
+UPDATE 3
+ ok   staff sees organisers (3) = 3
 
 RESET
-psql:strefa-t2.sql:51: error: no rows returned for \gset
- audit organizer events |     4
+ ok   audit organizer events (3 created, 3 verified) = organizer_created:3,organizer_verified:3
 
- org invite o1 | t
+ ok   org invite o1 = true
 
- org invite o2 | t
+ ok   org invite o2 = true
 
-psql:strefa-t2.sql:55: ERROR:  syntax error at or near ":" at character 87
- ERR expected: client token as organiser token
+ ok   org invite ownerA to salon-organiser = true
 
-psql:strefa-t2.sql:56: ERROR:  organizer accept: zaproszenie wygasło albo zostało użyte
- accept o1 | <uuid>
+ ok   ERR client token as organiser token = P0001 organizer accept: zaproszenie wygasło albo zostało użyte
 
- accept o2 | <uuid>
+ ok   accept o1 = <uuid>
 
-psql:strefa-t2.sql:59: ERROR:  organizer accept: zaproszenie wygasło albo zostało użyte
-UPDATE 0
-UPDATE 0
-psql:strefa-t2.sql:63: ERROR:  gus: brak konta
-psql:strefa-t2.sql:64: ERROR:  gus: brak konta
+ ok   accept o2 = <uuid>
+
+ ok   accept ownerA as organiser = <uuid>
+
+UPDATE 1
+UPDATE 1
+ ok   P1 gus A = true
+
+ ok   P1 gus B = true
+
 INSERT 0 2
- P1 plan org A | t
+ ok   P1 plan org A = true
 
- ERR expected: staff as organiser
+ ok   staff invited to organiser (invitation itself is created) = true
 
- t
+ ok   ERR staff as organiser (accept) = P0001 organizer accept: konto personelu nie może należeć do organizatora
 
-psql:strefa-t2.sql:68: ERROR:  organizer accept: konto personelu nie może należeć do organizatora
 SET
- 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+ 
 
- ERR expected: o1 insert published
+ ok   ERR o1 insert published = P0001 trainings: nowe szkolenie może być tylko szkicem albo trafić do moderacji
 
-psql:strefa-t2.sql:73: ERROR:  trainings: nowe szkolenie może być tylko szkicem albo trafić do moderacji
- ERR expected: o1 insert for org B (RLS)
+ ok   ERR o1 insert for org B (RLS) [42501]
 
-psql:strefa-t2.sql:74: ERROR:  new row violates row-level security policy for table "trainings"
- ERR expected: o1 insert URL in description
+ ok   ERR o1 insert URL in description [23514]
 
-psql:strefa-t2.sql:75: ERROR:  new row for relation "trainings" violates check constraint "trainings_check7"
- ERR expected: o1 sets published_at (no grant)
+ ok   ERR o1 sets published_at (no grant) [42501]
 
-psql:strefa-t2.sql:76: ERROR:  permission denied for table trainings
 INSERT 0 1
- o1 slug (no reserved term) | szkolenie-<hex8> | pending_review |               1 |                0
+ ok   o1 slug (no reserved term) / status / version / seats = true/pending_review/1/0
 
- ERR expected: o1 update capacity
+ ok   ERR o1 update capacity [42501]
 
-psql:strefa-t2.sql:79: ERROR:  permission denied for table trainings
- ERR expected: o1 update content during review
+ ok   ERR o1 update content during review = P0001 trainings: szkolenie jest w moderacji – wycofaj je do szkicu, aby zmienić treść
 
-psql:strefa-t2.sql:80: ERROR:  trainings: szkolenie jest w moderacji – wycofaj je do szkicu, aby zmienić treść
- ERR expected: o1 private details evil host
+ ok   ERR o1 private details evil host (during review) = P0001 training_private_details: szkolenie jest w moderacji
 
-psql:strefa-t2.sql:81: ERROR:  training_private_details: szkolenie jest w moderacji
- ERR expected: o1 private details during review
+ ok   ERR o1 private details during review = P0001 training_private_details: szkolenie jest w moderacji
 
-psql:strefa-t2.sql:82: ERROR:  training_private_details: szkolenie jest w moderacji
 UPDATE 1
- ERR expected: evil host in draft
+ ok   ERR evil host in draft [23514]
 
-psql:strefa-t2.sql:84: ERROR:  new row for relation "training_private_details" violates check constraint "training_private_details_online_join_url_check"
- ERR expected: evil host path trick
+ ok   ERR evil host path trick [23514]
 
-psql:strefa-t2.sql:85: ERROR:  new row for relation "training_private_details" violates check constraint "training_private_details_online_join_url_check"
 INSERT 0 1
 UPDATE 1
- o1 version after resubmit (2) |               2
+ ok   o1 version after resubmit (2) = 2
 
- o1 sees client_accounts (0) |     0
+ ok   o1 sees client_accounts (0) = 0
 
- o1 sees client_policies (0) |     0
+ ok   o1 sees client_policies (0) = 0
 
- o1 sees job_offers (0) |     0
+ ok   o1 sees job_offers (0) = 0
 
- o1 sees training_registrations (0) |     0
+ ok   o1 sees training_registrations (0) = 0
 
- {"aal":"aal1"}
+ 
 
- o1 aal1 sees own trainings (0) |     0
-
-RESET
- ERR expected: moderate training stale version
-
-psql:strefa-t2.sql:98: ERROR:  moderate training: szkolenie zmieniono w trakcie moderacji (wersja 2, oczekiwano 1)
- moderate training ok | 
-
- training status | published | t
-
-SET
- 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
-
-UPDATE 1
- o1 edit published -> pending_review v3 | pending_review |               3
-
-UPDATE 1
- ERR expected: o1 private details change when published handled later
+ ok   o1 aal1 sees own trainings (0) = 0
 
 RESET
+ ok   ERR moderate training stale version = P0001 moderate training: szkolenie zmieniono w trakcie moderacji (wersja 2, oczekiwano 1)
+
+ ok   moderate training ok = (no error)
+
+ ok   training status / published_at set = published/true
+
 SET
- 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+ 
+
+UPDATE 1
+ ok   o1 edit published -> pending_review v3 = pending_review/3
 
 UPDATE 1
 RESET
- publish v5 | 
-
 SET
- 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+ 
 
 UPDATE 1
- o1 private details change on published -> pending_review | pending_review
-
 RESET
- publish again | 
+ ok   publish again after resubmit = (no error)
+
+ ok   published version (v3 edit, v4 resubmit) = published/4
 
 SET
- 00000000-0000-0000-0000-00000000000a | {"aal":"aal1"}
+ 
 
- A aal1 sees accounts (0 – TOTP mandatory for owners) |     0
-
- {"aal":"aal2"}
-
- A sees accounts (1) |     0
-
- ERR expected: A reads crm_ref
-
-psql:strefa-t2.sql:126: ERROR:  permission denied for table client_accounts
- A sees policies (1) |     0
-
- A sees docs (1) |     0
-
- A sees storage obj (1) |     1
-
- A sees members (2) |     0
-
- A (also organiser S) sees trainings of org A? published only (1) |     1
-
- ERR expected: A offer with URL
-
-psql:strefa-t2.sql:133: ERROR:  new row violates row-level security policy for table "job_offers"
- ERR expected: A sets slug (no grant)
-
-psql:strefa-t2.sql:135: ERROR:  permission denied for table job_offers
-psql:strefa-t2.sql:137: ERROR:  new row violates row-level security policy for table "job_offers"
-
- ERR expected: A edit during review (bait-and-switch)
-
-UPDATE 0
- ERR expected: A contacts during review
-
-INSERT 0 0
-UPDATE 0
-INSERT 0 0
-UPDATE 0
-
- ERR expected: A set published
-
-UPDATE 0
- ERR expected: A set published_at
-
-psql:strefa-t2.sql:146: ERROR:  permission denied for table job_offers
- ERR expected: A call app fn
-
-psql:strefa-t2.sql:147: ERROR:  permission denied for function app_expire_job_offers
-RESET
-psql:strefa-t2.sql:150: ERROR:  reply address: brak uprawnień
- reply address confirmed | f
-
- ERR expected: moderate stale version
-
-psql:strefa-t2.sql:152: ERROR:  moderate: brak ogłoszenia
-psql:strefa-t2.sql:153: ERROR:  moderate: brak ogłoszenia
-
-SET
- 00000000-0000-0000-0000-00000000000a | {"aal":"aal2"}
-
-UPDATE 0
-
-psql:strefa-t2.sql:160: ERROR:  new row violates row-level security policy for table "job_offers"
- reserved city dropped from slug |     0
-
- ERR expected: 6th draft/pending
-
-psql:strefa-t2.sql:163: ERROR:  new row violates row-level security policy for table "job_offers"
-RESET
-psql:strefa-t2.sql:165: ERROR:  moderate: brak ogłoszenia
-UPDATE 0
-SET
- 00000000-0000-0000-0000-00000000000b | {"aal":"aal2"}
-
- B (expired policy) still sees account (D-B) (1) |     0
-
- B sees archival policy (1) |     0
-
-psql:strefa-t2.sql:172: ERROR:  new row violates row-level security policy for table "job_offers"
-INSERT 0 0
-UPDATE 0
- B sees A contacts (0) |     0
-
- ERR expected: B writes contact for A offer
-
-INSERT 0 0
- B update A offer (0 rows)
-
-UPDATE 0
-RESET
-UPDATE 0
- ERR expected: publish B without NIP check
-
-psql:strefa-t2.sql:180: ERROR:  moderate: brak ogłoszenia
-psql:strefa-t2.sql:181: ERROR:  gus: brak konta
-psql:strefa-t2.sql:182: ERROR:  moderate: brak ogłoszenia
-SET
- 00000000-0000-0000-0000-0000000000e1 | {"aal":"aal1"}
-
- E sees policies (0) |     0
-
- E sees docs (0) |     0
-
- E sees storage (0) |     0
-
- E sees contacts (0) |     0
-
- E sees own salon offers (5) |     0
+UPDATE 1
+ ok   o1 private details change on published -> pending_review = pending_review
 
 RESET
+ ok   publish again = (no error)
+
 SET
-            | 
+ 
 
- anon offers (2) |     0
+ ok   A aal1 sees accounts (0 – TOTP mandatory for owners) = 0
 
- ERR expected: anon account_id
+ 
 
-psql:strefa-t2.sql:196: ERROR:  permission denied for table job_offers
- ERR expected: anon contacts
+ ok   A sees accounts (1) = 1
 
-psql:strefa-t2.sql:197: ERROR:  permission denied for table job_offer_contacts
- anon trainings (1) |     1
+ ok   ERR A reads crm_ref [42501]
 
- anon organisers (3) + name |     2
+ ok   ERR A reads crm_tenant [42501]
 
- ERR expected: anon organiser status
+ ok   A sees policies (1) = 1
 
-psql:strefa-t2.sql:200: ERROR:  permission denied for table training_organizers
- ERR expected: anon policies
+ ok   A sees docs (1) = 1
 
-psql:strefa-t2.sql:201: ERROR:  permission denied for table client_policies
- ERR expected: anon organizer_ids
+ ok   A sees storage obj (1) = 1
 
-psql:strefa-t2.sql:202: ERROR:  permission denied for function organizer_ids
+ ok   A sees members (2) = 2
+
+ ok   A (also organiser S) sees trainings of org A? published only (1) = 1
+
+ ok   ERR A offer with URL [23514]
+
+ ok   ERR A sets slug (no grant) [42501]
+
+INSERT 0 1
+ ok   A offer: slug / employer / status / version = true/Salon Przykładowy A/pending_review/1
+
+ ok   ERR A edit during review (bait-and-switch) = P0001 job_offers: ogłoszenie jest w moderacji – wycofaj je do szkicu, aby zmienić treść
+
+ ok   ERR A contacts during review = P0001 job_offer_contacts: ogłoszenie jest w moderacji – wycofaj je do szkicu, aby zmienić kontakt
+
+UPDATE 1
+INSERT 0 1
+UPDATE 1
+ ok   A version (2) = 2
+
+ ok   ERR A set published = P0001 job_offers: niedozwolona zmiana statusu pending_review → published
+
+ ok   ERR A set published_at [42501]
+
+ ok   ERR A call app fn [42501]
+
 RESET
- ERR expected: relay to phone-only offer
+ ok   reply address request = (no error)
 
-psql:strefa-t2.sql:206: ERROR:  relay: ogłoszenie niedostępne
-UPDATE 0
-psql:strefa-t2.sql:209: ERROR:  relay: ogłoszenie niedostępne
+ ok   reply address confirmed = true
 
-UPDATE 0
- purge after send |                        0
+ ok   ERR moderate stale version = P0001 moderate: ogłoszenie zmieniono w trakcie moderacji (wersja 2, oczekiwano 1)
 
+ ok   moderate ok = (no error)
 
- relay log has no PII columns | id,offer_id,outbox_id,created_at
+ ok   offer status = published
 
-psql:strefa-t2.sql:217: ERROR:  register: brak aktywnego członkostwa
-psql:strefa-t2.sql:218: ERROR:  register: brak aktywnego członkostwa
- ERR expected: reg without notice
-
-psql:strefa-t2.sql:219: ERROR:  register: brak informacji o przekazaniu danych organizatorowi
 SET
- 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+ 
+
+UPDATE 1
+ ok   A contact change on published -> pending_review (v3) = pending_review/3
+
+INSERT 0 4
+ ok   reserved city dropped from slug = 4
+
+ ok   ERR 6th draft/pending = P0001 job_offers: limit 5 ogłoszeń w szkicu lub w moderacji na salon
 
 RESET
- o1 sees contacts via fn (1 registered, waitlist hidden) |     0
+ ok   republish A = (no error)
+
+UPDATE 1
+SET
+ 
+
+ ok   B (expired policy) still sees account (D-B) (1) = 1
+
+ ok   B sees archival policy (1) = 1
+
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+ ok   B sees A contacts (0) = 0
+
+ ok   ERR B writes contact for A offer [42501]
+
+ ok   B update A offer (0 rows) = 0
+
+RESET
+UPDATE 1
+ ok   ERR publish B without NIP check = P0001 moderate: NIP pracodawcy wymaga ponownego sprawdzenia w GUS albo konto jest nieaktywne
+
+ ok   P1 gus B again = true
+
+ ok   publish B with NIP check = (no error)
 
 SET
- 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+ 
 
- ERR expected: o1 reads registrations user_id
+ ok   E sees policies (0) = 0
 
-psql:strefa-t2.sql:223: ERROR:  column "user_id" does not exist at character 8
- o1 sees registrations (0) |     0
+ ok   E sees docs (0) = 0
 
- o1 sees private details (1) |     1
+ ok   E sees storage (0) = 0
+
+ ok   E sees contacts (0) = 0
+
+ ok   E sees own salon offers (5) = 5
 
 RESET
 SET
- 00000000-0000-0000-0000-0000000000c2 | {"aal":"aal2"}
+ 
 
- ERR expected: o2 reads contacts via Data API
+ ok   anon offers (2) = 2
 
-psql:strefa-t2.sql:228: ERROR:  permission denied for table training_participant_contacts
- o2 sees org A private details (0) |     0
+ ok   ERR anon account_id [42501]
 
- o2 sees client_members (0) |     0
+ ok   ERR anon contacts [42501]
+
+ ok   anon trainings (1) = 1
+
+ ok   anon organisers (3) + name = 3
+
+ ok   ERR anon organiser status [42501]
+
+ ok   ERR anon policies [42501]
+
+ ok   ERR anon organizer_ids [42501]
 
 RESET
- ERR expected: capacity by o2
+ ok   ERR relay to phone-only offer = P0001 relay: salon nie przyjmuje wiadomości przez formularz
 
-psql:strefa-t2.sql:232: ERROR:  capacity: brak uprawnień
- capacity 2 by o1 promotes |                         0
+UPDATE 1
+ ok   relay ok = true
 
- ERR expected: capacity below seats
+ ok   outbox has message = rekrutacja@salon-a.example/true
 
-                         0
+UPDATE 1
+ ok   purge after send = 1
 
- seats    |                0 |        1
+ ok   outbox purged = anonymized/{}
+
+ ok   relay log has no PII columns = id,offer_id,outbox_id,created_at
+
+ ok   reg A = registered
+
+ ok   reg E (waitlist) = waitlisted
+
+ ok   ERR reg without notice = P0001 register: brak informacji o przekazaniu danych organizatorowi
 
 SET
- 00000000-0000-0000-0000-0000000000c1 | {"aal":"aal2"}
+ 
 
 RESET
- o1 sees contacts via fn (2) |     0
-
-RESET
- ERR expected: attendance before start
-
-psql:strefa-t2.sql:239: ERROR:  attendance: brak zapisu
- log organiser view | 
-
- ERR expected: o2 log on A training
-
-psql:strefa-t2.sql:241: ERROR:  organizer log: brak uprawnień
-SET
- 00000000-0000-0000-0000-0000000000e1 | {"aal":"aal1"}
-
- E sees private details (1) |     0
-
-RESET
-UPDATE 0
- dormant revoked (1) |                          0
+ ok   o1 sees contacts via fn (1 registered, waitlist hidden) = 1
 
 SET
- 00000000-0000-0000-0000-0000000000e1 | {"aal":"aal1"}
+ 
 
- E after revoke sees private details (0) |     0
+ ok   ERR o1 reads registrations user_id (no such column in contacts) [42703]
+
+ ok   ERR o1 reads contacts via Data API [42501]
+
+ ok   o1 sees registrations (0) = 0
+
+ ok   o1 sees private details (1) = 1
 
 RESET
- cancel A by staff | 
-
-
- contacts after cancel (1) |     0
-
- cancel event by o1 | 
-
- training status | cancelled
-
- ERR expected: truncate audit (postgres)
-
-psql:strefa-t2.sql:258: ERROR:  client_audit_log: TRUNCATE zabroniony
- ERR expected: update audit
-
-psql:strefa-t2.sql:259: ERROR:  client_audit_log: wpisów nie można zmieniać
 SET
- ERR expected: service_role delete audit
+ 
 
-psql:strefa-t2.sql:261: ERROR:  permission denied for table client_audit_log
- ERR expected: service_role truncate audit
+ ok   ERR o2 reads contacts via Data API [42501]
 
-psql:strefa-t2.sql:262: ERROR:  permission denied for table client_audit_log
+ ok   o2 sees org A private details (0) = 0
+
+ ok   o2 sees client_members (0) = 0
+
 RESET
- purge audit (0) |                   0
+ ok   ERR capacity by o2 = P0001 capacity: brak uprawnień
 
- audit rows |    19
+ ok   capacity 2 by o1 promotes (1 from waitlist) = 1
 
- actors   | staff, user
+ ok   ERR capacity below seats = P0001 capacity: limit nie może być mniejszy niż liczba zapisanych i zarezerwowanych (2)
 
- fn exec anon | digest,digest,hmac,hmac,crypt,gen_salt,gen_salt,encrypt,decrypt,encrypt_iv,decrypt_iv,gen_random_bytes,gen_random_uuid,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_key_id,armor,armor,dearmor,pgp_armor_headers,admin_users_guard
+ ok   seats registered / capacity = 2/2
 
- fn exec authenticated | admin_users_guard,app_is_staff,armor,armor,client_account_ids,crypt,dearmor,decrypt,decrypt_iv,digest,digest,employer_account_ids,encrypt,encrypt_iv,gen_random_bytes,gen_random_uuid,gen_salt,gen_salt,hmac,hmac,organizer_ids,pgp_armor_headers,pgp_key_id,pgp_pub_decrypt,pgp_pub_decrypt,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt_bytea,pgp_pub_decrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_encrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_sym_decrypt_bytea,pgp_sym_encrypt,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_encrypt_bytea,zabiegi_ids
+SET
+ 
 
- tables with RLS and no policy | phone_verifications,outbox_emails,newsletter_subscribers,candidate_ad_contact_log,client_policy_reminders,job_offer_relay_log,training_participant_contacts,sms_send_log,candidate_blocks,candidate_ad_views_daily
+RESET
+ ok   o1 sees contacts via fn (2) = 2
 
- job_applications gone | t
+RESET
+ ok   ERR attendance before start = P0001 attendance: szkolenie jeszcze się nie rozpoczęło
+
+ ok   log organiser view = (no error)
+
+ ok   ERR o2 log on A training = P0001 organizer log: brak uprawnień
+
+SET
+ 
+
+ ok   E sees private details (1) = 1
+
+RESET
+UPDATE 1
+ ok   dormant revoked (1) = 1
+
+SET
+ 
+
+ ok   E after revoke sees private details (0) = 0
+
+RESET
+ ok   cancel A by staff = (no error)
+
+ ok   audit actor for staff cancel (staff/all) = 1/1
+
+ ok   contacts after cancel (1) = 1
+
+ ok   cancel event by o1 = (no error)
+
+ ok   training status = cancelled
+
+ ok   ERR truncate audit (postgres) = P0001 client_audit_log: TRUNCATE zabroniony
+
+ ok   ERR update audit = P0001 client_audit_log: wpisów nie można zmieniać
+
+SET
+ ok   ERR service_role delete audit [42501]
+
+ ok   ERR service_role truncate audit [42501]
+
+RESET
+ ok   purge audit (0) = 0
+
+ audit rows (info) |    53
+
+ ok   audit actors (role prefixes only) = staff, system, system:capacity, system:dormant, system:gus, system:reply-address, user
+
+ ok   fn exec anon (none) = (none)
+
+ ok   fn exec authenticated = app_is_staff,client_account_ids,employer_account_ids,organizer_ids,zabiegi_ids
+
+ ok   tables with RLS and no policy (service_role only) = candidate_ad_contact_log,candidate_ad_views_daily,candidate_blocks,client_policy_reminders,job_offer_relay_log,newsletter_subscribers,outbox_emails,phone_verifications,sms_send_log,training_participant_contacts
+
+ ok   job_applications gone = true
 

@@ -720,6 +720,9 @@ begin
   end if;
   return coalesce(new, old);
 end $$;
+-- jawnie, jak przy każdej funkcji: default privileges IN SCHEMA nie odbierają EXECUTE roli PUBLIC (11, 9.4);
+-- odpalenie wyzwalacza nie sprawdza EXECUTE, więc guard działa dalej dla każdej roli
+revoke all on function admin_users_guard() from public, anon, authenticated;
 create trigger admin_users_guard
   before insert or update or delete on admin_users
   for each row execute function admin_users_guard();

@@ -401,10 +401,16 @@ reset role;
 select '--- Z. zabiegi (00, D41) ---';
 grant execute on function t.errmsg(text) to authenticated;
 create function t.plan(p text) returns setof text language plpgsql as $$ begin return query execute 'explain ' || p; end $$;
--- Z0. lista z pliku (blok gen:zabiegi-ids)
-select t.eq('Z0 zabiegi_ids: 117, first g1-01, last g4-08', (select cardinality(z)::text || '/' || z[1] || '/' || z[117] from (select public.zabiegi_ids() z) q), '117/g1-01/g4-08');
-select t.eq('Z0 groups 40/38/31/8', (select string_agg(n::text, '/' order by g) from (select left(i, 2) g, count(*) n from unnest(public.zabiegi_ids()) i group by 1) q), '40/38/31/8');
-select t.eq('Z0 active = all (nothing retired yet)', public.zabiegi_ids(true) = public.zabiegi_ids(), true);
+-- Z0. lista z pliku (blok gen:zabiegi-ids; wersja 2 listy po 00, D43: 100 aktywnych + 31 wycofanych g3-01…g3-31,
+--     snippets/zabiegi-oc-beauty.json i zabiegi-oc-beauty-wycofane.json, generator narzedzia/makiety/gen_zabiegi_sql.py)
+select t.eq('Z0 zabiegi_ids: 131 known / 100 active, first g1-01, last known g3-31', (select cardinality(z)::text || '/' || cardinality(a)::text || '/' || z[1] || '/' || z[cardinality(z)] from (select public.zabiegi_ids() z, public.zabiegi_ids(true) a) q), '131/100/g1-01/g3-31');
+select t.eq('Z0 known ids unique', (select count(distinct i) from unnest(public.zabiegi_ids()) i), 131::bigint);
+select t.eq('Z0 known by group g1/g2/g3/g4', (select string_agg(g || ':' || n, ',' order by g) from (select left(i, 2) g, count(*) n from unnest(public.zabiegi_ids()) i group by 1) q), 'g1:47,g2:45,g3:31,g4:8');
+select t.eq('Z0 active by group (no g3)', (select string_agg(g || ':' || n, ',' order by g) from (select left(i, 2) g, count(*) n from unnest(public.zabiegi_ids(true)) i group by 1) q), 'g1:47,g2:45,g4:8');
+select t.eq('Z0 active is a subset of known', public.zabiegi_ids(true) <@ public.zabiegi_ids(), true);
+select t.eq('Z0 retired = known minus active = g3-01..g3-31',
+  array(select unnest(public.zabiegi_ids()) except select unnest(public.zabiegi_ids(true)) order by 1),
+  array(select 'g3-' || lpad(i::text, 2, '0') from generate_series(1, 31) i order by 1));
 select t.eq('Z0 EXECUTE: anon no, authenticated yes, service_role yes',
   has_function_privilege('anon','public.zabiegi_ids(boolean)','execute')::text || '/' || has_function_privilege('authenticated','public.zabiegi_ids(boolean)','execute')::text || '/' || has_function_privilege('service_role','public.zabiegi_ids(boolean)','execute')::text, 'false/true/true');
 select t.eq('Z0 page fn and filter fn: service_role only', (select string_agg(r || ':' || has_function_privilege(r, f, 'execute')::text, ',' order by f, r) from unnest(array['anon','authenticated','service_role']) r, unnest(array['public.app_job_offers_page(jsonb,jsonb)','public.zabiegi_filter(jsonb)']) f),
@@ -459,7 +465,8 @@ select t.expect('Z1 authenticated cannot call page function', $q$select * from p
 reset role;
 
 -- Z2. publiczna lista: filtr LUB, kolejność od najnowszej, 20 na stronę, kursor
--- fixtures (as postgres, guard bypassed): 22 published offers of salon A with controlled published_at
+-- fixtures (as postgres, guard bypassed): 22 published offers of salon A with controlled published_at;
+-- g3-05 is retired in list v2 (offers 2 and 3 = offers saved before the retirement – used again in Z4)
 insert into job_offers (slug, account_id, status, title, profession, employment_type, working_time, city, voivodeship, salary_min, salary_max, salary_unit, description, employer_name, published_at, expires_at, zabiegi)
 select 'kosmetolog-krakow-z' || i, 'aaaaaaaa-0000-0000-0000-000000000001', 'published', 'Oferta ' || i || ' (przykład)', 'kosmetolog', 'umowa-o-prace', 'pelny-etat', 'Kraków', 'malopolskie', 6000, 7500, 'MONTH',
        repeat('Opis ogłoszenia przykładowego. ', 10), 'Salon Przykładowy A', now() - make_interval(hours => i), now() - make_interval(hours => i) + interval '21 days',
@@ -536,27 +543,28 @@ set role service_role;
 select t.expect('Z3 page untrusted actor still refused before filter', $q$select * from public.app_candidate_ads_page('00000000-0000-0000-0000-0000000000e1', 'aaaaaaaa-0000-0000-0000-000000000001', null, '{"zabiegi":["g1-03"]}')$q$, 'P0001');
 reset role;
 
--- Z4. wycofanie pozycji z listy (symulacja nowej wersji bloku: g4-01 wycofane)
-create table t.zfn as select pg_get_functiondef('public.zabiegi_ids(boolean)'::regprocedure) d;
--- build the "retired" variant from the original: active = all minus g4-01, retired = {g4-01}
-select replace(replace(d, '''g4-01'',', ''), 'v_wycofane text[] := array[]::text[]', 'v_wycofane text[] := array[''g4-01'']::text[]') from t.zfn \gexec
-select t.eq('Z4 retired variant: 116 active, 117 known', cardinality(public.zabiegi_ids(true))::text || '/' || cardinality(public.zabiegi_ids())::text, '116/117');
+-- Z4. wycofana pozycja zostaje w ogłoszeniu, które ją ma (lista v2: g3-05 wycofane w 00, D43).
+--     Ogłoszenia sprzed wycofania odtwarzamy zapisem jako postgres (guard pomija postgres; CHECK dopuszcza
+--     wycofane, bo sprawdza zabiegi_ids() bez p_tylko_aktywne) – tak jak oferty 2 i 3 z Z2.
+select t.eq('Z4 g3-05 retired in v2: known yes, active no', ('g3-05' = any(public.zabiegi_ids()))::text || '/' || ('g3-05' = any(public.zabiegi_ids(true)))::text, 'true/false');
+update job_offers set zabiegi = '{g1-03,g2-12,g3-05,g4-01}' where id = :'zoff';   -- as saved before retirement
 set role authenticated; select t.as_user('00000000-0000-0000-0000-0000000000d1','aal2');
 update job_offers set status = 'closed' where id = :'zoff';
-select t.eq('Z4 offer keeps retired g4-01 (non-content update ok)', (select status || '/' || ('g4-01' = any(zabiegi))::text from job_offers where id = :'zoff'), 'closed/true');
+select t.eq('Z4 offer keeps retired g3-05 (non-content update ok)', (select status || '/' || ('g3-05' = any(zabiegi))::text from job_offers where id = :'zoff'), 'closed/true');
 insert into job_offers (account_id, status, title, profession, employment_type, working_time, city, voivodeship, salary_min, salary_max, salary_unit, description, zabiegi)
  values (:'d1acc','draft','Podolog (przykład)','podolog','b2b','elastyczny','Poznań','wielkopolskie',40,60,'HOUR',repeat('Opis ogłoszenia przykładowego. ',10), '{g4-02}')
  returning id as zoff2 \gset
-select t.expect('Z4 cannot add retired id to an offer', format($q$update job_offers set zabiegi = '{g4-01,g4-02}' where id = %L$q$, :'zoff2'), 'BP422');
+select t.expect('Z4 cannot add retired id to an offer (known, not active)', format($q$update job_offers set zabiegi = '{g3-05,g4-02}' where id = %L$q$, :'zoff2'), 'BP422');
 update job_offers set zabiegi = '{g4-02,g4-03}' where id = :'zoff2';
 select t.eq('Z4 active ids still accepted', (select zabiegi::text from job_offers where id = :'zoff2'), '{g4-02,g4-03}');
 reset role;
-update candidate_ads set zabiegi = '{g1-03,g4-01}' where id = :'ad1';   -- as before retirement
+update candidate_ads set zabiegi = '{g1-03,g3-05}' where id = :'ad1';   -- as saved before retirement
 set role service_role;
-select t.eq('Z4 seeker re-save keeps retired g4-01', public.app_candidate_ad_save('00000000-0000-0000-0000-0000000000a1', (:'seek1')::jsonb || '{"zabiegi":["g1-03","g4-01"]}', 'iod-v1') = :'ad1', true);
-select t.expect('Z4 seeker cannot add retired id (seeker 2)', format($q$select public.app_candidate_ad_save('00000000-0000-0000-0000-0000000000a2', %L::jsonb || '{"first_name":"Ewa","zabiegi":["g4-01"]}', 'iod-v1')$q$, :'seek1'), 'BP422');
-select t.eq('Z4 filter by retired id still accepted (old links)', (select count(*) from public.app_job_offers_page('{"zabiegi":["g4-01"]}')), 1::bigint);
+select t.eq('Z4 seeker re-save keeps retired g3-05', public.app_candidate_ad_save('00000000-0000-0000-0000-0000000000a1', (:'seek1')::jsonb || '{"zabiegi":["g1-03","g3-05"]}', 'iod-v1') = :'ad1', true);
 reset role;
-select d from t.zfn \gexec
-select t.eq('Z4 original list restored', cardinality(public.zabiegi_ids(true)), 117);
+select t.eq('Z4 seeker ad still has g3-05 after re-save', (select zabiegi::text from candidate_ads where id = :'ad1'), '{g1-03,g3-05}');
+set role service_role;
+select t.expect('Z4 seeker cannot add retired id (seeker 2)', format($q$select public.app_candidate_ad_save('00000000-0000-0000-0000-0000000000a2', %L::jsonb || '{"first_name":"Ewa","zabiegi":["g3-05"]}', 'iod-v1')$q$, :'seek1'), 'BP422');
+select t.eq('Z4 filter by retired id still accepted (old links): offers 2, 3', (select string_agg(title, ',' order by published_at desc) from public.app_job_offers_page('{"zabiegi":["g3-05"]}')), 'Oferta 2 (przykład),Oferta 3 (przykład)');
+reset role;
 select '--- Z. end ---';

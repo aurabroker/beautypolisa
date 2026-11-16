@@ -360,13 +360,18 @@ SET
 RESET
  ok   RT6b seat counters consistent = 0
 
- definer  | employer_account_ids,app_is_staff,client_account_ids,organizer_ids,client_audit_staff_change,app_purge_audit_log
+ --- RT10: uprawnienia funkcji po zmianach (bez funkcji rozszerzeń – w Supabase pgcrypto jest w extensions) ---
 
- no search_path | 
+CREATE VIEW
+ ok   RT10 SECURITY DEFINER only = app_is_staff,app_purge_audit_log,client_account_ids,client_audit_staff_change,employer_account_ids,organizer_ids
 
- exec authenticated | digest,digest,hmac,hmac,crypt,gen_salt,gen_salt,encrypt,decrypt,encrypt_iv,decrypt_iv,gen_random_bytes,gen_random_uuid,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_key_id,armor,armor,dearmor,pgp_armor_headers,employer_account_ids,admin_users_guard,app_is_staff,zabiegi_ids,client_account_ids,organizer_ids
+ ok   RT10 SECURITY DEFINER without search_path = (none)
 
- exec anon | digest,digest,hmac,hmac,crypt,gen_salt,gen_salt,encrypt,decrypt,encrypt_iv,decrypt_iv,gen_random_bytes,gen_random_uuid,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_encrypt,pgp_sym_encrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_sym_decrypt,pgp_sym_decrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_encrypt,pgp_pub_encrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_pub_decrypt,pgp_pub_decrypt_bytea,pgp_key_id,armor,armor,dearmor,pgp_armor_headers,admin_users_guard
+ ok   RT10 payment fns without search_path = (none)
 
- payment fns w/o service_role | training_orders_status_audit
+ ok   RT10 exec authenticated = app_is_staff,client_account_ids,employer_account_ids,organizer_ids,zabiegi_ids
+
+ ok   RT10 exec anon = (none)
+
+ ok   RT10 payment fns without service_role (trigger only) = training_orders_status_audit
 

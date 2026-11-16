@@ -334,4 +334,19 @@ select t.eq('RT6b cron run', public.app_expire_training_orders() >= 1, true);
 select t.eq('RT6b cron closes reservation of suspended organiser', (select status from training_orders where id = :'r6c'), 'cancelled');
 reset role;
 select t.eq('RT6b seat counters consistent', (select n from public.app_payment_health() where check_name = 'seat_counter'), 0::bigint);
-\i /tmp/claude-0/-home-user-beautypolisa/02bc7ecd-7d14-594f-829e-bcbe3ff0c238/scratchpad/payfix/fncheck.sql
+select '--- RT10: uprawnienia funkcji po zmianach (bez funkcji rozszerzeń – w Supabase pgcrypto jest w extensions) ---';
+create view t.fn as
+  select p.oid, p.proname, p.prosecdef,
+         exists (select 1 from unnest(coalesce(p.proconfig, '{}')) c where c like 'search_path=%') as has_search_path,
+         p.proname ~ '(payment|training_order|refund|checkout|payout|sales_terms|platform_fee|invoice)' as payment
+  from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+  where n.nspname = 'public' and not exists (select 1 from pg_depend d where d.objid = p.oid and d.deptype = 'e');
+select t.eq('RT10 SECURITY DEFINER only', (select string_agg(proname, ',' order by proname) from t.fn where prosecdef),
+  'app_is_staff,app_purge_audit_log,client_account_ids,client_audit_staff_change,employer_account_ids,organizer_ids');
+select t.eq('RT10 SECURITY DEFINER without search_path', (select coalesce(string_agg(proname, ',' order by proname), '(none)') from t.fn where prosecdef and not has_search_path), '(none)');
+select t.eq('RT10 payment fns without search_path', (select coalesce(string_agg(proname, ',' order by proname), '(none)') from t.fn where payment and not has_search_path), '(none)');
+select t.eq('RT10 exec authenticated', (select string_agg(proname, ',' order by proname) from t.fn where has_function_privilege('authenticated', oid, 'execute')),
+  'app_is_staff,client_account_ids,employer_account_ids,organizer_ids,zabiegi_ids');
+select t.eq('RT10 exec anon', (select coalesce(string_agg(proname, ',' order by proname), '(none)') from t.fn where has_function_privilege('anon', oid, 'execute')), '(none)');
+select t.eq('RT10 payment fns without service_role (trigger only)', (select coalesce(string_agg(proname, ',' order by proname), '(none)') from t.fn where payment and not has_function_privilege('service_role', oid, 'execute')),
+  'training_orders_status_audit');

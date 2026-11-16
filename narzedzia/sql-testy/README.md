@@ -5,7 +5,8 @@ tymczasowym PostgreSQL 16 z zaślepkami Supabase. Każdy zestaw dostaje własną
 z zapisanym wzorcem (`wzorce/*.out`). Dzięki temu „0 nowych błędów” sprawdza skrypt, a nie człowiek.
 
 Zestawy przeniesiono 16.11.2026 z katalogu roboczego sesji (ostatnie uruchomienie 13.11.2026 przy płatnościach za
-szkolenia, 00 D42). Bez sekretów; wszystkie adresy e-mail i domeny są przykładowe (`example.com`, `*.example`).
+szkolenia, 00 D42). Bez sekretów; wszystkie adresy e-mail i domeny są przykładowe (`example.com`, `*.example`) –
+poza hostami wideokonferencji (`zoom.us`, `meet.google.com`), które CHECK adresu spotkania dopuszcza z listy.
 
 ## Uruchomienie
 
@@ -42,8 +43,10 @@ prywatnym nadaj prawo przejścia (np. `chmod 711`) każdemu katalogowi nadrzędn
    w PostgREST) → `schema.sql` → `app-is-staff-przed-rls.sql` (w `rls-policies.sql` polityki używają funkcji przed jej
    definicją) → `rls-policies.sql` → `strefa-klienta.sql`. Błąd wczytania = błąd zestawu.
 3. Plik zestawu z `testy/` przez `psql`. Asercje: `t.expect(etykieta, sql, sqlstate)` – oczekiwany błąd,
-   `t.eq(etykieta, wynik, oczekiwane)` – wartość; wiersz zaczyna się od `ok` albo `FAIL`. Sesję użytkownika udaje
-   `set role authenticated` + `t.as_user(uuid, 'aal1'|'aal2')`; serwer – `set role service_role`.
+   `t.eq(etykieta, wynik, oczekiwane)` – wartość; wiersz zaczyna się od `ok` albo `FAIL`. Wyjątki z funkcji mają
+   wspólny kod `P0001`, więc tam `t.eq(…, t.errmsg(sql), 'P0001 <komunikat>')` sprawdza też treść (w `strefa-t2`).
+   Sesję użytkownika udaje `set role authenticated` + `t.as_user(uuid, 'aal1'|'aal2')`; serwer – `set role service_role`.
+   Testy nie wczytują plików spoza repozytorium.
 4. Wartości losowe (UUID z `gen_random_uuid()`, końcówki slugów, numery zamówień) zamieniane na znaczniki
    (`<uuid>`, `<hex8>`, `SZ-<nr>`), potem porównanie z `wzorce/<zestaw>.out`.
 
@@ -51,11 +54,11 @@ prywatnym nadaj prawo przejścia (np. `chmod 711`) każdemu katalogowi nadrzędn
 
 | Zestaw | Zakres | Wzorzec (16.11.2026) |
 |---|---|---|
-| `strefa-p1` | decyzje P1: przełącznik „Szukam pracy”, promocja, pracodawcy (GUS, poziomy zaufania), telefon i limity SMS, oferty i moderacja, „Szukam pracy”, plany organizatorów, retencja, uprawnienia funkcji | ok 280, FAIL 1 (znany) |
-| `strefa-t2` | scenariusze konta, zaproszeń, organizatorów i szkoleń (wersja 1.2) | ERROR 70 (znane – fikstura nieaktualna) |
-| `zabiegi` | pole i filtr „Zabiegi” (00, D41) w ofertach i „Szukam pracy” | ok 211, FAIL 6, ERROR 4 (znane) |
+| `strefa-p1` | decyzje P1: przełącznik „Szukam pracy”, promocja, pracodawcy (GUS, poziomy zaufania), telefon i limity SMS, oferty i moderacja, „Szukam pracy”, plany organizatorów, retencja, uprawnienia funkcji | ok 281 |
+| `strefa-t2` | scenariusze 2–10: konta salonów i zaproszenia, organizatorzy i szkolenia, „Dam pracę”, pracownik, `anon`, formularz kontaktowy, zapisy, dziennik audytu, uprawnienia | ok 145 |
+| `zabiegi` | pole i filtr „Zabiegi” (00, D41) w ofertach i „Szukam pracy”; lista w wersji 2 (00, D43), wycofane pozycje | ok 222 |
 | `platnosci` | płatności za szkolenia (00, D42; dok. 11 §12a.15 pkt 20) | ok 149 |
-| `platnosci-redteam` | przegląd red team płatności (pkt 21) | ok 86 |
+| `platnosci-redteam` | przegląd red team płatności (pkt 21); RT10 – uprawnienia funkcji po zmianach | ok 92 |
 | `zakladki` | zakładki w Strefie salonu (00, D44; snippet 10.7a; TEST-21 pkt 22) | ok 84 |
 | `wyscigi` | równoległe sesje: 5 osób o 1 miejsce, ten sam klucz idempotencji, webhook 3 × naraz, dwie zakładki naraz (R4) | ok 13 |
 
@@ -68,13 +71,24 @@ pracownika na szkolenie bezpłatne, zamówienie i płatność szkolenia płatneg
 `app_job_offers_page()`, wiadomość kandydata, „Szukam pracy” zależne tylko od globalnego przełącznika); żadna funkcja
 modułu ani polityka RLS nie czyta `ukryte_zakladki`. R4 w `wyscigi` wykrywa zgubioną zmianę bez blokady wiersza.
 
-### Znane błędy we wzorcach (sprzed zmiany 16.11.2026, do odświeżenia osobno)
+### Znane błędy we wzorcach
 
-- `strefa-p1`: `FAIL fn exec anon (none) = admin_users_guard` – funkcja wyzwalacza w `schema.sql` bez `revoke … from anon`.
-- `zabiegi`: Z0 i Z4 oczekują listy zabiegów w wersji 1 (117 pozycji, bez wycofanych); po D43 lista ma wersję 2
-  (100 aktywnych, 31 wycofanych) – trzeba przepisać oczekiwania, nie snippet.
-- `strefa-t2`: fikstura sprzed pary `crm_tenant` + `crm_ref` (12 §5.2) i sprzed nowych kolumn OC (D43) – pierwszy
-  `insert` się nie udaje, a dalsze kroki dziedziczą błąd; wzorzec pilnuje, żeby nie doszły nowe różnice.
+Stan na 16.11.2026: **brak** – każdy zestaw kończy się `FAIL=0 ERROR=0`. Usunięte tego dnia (powstały wcześniej
+i nie wynikały z błędów `strefa-klienta.sql`):
+
+- `strefa-p1`: `FAIL fn exec anon (none) = admin_users_guard` – funkcja wyzwalacza z `rls-policies.sql` (kopia dok. 02,
+  nie `schema.sql`) nie miała jawnego `REVOKE`, a `alter default privileges … in schema public` nie odbiera `EXECUTE`
+  roli `PUBLIC`. Dopisano `revoke all on function admin_users_guard() from public, anon, authenticated` w snippecie i
+  w dok. 02; funkcja zniknęła też z listy `authenticated`. Globalna poprawka uprawnień domyślnych (bez `IN SCHEMA`)
+  nadal czeka w dok. 02 na etap Z1.
+- `zabiegi`: Z0 sprawdza listę v2 (131 znanych, 100 aktywnych: g1 47, g2 45, g4 8; wycofane dokładnie `g3-01`…`g3-31`).
+  Z4 używa naprawdę wycofanego `g3-05` zamiast przepisywać `zabiegi_ids()`, więc odmowa `BP422` wynika z reguły
+  „nowe tylko aktywne”, a nie z nieznanego identyfikatora.
+- `strefa-t2`: fikstura z parą `crm_tenant` + `crm_ref` i kolumnami OC z D43 (`oc_rodzaje`, `oc_kategoria`, `'1-5'`;
+  składka 882 zł bez zmian według `oc-skladka.js`); zestaw przepisany na asercje z zachowaniem intencji wierszy
+  „ERR expected” – dwa kroki sprawdzają teraz to, co mówi etykieta (obrót tokenu przez obcego właściciela na
+  aktywnym zaproszeniu; odczyt kontaktów uczestników przez Data API).
+- `platnosci-redteam`: koniec testu wczytywał `\i` z katalogu roboczego innej sesji – zastąpiony sekcją RT10.
 
 ## Kiedy aktualizować wzorce
 
@@ -86,5 +100,6 @@ w `uruchom.sh` i pierwszy wzorzec.
 ## Ograniczenia
 
 Czysty PostgreSQL z zaślepkami nie zastępuje TEST-21 z końca `strefa-klienta.sql` (lokalny stos Supabase CLI albo
-gałąź projektu: prawdziwe role, Data API, właściciele funkcji SECURITY DEFINER, `max_rows`). Testy nie sprawdzają
-interfejsu – to robią testy makiet w `narzedzia/makiety/kontrola/`.
+gałąź projektu: prawdziwe role, Data API, właściciele funkcji SECURITY DEFINER, `max_rows`). Lokalnie pgcrypto leży
+w `public` (w Supabase – w `extensions`), dlatego listy uprawnień funkcji pomijają funkcje rozszerzeń. Testy nie
+sprawdzają interfejsu – to robią testy makiet w `narzedzia/makiety/kontrola/`.
