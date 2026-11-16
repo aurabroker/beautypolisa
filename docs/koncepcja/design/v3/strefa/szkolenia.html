@@ -285,6 +285,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <a href="#plan">Profil i&nbsp;plan</a>
     <a href="#wyplaty">Sprzedaż i&nbsp;wypłaty</a>
   </nav>
+  <nav aria-label="Ekrany makiety – zakładki w Strefie salonu">
+    <a href="szkolenia.html?zakladki=bez-szkolen#moje-szkolenia">Salon: zakładka Szkolenia ukryta</a>
+    <a href="szkolenia.html?rola=pracownik&amp;zakladki=bez-szkolen#moje-szkolenia">Pracownik: zakładka ukryta</a>
+    <a href="panel.html#zakladki">Ustawienia zakładek</a>
+  </nav>
 </div>
 
 <!-- ======================= pasek górny: ciemne szkło (tafla 1/3) ======================= -->
@@ -300,16 +305,17 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <span class="topbar-spacer"></span>
     <details class="account" id="account">
       <summary>
-        <span class="monogram" aria-hidden="true">AP</span>
-        <span class="account-name"><strong><span class="salon-only">Salon Przykładowy</span><span class="org-only">Organizator szkoleń</span></strong><span>Anna Przykładowa&nbsp;· <span class="salon-only">właścicielka</span><span class="org-only">Salon Przykładowy</span></span></span>
+        <span class="monogram owner-only" aria-hidden="true">AP</span><span class="monogram employee-only" aria-hidden="true">EP</span>
+        <span class="account-name"><strong><span class="salon-only">Salon Przykładowy</span><span class="org-only">Organizator szkoleń</span></strong><span class="owner-only">Anna Przykładowa&nbsp;· <span class="salon-only">właścicielka</span><span class="org-only">Salon Przykładowy</span></span><span class="employee-only">Ewa Przykładowa&nbsp;· pracownik</span></span>
         <span class="sr-only">– menu konta</span>
         <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg>
       </summary>
       <div class="account-panel">
-        <p class="acc-who"><strong>Anna Przykładowa</strong><span>anna@salon-przykladowy.example</span></p>
+        <p class="acc-who owner-only"><strong>Anna Przykładowa</strong><span>anna@salon-przykladowy.example</span></p>
+        <p class="acc-who employee-only"><strong>Ewa Przykładowa</strong><span>ewa@salon-przykladowy.example</span></p>
         <p class="label-caps">Przełącz konto</p>
         <a href="#katalog" data-acc="salon"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Salon Przykładowy</a>
-        <a href="#organizator" data-acc="organizer"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Salon Przykładowy&nbsp;– organizator szkoleń</a>
+        <a href="#organizator" data-acc="organizer" class="owner-only"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Salon Przykładowy&nbsp;– organizator szkoleń</a>
         <hr>
         <a href="panel.html#ustawienia"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Ustawienia</a>
         <a href="logowanie.html"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></svg>Wyloguj</a>
@@ -321,6 +327,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <div class="app">
 
   <!-- ======================= menu boczne: jasne szkło (tafla 2/3) ======================= -->
+  <!-- menu salonu (11 §5.2; pracownik: Pulpit · Dam pracę · Szkolenia). data-zakladka – pozycja znika, gdy salon ukryje zakładkę
+       w „Ustawieniach” (panel.html#zakladki): preferencja widoku, nie kontrola dostępu. Menu organizatora (osobne konto) – bez zmian. -->
   <nav class="sidenav glass glass--strong" id="sidenav" aria-label="Strefa Klienta">
     <button class="drawer-close nav-close" type="button" aria-label="Zamknij menu"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <p class="sidenav-title label-caps"><span class="salon-only">Salon Przykładowy</span><span class="org-only">Organizator szkoleń</span></p>
@@ -328,8 +336,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <li><a href="panel.html#pulpit"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Pulpit</a></li>
       <li class="owner-only"><a href="panel.html#polisy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Polisy</a></li>
       <li class="owner-only"><a href="panel.html#sprawy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Sprawy w&nbsp;toku<span class="count" aria-label="1 otwarta">1</span></a></li>
-      <li><a href="dam-prace.html#moje-ogloszenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Dam&nbsp;pracę</a></li>
-      <li>
+      <li data-zakladka="praca"><a href="dam-prace.html#moje-ogloszenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Dam&nbsp;pracę</a></li>
+      <li data-zakladka="szkolenia">
         <a href="#katalog" data-view="katalog szkolenie szkolenie-platne zamowienie"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Szkolenia</a>
         <ul class="sub">
           <li><a href="#katalog" data-view="katalog szkolenie szkolenie-platne zamowienie" data-sub>Katalog szkoleń</a></li>
@@ -358,6 +366,27 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   </nav>
 
   <main class="main" id="tresc">
+
+    <!-- ================================================================
+         ZAKŁADKA „SZKOLENIA” UKRYTA W USTAWIENIACH SALONU (panel.html#zakladki) – wejście pod adres modułu w Strefie salonu.
+         Preferencja widoku, nie kontrola dostępu: ekrany poniżej działają normalnie – zapisy, lista rezerwowa, opłacone zamówienia,
+         faktury i e-maile organizatorów bez zmian. Informacja tylko w kontekście salonu (.salon-only) – nie w profilu organizatora
+         (osobne konto). Publiczny katalog /szkolenia dla gościa – bez zmian. Z JS – tylko przy ukrytej zakładce; bez JS – wzór.
+         „Pokaż zakładkę” (właściciel): w produkcji POST /strefa-klienta/ustawienia/zakladki (app_client_set_tab_visibility,
+         wpis w „Historii konta”) i 303 z powrotem na ten adres; w makiecie bez JS – przejście do Ustawień.
+         ================================================================ -->
+    <div class="tab-note salon-only" data-zakladka-uwaga="szkolenia">
+      <form class="alert alert--info" action="panel.html#zakladki" method="post">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+        <p class="no-js-only"><span class="mock-note">Wzór: tylko gdy zakładka jest ukryta</span></p>
+        <strong class="alert-title">Zakładka Szkolenia jest ukryta w&nbsp;ustawieniach salonu</strong>
+        <p class="small">Szkolenia działają normalnie: zapisy i&nbsp;opłacone zamówienia są bez zmian, a&nbsp;przypomnienia i&nbsp;<span class="nowrap">e-maile</span> od organizatorów przychodzą jak dotąd. Ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.</p>
+        <input type="hidden" name="zakladka" value="szkolenia"><input type="hidden" name="widoczna" value="tak">
+        <div class="actions owner-only"><button class="btn btn-navy btn-sm" type="submit">Pokaż zakładkę</button></div>
+        <p class="small employee-only">Zakładkę może pokazać właścicielka konta – Anna Przykładowa – w&nbsp;ustawieniach salonu.</p>
+      </form>
+      <p class="alert alert--success tab-note-ok" tabindex="-1" hidden>Zakładka Szkolenia jest znowu widoczna w&nbsp;menu i&nbsp;na pulpicie Strefy salonu.</p>
+    </div>
 
     <!-- ================================================================
          1 · KATALOG SZKOLEŃ (publiczny /szkolenia – Założenie Z-6; w strefie ten sam katalog)
@@ -2068,6 +2097,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <li><strong>Decyzja <span class="nowrap">P1d</span> (12.11.2026):</strong> organizator płaci za plan&nbsp;– promocja na otwarcie portalu: 10&nbsp;000&nbsp;zł netto za 12&nbsp;miesięcy albo 1&nbsp;000&nbsp;zł netto za miesiąc; pozostałe warunki&nbsp;– do ustalenia (Q16). Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy tylko przy aktywnym planie (11 §12.4, S12, O5); po końcu planu zapisani zachowują miejsca i&nbsp;szczegóły, a&nbsp;organizator&nbsp;– listę uczestników. Ekrany: blok „Dla organizatorów szkoleń” w&nbsp;katalogu, stan planu w&nbsp;„Moich szkoleniach” organizatora, widok „Profil i&nbsp;plan” z&nbsp;wariantami „kończy się” i&nbsp;„brak aktywnego planu” oraz kontrola terminu w&nbsp;„Dodaj szkolenie”.</li>
         <li><strong>Założenia <span class="nowrap">Z-22</span> i&nbsp;<span class="nowrap">Z-41</span>:</strong> plan ustawia, przedłuża i&nbsp;anuluje wyłącznie personel w&nbsp;<code>/panel</code>; fakturę wystawia Aura Expert poza portalem (bez płatności online); plan nie limituje liczby szkoleń; plan obejmuje szkolenia zaczynające się w&nbsp;jego okresie; plan bez numeru faktury wygasa po 14&nbsp;dniach (Q22). Daty planu i&nbsp;numer faktury w&nbsp;makiecie są fikcyjne.</li>
         <li><strong>Decyzja <span class="nowrap">L1</span>:</strong> stopka ma pełną formułę Aura Expert sp.&nbsp;z&nbsp;o.o. (agent ubezpieczeniowy, wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych nr 11229690/A, link do <code>rpu.knf.gov.pl</code>) i&nbsp;kontakt do IOD. Pod formułą rozwijany blok „Informacje o&nbsp;agencie ubezpieczeniowym (IDD)”: 10&nbsp;zakładów ubezpieczeń, wynagrodzenie, brak udziałów ≥&nbsp;10%, reklamacje i&nbsp;Rzecznik Finansowy, kontakt do agenta (ustalenia 13.11.2026).</li>
+        <li><strong>Zakładka „Szkolenia” ukryta w&nbsp;ustawieniach salonu</strong> (<a href="panel.html#zakladki">panel.html#zakladki</a>; prośba zleceniodawcy 16.11.2026): to <strong>preferencja widoku, nie kontrola dostępu</strong>. W&nbsp;Strefie salonu znikają pozycja „Szkolenia” w&nbsp;menu i&nbsp;kafel na pulpicie (dla wszystkich członków salonu), a&nbsp;ekrany działają dalej pod swoimi adresami&nbsp;– u&nbsp;góry informacja „Zakładka Szkolenia jest ukryta w&nbsp;ustawieniach salonu”; właściciel ma „Pokaż zakładkę”, pracownik&nbsp;– informację, kto może ją pokazać. Zapisy, lista rezerwowa, opłacone zamówienia, faktury, przypomnienia i&nbsp;e-maile organizatorów&nbsp;– bez zmian. Katalog jest tu pokazany w&nbsp;koncie salonu, więc też ma informację; publiczny katalog <code>/szkolenia</code> dla gościa i&nbsp;profil organizatora (osobne konto)&nbsp;– bez zmian. Stany: <a href="szkolenia.html?zakladki=bez-szkolen#moje-szkolenia">?zakladki=bez-szkolen</a>, wariant pracownika&nbsp;– <a href="szkolenia.html?rola=pracownik&amp;zakladki=bez-szkolen#moje-szkolenia">?rola=pracownik</a> (menu: Pulpit, Dam pracę, Szkolenia; bez „Zapisów zespołu”).</li>
         <li><strong>Założenie <span class="nowrap">Z-6</span>:</strong> katalog jest publiczny, zapis tylko z&nbsp;konta salonu (gość widzi „Zaloguj się, aby się zapisać”). Czy katalog ma być publiczny&nbsp;– pytanie Q10.</li>
         <li><strong>Decyzja <span class="nowrap">D-D</span>:</strong> szkolenia dodają salony i&nbsp;firmy szkoleniowe. Organizator nie potrzebuje polisy; konto dostaje z&nbsp;zaproszenia po weryfikacji przez Aura Expert (<strong>Założenie Z-16</strong>). Salon-organizator ma osobny profil i&nbsp;przełącza się w&nbsp;menu konta&nbsp;– ten sam widok ma firma szkoleniowa, np. „Organizator przykładowy”.</li>
         <li>RODO: organizator jest administratorem danych uczestników swoich szkoleń; rola Aura Expert (odrębny administrator albo podmiot przetwarzający)&nbsp;– do decyzji prawnika i&nbsp;IOD (Q1). Organizator widzi tylko imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status, nazwę salonu tylko przy szkoleniu płatnym; dane usuwane 30&nbsp;dni po szkoleniu (<strong>Założenie Z-17</strong>).</li>
@@ -2160,13 +2190,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   }
 
   /* ---------- widoki ---------- */
+  /* pracownik salonu (?rola=pracownik – wariant makiety): menu bez Polis, Spraw i Zespołu, bez „Zapisów zespołu” (11 §3, §5.2) */
+  var EMPL = /[?&]rola=pracownik(&|$)/.test(location.search);
   function render(focus) {
     var id = decodeURIComponent(location.hash.slice(1));
     var el = id ? document.getElementById(id) : null;
     var view = el ? (el.classList.contains('view') ? el : el.closest('.view')) : null;
     if (!view) { view = views[0]; el = null; id = view.id; }
     views.forEach(function (v) { v.classList.toggle('is-active', v === view); });
-    var role = view.getAttribute('data-role-view') === 'organizer' ? 'organizer' : 'owner';
+    var role = view.getAttribute('data-role-view') === 'organizer' ? 'organizer' : (EMPL ? 'employee' : 'owner');
     body.setAttribute('data-role', role);
     var key = el && el.getAttribute('data-nav') ? el.getAttribute('data-nav') : view.id;
     navLinks.forEach(function (a) {
@@ -2207,14 +2239,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       });
       if (focus) { tab.focus(); }
     }
-    tabs.forEach(function (t, i) {
+    tabs.forEach(function (t) {
       t.addEventListener('click', function () { select(t, false); });
       t.addEventListener('keydown', function (e) {
-        var n = null;
-        if (e.key === 'ArrowRight') { n = tabs[(i + 1) % tabs.length]; }
-        if (e.key === 'ArrowLeft') { n = tabs[(i - 1 + tabs.length) % tabs.length]; }
-        if (e.key === 'Home') { n = tabs[0]; }
-        if (e.key === 'End') { n = tabs[tabs.length - 1]; }
+        /* tylko widoczne zakładki (pracownik nie ma „Zapisów zespołu”) */
+        var vis = tabs.filter(function (x) { return x.getClientRects().length > 0; }), i = vis.indexOf(t), n = null;
+        if (i < 0) { return; }
+        if (e.key === 'ArrowRight') { n = vis[(i + 1) % vis.length]; }
+        if (e.key === 'ArrowLeft') { n = vis[(i - 1 + vis.length) % vis.length]; }
+        if (e.key === 'Home') { n = vis[0]; }
+        if (e.key === 'End') { n = vis[vis.length - 1]; }
         if (n) { e.preventDefault(); select(n, true); }
       });
     });
@@ -2546,6 +2580,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   render(false);
 })();
 </script>
+<!-- „Zakładki w Strefie”: informacja przy ukrytej zakładce, „Pokaż zakładkę”, wariant pracownika (wspólny plik panel.html, dam-prace.html, szkolenia.html) -->
+<script src="zakladki.js"></script>
 <!-- gen:slownik-js -->
 <script type="application/json" id="slownik-dymki">
 {

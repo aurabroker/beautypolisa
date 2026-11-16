@@ -17,6 +17,7 @@ if OUT.exists(): shutil.rmtree(OUT)
 for p in (V3 / 'img').glob('*.webp'): shutil.copy(p, OUT / 'img' / p.name)
 shutil.copy(REPO / 'BeautyPolisa_logo_podstawowe_poziome.png', OUT / 'logo.png')
 shutil.copy(V3 / 'strefa/strefa.css', OUT / 'strefa/strefa.css')
+shutil.copy(V3 / 'strefa/zakladki.js', OUT / 'strefa/zakladki.js')   # „Zakładki w Strefie” – wspólny skrypt panel/dam-prace/szkolenia
 # strony obok index.html; produkty mają produkcyjnie adres /ubezpieczenia/<nazwa> (mapowany na plik podglądu)
 PRODUKTY = ['oc-beauty', 'tax-protect', 'utrata-dochodu', 'nnw-dzieci', 'grupowe-ergo', 'opieka-medyczna']
 STRONY = PRODUKTY + ['slownik']

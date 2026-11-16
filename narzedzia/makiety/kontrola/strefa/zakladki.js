@@ -52,7 +52,8 @@ async function newCtx(b, opt = {}) {
 async function open(c, url, errs) {
   const p = await c.newPage();
   p.on('pageerror', e => errs && errs.push(url + ': ' + e.message));
-  p.on('console', m => { if (errs && m.type() === 'error' && !/Failed to load resource|ERR_FILE_NOT_FOUND|net::|fonts\.g/.test(m.text())) errs.push(url + ': ' + m.text()); });
+  // pomijane: zasoby z sieci (fonty) i odczyt arkusza CSS przez axe-core (XMLHttpRequest z file:// – blokada CORS przeglądarki)
+  p.on('console', m => { if (errs && m.type() === 'error' && !/Failed to load resource|ERR_FILE_NOT_FOUND|net::|fonts\.g|XMLHttpRequest at 'file:/.test(m.text())) errs.push(url + ': ' + m.text()); });
   await p.goto(S + url, { waitUntil: 'load' });
   await p.waitForTimeout(120);
   return p;
@@ -68,6 +69,9 @@ async function axe(p, label, include) {
 }
 const isVis = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); return !!e && e.checkVisibility(); }, sel);
 const txt = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); return e ? e.textContent.replace(/\s+/g, ' ').trim() : null; }, sel);
+const vtxt = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); return e ? e.innerText.replace(/\s+/g, ' ').trim() : null; }, sel);   // tylko widoczny tekst
+// cele < 24 px w elemencie (WCAG 2.5.8); wyjątek: link w zdaniu (display: inline w akapicie)
+const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.querySelectorAll('a[href],button,input,summary,label')]).filter(e => e.checkVisibility() && !(e.tagName === 'A' && getComputedStyle(e).display === 'inline' && e.closest('p'))).map(e => { const r = e.getBoundingClientRect(); return [(e.textContent || '').trim().slice(0, 24) || e.id, Math.round(r.width), Math.round(r.height)]; }).filter(([, w2, h2]) => w2 < 24 || h2 < 24);
 
 (async () => {
   const b = await chromium.launch();
@@ -238,7 +242,7 @@ const txt = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); r
     nav = await p.evaluate(navTexts);
     ok(!nav.some(t => RE_PRACA.test(t) || RE_SZK.test(t)), 'panel (oba ukryte): menu: ' + nav.join('|'));
     ok(!(await isVis(p, '#pulpit a.shortcut[href^="dam-prace.html"]')) && !(await isVis(p, '#pulpit a.shortcut[href^="szkolenia.html"]')) && await isVis(p, '#pulpit a.shortcut[href="#szkoda"]'), 'pulpit (oba ukryte): zostaje tylko „Zgłoś szkodę”');
-    ok(nb(await txt(p, '#pulpit .lead')) === 'Polisy i dokumenty salonu – w jednym miejscu.', 'pulpit (oba ukryte): lead bez modułów: ' + await txt(p, '#pulpit .lead'));
+    ok(nb(await vtxt(p, '#pulpit .lead')) === 'Polisy i dokumenty salonu – w jednym miejscu.', 'pulpit (oba ukryte): lead bez modułów: ' + await vtxt(p, '#pulpit .lead'));
     await p.evaluate(() => { location.hash = 'pracownik'; }); await p.waitForTimeout(80);
     ok(await isVis(p, '#pracownik .zak-pusto') && !(await isVis(p, '#pracownik [data-zakladka="praca"]')) && !(await isVis(p, '#pracownik [data-zakladka="szkolenia"]')), 'pulpit pracownika (oba ukryte): pusty stan, bez kart');
     await axe(p, 'panel #pracownik (oba ukryte)', [['#pracownik']]);
@@ -350,11 +354,12 @@ const txt = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); r
   // ---------- 7. szerokości 320–1440: przewijanie w poziomie, tekst ≥ 12 px, cele ----------
   log('\n== 7. Szerokości');
   {
+    // [adres, element nowego komponentu – do przewinięcia i kontroli celów]
     const ekrany = [
       ['panel.html?zakladki=bez-pracy#zakladki', '#zakladki'],
       ['panel.html?rola=pracownik&zakladki=bez-szkolen#zakladki', '#zakladki'],
-      ['panel.html?zakladki=bez-pracy#pulpit', '#pulpit'],
-      ['panel.html?zakladki=bez-pracy,bez-szkolen#pracownik', '#pracownik'],
+      ['panel.html?zakladki=bez-pracy#pulpit', '#pulpit .zak-hint'],
+      ['panel.html?zakladki=bez-pracy,bez-szkolen#pracownik', '#pracownik .zak-pusto'],
       ['dam-prace.html?zakladki=bez-pracy#moje-ogloszenia', '[data-zakladka-uwaga="praca"]'],
       ['dam-prace.html?rola=pracownik&zakladki=bez-pracy#moje-ogloszenia', '[data-zakladka-uwaga="praca"]'],
       ['szkolenia.html?zakladki=bez-szkolen#moje-szkolenia', '[data-zakladka-uwaga="szkolenia"]'],
@@ -367,7 +372,7 @@ const txt = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); r
         const a = await p.evaluate(audit);
         ok(a.sw <= w && a.sw <= a.cw, `${u}@${w}: przewijanie w poziomie ${a.sw}/${a.cw} ${JSON.stringify(a.wide)}`);
         ok(!a.small.length, `${u}@${w}: tekst < 12 px ${JSON.stringify(a.small)}`);
-        const male = await p.evaluate(s => [...document.querySelectorAll(s + ' :is(a[href],button,input,summary)')].filter(e => e.checkVisibility()).map(e => { const r = e.getBoundingClientRect(); return [e.textContent.trim().slice(0, 24) || e.id, Math.round(r.width), Math.round(r.height)]; }).filter(([, w2, h2]) => w2 < 24 || h2 < 24 ), sel);
+        const male = await p.evaluate(maleCele, sel);
         ok(!male.length, `${u}@${w}: cele < 24 px ${JSON.stringify(male)}`);
         if (w === 320 || w === 1440) await p.screenshot({ path: OUT + u.replace(/[^a-z0-9]+/gi, '_') + '-' + w + '.png' });
         await p.close();

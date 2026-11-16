@@ -1090,7 +1090,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
         <p class="no-js-only"><span class="mock-note">Wzór: tylko gdy zakładka jest ukryta</span></p>
         <strong class="alert-title">Zakładka Praca jest ukryta w&nbsp;ustawieniach salonu</strong>
-        <p class="small">„Dam pracę” i&nbsp;„Szukam pracy” działają normalnie: ogłoszenia salonu są opublikowane, a&nbsp;wiadomości od kandydatów dochodzą jak dotąd. Ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.</p>
+        <p class="small">„Dam pracę”<span class="owner-only"> i&nbsp;„Szukam pracy” działają</span><span class="employee-only"> działa</span> normalnie: ogłoszenia salonu są opublikowane, a&nbsp;wiadomości od kandydatów dochodzą jak dotąd. Ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.</p>
         <input type="hidden" name="zakladka" value="praca"><input type="hidden" name="widoczna" value="tak">
         <div class="actions owner-only"><button class="btn btn-navy btn-sm" type="submit">Pokaż zakładkę</button></div>
         <p class="small employee-only">Zakładkę może pokazać właścicielka konta – Anna Przykładowa – w&nbsp;ustawieniach salonu.</p>
@@ -2624,6 +2624,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <ul>
         <li><strong>„Dam pracę” i&nbsp;„Szukam pracy” to wyłącznie tablica (D-C, P1).</strong> Zasada tablicy jest widoczna w&nbsp;nagłówku listy ofert, w&nbsp;„Szukam pracy” i&nbsp;w&nbsp;formularzu ogłoszenia osoby szukającej pracy. Bez aplikacji, CV, statusów rekrutacji, list kandydatów, „polecanych”, rankingów i&nbsp;wyróżnień.</li>
         <li><strong>Promocja na otwarcie (P1c):</strong> ogłoszenia bezpłatne, widoczne 21&nbsp;dni (CHECK w&nbsp;bazie); bez przedłużeń&nbsp;– po wygaśnięciu „Opublikuj ponownie” i&nbsp;nowa moderacja.</li>
+        <li><strong>Zakładka „Praca” ukryta w&nbsp;ustawieniach salonu</strong> (<a href="panel.html#zakladki">panel.html#zakladki</a>; prośba zleceniodawcy 16.11.2026): to <strong>preferencja widoku, nie kontrola dostępu</strong>. W&nbsp;Strefie salonu znikają pozycja „Dam pracę” w&nbsp;menu i&nbsp;kafel na pulpicie (dla wszystkich członków salonu), a&nbsp;ekrany strefy działają dalej pod swoimi adresami&nbsp;– u&nbsp;góry informacja „Zakładka Praca jest ukryta w&nbsp;ustawieniach salonu”; właściciel ma „Pokaż zakładkę” (zakładka wraca od razu, wpis w&nbsp;„Historii konta”), pracownik&nbsp;– informację, kto może ją pokazać. Ogłoszenia salonu zostają opublikowane, wiadomości od kandydatów i&nbsp;e-maile modułu wychodzą jak dotąd. Publiczna tablica (<code>#oferty</code>, <code>#oferta</code>) i&nbsp;konto pracodawcy z&nbsp;rejestracji (<code>?konto=pracodawca</code>)&nbsp;– bez zmian. Globalny przełącznik <code>szukam_pracy</code> (11.9.6) ma pierwszeństwo. Stany: <a href="dam-prace.html?zakladki=bez-pracy#moje-ogloszenia">?zakladki=bez-pracy</a>, wariant pracownika&nbsp;– <a href="dam-prace.html?rola=pracownik&amp;zakladki=bez-pracy#moje-ogloszenia">?rola=pracownik</a> (podgląd ogłoszeń salonu bez akcji, „Szukam pracy” i&nbsp;nowego ogłoszenia; menu: Pulpit, Dam pracę, Szkolenia).</li>
         <li><strong>Pracodawca (P1b):</strong> dowolna firma; rejestracja w&nbsp;<a href="logowanie.html#s-rej">logowanie.html</a> (NIP → GUS → telefon SMS → TOTP). Dwa konta w&nbsp;makiecie: salon z&nbsp;polisą (firma potwierdzona z&nbsp;urzędu; pierwsze wejście&nbsp;– <a href="dam-prace.html#wlacz-dam-prace">„Włącz Dam pracę”</a>: NIP z&nbsp;konta → GUS → SMS) i&nbsp;pracodawca z&nbsp;rejestracji „Studio Przykładowe” (<a href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy">?konto=pracodawca</a>: pulpit pracodawcy, moje ogłoszenia, „Szukam pracy” w&nbsp;stanie „czeka na potwierdzenie firmy”; menu z&nbsp;11 §5.2, bez polis, zespołu i&nbsp;szkoleń).</li>
         <li><strong>„Szukam pracy” (P1a, aktywne):</strong> karty widzi tylko pracodawca z&nbsp;potwierdzoną firmą; wiadomość przez formularz przekazujący, bez ujawniania kontaktu. Widoczność wyłącznie dla zalogowanych pracodawców i&nbsp;noindex&nbsp;– <span class="mock-note">Założenie</span>.</li>
         <li><strong>Założenia:</strong> najwyżej 5&nbsp;ogłoszeń w&nbsp;szkicu lub moderacji, usunięcie kontaktu 30&nbsp;dni po zakończeniu, limity formularzy i&nbsp;wiadomości, kwota 200&nbsp;kart dziennie, retencja. Widełki i&nbsp;treści ogłoszeń są przykładowe.</li>
@@ -2878,9 +2879,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       if (!view.hasAttribute('data-employer')) { view = byId('pulpit-pracodawcy'); el = null; id = view.id; }
       ctx = 'employer';
     }
+    /* pracownik: pozostałe ekrany strefy (nowe ogłoszenie, „Szukam pracy”, włączenie modułu) – lista ogłoszeń salonu */
+    if (EMPL && ctx === 'zone' && view.id !== 'moje-ogloszenia') { view = byId('moje-ogloszenia'); el = null; id = view.id; }
     views.forEach(function (v) { v.classList.toggle('is-active', v === view); });
     root.setAttribute('data-ctx', ctx);
-    brand.setAttribute('href', ctx === 'employer' ? 'dam-prace.html?konto=pracodawca#pulpit-pracodawcy' : (ctx === 'seeker' ? 'dam-prace.html#szukam-moje' : 'panel.html#pulpit'));
+    document.body.setAttribute('data-role', EMPL && ctx === 'zone' ? 'employee' : 'owner');
+    brand.setAttribute('href', ctx === 'employer' ? 'dam-prace.html?konto=pracodawca#pulpit-pracodawcy' : (ctx === 'seeker' ? 'dam-prace.html#szukam-moje' : (EMPL ? 'panel.html#pracownik' : 'panel.html#pulpit')));
     var navKey = (el && el.id === 'konto-studio') ? 'konto-studio' : view.id;
     empNav.forEach(function (a) { if (a.getAttribute('data-nav').split(' ').indexOf(navKey) > -1) { a.setAttribute('aria-current', 'page'); } else { a.removeAttribute('aria-current'); } });
     mockLinks.forEach(function (a) {
@@ -3401,6 +3405,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   render(false);
 })();
 </script>
+<!-- „Zakładki w Strefie”: informacja przy ukrytej zakładce, „Pokaż zakładkę”, wariant pracownika (wspólny plik panel.html, dam-prace.html, szkolenia.html) -->
+<script src="zakladki.js"></script>
 <!-- gen:slownik-js -->
 <script type="application/json" id="slownik-dymki">
 {
