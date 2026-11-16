@@ -172,7 +172,7 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     const btn = d.getByRole('button', { name: 'Pokaż zakładkę', exact: true });
     ok(await btn.count() === 1 && await btn.isVisible(), 'dam-prace: przycisk „Pokaż zakładkę” (właściciel)');
     const bb = await btn.boundingBox(); ok(bb && bb.width >= 24 && bb.height >= 24, 'dam-prace: cel „Pokaż zakładkę” ≥ 24 px ' + JSON.stringify(bb));
-    ok(!(await isVis(d, '[data-zakladka-uwaga="praca"] .employee-only')), 'dam-prace: tekst dla pracownika ukryty u właściciela');
+    ok(!(await isVis(d, '[data-zakladka-uwaga="praca"] p.employee-only')), 'dam-prace: tekst dla pracownika ukryty u właściciela');
     await axe(d, 'dam-prace #moje-ogloszenia z informacją', [['#tresc'], ['#sidenav']]);
     for (const h of ['nowe-ogloszenie', 'szukam-pracy']) {
       await d.evaluate(h => { location.hash = h; }, h); await d.waitForTimeout(60);
@@ -291,13 +291,13 @@ const maleCele = s => [...document.querySelectorAll(s)].flatMap(r => [...r.query
     ok(await q.evaluate(() => document.body.getAttribute('data-role')) === 'owner' && await q.$eval('#sidenav a[data-view="ustawienia"]', a => a.getAttribute('href')) === 'panel.html#ustawienia', 'pulpit właściciela na adresie ?rola=pracownik: Ustawienia bez parametru');
     const d = await open(c, 'dam-prace.html?rola=pracownik#moje-ogloszenia', errs);
     ok(await isVis(d, '[data-zakladka-uwaga="praca"]') && !(await d.getByRole('button', { name: 'Pokaż zakładkę' }).isVisible()), 'dam-prace (pracownik): informacja bez „Pokaż zakładkę”');
-    ok(await isVis(d, '[data-zakladka-uwaga="praca"] .employee-only') && /właściciel/.test(await txt(d, '[data-zakladka-uwaga="praca"] .employee-only')), 'dam-prace (pracownik): kto pokaże zakładkę');
+    ok(await isVis(d, '[data-zakladka-uwaga="praca"] p.employee-only') && /właściciel/.test(await txt(d, '[data-zakladka-uwaga="praca"] p.employee-only')), 'dam-prace (pracownik): kto pokaże zakładkę');
     ok(!(await d.evaluate(navTexts)).includes('Polisy') && !(await isVis(d, '#moje-ogloszenia .subnav')) && !(await isVis(d, '#moje-ogloszenia .cell-actions')), 'dam-prace (pracownik): bez Polis, „Szukam pracy” i akcji');
     await d.evaluate(() => { location.hash = 'nowe-ogloszenie'; }); await d.waitForTimeout(60);
     ok(await isVis(d, '#moje-ogloszenia h1') && !(await isVis(d, '#nowe-ogloszenie h1')), 'dam-prace (pracownik): „Nowe ogłoszenie” → lista ogłoszeń salonu');
     await axe(d, 'dam-prace (pracownik) z informacją', [['#tresc']]);
     const sz = await open(c, 'szkolenia.html?rola=pracownik&zakladki=bez-szkolen#moje-szkolenia', errs);
-    ok(await isVis(sz, '[data-zakladka-uwaga="szkolenia"]') && !(await sz.getByRole('button', { name: 'Pokaż zakładkę' }).isVisible()) && await isVis(sz, '[data-zakladka-uwaga="szkolenia"] .employee-only'), 'szkolenia (pracownik): informacja bez przycisku');
+    ok(await isVis(sz, '[data-zakladka-uwaga="szkolenia"]') && !(await sz.getByRole('button', { name: 'Pokaż zakładkę' }).isVisible()) && await isVis(sz, '[data-zakladka-uwaga="szkolenia"] p.employee-only'), 'szkolenia (pracownik): informacja bez przycisku');
     ok(!(await isVis(sz, '#t-zespol')), 'szkolenia (pracownik): bez „Zapisów zespołu”');
     ok(/^panel\.html#pracownik$/.test(await sz.$eval('#sidenav a[data-href0="panel.html#pulpit"]', a => a.getAttribute('href'))), 'szkolenia (pracownik): Pulpit → pulpit pracownika');
     await axe(sz, 'szkolenia (pracownik) z informacją', [['#tresc']]);
