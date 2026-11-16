@@ -517,11 +517,17 @@ RESET
 
 GRANT
 CREATE FUNCTION
- FAIL Z0 zabiegi_ids: 117, first g1-01, last g4-08 = 131/g1-01/g3-17
+ ok   Z0 zabiegi_ids: 131 known / 100 active, first g1-01, last known g3-31 = 131/100/g1-01/g3-31
 
- FAIL Z0 groups 40/38/31/8 = 47/45/31/8
+ ok   Z0 known ids unique = 131
 
- FAIL Z0 active = all (nothing retired yet) = false
+ ok   Z0 known by group g1/g2/g3/g4 = g1:47,g2:45,g3:31,g4:8
+
+ ok   Z0 active by group (no g3) = g1:47,g2:45,g4:8
+
+ ok   Z0 active is a subset of known = true
+
+ ok   Z0 retired = known minus active = g3-01..g3-31 = {g3-01,g3-02,g3-03,g3-04,g3-05,g3-06,g3-07,g3-08,g3-09,g3-10,g3-11,g3-12,g3-13,g3-14,g3-15,g3-16,g3-17,g3-18,g3-19,g3-20,g3-21,g3-22,g3-23,g3-24,g3-25,g3-26,g3-27,g3-28,g3-29,g3-30,g3-31}
 
  ok   Z0 EXECUTE: anon no, authenticated yes, service_role yes = false/true/true
 
@@ -709,32 +715,34 @@ SET
  ok   Z3 page untrusted actor still refused before filter [P0001]
 
 RESET
-SELECT 1
-CREATE FUNCTION
- FAIL Z4 retired variant: 116 active, 117 known = 99/130
+ ok   Z4 g3-05 retired in v2: known yes, active no = true/false
 
+UPDATE 1
 SET
  
 
-psql:zabiegi.sql:545: ERROR:  new row for relation "job_offers" violates check constraint "job_offers_zabiegi_check"
- FAIL Z4 offer keeps retired g4-01 (non-content update ok) = published/true
+UPDATE 1
+ ok   Z4 offer keeps retired g3-05 (non-content update ok) = closed/true
 
 INSERT 0 1
- ok   Z4 cannot add retired id to an offer [BP422]
+ ok   Z4 cannot add retired id to an offer (known, not active) [BP422]
 
 UPDATE 1
  ok   Z4 active ids still accepted = {g4-02,g4-03}
 
 RESET
-psql:zabiegi.sql:554: ERROR:  new row for relation "candidate_ads" violates check constraint "candidate_ads_zabiegi_check"
+UPDATE 1
 SET
-psql:zabiegi.sql:556: ERROR:  szukam-pracy: nieprawidłowe pole zabiegi
+ ok   Z4 seeker re-save keeps retired g3-05 = true
+
+RESET
+ ok   Z4 seeker ad still has g3-05 after re-save = {g1-03,g3-05}
+
+SET
  ok   Z4 seeker cannot add retired id (seeker 2) [BP422]
 
-psql:zabiegi.sql:558: ERROR:  filtr: nieprawidłowe pole zabiegi
-RESET
-CREATE FUNCTION
- FAIL Z4 original list restored = 100
+ ok   Z4 filter by retired id still accepted (old links): offers 2, 3 = Oferta 2 (przykład),Oferta 3 (przykład)
 
+RESET
  --- Z. end ---
 

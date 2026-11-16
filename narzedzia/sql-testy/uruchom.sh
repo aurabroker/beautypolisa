@@ -3,7 +3,7 @@
 # PostgreSQL 16 z zaślepkami Supabase. Każdy zestaw dostaje własną, świeżą bazę. Opis: README.md obok.
 #
 #   narzedzia/sql-testy/uruchom.sh                 – wszystkie zestawy i test równoległy (wyscigi)
-#   narzedzia/sql-testy/uruchom.sh zakladki zabiegi – wybrane zestawy
+#   narzedzia/sql-testy/uruchom.sh strefa-t2 zabiegi – wybrane zestawy
 #   narzedzia/sql-testy/uruchom.sh --aktualizuj-wzorce [zestawy] – zapisuje bieżące wyniki jako wzorce
 #                                                    (tylko po świadomej zmianie snippetu albo testu)
 # Zmienne: PG_BIN (domyślnie /usr/lib/postgresql/16/bin), SQL_TESTY_PORT (55450), SQL_TESTY_TMP (katalog
@@ -17,7 +17,8 @@ SNIP=$REPO/docs/koncepcja/snippets
 STREFA_SQL=${STREFA_SQL:-$SNIP/strefa-klienta.sql}
 PG_BIN=${PG_BIN:-/usr/lib/postgresql/16/bin}
 PORT=${SQL_TESTY_PORT:-55450}
-WSZYSTKIE=(strefa-p1 strefa-t2 zabiegi platnosci platnosci-redteam zakladki wyscigi)
+# zakladki (00, D44 – ukrywanie zakładek salonu) dochodzi do listy razem z testy/zakladki.sql i wzorcem
+WSZYSTKIE=(strefa-p1 strefa-t2 zabiegi platnosci platnosci-redteam wyscigi)
 
 AKTUALIZUJ=0
 if [ "${1:-}" = "--aktualizuj-wzorce" ]; then AKTUALIZUJ=1; shift; fi

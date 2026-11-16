@@ -956,9 +956,9 @@ SET
 RESET
  --- 8. privileges ---
 
- FAIL fn exec anon (none) = admin_users_guard
+ ok   fn exec anon (none) = (none)
 
- zone fns exec authenticated | admin_users_guard,app_is_staff,client_account_ids,employer_account_ids,organizer_ids,zabiegi_ids
+ zone fns exec authenticated | app_is_staff,client_account_ids,employer_account_ids,organizer_ids,zabiegi_ids
 
  P1 fns exec service_role |    93
 
