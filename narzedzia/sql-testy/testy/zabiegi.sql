@@ -240,7 +240,7 @@ select t.eq('D1 reads app_settings (0, staff only)', (select count(*) from app_s
 select t.eq('D1 promotions (staff only) 0', (select count(*) from app_promotions), 0::bigint);
 insert into job_offers (account_id, status, title, profession, employment_type, working_time, city, voivodeship, salary_min, salary_max, salary_unit, description)
  values (:'d1acc','draft','Stylistka paznokci (przykład)','stylistka-paznokci','umowa-zlecenie','czesc-etatu','Poznań','wielkopolskie',40,60,'HOUR',repeat('Opis ogłoszenia przykładowego. ',10));
-insert into job_offer_contacts(offer_id, method, email) select id,'formularz','rekrutacja@studio-przyklad.pl' from job_offers;
+insert into job_offer_contacts(offer_id, method, email) select id,'formularz','rekrutacja@studio-przyklad.example' from job_offers;
 update job_offers set status='pending_review';
 select t.eq('D1 sees own offer', (select count(*) from job_offers), 1::bigint);
 select t.as_user('00000000-0000-0000-0000-0000000000d1','aal1');
@@ -271,7 +271,7 @@ select '--- 4. offers: 21 days, GUS freshness, promotion ---';
 select id as d1offer from job_offers where account_id = :'d1acc' \gset
 set role service_role;
 select t.expect('SEC-05 publish with unconfirmed recruitment address', format($q$select public.app_moderate_job_offer(%L,'00000000-0000-0000-0000-0000000000f2','publish',2)$q$, :'d1offer'), 'P0001');
-select public.app_reply_address_request(:'d1acc','00000000-0000-0000-0000-0000000000d1','Rekrutacja@Studio-Przyklad.pl', t.h('tokRA1'));
+select public.app_reply_address_request(:'d1acc','00000000-0000-0000-0000-0000000000d1','Rekrutacja@Studio-Przyklad.example', t.h('tokRA1'));
 select t.eq('SEC-05 wrong token does not confirm', public.app_reply_address_confirm(t.h('zly')), false);
 select t.eq('SEC-05 confirm link', public.app_reply_address_confirm(t.h('tokRA1')), true);
 select t.eq('SEC-05 token single use', public.app_reply_address_confirm(t.h('tokRA1')), false);
@@ -305,7 +305,7 @@ select t.expect('SEC-05 relay refused when address not confirmed', format($q$sel
 reset role;
 update employer_reply_addresses set verified_at = now(), token_hash = null, token_expires_at = null where account_id = :'d1acc';
 select t.expect('SEC-19 CHECK: phone number in offer text', format($q$update job_offers set description = description || ' Tel. 600 100 200' where id = %L$q$, :'d1offer'), '23514');
-select t.expect('SEC-19 CHECK: e-mail in offer text', format($q$update job_offers set description = description || ' cv@studio.pl' where id = %L$q$, :'d1offer'), '23514');
+select t.expect('SEC-19 CHECK: e-mail in offer text', format($q$update job_offers set description = description || ' cv@studio.example' where id = %L$q$, :'d1offer'), '23514');
 select t.eq('SEC-19 salary range and date are not a phone number', (select 'Wynagrodzenie 6000-7500 zł brutto, start 2026-12-01, tel. wewn. 12' !~ '(^|[^0-9])(\+?48[ .-]?)?([0-9]{3}[ .-]?[0-9]{3}[ .-]?[0-9]{3}|[0-9]{2}[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2})([^0-9]|$)'), true);
 update job_offers set published_at = now() - interval '21 days', expires_at = now() - interval '1 second' where id = :'d1offer';
 set role service_role;
@@ -432,7 +432,7 @@ select t.eq('Z1 30 zabiegi accepted', (select cardinality(zabiegi) from job_offe
 update job_offers set zabiegi = '{g2-12,g1-03,g1-03}' where id = :'zoff';
 select t.eq('Z1 duplicates removed, sorted', (select zabiegi::text from job_offers where id = :'zoff'), '{g1-03,g2-12}');
 select t.eq('Z1 optional: offer without zabiegi has empty array', (select zabiegi::text from job_offers where id = :'d1offer'), '{}');
-insert into job_offer_contacts(offer_id, method, email) values (:'zoff','formularz','rekrutacja@studio-przyklad.pl');
+insert into job_offer_contacts(offer_id, method, email) values (:'zoff','formularz','rekrutacja@studio-przyklad.example');
 update job_offers set status = 'pending_review' where id = :'zoff';
 reset role;
 set role service_role;

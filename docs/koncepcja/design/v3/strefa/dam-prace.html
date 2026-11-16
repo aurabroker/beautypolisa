@@ -41,6 +41,8 @@ html[data-ctx="zone"] :is(.ctx-public,.ctx-employer,.ctx-seeker),
 html[data-ctx="employer"] :is(.ctx-public,.ctx-zone,.ctx-seeker),
 html[data-ctx="seeker"] :is(.ctx-public,.ctx-zone,.ctx-employer){display:none!important}
 html[data-ctx="public"] .app{grid-template-columns:minmax(0,1fr)}
+/* pracownik salonu (?rola=pracownik – wariant makiety): podgląd ogłoszeń salonu bez akcji (11 §3) */
+[data-role="employee"] .table-owner :is(thead th:last-child,.cell-actions){display:none!important}
 .crumbs li > a + a{margin-left:10px}
 html:not(.js) .pub-header{position:relative}
 /* bez JS widać menu wszystkich trzech kont w pasku strefy – zawijają się zamiast poszerzać stronę */
@@ -310,6 +312,14 @@ html:has(.zab-sheet[open]){overflow:hidden}
 @media print{.pub-header{display:none!important}}
 </style>
 <script>(function(d){d.classList.add('js');var h=location.hash.slice(1),e=/[?&]konto=pracodawca(&|$)/.test(location.search);d.setAttribute('data-ctx',/^(szukam-(dodaj|moje|konto)|sa-)/.test(h)?'seeker':(/^(pulpit-pracodawcy|konto-studio)$/.test(h)?'employer':(/^(moje-ogloszenia|ogloszenie-wyslane|nowe-ogloszenie|podglad|konto-pracodawcy|szukam-pracy|sp-|wlacz-)/.test(h)?(e?'employer':'zone'):'public')))})(document.documentElement)</script>
+<!-- Zakładki w Strefie salonu – preferencja widoku, nie kontrola dostępu (zakladki.js): ukryte zakładki z ?zakladki=… (makieta;
+     zapisuje stan) albo z localStorage → html[data-ukryte] jeszcze przed pierwszym malowaniem. Bez JS atrybutu nie ma – wszystko
+     widoczne. Ten sam skrypt w panel.html, dam-prace.html i szkolenia.html. -->
+<script>(function(d){var K='bp-strefa-zakladki',Z=['praca','szkolenia'],P={'bez-pracy':'praca','bez-szkolen':'szkolenia'},u=[],s=null,m=/[?&]zakladki=([^&#]*)/.exec(location.search);
+try{s=JSON.parse(localStorage.getItem(K))}catch(e){}if(!s||typeof s!=='object'){s={}}
+if(m){try{decodeURIComponent(m[1]).split(',').forEach(function(t){t=P[t];if(t&&u.indexOf(t)<0){u.push(t)}})}catch(e){}u.sort(function(a,b){return Z.indexOf(a)-Z.indexOf(b)});s.ukryte=u;try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}}
+else if(Array.isArray(s.ukryte)){s.ukryte.forEach(function(t){if(Z.indexOf(t)>-1&&u.indexOf(t)<0){u.push(t)}})}
+d.setAttribute('data-ukryte',u.join(' '))})(document.documentElement)</script>
 <!-- gen:slownik-css -->
 <style>
 /* ===== Pojęcia ze słownika w treści + dymek z definicją (gen_terminy.py – nie edytuj ręcznie) ===== */
@@ -376,6 +386,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <a href="dam-prace.html#szukam-moje">Moje ogłoszenie</a>
     <a href="logowanie.html#s-rej">Rejestracja</a>
   </nav>
+  <nav aria-label="Ekrany makiety – zakładki w Strefie salonu">
+    <a href="dam-prace.html?zakladki=bez-pracy#moje-ogloszenia">Salon: zakładka Praca ukryta</a>
+    <a href="dam-prace.html?rola=pracownik&amp;zakladki=bez-pracy#moje-ogloszenia">Pracownik: zakładka ukryta</a>
+    <a href="panel.html#zakladki">Ustawienia zakładek</a>
+  </nav>
 </div>
 
 <!-- ======================= nagłówek strony publicznej: jasne szkło (tafla 1/3) ======================= -->
@@ -420,19 +435,19 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <span class="zone-name">Strefa Klienta<small>created by Aura Expert</small></span>
     </a>
     <span class="topbar-spacer"></span>
-    <!-- konto pracodawcy (tu: właścicielka salonu z polisą) -->
+    <!-- konto pracodawcy (tu: właścicielka salonu z polisą; z ?rola=pracownik – pracownik salonu, wariant makiety) -->
     <details class="account ctx-zone" id="account">
       <summary>
-        <span class="monogram" aria-hidden="true">AP</span>
-        <span class="account-name"><strong>Salon Przykładowy</strong><span>Anna Przykładowa · właścicielka</span></span>
+        <span class="monogram owner-only" aria-hidden="true">AP</span><span class="monogram employee-only" aria-hidden="true">EP</span>
+        <span class="account-name"><strong>Salon Przykładowy</strong><span class="owner-only">Anna Przykładowa · właścicielka</span><span class="employee-only">Ewa Przykładowa · pracownik</span></span>
         <span class="sr-only">– menu konta</span>
         <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg>
       </summary>
       <div class="account-panel">
-        <p class="acc-who"><strong>Salon Przykładowy</strong><span>anna@salon-przykladowy.example</span></p>
+        <p class="acc-who"><strong>Salon Przykładowy</strong><span class="owner-only">anna@salon-przykladowy.example</span><span class="employee-only">ewa@salon-przykladowy.example</span></p>
         <p class="label-caps">Przełącz konto</p>
         <a href="panel.html#pulpit" aria-current="true"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Salon Przykładowy</a>
-        <a href="szkolenia.html#organizator"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Salon Przykładowy&nbsp;– organizator szkoleń</a>
+        <a href="szkolenia.html#organizator" class="owner-only"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Salon Przykładowy&nbsp;– organizator szkoleń</a>
         <hr>
         <a href="panel.html#ustawienia"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Ustawienia</a>
         <a href="logowanie.html"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></svg>Wyloguj</a>
@@ -477,15 +492,17 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <!-- ======================= menu boczne strefy: jasne szkło (tafla 2/3) ======================= -->
   <nav class="sidenav glass glass--strong ctx-app" id="sidenav" aria-label="Strefa Klienta">
     <button class="drawer-close nav-close" type="button" aria-label="Zamknij menu"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <!-- menu salonu (11 §5.2; pracownik: Pulpit · Dam pracę · Szkolenia). data-zakladka – pozycja znika, gdy salon ukryje zakładkę
+         w „Ustawieniach” (panel.html#zakladki): preferencja widoku, nie kontrola dostępu – ten ekran działa dalej pod swoim adresem. -->
     <div class="ctx-zone">
       <p class="sidenav-title label-caps">Salon Przykładowy</p>
       <ul>
         <li><a href="panel.html#pulpit"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>Pulpit</a></li>
-        <li><a href="panel.html#polisy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Polisy<span class="count" aria-label="2 aktualne">2</span></a></li>
+        <li class="owner-only"><a href="panel.html#polisy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Polisy<span class="count" aria-label="2 aktualne">2</span></a></li>
         <li class="owner-only"><a href="panel.html#sprawy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Sprawy w&nbsp;toku<span class="count" aria-label="1 otwarta">1</span></a></li>
-        <li><a href="#moje-ogloszenia" aria-current="page"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Dam&nbsp;pracę</a></li>
-        <li><a href="szkolenia.html#moje-szkolenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Szkolenia</a></li>
-        <li><a href="panel.html#zespol"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg>Zespół</a></li>
+        <li data-zakladka="praca"><a href="#moje-ogloszenia" aria-current="page"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Dam&nbsp;pracę</a></li>
+        <li data-zakladka="szkolenia"><a href="szkolenia.html#moje-szkolenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Szkolenia</a></li>
+        <li class="owner-only"><a href="panel.html#zespol"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg>Zespół</a></li>
       </ul>
       <hr>
       <ul>
@@ -1061,6 +1078,27 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     </section>
 
     <!-- ================================================================
+         ZAKŁADKA „PRACA” UKRYTA W USTAWIENIACH SALONU (panel.html#zakladki) – wejście pod adres modułu w Strefie salonu.
+         Preferencja widoku, nie kontrola dostępu: ekrany poniżej działają normalnie, dane i procesy bez zmian. Informacja tylko
+         w kontekście salonu (.ctx-zone) – nie na publicznej tablicy /dam-prace i nie na koncie pracodawcy z rejestracji. Stoi przed
+         pierwszym ekranem strefy, więc jest u góry każdego z nich. Z JS – tylko przy ukrytej zakładce; bez JS – wzór.
+         „Pokaż zakładkę” (właściciel): w produkcji POST /strefa-klienta/ustawienia/zakladki (app_client_set_tab_visibility,
+         wpis w „Historii konta”) i 303 z powrotem na ten adres; w makiecie bez JS – przejście do Ustawień.
+         ================================================================ -->
+    <div class="tab-note ctx-zone" data-zakladka-uwaga="praca">
+      <form class="alert alert--info" action="panel.html#zakladki" method="post">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+        <p class="no-js-only"><span class="mock-note">Wzór: tylko gdy zakładka jest ukryta</span></p>
+        <strong class="alert-title">Zakładka Praca jest ukryta w&nbsp;ustawieniach salonu</strong>
+        <p class="small">„Dam pracę”<span class="owner-only"> i&nbsp;„Szukam pracy” działają</span><span class="employee-only"> działa</span> normalnie: ogłoszenia salonu są opublikowane, a&nbsp;wiadomości od kandydatów dochodzą jak dotąd. Ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.</p>
+        <input type="hidden" name="zakladka" value="praca"><input type="hidden" name="widoczna" value="tak">
+        <div class="actions owner-only"><button class="btn btn-navy btn-sm" type="submit">Pokaż zakładkę</button></div>
+        <p class="small employee-only">Zakładkę może pokazać właścicielka konta – Anna Przykładowa – w&nbsp;ustawieniach salonu.</p>
+      </form>
+      <p class="alert alert--success tab-note-ok" tabindex="-1" hidden>Zakładka Praca jest znowu widoczna w&nbsp;menu i&nbsp;na pulpicie Strefy salonu.</p>
+    </div>
+
+    <!-- ================================================================
          2a · SALON Z POLISĄ: PIERWSZE WEJŚCIE DO „DAM PRACĘ” (11 §4.8) – /strefa-klienta/dam-prace
          Jedna reguła dla wszystkich pracodawców: NIP z konta → GUS (serwer) → telefon SMS (/strefa-klienta/telefon).
          TOTP właściciel już ma; poziom 2 (potwierdzona firma) – z urzędu, bo salon zna Aura Expert.
@@ -1140,13 +1178,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <div class="page-head-row">
           <div>
             <p class="eyebrow">Dam pracę</p>
-            <h1 id="t-moje">Moje ogłoszenia</h1>
-            <p class="lead">Kandydaci kontaktują się bezpośrednio z&nbsp;Twoją firmą. Aura Expert sprawdza wyłącznie treść ogłoszeń.</p>
+            <h1 id="t-moje"><span class="owner-only">Moje ogłoszenia</span><span class="employee-only">Ogłoszenia salonu</span></h1>
+            <p class="lead owner-only">Kandydaci kontaktują się bezpośrednio z&nbsp;Twoją firmą. Aura Expert sprawdza wyłącznie treść ogłoszeń.</p>
+            <p class="lead employee-only">Podgląd ogłoszeń salonu – publikuje je i&nbsp;edytuje właścicielka konta.</p>
           </div>
-          <a class="btn btn-navy" href="#nowe-ogloszenie">Nowe ogłoszenie</a>
+          <a class="btn btn-navy owner-only" href="#nowe-ogloszenie">Nowe ogłoszenie</a>
         </div>
         <p class="promo-tag"><strong>Promocja na otwarcie</strong><span>ogłoszenie bez opłat, widoczne 21&nbsp;dni</span></p>
-        <nav class="subnav" aria-label="Dam pracę">
+        <nav class="subnav owner-only" aria-label="Dam pracę">
           <a href="#moje-ogloszenia" aria-current="page">Moje ogłoszenia</a>
           <a href="#szukam-pracy">Szukam pracy</a>
         </nav>
@@ -1159,7 +1198,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <p class="small">„<span id="nowe-tytul-ok">Tatuażysta / tatuażystka (przykład)</span>” trafiło do moderacji. Do decyzji nie można zmieniać treści ani kontaktu. Po akceptacji ogłoszenie będzie widoczne bezpłatnie przez 21&nbsp;dni&nbsp;– wyślemy <span class="nowrap">e-mail</span>.</p>
       </div>
 
-      <div class="alert alert--warn ctx-zone">
+      <div class="alert alert--warn ctx-zone owner-only">
         <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
         <strong class="alert-title">Ogłoszenie wygasa 15&nbsp;listopada 2026&nbsp;r.</strong>
         <p class="small">„Kosmetolog / kosmetolożka (przykład)” zniknie z&nbsp;tablicy za 3&nbsp;dni. Ważności nie przedłużamy&nbsp;– po wygaśnięciu przycisk „Opublikuj ponownie” utworzy kopię jako nowe ogłoszenie: po akceptacji treści będzie widoczne przez kolejne 21&nbsp;dni.</p>
@@ -1265,7 +1304,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       </section>
 
       <div class="grid grid-2">
-        <section class="card surface account-status ctx-zone" id="konto-pracodawcy" aria-labelledby="t-konto-prac">
+        <section class="card surface account-status ctx-zone owner-only" id="konto-pracodawcy" aria-labelledby="t-konto-prac">
           <h2 class="card-title" id="t-konto-prac">Konto pracodawcy</h2>
           <dl class="kv kv--rows">
             <div><dt>Firma</dt><dd><span>Salon Przykładowy · NIP <span class="nowrap">000-000-00-00</span> (przykład)</span><span class="xsmall muted">Aktywna działalność w&nbsp;rejestrze REGON (GUS), sprawdzono <time datetime="2026-11-03">3.11.2026</time>. Kolejne sprawdzenie co 90&nbsp;dni. <span class="mock-note">Założenie</span></span></dd></div>
@@ -1292,7 +1331,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </dl>
           <div class="actions"><a class="link-lux" href="#konto-studio">Dane firmy, telefon i&nbsp;adresy</a></div>
         </section>
-        <section class="card surface" aria-labelledby="t-wiad">
+        <section class="card surface owner-only" aria-labelledby="t-wiad">
           <h2 class="card-title" id="t-wiad">Wiadomości od kandydatów</h2>
           <p class="small">Wiadomości z&nbsp;formularza trafiają na potwierdzony adres rekrutacyjny wskazany w&nbsp;ogłoszeniu. Odpowiadasz bezpośrednio ze swojej poczty.</p>
           <p class="small">BeautyPolisa nie przechowuje wiadomości i&nbsp;nie prowadzi list kandydatów ani statusów rekrutacji. W&nbsp;strefie widzisz tylko liczbę przekazanych wiadomości.</p>
@@ -2585,6 +2624,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <ul>
         <li><strong>„Dam pracę” i&nbsp;„Szukam pracy” to wyłącznie tablica (D-C, P1).</strong> Zasada tablicy jest widoczna w&nbsp;nagłówku listy ofert, w&nbsp;„Szukam pracy” i&nbsp;w&nbsp;formularzu ogłoszenia osoby szukającej pracy. Bez aplikacji, CV, statusów rekrutacji, list kandydatów, „polecanych”, rankingów i&nbsp;wyróżnień.</li>
         <li><strong>Promocja na otwarcie (P1c):</strong> ogłoszenia bezpłatne, widoczne 21&nbsp;dni (CHECK w&nbsp;bazie); bez przedłużeń&nbsp;– po wygaśnięciu „Opublikuj ponownie” i&nbsp;nowa moderacja.</li>
+        <li><strong>Zakładka „Praca” ukryta w&nbsp;ustawieniach salonu</strong> (<a href="panel.html#zakladki">panel.html#zakladki</a>; prośba zleceniodawcy 16.11.2026): to <strong>preferencja widoku, nie kontrola dostępu</strong>. W&nbsp;Strefie salonu znikają pozycja „Dam pracę” w&nbsp;menu i&nbsp;kafel na pulpicie (dla wszystkich członków salonu), a&nbsp;ekrany strefy działają dalej pod swoimi adresami&nbsp;– u&nbsp;góry informacja „Zakładka Praca jest ukryta w&nbsp;ustawieniach salonu”; właściciel ma „Pokaż zakładkę” (zakładka wraca od razu, wpis w&nbsp;„Historii konta”), pracownik&nbsp;– informację, kto może ją pokazać. Ogłoszenia salonu zostają opublikowane, wiadomości od kandydatów i&nbsp;e-maile modułu wychodzą jak dotąd. Publiczna tablica (<code>#oferty</code>, <code>#oferta</code>) i&nbsp;konto pracodawcy z&nbsp;rejestracji (<code>?konto=pracodawca</code>)&nbsp;– bez zmian. Globalny przełącznik <code>szukam_pracy</code> (11.9.6) ma pierwszeństwo. Stany: <a href="dam-prace.html?zakladki=bez-pracy#moje-ogloszenia">?zakladki=bez-pracy</a>, wariant pracownika&nbsp;– <a href="dam-prace.html?rola=pracownik&amp;zakladki=bez-pracy#moje-ogloszenia">?rola=pracownik</a> (podgląd ogłoszeń salonu bez akcji, „Szukam pracy” i&nbsp;nowego ogłoszenia; menu: Pulpit, Dam pracę, Szkolenia).</li>
         <li><strong>Pracodawca (P1b):</strong> dowolna firma; rejestracja w&nbsp;<a href="logowanie.html#s-rej">logowanie.html</a> (NIP → GUS → telefon SMS → TOTP). Dwa konta w&nbsp;makiecie: salon z&nbsp;polisą (firma potwierdzona z&nbsp;urzędu; pierwsze wejście&nbsp;– <a href="dam-prace.html#wlacz-dam-prace">„Włącz Dam pracę”</a>: NIP z&nbsp;konta → GUS → SMS) i&nbsp;pracodawca z&nbsp;rejestracji „Studio Przykładowe” (<a href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy">?konto=pracodawca</a>: pulpit pracodawcy, moje ogłoszenia, „Szukam pracy” w&nbsp;stanie „czeka na potwierdzenie firmy”; menu z&nbsp;11 §5.2, bez polis, zespołu i&nbsp;szkoleń).</li>
         <li><strong>„Szukam pracy” (P1a, aktywne):</strong> karty widzi tylko pracodawca z&nbsp;potwierdzoną firmą; wiadomość przez formularz przekazujący, bez ujawniania kontaktu. Widoczność wyłącznie dla zalogowanych pracodawców i&nbsp;noindex&nbsp;– <span class="mock-note">Założenie</span>.</li>
         <li><strong>Założenia:</strong> najwyżej 5&nbsp;ogłoszeń w&nbsp;szkicu lub moderacji, usunięcie kontaktu 30&nbsp;dni po zakończeniu, limity formularzy i&nbsp;wiadomości, kwota 200&nbsp;kart dziennie, retencja. Widełki i&nbsp;treści ogłoszeń są przykładowe.</li>
@@ -2799,6 +2839,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   var NBSP = ' ';
   /* konto pracodawcy z rejestracji (Studio Przykładowe) – w produkcji wynika z sesji */
   var EMP = /[?&]konto=pracodawca(&|$)/.test(location.search);
+  /* pracownik salonu z polisą (?rola=pracownik – wariant makiety): w strefie tylko podgląd ogłoszeń salonu (11 §3, §5.2) */
+  var EMPL = !EMP && /[?&]rola=pracownik(&|$)/.test(location.search);
   var ACCOUNT = EMP ? 'Studio Przykładowe' : 'Salon Przykładowy';
   var brand = document.querySelector('.topbar .brand');
   var empNav = Array.prototype.slice.call(document.querySelectorAll('.sidenav [data-nav]'));
@@ -2837,9 +2879,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       if (!view.hasAttribute('data-employer')) { view = byId('pulpit-pracodawcy'); el = null; id = view.id; }
       ctx = 'employer';
     }
+    /* pracownik: pozostałe ekrany strefy (nowe ogłoszenie, „Szukam pracy”, włączenie modułu) – lista ogłoszeń salonu */
+    if (EMPL && ctx === 'zone' && view.id !== 'moje-ogloszenia') { view = byId('moje-ogloszenia'); el = null; id = view.id; }
     views.forEach(function (v) { v.classList.toggle('is-active', v === view); });
     root.setAttribute('data-ctx', ctx);
-    brand.setAttribute('href', ctx === 'employer' ? 'dam-prace.html?konto=pracodawca#pulpit-pracodawcy' : (ctx === 'seeker' ? 'dam-prace.html#szukam-moje' : 'panel.html#pulpit'));
+    document.body.setAttribute('data-role', EMPL && ctx === 'zone' ? 'employee' : 'owner');
+    brand.setAttribute('href', ctx === 'employer' ? 'dam-prace.html?konto=pracodawca#pulpit-pracodawcy' : (ctx === 'seeker' ? 'dam-prace.html#szukam-moje' : (EMPL ? 'panel.html#pracownik' : 'panel.html#pulpit')));
     var navKey = (el && el.id === 'konto-studio') ? 'konto-studio' : view.id;
     empNav.forEach(function (a) { if (a.getAttribute('data-nav').split(' ').indexOf(navKey) > -1) { a.setAttribute('aria-current', 'page'); } else { a.removeAttribute('aria-current'); } });
     mockLinks.forEach(function (a) {
@@ -3360,6 +3405,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   render(false);
 })();
 </script>
+<!-- „Zakładki w Strefie”: informacja przy ukrytej zakładce, „Pokaż zakładkę”, wariant pracownika (wspólny plik panel.html, dam-prace.html, szkolenia.html) -->
+<script src="zakladki.js"></script>
 <!-- gen:slownik-js -->
 <script type="application/json" id="slownik-dymki">
 {

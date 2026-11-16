@@ -17,6 +17,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="strefa.css">
 <script>document.documentElement.classList.add('js')</script>
+<!-- Zakładki w Strefie salonu – preferencja widoku, nie kontrola dostępu (zakladki.js): ukryte zakładki z ?zakladki=… (makieta;
+     zapisuje stan) albo z localStorage → html[data-ukryte] jeszcze przed pierwszym malowaniem. Bez JS atrybutu nie ma – wszystko
+     widoczne. Ten sam skrypt w panel.html, dam-prace.html i szkolenia.html. -->
+<script>(function(d){var K='bp-strefa-zakladki',Z=['praca','szkolenia'],P={'bez-pracy':'praca','bez-szkolen':'szkolenia'},u=[],s=null,m=/[?&]zakladki=([^&#]*)/.exec(location.search);
+try{s=JSON.parse(localStorage.getItem(K))}catch(e){}if(!s||typeof s!=='object'){s={}}
+if(m){try{decodeURIComponent(m[1]).split(',').forEach(function(t){t=P[t];if(t&&u.indexOf(t)<0){u.push(t)}})}catch(e){}u.sort(function(a,b){return Z.indexOf(a)-Z.indexOf(b)});s.ukryte=u;try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}}
+else if(Array.isArray(s.ukryte)){s.ukryte.forEach(function(t){if(Z.indexOf(t)>-1&&u.indexOf(t)<0){u.push(t)}})}
+d.setAttribute('data-ukryte',u.join(' '))})(document.documentElement)</script>
 <!-- gen:slownik-css -->
 <style>
 /* ===== Pojęcia ze słownika w treści + dymek z definicją (gen_terminy.py – nie edytuj ręcznie) ===== */
@@ -76,6 +84,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <a href="#pracownik">Pulpit pracownika</a>
     <a href="#ustawienia">Ustawienia</a>
   </nav>
+  <nav aria-label="Ekrany makiety – zakładki w Strefie">
+    <a href="#zakladki">Zakładki w&nbsp;Strefie</a>
+    <a href="panel.html?zakladki=bez-pracy#pulpit">Bez zakładki Praca</a>
+    <a href="panel.html?zakladki=bez-szkolen#pulpit">Bez Szkoleń</a>
+    <a href="panel.html?zakladki=bez-pracy,bez-szkolen#pracownik">Pracownik: obie ukryte</a>
+    <a href="panel.html?rola=pracownik#zakladki">Zakładki – widok pracownika</a>
+    <a href="panel.html?zakladki=wszystkie#zakladki">Wszystkie widoczne</a>
+  </nav>
 </div>
 
 <!-- ======================= pasek górny: ciemne szkło (tafla 1/3) ======================= -->
@@ -113,7 +129,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
   <!-- ======================= menu boczne: jasne szkło (tafla 2/3) ======================= -->
   <!-- „Szukam pracy” (P1a) – aktywne od startu: podpunkt pod „Dam pracę” tylko dla właściciela konta (salon z polisą ma poziom 2 z urzędu).
-       Przełącznik szukam_pracy zostaje – wyłącza go tylko admin; wtedy podpunkt, zakładka i linki znikają. Pracownik go nie widzi. -->
+       Przełącznik szukam_pracy zostaje – wyłącza go tylko admin; wtedy podpunkt, zakładka i linki znikają. Pracownik go nie widzi.
+       „Zakładki w Strefie” (#zakladki): data-zakladka="praca" / "szkolenia" – pozycja znika, gdy salon ukryje zakładkę (preferencja widoku
+       dla wszystkich członków salonu, nie kontrola dostępu; w produkcji serwer nie renderuje pozycji). Przełącznik szukam_pracy ma pierwszeństwo. -->
   <nav class="sidenav glass glass--strong" id="sidenav" aria-label="Strefa Klienta">
     <button class="drawer-close nav-close" type="button" aria-label="Zamknij menu"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <p class="sidenav-title label-caps">Salon Przykładowy</p>
@@ -122,14 +140,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <li class="owner-only"><a href="#polisy" data-view="polisy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Polisy<span class="count" aria-label="2 aktualne">2</span></a></li>
       <!-- „Sprawy w toku” (11 §4.4a; 00, D32): tylko właściciel z sesją aal2 i tylko gdy CRM ma otwarte sprawy OC konta; pracownik nie widzi -->
       <li class="owner-only"><a href="#sprawy"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Sprawy w&nbsp;toku<span class="count" aria-label="1 otwarta">1</span></a></li>
-      <li>
+      <li data-zakladka="praca">
         <a href="dam-prace.html#moje-ogloszenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Dam&nbsp;pracę</a>
         <ul class="sub owner-only">
           <li><a href="dam-prace.html#moje-ogloszenia">Moje ogłoszenia</a></li>
           <li><a href="dam-prace.html#szukam-pracy">Szukam pracy</a></li>
         </ul>
       </li>
-      <li><a href="szkolenia.html#moje-szkolenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Szkolenia</a></li>
+      <li data-zakladka="szkolenia"><a href="szkolenia.html#moje-szkolenia"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Szkolenia</a></li>
       <li class="owner-only"><a href="#zespol" data-view="zespol"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg>Zespół</a></li>
     </ul>
     <hr>
@@ -155,7 +173,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <div>
             <p class="eyebrow">Pulpit</p>
             <h1 id="t-pulpit">Dzień dobry, <em>Salon Przykładowy</em></h1>
-            <p class="lead">Polisy i&nbsp;dokumenty salonu, ogłoszenia w&nbsp;„Dam pracę” i&nbsp;szkolenia – w&nbsp;jednym miejscu.</p>
+            <p class="lead">Polisy i&nbsp;dokumenty salonu<span data-zakladka="praca">, ogłoszenia w&nbsp;„Dam pracę”</span><span data-zakladka="szkolenia">, szkolenia</span> – w&nbsp;jednym miejscu.</p>
           </div>
           <p class="asof">Stan na <time datetime="2026-11-12">12&nbsp;listopada 2026&nbsp;r.</time></p>
         </div>
@@ -308,15 +326,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </div>
       </div>
 
+      <!-- kafle modułów: data-zakladka – znikają, gdy salon ukryje zakładkę w „Ustawieniach” (#zakladki); moduł działa dalej pod swoim adresem -->
       <div class="section-title"><h2>Na skróty</h2></div>
       <div class="grid grid-3">
-        <a class="shortcut surface" href="dam-prace.html#moje-ogloszenia">
+        <a class="shortcut surface" href="dam-prace.html#moje-ogloszenia" data-zakladka="praca">
           <svg class="lux-icon" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>
           <strong>Dam&nbsp;pracę</strong>
           <span>1 ogłoszenie opublikowane, 1&nbsp;czeka na akceptację. W&nbsp;zakładce „Szukam pracy”&nbsp;– ogłoszenia osób szukających pracy.</span>
           <span class="link-lux" aria-hidden="true">Ogłoszenia</span>
         </a>
-        <a class="shortcut surface" href="szkolenia.html#moje-szkolenia">
+        <a class="shortcut surface" href="szkolenia.html#moje-szkolenia" data-zakladka="szkolenia">
           <svg class="lux-icon" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>
           <strong>Szkolenia</strong>
           <span>Najbliższe: „Higiena i&nbsp;bezpieczeństwo zabiegów (przykład)”, <time datetime="2026-12-03">3&nbsp;grudnia 2026&nbsp;r.</time></span>
@@ -329,6 +348,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <span class="link-lux" aria-hidden="true">Zgłoś szkodę</span>
         </a>
       </div>
+      <p class="small zak-hint">Niektóre zakładki są ukryte w&nbsp;ustawieniach salonu. <a href="#zakladki">Zakładki w&nbsp;Strefie</a></p>
 
       <div class="grid grid-2">
         <section class="card surface" aria-labelledby="t-zesp-mini">
@@ -347,7 +367,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <div><h2 class="card-title" id="t-hist-mini">Ostatnie zdarzenia</h2><p class="card-sub">Historia konta salonu</p></div>
             <a class="btn btn-ghost btn-sm" href="#historia">Cała historia</a>
           </div>
-          <ul class="list">
+          <ul class="list" data-historia-mini>
             <li><div class="grow"><strong>Ogłoszenie wysłane do akceptacji: „Recepcjonistka / recepcjonista (przykład)”</strong><span class="meta"><time datetime="2026-11-11">11&nbsp;listopada 2026&nbsp;r.</time> · Anna Przykładowa</span></div></li>
             <li><div class="grow"><strong>Pobrano dokument: OWU – OC dla branży beauty</strong><span class="meta"><time datetime="2026-11-10">10&nbsp;listopada 2026&nbsp;r.</time> · Anna Przykładowa</span></div></li>
             <li><div class="grow"><strong>Wysłano zaproszenie: kasia@salon-przykladowy.example</strong><span class="meta"><time datetime="2026-11-09">9&nbsp;listopada 2026&nbsp;r.</time> · Anna Przykładowa</span></div></li>
@@ -619,7 +639,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <div>
             <p class="eyebrow">Pulpit pracownika</p>
             <h1 id="t-prac">Dzień dobry, <em>Ewa</em></h1>
-            <p class="lead">Salon Przykładowy · szkolenia i&nbsp;ogłoszenia salonu.</p>
+            <p class="lead">Salon Przykładowy<span data-zakladka="szkolenia"> · szkolenia</span><span data-zakladka="praca"> · ogłoszenia salonu</span></p>
           </div>
           <p class="asof">Stan na <time datetime="2026-11-12">12&nbsp;listopada 2026&nbsp;r.</time></p>
         </div>
@@ -631,8 +651,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <p class="small">Dokumenty polis i&nbsp;<a class="bp-termin" href="../slownik.html#haslo-zgloszenie-szkody" data-termin="zgloszenie-szkody">zgłoszenia szkód</a> są dostępne dla właściciela salonu. W&nbsp;sprawie polisy porozmawiaj z&nbsp;Anną Przykładową.</p>
       </div>
 
-      <div class="grid grid-2">
-        <section class="card surface" aria-labelledby="t-moje-szk">
+      <!-- karty modułów: data-zakladka – znikają, gdy salon ukryje zakładkę (dla wszystkich członków salonu) -->
+      <div class="grid grid-fit">
+        <section class="card surface" aria-labelledby="t-moje-szk" data-zakladka="szkolenia">
           <div class="card-head">
             <div><h2 class="card-title" id="t-moje-szk">Moje szkolenia</h2><p class="card-sub">Nadchodzące i&nbsp;lista rezerwowa</p></div>
           </div>
@@ -649,7 +670,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <a class="link-lux" href="szkolenia.html">Katalog szkoleń</a>
         </section>
 
-        <section class="card surface" aria-labelledby="t-ogl-salonu">
+        <section class="card surface" aria-labelledby="t-ogl-salonu" data-zakladka="praca">
           <div class="card-head">
             <div><h2 class="card-title" id="t-ogl-salonu">Ogłoszenia salonu</h2><p class="card-sub">Tylko do odczytu – publikuje i&nbsp;edytuje właściciel konta</p></div>
           </div>
@@ -673,6 +694,13 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <a class="link-lux" href="dam-prace.html">Tablica „Dam pracę”</a>
         </section>
       </div>
+      <!-- pusty pulpit pracownika, gdy salon ukrył obie zakładki (z JS tylko wtedy; bez JS – wzór) -->
+      <div class="empty zak-pusto">
+        <p class="no-js-only"><span class="mock-note">Wzór: salon ukrył obie zakładki</span></p>
+        <svg class="lux-icon" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>
+        <strong>Zakładki Praca i&nbsp;Szkolenia są ukryte</strong>
+        <p>Salon ukrył je w&nbsp;ustawieniach Strefy. Jeśli chcesz zapisać się na szkolenie albo zobaczyć ogłoszenia salonu, poproś Annę Przykładową o&nbsp;ich pokazanie.</p>
+      </div>
     </section>
 
     <!-- ================================================================
@@ -682,16 +710,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <header class="page-head glass glass--strong frame">
         <ol class="crumbs" aria-label="Ścieżka"><li><a href="#pulpit">Pulpit</a></li><li aria-current="page">Ustawienia</li></ol>
         <h1 id="t-ust">Ustawienia</h1>
-        <p class="lead">Logowanie, urządzenia i&nbsp;zgody. Strefa nie ma haseł – logujesz się kodem z&nbsp;e-maila i&nbsp;kodem z&nbsp;aplikacji.</p>
+        <p class="lead">Logowanie, urządzenia, zgody i&nbsp;zakładki w&nbsp;Strefie salonu. Strefa nie ma haseł – logujesz się kodem z&nbsp;e-maila i&nbsp;kodem z&nbsp;aplikacji.</p>
       </header>
 
       <div class="grid grid-2">
         <section class="card surface" aria-labelledby="t-konto">
           <h2 class="card-title" id="t-konto">Konto</h2>
           <dl class="kv kv--rows">
-            <div><dt>Adres e-mail</dt><dd>anna@salon-przykladowy.example<br><span class="xsmall muted">Zmianę adresu wykonuje doradca Aura Expert.</span></dd></div>
-            <div><dt>Rola</dt><dd>Właścicielka – Salon Przykładowy</dd></div>
-            <div><dt>Telefon</dt><dd><span class="nowrap">•••&nbsp;•••&nbsp;123</span><br><span class="xsmall muted" id="phone-hint">Potwierdzony kodem SMS. Numer potwierdza konto pracodawcy w&nbsp;„Dam pracę”; zapisujemy tylko skrót numeru i&nbsp;3&nbsp;ostatnie cyfry.</span><br><button class="link-quiet" type="button" id="phone-change" aria-describedby="phone-hint">Zmień numer</button></dd></div>
+            <div><dt>Adres e-mail</dt><dd><span class="owner-only">anna@salon-przykladowy.example</span><span class="employee-only">ewa@salon-przykladowy.example</span><br><span class="xsmall muted">Zmianę adresu wykonuje doradca Aura Expert.</span></dd></div>
+            <div><dt>Rola</dt><dd><span class="owner-only">Właścicielka – Salon Przykładowy</span><span class="employee-only">Pracownik – Salon Przykładowy</span></dd></div>
+            <div class="owner-only"><dt>Telefon</dt><dd><span class="nowrap">•••&nbsp;•••&nbsp;123</span><br><span class="xsmall muted" id="phone-hint">Potwierdzony kodem SMS. Numer potwierdza konto pracodawcy w&nbsp;„Dam pracę”; zapisujemy tylko skrót numeru i&nbsp;3&nbsp;ostatnie cyfry.</span><br><button class="link-quiet" type="button" id="phone-change" aria-describedby="phone-hint">Zmień numer</button></dd></div>
             <div><dt>Regulamin</dt><dd>Wersja 1.0 (przykład), zaakceptowana <time datetime="2025-11-04">4&nbsp;listopada 2025&nbsp;r.</time></dd></div>
             <div><dt>Dane osobowe</dt><dd><a href="logowanie.html#klauzula">Klauzula informacyjna</a></dd></div>
           </dl>
@@ -718,6 +746,51 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </section>
       </div>
 
+      <!-- ================= Zakładki w Strefie (prośba zleceniodawcy 16.11.2026) =================
+           PREFERENCJA WIDOKU, NIE KONTROLA DOSTĘPU. Ukryta zakładka znika w Strefie tego salonu – dla wszystkich jego członków – tylko jako
+           wejście do modułu: pozycja menu (pasek boczny i szuflada), kafel i skróty na pulpicie. Moduły „Dam pracę”, „Szukam pracy”
+           i „Szkolenia” działają dalej pod swoimi adresami (u góry informacja „Zakładka … jest ukryta w ustawieniach salonu”, właściciel
+           ma „Pokaż zakładkę”); ogłoszenia, kontakty od kandydatów, zapisy, opłacone zamówienia i e-maile modułów – bez zmian;
+           publiczne /dam-prace i katalog /szkolenia – bez zmian.
+           Produkcja: client_accounts.ukryte_zakladki; zmiana POST /strefa-klienta/ustawienia/zakladki → app_client_set_tab_visibility(
+           p_account, p_tab, p_visible) – tylko właściciel, idempotentna, wpis w client_audit_log („Historia konta”); odczyt dla członków
+           salonu przez istniejące polityki; RLS i funkcje modułów bez zmian. Serwer renderuje menu i pulpit już bez ukrytych wejść.
+           Z JS zmiana zapisuje się od razu, bez okna potwierdzenia (to nie jest operacja niebezpieczna), komunikat w aria-live;
+           bez JS – przycisk „Zapisz”. Pracownik widzi stan tylko do odczytu.
+           Globalny przełącznik szukam_pracy (11 §11.9.6) jest osobny i ma pierwszeństwo: wyłączony – etykieta „Praca – Dam pracę”,
+           bez wzmianki o „Szukam pracy”. Makieta: stan w localStorage (zakladki.js), wspólny dla panel.html, dam-prace.html i szkolenia.html. -->
+      <section class="card surface" id="zakladki" aria-labelledby="t-zakladki">
+        <div class="card-head">
+          <div><h2 class="card-title" id="t-zakladki">Zakładki w&nbsp;Strefie</h2><p class="card-sub">Ukryj zakładki, z&nbsp;których salon nie korzysta – menu i&nbsp;pulpit będą prostsze dla wszystkich osób z&nbsp;dostępem do Strefy salonu.</p></div>
+        </div>
+        <form class="toggles" id="f-zakladki" action="#zakladki" method="post" data-zakladki-form aria-labelledby="t-zakladki">
+          <p class="small employee-only" id="zak-ro">Zakładki ustawia właścicielka konta – Anna Przykładowa. Zmiana dotyczy wszystkich osób w&nbsp;salonie.</p>
+          <div class="toggle-row">
+            <label class="toggle-label" for="zak-praca">Praca – Dam pracę i&nbsp;Szukam pracy</label>
+            <div class="toggle-ctrl">
+              <input class="toggle" type="checkbox" role="switch" id="zak-praca" name="widoczne" value="praca" checked data-zakladka-przelacznik aria-describedby="zak-praca-opis zak-praca-info">
+              <span class="toggle-state" id="zak-praca-stan">Widoczna</span>
+            </div>
+            <p class="small toggle-opis" id="zak-praca-opis">Wyłącz, jeśli nie zatrudniasz i&nbsp;nie szukasz pracowników. Zakładkę włączysz tu w&nbsp;każdej chwili.</p>
+            <p class="small toggle-info" id="zak-praca-info">Salon ma 2&nbsp;aktywne ogłoszenia (1&nbsp;opublikowane, 1&nbsp;w&nbsp;moderacji) – zostają bez zmian, a&nbsp;wiadomości od kandydatów dochodzą jak dotąd; <span class="owner-only">zarządzisz nimi</span><span class="employee-only">zobaczysz je</span> pod adresem <a href="dam-prace.html#moje-ogloszenia">/strefa-klienta/dam-prace</a>.</p>
+          </div>
+          <div class="toggle-row">
+            <label class="toggle-label" for="zak-szkolenia">Szkolenia</label>
+            <div class="toggle-ctrl">
+              <input class="toggle" type="checkbox" role="switch" id="zak-szkolenia" name="widoczne" value="szkolenia" checked data-zakladka-przelacznik aria-describedby="zak-szkolenia-opis zak-szkolenia-info">
+              <span class="toggle-state" id="zak-szkolenia-stan">Widoczna</span>
+            </div>
+            <p class="small toggle-opis" id="zak-szkolenia-opis">Wyłącz, jeśli salon nie korzysta ze szkoleń. Zakładkę włączysz tu w&nbsp;każdej chwili.</p>
+            <p class="small toggle-info" id="zak-szkolenia-info"><span class="owner-only">Masz 3&nbsp;nadchodzące zapisy, w&nbsp;tym 1&nbsp;opłacone zamówienie</span><span class="employee-only">Masz 1&nbsp;nadchodzący zapis i&nbsp;1&nbsp;miejsce na liście rezerwowej</span> – zostają bez zmian, a&nbsp;przypomnienia i&nbsp;<span class="nowrap">e-maile</span> od organizatorów przychodzą jak dotąd; znajdziesz je pod adresem <a href="szkolenia.html#moje-szkolenia">/strefa-klienta/szkolenia</a>.</p>
+          </div>
+          <div class="toggles-foot">
+            <p class="small" id="zak-live" role="status"></p>
+            <div class="no-js-only"><button class="btn btn-navy btn-sm" type="submit">Zapisz</button></div>
+            <p class="xsmall"><span class="mock-note" data-zakladki-adnotacja>Makieta: preferencja widoku, nie kontrola dostępu</span> Ukrycie zmienia tylko menu, pulpit i&nbsp;skróty w&nbsp;Strefie salonu&nbsp;– moduły działają pod swoimi adresami, a&nbsp;uprawnienia i&nbsp;dane są bez zmian. Stan zapisuje przeglądarka i&nbsp;widzą go wszystkie strony Strefy; stany z&nbsp;adresu: ?zakladki=bez-pracy, bez-szkolen, wszystkie; widok pracownika: ?rola=pracownik.</p>
+          </div>
+        </form>
+      </section>
+
       <section class="card surface" aria-labelledby="t-sesje">
         <div class="card-head">
           <div><h2 class="card-title" id="t-sesje">Ostatnie logowania</h2><p class="card-sub">Logowanie z&nbsp;nowego urządzenia potwierdzamy e-mailem.</p></div>
@@ -736,12 +809,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </div>
       </section>
 
-      <section class="card surface" id="historia" aria-labelledby="t-hist">
+      <!-- dziennik zdarzeń salonu (client_audit_log) – tylko właściciel (11 §3, macierz); zmiany zakładek dopisuje zakladki.js -->
+      <section class="card surface owner-only" id="historia" aria-labelledby="t-hist">
         <div class="card-head"><div><h2 class="card-title" id="t-hist">Historia konta</h2><p class="card-sub">Zdarzenia w&nbsp;koncie salonu widoczne dla właściciela</p></div></div>
         <div class="table-wrap" tabindex="0" role="region" aria-label="Historia konta – tabela">
           <table class="data stack">
             <thead><tr><th scope="col">Data</th><th scope="col">Zdarzenie</th><th scope="col">Osoba</th></tr></thead>
             <tbody>
+              <tr class="hist-wzor"><td data-label="Data"><time datetime="2026-11-12">12.11.2026</time></td><td data-label="Zdarzenie"><span class="mock-note">Wzór wpisu</span> Ukryto zakładkę Praca (Dam pracę i&nbsp;Szukam pracy) w&nbsp;Strefie salonu</td><td data-label="Osoba">Anna Przykładowa</td></tr>
               <tr><td data-label="Data"><time datetime="2026-11-11">11.11.2026</time></td><td data-label="Zdarzenie">Ogłoszenie wysłane do akceptacji: „Recepcjonistka / recepcjonista (przykład)”</td><td data-label="Osoba">Anna Przykładowa</td></tr>
               <tr><td data-label="Data"><time datetime="2026-11-10">10.11.2026</time></td><td data-label="Zdarzenie">Pobrano dokument: OWU – OC dla branży beauty</td><td data-label="Osoba">Anna Przykładowa</td></tr>
               <tr><td data-label="Data"><time datetime="2026-11-09">9.11.2026</time></td><td data-label="Zdarzenie">Wysłano zaproszenie: kasia@salon-przykladowy.example</td><td data-label="Osoba">Anna Przykładowa</td></tr>
@@ -774,6 +849,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <li>Kwoty OC wyłącznie z&nbsp;taryfy (snippets/taryfa-oc-beauty.json, wycena jak w&nbsp;CRM): Gabinety kosmetologiczne, suma 200&nbsp;tys.&nbsp;zł: 790&nbsp;zł, +92&nbsp;zł ochrona prawna = 882,00&nbsp;zł (do 5&nbsp;osób wykonujących zabiegi). Zakres na karcie polisy = nazwa taryfy z&nbsp;certyfikatu (wynika z&nbsp;rodzaju działalności). Grupowe ERGO i&nbsp;Tax Protect bez kwot.</li>
         <li>Po wygaśnięciu ostatniej polisy konto zostaje, a&nbsp;polisy przechodzą do archiwum (D-B).</li>
         <li>„Szukam pracy” (P1a)&nbsp;– aktywne od startu: zakładka w&nbsp;„Dam pracę” (<code>dam-prace.html#szukam-pracy</code>) i&nbsp;podpunkt w&nbsp;menu bocznym, tylko dla właściciela konta (salon z&nbsp;polisą ma poziom&nbsp;2 z&nbsp;urzędu); pracownik ich nie widzi. Przełącznik <code>szukam_pracy</code> zostaje&nbsp;– wyłącza go tylko admin, a&nbsp;wtedy zakładka i&nbsp;linki znikają.</li>
+        <li><strong>Zakładki w&nbsp;Strefie (prośba zleceniodawcy 16.11.2026):</strong> w&nbsp;„Ustawieniach” (<code>#zakladki</code>) właściciel ukrywa zakładki „Praca – Dam pracę i&nbsp;Szukam pracy” i&nbsp;„Szkolenia”, np. gdy salon prowadzą jedna lub dwie osoby. To <strong>preferencja widoku, nie kontrola dostępu</strong>: znikają tylko wejścia do modułu w&nbsp;Strefie tego salonu (menu: pasek boczny i&nbsp;szuflada, kafle i&nbsp;skróty na pulpicie) – dla wszystkich jego członków. Moduły zostają w&nbsp;pełni wdrożone: bezpośredni adres działa i&nbsp;pokazuje u&nbsp;góry „Zakładka … jest ukryta w&nbsp;ustawieniach salonu” (właściciel: „Pokaż zakładkę”), ogłoszenia zostają opublikowane, wiadomości od kandydatów dochodzą, zapisy i&nbsp;opłacone zamówienia są bez zmian, e-maile modułów wychodzą; publiczne <code>/dam-prace</code> i&nbsp;katalog <code>/szkolenia</code>&nbsp;– bez zmian. Zmiana od razu, bez okna potwierdzenia, z&nbsp;komunikatem w&nbsp;aria-live i&nbsp;wpisem w&nbsp;„Historii konta”; pracownik widzi stan tylko do odczytu. Produkcja: <code>client_accounts.ukryte_zakladki</code>, <code>app_client_set_tab_visibility()</code> (tylko właściciel, wpis w&nbsp;<code>client_audit_log</code>); RLS i&nbsp;funkcje modułów bez zmian. Globalny przełącznik <code>szukam_pracy</code> (11.9.6) ma pierwszeństwo. Makieta: stan w&nbsp;localStorage (<code>zakladki.js</code>), stany z&nbsp;adresu <code>?zakladki=bez-pracy</code>, <code>bez-szkolen</code>, <code>bez-pracy,bez-szkolen</code>, <code>wszystkie</code>; wariant pracownika: <code>?rola=pracownik</code> albo „Pulpit pracownika”.</li>
         <li>Pierwsze wejście właściciela do „Dam pracę” (4.8): NIP salonu z&nbsp;konta → sprawdzenie w&nbsp;GUS → telefon z&nbsp;kodem SMS (<code>dam-prace.html#wlacz-dam-prace</code>). Potwierdzony numer widać w&nbsp;„Ustawieniach”. Pracodawca bez polisy ma własny kontekst w&nbsp;<code>dam-prace.html?konto=pracodawca</code>.</li>
         <li>Szkło: pasek górny, menu boczne i&nbsp;nagłówek strony – najwyżej 3&nbsp;tafle w&nbsp;widoku; dane i&nbsp;formularze na kryjących powierzchniach.</li>
         <li>Bez JavaScriptu wszystkie ekrany są widoczne pod sobą, zakładki jako sekcje, a&nbsp;szczegóły polisy otwierają się przez <code>:target</code>.</li>
@@ -970,17 +1046,20 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     return { view: v || views[0], el: el };
   }
   var currentView = null;
+  /* rola: „Pulpit pracownika” – pracownik; widoki właściciela – właściciel; widoki wspólne (Ustawienia) – ?rola=pracownik albo właściciel.
+     Linki Strefy (Pulpit, Ustawienia, Dam pracę, Szkolenia) przepina za rolą zakladki.js. */
+  var EMPL = /[?&]rola=pracownik(&|$)/.test(location.search);
   function render(focus) {
     var id = location.hash.slice(1);
     var r = viewFor(id);
     currentView = r.view;
     views.forEach(function (v) { v.classList.toggle('is-active', v === r.view); });
-    document.body.setAttribute('data-role', r.view.getAttribute('data-role-view') === 'employee' ? 'employee' : 'owner');
+    var rv = r.view.getAttribute('data-role-view');
+    document.body.setAttribute('data-role', rv === 'employee' || (!rv && EMPL) ? 'employee' : 'owner');
     navLinks.forEach(function (a) {
       var on = a.getAttribute('data-view') === (r.view.id === 'pracownik' ? 'pulpit' : r.view.id);
       if (on) { a.setAttribute('aria-current', 'page'); } else { a.removeAttribute('aria-current'); }
     });
-    navLinks[0].setAttribute('href', r.view.id === 'pracownik' ? '#pracownik' : '#pulpit');
     mockLinks.forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('href') === '#' + (id || 'pulpit') ? 'true' : 'false'); });
     /* stan po wysłaniu zgłoszenia szkody */
     var sent = id === 'szkoda-wyslane';
@@ -1186,6 +1265,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   render(false);
 })();
 </script>
+<!-- „Zakładki w Strefie”: przełączniki w Ustawieniach, historia, wariant pracownika (wspólny plik panel.html, dam-prace.html, szkolenia.html) -->
+<script src="zakladki.js"></script>
 <!-- gen:slownik-js -->
 <script type="application/json" id="slownik-dymki">
 {

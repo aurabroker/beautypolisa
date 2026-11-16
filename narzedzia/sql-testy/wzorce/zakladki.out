@@ -1,0 +1,336 @@
+CREATE SCHEMA
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+CREATE FUNCTION
+GRANT
+GRANT
+GRANT
+REVOKE
+INSERT 0 8
+INSERT 0 2
+INSERT 0 3
+INSERT 0 3
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+ t
+
+UPDATE 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ t
+
+ t
+
+ t
+
+SET
+ 
+
+INSERT 0 1
+INSERT 0 1
+RESET
+SET
+ t
+
+ onboarding
+
+ 
+
+ active
+
+RESET
+UPDATE 1
+SET
+ 
+
+ 
+
+ t
+
+RESET
+INSERT 0 1
+SET
+ t
+
+ t
+
+RESET
+SET
+ 
+
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+RESET
+ ok   fikstura: 2 szkolenia opublikowane = 2
+
+ ok   fikstura: oferta salonu A w moderacji = pending_review
+
+ --- 1. domyślnie wszystkie zakładki widoczne ---
+
+ ok   domyślnie {} (salony i pracodawca) = {}
+
+ ok   kolumna NOT NULL z domyślną {} = NO/'{}'::text[]
+
+ --- 2. kto może zmienić, walidacja ---
+
+SET
+ 
+
+ ok   authenticated (właścicielka) nie ma EXECUTE [42501]
+
+RESET
+SET
+ 
+
+ ok   anon nie ma EXECUTE [42501]
+
+RESET
+ ok   EXECUTE tylko service_role (anon/authenticated/public: brak) = service_role
+
+ ok   security invoker, search_path ustalony = true/search_path=""
+
+SET
+ ok   pracownica salonu A [P0001]
+
+ ok   właściciel innego salonu (B → A) [P0001]
+
+ ok   personel admin (preferencja salonu – zmienia właściciel) [P0001]
+
+ ok   organizator szkoleń (obcy dla salonu) [P0001]
+
+ ok   właściciel konta pracodawcy (kind employer) [P0001]
+
+ ok   właścicielka zawieszonego salonu C [P0001]
+
+ ok   nieistniejące konto [P0001]
+
+ ok   nieznana zakładka [BP422]
+
+ ok   wielkość liter (Praca) [BP422]
+
+ ok   zakładka NULL [BP422]
+
+ ok   stan NULL [BP422]
+
+ ok   komunikat BP422 bez wartości (PRIV-12) = BP422: tabs: nieprawidłowe pole zakladka albo widoczna
+
+RESET
+ ok   po odmowach: bez zmian i bez wpisów w dzienniku = {}/0
+
+ --- 3. właścicielka ukrywa i pokazuje ---
+
+SET
+ ok   ukryj Pracę → {praca} = {praca}
+
+ ok   ukryj Pracę ponownie → ten sam stan = {praca}
+
+RESET
+ ok   dziennik: 1 wpis mimo powtórzenia = 1
+
+ ok   dziennik: aktor, encja, payload bez PII = user:00000000-0000-0000-0000-00000000000a|account|aaaaaaaa-0000-0000-0000-000000000001|{"widoczna": false, "zakladka": "praca"}
+
+SET
+ ok   ukryj Szkolenia → {praca,szkolenia} (posortowane) = {praca,szkolenia}
+
+ ok   pokaż Pracę → {szkolenia} = {szkolenia}
+
+ ok   pokaż Pracę ponownie → ten sam stan = {szkolenia}
+
+ ok   pokaż Szkolenia → {} = {}
+
+ ok   pokaż już widoczną → {} = {}
+
+RESET
+ ok   dziennik: 4 zmiany, kolejność = praca:false,szkolenia:false,praca:true,szkolenia:true
+
+ ok   wyzwalacz audytu kont nie dopisuje account_identity_changed = 1
+
+ ok   salon B bez zmian = {}
+
+SET
+ ok   ukryj Pracę = {praca}
+
+ ok   ukryj Szkolenia = {praca,szkolenia}
+
+RESET
+ ok   stan salonu A = {praca,szkolenia}
+
+ --- 4. odczyt przez członków salonu ---
+
+SET
+ 
+
+ ok   właścicielka A (aal2) czyta stan = {praca,szkolenia}
+
+ ok   właścicielka A widzi zmiany w Historii konta = 6
+
+ ok   właścicielka A: UPDATE kolumny przez Data API [42501]
+
+ 
+
+ ok   właścicielka A bez aal2: 0 wierszy (jak dotąd) = 0
+
+ 
+
+ ok   pracownica A (bez TOTP) czyta stan = {praca,szkolenia}
+
+ ok   pracownica A nie widzi dziennika (jak dotąd) = 0
+
+ ok   pracownica A: UPDATE kolumny [42501]
+
+ 
+
+ ok   właściciel B: 0 wierszy salonu A = 0
+
+ ok   właściciel B: własny stan {} = {}
+
+ 
+
+ ok   personel (aal2) czyta stan salonu A = {praca,szkolenia}
+
+ ok   personel: UPDATE kolumny przez Data API (brak grantu) [42501]
+
+RESET
+SET
+ 
+
+ ok   anon: client_accounts [42501]
+
+RESET
+ --- 5. CHECK ---
+
+ ok   CHECK: wartość spoza listy [23514]
+
+ ok   CHECK: kolejność inna niż kanoniczna [23514]
+
+ ok   CHECK: powtórzenie [23514]
+
+ ok   CHECK: NULL w tablicy [23514]
+
+ ok   CHECK: NULL obok wartości [23514]
+
+ ok   NOT NULL [23502]
+
+ ok   CHECK: preferencja konta pracodawcy [23514]
+
+ --- 6. szkolenia przy ukrytej zakładce ---
+
+SET
+ ok   pracownica zapisuje się na szkolenie bezpłatne = registered
+
+ ok   właścicielka zapisuje się na szkolenie bezpłatne = registered
+
+ ok   zamówienie szkolenia płatnego: kwota z bazy = 45000
+
+ t
+
+ ok   webhook: płatność → paid = paid
+
+RESET
+ ok   zapisy salonu A na nadchodzące szkolenia (informacja przy przełączniku) = 3
+
+ ok   e-mail modułu wychodzi (training_order_paid do kupującej) = 1
+
+SET
+ 
+
+ ok   pracownica widzi katalog szkoleń (2) = 2
+
+ ok   pracownica widzi swoje zapisy (2) = 2
+
+ ok   pracownica widzi swoje zamówienie (paid) = paid
+
+RESET
+SET
+ 
+
+ ok   publiczny katalog szkoleń bez zmian (anon: 2) = 2
+
+RESET
+ --- 7. praca przy ukrytej zakładce ---
+
+SET
+ 
+
+RESET
+ ok   moderacja publikuje ofertę salonu z ukrytą Pracą = published
+
+SET
+ 
+
+ ok   publiczna tablica: anon widzi ofertę salonu A = 1
+
+RESET
+SET
+ ok   app_job_offers_page() zwraca ofertę salonu A = 1
+
+ ok   wiadomość kandydata przekazana (formularz) = true
+
+RESET
+ ok   outbox job_relay do salonu A = 1
+
+SET
+ ok   cron wygaszania nie rusza aktywnej oferty = true
+
+RESET
+ ok   aktywne oferty salonu A (informacja przy przełączniku) = 1
+
+SET
+ 
+
+ ok   pracownica widzi ogłoszenia salonu (adres bezpośredni działa) = 1
+
+ 
+
+ ok   właścicielka widzi kontakt w ofercie = 1
+
+RESET
+SET
+ ok   Szukam pracy przy ukrytej Pracy: odczyt działa (0 ogłoszeń, bez błędu) = 0
+
+ 
+
+ ok   przełącznik wyłączony → BP404 niezależnie od preferencji [BP404]
+
+ ok   pokazanie Pracy nie włącza Szukam pracy = {szkolenia}
+
+ ok   nadal BP404 [BP404]
+
+ ok   przełącznik nie zmienia preferencji salonu = {szkolenia}
+
+ 
+
+ ok   przełącznik włączony: odczyt znów działa = 0
+
+RESET
+ ok   preferencja nie zmienia app_feature_flags = true
+
+ --- 8. stan końcowy i dziennik ---
+
+ ok   dziennik salonu A: 7 zmian, salon B: 0 = 7/0
+
+ ok   funkcje modułów nie czytają ukryte_zakladki = 0
+
+ ok   polityki RLS nie czytają ukryte_zakladki = 0
+

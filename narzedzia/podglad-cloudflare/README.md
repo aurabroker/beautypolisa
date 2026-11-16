@@ -24,7 +24,8 @@ Usunięcie podglądu: `npx -y wrangler@4.155.0 delete beautypolisa-podglad`.
 ## Zawartość i rozmiar paczki
 
 - Strony: `index.html` (= `makieta-v3.html`), `oc-beauty`, `tax-protect`, `utrata-dochodu`, `nnw-dzieci`, `grupowe-ergo`,
-  `opieka-medyczna`, `slownik` (od 15.11.2026 także dwie ostatnie) i wszystkie `strefa/*.html` (logowanie, panel, Dam pracę, szkolenia).
+  `opieka-medyczna`, `slownik` (od 15.11.2026 także dwie ostatnie) i wszystkie `strefa/*.html` (logowanie, panel, Dam pracę, szkolenia)
+  z `strefa/strefa.css` i – od 16.11.2026 – `strefa/zakladki.js` („Zakładki w Strefie”, wspólny skrypt panelu, „Dam pracę” i szkoleń).
   Ścieżki produkcyjne `/ubezpieczenia/<produkt>` są przepinane na pliki podglądu, pozostałe ścieżki bezwzględne (np. `/o-nas`,
   `/dokumenty`) – na `#` z `data-podglad="podstrona w przygotowaniu"`. `build.py` wypisuje linki względne do plików spoza paczki
   (stan 15.11.2026: brak).

@@ -9,3 +9,5 @@
  ok   R3 zapisy u6 = 1
  ok   R3 liczniki held/registered = 1/1
  ok   R3 wiersze webhooków pi_RACE = 2
+ ok   R4 dwie zakładki naraz: stan końcowy = {praca,szkolenia}
+ ok   R4 wpisy w dzienniku = 2

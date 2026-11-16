@@ -111,6 +111,13 @@ create table client_accounts (
   crm_ref          text check (char_length(crm_ref) <= 64),      -- klient_id w CRM Aura Expert („aurabroker”)
   source_lead_id    uuid references leads(id) on delete set null,  -- lead, z którego powstała polisa (jeśli był); tylko personel
   team_confirmed_at timestamptz,             -- coroczne potwierdzenie składu zespołu przez właściciela [Założenie, D-B]
+  -- 00, D44: zakładki ukryte w Strefie TEGO salonu ('praca' = „Dam pracę” + „Szukam pracy”, 'szkolenia').
+  -- Preferencja widoku, nie uprawnienie: czyta ją serwer renderujący nawigację, pulpit i skróty (10.7a);
+  -- RLS i funkcje modułów jej nie sprawdzają. Pusta tablica = wszystkie zakładki widoczne (domyślnie).
+  -- Postać kanoniczna (posortowana, bez powtórzeń i NULL) – jedyna droga zapisu to funkcja 10.7a.
+  -- Nowa zakładka = nowa migracja: ten CHECK + walidacja w funkcji.
+  ukryte_zakladki   text[] not null default '{}'
+                      check (ukryte_zakladki in ('{}', '{praca}', '{szkolenia}', '{praca,szkolenia}')),
   activated_at      timestamptz,
   activated_by      uuid references auth.users(id) on delete set null,
   suspended_at      timestamptz,
@@ -123,6 +130,7 @@ create table client_accounts (
   check (kind <> 'employer' or status in ('pending','closed','suspended') or employer_verified_at is not null),
   check (employer_trusted_at is null or employer_trust_method is not null),
   check ((crm_tenant is null) = (crm_ref is null)),   -- odwołanie do CRM tylko jako para
+  check (kind = 'client' or ukryte_zakladki = '{}'),  -- 00, D44: preferencja tylko salonów (pracodawca ma wyłącznie „Pracę”)
   -- nazwy zastrzeżone nie mogą być nazwą wyświetlaną pracodawcy z rejestracji (podszywanie się – SEC-02)
   check (kind <> 'employer' or display_name !~* '(\m(aura|beautypolisa|ergo|hestia|colonnade)\M|beauty[ -]?polisa|lux[ -]?med|enel[ -]?med)')
 );
@@ -1323,7 +1331,9 @@ create table client_audit_log (
                   -- przegląd red team płatności (13.11.2026)
                   'payout_account_link_created','payout_destination_changed','payout_account_kyb_mismatch',
                   'organizer_owner_mfa_reset','training_order_withdrawal_declared','training_dispute_closed',
-                  'organizer_suspended_orders_closed')),
+                  'organizer_suspended_orders_closed',
+                  -- 00, D44 (zakładki w Strefie salonu – preferencja widoku)
+                  'account_tab_visibility_changed')),
   entity        text not null check (entity in ('account','member','invitation','policy','document','claim',
                   'job_offer','training','training_registration','organizer','organizer_member',
                   'feature_flag','candidate_ad','job_seeker','phone','promotion','organizer_plan',
@@ -2035,8 +2045,12 @@ revoke all on client_accounts, client_members, client_invitations, client_polici
 
 -- 8.1 Konta salonów -------------------------------------------------------------------------------
 grant select (id, kind, display_name, legal_name, nip, city, status, employer_verified_at, employer_trusted_at,
-              display_name_approved_at, team_confirmed_at, activated_at, suspended_at, closed_at, created_at, updated_at)
+              display_name_approved_at, team_confirmed_at, ukryte_zakladki, activated_at, suspended_at, closed_at,
+              created_at, updated_at)
   on client_accounts to authenticated;
+-- ukryte_zakladki (00, D44): odczyt dla członków salonu (właściciel i pracownik) istniejącą polityką
+-- client_accounts_member_read i dla personelu – client_accounts_staff_read; BEZ grantu UPDATE dla
+-- authenticated (także personelu) – zmienia wyłącznie app_client_set_tab_visibility() (właściciel, 10.7a).
 grant insert (display_name, legal_name, nip, city, crm_tenant, crm_ref, source_lead_id, created_by),
       update (display_name, legal_name, nip, city, crm_tenant, crm_ref, status, suspended_at, closed_at, updated_at)
   on client_accounts to authenticated;          -- aktywację (status active) wykonuje app_activate_client_account()
@@ -2794,6 +2808,62 @@ begin
   )
   select count(*) into v_count from log;
   return v_count;
+end $$;
+
+-- 10.7a Zakładki w Strefie salonu (00, D44; prośba zleceniodawcy 16.11.2026). PREFERENCJA WIDOKU, NIE
+--      KONTROLA DOSTĘPU. Właściciel salonu ukrywa w Strefie SWOJEGO salonu zakładkę „Praca” („Dam pracę”
+--      i „Szukam pracy”) albo „Szkolenia” – np. salon prowadzony przez 1–2 osoby, który nie zatrudnia.
+--      Skutek wyłącznie w interfejsie Strefy tego salonu, dla wszystkich jego członków: serwer renderujący
+--      Strefę czyta client_accounts.ukryte_zakladki i nie pokazuje pozycji w nawigacji (górny pasek
+--      i szuflada), kafla na pulpicie ani skrótów do modułu. Bezpośredni adres modułu nadal działa –
+--      serwer pokazuje u góry informację „Zakładka jest ukryta w ustawieniach salonu” (właścicielowi
+--      z przyciskiem „Pokaż zakładkę”), a moduł działa normalnie.
+--      CELOWO BEZ ZMIAN (to nie jest blokada ani wyłączenie funkcji): polityki RLS, granty i funkcje modułów
+--      (app_training_register, app_training_order_create i cała ścieżka płatności, app_moderate_job_offer,
+--      app_relay_job_message, app_expire_job_offers, app_candidate_ads_page, app_candidate_contact …) NIE
+--      czytają tej kolumny i nie wolno jej do nich dodawać. Aktywne ogłoszenia salonu zostają opublikowane,
+--      wiadomości od kandydatów dochodzą, zapisy i opłacone zamówienia na szkolenia trwają, e-maile modułów
+--      (outbox) wychodzą, Cron działa; publiczne /dam-prace i katalog /szkolenia – bez zmian.
+--      Informacja przy przełączniku („Masz 1 aktywne ogłoszenie – zostaje opublikowane …”) to zwykły odczyt
+--      istniejących tabel przez serwer: job_offers salonu (status 'published', expires_at > now()) oraz
+--      training_registrations salonu ('registered'/'waitlisted') na szkolenia, które się jeszcze nie
+--      zaczęły (starts_at > now()).
+--      Przełącznik globalny app_feature_flags('szukam_pracy') (11.9.6) zostaje OSOBNY i ma pierwszeństwo:
+--      wyłączony – „Szukam pracy” znika wszędzie niezależnie od tej preferencji; pokazanie zakładki „Praca”
+--      go nie włącza. Ukrycie „Pracy” ukrywa w Strefie salonu także „Szukam pracy” (część tej zakładki).
+--      Uprawnienia: wyłącznie aktywny właściciel aktywnego konta salonu (kind = 'client'; sesja aal2 –
+--      sprawdza serwer jak przy innych działaniach właściciela). Pracownik widzi stan (odczyt kolumny), ale
+--      go nie zmienia; personel Aura, pracodawca z rejestracji i obcy – odmowa (P0001). Nieznana zakładka
+--      albo brak stanu → BP422 bez wartości. Idempotentna: stan bez zmian → bez UPDATE i bez wpisu
+--      w dzienniku (podwójne kliknięcie nie zaśmieca „Historii konta”); zwraca bieżącą listę ukrytych.
+--      Blokada wiersza konta: dwie równoległe zmiany różnych zakładek nie gubią się nawzajem.
+create or replace function public.app_client_set_tab_visibility(
+  p_account uuid, p_actor uuid, p_tab text, p_visible boolean)
+returns text[]
+language plpgsql set search_path = '' as $$
+declare
+  v_old text[];
+  v_new text[];
+begin
+  if p_tab is null or p_tab not in ('praca', 'szkolenia') or p_visible is null then
+    raise exception 'tabs: nieprawidłowe pole zakladka albo widoczna' using errcode = 'BP422';
+  end if;
+  if not exists (select 1 from public.client_members m
+                 join public.client_accounts a on a.id = m.account_id and a.status = 'active' and a.kind = 'client'
+                  where m.account_id = p_account and m.user_id = p_actor
+                    and m.role = 'owner' and m.status = 'active') then
+    raise exception 'tabs: brak uprawnień';
+  end if;
+  select a.ukryte_zakladki into v_old from public.client_accounts a where a.id = p_account for update;
+  v_new := case when p_visible then array_remove(v_old, p_tab)
+                else array(select distinct z from unnest(v_old || p_tab) as z order by z) end;
+  if v_new is distinct from v_old then
+    update public.client_accounts set ukryte_zakladki = v_new, updated_at = now() where id = p_account;
+    insert into public.client_audit_log (account_id, actor, action, entity, entity_id, payload)
+    values (p_account, 'user:' || p_actor::text, 'account_tab_visibility_changed', 'account', p_account,
+            jsonb_build_object('zakladka', p_tab, 'widoczna', p_visible));
+  end if;
+  return v_new;
 end $$;
 
 -- 10.8 Moderacja ogłoszenia (personel; serwer sprawdza też app_is_staff w sesji aal2).
@@ -7032,7 +7102,9 @@ revoke execute on function
   public.app_payment_discrepancy_report(text, text, text, uuid, jsonb),
   public.app_payment_discrepancy_resolve(bigint, uuid, text),
   public.app_payment_health(),
-  public.app_purge_training_orders()
+  public.app_purge_training_orders(),
+  -- 00, D44 (zakładki w Strefie salonu – preferencja widoku)
+  public.app_client_set_tab_visibility(uuid, uuid, text, boolean)
   from public, anon, authenticated;
 grant execute on function
   public.app_activate_client_account(uuid, uuid, text, text),
@@ -7151,10 +7223,13 @@ grant execute on function
   public.app_payment_discrepancy_report(text, text, text, uuid, jsonb),
   public.app_payment_discrepancy_resolve(bigint, uuid, text),
   public.app_payment_health(),
-  public.app_purge_training_orders()
+  public.app_purge_training_orders(),
+  -- 00, D44 (zakładki w Strefie salonu – preferencja widoku)
+  public.app_client_set_tab_visibility(uuid, uuid, text, boolean)
   to service_role;
 
 -- Test w CI (rozszerzenie packages/db/tests/privileges.test.sql) – pełna lista w pkt 9.6 dokumentu 11.
+-- Lokalna regresja tego pliku (PostgreSQL 16 z zaślepkami Supabase, wzorce wyników): narzedzia/sql-testy/uruchom.sh.
 -- TEST-21: uruchamiany na lokalnym stosie Supabase CLI albo na gałęzi projektu (prawdziwe role anon,
 -- authenticated, service_role, postgres i ustawienia Data API), nie tylko na czystym Postgresie; asercja,
 -- że właściciel funkcji DEFINER (client_account_ids, employer_account_ids, organizer_ids) ma oczekiwane
@@ -7232,3 +7307,12 @@ grant execute on function
 --       drugiej referencji, unknown_ref także przy ponowieniu; rezerwacja Stripe = 30 min; szkolenie < 14 dni
 --       bez żądania wcześniejszego rozpoczęcia → BP422; odstąpienie: zapis, miejsce, e-maile, alert po 3 dniach,
 --       po 14 dniach → BP409; limit sprzedaży nowego organizatora → BP409.
+--  (22) zakładki w Strefie salonu (00, D44; narzedzia/sql-testy/testy/zakladki.sql): domyślnie '{}'; właściciel
+--       ukrywa i pokazuje „Pracę” i „Szkolenia” (powtórzenie → ten sam stan, bez drugiego wpisu w dzienniku),
+--       wpis account_tab_visibility_changed bez PII; pracownik, właściciel innego salonu, personel, pracodawca
+--       z rejestracji i właściciel konta zawieszonego → odmowa; nieznana zakładka i NULL → BP422; zapis
+--       z pominięciem funkcji (wartość spoza listy, powtórzenie, NULL w tablicy, preferencja konta pracodawcy)
+--       → naruszenie CHECK; authenticated: brak EXECUTE i brak UPDATE kolumny; członkowie salonu (także
+--       pracownik bez TOTP) czytają stan, salon B – 0 wierszy salonu A; przy ukrytych zakładkach moduły bez
+--       zmian: zapis pracownika na szkolenie, ogłoszenie opublikowane (anon i app_job_offers_page()),
+--       wiadomość kandydata przekazana (app_relay_job_message), „Szukam pracy” zależne tylko od przełącznika.

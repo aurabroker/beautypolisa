@@ -3,7 +3,7 @@
 # PostgreSQL 16 z zaślepkami Supabase. Każdy zestaw dostaje własną, świeżą bazę. Opis: README.md obok.
 #
 #   narzedzia/sql-testy/uruchom.sh                 – wszystkie zestawy i test równoległy (wyscigi)
-#   narzedzia/sql-testy/uruchom.sh strefa-t2 zabiegi – wybrane zestawy
+#   narzedzia/sql-testy/uruchom.sh zakladki zabiegi – wybrane zestawy
 #   narzedzia/sql-testy/uruchom.sh --aktualizuj-wzorce [zestawy] – zapisuje bieżące wyniki jako wzorce
 #                                                    (tylko po świadomej zmianie snippetu albo testu)
 # Zmienne: PG_BIN (domyślnie /usr/lib/postgresql/16/bin), SQL_TESTY_PORT (55450), SQL_TESTY_TMP (katalog
@@ -17,8 +17,7 @@ SNIP=$REPO/docs/koncepcja/snippets
 STREFA_SQL=${STREFA_SQL:-$SNIP/strefa-klienta.sql}
 PG_BIN=${PG_BIN:-/usr/lib/postgresql/16/bin}
 PORT=${SQL_TESTY_PORT:-55450}
-# zakladki (00, D44 – ukrywanie zakładek salonu) dochodzi do listy razem z testy/zakladki.sql i wzorcem
-WSZYSTKIE=(strefa-p1 strefa-t2 zabiegi platnosci platnosci-redteam wyscigi)
+WSZYSTKIE=(strefa-p1 strefa-t2 zabiegi platnosci platnosci-redteam zakladki wyscigi)
 
 AKTUALIZUJ=0
 if [ "${1:-}" = "--aktualizuj-wzorce" ]; then AKTUALIZUJ=1; shift; fi
@@ -93,6 +92,15 @@ wyscigi() {
   sprawdz "R3 zapisy u6" "$("${Q[@]}" -c "select count(*) from training_registrations where user_id='00000000-0000-0000-0000-000000000106' and status='registered'")" 1
   sprawdz "R3 liczniki held/registered" "$("${Q[@]}" -c "select seats_held||'/'||seats_registered from trainings where id='$T2'")" "1/1"
   sprawdz "R3 wiersze webhooków pi_RACE" "$("${Q[@]}" -c "select count(*) from payment_webhook_events where provider_ref='pi_RACE'")" 2
+  # R4 (00, D44): dwie sesje właścicielki naraz ukrywają RÓŻNE zakładki – blokada wiersza konta, żadna zmiana
+  # się nie gubi (sesja 1 trzyma transakcję 1 s; bez FOR UPDATE sesja 2 nadpisałaby stan sprzed sesji 1)
+  local A=aaaaaaaa-0000-0000-0000-000000000001 UA=00000000-0000-0000-0000-00000000000a
+  "${Q[@]}" -c "set role service_role" -c "begin" -c "select public.app_client_set_tab_visibility('$A','$UA','praca',false)" -c "select pg_sleep(1)" -c "commit" >"$W/r4_1.out" 2>&1 & pids+=($!)
+  sleep 0.3
+  "${Q[@]}" -c "set role service_role" -c "select public.app_client_set_tab_visibility('$A','$UA','szkolenia',false)" >"$W/r4_2.out" 2>&1 & pids+=($!)
+  wait "${pids[@]}"; pids=()
+  sprawdz "R4 dwie zakładki naraz: stan końcowy" "$("${Q[@]}" -c "select ukryte_zakladki from client_accounts where id='$A'")" "{praca,szkolenia}"
+  sprawdz "R4 wpisy w dzienniku" "$("${Q[@]}" -c "select count(*) from client_audit_log where action='account_tab_visibility_changed' and account_id='$A'")" 2
 }
 
 KOD=0
