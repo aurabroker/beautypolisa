@@ -349,7 +349,7 @@
       "gdzie": [
         {
           "strona": "nnw-dzieci.html#jak-kupic",
-          "etykieta": "NNW dla dzieci – zakup online w czterech krokach"
+          "etykieta": "NNW dla dzieci – zakup online w 4 krokach"
         }
       ],
       "zobacz_tez": [
@@ -558,7 +558,7 @@
         "Microsoft Authenticator"
       ],
       "kategoria": "strefa-klienta",
-      "definicja": "Dodatkowe zabezpieczenie konta. Strefa nie ma haseł: najpierw podajesz sześciocyfrowy kod z e-maila, a potem – jako drugi składnik – kod z aplikacji uwierzytelniającej, który zmienia się co 30 sekund (TOTP – jednorazowy kod zależny od czasu); sam dostęp do skrzynki e-mail nie wystarczy więc, by ktoś wszedł na konto. Aplikacją może być np. Google Authenticator, Microsoft Authenticator albo menedżer haseł; kodów zapasowych nie ma, dlatego dodaj zapasowe urządzenie, a po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości. Drugi składnik jest obowiązkowy dla właścicieli kont salonów, pracodawców i organizatorów szkoleń; SMS nie jest drugim składnikiem.",
+      "definicja": "Dodatkowe zabezpieczenie konta. Strefa nie ma haseł: najpierw podajesz 6-⁠cyfrowy kod z e-maila, a potem – jako drugi składnik – kod z aplikacji uwierzytelniającej, który zmienia się co 30 sekund (TOTP – jednorazowy kod zależny od czasu); sam dostęp do skrzynki e-mail nie wystarczy więc, by ktoś wszedł na konto. Aplikacją może być np. Google Authenticator, Microsoft Authenticator albo menedżer haseł; kodów zapasowych nie ma, dlatego dodaj zapasowe urządzenie, a po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości. Drugi składnik jest obowiązkowy dla właścicieli kont salonów, pracodawców i organizatorów szkoleń; SMS nie jest drugim składnikiem.",
       "gdzie": [
         {
           "strona": "strefa/logowanie.html#s-totp",
@@ -631,7 +631,7 @@
         "grupę otwartą"
       ],
       "kategoria": "strony",
-      "definicja": "Ubezpieczenie grupowe, do którego przystępujesz indywidualnie – sama albo z bliskimi – bez udziału pracodawcy. Tak działa ERGO Razem: wiek 18–65 lat w dniu objęcia ochroną, ankieta medyczna zamiast badań, składka zależna od wieku.",
+      "definicja": "Ubezpieczenie grupowe, do którego przystępujesz indywidualnie – samodzielnie albo z bliskimi – bez udziału pracodawcy. Tak działa ERGO Razem: wiek 18–65 lat w dniu objęcia ochroną, ankieta medyczna zamiast badań, składka zależna od wieku.",
       "gdzie": [
         {
           "strona": "grupowe-ergo.html#dla-rodziny",
@@ -936,7 +936,7 @@
         "IOD"
       ],
       "kategoria": "dystrybucja-prawo",
-      "definicja": "Informacja o tym, kto przetwarza Twoje dane (administrator), w jakim celu, na jakiej podstawie, jak długo i jakie masz prawa – RODO wymaga jej przy zbieraniu danych. Administratorem danych w BeautyPolisa i Strefie Klienta jest Aura Expert sp. z o.o.; z inspektorem ochrony danych (IOD) skontaktujesz się pod adresem iod@auraexpert.pl. Ubezpieczyciele, którym przekazujemy dane do umowy, są odrębnymi administratorami danych z polis – ich klauzule informacyjne dostajesz z dokumentami ubezpieczenia.",
+      "definicja": "Informacja o tym, kto przetwarza Twoje dane (administrator), w jakim celu, na jakiej podstawie, jak długo i jakie masz prawa – RODO wymaga jej przy zbieraniu danych. Administratorem danych w BeautyPolisa i Strefie Klienta jest Aura Expert sp. z o.o.; z inspektorem ochrony danych (IOD) skontaktujesz się pod adresem iod@auraexpert.pl. Ubezpieczyciele, którym Aura Expert przekazuje dane do umowy, są odrębnymi administratorami danych z polis – ich klauzule informacyjne dostajesz z dokumentami ubezpieczenia.",
       "gdzie": [
         {
           "strona": "makieta-v3.html#kontakt",
@@ -1166,7 +1166,7 @@
     },
     {
       "id": "lista-zabiegow-programu",
-      "termin": "Lista zabiegów programu (OC beauty)",
+      "termin": "Lista zabiegów programu (OC dla branży beauty)",
       "alias": [
         "lista zabiegów programu",
         "listy zabiegów programu",
@@ -2400,7 +2400,7 @@
     },
     {
       "id": "rodzaj-dzialalnosci",
-      "termin": "Rodzaj działalności (OC beauty)",
+      "termin": "Rodzaj działalności (OC dla branży beauty)",
       "alias": [
         "rodzaj działalności",
         "rodzaju działalności",
@@ -2806,7 +2806,7 @@
       ],
       "kategoria": "ochrona",
       "definicja": "Górna granica tego, ile ubezpieczyciel zapłaci poszkodowanym w ubezpieczeniu OC – np. klientce, której stała się krzywda podczas zabiegu. Za szkody ponad tę kwotę odpowiadasz z własnych pieniędzy. W programie OC dla branży beauty wybierasz 100, 200 albo 300 tys. zł; czy suma zmniejsza się o wypłaty w okresie ubezpieczenia, określają warunki programu.",
-      "przyklad": "Gdy roszczenie klientki przekroczy sumę gwarancyjną, nadwyżkę pokrywasz sama.",
+      "przyklad": "Gdy roszczenie klientki przekroczy sumę gwarancyjną, nadwyżkę pokrywasz z własnych środków.",
       "gdzie": [
         {
           "strona": "oc-beauty.html#taryfa",
@@ -3492,7 +3492,7 @@
         },
         {
           "strona": "grupowe-ergo.html#warianty",
-          "etykieta": "Grupowe ERGO – trzy warianty"
+          "etykieta": "Grupowe ERGO – 3 warianty"
         },
         {
           "strona": "grupowe-ergo.html#pakiety",

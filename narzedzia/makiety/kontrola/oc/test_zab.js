@@ -45,7 +45,7 @@ const bledy = [];
     ma('fokus wraca do pola, lista zamknięta', (await p.evaluate(() => document.activeElement.id)) === 'zab-q' && (await p.locator('#zab-q').getAttribute('aria-expanded')) === 'false');
     // polskie znaki i wielkość liter
     await p.keyboard.type('MANICURE');
-    const man = await p.locator('#zab-lista [role=option]').allTextContents();
+    const man = (await p.locator('#zab-lista [role=option]').allTextContents()).map((x) => x.replace(/\u00a0/g, ' '));  // twarda spacja = spacja (runda 2)
     ma('„MANICURE” → Manicure z plakietką „Listy nr 1 i 2”', man.some((o) => o.startsWith('Manicure') && o.endsWith('Listy nr 1 i 2')));
     await p.keyboard.press('Escape'); ma('Esc zamyka listę', (await p.locator('#zab-q').getAttribute('aria-expanded')) === 'false' && (await p.locator('#zab-q').inputValue()) === 'MANICURE');
     await p.keyboard.press('Escape'); ma('drugi Esc czyści pole', (await p.locator('#zab-q').inputValue()) === '');
@@ -79,7 +79,7 @@ const bledy = [];
     await p.waitForTimeout(600);
     const brak = await p.locator('#zab-brak').textContent();
     log('brak', brak);
-    ma('brak wyników: komunikat i odnośniki', (await p.locator('#zab-brak').isVisible()) && brak.startsWith('Nie znaleźliśmy „xyzzy” na listach zabiegów programu.') && (await p.locator('#zab-brak a').count()) === 3);
+    ma('brak wyników: komunikat i odnośniki', (await p.locator('#zab-brak').isVisible()) && brak.startsWith('Zabiegu „xyzzy” nie ma na listach zabiegów programu.') && (await p.locator('#zab-brak a').count()) === 3);
     // Q1: zabiegów podologicznych nie ma w wyszukiwarce – stałe zdanie i odnośnik do sekcji Podologia (bez oceny zakresu)
     ma('brak wyników: zdanie o liście podologicznej i odnośnik', brak.replace(/\u00a0/g, ' ').includes('Lista zabiegów podologicznych jest w dokumentach programu') && (await p.locator('#zab-brak a[href="oc-beauty.html#podologia"]').count()) === 1);
     // „zapytaj doradcę” ustawia temat formularza (a[data-produkt] – jak inne odnośniki kalkulatora do #kontakt)
@@ -98,11 +98,13 @@ const bledy = [];
     ma('usunięcie chipa', (await p.locator('.zab-chip').count()) === chips1 - 1 && (await p.locator('input[name=rodzaj]:checked').count()) === 1);
     // dialog klauzuli
     await p.locator('#klauzula-open').scrollIntoViewIfNeeded();
-    ma('„Treść klauzuli” jako przycisk', (await p.evaluate(() => document.getElementById('klauzula-open').tagName)) === 'BUTTON');
+    ma('„Pokaż treść klauzuli” jako przycisk', (await p.evaluate(() => document.getElementById('klauzula-open').tagName)) === 'BUTTON');
     await p.locator('#klauzula-open').focus(); await p.keyboard.press('Enter');
     await p.waitForTimeout(500);
     const dl = await p.evaluate(() => { const d = document.getElementById('klauzula-dialog'); const r = d.getBoundingClientRect(); const bd = d.querySelector('.klauzula-body'); return { open: d.open, w: r.width, h: r.height, scrollH: bd.scrollHeight, clientH: bd.clientHeight, tytul: d.querySelector('.klauzula-tytul').textContent, items: [...d.querySelectorAll('.klauzula-body > ol > li')].map((li) => ({ t: li.firstChild.textContent.trim(), u: [...li.querySelectorAll('ul li')].map((x) => x.textContent) })) }; });
-    const same = dl.tytul === K.tytul && dl.items.length === 12 && dl.items.every((it, i) => it.t === K.punkty[i].tekst && JSON.stringify(it.u) === JSON.stringify(K.punkty[i].wyliczenie || []));
+    // brzmienie słowo w słowo; twarde spacje (polska typografia, typografia.py – raport 16, 3.1) = spacje
+    const sp = (t) => t.replace(/\u00a0/g, ' ');
+    const same = sp(dl.tytul) === K.tytul && dl.items.length === 12 && dl.items.every((it, i) => sp(it.t) === K.punkty[i].tekst && JSON.stringify(it.u.map(sp)) === JSON.stringify(K.punkty[i].wyliczenie || []));
     log('dialog size', dl.w, dl.h, 'scroll', dl.scrollH, dl.clientH, 'verbatim', same);
     ma('dialog klauzuli otwarty, treść słowo w słowo', dl.open && same);
     await p.screenshot({ path: OUT + `dialog-${w}.png` });

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pl">
+<html lang="pl" data-type="service">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -12,14 +12,28 @@
 <meta property="og:url" content="https://beautypolisa.eu/ubezpieczenia/utrata-dochodu">
 <meta property="og:title" content="Utrata dochodu – ubezpieczenie dla beauty | BeautyPolisa">
 <meta property="og:description" content="Ubezpieczenie utraty dochodu dla kosmetologów, fryzjerów i stylistek na B2B. Świadczenie przy niezdolności do pracy, karencja, wyłączenia – po ludzku.">
-<meta name="theme-color" content="#141C33">
+<meta name="theme-color" content="#F7F3EC">
 <meta name="color-scheme" content="only light">
+<!-- udostępnianie i rodzaj strony (raport 15, Z24): obraz 1200×630 bez tekstu (kadr zdjęcia hero), ikona – serce z logo;
+     produkcyjnie przez metadata Next.js; adres obrazu docelowy -->
+<meta property="og:image" content="https://beautypolisa.eu/img/og-beautypolisa.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jasny gabinet beauty: granatowy fotel zabiegowy, marmurowy stolik z kosmetykami i piwonie przy oknie">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="page-type" content="service">
+<meta name="site-kind" content="service">
+<link rel="icon" href="img/ikona-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <!-- Makieta strony produktu: docelowy adres https://beautypolisa.eu/ubezpieczenia/utrata-dochodu (04, mapa URL).
      Źródło faktów: nasz serwis utratadochodu.pl (llms.txt i podstrony .md pobrane 12.11.2026) – tekst pisany od nowa pod branżę beauty,
      bez kopiowania długich fragmentów (unikamy duplikacji treści między domenami); szczegóły zostają na utratadochodu.pl.
      Utrata dochodu NIE ma stałej taryfy: na tej stronie nie ma kwot składek ani przedziałów – tylko odesłanie do wniosku i symulacji.
      Linki do utratadochodu.pl z parametrami utm_source=beautypolisa&utm_medium=referral&utm_campaign=utrata-dochodu (bez danych osobowych).
      Blokadę indeksowania (meta robots) dokłada tylko podgląd makiet – nie ten plik. Tag Google – dopiero po zgodzie (decyzja G1), tu go nie ma. -->
+<!-- tło hero (marmur) jest elementem LCP: klasa bg-on wpisana w sekcję hero + preload (raport 16, 3.2) -->
+<link rel="preload" as="image" href="img/tlo-marmur-len.webp" media="(min-width:768px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/tlo-marmur-len-1024.webp" media="(max-width:767px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
@@ -52,7 +66,7 @@
   --font-caps:'Poppins','Poppins Caps Fallback','Poppins Fallback 2',system-ui,sans-serif;
   --text-xs:.75rem; --text-sm:.875rem; --text-body:.9375rem; --text-base:1rem; --text-lead:clamp(1.0625rem,1rem + .25vw,1.125rem);
   --text-serif-sm:1.2rem; --text-serif-md:1.45rem; --text-h3:1.65rem;
-  --text-h2:clamp(2.25rem,1.35rem + 3.4vw,4.25rem); --text-h1:clamp(2.75rem,1.4rem + 4.6vw,5.25rem);
+  --text-h2:clamp(2.125rem,1.45rem + 2.65vw,3.375rem); --text-h1:clamp(2.25rem,1.2rem + 4.15vw,5rem);
   --text-display-numeral:3.4rem; --text-price:clamp(3rem,2.4rem + 2vw,4.2rem);
   --tracking-label:.2em; --tracking-nav:.16em;
   --radius-card:6px; --radius-btn:3px;
@@ -65,12 +79,12 @@
   --bp-line-gold-on-dark:rgba(217,192,137,.32); --bp-line-gold-on-dark-soft:rgba(217,192,137,.2);
   --bp-line-navy:rgba(42,59,104,.22); --bp-line-field:rgba(42,59,104,.7);
   --bp-error:#7A2E2E;
-  --bp-frame-inset:9px; --bp-container:1240px; --bp-gutter:clamp(16px,4vw,40px);
+  --bp-frame-inset:9px; --bp-container:77.5rem; --bp-gutter:clamp(16px,4vw,40px);
   --bp-z-sticky:55; --bp-z-header:60; --bp-z-skip:100;
   --bp-dur-1:.2s; --bp-dur-2:.3s; --bp-dur-3:.45s;
   /* ziarno: statyczny szum SVG, alfa ≤ .07 zapisana w pliku (CSP: img-src data:) */
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 .07 0 0 0 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
-  /* breakpointy: 480 / 768 / 1024 / 1200 px – w @media jako liczby */
+  /* breakpointy: 480 / 768 / 1024 / 1200 px – w @media jako liczby; przełączenie belka/szuflada – 75em (rośnie z czcionką domyślną) */
 }
 
 /* ---------- baza ---------- */
@@ -94,7 +108,7 @@ a{color:inherit}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .sprite{position:absolute;width:0;height:0;overflow:hidden}
 
-/* ---------- sceny: zdjęcie dopiero z klasą .bg-on (poza heroem), złote szwy między scenami ---------- */
+/* ---------- sceny: zdjęcie dopiero z klasą .bg-on (hero: klasa w HTML i preload), złote szwy między scenami ---------- */
 .scene{position:relative;background-size:cover;background-position:center;background-repeat:no-repeat;isolation:isolate}
 .scene--hero{background-color:var(--color-parchment)}
 .scene--silk{background-color:var(--color-midnight)}
@@ -198,14 +212,14 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
 .menu-panel a:not(.btn){display:flex;align-items:center;gap:14px;min-height:52px;border-bottom:1px solid var(--bp-line-gold-soft);text-decoration:none;color:var(--color-ink);font:500 .8rem/1.3 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase}
 .menu-panel .rule{margin-block:10px 4px}
 .menu-panel .btn{width:100%;margin-top:18px}
-@media (max-width:1199px){.main-nav,.client-link,.header-cta{display:none}.menu{display:block}}
+@media (max-width:74.99em){.main-nav,.client-link,.header-cta{display:none}.menu{display:block}}
 @media (max-height:500px){.site-header{position:absolute}}
 
 
 /* ---------- prolog strony produktu: marmur i jedna tafla ---------- */
 .page-hero{padding:clamp(124px,13vw,172px) 0 clamp(56px,8vw,104px)}
 .hero-panel{max-width:780px;padding:clamp(26px,4vw,56px);display:grid;gap:24px}
-.hero-panel h1{font-size:clamp(2.5rem,1.4rem + 3.6vw,4.4rem);line-height:1}
+.hero-panel h1{line-height:1}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px}
 .crumbs ol{display:flex;flex-wrap:wrap;align-items:center;gap:0 10px;list-style:none;margin:0;padding:0;font-size:var(--text-sm);line-height:1.4;color:var(--color-ink)}
 .crumbs li{display:inline-flex;align-items:center;gap:10px}
@@ -231,8 +245,8 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .section-head{display:grid;gap:18px;margin-bottom:clamp(36px,5vw,72px);max-width:46rem}
 .section-head .eyebrow{color:var(--color-navy)}
 .section-head,.clause-aside{position:relative;isolation:isolate}
-.chapter-no{position:absolute;z-index:-1;top:-.5em;right:0;--drift:70px;font:italic 500 clamp(7rem,4.2rem + 9vw,14.5rem)/1 var(--font-serif);letter-spacing:-.02em;color:rgba(184,151,90,.2);pointer-events:none;user-select:none;-webkit-user-select:none;white-space:nowrap}
-@media (max-width:767px){.chapter-no{--drift:36px;top:-.35em;font-size:clamp(5.5rem,3rem + 14vw,8rem)}}
+.chapter-no{position:absolute;z-index:-1;top:-.5em;right:0;font:italic 500 clamp(7rem,4.2rem + 9vw,14.5rem)/1 var(--font-serif);letter-spacing:-.02em;color:rgba(184,151,90,.2);pointer-events:none;user-select:none;-webkit-user-select:none;white-space:nowrap}
+@media (max-width:767px){.chapter-no{top:-.35em;font-size:clamp(5.5rem,3rem + 14vw,8rem)}}
 .band{background:var(--color-parchment);border-top:1px solid rgba(217,192,137,.45);border-bottom:1px solid rgba(217,192,137,.45)}
 
 /* ---------- I · luka: zasiłek ZUS a świadczenie z polisy ---------- */
@@ -340,6 +354,11 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .route-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;padding-top:4px}
 .routes-sub,.related{display:grid;gap:clamp(20px,3vw,32px)}
 @media (min-width:768px){.related{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* karta „Inne ubezpieczenia” jak na pozostałych podstronach (wygląd karty – Z38 w gen:wspolne-css) */
+.rel-card{display:grid;gap:14px;align-content:start;padding:clamp(22px,3vw,34px)}
+.rel-top{display:flex;align-items:center;gap:16px}
+.rel-card p{font-size:var(--text-body);color:var(--color-ink)}
+.rel-links{display:flex;flex-wrap:wrap;align-items:center;gap:0 24px}
 @media (min-width:1024px){
   .route--main .steps{grid-template-columns:repeat(5,minmax(0,1fr));column-gap:24px}
   .route--main .steps > li{padding:58px 0 0;border-top:1px solid var(--bp-line-gold)}
@@ -442,7 +461,6 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 @keyframes rise{from{translate:0 56px;scale:.96}to{translate:0 0;scale:1}}
 @keyframes fade-in{from{opacity:0}to{opacity:1}}
 @keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-@keyframes drift{from{translate:0 var(--drift)}to{translate:0 calc(-1 * var(--drift))}}
 @keyframes frame-draw{from{clip-path:polygon(0 0,0 0,0 0)}to{clip-path:polygon(0 0,200% 0,0 200%)}}
 @keyframes note-in{from{opacity:.001;translate:0 24px}to{opacity:1;translate:0 0}}
 @media screen and (prefers-reduced-motion:no-preference){
@@ -461,7 +479,6 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     .site-footer .footer-nav > .rv-rise:nth-child(4){animation-range:entry 30% entry 100%;animation-range:entry 30% entry 100%,entry 0% entry min(100%,11vh)}
     :is(.section-head,.end-card) > .eyebrow{view-timeline:--eyebrow block}
     :is(.section-head,.end-card) > .eyebrow::before{animation:draw linear both;animation-timeline:--eyebrow;animation-range:entry 0% cover 40%}
-    .chapter-no{animation:drift linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
   }
   html.io-reveal .rv-curtain:not(.is-in){opacity:0;translate:0 .6em}
   html.io-reveal .rv-rise:not(.is-in){opacity:0;translate:0 56px;scale:.96}
@@ -471,7 +488,6 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   html.io-reveal .footer-nav > .rv-rise:nth-child(2){transition-delay:.12s}
   html.io-reveal .footer-nav > .rv-rise:nth-child(3){transition-delay:.24s}
   html.io-reveal .footer-nav > .rv-rise:nth-child(4){transition-delay:.36s}
-  html.sl-js .chapter-no{translate:0 var(--drift-y,0px)}
 }
 @media screen and (prefers-reduced-motion:no-preference){
   @supports (animation-timeline:view()){
@@ -519,7 +535,6 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   *,*::before,*::after{animation:none!important;transition:none!important}
   html.io-reveal .rv-curtain,html.io-reveal .rv-rise{opacity:1!important;translate:none!important;scale:none!important}
   html.io-reveal .rv-eyebrow::before,html.io-reveal .ledger .bar{transform:none!important}
-  html.sl-js .chapter-no{translate:none!important}
   .site-header{display:none!important}
 }
 </style>
@@ -527,7 +542,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .scene--silk{background-image:url(img/tlo-jedwab.webp)}.scene--marble{background-image:url(img/tlo-marmur-len.webp)}
 @media (max-width:767px){.scene--silk{background-image:url(img/tlo-jedwab-1024.webp)}.scene--marble{background-image:url(img/tlo-marmur-len-1024.webp)}}
 </style></noscript>
-<!-- GEN:jsonld (wygenerowane – build.py z jednej listy pytań; nie edytować ręcznie) -->
+<!-- GEN:jsonld (FAQPage – narzedzia/makiety/utrata-dochodu/gen_faq.py z jednej listy pytań; pozostałe węzły – nie edytować ręcznie) -->
 <!-- JSON-LD: WebPage, BreadcrumbList, Service (provider: Lloyd’s Insurance Company S.A.; offers.offeredBy: agencja BeautyPolisa / Aura Expert;
      bez „broker”, bez cen – produkt nie ma stałej taryfy), Organization i InsuranceAgency (minimalne węzły z snippets/schema-home.json,
      jak w oc-beauty.html – cel odwołań publisher/offeredBy), FAQPage (= widoczne pytania, identyczne brzmienie) -->
@@ -580,7 +595,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    "@type": "Service",
    "@id": "https://beautypolisa.eu/ubezpieczenia/utrata-dochodu#service",
    "name": "Ubezpieczenie utraty dochodu dla branży beauty",
-   "alternateName": "Prywatne L4 dla samozatrudnionych w branży beauty",
+   "alternateName": "Prywatne L4 dla pracujących w branży beauty",
    "serviceType": "Ubezpieczenie utraty dochodu",
    "category": "Ubezpieczenia osobowe – utrata dochodu",
    "description": "Ubezpieczenie utraty dochodu (prywatne L4) dla osób pracujących w branży beauty, m.in. fryzjerów, kosmetologów, kosmetyczek, masażystów, stylistów, stylistek paznokci, tatuażystów, terapeutów i wizażystów. Polisa wypłaca co miesiąc świadczenie, gdy choroba lub nieszczęśliwy wypadek całkowicie uniemożliwiają wykonywanie zawodu: do 80% udokumentowanego dochodu przy działalności i kontrakcie B2B, do 65% przy umowie o pracę i umowie zlecenia (w CEU „Utrata dochodu” 65% także na B2B), najwyżej 50 000 zł miesięcznie, po okresie wyczekiwania, przez okres wypłaty wybrany przy zawarciu umowy: 24, 36, 48 albo 60 miesięcy. Zakres może obejmować też trwałą niezdolność do pracy oraz śmierć i inwalidztwo wskutek nieszczęśliwego wypadku (świadczenia jednorazowe). Umowę zawiera się za pośrednictwem coverholderów Lloyd’s: Leadenhall Insurance S.A. i CEU sp. z o.o. Składkę wylicza ubezpieczyciel po ocenie ryzyka.",
@@ -597,7 +612,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    },
    "audience": {
     "@type": "Audience",
-    "audienceType": "osoby samozatrudnione i pracujące na kontrakcie B2B w branży beauty: fryzjerzy, kosmetolodzy, kosmetyczki, masażyści, styliści, stylistki paznokci, tatuażyści, terapeuci, wizażyści"
+    "audienceType": "osoby pracujące w branży beauty – na działalności, kontrakcie B2B i umowie o pracę: fryzjerzy, kosmetolodzy, kosmetyczki, masażyści, styliści, stylistki paznokci, tatuażyści, terapeuci, wizażyści"
    },
    "termsOfService": "https://utratadochodu.pl/dokumenty/",
    "availableChannel": {
@@ -701,7 +716,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
      "name": "Ile kosztuje ubezpieczenie utraty dochodu?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Ten produkt nie ma stałej taryfy. Składkę wylicza ubezpieczyciel po ocenie ryzyka: zawodu, wieku, wysokości dochodu i ankiety medycznej; znaczenie mają też okres wyczekiwania i okres wypłaty – dłuższy okres wypłaty podnosi składkę. Dlatego nie podajemy tu kwot. Symulację zobaczysz na końcu wniosku na utratadochodu.pl, a ofertę z realną stawką dostaniesz w 1–2 dni robocze."
+      "text": "Kwot tu nie ma, bo ten produkt nie ma stałej taryfy. Składkę wylicza ubezpieczyciel po ocenie ryzyka: zawodu, wieku, wysokości dochodu i ankiety medycznej; znaczenie mają też okres wyczekiwania i okres wypłaty – dłuższy okres wypłaty podnosi składkę. Symulację zobaczysz na końcu wniosku na utratadochodu.pl, a ofertę z realną stawką dostaniesz w 1–2 dni robocze."
      }
     },
     {
@@ -709,7 +724,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
      "name": "Czy dostanę świadczenie, jeśli mogę pracować tylko w mniejszym wymiarze?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Nie. Polisa wypłaca świadczenie za całkowitą niezdolność do wykonywania zawodu – praca w mniejszym wymiarze albo przejście na lżejsze obowiązki nie spełnia warunku wypłaty. Ochrona nie obejmuje też m.in. wypalenia zawodowego jako samodzielnej diagnozy, chorób psychicznych (w Leadenhall – gdy są jedyną przyczyną niezdolności, w CEU – bez tego zastrzeżenia) i schorzeń leczonych w ciągu 24 miesięcy przed zawarciem umowy, jeśli nie zostały zgłoszone i przyjęte przez ubezpieczyciela. Pełną listę znajdziesz w sekcji Co obejmuje, a czego nie."
+      "text": "Nie. Polisa wypłaca świadczenie za całkowitą niezdolność do wykonywania zawodu – praca w mniejszym wymiarze albo przejście na lżejsze obowiązki nie spełnia warunku wypłaty. Ochrona nie obejmuje też m.in. wypalenia zawodowego jako samodzielnej diagnozy, chorób psychicznych (w Leadenhall – gdy są jedyną przyczyną niezdolności, w CEU – bez tego zastrzeżenia) i schorzeń leczonych w ciągu 24 miesięcy przed zawarciem umowy, jeśli ich nie zgłosisz albo ubezpieczyciel ich nie przyjmie. Pełną listę znajdziesz w sekcji Co obejmuje, a czego nie."
      }
     },
     {
@@ -737,7 +752,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 <!-- gen:wspolne-css -->
 <style>
 /* ===== Wspólne komponenty stron publicznych (gen_wspolne.py – nie edytuj ręcznie) ===== */
-/* --- menu „Ubezpieczenia” (≥ 1200 px): wzorzec disclosure, panel ivory bez backdrop-filter (nie liczy się do limitu tafli) --- */
+/* --- menu „Ubezpieczenia” (≥ 75em – 1200 px przy domyślnej czcionce 16 px; przy 20–24 px próg rośnie razem z etykietami): wzorzec disclosure, panel ivory bez backdrop-filter (nie liczy się do limitu tafli) --- */
 .main-nav .nav-produkty-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:0;padding:0 10px;background:none;border:0;border-radius:var(--radius-btn);font:500 var(--text-xs)/1 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase;text-decoration:none;color:var(--color-ink);white-space:nowrap;cursor:pointer}
 .main-nav .nav-produkty-btn:hover,.main-nav .nav-produkty-btn[aria-expanded="true"],.nav-produkty[data-biezacy] > .nav-produkty-btn{color:var(--color-navy);text-decoration:underline;text-underline-offset:6px;text-decoration-color:var(--color-gold)}
 .nav-produkty-btn svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform var(--bp-dur-2) var(--ease-lux)}
@@ -747,7 +762,9 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .mega-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;padding-bottom:12px;border-bottom:1px solid var(--color-gold)}
 .mega-title{margin:0;font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
 .main-nav .mega a{display:revert;min-height:0;padding:0;font:inherit;letter-spacing:normal;text-transform:none;white-space:normal;color:inherit;text-decoration:none}
-.main-nav .mega .mega-all{display:inline-flex;align-items:center;min-height:24px;font:500 var(--text-sm)/1.3 var(--font-sans);color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px}
+.main-nav .mega .mega-all{display:inline-flex;align-items:center;min-height:24px;font:500 var(--text-sm)/1.3 var(--font-sans);color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px;transition:text-decoration-thickness var(--bp-dur-1)}
+/* hover: „Wszystkie ubezpieczenia” i przycisk z data-biezacy (podkreślony już w spoczynku) – grubsza linia (raport 16, 3.1) */
+.main-nav .mega .mega-all:hover,.nav-produkty[data-biezacy] > .nav-produkty-btn:hover{text-decoration-thickness:2px}
 .main-nav .mega-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 20px;margin:14px 0 0;padding:0;list-style:none}
 .main-nav .mega .mega-item{display:grid;grid-template-columns:32px minmax(0,1fr);column-gap:16px;align-items:start;height:100%;padding:14px 14px 16px;border-radius:var(--radius-card);color:var(--color-ink);transition:background-color var(--bp-dur-1)}
 .main-nav .mega .mega-item:hover{background:var(--color-parchment)}
@@ -764,8 +781,8 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .main-nav .mega .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 24px;font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;text-decoration:none;white-space:nowrap}
 .main-nav .mega .btn-navy,.main-nav .mega .btn-navy:hover{color:var(--color-ivory)}
 .main-nav .mega .btn-ghost,.main-nav .mega .btn-ghost:hover{color:var(--color-navy)}
-@media (max-width:1199px){.mega{display:none!important}}
-/* --- szuflada (< 1200 px): „Oblicz składkę OC” na górze + 6 produktów z ceną --- */
+@media (max-width:74.99em){.mega{display:none!important}}
+/* --- szuflada (< 75em): „Oblicz składkę OC” na górze + 6 produktów z ceną --- */
 .menu-panel .btn.mm-oblicz{width:100%;margin:4px 0 14px}
 .mm-tytul{margin:0;padding:4px 0 2px;font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
 .mm-produkty{margin:0 0 6px;padding:0;list-style:none}
@@ -798,6 +815,172 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 @media (prefers-reduced-motion:reduce){.pasek-akcji,.pasek-akcji[data-on="1"],.nav-produkty-btn svg{transition:none!important}}
 @media (forced-colors:active){.mega,.pasek-akcji{border-color:CanvasText}.main-nav .mega .mega-item[aria-current="page"]{outline:2px solid Highlight}}
 @media print{.pasek-akcji,.mega{display:none!important}}
+/* ===== Wzorce wspólne bazowego CSS stron (raport 16, rozdz. 3.2; raport 15: Z5, Z15, Z16, Z18, Z27, Z41) =====
+   Blok stoi na końcu <head>, więc nadpisuje ręczne kopie bazowego CSS (tax-protect.html i kopie, opieka-medyczna/common.css).
+   Ruch tylko na transform i opacity (zmiany samych kolorów – tylko malowanie); prefers-reduced-motion wyłącza przejścia jak dotąd. */
+/* safe-area przy viewport-fit=cover: w poziomie na iPhonie treść, belka i szuflada nie wchodzą pod wycięcie ekranu */
+.container{padding-left:max(var(--bp-gutter),env(safe-area-inset-left));padding-right:max(var(--bp-gutter),env(safe-area-inset-right))}
+.menu-panel{padding-bottom:calc(22px + env(safe-area-inset-bottom))}
+.site-footer{padding-bottom:calc(40px + env(safe-area-inset-bottom))}
+.klauzula{width:min(calc(100% - 32px - env(safe-area-inset-left) - env(safe-area-inset-right)),780px)}
+/* dotyk: bez powiększania podwójnym tapnięciem, stonowane podświetlenie tapnięcia, bez „odbijania” strony na gładziku */
+a,button,summary,label,input,select,textarea,[role="button"]{touch-action:manipulation}
+html{-webkit-tap-highlight-color:rgba(42,59,104,.12)}
+:is(.dark,.pasek-akcji,.end-card){-webkit-tap-highlight-color:rgba(217,192,137,.2)}
+@media (pointer:fine){html{overscroll-behavior-y:none}}
+/* długie słowa i tekst powiększony do 200%: hero bez przewijania w poziomie (minmax(0,1fr), kwoty łamią się poniżej 540 px) */
+.hero-panel{grid-template-columns:minmax(0,1fr)}
+h1,h2,h3,.lead{overflow-wrap:break-word}
+@media (max-width:539px){.figures dd{white-space:normal}.figures > div,.figures > div:first-child{flex-wrap:wrap}.figures dt{min-width:0}}
+.mock-note{white-space:normal}   /* adnotacje makiety łamią się przy powiększonym tekście */
+/* logo kurczy się przy dużej czcionce domyślnej (24 px), przycisk „Menu” zostaje w belce */
+.brand{flex:0 1 auto;min-width:0}
+.brand small{white-space:normal}
+.menu{flex:none}
+/* hover: linki w treści, okruszki, „Wróć…” (.link-quiet) – grubsza linia; szuflada i „Menu” – kolor i ramka */
+.link-quiet,.crumbs a{transition:text-decoration-thickness var(--bp-dur-1),color var(--bp-dur-1)}
+@media (hover:hover){
+  a:not(.btn):not(.link-lux):hover{text-decoration-thickness:2px}
+  .menu-panel > a:not(.btn):hover{color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px}
+  .menu summary:hover{border-color:var(--color-navy)}
+}
+/* .btn-ghost-dark: hover mocniejszy od spoczynku – tekst zostaje ivory, wzmacnia się ramka i tło */
+.btn-ghost-dark:hover{color:var(--color-ivory);border-color:var(--color-gold-light);background-color:rgba(217,192,137,.14)}
+/* Z18: stan „wciśnięty” przycisków */
+.btn:active,.pasek-akcji a:active{transform:translateY(1px)}
+.btn-navy:active{background-color:var(--color-midnight);border-color:var(--color-midnight)}
+.btn-ghost:active{background-color:var(--color-parchment);border-color:var(--color-navy)}
+.btn-ivory:active{background-color:#E2D7C5}
+.btn-ghost-dark:active{background-color:rgba(217,192,137,.24)}
+/* Z27: podkreślenia nawigacji, stopki i pytań pojawiają się płynnie (kolor linii), w nawigacji linia się rysuje (scaleX); logo – krycie */
+.footer-nav a,.faq summary,.product-link{text-decoration-line:underline;text-decoration-color:transparent;text-decoration-thickness:1px;transition:color var(--bp-dur-2),text-decoration-color var(--bp-dur-2) var(--ease-lux)}
+.footer-nav a{text-underline-offset:5px}
+.faq summary,.product-link{text-underline-offset:6px}
+.main-nav > ul > li > a,.client-link{position:relative}
+.main-nav > ul > li > a::after,.client-link::after{content:"";position:absolute;left:10px;right:10px;bottom:10px;height:1px;background:var(--color-gold);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease-lux);pointer-events:none}
+.client-link::after{left:18px;right:6px}
+@media (hover:hover){
+  .main-nav > ul > li > a:hover,.client-link:hover{text-decoration:none}
+  .main-nav > ul > li > a:hover::after,.client-link:hover::after{transform:scaleX(1)}
+}
+.brand img{transition:opacity var(--bp-dur-2)}
+.brand:hover img{opacity:.78}
+/* kreska .link-lux i podkreślenie .btn-navy: transform zamiast width i background-size (bez przeliczania układu) */
+.link-lux::after{transform-origin:left;transition:transform var(--bp-dur-2) var(--ease-lux)}
+.link-lux:hover::after{width:28px;transform:scaleX(1.5715)}
+@media (hover:hover) and (pointer:fine){
+  .btn-navy{position:relative;background-image:none}
+  .btn-navy::after{content:"";position:absolute;left:28px;right:28px;bottom:10px;height:1px;background:var(--color-gold-light);transform:scaleX(0);transition:transform .5s var(--ease-lux);pointer-events:none}
+  .header-cta .btn-navy::after{left:20px;right:20px}
+  .btn-navy:hover::after,.btn-navy:focus-visible::after{transform:scaleX(1)}
+}
+/* rama panelu hero: opacity i scale zamiast clip-path */
+@keyframes bp-frame-in{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+@media screen and (prefers-reduced-motion:no-preference){.hero-panel.frame::before{animation-name:bp-frame-in}}
+/* długie listy rozwijane (zabiegi OC, pełne tabele) bez animacji block-size; FAQ – świadomy wyjątek (krótkie odpowiedzi) */
+@supports selector(::details-content){.zdetails::details-content,.full::details-content,.full-list::details-content{transition:none}}
+/* Z15: pytania na płaskim tle (poza sceną ze zdjęciem) bez rozmycia – szkło zawsze leży na zdjęciu (§6) */
+.faq.glass:not(.scene .faq){-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--bp-glass-ivory-tint)}
+/* Z16: karta końcowa – płaski token zamiast gradientu */
+.end-card{background:var(--color-navy)}
+/* Z5: cele dotyku 44 px na ekranach dotykowych (okruszki, „Informacje o agencie…”, odsyłacze „także na liście nr …”) */
+@media (pointer:coarse){
+  .crumbs a{min-height:44px}
+  .legal-idd > summary{min-height:44px;padding-block:10px}
+  a.z-inna{display:inline-flex;align-items:center;min-height:44px}
+}
+/* Z1, Z2, Z3, Z7, Z29: pierwszy ekran podstron (.page-hero). Hero zajmuje ekran (min-height 100svh), panel stoi pośrodku
+   i kończy się co najmniej 24 px nad dolną krawędzią okna. Od 64em panel na całą szerokość kontenera: z lewej tekst i akcje
+   (.hero-copy), z prawej liczby (.hero-aside) – bez pustego pasa. Na telefonie lead to jedno zdanie z twardym faktem (dalsze zdania
+   – .hero-note pod przyciskami), mniejszy H1, ciaśniejszy panel i okruszki zwinięte do „‹ rodzic”: główny przycisk w 1. ekranie od 320×640 */
+.page-hero{padding-top:clamp(92px,7vw,104px);padding-bottom:24px}
+/* siatka tylko od 48em: poniżej scena ma przyklejoną warstwę tła (::before, position:sticky) – w siatce byłaby elementem siatki */
+@media (min-width:48em){.page-hero{min-height:100svh;display:grid;align-items:center}}
+.page-hero .hero-copy{display:grid;gap:inherit;min-width:0;align-content:start}
+.page-hero .hero-aside{display:grid;gap:12px;min-width:0;align-content:center}
+/* H1 panelu hero podstron – token --text-h1-podstrona (tokens-v3.css, DESIGN.md; Z37, runda 2: bez lokalnych rozmiarów); definicja
+   także tu, bo strony mają własne kopie :root */
+:root{--text-h1-podstrona:clamp(2.25rem,.6rem + 4.4vw,4.4rem);--text-h3-kafel:clamp(1.9rem,1.45rem + 1.4vw,2.3rem)}
+.page-hero .hero-panel h1{font-size:var(--text-h1-podstrona)}
+.page-hero .hero-note{font-size:var(--text-sm);line-height:1.6;color:var(--color-ink);max-width:42rem}
+@media (min-width:64em){
+  .page-hero .hero-panel{max-width:none;grid-template-columns:minmax(0,1fr) minmax(14rem,18rem);column-gap:clamp(36px,4.5vw,72px);row-gap:20px;padding-block:clamp(28px,3vw,48px)}
+  .page-hero .hero-aside{padding-left:clamp(28px,3vw,44px);border-left:1px solid rgba(184,151,90,.55)}
+  .page-hero .hero-aside .figures{flex-direction:column;padding-top:0;border-top:0}
+  .page-hero .hero-aside .figures > div,.page-hero .hero-aside .figures > div:first-child{padding:16px 0;border-left:0}
+  .page-hero .hero-aside .figures > div + div{border-top:1px solid var(--bp-line-gold-soft)}
+  .page-hero .hero-aside .figures dd{font-size:clamp(1.9rem,1.2rem + 1.1vw,2.4rem);white-space:normal}
+}
+@media (max-width:47.99em){
+  .page-hero{padding-top:94px}
+  .page-hero .hero-panel{gap:16px;padding:22px 20px 24px}
+  .page-hero .crumbs li:not(:nth-last-child(2)){display:none}
+  .page-hero .crumbs li:nth-last-child(2)::before{content:none}
+  .page-hero .crumbs li:nth-last-child(2) a::before{content:"‹\00a0";content:"‹\00a0" / ""}
+}
+/* Z37: jedna skala nagłówków (dok. 10 §4, DESIGN.md): H2 = --text-h2 (34–54 px), H3 = --text-h3 (26,4 px; wyjątek – nazwa kafelka
+   produktu na stronie głównej: --text-h3-kafel), H4 = --text-serif-md; bez lokalnych rozmiarów w CSS stron. Nagłówek okna klauzuli zostaje mniejszy. */
+main h2:not(.klauzula h2){font-size:var(--text-h2)}
+main h3:not(.product h3){font-size:var(--text-h3)}
+main h4:not(.bp-bez-skali){font-size:var(--text-serif-md)}
+/* Z12: tafle od lewej do prawej linii kontenera (bez jednostronnego pasa przy 1440 px); miara tekstu w środku ograniczona */
+.zrules,.mind,.scope-aside,.variants-box,.plan-panel,.cta-row + .ext-note{max-width:none}
+:is(.zrules,.mind,.scope-aside) > :is(p,ul,h3,.cta-row){max-width:62rem}
+/* Z8: sekcja zamykająca podstron (section#zamkniecie, section--flush-top) – „Inne ubezpieczenia” (H2) i karta końcowa jako bloki
+   jednej sekcji; pytania – osobna sekcja przed nią (runda 2 weryfikacji: razem miały 2,23–2,55 ekranu) */
+.zamkniecie-blok{margin-top:clamp(56px,7vw,104px)}
+/* Z10: rytm sekcji – od 64em szerokości i 37.5em wysokości okna każda sekcja główna (poza hero i sekcjami-dokumentami z K6:
+   listy zabiegów, klauzula, hasła słownika) ma dokładnie 1 albo 2 ekrany. Skrypt (gen:wspolne-js) mierzy wysokość treści przy
+   przyciętym padding-block (dawniej clamp(72px,11vw,168px), czyli 158 px przy 1440 px) i ustawia data-ekrany="1" albo "2";
+   sekcja, która mieści się w ekranie dopiero przy 24 px odstępu (data-ciasno), dostaje 1 ekran zamiast 2 (tolerancja ≈ 1 ekran:
+   do 1,1 – raport 15, N1); treść stoi pośrodku sekcji. Bez JS, na telefonie i w niskim oknie – naturalna wysokość jak dotąd */
+@media (min-width:64em) and (min-height:37.5em){
+  main section[data-ekrany]{display:flex;flex-direction:column;justify-content:center;padding-block:clamp(48px,7svh,96px)}
+  main section[data-ekrany][data-ciasno]{padding-block:24px}
+  main section[data-ekrany] > *{flex:none}
+  main section[data-ekrany="1"]{min-height:100svh}
+  main section[data-ekrany="2"]{min-height:200svh}
+}
+.end-card h3{max-width:40rem}
+/* Z38 (raport 15): jedna karta pełna i jedna notka poza szkłem – cztery warianty szkła z D14 bez zmian. Karta: ivory, złota linia 1 px,
+   promień 6 px, jeden cień (dawniej 6 wyglądów: z cieniem albo bez, linia 35 / 50% albo żadna, przezroczysta .mind). Notka: pergamin 55%,
+   lewa złota kreska 2 px, bez cienia i promienia. Tokeny także w tokens-v3.css i DESIGN.md (4.5) */
+:root{--bp-karta-tlo:var(--color-ivory);--bp-karta-linia:rgba(184,151,90,.5);--bp-karta-cien:0 24px 48px -38px rgba(20,28,51,.45);
+  --bp-notka-tlo:rgba(237,229,216,.55);--bp-notka-kreska:var(--color-gold);
+  --bp-link-podkreslenie:var(--color-gold);--bp-link-podkreslenie-ciemne:rgba(217,192,137,.7)}
+main :is(.clause,.op-card,.rel-card,.route,.scope-card,.apply,figure.ledger,.mind,.panel,.sl-narzedzia,li.job,.vcard,.cmp-attr,.sl-litera){
+  background-color:var(--bp-karta-tlo);border:1px solid var(--bp-karta-linia);border-radius:var(--radius-card);box-shadow:var(--bp-karta-cien)}
+main :is(.scope-extra,.scope-aside,.haslo-przyklad){background:var(--bp-notka-tlo);border:0;border-left:2px solid var(--bp-notka-kreska);border-radius:0;box-shadow:none}
+/* Z39 (raport 15): jeden zestaw elementów w roli przycisku – para .btn (bez zmian); jeden chip do nawigacji po liście i filtrów (skok do
+   list OC, indeks A–Z słownika, podpowiedzi specjalizacji – dawniej 3 wyglądy); jeden link-akcja: zwykły tekst z podkreśleniem, bez etykiety
+   w wersalikach z kreską („KALKULATOR ——”); jeden token podkreślenia linków na jasnym tle i jeden na ciemnym; linki w tekście granatowe */
+main :is(.zjump a,.sl-az a[href],.spec-quick button){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;
+  border:1px solid var(--bp-karta-linia);border-radius:var(--radius-btn);background:rgba(255,255,255,.55);color:var(--color-navy);
+  font:500 var(--text-sm)/1.2 var(--font-sans);letter-spacing:normal;text-transform:none;text-decoration:none;cursor:pointer}
+main :is(.zjump a,.spec-quick button){padding:8px 14px}
+main .zjump a span{font:inherit;font-weight:400;color:inherit}
+main :is(.sl-az a:not([href]),.sl-az-off){font:400 var(--text-sm)/1.2 var(--font-sans)}
+@media (hover:hover) and (pointer:fine){main :is(.zjump a,.sl-az a[href],.spec-quick button):hover{border-color:var(--color-navy);background:rgba(255,255,255,.85);text-decoration:none}}
+main .link-lux{gap:8px;font:500 var(--text-sm)/1.4 var(--font-sans);letter-spacing:normal;text-transform:none;
+  text-decoration:underline;text-decoration-color:var(--bp-link-podkreslenie);text-decoration-thickness:1px;text-underline-offset:5px}
+main .link-lux::after{content:none}
+main :is(p,dd) a:not([class]){color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--bp-link-podkreslenie);text-decoration-thickness:1px;text-underline-offset:4px}
+/* na ciemnym tle (sceny .dark, wynik kalkulatora, karta promocji i karta Strefy): tekst parchment, podkreślenie złote 70%; jasne
+   powierzchnie wewnątrz ciemnej sceny (kafle produktów .ledger--light, jasne szkło) – jak na jasnym tle */
+main :is(.dark,.result,.promo,.member-card) :is(.link-lux,.link-quiet,p a:not([class]),dd a:not([class])){color:var(--color-parchment);text-decoration-color:var(--bp-link-podkreslenie-ciemne)}
+main .dark :is(.ledger--light,.glass:not(.glass--dark)) :is(.link-lux,.link-quiet,p a:not([class]),dd a:not([class])){color:var(--color-navy);text-decoration-color:var(--bp-link-podkreslenie)}
+@media (hover:hover) and (pointer:fine){main :is(.link-lux,.link-quiet,p a:not([class]),dd a:not([class])):hover{text-decoration-thickness:2px}}
+/* Z41: szuflada poniżej 768 px – pełny ekran (ivory, bez backdrop-filter), stan otwarcia widoczny w przycisku („Zamknij”, ikona X – skrypt) */
+@media (max-width:767px){
+  html:has(details.menu[open]){overflow:hidden}
+  .site-header:has(details.menu[open]) .header-bar{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--color-ivory)}
+  .site-header:has(details.menu[open]) .brand,details.menu[open] > summary{position:relative;z-index:2}
+  details.menu[open] .menu-panel{position:fixed;inset:0;z-index:1;max-height:none;height:100dvh;border:0;border-radius:0;box-shadow:none;background:var(--color-ivory);
+    padding:calc(110px + env(safe-area-inset-top)) max(var(--bp-gutter),env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) max(var(--bp-gutter),env(safe-area-inset-left))}
+}
+details.menu[open] > summary{border-color:var(--color-navy)}
+@media (prefers-reduced-motion:reduce){.btn:active,.pasek-akcji a:active{transform:none}}
+@media (forced-colors:active){.main-nav > ul > li > a::after,.client-link::after,.btn-navy::after{background:CanvasText}}
 </style>
 <!-- /gen:wspolne-css -->
 <!-- gen:slownik-css -->
@@ -815,7 +998,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
 /* dymek: kryjące ivory (bez backdrop-filter – nie liczy się do limitu 3 tafli), złota linia, cień */
-.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
+.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;overscroll-behavior:contain;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
 .bp-dymek[hidden]{display:none}
 .bp-dymek:focus{outline:none}
 .bp-dymek:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
@@ -848,7 +1031,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <div class="container">
     <div class="header-bar glass glass--strong">
       <a class="brand" href="makieta-v3.html" aria-label="BeautyPolisa – strona główna">
-        <img src="../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="160" height="24">
+        <img src="img/logo-beautypolisa-320.png" alt="BeautyPolisa" width="160" height="24" translate="no">
         <small>created by Aura Expert</small>
       </a>
       <nav class="main-nav" aria-label="Menu główne">
@@ -860,12 +1043,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <div class="mega" id="menu-produkty" hidden>
               <div class="mega-head"><p class="mega-title">Ubezpieczenia dla branży beauty</p><a class="mega-all" href="makieta-v3.html#ubezpieczenia">Wszystkie ubezpieczenia</a></div>
               <ul class="mega-grid">
-                <li><a class="mega-item" href="oc-beauty.html" aria-labelledby="mp-oc-beauty-n" aria-describedby="mp-oc-beauty-d mp-oc-beauty-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name" id="mp-oc-beauty-n">OC dla branży beauty</span><span class="mega-desc" id="mp-oc-beauty-d">OC za szkody wyrządzone klientom podczas zabiegów – składka ze stałej taryfy ERGO Hestia.</span><span class="mega-price" id="mp-oc-beauty-c"><span class="mega-cena">od 400&nbsp;zł rocznie</span></span></span></a></li>
-                <li><a class="mega-item" href="tax-protect.html" aria-labelledby="mp-tax-protect-n" aria-describedby="mp-tax-protect-d mp-tax-protect-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name" id="mp-tax-protect-n">Tax Protect</span><span class="mega-desc" id="mp-tax-protect-d">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (Colonnade).</span><span class="mega-price" id="mp-tax-protect-c"><span class="mega-cena">od 1&nbsp;532&nbsp;zł rocznie</span></span></span></a></li>
-                <li><a class="mega-item" href="utrata-dochodu.html" aria-current="page" aria-labelledby="mp-utrata-dochodu-n" aria-describedby="mp-utrata-dochodu-d mp-utrata-dochodu-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name" id="mp-utrata-dochodu-n">Utrata dochodu<span class="mega-tu" aria-hidden="true">Jesteś tutaj</span></span><span class="mega-desc" id="mp-utrata-dochodu-d">Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy – Lloyd’s przez Leadenhall i&nbsp;CEU.</span><span class="mega-price" id="mp-utrata-dochodu-c"><span class="mega-cena">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></span></a></li>
-                <li><a class="mega-item" href="nnw-dzieci.html" aria-labelledby="mp-nnw-dzieci-n" aria-describedby="mp-nnw-dzieci-d mp-nnw-dzieci-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name" id="mp-nnw-dzieci-n">NNW dla dzieci</span><span class="mega-desc" id="mp-nnw-dzieci-d">Ochrona dziecka od następstw nieszczęśliwych wypadków – całą dobę (Colonnade).</span><span class="mega-price" id="mp-nnw-dzieci-c"><span class="mega-cena">od 40&nbsp;zł rocznie za dziecko</span><span class="mega-dop">Zakup online u&nbsp;Colonnade</span></span></span></a></li>
-                <li><a class="mega-item" href="grupowe-ergo.html" aria-labelledby="mp-grupowe-ergo-n" aria-describedby="mp-grupowe-ergo-d mp-grupowe-ergo-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name" id="mp-grupowe-ergo-n">Grupowe ERGO dla beauty</span><span class="mega-desc" id="mp-grupowe-ergo-d">Ubezpieczenie na życie dla zespołu (2–&#8288;100 osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</span><span class="mega-price" id="mp-grupowe-ergo-c"><span class="mega-cena">Zespół: od 58&nbsp;zł za osobę / mies.</span><span class="mega-cena">ERGO Razem: od 57&nbsp;zł / mies.</span></span></span></a></li>
-                <li><a class="mega-item" href="opieka-medyczna.html" aria-labelledby="mp-opieka-medyczna-n" aria-describedby="mp-opieka-medyczna-d mp-opieka-medyczna-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name" id="mp-opieka-medyczna-n">Opieka medyczna</span><span class="mega-desc" id="mp-opieka-medyczna-d">Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price" id="mp-opieka-medyczna-c"><span class="mega-cena">Cenę przygotuje doradca</span></span></span></a></li>
+                <li><a class="mega-item" href="oc-beauty.html" aria-labelledby="mp-oc-beauty-n" aria-describedby="mp-oc-beauty-d mp-oc-beauty-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name" id="mp-oc-beauty-n">OC dla branży beauty</span><span class="mega-desc" id="mp-oc-beauty-d">OC za szkody wyrządzone klientom podczas zabiegów&nbsp;– składka ze stałej taryfy <span translate="no">ERGO&nbsp;Hestia</span>.</span><span class="mega-price" id="mp-oc-beauty-c"><span class="mega-cena">od 400&nbsp;zł rocznie</span></span></span></a></li>
+                <li><a class="mega-item" href="tax-protect.html" aria-labelledby="mp-tax-protect-n" aria-describedby="mp-tax-protect-d mp-tax-protect-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name" id="mp-tax-protect-n"><span translate="no">Tax Protect</span></span><span class="mega-desc" id="mp-tax-protect-d">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (<span translate="no">Colonnade</span>).</span><span class="mega-price" id="mp-tax-protect-c"><span class="mega-cena">od 1&nbsp;532&nbsp;zł rocznie</span></span></span></a></li>
+                <li><a class="mega-item" href="utrata-dochodu.html" aria-current="page" aria-labelledby="mp-utrata-dochodu-n" aria-describedby="mp-utrata-dochodu-d mp-utrata-dochodu-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name" id="mp-utrata-dochodu-n">Utrata dochodu<span class="mega-tu" aria-hidden="true">Jesteś tutaj</span></span><span class="mega-desc" id="mp-utrata-dochodu-d">Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy&nbsp;– <span translate="no">Lloyd’s</span> przez <span translate="no">Leadenhall</span> i&nbsp;<span translate="no">CEU</span>.</span><span class="mega-price" id="mp-utrata-dochodu-c"><span class="mega-cena">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></span></a></li>
+                <li><a class="mega-item" href="nnw-dzieci.html" aria-labelledby="mp-nnw-dzieci-n" aria-describedby="mp-nnw-dzieci-d mp-nnw-dzieci-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name" id="mp-nnw-dzieci-n">NNW dla dzieci</span><span class="mega-desc" id="mp-nnw-dzieci-d">Ochrona dziecka od następstw nieszczęśliwych wypadków&nbsp;– całą dobę (<span translate="no">Colonnade</span>).</span><span class="mega-price" id="mp-nnw-dzieci-c"><span class="mega-cena">od 40&nbsp;zł rocznie za osobę</span><span class="mega-dop">Zakup online u&nbsp;<span translate="no">Colonnade</span></span></span></span></a></li>
+                <li><a class="mega-item" href="grupowe-ergo.html" aria-labelledby="mp-grupowe-ergo-n" aria-describedby="mp-grupowe-ergo-d mp-grupowe-ergo-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name" id="mp-grupowe-ergo-n">Grupowe ERGO dla beauty</span><span class="mega-desc" id="mp-grupowe-ergo-d">Ubezpieczenie na życie dla zespołu (2–&#8288;100&nbsp;osób) albo <span translate="no">ERGO&nbsp;Razem</span> dla Ciebie i&nbsp;rodziny.</span><span class="mega-price" id="mp-grupowe-ergo-c"><span class="mega-cena">Zespół: od 58&nbsp;zł za osobę&nbsp;/&nbsp;mies.</span><span class="mega-cena"><span translate="no">ERGO&nbsp;Razem</span>: od 57&nbsp;zł&nbsp;/&nbsp;mies.</span></span></span></a></li>
+                <li><a class="mega-item" href="opieka-medyczna.html" aria-labelledby="mp-opieka-medyczna-n" aria-describedby="mp-opieka-medyczna-d mp-opieka-medyczna-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name" id="mp-opieka-medyczna-n">Opieka medyczna</span><span class="mega-desc" id="mp-opieka-medyczna-d">Abonamenty <span translate="no">ENEL-&#8288;MED</span> lub <span translate="no">LUX&nbsp;MED</span> dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price" id="mp-opieka-medyczna-c"><span class="mega-cena">Cenę przygotuje doradca</span></span></span></a></li>
               </ul>
               <div class="mega-foot"><a class="btn btn-navy" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a><a class="btn btn-ghost" href="makieta-v3.html#kalkulator-tax">Oblicz składkę Tax Protect</a></div>
             </div>
@@ -887,10 +1070,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <p class="mm-tytul" id="mm-produkty-t">Ubezpieczenia</p>
           <ul class="mm-produkty" aria-labelledby="mm-produkty-t">
             <li><a href="oc-beauty.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mm-text"><span class="mm-name">OC dla branży beauty</span><span class="mm-price">od 400&nbsp;zł rocznie</span></span></a></li>
-            <li><a href="tax-protect.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mm-text"><span class="mm-name">Tax Protect</span><span class="mm-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
+            <li><a href="tax-protect.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mm-text"><span class="mm-name"><span translate="no">Tax Protect</span></span><span class="mm-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
             <li><a href="utrata-dochodu.html" aria-current="page"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mm-text"><span class="mm-name">Utrata dochodu</span><span class="mm-price">składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></a></li>
-            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie za dziecko</span></span></a></li>
-            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 58&nbsp;zł za osobę / mies.</span></span></a></li>
+            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie za osobę</span></span></a></li>
+            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 58&nbsp;zł za osobę&nbsp;/&nbsp;mies.</span></span></a></li>
             <li><a href="opieka-medyczna.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mm-text"><span class="mm-name">Opieka medyczna</span><span class="mm-price">cenę przygotuje doradca</span></span></a></li>
           </ul>
           <!-- /gen:menu-mobilne -->
@@ -915,9 +1098,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <main id="tresc">
 
   <!-- PROLOG · otwarcie. Fakty: llms.txt, index.md, jak-to-dziala.md (utratadochodu.pl). -->
-  <section class="scene scene--marble scene--pos-ct page-hero" aria-labelledby="hero-title">
+  <section class="scene scene--marble scene--pos-ct page-hero bg-on" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero-panel glass frame">
+        <div class="hero-copy">
         <nav class="crumbs" aria-label="Okruszki">
           <!-- produkcyjnie: / › /ubezpieczenia › /ubezpieczenia/utrata-dochodu (BreadcrumbList w JSON-LD) -->
           <ol>
@@ -926,18 +1110,22 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <li><span aria-current="page">Utrata dochodu</span></li>
           </ol>
         </nav>
-        <p class="eyebrow">Prywatne L4 · Lloyd’s Insurance Company S.A.</p>
+        <p class="eyebrow">Prywatne L4 · Lloyd’s Insurance Company&nbsp;S.A.</p>
         <h1 id="hero-title">Ubezpieczenie utraty dochodu dla branży beauty</h1>
-        <p class="lead">Prywatne L4 dla samozatrudnionych w&nbsp;beauty. Gdy choroba albo wypadek wyłączą Cię z&nbsp;pracy, ZUS policzy zasiłek od zadeklarowanej podstawy składek – nie od tego, ile naprawdę zarabiasz. Polisa wypłaca co miesiąc świadczenie liczone od udokumentowanego dochodu.</p>
+        <p class="lead">Prywatne L4 dla pracujących w&nbsp;beauty&nbsp;– na działalności, B2B i&nbsp;na etacie: świadczenie do 50&nbsp;000&nbsp;zł miesięcznie, gdy choroba albo wypadek wyłączą Cię z&nbsp;pracy.</p>
         <div class="hero-actions">
           <a class="btn btn-navy" href="https://utratadochodu.pl/wniosek/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Złóż wniosek na utratadochodu.pl</a>
           <a class="btn btn-ghost" href="#porownanie">Porównaj z&nbsp;zasiłkiem ZUS</a>
         </div>
+        <p class="hero-note">ZUS liczy zasiłek od zadeklarowanej podstawy składek, a&nbsp;polisa&nbsp;– od udokumentowanego dochodu.</p>
+        </div>
+        <div class="hero-aside">
         <dl class="figures">
-          <div><dt>Świadczenie na B2B</dt><dd>do 80% dochodu</dd></div>
+          <div><dt>Dochodu: działalność i&nbsp;B2B / etat</dt><dd>do 80 / 65%</dd></div>
           <div><dt>Najwyżej miesięcznie</dt><dd>50&nbsp;000&nbsp;zł</dd></div>
-          <div><dt>Okres wypłaty</dt><dd>24–60 mies.</dd></div>
+          <div><dt>Okres wypłaty</dt><dd>24–60&nbsp;mies.</dd></div>
         </dl>
+        </div>
       </div>
     </div>
   </section>
@@ -949,37 +1137,37 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="section-head">
         <span class="chapter-no" aria-hidden="true">I</span>
         <p class="eyebrow">Zasiłek ZUS a&nbsp;polisa</p>
-        <h2 id="gap-title" class="rv-curtain">Ile dostaniesz, <em>gdy nie możesz pracować</em></h2>
-        <p class="lead">ZUS nie patrzy na Twój kalendarz klientek. Zasiłek liczy od podstawy, od której płacisz składki – przy tej samej podstawie dostaniesz tyle samo, czy zarabiasz 8&nbsp;000&nbsp;zł, czy 80&nbsp;000&nbsp;zł.</p>
+        <h2 id="gap-title" class="rv-curtain">Świadczenie <em>a&nbsp;zasiłek z&nbsp;ZUS</em></h2>
+        <p class="lead">ZUS nie patrzy na Twój kalendarz klientek. Zasiłek liczy od podstawy, od której płacisz składki&nbsp;– przy tej samej podstawie dostaniesz tyle samo, czy zarabiasz 8&nbsp;000&nbsp;zł, czy 80&nbsp;000&nbsp;zł.</p>
       </div>
       <div class="gap-grid">
         <div class="gap-copy">
-          <p><a class="bp-termin" href="slownik.html#haslo-zasilek-chorobowy" data-termin="zasilek-chorobowy">Zasiłek chorobowy</a> to 80% podstawy wymiaru składek po odliczeniu 13,71% – nie 80% dochodu. Przedsiębiorca dostaje go po 90 dniach nieprzerwanego ubezpieczenia chorobowego (wlicza się wcześniejsze chorobowe, np. z&nbsp;etatu, jeśli przerwa nie przekroczyła 30 dni) i&nbsp;najdłużej przez 182 dni. Czynsz za fotel, raty za urządzenia i&nbsp;ZUS biegną w&nbsp;tym czasie dalej.</p>
+          <p><a class="bp-termin" href="slownik.html#haslo-zasilek-chorobowy" data-termin="zasilek-chorobowy">Zasiłek chorobowy</a> to 80% podstawy wymiaru składek po odliczeniu 13,71%&nbsp;– nie 80% dochodu. Przedsiębiorca dostaje go po 90&nbsp;dniach nieprzerwanego ubezpieczenia chorobowego (wlicza się wcześniejsze chorobowe, np. z&nbsp;etatu, jeśli przerwa nie przekroczyła 30&nbsp;dni) i&nbsp;najdłużej przez 182&nbsp;dni. Czynsz za fotel, raty za urządzenia i&nbsp;ZUS biegną w&nbsp;tym czasie dalej.</p>
           <p class="tiers-cap" id="tiers-cap">Zasiłek z&nbsp;ZUS miesięcznie, przed podatkiem</p>
           <dl class="tiers" aria-labelledby="tiers-cap">
             <div><dt>Duży ZUS z&nbsp;najniższej podstawy, z&nbsp;dobrowolnym chorobowym</dt><dd>3&nbsp;902&nbsp;zł</dd></div>
             <div><dt>Preferencyjny ZUS z&nbsp;dobrowolnym chorobowym</dt><dd>ok. 995&nbsp;zł</dd></div>
             <div><dt>Bez dobrowolnego chorobowego</dt><dd>0&nbsp;zł</dd></div>
           </dl>
-          <p class="note">Kwota 3&nbsp;902&nbsp;zł dotyczy dużego ZUS-u z&nbsp;najniższej podstawy (5&nbsp;652&nbsp;zł) i&nbsp;dobrowolnego chorobowego opłacanego od co najmniej 90 dni. To kwota przed podatkiem dochodowym. Jeśli płacisz składki od wyższej podstawy, Twój zasiłek będzie wyższy.</p>
-          <p class="note">Pracujesz w&nbsp;salonie na umowie o&nbsp;pracę? ZUS wypłaca co najmniej 80% pensji przez 182 dni, a&nbsp;polisa chroni dochód przy dłuższej niezdolności – do 65% dochodu.</p>
+          <p class="note">Kwota 3&nbsp;902&nbsp;zł dotyczy dużego ZUS-u z&nbsp;najniższej podstawy (5&nbsp;652&nbsp;zł) i&nbsp;dobrowolnego chorobowego opłacanego od co najmniej 90&nbsp;dni. To kwota przed podatkiem dochodowym. Jeśli płacisz składki od wyższej podstawy, Twój zasiłek będzie wyższy.</p>
+          <p class="note">Pracujesz w&nbsp;salonie na umowie o&nbsp;pracę? ZUS wypłaca co najmniej 80% pensji przez 182&nbsp;dni, a&nbsp;polisa chroni dochód przy dłuższej niezdolności&nbsp;– do 65% dochodu.</p>
         </div>
         <figure class="ledger rv-rise" aria-labelledby="ledger-title">
           <p class="ledger-label">Przykład ze strony zawodu na utratadochodu.pl</p>
           <h3 id="ledger-title">Stylistka paznokci na B2B, dochód 11&nbsp;000&nbsp;zł netto miesięcznie</h3>
           <table>
-            <caption>Miesięczny dochód, zasiłek z ZUS i świadczenie z polisy – stylistka paznokci na B2B</caption>
+            <caption>Miesięczny dochód, zasiłek z&nbsp;ZUS i&nbsp;świadczenie z&nbsp;polisy&nbsp;– stylistka paznokci na B2B</caption>
             <tbody>
               <tr><th scope="row">Dochód miesięczny netto<span class="bar bar--income" aria-hidden="true"></span></th><td>11&nbsp;000&nbsp;zł</td></tr>
               <tr class="is-zus"><th scope="row">Zasiłek z&nbsp;ZUS (duży ZUS z&nbsp;chorobowym)<span class="bar bar--zus" aria-hidden="true"></span></th><td>3&nbsp;902&nbsp;zł</td></tr>
               <tr><th scope="row">Świadczenie z&nbsp;polisy (80% dochodu)<span class="bar bar--policy" aria-hidden="true"></span></th><td>8&nbsp;800&nbsp;zł</td></tr>
             </tbody>
           </table>
-          <figcaption class="ledger-foot"><strong>Symulacja, nie oferta.</strong> Świadczenie z&nbsp;polisy przychodzi co miesiąc po okresie wyczekiwania ustalonym w&nbsp;umowie, najdłużej przez wybrany okres (24, 36, 48 albo 60 miesięcy). Zasiłek przy dużym ZUS-ie z&nbsp;najniższej podstawy i&nbsp;dobrowolnym chorobowym opłacanym od co najmniej 90 dni; na preferencyjnym ZUS-ie około 995&nbsp;zł, bez chorobowego 0&nbsp;zł. Realną składkę i&nbsp;sumę wylicza ubezpieczyciel po ocenie ryzyka.</figcaption>
-          <div class="ledger-actions">
-            <a class="link-lux" href="https://utratadochodu.pl/stylistka-paznokci/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Symulacja dla stylistki paznokci</a>
-          </div>
+          <figcaption class="ledger-foot"><strong>Symulacja, nie oferta.</strong> Świadczenie z&nbsp;polisy przychodzi co miesiąc po okresie wyczekiwania ustalonym w&nbsp;umowie, najdłużej przez wybrany okres (24, 36, 48 albo 60&nbsp;miesięcy). Zasiłek przy dużym ZUS-ie z&nbsp;najniższej podstawy i&nbsp;dobrowolnym chorobowym opłacanym od co najmniej 90&nbsp;dni; na preferencyjnym ZUS-ie około 995&nbsp;zł, bez chorobowego 0&nbsp;zł. Realną składkę i&nbsp;sumę wylicza ubezpieczyciel po ocenie ryzyka.</figcaption>
         </figure>
+        <div class="ledger-actions">
+          <a class="link-lux" href="https://utratadochodu.pl/stylistka-paznokci/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Symulacja dla stylistki paznokci</a>
+        </div>
       </div>
     </div>
   </section>
@@ -991,56 +1179,56 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="section-head">
         <span class="chapter-no" aria-hidden="true">II</span>
         <p class="eyebrow">9 zawodów beauty</p>
-        <h2 id="zaw-title" class="rv-curtain">Co najczęściej <em>wyłącza z&nbsp;pracy</em></h2>
+        <h2 id="zaw-title" class="rv-curtain">Najczęstsze przyczyny <em>niezdolności do pracy</em></h2>
         <p class="lead">Każdy zawód ma na utratadochodu.pl osobną stronę: ryzyka, wyliczenie zasiłku i&nbsp;symulację. Wniosek z&nbsp;karty od razu wie, jaki zawód wykonujesz.</p>
       </div>
       <ul class="jobs">
         <li class="job rv-rise">
           <span class="job-no" aria-hidden="true">01</span>
           <h3>Fryzjer</h3>
-          <p class="job-risk"><span>Typowe ryzyko</span><strong>Wyprysk kontaktowy od farb i utleniaczy</strong></p>
-          <p>Uczulenie na składniki farb i preparatów do trwałej narasta latami i nie mija. Po rozpoznaniu nie pomagają nawet rękawice.</p>
+          <p class="job-risk"><span>Typowe ryzyko</span><strong>Wyprysk kontaktowy od farb i&nbsp;utleniaczy</strong></p>
+          <p>Uczulenie na składniki farb i&nbsp;preparatów do trwałej narasta latami i&nbsp;nie mija. Po rozpoznaniu nie pomagają nawet rękawice.</p>
           <p class="job-links"><a class="link-quiet" href="https://utratadochodu.pl/fryzjer/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Ryzyka i&nbsp;symulacja<span class="sr-only"> dla fryzjera na utratadochodu.pl</span></a><a class="link-quiet" href="https://utratadochodu.pl/wniosek/?zawod=fryzjer&amp;utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Wniosek dla zawodu<span class="sr-only">: fryzjer</span></a></p>
         </li>
         <li class="job rv-rise">
           <span class="job-no" aria-hidden="true">02</span>
           <h3>Kosmetolog</h3>
-          <p class="job-risk"><span>Typowe ryzyko</span><strong>Uszkodzenie wzroku przy pracy z laserem</strong></p>
-          <p>Rozproszone światło lasera działa latami, także mimo okularów ochronnych. Uszkodzona siatkówka zamyka pracę z aparaturą laserową na stałe.</p>
+          <p class="job-risk"><span>Typowe ryzyko</span><strong>Uszkodzenie wzroku przy pracy z&nbsp;laserem</strong></p>
+          <p>Rozproszone światło lasera działa latami, także mimo okularów ochronnych. Uszkodzona siatkówka zamyka pracę z&nbsp;aparaturą laserową na stałe.</p>
           <p class="job-links"><a class="link-quiet" href="https://utratadochodu.pl/kosmetolog/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Ryzyka i&nbsp;symulacja<span class="sr-only"> dla kosmetologa na utratadochodu.pl</span></a><a class="link-quiet" href="https://utratadochodu.pl/wniosek/?zawod=kosmetolog&amp;utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Wniosek dla zawodu<span class="sr-only">: kosmetolog</span></a></p>
         </li>
         <li class="job rv-rise">
           <span class="job-no" aria-hidden="true">03</span>
           <h3>Kosmetyczka</h3>
-          <p class="job-risk"><span>Typowe ryzyko</span><strong>Uczulenie na kwasy i konserwanty zabiegowe</strong></p>
-          <p>Kwasy, konserwanty i żywice w preparatach codziennego użytku. Gdy pojawi się uczulenie, danym preparatem nie da się już pracować, nawet w nitrylu.</p>
+          <p class="job-risk"><span>Typowe ryzyko</span><strong>Uczulenie na kwasy i&nbsp;konserwanty zabiegowe</strong></p>
+          <p>Kwasy, konserwanty i&nbsp;żywice w&nbsp;preparatach codziennego użytku. Gdy pojawi się uczulenie, danym preparatem nie da się już pracować, nawet w&nbsp;nitrylu.</p>
           <p class="job-links"><a class="link-quiet" href="https://utratadochodu.pl/kosmetyczka/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Ryzyka i&nbsp;symulacja<span class="sr-only"> dla kosmetyczki na utratadochodu.pl</span></a><a class="link-quiet" href="https://utratadochodu.pl/wniosek/?zawod=kosmetyczka&amp;utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Wniosek dla zawodu<span class="sr-only">: kosmetyczka</span></a></p>
         </li>
         <li class="job rv-rise">
           <span class="job-no" aria-hidden="true">04</span>
           <h3>Masażysta</h3>
           <p class="job-risk"><span>Typowe ryzyko</span><strong>Choroba zwyrodnieniowa stawów rąk</strong></p>
-          <p>Ucisk kciukiem i nasadą dłoni powtarzany tysiące razy dziennie. Zmiany w stawach dłoni po latach pracy już się nie cofają.</p>
+          <p>Ucisk kciukiem i&nbsp;nasadą dłoni powtarzany tysiące razy dziennie. Zmiany w&nbsp;stawach dłoni po latach pracy już się nie cofają.</p>
           <p class="job-links"><a class="link-quiet" href="https://utratadochodu.pl/masazysta/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Ryzyka i&nbsp;symulacja<span class="sr-only"> dla masażysty na utratadochodu.pl</span></a><a class="link-quiet" href="https://utratadochodu.pl/wniosek/?zawod=masazysta&amp;utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Wniosek dla zawodu<span class="sr-only">: masażysta</span></a></p>
         </li>
         <li class="job rv-rise">
           <span class="job-no" aria-hidden="true">05</span>
           <h3>Stylista</h3>
           <p class="job-risk"><span>Typowe ryzyko</span><strong>Uraz kręgosłupa przy transporcie garderoby</strong></p>
-          <p>Kufry i wieszaki z ubraniami nosisz na plan zwykle sam. Przeciążony odcinek lędźwiowy to w tym zawodzie najczęstsza nagła przerwa.</p>
+          <p>Kufry i&nbsp;wieszaki z&nbsp;ubraniami nosisz na plan zwykle sam. Przeciążony odcinek lędźwiowy to w&nbsp;tym zawodzie najczęstsza nagła przerwa.</p>
           <p class="job-links"><a class="link-quiet" href="https://utratadochodu.pl/stylista/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Ryzyka i&nbsp;symulacja<span class="sr-only"> dla stylisty na utratadochodu.pl</span></a><a class="link-quiet" href="https://utratadochodu.pl/wniosek/?zawod=stylista&amp;utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Wniosek dla zawodu<span class="sr-only">: stylista</span></a></p>
         </li>
         <li class="job rv-rise">
           <span class="job-no" aria-hidden="true">06</span>
           <h3>Stylistka paznokci</h3>
-          <p class="job-risk"><span>Typowe ryzyko</span><strong>Astma i uczulenie na akrylany</strong></p>
-          <p>Opary metakrylanów i pył z frezowania przez całą zmianę, w małym pomieszczeniu. Po rozpoznaniu praca tymi materiałami się kończy.</p>
+          <p class="job-risk"><span>Typowe ryzyko</span><strong>Astma i&nbsp;uczulenie na akrylany</strong></p>
+          <p>Opary metakrylanów i&nbsp;pył z&nbsp;frezowania przez całą zmianę, w&nbsp;małym pomieszczeniu. Po rozpoznaniu praca tymi materiałami się kończy.</p>
           <p class="job-links"><a class="link-quiet" href="https://utratadochodu.pl/stylistka-paznokci/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Ryzyka i&nbsp;symulacja<span class="sr-only"> dla stylistki paznokci na utratadochodu.pl</span></a><a class="link-quiet" href="https://utratadochodu.pl/wniosek/?zawod=stylistka-paznokci&amp;utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Wniosek dla zawodu<span class="sr-only">: stylistka paznokci</span></a></p>
         </li>
         <li class="job rv-rise">
           <span class="job-no" aria-hidden="true">07</span>
           <h3>Tatuażysta</h3>
-          <p class="job-risk"><span>Typowe ryzyko</span><strong>Przeciążenie nadgarstka i przedramienia</strong></p>
+          <p class="job-risk"><span>Typowe ryzyko</span><strong>Przeciążenie nadgarstka i&nbsp;przedramienia</strong></p>
           <p>Maszynka trzymana pod stałym kątem przez wielogodzinne sesje. Każdy nawrót zapalenia ścięgien to kilka tygodni bez pracy.</p>
           <p class="job-links"><a class="link-quiet" href="https://utratadochodu.pl/tatuazysta/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Ryzyka i&nbsp;symulacja<span class="sr-only"> dla tatuażysty na utratadochodu.pl</span></a><a class="link-quiet" href="https://utratadochodu.pl/wniosek/?zawod=tatuazysta&amp;utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Wniosek dla zawodu<span class="sr-only">: tatuażysta</span></a></p>
         </li>
@@ -1048,14 +1236,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <span class="job-no" aria-hidden="true">08</span>
           <h3>Terapeuta</h3>
           <p class="job-risk"><span>Typowe ryzyko</span><strong>Choroby narządu głosu</strong></p>
-          <p>Kilka sesji dziennie, każda to prawie godzina mówienia. Przewlekłe zapalenie krtani wyłącza z pracy do wyleczenia i lubi wracać.</p>
+          <p>Kilka sesji dziennie, każda to prawie godzina mówienia. Przewlekłe zapalenie krtani wyłącza z&nbsp;pracy do wyleczenia i&nbsp;lubi wracać.</p>
           <p class="job-links"><a class="link-quiet" href="https://utratadochodu.pl/terapeuta/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Ryzyka i&nbsp;symulacja<span class="sr-only"> dla terapeuty na utratadochodu.pl</span></a><a class="link-quiet" href="https://utratadochodu.pl/wniosek/?zawod=terapeuta&amp;utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Wniosek dla zawodu<span class="sr-only">: terapeuta</span></a></p>
         </li>
         <li class="job rv-rise">
           <span class="job-no" aria-hidden="true">09</span>
           <h3>Wizażysta</h3>
           <p class="job-risk"><span>Typowe ryzyko</span><strong>Uczulenie kontaktowe na kosmetyki kolorowe</strong></p>
-          <p>Pigmenty, konserwanty i kleje do rzęs na co dzień. Uczulenie na własne narzędzia pracy wyklucza z części zleceń na stałe.</p>
+          <p>Pigmenty, konserwanty i&nbsp;kleje do rzęs na co dzień. Uczulenie na własne narzędzia pracy wyklucza z&nbsp;części zleceń na stałe.</p>
           <p class="job-links"><a class="link-quiet" href="https://utratadochodu.pl/wizazysta/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Ryzyka i&nbsp;symulacja<span class="sr-only"> dla wizażysty na utratadochodu.pl</span></a><a class="link-quiet" href="https://utratadochodu.pl/wniosek/?zawod=wizazysta&amp;utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Wniosek dla zawodu<span class="sr-only">: wizażysta</span></a></p>
         </li>
       </ul>
@@ -1071,37 +1259,37 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="section-head">
         <span class="chapter-no" aria-hidden="true">III</span>
         <p class="eyebrow">Zakres ochrony</p>
-        <h2 id="zak-title" class="rv-curtain">Co obejmuje, <em>a&nbsp;czego nie</em></h2>
-        <p class="lead"><a class="bp-termin" href="slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">Wyłączenia</a> czytaj przed wnioskiem, nie po odmowie. Poniżej skrót – wiążą <a class="bp-termin" href="slownik.html#haslo-owu" data-termin="owu">ogólne warunki ubezpieczenia</a>.</p>
+        <h2 id="zak-title" class="rv-curtain">Zakres <em>i&nbsp;wyłączenia</em></h2>
+        <p class="lead"><a class="bp-termin" href="slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">Wyłączenia</a> czytaj przed wnioskiem, nie po odmowie. Poniżej skrót&nbsp;– wiążą <a class="bp-termin" href="slownik.html#haslo-owu" data-termin="owu">ogólne warunki ubezpieczenia</a>.</p>
       </div>
       <div class="scope-grid">
         <div class="scope glass glass--tint rv-rise">
-          <div class="scope-head"><svg class="lux-icon" aria-hidden="true"><use href="#lux-w-zakresie"/></svg><h3>Co obejmuje</h3></div>
+          <div class="scope-head"><svg class="lux-icon" aria-hidden="true"><use href="#lux-w-zakresie"/></svg><h3>Zakres ochrony</h3></div>
           <ul class="scope-list">
             <li><strong><a class="bp-termin" href="slownik.html#haslo-okresowa-niezdolnosc" data-termin="okresowa-niezdolnosc">Okresowa niezdolność do pracy</a></strong>Świadczenie co miesiąc, gdy choroba albo nieszczęśliwy wypadek całkowicie uniemożliwiają wykonywanie zawodu.</li>
             <li><strong><a class="bp-termin" href="slownik.html#haslo-trwala-niezdolnosc" data-termin="trwala-niezdolnosc">Trwała niezdolność do pracy</a></strong>Świadczenie jednorazowe.</li>
             <li><strong>Śmierć i&nbsp;inwalidztwo wskutek nieszczęśliwego wypadku</strong>Świadczenia jednorazowe.</li>
             <li><strong>Wysokość świadczenia</strong>Do 80% udokumentowanego dochodu przy działalności i&nbsp;kontrakcie B2B, do 65% przy umowie o&nbsp;pracę i&nbsp;zleceniu; w&nbsp;CEU „Utrata dochodu” 65% także na B2B. Najwyżej 50&nbsp;000&nbsp;zł miesięcznie.</li>
-            <li><strong>Okres wypłaty i&nbsp;wyczekiwania</strong>Okres wypłaty wybierasz przy zawarciu umowy: 24, 36, 48 albo 60 miesięcy. Pierwsza wypłata – po okresie wyczekiwania ustalonym w&nbsp;umowie.</li>
+            <li><strong>Okres wypłaty i&nbsp;wyczekiwania</strong>Okres wypłaty wybierasz przy zawarciu umowy: 24, 36, 48 albo 60&nbsp;miesięcy. Pierwsza wypłata&nbsp;– po okresie wyczekiwania ustalonym w&nbsp;umowie.</li>
           </ul>
         </div>
         <div class="scope scope--out glass glass--tint rv-rise">
-          <div class="scope-head"><svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg><h3>Czego nie obejmuje</h3></div>
+          <div class="scope-head"><svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg><h3>Wyłączenia</h3></div>
           <ul class="scope-list">
             <li><strong>Częściowej niezdolności do pracy</strong>Praca w&nbsp;mniejszym wymiarze albo przejście na lżejsze obowiązki nie spełnia warunku wypłaty.</li>
             <li><strong>Wypalenia zawodowego jako samodzielnej diagnozy</strong>Nie jest jednostką chorobową w&nbsp;klasyfikacji ICD. Stres i&nbsp;przemęczenie też nie są rozpoznaniem.</li>
-            <li><strong>Chorób i&nbsp;zaburzeń psychicznych</strong>W&nbsp;Leadenhall – gdy są jedyną przyczyną niezdolności; w&nbsp;CEU – także bez tego zastrzeżenia.</li>
-            <li><strong>Schorzeń leczonych w&nbsp;ciągu 24 miesięcy przed umową</strong>Chyba że zgłosisz je w&nbsp;ankiecie medycznej, a&nbsp;ubezpieczyciel przyjmie je do ochrony.</li>
+            <li><strong>Chorób i&nbsp;zaburzeń psychicznych</strong>W&nbsp;Leadenhall&nbsp;– gdy są jedyną przyczyną niezdolności; w&nbsp;CEU&nbsp;– także bez tego zastrzeżenia.</li>
+            <li><strong>Schorzeń leczonych w&nbsp;ciągu 24&nbsp;miesięcy przed umową</strong>Chyba że zgłosisz je w&nbsp;ankiecie medycznej, a&nbsp;ubezpieczyciel przyjmie je do ochrony.</li>
             <li><strong>Przerwy z&nbsp;braku klientek lub zleceń</strong>Polisa chroni zdolność do pracy, nie popyt na usługi. Kwarantanna i&nbsp;izolacja bez orzeczonej niezdolności też nie wystarczą.</li>
-            <li><strong>Zdarzeń w&nbsp;określonych okolicznościach</strong>Alkohol, narkotyki i&nbsp;środki odurzające (poza zaleconymi przez lekarza), umyślne samookaleczenie i&nbsp;próba samobójcza, działania wojenne, zamieszki i&nbsp;terroryzm, wyczynowy sport i&nbsp;sporty wysokiego ryzyka – część z&nbsp;nich da się objąć po zgłoszeniu we wniosku.</li>
+            <li><strong>Zdarzeń w&nbsp;określonych okolicznościach</strong>Alkohol, narkotyki i&nbsp;środki odurzające (poza zaleconymi przez lekarza), umyślne samookaleczenie i&nbsp;próba samobójcza, działania wojenne, zamieszki i&nbsp;terroryzm, wyczynowy sport i&nbsp;sporty wysokiego ryzyka&nbsp;– część z&nbsp;nich da się objąć po zgłoszeniu we wniosku.</li>
           </ul>
-          <p class="note">To streszczenie. Każde wyłączenie z&nbsp;wyjaśnieniem znajdziesz na stronie <a href="https://utratadochodu.pl/wylaczenia/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">czego to ubezpieczenie nie obejmuje</a>, a&nbsp;wiążące OWU i&nbsp;karty produktu – w&nbsp;<a href="https://utratadochodu.pl/dokumenty/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">dokumentach do pobrania</a>.</p>
+          <p class="note">To streszczenie. Każde wyłączenie z&nbsp;wyjaśnieniem znajdziesz na stronie <a href="https://utratadochodu.pl/wylaczenia/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">czego to ubezpieczenie nie obejmuje</a>, a&nbsp;wiążące OWU i&nbsp;karty produktu&nbsp;– w&nbsp;<a href="https://utratadochodu.pl/dokumenty/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">dokumentach do pobrania</a>.</p>
         </div>
       </div>
       <div class="scope-aside rv-rise">
         <h3>Tatuaż, piercing, zabiegi iniekcyjne i&nbsp;aparaturowe</h3>
-        <p>Zakażenie HIV albo WZW nie jest wyłączone – niezdolność do pracy, do której doprowadzi, ocenia się na zasadach ogólnych, jak przy każdej innej chorobie. Osobna klauzula HIV/WZW z&nbsp;jednorazową wypłatą za samo zakażenie jest dostępna tylko w&nbsp;wariantach dla zawodów medycznych.</p>
-        <p>Wykonujesz zabiegi aparaturowe lub iniekcyjne? Opisz ich zakres dokładnie we wniosku – zmienia to ocenę ryzyka.</p>
+        <p>Zakażenie HIV albo WZW nie jest wyłączone&nbsp;– niezdolność do pracy, do której doprowadzi, ocenia się na zasadach ogólnych, jak przy każdej innej chorobie. Osobna klauzula HIV/WZW z&nbsp;jednorazową wypłatą za samo zakażenie jest dostępna tylko w&nbsp;wariantach dla zawodów medycznych.</p>
+        <p>Wykonujesz zabiegi aparaturowe lub iniekcyjne? Opisz ich zakres dokładnie we wniosku&nbsp;– zmienia to ocenę ryzyka.</p>
       </div>
     </div>
   </section>
@@ -1115,34 +1303,34 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <h2 id="war-title" class="rv-curtain">Kto ubezpiecza <em>i&nbsp;kto wypłaca</em></h2>
       </div>
       <dl class="roles">
-        <div><dt>Ubezpieczyciel</dt><dd><strong>Lloyd’s Insurance Company S.A.</strong><span>Udziela ochrony we wszystkich wariantach. Siedziba: Bruksela. W&nbsp;informacji o&nbsp;agencie występuje jako Lloyd’s Insurance Company SA/NV.</span></dd></div>
-        <div><dt>Coverholderzy Lloyd’s</dt><dd><strong>Leadenhall Insurance S.A. i&nbsp;CEU sp.&nbsp;z&nbsp;o.o.</strong><span>Reprezentują ubezpieczyciela przy zawarciu i&nbsp;wykonaniu umowy, przygotowują oferty; ich nazwy są na OWU.</span></dd></div>
-        <div><dt>Agent ubezpieczeniowy</dt><dd><strong>Aura Expert sp.&nbsp;z&nbsp;o.o.</strong><span>RPU 11229690/A. Prowadzi BeautyPolisa i&nbsp;utratadochodu.pl: przyjmuje wniosek i&nbsp;prowadzi sprawę do wystawienia polisy.</span></dd></div>
+        <div><dt>Ubezpieczyciel</dt><dd><strong>Lloyd’s Insurance Company&nbsp;S.A.</strong><span>Udziela ochrony we wszystkich wariantach. Siedziba: Bruksela. W&nbsp;informacji o&nbsp;agencie występuje jako Lloyd’s Insurance Company SA/NV.</span></dd></div>
+        <div><dt>Coverholderzy Lloyd’s</dt><dd><strong>Leadenhall Insurance&nbsp;S.A. i&nbsp;CEU sp.&nbsp;z&nbsp;o.o.</strong><span>Reprezentują ubezpieczyciela przy zawarciu i&nbsp;wykonaniu umowy, przygotowują oferty; ich nazwy są na OWU.</span></dd></div>
+        <div><dt>Agent ubezpieczeniowy</dt><dd><strong>Aura&nbsp;Expert sp.&nbsp;z&nbsp;o.o.</strong><span>RPU 11229690/A. Prowadzi BeautyPolisa i&nbsp;utratadochodu.pl: przyjmuje wniosek i&nbsp;prowadzi sprawę do wystawienia polisy.</span></dd></div>
       </dl>
       <div class="variants-box glass glass--tint rv-rise">
         <h3>Warianty w&nbsp;ofercie</h3>
         <ul class="variants">
-          <li><span class="v-name">Leadenhall Utrata Dochodu<small>LW044 · Leadenhall Insurance S.A.</small></span><span class="v-who">Zawody spoza medycyny.</span></li>
-          <li><span class="v-name">Leadenhall MEDICA i&nbsp;MEDICARE<small>LW046, LW047 · Leadenhall Insurance S.A.</small></span><span class="v-who">Zawody medyczne. Tylko do nich można dokupić <a class="bp-termin" href="slownik.html#haslo-klauzula" data-termin="klauzula">warunki szczególne</a> HIV/WZW (LW048, LW049).</span></li>
-          <li><span class="v-name">CEU Utrata Dochodu i&nbsp;CEU LOI Premium<small>CEU sp. z o.o.</small></span><span class="v-who">Osoby, które nie zatrudniają nikogo, kto przejmuje ich obowiązki. W&nbsp;CEU Utrata Dochodu <a class="bp-termin" href="slownik.html#haslo-limit" data-termin="limit">limit świadczenia</a> to 65% dochodu także na B2B.</span></li>
-          <li><span class="v-name">CEU Utrata Dochodu dla zatrudniających<small>CEU sp. z o.o.</small></span><span class="v-who">Osoby, które zatrudniają pracowników – na przykład właścicielki salonów z&nbsp;zespołem.</span></li>
+          <li><span class="v-name">Leadenhall Utrata Dochodu<small>LW044 · Leadenhall Insurance&nbsp;S.A.</small></span><span class="v-who">Zawody spoza medycyny.</span></li>
+          <li><span class="v-name">Leadenhall MEDICA i&nbsp;MEDICARE<small>LW046, LW047 · Leadenhall Insurance&nbsp;S.A.</small></span><span class="v-who">Zawody medyczne. Tylko do nich można dokupić <a class="bp-termin" href="slownik.html#haslo-klauzula" data-termin="klauzula">warunki szczególne</a> HIV/WZW (LW048, LW049).</span></li>
+          <li><span class="v-name">CEU Utrata Dochodu i&nbsp;CEU LOI Premium<small>CEU sp.&nbsp;z&nbsp;o.o.</small></span><span class="v-who">Osoby, które nie zatrudniają nikogo, kto przejmuje ich obowiązki. W&nbsp;CEU Utrata Dochodu <a class="bp-termin" href="slownik.html#haslo-limit" data-termin="limit">limit świadczenia</a> to 65% dochodu także na B2B.</span></li>
+          <li><span class="v-name">CEU Utrata Dochodu dla zatrudniających<small>CEU sp.&nbsp;z&nbsp;o.o.</small></span><span class="v-who">Osoby, które zatrudniają pracowników&nbsp;– na przykład właścicielki salonów z&nbsp;zespołem.</span></li>
         </ul>
         <p class="note">OWU i&nbsp;<a class="bp-termin" href="slownik.html#haslo-karta-produktu" data-termin="karta-produktu">karty produktu</a> (IPID) wszystkich wariantów pobierzesz bez logowania na <a href="https://utratadochodu.pl/dokumenty/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">utratadochodu.pl/dokumenty</a>.</p>
       </div>
       <div class="claims">
         <div>
-          <h3>Gdy zachorujesz</h3>
+          <h3>Zgłoszenie roszczenia</h3>
           <ul>
-            <li><a class="bp-termin" href="slownik.html#haslo-roszczenie" data-termin="roszczenie">Roszczenie</a> z&nbsp;wariantu Leadenhall zgłaszasz do ubezpieczyciela przez Leadenhall Insurance S.A.</li>
-            <li>Roszczenie z&nbsp;wariantu CEU – przez WAGAS S.A., której ubezpieczyciel powierzył likwidację szkód.</li>
+            <li><a class="bp-termin" href="slownik.html#haslo-roszczenie" data-termin="roszczenie">Roszczenie</a> z&nbsp;wariantu Leadenhall zgłaszasz do ubezpieczyciela przez Leadenhall Insurance&nbsp;S.A.</li>
+            <li>Roszczenie z&nbsp;wariantu CEU&nbsp;– przez WAGAS&nbsp;S.A., której ubezpieczyciel powierzył likwidację szkód.</li>
           </ul>
         </div>
         <div>
           <h3>Jak udokumentujesz dochód</h3>
-          <p>Przy działalności – PIT za poprzedni rok i&nbsp;wyciągi albo zestawienie faktur z&nbsp;ostatnich miesięcy. Przy umowie o&nbsp;pracę – zaświadczenie o&nbsp;zarobkach. Od tych dokumentów zależy tempo wypłaty, więc trzymaj je pod ręką.</p>
+          <p>Przy działalności&nbsp;– PIT za poprzedni rok i&nbsp;wyciągi albo zestawienie faktur z&nbsp;ostatnich miesięcy. Przy umowie o&nbsp;pracę&nbsp;– zaświadczenie o&nbsp;zarobkach. Od tych dokumentów zależy tempo wypłaty, więc trzymaj je pod ręką.</p>
         </div>
       </div>
-      <p class="note idd">Na tej stronie nie wskazujemy wariantu dla Ciebie. Wariant i&nbsp;sumę dobiera się po analizie Twoich potrzeb, zawodu i&nbsp;formy pracy, a&nbsp;o&nbsp;warunkach i&nbsp;składce decyduje ubezpieczyciel po ocenie ryzyka.</p>
+      <p class="note idd">Ta strona nie wskazuje wariantu dla Ciebie. Wariant i&nbsp;sumę dobiera się po analizie Twoich potrzeb, zawodu i&nbsp;formy pracy, a&nbsp;o&nbsp;warunkach i&nbsp;składce decyduje ubezpieczyciel po ocenie ryzyka.</p>
     </div>
   </section>
 
@@ -1156,14 +1344,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <span class="chapter-no" aria-hidden="true">V</span>
         <p class="eyebrow">Jak kupić</p>
         <h2 id="kup-title" class="rv-curtain">Trzy drogi <em>do polisy</em></h2>
-        <p class="lead">Ten produkt nie ma <a class="bp-termin" href="slownik.html#haslo-stala-taryfa" data-termin="stala-taryfa">stałej taryfy</a>, więc nie podajemy tu kwot. Składkę wylicza <a class="bp-termin" href="slownik.html#haslo-ubezpieczyciel" data-termin="ubezpieczyciel">ubezpieczyciel</a> po ocenie ryzyka – zawodu, wieku, dochodu i&nbsp;ankiety medycznej.</p>
+        <p class="lead">Ten produkt nie ma <a class="bp-termin" href="slownik.html#haslo-stala-taryfa" data-termin="stala-taryfa">stałej taryfy</a>, więc kwot tu nie ma. Składkę wylicza ubezpieczyciel po <a class="bp-termin" href="slownik.html#haslo-ocena-ryzyka" data-termin="ocena-ryzyka">ocenie ryzyka</a>&nbsp;– zawodu, wieku, dochodu i&nbsp;ankiety medycznej.</p>
       </div>
       <div class="routes">
         <article class="route route--main rv-rise" aria-labelledby="droga-1">
           <p class="route-tag">Droga 1 · pełny zakres</p>
           <h3 id="droga-1">Wniosek online na utratadochodu.pl</h3>
           <ul class="route-facts" aria-label="W skrócie">
-            <li>5 kroków</li><li>ok. 5 minut</li><li>oferta w&nbsp;1–2 dni robocze</li><li>Leadenhall i&nbsp;CEU w&nbsp;jednej ofercie</li>
+            <li>5&nbsp;kroków</li><li>ok.&nbsp;5&nbsp;minut</li><li>oferta w&nbsp;1–2&nbsp;dni robocze</li><li>Leadenhall i&nbsp;CEU w&nbsp;jednej ofercie</li>
           </ul>
           <ol class="steps">
             <li><strong>Kontakt</strong>E-mail i&nbsp;telefon, na które przyjdzie oferta.</li>
@@ -1172,8 +1360,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <li><strong>Stan zdrowia</strong><a class="bp-termin" href="slownik.html#haslo-ankieta-medyczna" data-termin="ankieta-medyczna">Ankieta medyczna</a> – przy standardowych sumach bez badań.</li>
             <li><strong>Zgody</strong>Na koniec widzisz symulację składki.</li>
           </ol>
-          <p>Ofertę z&nbsp;realną stawką dostajesz e-mailem w&nbsp;1–2 dni robocze, po ocenie ryzyka przez ubezpieczyciela – z&nbsp;porównaniem wariantów Leadenhall i&nbsp;CEU, OWU i&nbsp;kartą produktu. Do podpisania nic Cię nie wiąże; polisę podpisujesz elektronicznie. Cała droga trwa zwykle 2–4 dni robocze.</p>
-          <span class="mock-note">Gdzie w&nbsp;tej drodze jest analiza potrzeb (APK) – do potwierdzenia</span>
+          <p>Ofertę z&nbsp;realną stawką dostajesz e-mailem w&nbsp;1–2&nbsp;dni robocze, po ocenie ryzyka przez ubezpieczyciela&nbsp;– z&nbsp;porównaniem wariantów Leadenhall i&nbsp;CEU, OWU i&nbsp;kartą produktu. Do podpisania nic Cię nie wiąże; polisę podpisujesz elektronicznie. Cała droga trwa zwykle 2–4&nbsp;dni robocze.</p>
+          <span class="mock-note">Gdzie w&nbsp;tej drodze jest analiza potrzeb (APK)&nbsp;– do potwierdzenia</span>
           <div class="route-actions">
             <a class="btn btn-navy" href="https://utratadochodu.pl/wniosek/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Złóż wniosek na utratadochodu.pl</a>
             <a class="link-lux" href="https://utratadochodu.pl/jak-to-dziala/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Jak to działa krok po kroku</a>
@@ -1185,8 +1373,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <h3 id="droga-2">Zakup online u&nbsp;Leadenhall</h3>
             <ul class="route-list">
               <li>Online kupisz tylko ochronę na okresową niezdolność do pracy (świadczenie miesięczne).</li>
-              <li>Trwała niezdolność oraz śmierć i&nbsp;inwalidztwo wskutek wypadku – tylko w&nbsp;ofercie po wniosku (droga 1).</li>
-              <li>Leadenhall Insurance S.A. sprzedaje ten zakres na własnych warunkach. Mogą różnić się od wariantów z&nbsp;oferty po wniosku i&nbsp;nie ma tu porównania z&nbsp;CEU.</li>
+              <li>Trwała niezdolność oraz śmierć i&nbsp;inwalidztwo wskutek wypadku&nbsp;– tylko w&nbsp;ofercie po wniosku (droga 1).</li>
+              <li>Leadenhall Insurance&nbsp;S.A. sprzedaje ten zakres na własnych warunkach. Mogą różnić się od wariantów z&nbsp;oferty po wniosku i&nbsp;nie ma tu porównania z&nbsp;CEU.</li>
               <li>Ankietę zdrowotną wypełniasz na stronie Leadenhall.</li>
             </ul>
             <div class="route-actions">
@@ -1194,16 +1382,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             </div>
           </article>
           <article class="route rv-rise" aria-labelledby="droga-3">
-            <p class="route-tag">Droga 3 · z&nbsp;doradcą Aura Expert</p>
+            <p class="route-tag">Droga 3 · z&nbsp;doradcą Aura&nbsp;Expert</p>
             <h3 id="droga-3">Kontakt z&nbsp;doradcą</h3>
             <ol class="steps">
               <li><strong>Formularz kontaktu</strong>Wybierasz temat „Utrata dochodu”.</li>
-              <li><strong>Kontakt doradcy</strong>Doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;przeprowadzi analizę Twoich potrzeb (APK).</li>
-              <li><strong>Wniosek</strong>Doradca Aura Expert poprowadzi wniosek. <span class="mock-note">Czy doradca składa wniosek na utratadochodu.pl – do potwierdzenia</span></li>
+              <li><strong>Kontakt doradcy</strong>Doradca Aura&nbsp;Expert skontaktuje się z&nbsp;Tobą i&nbsp;przeprowadzi analizę Twoich potrzeb (APK).</li>
+              <li><strong>Wniosek</strong>Doradca Aura&nbsp;Expert poprowadzi wniosek. <span class="mock-note">Czy doradca składa wniosek na utratadochodu.pl&nbsp;– do potwierdzenia</span></li>
               <li><strong>Oferta i&nbsp;polisa</strong>Po ocenie ryzyka przez ubezpieczyciela.</li>
             </ol>
             <div class="route-actions">
-              <a class="btn btn-ghost" href="makieta-v3.html?produkt=utrata-dochodu#kontakt" data-produkt="utrata-dochodu">Zamów rozmowę</a>
+              <a class="btn btn-ghost" href="makieta-v3.html?produkt=utrata-dochodu#kontakt" data-produkt="utrata-dochodu">Zapytaj doradcę<span class="sr-only"> o&nbsp;ubezpieczenie utraty dochodu</span></a>
             </div>
           </article>
         </div>
@@ -1219,21 +1407,23 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <h2 id="faq-title" class="rv-curtain">Pytania <em>o&nbsp;utratę dochodu</em></h2>
       </div>
       <div class="faq glass">
-        <!-- GEN:faq (wygenerowane – build.py; nie edytować ręcznie) -->
-        <details id="pytanie-1"><summary>Ile zasiłku chorobowego dostanę z ZUS, prowadząc działalność w branży beauty?</summary><p>Zasiłek chorobowy to 80% podstawy wymiaru składek po odliczeniu 13,71% – nie 80% Twojego dochodu. Przy dużym ZUS-ie z najniższej podstawy (5 652 zł) i dobrowolnym chorobowym opłacanym od co najmniej 90 dni wynosi 3 902 zł miesięcznie przed podatkiem, niezależnie od tego, ile zarabiasz. Na preferencyjnym ZUS-ie to około 995 zł, a bez dobrowolnego chorobowego – 0 zł. ZUS wypłaca zasiłek najdłużej przez 182 dni.</p></details>
-        <details id="pytanie-2"><summary>Ile wypłaci polisa od utraty dochodu?</summary><p>Do 80% udokumentowanego dochodu przy działalności gospodarczej i kontrakcie B2B oraz do 65% przy umowie o pracę i umowie zlecenia, najwyżej 50 000 zł miesięcznie. W ubezpieczeniu CEU „Utrata dochodu” limit wynosi 65% także przy działalności i B2B. Świadczenie przychodzi co miesiąc po okresie wyczekiwania ustalonym w umowie, dopóki trwa niezdolność do pracy – najdłużej przez okres wybrany przy zawarciu umowy: 24, 36, 48 albo 60 miesięcy.</p></details>
-        <details id="pytanie-3"><summary>Ile kosztuje ubezpieczenie utraty dochodu?</summary><p>Ten produkt nie ma stałej taryfy. Składkę wylicza ubezpieczyciel po ocenie ryzyka: zawodu, wieku, wysokości dochodu i ankiety medycznej; znaczenie mają też okres wyczekiwania i okres wypłaty – dłuższy okres wypłaty podnosi składkę. Dlatego nie podajemy tu kwot. Symulację zobaczysz na końcu <a href="https://utratadochodu.pl/wniosek/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">wniosku na utratadochodu.pl</a>, a ofertę z realną stawką dostaniesz w 1–2 dni robocze.</p></details>
-        <details id="pytanie-4"><summary>Czy dostanę świadczenie, jeśli mogę pracować tylko w mniejszym wymiarze?</summary><p>Nie. Polisa wypłaca świadczenie za całkowitą niezdolność do wykonywania zawodu – praca w mniejszym wymiarze albo przejście na lżejsze obowiązki nie spełnia warunku wypłaty. Ochrona nie obejmuje też m.in. wypalenia zawodowego jako samodzielnej diagnozy, chorób psychicznych (w Leadenhall – gdy są jedyną przyczyną niezdolności, w CEU – bez tego zastrzeżenia) i schorzeń leczonych w ciągu 24 miesięcy przed zawarciem umowy, jeśli nie zostały zgłoszone i przyjęte przez ubezpieczyciela. Pełną listę znajdziesz w sekcji <a href="#zakres">Co obejmuje, a czego nie</a>.</p></details>
-        <details id="pytanie-5"><summary>Czy przed zawarciem umowy potrzebne są badania lekarskie?</summary><p>Przy standardowych sumach wystarczy ankieta medyczna we wniosku. Gdy suma dla trwałej niezdolności do pracy przekracza 1 000 000 zł, uruchamia się rozszerzona ankieta zdrowotna, a ubezpieczyciel może poprosić o badania. Wcześniejsze leczenie zgłoś w ankiecie – zatajenie schorzenia jest najczęstszą przyczyną odmowy wypłaty.</p></details>
-        <details id="pytanie-6"><summary>Kto jest ubezpieczycielem i do kogo zgłasza się roszczenie?</summary><p>Ubezpieczycielem jest Lloyd’s Insurance Company S.A. z siedzibą w Brukseli. Umowę zawiera się za pośrednictwem coverholderów Lloyd’s: Leadenhall Insurance S.A. albo CEU sp. z o.o. Roszczenia z wariantów Leadenhall zgłasza się przez Leadenhall Insurance S.A., a z wariantów CEU – przez WAGAS S.A., której ubezpieczyciel powierzył likwidację szkód. Aura Expert sp. z o.o. jest agentem ubezpieczeniowym (RPU 11229690/A): przyjmuje wniosek i prowadzi sprawę do wystawienia polisy.</p></details>
+        <!-- GEN:faq (wygenerowane – narzedzia/makiety/utrata-dochodu/gen_faq.py; nie edytować ręcznie) -->
+        <details id="pytanie-1"><summary>Ile zasiłku chorobowego dostanę z&nbsp;ZUS, prowadząc działalność w&nbsp;branży beauty?</summary><p>Zasiłek chorobowy to 80% podstawy wymiaru składek po odliczeniu 13,71%&nbsp;– nie 80% Twojego dochodu. Przy dużym ZUS-ie z&nbsp;najniższej podstawy (5&nbsp;652&nbsp;zł) i&nbsp;dobrowolnym chorobowym opłacanym od co najmniej 90&nbsp;dni wynosi 3&nbsp;902&nbsp;zł miesięcznie przed podatkiem, niezależnie od tego, ile zarabiasz. Na preferencyjnym ZUS-ie to około 995&nbsp;zł, a&nbsp;bez dobrowolnego chorobowego&nbsp;– 0&nbsp;zł. ZUS wypłaca zasiłek najdłużej przez 182&nbsp;dni.</p></details>
+        <details id="pytanie-2"><summary>Ile wypłaci polisa od utraty dochodu?</summary><p>Do 80% udokumentowanego dochodu przy działalności gospodarczej i&nbsp;kontrakcie B2B oraz do 65% przy umowie o&nbsp;pracę i&nbsp;umowie zlecenia, najwyżej 50&nbsp;000&nbsp;zł miesięcznie. W&nbsp;ubezpieczeniu CEU „Utrata dochodu” limit wynosi 65% także przy działalności i&nbsp;B2B. Świadczenie przychodzi co miesiąc po okresie wyczekiwania ustalonym w&nbsp;umowie, dopóki trwa niezdolność do pracy&nbsp;– najdłużej przez okres wybrany przy zawarciu umowy: 24, 36, 48 albo 60&nbsp;miesięcy.</p></details>
+        <details id="pytanie-3"><summary>Ile kosztuje ubezpieczenie utraty dochodu?</summary><p>Kwot tu nie ma, bo ten produkt nie ma stałej taryfy. Składkę wylicza ubezpieczyciel po ocenie ryzyka: zawodu, wieku, wysokości dochodu i&nbsp;ankiety medycznej; znaczenie mają też okres wyczekiwania i&nbsp;okres wypłaty&nbsp;– dłuższy okres wypłaty podnosi składkę. Symulację zobaczysz na końcu <a href="https://utratadochodu.pl/wniosek/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">wniosku na utratadochodu.pl</a>, a&nbsp;ofertę z&nbsp;realną stawką dostaniesz w&nbsp;1–2&nbsp;dni robocze.</p></details>
+        <details id="pytanie-4"><summary>Czy dostanę świadczenie, jeśli mogę pracować tylko w&nbsp;mniejszym wymiarze?</summary><p>Nie. Polisa wypłaca świadczenie za całkowitą niezdolność do wykonywania zawodu&nbsp;– praca w&nbsp;mniejszym wymiarze albo przejście na lżejsze obowiązki nie spełnia warunku wypłaty. Ochrona nie obejmuje też m.in. wypalenia zawodowego jako samodzielnej diagnozy, chorób psychicznych (w&nbsp;Leadenhall&nbsp;– gdy są jedyną przyczyną niezdolności, w&nbsp;CEU&nbsp;– bez tego zastrzeżenia) i&nbsp;schorzeń leczonych w&nbsp;ciągu 24&nbsp;miesięcy przed zawarciem umowy, jeśli ich nie zgłosisz albo ubezpieczyciel ich nie przyjmie. Pełną listę znajdziesz w&nbsp;sekcji <a href="#zakres">Co obejmuje, a&nbsp;czego nie</a>.</p></details>
+        <details id="pytanie-5"><summary>Czy przed zawarciem umowy potrzebne są badania lekarskie?</summary><p>Przy standardowych sumach wystarczy ankieta medyczna we wniosku. Gdy suma dla trwałej niezdolności do pracy przekracza 1&nbsp;000&nbsp;000&nbsp;zł, uruchamia się rozszerzona ankieta zdrowotna, a&nbsp;ubezpieczyciel może poprosić o&nbsp;badania. Wcześniejsze leczenie zgłoś w&nbsp;ankiecie&nbsp;– zatajenie schorzenia jest najczęstszą przyczyną odmowy wypłaty.</p></details>
+        <details id="pytanie-6"><summary>Kto jest ubezpieczycielem i&nbsp;do kogo zgłasza się roszczenie?</summary><p>Ubezpieczycielem jest Lloyd’s Insurance Company&nbsp;S.A. z&nbsp;siedzibą w&nbsp;Brukseli. Umowę zawiera się za pośrednictwem coverholderów Lloyd’s: Leadenhall Insurance&nbsp;S.A. albo CEU sp.&nbsp;z&nbsp;o.o. Roszczenia z&nbsp;wariantów Leadenhall zgłasza się przez Leadenhall Insurance&nbsp;S.A., a&nbsp;z&nbsp;wariantów CEU&nbsp;– przez WAGAS&nbsp;S.A., której ubezpieczyciel powierzył likwidację szkód. Aura&nbsp;Expert sp.&nbsp;z&nbsp;o.o. jest agentem ubezpieczeniowym (RPU 11229690/A): przyjmuje wniosek i&nbsp;prowadzi sprawę do wystawienia polisy.</p></details>
         <!-- /GEN:faq -->
       </div>
     </div>
   </section>
 
-  <!-- POWIĄZANE: linki publiczne ustalone 12.11.2026 – OC: rejestracja w programie na beautyrazem.pl/polisa; Tax Protect: kalkulator na stronie głównej. -->
-  <section class="section section--flush-top" id="powiazane" aria-labelledby="pow-title">
-    <div class="container">
+  <!-- SEKCJA ZAMYKAJĄCA (raport 15, Z8; runda 2 weryfikacji): „Inne ubezpieczenia” i karta końcowa – jedna sekcja; pytania to osobna
+       sekcja wyżej (razem miały 2,23–2,55 ekranu przy 1440×900) -->
+  <section class="section section--flush-top" id="zamkniecie" aria-labelledby="pow-title">
+    <!-- POWIĄZANE: linki publiczne ustalone 12.11.2026 – OC: rejestracja w programie na beautyrazem.pl/polisa; Tax Protect: kalkulator na stronie głównej. -->
+    <div class="container zamkniecie-blok" id="powiazane">
       <div class="section-head">
         <p class="eyebrow">Powiązane</p>
         <h2 id="pow-title" class="rv-curtain">Inne ubezpieczenia <em>w&nbsp;BeautyPolisa</em></h2>
@@ -1241,23 +1431,23 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="related">
         <article class="route rv-rise" aria-labelledby="pow-oc">
           <div class="scope-head"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><h3 id="pow-oc">OC dla branży beauty</h3></div>
-          <p>Program OC ERGO Hestii ze stałą taryfą: składka zależy od rodzaju działalności gabinetu, sumy gwarancyjnej i&nbsp;liczby osób wykonujących zabiegi. Do programu rejestrujesz się na beautyrazem.pl/polisa. Członkostwo w&nbsp;Beauty Razem nie jest wymagane.</p>
+          <p>Program OC ERGO&nbsp;Hestii ze stałą taryfą: składka zależy od rodzaju działalności gabinetu, sumy gwarancyjnej i&nbsp;liczby osób wykonujących zabiegi. Do programu rejestrujesz się na beautyrazem.pl/polisa. Członkostwo w&nbsp;Beauty Razem nie jest wymagane.</p>
           <div class="route-actions">
-            <a class="link-lux" href="oc-beauty.html">Poznaj OC beauty</a>
+            <a class="link-lux" href="oc-beauty.html">Poznaj OC<span class="sr-only"> dla branży beauty</span></a>
             <a class="link-quiet" href="https://beautyrazem.pl/polisa">Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa</a>
           </div>
         </article>
         <article class="route rv-rise" aria-labelledby="pow-tax">
           <div class="scope-head"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><h3 id="pow-tax">Tax Protect</h3></div>
-          <p>Ochrona karnoskarbowa i&nbsp;podatkowa Colonnade ze stałą taryfą. Po kalkulatorze albo formularzu doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p>
+          <p>Ochrona karnoskarbowa i&nbsp;podatkowa Colonnade ze stałą taryfą. Po kalkulatorze albo formularzu doradca Aura&nbsp;Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p>
           <div class="route-actions">
             <a class="link-lux" href="tax-protect.html">Poznaj Tax Protect</a>
-            <a class="link-quiet" href="makieta-v3.html#kalkulator-tax">Policz składkę Tax Protect</a>
+            <a class="link-quiet" href="makieta-v3.html#kalkulator-tax">Oblicz składkę Tax Protect</a>
           </div>
         </article>
         <article class="route rv-rise" aria-labelledby="pow-nnw">
           <div class="scope-head"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><h3 id="pow-nnw">NNW dla dzieci</h3></div>
-          <p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków w&nbsp;Colonnade: ochrona 24&nbsp;godziny na dobę na całym świecie, jedna składka za rok – 40, 94 albo 175&nbsp;zł za osobę. Polisę kupujesz online na platformie Colonnade.</p>
+          <p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków w&nbsp;Colonnade: ochrona 24&nbsp;godziny na dobę na całym świecie, jedna składka za rok&nbsp;– 40, 94 albo 175&nbsp;zł za osobę. Polisę kupujesz online na platformie Colonnade.</p>
           <div class="route-actions">
             <a class="link-lux" href="nnw-dzieci.html">Poznaj NNW dla dzieci</a>
             <a class="link-quiet" href="https://bit.ly/szkolneNNW2026" target="_blank" rel="noopener">Kup online u&nbsp;Colonnade<span class="sr-only"> – strona ubezpieczyciela otworzy się w&nbsp;nowej karcie</span></a>
@@ -1265,25 +1455,29 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </article>
         <article class="route rv-rise" aria-labelledby="pow-gr">
           <div class="scope-head"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><h3 id="pow-gr">Grupowe ERGO dla beauty</h3></div>
-          <p>Ubezpieczenie na życie w&nbsp;ERGO Hestii. Dla salonu z&nbsp;zespołem (od 2 do 100 osób): ERGO Życie w&nbsp;Biznesie, od 58&nbsp;zł za osobę miesięcznie. Dla Ciebie i&nbsp;rodziny: ERGO Razem, od 57&nbsp;zł miesięcznie.</p>
+          <p>Ubezpieczenie na życie w&nbsp;ERGO&nbsp;Hestii. Dla salonu z&nbsp;zespołem (od 2&nbsp;do 100&nbsp;osób): ERGO&nbsp;Życie w&nbsp;Biznesie, od 58&nbsp;zł za osobę miesięcznie. Dla Ciebie i&nbsp;rodziny: ERGO&nbsp;Razem, od 57&nbsp;zł miesięcznie.</p>
           <div class="route-actions">
             <a class="link-lux" href="grupowe-ergo.html">Poznaj ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a>
           </div>
         </article>
+        <article class="rel-card rv-rise" aria-labelledby="rel-om">
+          <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><h3 id="rel-om">Opieka medyczna</h3></div>
+          <p>Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników salonu, a&nbsp;w&nbsp;zakresie Partner albo Rodzina także dla ich bliskich. Cenę dla Twojego zespołu przygotuje doradca.</p>
+          <div class="rel-links">
+            <a class="link-lux" href="opieka-medyczna.html">Poznaj opiekę medyczną</a>
+          </div>
+        </article>
       </div>
     </div>
-  </section>
-
-  <!-- EPILOG · CTA: kryjąca karta (bez nowej tafli szkła) -->
-  <section class="section section--flush-top" id="dalej" aria-labelledby="end-title">
-    <div class="container">
+    <!-- EPILOG · CTA: kryjąca karta (bez nowej tafli szkła) -->
+    <div class="container zamkniecie-blok" id="dalej">
       <div class="end-card dark">
         <p class="eyebrow">Na koniec</p>
-        <h2 id="end-title" class="rv-curtain">Złóż wniosek <em>albo porozmawiaj z&nbsp;doradcą</em></h2>
-        <p>Wniosek na utratadochodu.pl zajmuje około pięciu minut, a&nbsp;oferta przychodzi w&nbsp;1–2 dni robocze. Wolisz najpierw rozmowę? Doradca Aura Expert skontaktuje się z&nbsp;Tobą po formularzu na stronie głównej.</p>
+        <h3 id="end-title" class="rv-curtain">Złóż wniosek <em>albo porozmawiaj z&nbsp;doradcą</em></h3>
+        <p>Wniosek na utratadochodu.pl zajmuje ok.&nbsp;5&nbsp;minut, a&nbsp;oferta przychodzi w&nbsp;1–2&nbsp;dni robocze. Wolisz najpierw rozmowę? Doradca Aura&nbsp;Expert skontaktuje się z&nbsp;Tobą po formularzu na stronie głównej.</p>
         <div class="end-actions">
           <a class="btn btn-ivory" href="https://utratadochodu.pl/wniosek/?utm_source=beautypolisa&amp;utm_medium=referral&amp;utm_campaign=utrata-dochodu">Złóż wniosek</a>
-          <a class="btn btn-ghost-dark" href="makieta-v3.html?produkt=utrata-dochodu#kontakt" data-produkt="utrata-dochodu">Zamów rozmowę</a>
+          <a class="btn btn-ghost-dark" href="makieta-v3.html?produkt=utrata-dochodu#kontakt" data-produkt="utrata-dochodu">Zapytaj doradcę<span class="sr-only"> o&nbsp;ubezpieczenie utraty dochodu</span></a>
         </div>
       </div>
     </div>
@@ -1298,16 +1492,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <div class="footer-panel glass glass--dark">
       <div class="footer-grid">
         <div class="footer-brand">
-          <span class="logo-chip"><img src="../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="147" height="22"></span>
-          <p>Program ubezpieczeń dla branży beauty prowadzony przez Aura Expert sp.&nbsp;z&nbsp;o.o. – agenta ubezpieczeniowego.</p>
+          <span class="logo-chip"><img src="img/logo-beautypolisa-320.png" alt="BeautyPolisa" width="147" height="22" translate="no"></span>
+          <p>Program ubezpieczeń dla branży beauty prowadzony przez <span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o.&nbsp;– agenta ubezpieczeniowego.</p>
         </div>
         <nav class="footer-nav" aria-label="Stopka">
-          <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html">OC dla branży beauty</a></li><li><a href="tax-protect.html">Tax Protect</a></li><li><a href="utrata-dochodu.html" aria-current="page">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dla dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO dla beauty</a></li><li><a href="opieka-medyczna.html">Opieka medyczna</a></li></ul></div>
-          <div class="rv-rise"><h2 class="footer-title">Dla kogo</h2><ul><li><a href="/dla-kogo/kosmetolog">Kosmetolog</a></li><li><a href="/dla-kogo/fryzjer">Fryzjer i&nbsp;barber</a></li><li><a href="/dla-kogo/podolog">Podolog</a></li><li><a href="/dla-kogo/linergistka">Linergistka</a></li><li><a href="/dla-kogo/stylistka-paznokci">Stylistka paznokci</a></li><li><a href="/dla-kogo/tatuazysta">Tatuażysta</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html">OC dla branży beauty</a></li><li><a href="tax-protect.html"><span translate="no">Tax Protect</span></a></li><li><a href="utrata-dochodu.html" aria-current="page">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dla dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO dla beauty</a></li><li><a href="opieka-medyczna.html">Opieka medyczna</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Dla kogo</h2><ul><li><a href="/dla-kogo/kosmetolog">Kosmetolog</a></li><li><a href="/dla-kogo/fryzjer">Fryzjer i&nbsp;barber</a></li><li><a href="/dla-kogo/podolog">Podolog</a></li><li><a href="/dla-kogo/linergistka">Linergistka</a></li><li><a href="/dla-kogo/stylistka-paznokci">Stylistka paznokci</a></li><li><a href="/dla-kogo/tatuazysta">Tatuażysta</a></li><li><a href="/dla-kogo/trycholog">Trycholog</a></li><li><a href="/dla-kogo/masazysta">Masażysta</a></li></ul></div>
           <!-- „Zgłoś szkodę”: w makiecie makieta-v3.html#jak-zglosic-szkode, produkcyjnie /szkoda; „Polityka prywatności”: /rodo -->
           <div class="rv-rise"><h2 class="footer-title">BeautyPolisa</h2><ul><li><a href="/o-nas">O&nbsp;nas</a></li><li><a href="/dokumenty">Dokumenty i&nbsp;OWU</a></li><li><a href="slownik.html">Słownik pojęć</a></li><li><a href="makieta-v3.html#jak-zglosic-szkode">Zgłoś szkodę</a></li><li><a href="/rodo">Polityka prywatności</a></li><li><a href="makieta-v3.html#kontakt">Kontakt</a></li></ul></div>
           <!-- produkcyjnie /strefa-klienta/logowanie, /dam-prace, /strefa-klienta/rejestracja/szukam-pracy, /szkolenia, /szkolenia#dla-organizatorow -->
-          <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="https://beautyrazem.pl/polisa">Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa (członkostwo w&nbsp;Beauty Razem nie jest wymagane)</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę – ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy – dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="makieta-v3.html#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="https://beautyrazem.pl/polisa">Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa (członkostwo w&nbsp;<span translate="no">Beauty Razem</span> nie jest wymagane)</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę&nbsp;– ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy&nbsp;– dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="makieta-v3.html#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
         </nav>
       </div>
       <div class="legal">
@@ -1315,16 +1509,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
              ergo.beautypolisa.eu/informacja-o-agencie podaje „XIII” – błąd po tamtej stronie, uwaga dla zleceniodawcy).
              Informacje o agencie (art. 22 ustawy o dystrybucji ubezpieczeń) – źródło: ujawnienie Aura Expert. Blok details.legal-idd
              jest identyczny na stronach publicznych i w Strefie Klienta. -->
-        <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
-        <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
+        <p><span translate="no">BeautyPolisa</span> created by <span translate="no">Aura&nbsp;Expert</span> (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong><span translate="no">Aura&nbsp;Expert</span> spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem&nbsp;0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem&nbsp;11229690/A.</p>
+        <p><span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
         <details class="legal-idd">
           <summary>Informacje o&nbsp;agencie ubezpieczeniowym (IDD)</summary>
           <div class="legal-idd-body">
             <p><strong>Zakłady ubezpieczeń, na rzecz których działa agent:</strong></p>
-            <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie S.A.</li><li>Lloyd’s Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA S.A.</li><li>Colonnade Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
+            <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji&nbsp;S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń&nbsp;S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li><span translate="no">Lloyd’s</span> Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA&nbsp;S.A.</li><li><span translate="no">Colonnade</span> Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
             <p><strong>Wynagrodzenie.</strong> Agent otrzymuje od zakładu ubezpieczeń prowizję, która jest uwzględniona w&nbsp;składce. Może też otrzymywać od zakładu ubezpieczeń inny rodzaj wynagrodzenia.</p>
             <p><strong>Powiązania kapitałowe.</strong> Agent nie ma akcji ani udziałów zakładu ubezpieczeń dających co najmniej 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie ma udziałów agenta dających co najmniej 10% głosów na zgromadzeniu wspólników.</p>
-            <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
+            <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres <span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466&nbsp;Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
             <p><strong>Kontakt z&nbsp;agentem:</strong> <a href="mailto:zarzad@auraexpert.pl">zarzad@auraexpert.pl</a>, <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>. Wpis agenta (numer 11229690/A) sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>.</p>
           </div>
         </details>
@@ -1349,7 +1543,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 </svg>
 <!-- gen:pasek-akcji -->
 <!-- Pasek akcji na telefonie (< 768 px, wysokość okna > 500 px): pokazuje go skrypt gen:wspolne-js po przewinięciu poza pierwszy ekran;
-     chowa się przy polu formularza / klawiaturze, przy widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu,
+     chowa się przy polu formularza / klawiaturze, przy widocznym pasku ceny kalkulatora (.calc-peek), kalkulatorze OC, wyszukiwarkach, formularzu kontaktu,
      karcie końcowej i stopce. Bez JS zostaje ukryty (te same akcje są w treści). -->
 <aside class="pasek-akcji" id="pasek-akcji" aria-label="Szybkie akcje" hidden>
   <a class="pa-glowny" href="makieta-v3.html?produkt=utrata-dochodu#kontakt">Zapytaj doradcę</a>
@@ -1432,7 +1626,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   [].forEach.call(document.querySelectorAll('.section-head > .eyebrow,.end-card > .eyebrow'),function(e){e.classList.add('rv-eyebrow')});
   var els=[].slice.call(document.querySelectorAll('.rv-curtain,.rv-rise,.rv-eyebrow')), vh=window.innerHeight;
   function show(e){e.classList.add('is-in')}
-  els.forEach(function(e){if(e.getBoundingClientRect().top<vh)show(e)});
+  /* najpierw wszystkie odczyty położenia, potem zapisy klas (bez wymuszania przeliczeń stylu w pętli) */
+  var tops=els.map(function(e){return e.getBoundingClientRect().top});
+  els.forEach(function(e,i){if(tops[i]<vh)show(e)});
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(en){if(en.isIntersecting){show(en.target);io.unobserve(en.target)}});
   },{rootMargin:'0px 0px -10% 0px'});
@@ -1441,28 +1637,6 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   window.addEventListener('beforeprint',function(){els.forEach(show)});
 })();
 
-/* Dryf cyfr rozdziałów bez animation-timeline: rAF po zdarzeniu scroll (passive), tylko translate */
-(function(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if(window.CSS&&CSS.supports&&CSS.supports('animation-timeline: view()')) return;
-  var nums=[].slice.call(document.querySelectorAll('.chapter-no')).map(function(n){return {el:n,box:n.parentNode,d:parseFloat(getComputedStyle(n).getPropertyValue('--drift'))||60}});
-  if(!nums.length) return;
-  var ticking=false;
-  function clamp(v){return v<0?0:v>1?1:v}
-  function frame(){
-    ticking=false;var vh=window.innerHeight, out=[];
-    nums.forEach(function(n){
-      var r=n.box.getBoundingClientRect();if(r.bottom<-vh||r.top>2*vh)return;
-      out.push([n.el,(n.d*(1-2*clamp((vh-r.top)/(vh+r.height)))).toFixed(1)+'px']);
-    });
-    out.forEach(function(o){o[0].style.setProperty('--drift-y',o[1])});
-  }
-  function request(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
-  document.documentElement.classList.add('sl-js');
-  window.addEventListener('scroll',request,{passive:true});
-  window.addEventListener('resize',request);
-  frame();
-})();
 
 </script>
 <!-- gen:wspolne-js -->
@@ -1496,19 +1670,59 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if(hdr&&hdr.dataset.hidden==='1'){close(false);return}
     if(via!=='hover'&&!panel.contains(document.activeElement)&&Math.abs(window.scrollY-y0)>120)close(false);
   },{passive:true});
-  var mqWide=window.matchMedia('(min-width:1200px)');
+  var mqWide=window.matchMedia('(min-width:75em)');
   function onWide(){if(!mqWide.matches)close(false)}
   if(mqWide.addEventListener)mqWide.addEventListener('change',onWide);else if(mqWide.addListener)mqWide.addListener(onWide);
 })();
 
+/* Szuflada menu (details.menu): widoczny stan otwarcia – etykieta „Zamknij” i ikona X; bez JS – „Menu” w obu stanach (raport 15, Z41) */
+(function(){
+  var menu=document.querySelector('details.menu'); if(!menu) return;
+  var lab=menu.querySelector('.menu-label'), path=menu.querySelector('summary svg path'); if(!lab||!path) return;
+  var d0=path.getAttribute('d'), d1='M6 6l12 12M18 6 6 18', t0=lab.textContent;
+  function sync(){var o=menu.open;lab.textContent=o?'Zamknij':t0;path.setAttribute('d',o?d1:d0)}
+  menu.addEventListener('toggle',sync);sync();
+})();
+
+/* Z10 (raport 15): rytm sekcji 1 albo 2 ekrany – od 64em × 37.5em. Pomiar: wszystkie sekcje główne naraz w stanie pomiaru
+   (data-ekrany="0": przycięty padding, bez min-height), odczyt wysokości, potem zapis 1 (do 1,1 ekranu) / 2 (do 2,02 ekranu; powyżej –
+   bez atrybutu,
+   np. listy zabiegów i hasła słownika – K6). Ponownie po wczytaniu fontów, przy zmianie rozmiaru okna; nie przy rozwijaniu
+   treści (pytania, pełne listy), żeby sekcja nie skakała o ekran */
+(function(){
+  var mq=window.matchMedia('(min-width:64em) and (min-height:37.5em)'), raf=0;
+  var sekcje=[].slice.call(document.querySelectorAll('main section')).filter(function(s){
+    return !(s.parentElement&&s.parentElement.closest('main section'))&&!s.matches('.scene--hero,.page-hero,[data-ekrany-auto]');
+  });
+  if(!sekcje.length) return;
+  function licz(){
+    raf=0;
+    if(!mq.matches){sekcje.forEach(function(s){s.removeAttribute('data-ekrany')});return}
+    sekcje.forEach(function(s){s.setAttribute('data-ekrany','0');s.removeAttribute('data-ciasno')});
+    var H=window.innerHeight, T1=1.1*H, T2=2.02*H, m=sekcje.map(function(s){var cs=getComputedStyle(s);
+      return {h:s.getBoundingClientRect().height,p:parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom)}});
+    sekcje.forEach(function(s,i){
+      var h=m[i].h, t=h-m[i].p+48, n='', c=false;
+      if(h<=T1)n='1';else if(t<=T1){n='1';c=true}else if(h<=T2)n='2';else if(t<=T2){n='2';c=true}
+      if(n){s.setAttribute('data-ekrany',n);if(c)s.setAttribute('data-ciasno','')}else s.removeAttribute('data-ekrany');
+    });
+  }
+  function req(){if(!raf)raf=requestAnimationFrame(licz)}
+  licz();
+  window.addEventListener('resize',req);
+  window.addEventListener('load',req);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(req);
+})();
+
 /* Pasek akcji na telefonie (< 768 px): po przewinięciu poza pierwszy ekran; chowa się przy polu formularza/klawiaturze,
-   otwartej szufladzie menu, widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu, karcie końcowej, akcjach otwarcia i stopce */
+   otwartej szufladzie menu, widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu, karcie końcowej, akcjach otwarcia i stopce,
+   a także nad formularzami kalkulatora OC (form#calc), wyszukiwarką zabiegów (.zsearch) i wyszukiwarką specjalizacji (#spec-form) – raport 15, Z22 */
 (function(){
   var bar=document.getElementById('pasek-akcji'); if(!bar||!('IntersectionObserver' in window)) return;
   /* niskie okno (telefon w poziomie, ≤ 500 px – jak nagłówek): bez paska */
   var root=document.documentElement, mq=window.matchMedia('(max-width:767px) and (min-height:501px)'), menu=document.querySelector('details.menu');
   var FIELD='input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]):not([type=reset]):not([type=range]):not([type=file]):not([type=image]),textarea,select,[contenteditable="true"]';
-  var targets=[].slice.call(document.querySelectorAll('.calc-peek,.lead-form,.end-card,.hero-actions,.tariff-actions,.site-footer'));
+  var targets=[].slice.call(document.querySelectorAll('.calc-peek,.lead-form,.end-card,.hero-actions,.tariff-actions,.site-footer,form#calc,.zsearch,#spec-form'));
   var seen=new Set(), io=null, ticking=false;
   function typing(){var a=document.activeElement;return !!(a&&a.matches&&a.matches(FIELD))}
   function keyboard(){var v=window.visualViewport;return !!(v&&v.height<window.innerHeight*0.72)}
@@ -1558,72 +1772,73 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <script type="application/json" id="slownik-dymki">
 {
  "zasilek-chorobowy": {
-  "t": "Zasiłek chorobowy z ZUS",
-  "d": "Pieniądze z ZUS za czas zwolnienia lekarskiego (L4). Przedsiębiorca dostaje go tylko wtedy, gdy opłaca dobrowolne ubezpieczenie chorobowe – po 90 dniach nieprzerwanego ubezpieczenia, najdłużej przez 182 dni.",
+  "t": "Zasiłek chorobowy z ZUS",
+  "d": "Pieniądze z ZUS za czas zwolnienia lekarskiego (L4). Przedsiębiorca dostaje go tylko wtedy, gdy opłaca dobrowolne ubezpieczenie chorobowe – po 90 dniach nieprzerwanego ubezpieczenia, najdłużej przez 182 dni.",
   "u": "slownik.html#haslo-zasilek-chorobowy"
  },
  "zakres-i-wylaczenia": {
-  "t": "Zakres ochrony i wyłączenia",
-  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
+  "t": "Zakres ochrony i wyłączenia",
+  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
   "u": "slownik.html#haslo-zakres-i-wylaczenia",
   "o": 1
  },
  "owu": {
   "t": "OWU (ogólne warunki ubezpieczenia)",
-  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. Ubezpieczyciel ma obowiązek doręczyć je przed zawarciem umowy.",
+  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. Ubezpieczyciel ma obowiązek doręczyć je przed zawarciem umowy.",
   "u": "slownik.html#haslo-owu",
   "o": 1
  },
  "okresowa-niezdolnosc": {
   "t": "Okresowa niezdolność do pracy",
-  "d": "Czasowy stan, w którym choroba albo wypadek całkowicie uniemożliwiają wykonywanie Twojego zawodu – za ten czas ubezpieczenie utraty dochodu wypłaca świadczenie miesięczne. Częściowa niezdolność, czyli praca w mniejszym wymiarze albo przejście na lżejsze obowiązki, nie spełnia warunku wypłaty.",
+  "d": "Czasowy stan, w którym choroba albo wypadek całkowicie uniemożliwiają wykonywanie Twojego zawodu – za ten czas ubezpieczenie utraty dochodu wypłaca świadczenie miesięczne. Częściowa niezdolność, czyli praca w mniejszym wymiarze albo przejście na lżejsze obowiązki, nie spełnia warunku wypłaty.",
   "u": "slownik.html#haslo-okresowa-niezdolnosc",
   "o": 1
  },
  "trwala-niezdolnosc": {
   "t": "Trwała niezdolność do pracy",
-  "d": "Stan, w którym na stałe nie możesz pracować; świadczenie jest jednorazowe. W ubezpieczeniu utraty dochodu to osobne ryzyko obok okresowej niezdolności; dokładną definicję podają OWU wariantu.",
+  "d": "Stan, w którym na stałe nie możesz pracować; świadczenie jest jednorazowe. W ubezpieczeniu utraty dochodu to osobne ryzyko obok okresowej niezdolności; dokładną definicję podają OWU wariantu.",
   "u": "slownik.html#haslo-trwala-niezdolnosc",
   "o": 1
  },
  "klauzula": {
   "t": "Klauzula (rozszerzenie zakresu)",
-  "d": "Dodatkowe postanowienie dołączone do umowy, które zmienia jej zakres – najczęściej rozszerza ochronę o coś, czego podstawowe warunki nie obejmują, zwykle za dodatkową składką. Klauzula działa razem z OWU: postanowienia, których nie zmienia, obowiązują bez zmian.",
+  "d": "Dodatkowe postanowienie dołączone do umowy, które zmienia jej zakres – najczęściej rozszerza ochronę o coś, czego podstawowe warunki nie obejmują, zwykle za dodatkową składką. Klauzula działa razem z OWU: postanowienia, których nie zmienia, obowiązują bez zmian.",
   "u": "slownik.html#haslo-klauzula",
   "o": 1
  },
  "limit": {
   "t": "Limit (podlimit)",
-  "d": "Najwyższa kwota albo liczba usług, jaką ubezpieczyciel pokryje w danej pozycji – np. za jeden rodzaj kosztów, na jedną osobę albo na rok. Podlimit to limit „w środku” większej kwoty, dotyczący tylko jednej części ochrony.",
+  "d": "Najwyższa kwota albo liczba usług, jaką ubezpieczyciel pokryje w danej pozycji – np. za jeden rodzaj kosztów, na jedną osobę albo na rok. Podlimit to limit „w środku” większej kwoty, dotyczący tylko jednej części ochrony.",
   "u": "slownik.html#haslo-limit",
   "o": 1
  },
  "karta-produktu": {
   "t": "Karta produktu (IPID)",
-  "d": "Krótki dokument w ujednoliconym układzie (IPID – z ang. Insurance Product Information Document), który streszcza ubezpieczenie: co obejmuje, czego nie obejmuje, gdzie działa i jakie masz obowiązki. Ułatwia porównanie produktów, ale wiążące są OWU i polisa.",
+  "d": "Krótki dokument w ujednoliconym układzie (IPID – z ang. Insurance Product Information Document), który streszcza ubezpieczenie: co obejmuje, czego nie obejmuje, gdzie działa i jakie masz obowiązki. Ułatwia porównanie produktów, ale wiążące są OWU i polisa.",
   "u": "slownik.html#haslo-karta-produktu",
   "o": 1
  },
  "roszczenie": {
   "t": "Roszczenie",
-  "d": "Żądanie zapłaty albo innego świadczenia. W ubezpieczeniach na życie i utraty dochodu „zgłosić roszczenie” znaczy po prostu wystąpić o wypłatę.",
+  "d": "Żądanie zapłaty albo innego świadczenia. W ubezpieczeniach na życie i utraty dochodu „zgłosić roszczenie” znaczy po prostu wystąpić o wypłatę.",
   "u": "slownik.html#haslo-roszczenie",
   "o": 1
  },
  "stala-taryfa": {
   "t": "Stała taryfa",
-  "d": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. rodzaj działalności i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
+  "d": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. rodzaj działalności i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
   "u": "slownik.html#haslo-stala-taryfa",
   "o": 1
  },
- "ubezpieczyciel": {
-  "t": "Ubezpieczyciel (zakład ubezpieczeń)",
-  "d": "Firma, która udziela ochrony: przyjmuje składkę, rozpatruje zgłoszenia i decyduje o wypłacie. W BeautyPolisa ubezpieczycielami są m.in. dwie spółki ERGO Hestii – Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A. (OC) i Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. (grupowe ERGO) – oraz Colonnade i Lloyd’s Insurance Company; Aura Expert nim nie jest.",
-  "u": "slownik.html#haslo-ubezpieczyciel"
+ "ocena-ryzyka": {
+  "t": "Ocena ryzyka (underwriting)",
+  "d": "Sprawdzenie przez ubezpieczyciela, jak prawdopodobna i jak wysoka może być wypłata w Twoim przypadku. Na tej podstawie ubezpieczyciel decyduje, czy przyjmie Cię do ubezpieczenia, na jakich warunkach i za jaką składkę.",
+  "u": "slownik.html#haslo-ocena-ryzyka",
+  "o": 1
  },
  "ankieta-medyczna": {
   "t": "Ankieta medyczna",
-  "d": "Pytania o Twoje zdrowie i leczenie, na które odpowiadasz przed zawarciem umowy – zamiast badań lekarskich albo przed nimi. Na ich podstawie ubezpieczyciel ocenia ryzyko, dlatego odpowiadaj zgodnie z prawdą: zatajenie wcześniejszego leczenia to najczęstsza przyczyna odmowy wypłaty w ubezpieczeniu utraty dochodu.",
+  "d": "Pytania o Twoje zdrowie i leczenie, na które odpowiadasz przed zawarciem umowy – zamiast badań lekarskich albo przed nimi. Na ich podstawie ubezpieczyciel ocenia ryzyko, dlatego odpowiadaj zgodnie z prawdą: zatajenie wcześniejszego leczenia to najczęstsza przyczyna odmowy wypłaty w ubezpieczeniu utraty dochodu.",
   "u": "slownik.html#haslo-ankieta-medyczna",
   "o": 1
  }
@@ -1631,8 +1846,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 </script>
 <script>
 /* Dymek z definicją pojęcia (gen_terminy.py – nie edytuj ręcznie).
-   Bez JS oznaczenie jest linkiem do słownika. Z JS: link dostaje rolę przycisku (aria-haspopup="dialog", aria-expanded, aria-controls),
-   klik / Enter / Spacja otwiera niemodalny dialog (role="dialog" + aria-labelledby/aria-describedby – w środku link i przycisk, więc nie tooltip).
+   Bez JS oznaczenie jest linkiem do słownika. Z JS zostaje linkiem (czytnik ogłasza link, a pojęcie jest na liście linków strony),
+   dostaje aria-haspopup="dialog", aria-expanded i aria-controls; klik / Enter otwiera niemodalny dialog (role="dialog" +
+   aria-labelledby/aria-describedby – w środku link „Więcej w słowniku” do hasła i przycisk, więc nie tooltip). Spacja – jak przy linku.
    Fokus przechodzi do dialogu; Esc i „Zamknij” zamykają i oddają fokus pojęciu; Tab za ostatnim elementem i Shift+Tab przed pierwszym też wracają do pojęcia;
    klik poza dymkiem zamyka. Najechanie myszą niczego nie otwiera ani nie zamyka (WCAG 1.4.13: dymek nie znika, gdy kursor jest nad nim).
    Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Okno od 600 × 600 px: dymek pod ostatnią linią pojęcia albo nad
@@ -1654,21 +1870,24 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   var mqWaski=window.matchMedia('(max-width:599px),(max-height:599px)'), biezace=null, GORA=88, M=12;
   pojecia.forEach(function(a){
     if(!D[a.getAttribute('data-termin')])return;
-    a.setAttribute('role','button');a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
+    a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
   });
+  /* położenie: najpierw wszystkie odczyty (jedno przeliczenie układu), potem zapisy; wysokość treści z scrollHeight + ramka,
+     więc nie trzeba zdejmować max-height przed pomiarem */
   function pozycja(){
     if(!biezace||box.hidden)return;
-    box.style.maxHeight='';box.style.overflowY='';
-    if(mqWaski.matches){box.style.top='';box.style.left='';return}
+    if(mqWaski.matches){box.style.maxHeight='';box.style.overflowY='';box.style.top='';box.style.left='';return}
     var rs=biezace.getClientRects(), r1=rs[0]||biezace.getBoundingClientRect(), r2=rs[rs.length-1]||r1;
-    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.offsetHeight;
-    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y;
+    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.scrollHeight+(box.offsetHeight-box.clientHeight);
+    var sx=window.scrollX, sy=window.scrollY;
+    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y, maxH=0;
     if(h<=pod){y=r2.bottom+10}
     else if(h<=nad){r=r1;y=r1.top-10-h}
-    else if(pod>=nad){y=r2.bottom+10;box.style.maxHeight=Math.max(160,pod)+'px';box.style.overflowY='auto'}
-    else{r=r1;box.style.maxHeight=Math.max(160,nad)+'px';box.style.overflowY='auto';y=r1.top-10-box.offsetHeight}
+    else if(pod>=nad){y=r2.bottom+10;maxH=Math.max(160,pod)}
+    else{r=r1;maxH=Math.max(160,nad);y=r1.top-10-Math.min(h,maxH)}
     var x=Math.min(Math.max(16,r.left),vw-w-16);
-    box.style.left=Math.round(x+window.scrollX)+'px';box.style.top=Math.round(y+window.scrollY)+'px';
+    box.style.maxHeight=maxH?maxH+'px':'';box.style.overflowY=maxH?'auto':'';
+    box.style.left=Math.round(x+sx)+'px';box.style.top=Math.round(y+sy)+'px';
   }
   function otworz(a){
     var d=D[a.getAttribute('data-termin')]; if(!d)return;
@@ -1692,8 +1911,6 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if(biezace&&!box.contains(e.target))zamknijDymek(false);
   });
   document.addEventListener('keydown',function(e){
-    var a=e.target.closest&&e.target.closest('a.bp-termin[data-termin]');
-    if(a&&(e.key===' '||e.key==='Spacebar')&&D[a.getAttribute('data-termin')]){e.preventDefault();if(biezace===a)zamknijDymek(true);else otworz(a);return}
     if(!biezace)return;
     if(e.key==='Escape'||e.key==='Esc'){e.preventDefault();zamknijDymek(true);return}
     if(e.key==='Tab'&&box.contains(document.activeElement)){

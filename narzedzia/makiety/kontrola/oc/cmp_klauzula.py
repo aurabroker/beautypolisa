@@ -48,8 +48,9 @@ for i,(h,j) in enumerate(zip(t.items,k['punkty']),1):
         for a,b in zip(hw,jw):
             if a!=b: print(' H:',repr(a)); print(' J:',repr(b))
     elif jw: print('pkt',i,'wyliczenie',len(hw),'pozycji OK')
-# exact byte check: raw (without whitespace normalisation) also contains no entities / nbsp
-raw_txt=re.sub(r'<[^>]+>','\n',art)
-print('encje HTML w klauzuli:',re.findall(r'&[a-z#0-9]+;',art))
-print('NBSP w klauzuli:', ' ' in art)
+# od 16.11.2026 klauzula ma polską typografię (twarde spacje &nbsp; z narzedzia/makiety/typografia.py – raport 16, 3.1);
+# brzmienie porównywane po normalizacji odstępów (\s obejmuje U+00A0); encje inne niż &nbsp; – błąd
+inne_encje=[x for x in re.findall(r'&[a-z#0-9]+;',art) if x!='&nbsp;']
+print('twarde spacje (&nbsp;) w klauzuli:',art.count('&nbsp;'),'| inne encje:',inne_encje)
+if inne_encje: errs+=1
 print('ROZNIC:',errs)

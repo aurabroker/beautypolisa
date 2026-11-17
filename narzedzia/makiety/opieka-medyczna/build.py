@@ -12,6 +12,8 @@ import html, json, re, sys, unicodedata, os
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from data import PRICES, TEAMS, SCOPES, OPS, PACKAGES, SPEC_MAP, PROCEDURES  # noqa: E402
+sys.path.insert(0, os.path.join(HERE, '..'))
+import typografia  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(HERE, '..', '..', '..'))  # katalog główny repozytorium
 V3 = REPO + '/docs/koncepcja/design/v3'
@@ -70,8 +72,7 @@ def price_card(op):
               </tbody>
             </table>
           </div>
-          <a class="btn btn-navy" href="#zapytanie" data-to-form data-op="{op}"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Zapytaj o&nbsp;{o['brand']}<span class="sr-only"> Standard</span></a>
-        </article>'''
+        </article>'''   # bez przycisku w karcie: jedna akcja „Zapytaj doradcę o cenę” pod obiema kartami, sieć wybierasz w formularzu (raport 15, Z34)
 
 
 # ---------------------------------------------------------------- porównanie
@@ -104,7 +105,8 @@ def cell(p, key):
         n = len(p['specs_list'])
         return f'{esc(p["specs"])} <span class="mock-note">na liście w&nbsp;źródle: {n} nazw – do potwierdzenia</span>'
     if key == 'list':
-        return esc(', '.join(p['specs_list']))
+        t = ', '.join(p['specs_list'])
+        return esc(t[:1].upper() + t[1:])
     if key == 'price':
         if not p['priced']:
             return 'brak przykładu – cenę przygotuje doradca <span class="mock-note">cennik programu w&nbsp;przygotowaniu</span>'
@@ -117,7 +119,8 @@ def cell(p, key):
                 + ' miesięcznie (Singiel za pracownika; zespół 3&#8288;–&#8288;50&nbsp;osób)</span> – <a href="#ceny">zobacz przykładowe stawki</a>')
     if key == 'diff':
         d = diff_for(p['id'], [x['id'] for x in PACKAGES])
-        return f'<span data-diff="{p["id"]}">{esc(", ".join(d)) if d else "–"}</span>'
+        t = ', '.join(d)
+        return f'<span data-diff="{p["id"]}">{esc(t[:1].upper() + t[1:]) if d else "–"}</span>'
     return esc(p[key])
 
 
@@ -360,22 +363,12 @@ def page_data():
     }, ensure_ascii=False, separators=(',', ':'))
 
 
-# ---------------------------------------------------------------- nbsp po jednoliterowych słowach (tylko tekst, poza script/style/FAQ)
+# ---------------------------------------------------------------- polska typografia (tylko tekst, poza script/style)
 def nbsp(doc):
-    out, skip = [], False
-    for part in re.split(r'(<[^>]+>)', doc):
-        if part.startswith('<'):
-            low = part.lower()
-            if low.startswith(('<script', '<style', '<!--nb-off')):
-                skip = True
-            elif low.startswith(('</script', '</style', '<!--nb-on')):
-                skip = False
-            out.append(part)
-        elif skip:
-            out.append(part)
-        else:
-            out.append(re.sub(r'(^|[\s(„])([aiouwzAIOUWZ]) +(?=\S)', r'\1\2&nbsp;', part))
-    return ''.join(out)
+    """Wspólny moduł narzedzia/makiety/typografia.py (raport 16, 3.1): twarde spacje po jednoliterowych wyrazach – także kilku
+    z rzędu („i&nbsp;w&nbsp;jednym”; dawny wzorzec zużywał spację przed wyrazem) – w grupach cyfr, przed „zł”, „osób”, po „nr”,
+    przed półpauzą. FAQ także (twarde spacje tylko w widocznym HTML; FAQPage w JSON-LD bez nich)."""
+    return typografia.html(doc)
 
 
 def sprite():

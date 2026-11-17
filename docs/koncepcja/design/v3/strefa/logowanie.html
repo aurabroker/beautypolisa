@@ -7,7 +7,7 @@
 <meta name="description" content="Makieta: logowanie do Strefy Klienta BeautyPolisa kodem z e-maila, drugi składnik, przyjęcie zaproszenia oraz zakładanie konta pracodawcy (NIP, GUS, SMS) i konta osoby szukającej pracy (e-mail, SMS, 18+).">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#141C33">
+<meta name="theme-color" content="#EDE5D8">
 <meta name="color-scheme" content="only light">
 <!-- Produkcja: /strefa-klienta/logowanie, /strefa-klienta/zaproszenie, /strefa-klienta/rejestracja(/pracodawca|/szukam-pracy), /strefa-klienta/telefon –
      dynamiczne, no-store, noindex, CSP z nonce, Turnstile (host już w CSP), Referrer-Policy: no-referrer.
@@ -33,7 +33,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
 /* dymek: kryjące ivory (bez backdrop-filter – nie liczy się do limitu 3 tafli), złota linia, cień */
-.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
+.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;overscroll-behavior:contain;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
 .bp-dymek[hidden]{display:none}
 .bp-dymek:focus{outline:none}
 .bp-dymek:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
@@ -65,7 +65,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <!-- Adnotacja makiety: w produkcji usuwana -->
 <div class="mock-bar" role="note">
   <strong>Makieta</strong>
-  <span>Strefa Klienta – logowanie i&nbsp;rejestracja (P1). Dane są fikcyjne.</span>
+  <span>Strefa Klienta&nbsp;– logowanie i&nbsp;rejestracja (P1). Dane są fikcyjne.</span>
   <nav aria-label="Ekrany makiety – logowanie">
     <a href="#s-email">1. E-mail</a>
     <a href="#s-kod">2. Kod z&nbsp;e-maila</a>
@@ -94,8 +94,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
 <header class="auth-top">
   <a class="brand" href="../makieta-v3.html" aria-label="BeautyPolisa – strona główna">
-    <span class="logo-chip"><img src="../../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="133" height="20"></span>
-    <span class="zone-name">Strefa Klienta<small>created by Aura Expert</small></span>
+    <span class="logo-chip"><img src="../img/logo-beautypolisa-320.png" alt="BeautyPolisa" width="133" height="20" translate="no"></span>
+    <span class="zone-name">Strefa Klienta<small>created by <span translate="no">Aura&nbsp;Expert</span></small></span>
   </a>
   <a class="link-quiet" href="../makieta-v3.html">Wróć na stronę główną</a>
 </header>
@@ -108,11 +108,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="auth-card glass glass--strong frame">
         <p class="eyebrow">Strefa Klienta</p>
         <h1 id="t-email">Zaloguj się</h1>
-        <p class="lead">Wpisz adres e-mail przypisany do konta. Wyślemy na niego sześciocyfrowy kod&nbsp;– bez hasła.</p>
+        <p class="lead">Wpisz adres e-mail przypisany do konta. Wyślemy na niego 6-&#8288;cyfrowy kod&nbsp;– bez hasła.</p>
         <form class="form" id="f-email" action="#s-kod" method="post" novalidate>
           <div class="field">
             <label for="email">Adres e-mail</label>
-            <input type="email" id="email" name="email" autocomplete="email" inputmode="email" spellcheck="false" required aria-describedby="email-hint" placeholder="np. anna@salon-przykladowy.example">
+            <input type="email" id="email" name="email" autocomplete="email" inputmode="email" spellcheck="false" required aria-describedby="email-hint" placeholder="np. anna@salon-przykladowy.example…">
             <p class="hint" id="email-hint">Ten sam formularz służy salonom, pracodawcom, osobom szukającym pracy i&nbsp;organizatorom szkoleń.</p>
             <p class="field-error" id="email-err" hidden>Wpisz adres e-mail w&nbsp;formacie nazwa@domena.pl.</p>
           </div>
@@ -123,9 +123,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <button class="btn btn-navy" type="submit">Wyślij kod</button>
         </form>
         <hr class="rule">
-        <p class="small">Konto klienta zakłada Aura Expert po zawarciu <a class="bp-termin" href="../slownik.html#haslo-polisa" data-termin="polisa">polisy</a>&nbsp;– salon nie musi się rejestrować. <span class="mock-note">Założenie – do decyzji zleceniodawcy</span> Pracodawcy i&nbsp;osoby szukające pracy zakładają konto sami.</p>
+        <p class="small">Konto klienta zakłada <span translate="no">Aura&nbsp;Expert</span> po zawarciu <a class="bp-termin" href="../slownik.html#haslo-polisa" data-termin="polisa">polisy</a>&nbsp;– salon nie musi się rejestrować. <span class="mock-note">Założenie&nbsp;– do decyzji zleceniodawcy</span> Pracodawcy i&nbsp;osoby szukające pracy zakładają konto sami.</p>
         <!-- Rejestracja w programie (zakup polisy) – decyzja zleceniodawcy 12.11.2026: beautyrazem.pl/polisa -->
-        <p class="small"><strong>Nie masz polisy <a class="bp-termin" href="../slownik.html#haslo-odpowiedzialnosc-cywilna" data-termin="odpowiedzialnosc-cywilna">OC</a> dla branży beauty?</strong> Zarejestruj się na <a href="https://beautyrazem.pl/polisa">beautyrazem.pl/polisa</a>. Członkostwo w&nbsp;Beauty Razem nie jest wymagane.</p>
+        <p class="small"><strong>Nie masz polisy <a class="bp-termin" href="../slownik.html#haslo-odpowiedzialnosc-cywilna" data-termin="odpowiedzialnosc-cywilna">OC</a> dla branży beauty?</strong> Zarejestruj się na <a href="https://beautyrazem.pl/polisa">beautyrazem.pl/polisa</a>. Członkostwo w&nbsp;<span translate="no">Beauty Razem</span> nie jest wymagane.</p>
         <div class="actions"><a class="link-lux" href="#s-rej">Załóż konto</a><a class="link-quiet" href="../makieta-v3.html#kontakt">Salon z&nbsp;polisą bez zaproszenia? Napisz do doradcy</a></div>
       </div>
     </section>
@@ -141,13 +141,13 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <h1 id="t-kod">Wpisz kod z&nbsp;e-maila</h1>
         <div class="alert alert--info" role="status">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3.5 6l8.5 7 8.5-7"/></svg>
-          <p>Jeśli adres <strong class="js-email">anna@salon-przykladowy.example</strong> jest przypisany do konta, wysłaliśmy na niego sześciocyfrowy kod. Kod jest ważny 10&nbsp;minut <span class="mock-note">Założenie</span>.</p>
+          <p>Jeśli adres <strong class="js-email">anna@salon-przykladowy.example</strong> jest przypisany do konta, wysłaliśmy na niego 6-&#8288;cyfrowy kod. Kod jest ważny 10&nbsp;minut <span class="mock-note">Założenie</span>.</p>
         </div>
         <form class="form" id="f-kod" action="#s-totp" method="post" novalidate>
           <div class="field">
             <label for="kod">Kod z&nbsp;e-maila</label>
-            <input class="code-input" type="text" id="kod" name="kod" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="kod-hint">
-            <p class="hint" id="kod-hint">Sześć cyfr. Nie widzisz wiadomości? Sprawdź folder „Oferty” lub „Spam”.</p>
+            <input class="code-input" type="text" id="kod" spellcheck="false" name="kod" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="kod-hint">
+            <p class="hint" id="kod-hint">6&nbsp;cyfr. Nie widzisz wiadomości? Sprawdź folder „Oferty” lub „Spam”.</p>
             <p class="field-error" id="kod-err" hidden></p>
           </div>
           <div class="turnstile-slot" role="img" aria-label="Miejsce na weryfikację Cloudflare Turnstile">
@@ -156,8 +156,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </div>
           <div class="form-foot">
             <button class="btn btn-navy" type="submit">Zaloguj się</button>
-            <button class="link-quiet" type="button" id="resend" disabled aria-describedby="resend-info">Wyślij kod ponownie</button>
-            <span class="xsmall" id="resend-info" aria-live="polite">Możliwe za <span class="num" id="resend-left">0:59</span></span>
+            <button class="link-quiet" type="button" id="resend" aria-disabled="true" aria-describedby="resend-info">Wyślij kod ponownie</button>
+            <span class="xsmall resend-info" id="resend-info">Możliwe za <span class="num" id="resend-left" role="timer" aria-live="off">0:59</span></span>
           </div>
         </form>
         <hr class="rule">
@@ -175,21 +175,21 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <li aria-current="step">Kod z&nbsp;aplikacji</li>
         </ol>
         <h1 id="t-totp">Drugi składnik logowania</h1>
-        <p class="lead">Otwórz <a class="bp-termin" href="../slownik.html#haslo-drugi-skladnik" data-termin="drugi-skladnik">aplikację uwierzytelniającą</a> w&nbsp;telefonie i&nbsp;wpisz kod dla konta „BeautyPolisa&nbsp;– Strefa Klienta”.</p>
+        <p class="lead">Otwórz <a class="bp-termin" href="../slownik.html#haslo-drugi-skladnik" data-termin="drugi-skladnik">aplikację uwierzytelniającą</a> w&nbsp;telefonie i&nbsp;wpisz kod dla konta „<span translate="no">BeautyPolisa</span>&nbsp;– Strefa Klienta”.</p>
         <!-- 00, D28a: Supabase Auth nie wydaje kodów zapasowych – zapasem jest drugi zarejestrowany czynnik TOTP (inne urządzenie lub menedżer haseł).
              Kod z dowolnego zarejestrowanego urządzenia działa w tym samym polu. Po utracie wszystkich urządzeń – reset przez doradcę po weryfikacji tożsamości (Q25). -->
         <form class="form" id="f-totp" action="panel.html" method="post" novalidate>
           <div class="field" id="totp-field">
             <label for="totp">Kod z&nbsp;aplikacji</label>
-            <input class="code-input" type="text" id="totp" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="totp-hint">
+            <input class="code-input" type="text" id="totp" spellcheck="false" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="totp-hint">
             <p class="hint" id="totp-hint">Kod zmienia się co 30&nbsp;sekund. Nie masz przy sobie telefonu? Wpisz kod z&nbsp;zapasowego urządzenia, jeśli je dodano&nbsp;– np. z&nbsp;innego telefonu albo z&nbsp;menedżera haseł.</p>
             <p class="field-error" id="totp-err" hidden></p>
           </div>
           <div class="form-foot">
-            <button class="btn btn-navy" type="submit">Potwierdź</button>
+            <button class="btn btn-navy" type="submit">Zaloguj się</button>
           </div>
         </form>
-        <p class="notice">Nie masz dostępu do żadnego urządzenia z&nbsp;aplikacją? Dostęp przywróci <a class="bp-termin" href="../slownik.html#haslo-doradca" data-termin="doradca">doradca Aura Expert</a> po weryfikacji tożsamości&nbsp;– <a href="../makieta-v3.html#kontakt">napisz do doradcy</a>.</p>
+        <p class="notice">Nie masz dostępu do żadnego urządzenia z&nbsp;aplikacją? Dostęp przywróci <a class="bp-termin" href="../slownik.html#haslo-doradca" data-termin="doradca">doradca Aura&nbsp;Expert</a> po weryfikacji tożsamości&nbsp;– <a href="../makieta-v3.html#kontakt">napisz do doradcy</a>.</p>
         <p class="xsmall muted">Drugi składnik jest obowiązkowy dla właścicieli kont salonów i&nbsp;pracodawców oraz organizatorów szkoleń, a&nbsp;dla pracowników i&nbsp;osób szukających pracy&nbsp;– opcjonalny.</p>
       </div>
     </section>
@@ -245,21 +245,21 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <hr class="rule">
           <fieldset class="field">
             <legend>Drugi składnik logowania</legend>
-            <p class="small">Dla właściciela konta drugi składnik jest obowiązkowy, bo w&nbsp;Strefie są polisy i&nbsp;dokumenty salonu. Zeskanuj kod QR aplikacją uwierzytelniającą w&nbsp;telefonie, np. Google Authenticator lub Microsoft Authenticator, i&nbsp;wpisz sześciocyfrowy kod. Robisz to raz; potem aplikacja podaje nowy kod przy każdym logowaniu.</p>
+            <p class="small">Dla właściciela konta drugi składnik jest obowiązkowy, bo w&nbsp;Strefie są polisy i&nbsp;dokumenty salonu. Zeskanuj kod QR aplikacją uwierzytelniającą w&nbsp;telefonie, np. Google Authenticator lub Microsoft Authenticator, i&nbsp;wpisz 6-&#8288;cyfrowy kod. Robisz to raz; potem aplikacja podaje nowy kod przy każdym logowaniu.</p>
             <div class="qr-row">
               <div class="qr" role="img" aria-label="Kod QR do aplikacji uwierzytelniającej – zastępnik makiety"><span>kod QR<br>(przykład)</span></div>
               <div class="field">
                 <span class="label">Klucz do wpisania ręcznie</span>
                 <span class="secret">ABCD EFGH IJKL MNOP <span class="mock-note">przykład</span></span>
                 <label for="totp-new" class="label">Kod z&nbsp;aplikacji</label>
-                <input class="code-input" type="text" id="totp-new" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
+                <input class="code-input" type="text" id="totp-new" spellcheck="false" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
                 <p class="field-error" id="totp-new-err" hidden></p>
               </div>
             </div>
             <div class="alert alert--info">
               <svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg>
               <strong class="alert-title">Następny krok: zapasowe urządzenie</strong>
-              <p class="small">Po zapisaniu zaproponujemy dodanie drugiej aplikacji uwierzytelniającej&nbsp;– na innym telefonie albo w&nbsp;menedżerze haseł. Gdy zgubisz telefon, zalogujesz się kodem z&nbsp;zapasowego urządzenia. Kodów zapasowych nie ma; po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości.</p>
+              <p class="small">Po zapisaniu zaproponujemy dodanie drugiej aplikacji uwierzytelniającej&nbsp;– na innym telefonie albo w&nbsp;menedżerze haseł. Gdy zgubisz telefon, zalogujesz się kodem z&nbsp;zapasowego urządzenia. Kodów zapasowych nie ma; po utracie wszystkich urządzeń dostęp przywraca doradca <span translate="no">Aura&nbsp;Expert</span> po weryfikacji tożsamości.</p>
             </div>
           </fieldset>
           <div class="form-foot">
@@ -290,11 +290,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <span class="label">Klucz do wpisania ręcznie</span>
               <span class="secret">EFGH IJKL MNOP QRST <span class="mock-note">przykład</span></span>
               <label for="totp-zapas" class="label">Kod z&nbsp;zapasowej aplikacji</label>
-              <input class="code-input" type="text" id="totp-zapas" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
+              <input class="code-input" type="text" id="totp-zapas" spellcheck="false" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
               <p class="field-error" id="totp-zapas-err" hidden></p>
             </div>
           </div>
-          <p class="small">Kodów zapasowych nie ma. Po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości. O&nbsp;dodaniu urządzenia powiadomimy Cię e-mailem.</p>
+          <p class="small">Kodów zapasowych nie ma. Po utracie wszystkich urządzeń dostęp przywraca doradca <span translate="no">Aura&nbsp;Expert</span> po weryfikacji tożsamości. O&nbsp;dodaniu urządzenia powiadomimy Cię e-mailem.</p>
           <div class="form-foot">
             <button class="btn btn-navy" type="submit">Dodaj i&nbsp;przejdź do pulpitu</button>
             <a class="btn btn-quiet" href="panel.html">Pomiń&nbsp;– przypomnij w&nbsp;Ustawieniach</a>
@@ -312,7 +312,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <form class="form" action="#s-stany" method="post" novalidate>
           <div class="field">
             <label for="kod-zly">Kod z&nbsp;e-maila</label>
-            <input class="code-input" type="text" id="kod-zly" name="kod" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="482913" aria-invalid="true" aria-describedby="kod-zly-err">
+            <input class="code-input" type="text" id="kod-zly" spellcheck="false" name="kod" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="482913" aria-invalid="true" aria-describedby="kod-zly-err">
             <p class="field-error" id="kod-zly-err">Kod jest nieprawidłowy albo wygasł. Wpisz go ponownie lub poproś o&nbsp;nowy kod.</p>
           </div>
         </form>
@@ -320,15 +320,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <div class="alert alert--warn" role="status">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
           <strong class="alert-title">Zbyt wiele prób</strong>
-          <p class="small">Ten kod został unieważniony. Poproś o&nbsp;nowy kod. Ze względów bezpieczeństwa liczba kodów na godzinę jest ograniczona.</p>
+          <p class="small">Ten kod już nie działa&nbsp;– poproś o&nbsp;nowy. Ze względów bezpieczeństwa liczba kodów na godzinę jest ograniczona.</p>
           <div class="actions"><a class="btn btn-ghost btn-sm" href="#s-email">Poproś o&nbsp;nowy kod</a></div>
         </div>
 
         <div class="alert alert--error" role="alert">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3.5 6l8.5 7 8.5-7"/><path d="M15 15l4 4M19 15l-4 4"/></svg>
           <strong class="alert-title">Zaproszenie wygasło albo zostało już użyte</strong>
-          <p class="small">Poproś osobę, która Cię zaprosiła, o&nbsp;nowe zaproszenie. Jeśli zaproszenie wysłała Aura Expert, skontaktuj się z&nbsp;doradcą.</p>
-          <div class="actions"><a class="btn btn-ghost btn-sm" href="../makieta-v3.html#kontakt">Napisz do doradcy</a><a class="link-quiet" href="#s-email">Mam już konto&nbsp;– zaloguj się</a></div>
+          <p class="small">Poproś osobę, która Cię zaprosiła, o&nbsp;nowe zaproszenie. Jeśli zaproszenie wysłała <span translate="no">Aura&nbsp;Expert</span>, skontaktuj się z&nbsp;doradcą.</p>
+          <div class="actions"><a class="btn btn-ghost btn-sm" href="../makieta-v3.html#kontakt">Napisz do doradcy</a><a class="link-quiet" href="#s-email">Masz konto? Zaloguj się</a></div>
         </div>
 
         <hr class="rule">
@@ -356,7 +356,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="auth-card auth-card--xwide glass glass--strong frame">
         <p class="eyebrow">Strefa Klienta · Dam pracę</p>
         <h1 id="t-rej">Załóż konto</h1>
-        <p class="lead">Konto zakładają sami pracodawcy i&nbsp;osoby szukające pracy. Salon z&nbsp;polisą kupioną przez BeautyPolisa dostaje konto z&nbsp;zaproszenia od Aura Expert&nbsp;– nie musi się rejestrować. <span class="mock-note">Założenie – do decyzji zleceniodawcy</span></p>
+        <p class="lead">Konto zakładają sami pracodawcy i&nbsp;osoby szukające pracy. Salon z&nbsp;polisą kupioną przez <span translate="no">BeautyPolisa</span> dostaje konto z&nbsp;zaproszenia od <span translate="no">Aura&nbsp;Expert</span>&nbsp;– nie musi się rejestrować. <span class="mock-note">Założenie&nbsp;– do decyzji zleceniodawcy</span></p>
         <p class="promo-tag"><strong>Promocja na otwarcie</strong><span>ogłoszenie bez opłat, widoczne 21&nbsp;dni</span></p>
         <div class="choice-grid">
           <a class="shortcut surface" href="#s-rp-email">
@@ -369,7 +369,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <a class="shortcut surface" href="#s-rs-email">
             <svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg>
             <strong>Szukam pracy</strong>
-            <span>Ogłoszenie bez nazwiska i&nbsp;kontaktu, widoczne tylko dla pracodawców, których firmę potwierdziła Aura Expert.</span>
+            <span>Ogłoszenie bez nazwiska i&nbsp;kontaktu, widoczne tylko dla pracodawców, których firmę potwierdziła <span translate="no">Aura&nbsp;Expert</span>.</span>
             <small>E-mail, telefon z&nbsp;kodem SMS, ukończone 18&nbsp;lat.</small>
             <span class="link-lux" aria-hidden="true">Załóż konto&nbsp;– szukam pracy</span>
           </a>
@@ -377,9 +377,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <div class="statement">
           <svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg>
           <strong>To tylko tablica ogłoszeń</strong>
-          <p>Aura Expert i&nbsp;BeautyPolisa nie rekomendują, nie wyszukują, nie dobierają, nie oceniają ani nie dopasowują kandydatów i&nbsp;pracodawców i&nbsp;nie kontaktują się z&nbsp;nimi w&nbsp;sprawie rekrutacji; moderujemy wyłącznie treść ogłoszeń.</p>
+          <p><span translate="no">Aura&nbsp;Expert</span> i&nbsp;<span translate="no">BeautyPolisa</span> nie rekomendują, nie wyszukują, nie dobierają, nie oceniają ani nie dopasowują kandydatów i&nbsp;pracodawców i&nbsp;nie kontaktują się z&nbsp;nimi w&nbsp;sprawie rekrutacji; moderujemy wyłącznie treść ogłoszeń.</p>
         </div>
-        <p class="small"><strong>Salon bez polisy?</strong> Zarejestruj się na <a href="https://beautyrazem.pl/polisa">beautyrazem.pl/polisa</a>&nbsp;– konto w&nbsp;Strefie Klienta dostaniesz po zawarciu polisy. Członkostwo w&nbsp;Beauty Razem nie jest wymagane.</p>
+        <p class="small"><strong>Salon bez polisy?</strong> Zarejestruj się na <a href="https://beautyrazem.pl/polisa">beautyrazem.pl/polisa</a>&nbsp;– konto w&nbsp;Strefie Klienta dostaniesz po zawarciu polisy. Członkostwo w&nbsp;<span translate="no">Beauty Razem</span> nie jest wymagane.</p>
         <p class="small">Masz już konto? <a href="#s-email">Zaloguj się</a>.</p>
       </div>
     </section>
@@ -391,7 +391,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <li aria-current="step">E-mail</li><li>Firma</li><li>Telefon</li><li>Drugi składnik</li>
         </ol>
         <h1 id="t-rp-email">Załóż konto pracodawcy</h1>
-        <p class="lead">Dla każdej firmy, która zatrudnia w&nbsp;branży beauty&nbsp;– salonu, gabinetu, studia czy sieci, także bez polisy. Zaczniemy od adresu e-mail: wyślemy na niego sześciocyfrowy kod.</p>
+        <p class="lead">Dla każdej firmy, która zatrudnia w&nbsp;branży beauty&nbsp;– salonu, gabinetu, studia czy sieci, także bez polisy. Zaczniemy od adresu e-mail: wyślemy na niego 6-&#8288;cyfrowy kod.</p>
         <p class="promo-tag"><strong>Promocja na otwarcie</strong><span>ogłoszenie bez opłat, widoczne 21&nbsp;dni</span></p>
         <form class="form js-rej-email" id="f-rp-email" action="#s-rej-kod" method="post" novalidate data-flow-set="p">
           <div class="field">
@@ -407,7 +407,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <button class="btn btn-navy" type="submit">Wyślij kod</button>
         </form>
         <hr class="rule">
-        <p class="xsmall muted">Salon z&nbsp;polisą kupioną przez BeautyPolisa ma już konto&nbsp;– <a href="#s-email">zaloguj się</a>. „Dam pracę” włączysz przy pierwszym wejściu: sprawdzimy NIP salonu w&nbsp;GUS i&nbsp;poprosimy o&nbsp;kod SMS.</p>
+        <p class="xsmall muted">Salon z&nbsp;polisą kupioną przez <span translate="no">BeautyPolisa</span> ma już konto&nbsp;– <a href="#s-email">zaloguj się</a>. „Dam pracę” włączysz przy pierwszym wejściu: sprawdzimy NIP salonu w&nbsp;GUS i&nbsp;poprosimy o&nbsp;kod SMS.</p>
       </div>
     </section>
 
@@ -418,7 +418,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <li aria-current="step">E-mail</li><li>Telefon</li><li>Oświadczenie</li>
         </ol>
         <h1 id="t-rs-email">Załóż konto&nbsp;– <em>szukam pracy</em></h1>
-        <p class="lead">Ogłoszenie „Szukam pracy” doda każda pełnoletnia osoba. Zaczniemy od adresu e-mail: wyślemy na niego sześciocyfrowy kod. Adresu nie pokażemy pracodawcom.</p>
+        <p class="lead">Ogłoszenie „Szukam pracy” doda każda pełnoletnia osoba. Zaczniemy od adresu e-mail: wyślemy na niego 6-&#8288;cyfrowy kod. Adresu nie pokażemy pracodawcom.</p>
         <p class="promo-tag"><strong>Promocja na otwarcie</strong><span>ogłoszenie bez opłat, widoczne 21&nbsp;dni</span></p>
         <form class="form js-rej-email" id="f-rs-email" action="#s-rej-kod" method="post" novalidate data-flow-set="s">
           <div class="field">
@@ -434,7 +434,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <button class="btn btn-navy" type="submit">Wyślij kod</button>
         </form>
         <hr class="rule">
-        <p class="xsmall muted">Nie zakładamy profilu, nie zbieramy CV ani zdjęć. Ogłoszenie zawiera imię, zawód, region i&nbsp;krótki opis. <a href="#s-email">Mam już konto</a></p>
+        <p class="xsmall muted">Nie zakładamy profilu, nie zbieramy CV ani zdjęć. Ogłoszenie zawiera imię, zawód, region i&nbsp;krótki opis. Masz konto? <a href="#s-email">Zaloguj się</a></p>
       </div>
     </section>
 
@@ -450,19 +450,19 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <h1 id="t-rej-kod">Wpisz kod z&nbsp;e-maila</h1>
         <div class="alert alert--info" role="status">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3.5 6l8.5 7 8.5-7"/></svg>
-          <p>Jeśli adres <strong class="js-rej-email-out">biuro@studio-przyklad.example</strong> może zostać użyty, wysłaliśmy na niego sześciocyfrowy kod. Kod jest ważny 10&nbsp;minut.</p>
+          <p>Jeśli adres <strong class="js-rej-email-out">biuro@studio-przyklad.example</strong> może zostać użyty, wysłaliśmy na niego 6-&#8288;cyfrowy kod. Kod jest ważny 10&nbsp;minut.</p>
         </div>
         <form class="form" id="f-rej-kod" action="#s-rp-nip" method="post" novalidate>
           <div class="field">
             <label for="rej-kod">Kod z&nbsp;e-maila</label>
-            <input class="code-input" type="text" id="rej-kod" name="kod" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="rej-kod-hint">
-            <p class="hint" id="rej-kod-hint">Sześć cyfr. Adres, który ma już konto, dostanie zwykły kod logowania.</p>
+            <input class="code-input" type="text" id="rej-kod" spellcheck="false" name="kod" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="rej-kod-hint">
+            <p class="hint" id="rej-kod-hint">6&nbsp;cyfr. Adres, który ma już konto, dostanie zwykły kod logowania.</p>
             <p class="field-error" id="rej-kod-err" hidden></p>
           </div>
           <div class="form-foot">
-            <button class="btn btn-navy" type="submit">Dalej</button>
-            <button class="link-quiet" type="button" id="rej-resend" disabled aria-describedby="rej-resend-info">Wyślij kod ponownie</button>
-            <span class="xsmall" id="rej-resend-info" aria-live="polite">Możliwe za <span class="num" id="rej-resend-left">0:59</span></span>
+            <button class="btn btn-navy" type="submit">Potwierdź kod</button>
+            <button class="link-quiet" type="button" id="rej-resend" aria-disabled="true" aria-describedby="rej-resend-info">Wyślij kod ponownie</button>
+            <span class="xsmall resend-info" id="rej-resend-info">Możliwe za <span class="num" id="rej-resend-left" role="timer" aria-live="off">0:59</span></span>
           </div>
         </form>
       </div>
@@ -521,7 +521,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <div class="field">
             <label for="nazwa">Nazwa wyświetlana przy ofertach <span>(opcjonalnie)</span></label>
             <input type="text" id="nazwa" name="nazwa_wyswietlana" maxlength="80" autocomplete="organization" value="Studio Przykładowe" aria-describedby="nazwa-hint">
-            <p class="hint" id="nazwa-hint">Domyślnie nazwa z&nbsp;rejestru. Nazwę handlową sprawdzi Aura Expert przed pierwszym użyciem. Niedozwolone: Aura, BeautyPolisa, ERGO, Hestia, Colonnade, LUX MED, ENEL-MED.</p>
+            <p class="hint" id="nazwa-hint">Domyślnie nazwa z&nbsp;rejestru. Nazwę handlową sprawdzi <span translate="no">Aura&nbsp;Expert</span> przed pierwszym użyciem. Niedozwolone: Aura, <span translate="no">BeautyPolisa</span>, ERGO, Hestia, <span translate="no">Colonnade</span>, <span translate="no">LUX&nbsp;MED</span>, <span translate="no">ENEL-MED</span>.</p>
             <p class="field-error" id="nazwa-err" hidden></p>
           </div>
           <label class="check-row"><input type="checkbox" id="reg-dp" name="regulamin" required aria-describedby="reg-dp-err"> <span>Akceptuję <a href="#regulamin-dp">Regulamin „Dam pracę”</a> (wersja 1.0, przykład).</span></label>
@@ -529,7 +529,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <details class="disclose-lite">
             <summary class="link-quiet">Informacja o&nbsp;przetwarzaniu danych</summary>
             <ul class="small clause">
-              <li>Administrator: Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</li>
+              <li>Administrator: <span translate="no">Aura&nbsp;Expert</span> spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem&nbsp;0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem&nbsp;11229690/A.</li>
               <li>Inspektor ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>.</li>
               <li>Cel: konto pracodawcy, sprawdzenie NIP w&nbsp;rejestrze REGON i&nbsp;numeru telefonu, publikacja ofert, bezpieczeństwo tablicy.</li>
               <li>Zapisujemy z&nbsp;rejestru tylko: NIP, REGON, typ podmiotu, nazwę, miejscowość, kod pocztowy, wynik i&nbsp;czas sprawdzenia. Z&nbsp;numeru telefonu&nbsp;– tylko skrót i&nbsp;3&nbsp;ostatnie cyfry.</li>
@@ -560,7 +560,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </ol>
         <h1 id="t-sms">Potwierdź numer telefonu</h1>
         <p class="small" data-flow="o" hidden><span class="mock-note">Wariant salonu z&nbsp;polisą</span> Właściciel konta salonu potwierdza telefon raz, przy pierwszym wejściu do „Dam pracę”. Drugi składnik ma już włączony.</p>
-        <p class="lead">Wyślemy SMS z&nbsp;sześciocyfrowym kodem. Numer służy tylko do potwierdzenia konta&nbsp;– nie pokazujemy go nikomu i&nbsp;nie logujesz się nim.</p>
+        <p class="lead">Wyślemy SMS z&nbsp;6-&#8288;cyfrowym kodem. Numer służy tylko do potwierdzenia konta&nbsp;– nie pokazujemy go nikomu i&nbsp;nie logujesz się nim.</p>
         <form class="form" id="f-tel" action="#s-sms" method="post" novalidate>
           <div class="field">
             <label for="tel">Numer telefonu komórkowego</label>
@@ -584,20 +584,20 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <form class="form" id="f-sms" action="#s-rp-totp" method="post" novalidate>
             <div class="field">
               <label for="sms">Kod z&nbsp;SMS</label>
-              <input class="code-input" type="text" id="sms" name="kod_sms" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="sms-hint">
+              <input class="code-input" type="text" id="sms" spellcheck="false" name="kod_sms" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="sms-hint">
               <p class="hint" id="sms-hint">Masz 5&nbsp;prób. Nowy kod unieważnia poprzedni. <span class="mock-note">W&nbsp;makiecie 000000 pokazuje błędny kod</span></p>
               <p class="field-error" id="sms-err" hidden></p>
             </div>
             <div class="form-foot">
               <button class="btn btn-navy" type="submit">Potwierdź numer</button>
-              <button class="link-quiet" type="button" id="sms-resend" disabled aria-describedby="sms-resend-info">Wyślij kod ponownie</button>
-              <span class="xsmall" id="sms-resend-info" aria-live="polite">Możliwe za <span class="num" id="sms-resend-left">1:00</span></span>
+              <button class="link-quiet" type="button" id="sms-resend" aria-disabled="true" aria-describedby="sms-resend-info">Wyślij kod ponownie</button>
+              <span class="xsmall resend-info" id="sms-resend-info">Możliwe za <span class="num" id="sms-resend-left" role="timer" aria-live="off">1:00</span></span>
             </div>
           </form>
           <button class="link-quiet" type="button" id="sms-change">Zmień numer</button>
         </div>
         <hr class="rule">
-        <p class="xsmall muted">Treść SMS: „BeautyPolisa: kod weryfikacyjny 123456. Nie podawaj go nikomu.”&nbsp;– bez linków (przykład). SMS nie jest drugim składnikiem logowania. Bramka SMS: polski dostawca, wybór w&nbsp;etapie Z0 <span class="mock-note">do wyboru</span>.</p>
+        <p class="xsmall muted">Treść SMS: „<span translate="no">BeautyPolisa</span>: kod weryfikacyjny 123456. Nie podawaj go nikomu.”&nbsp;– bez linków (przykład). SMS nie jest drugim składnikiem logowania. Bramka SMS: polski dostawca, wybór w&nbsp;etapie Z0 <span class="mock-note">do wyboru</span>.</p>
       </div>
     </section>
 
@@ -608,7 +608,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <li class="done">E-mail</li><li class="done">Firma</li><li class="done">Telefon</li><li aria-current="step">Drugi składnik</li>
         </ol>
         <h1 id="t-rp-totp">Drugi składnik logowania</h1>
-        <p class="small">Dla właściciela konta pracodawcy drugi składnik jest obowiązkowy. Zeskanuj kod QR aplikacją uwierzytelniającą w&nbsp;telefonie, np. Google Authenticator lub Microsoft Authenticator, i&nbsp;wpisz sześciocyfrowy kod.</p>
+        <p class="small">Dla właściciela konta pracodawcy drugi składnik jest obowiązkowy. Zeskanuj kod QR aplikacją uwierzytelniającą w&nbsp;telefonie, np. Google Authenticator lub Microsoft Authenticator, i&nbsp;wpisz 6-&#8288;cyfrowy kod.</p>
         <form class="form" id="f-rp-totp" action="#s-rp-gotowe" method="post" novalidate>
           <div class="qr-row">
             <div class="qr" role="img" aria-label="Kod QR do aplikacji uwierzytelniającej – zastępnik makiety"><span>kod QR<br>(przykład)</span></div>
@@ -616,11 +616,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <span class="label">Klucz do wpisania ręcznie</span>
               <span class="secret">QRST UVWX YZAB CDEF <span class="mock-note">przykład</span></span>
               <label for="rp-totp" class="label">Kod z&nbsp;aplikacji</label>
-              <input class="code-input" type="text" id="rp-totp" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" aria-describedby="rp-totp-err">
+              <input class="code-input" type="text" id="rp-totp" spellcheck="false" name="totp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" aria-describedby="rp-totp-err">
               <p class="field-error" id="rp-totp-err" hidden></p>
             </div>
           </div>
-          <p class="hint">Po aktywacji dodaj w&nbsp;„Ustawieniach” zapasowe urządzenie&nbsp;– drugą aplikację uwierzytelniającą na innym telefonie albo w&nbsp;menedżerze haseł. Kodów zapasowych nie ma; po utracie wszystkich urządzeń dostęp przywraca doradca Aura Expert po weryfikacji tożsamości.</p>
+          <p class="hint">Po aktywacji dodaj w&nbsp;„Ustawieniach” zapasowe urządzenie&nbsp;– drugą aplikację uwierzytelniającą na innym telefonie albo w&nbsp;menedżerze haseł. Kodów zapasowych nie ma; po utracie wszystkich urządzeń dostęp przywraca doradca <span translate="no">Aura&nbsp;Expert</span> po weryfikacji tożsamości.</p>
           <button class="btn btn-navy" type="submit">Włącz i&nbsp;aktywuj konto</button>
         </form>
       </div>
@@ -638,9 +638,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <p class="promo-tag"><strong>Promocja na otwarcie</strong><span>ogłoszenie bez opłat, widoczne 21&nbsp;dni</span></p>
         <dl class="kv kv--rows">
           <div><dt>Oferty pracy</dt><dd><span class="badge badge--ok">Dostępne</span></dd></div>
-          <div><dt>Szukam pracy</dt><dd><span class="badge badge--warn">Czeka na potwierdzenie firmy przez Aura Expert</span></dd></div>
+          <div><dt>Szukam pracy</dt><dd><span class="badge badge--warn">Czeka na potwierdzenie firmy przez <span translate="no">Aura&nbsp;Expert</span></span></dd></div>
         </dl>
-        <p class="small">Rejestr potwierdza, że firma istnieje, a&nbsp;SMS&nbsp;– numer telefonu. Zanim zobaczysz ogłoszenia osób szukających pracy, Aura Expert potwierdzi, że reprezentujesz firmę: np. adresem e-mail w&nbsp;domenie firmy, telefonem na numer z&nbsp;rejestru lub ze strony firmy albo kodem wysłanym listem na adres siedziby. <span class="mock-note">Założenie</span></p>
+        <p class="small">Rejestr potwierdza, że firma istnieje, a&nbsp;SMS&nbsp;– numer telefonu. Zanim zobaczysz ogłoszenia osób szukających pracy, <span translate="no">Aura&nbsp;Expert</span> potwierdzi, że reprezentujesz firmę: np. adresem e-mail w&nbsp;domenie firmy, telefonem na numer z&nbsp;rejestru lub ze strony firmy albo kodem wysłanym listem na adres siedziby. <span class="mock-note">Założenie</span></p>
         <div class="actions">
           <a class="btn btn-navy" href="dam-prace.html?konto=pracodawca#nowe-ogloszenie">Dodaj pierwsze ogłoszenie</a>
           <a class="link-lux" href="dam-prace.html?konto=pracodawca#pulpit-pracodawcy">Przejdź do pulpitu pracodawcy</a>
@@ -667,11 +667,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <details class="disclose-lite">
             <summary class="link-quiet">Informacja o&nbsp;przetwarzaniu danych</summary>
             <ul class="small clause">
-              <li>Administrator: Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</li>
+              <li>Administrator: <span translate="no">Aura&nbsp;Expert</span> spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem&nbsp;0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem&nbsp;11229690/A.</li>
               <li>Inspektor ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>.</li>
-              <li>Cel: konto, potwierdzenie numeru telefonu, publikacja ogłoszenia dla pracodawców, których firmę i&nbsp;reprezentację sprawdziła Aura Expert, przekazywanie ich wiadomości na Twój adres.</li>
+              <li>Cel: konto, potwierdzenie numeru telefonu, publikacja ogłoszenia dla pracodawców, których firmę i&nbsp;reprezentację sprawdziła <span translate="no">Aura&nbsp;Expert</span>, przekazywanie ich wiadomości na Twój adres.</li>
               <li>Odbiorcy: ci pracodawcy (widzą ogłoszenie, nie Twój e-mail ani telefon); podmioty przetwarzające&nbsp;– Supabase, Cloudflare, Resend, bramka SMS (dostawca do wyboru).</li>
-              <li>Prawa: usunięcie ogłoszenia i&nbsp;konta jednym przyciskiem, sprostowanie przez edycję, pozostałe prawa&nbsp;– przez kontakt z&nbsp;IOD. Aura Expert nie poleca i&nbsp;nie dobiera kandydatów.</li>
+              <li>Prawa: usunięcie ogłoszenia i&nbsp;konta w&nbsp;każdej chwili (przycisk z&nbsp;potwierdzeniem), sprostowanie przez edycję, pozostałe prawa&nbsp;– przez kontakt z&nbsp;IOD. <span translate="no">Aura&nbsp;Expert</span> nie poleca i&nbsp;nie dobiera kandydatów.</li>
               <li><span class="mock-note">Założenie&nbsp;– podstawę prawną i&nbsp;okresy przechowywania wskaże prawnik</span></li>
             </ul>
           </details>
@@ -698,7 +698,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <h1 id="t-rs-gotowe">Konto jest gotowe</h1>
         <div class="alert alert--success" role="status">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
-          <p>Możesz dodać ogłoszenie „Szukam pracy”. Po akceptacji treści będzie widoczne dla pracodawców, których firmę potwierdziła Aura Expert.</p>
+          <p>Możesz dodać ogłoszenie „Szukam pracy”. Po akceptacji treści będzie widoczne dla pracodawców, których firmę potwierdziła <span translate="no">Aura&nbsp;Expert</span>.</p>
         </div>
         <p class="promo-tag"><strong>Promocja na otwarcie</strong><span>ogłoszenie bez opłat, widoczne 21&nbsp;dni</span></p>
         <div class="actions">
@@ -729,12 +729,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <div class="alert alert--warn" role="status">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
           <strong class="alert-title">Rejestr nie odpowiada</strong>
-          <p class="small">Rejestr nie odpowiada&nbsp;– spróbuj za kilka minut. Po 3&nbsp;nieudanych próbach dane firmy sprawdzi ręcznie Aura Expert i&nbsp;odezwie się <span class="nowrap">e-mailem</span>.</p>
+          <p class="small">Rejestr nie odpowiada&nbsp;– spróbuj za kilka minut. Po 3&nbsp;nieudanych próbach dane firmy sprawdzi ręcznie <span translate="no">Aura&nbsp;Expert</span> i&nbsp;odezwie się <span class="nowrap">e-mailem</span>.</p>
         </div>
         <div class="alert alert--info" role="status">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3.5 6l8.5 7 8.5-7"/></svg>
           <strong class="alert-title">Sprawdzimy dane i&nbsp;odezwiemy się <span class="nowrap">e-mailem</span></strong>
-          <p class="small">Tę samą odpowiedź widzi każdy, gdy aktywacja wymaga sprawdzenia przez Aura Expert&nbsp;– także wtedy, gdy dla NIP istnieje już konto. <span class="mock-note">Odpowiedź nie zdradza, czy firma jest klientem</span></p>
+          <p class="small">Tę samą odpowiedź widzi każdy, gdy aktywacja wymaga sprawdzenia przez <span translate="no">Aura&nbsp;Expert</span>&nbsp;– także wtedy, gdy dla NIP istnieje już konto. <span class="mock-note">Odpowiedź nie zdradza, czy firma jest klientem</span></p>
         </div>
 
         <hr class="rule">
@@ -746,16 +746,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </div>
         <div class="field">
           <label for="sms-zly">Kod z&nbsp;SMS</label>
-          <input class="code-input" type="text" id="sms-zly" name="kod_sms" inputmode="numeric" maxlength="6" value="000000" aria-invalid="true" aria-describedby="sms-zly-err">
-          <p class="field-error" id="sms-zly-err">Kod jest nieprawidłowy. Pozostały 3&nbsp;próby.</p>
+          <input class="code-input" type="text" id="sms-zly" spellcheck="false" name="kod_sms" inputmode="numeric" maxlength="6" value="000000" aria-invalid="true" aria-describedby="sms-zly-err">
+          <p class="field-error" id="sms-zly-err">Kod jest nieprawidłowy. Pozostały 3&nbsp;próby. Sprawdź SMS i&nbsp;wpisz kod ponownie albo wyślij nowy kod.</p>
         </div>
         <div class="alert alert--warn" role="status">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
           <strong class="alert-title">Limit prób</strong>
-          <p class="small">Wpisano błędny kod 5&nbsp;razy. Ten kod został unieważniony&nbsp;– wyślij nowy kod.</p>
+          <p class="small">Wpisano błędny kod 5&nbsp;razy. Ten kod już nie działa&nbsp;– wyślij nowy.</p>
         </div>
         <div class="form-foot">
-          <button class="link-quiet" type="button" disabled aria-describedby="stany-resend">Wyślij kod ponownie</button>
+          <button class="link-quiet" type="button" aria-disabled="true" aria-describedby="stany-resend">Wyślij kod ponownie</button>
           <span class="xsmall" id="stany-resend">Ponowna wysyłka możliwa po 60&nbsp;s&nbsp;– za <span class="num">0:42</span></span>
         </div>
         <div class="alert alert--error" role="alert">
@@ -776,7 +776,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   </section>
   <section class="surface card auth-card auth-card--wide" id="klauzula" aria-labelledby="t-klauz">
     <h2 id="t-klauz">Klauzula informacyjna</h2>
-    <p class="small">Administratorem danych w&nbsp;Strefie Klienta jest Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
+    <p class="small">Administratorem danych w&nbsp;Strefie Klienta jest <span translate="no">Aura&nbsp;Expert</span> spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem&nbsp;0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem&nbsp;11229690/A.</p>
     <p class="small">Kontakt z&nbsp;inspektorem ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Pełną treść przygotuje zleceniodawca z&nbsp;prawnikiem. <span class="mock-note">miejsce na treść</span></p>
   </section>
   <section class="surface card auth-card auth-card--wide" id="regulamin-dp" aria-labelledby="t-reg-dp">
@@ -790,29 +790,29 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <section class="surface card auth-card auth-card--wide" id="punkty-kontaktowe" aria-labelledby="t-pk">
     <h2 id="t-pk">Punkty kontaktowe (DSA)</h2>
     <p class="small">Punkt kontaktowy dla organów państw członkowskich, Komisji Europejskiej i&nbsp;Europejskiej Rady ds. Usług Cyfrowych (art.&nbsp;11 DSA) oraz dla użytkowników serwisu (art.&nbsp;12 DSA): adres <span class="nowrap">e-mail</span> [do uzupełnienia przez zleceniodawcę]. Język kontaktu: polski. <span class="mock-note">Q24</span></p>
-    <p class="small">Usługodawca: Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
+    <p class="small">Usługodawca: <span translate="no">Aura&nbsp;Expert</span> spółka z&nbsp;ograniczoną odpowiedzialnością z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem&nbsp;0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem&nbsp;11229690/A.</p>
     <p class="small">Treść konkretnego ogłoszenia zgłaszasz przyciskiem „Zgłoś” przy ogłoszeniu. W&nbsp;produkcji osobna, publiczna strona <code>/punkty-kontaktowe</code>.</p>
   </section>
 </main>
 
 <footer class="app-footer">
   <div class="app-footer-inner">
-    <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html">Tax Protect</a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="../opieka-medyczna.html">Opieka medyczna</a></nav>
+    <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html"><span translate="no">Tax Protect</span></a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="../opieka-medyczna.html">Opieka medyczna</a></nav>
     <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="../slownik.html">Słownik pojęć</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
-    <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
+    <p><span translate="no">BeautyPolisa</span> created by <span translate="no">Aura&nbsp;Expert</span> (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong><span translate="no">Aura&nbsp;Expert</span> spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem&nbsp;0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem&nbsp;11229690/A.</p>
     <!-- L1 (12–13.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy („XII Wydział” – prawidłowo; strona
          ergo.beautypolisa.eu/informacja-o-agencie podaje „XIII” – błąd po tamtej stronie, uwaga dla zleceniodawcy).
          Informacje o agencie (art. 22 ustawy o dystrybucji ubezpieczeń) – źródło: ujawnienie Aura Expert. Blok details.legal-idd
          jest identyczny na stronach publicznych i w Strefie Klienta. -->
-    <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
+    <p><span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
     <details class="legal-idd">
       <summary>Informacje o&nbsp;agencie ubezpieczeniowym (IDD)</summary>
       <div class="legal-idd-body">
         <p><strong>Zakłady ubezpieczeń, na rzecz których działa agent:</strong></p>
-        <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie S.A.</li><li>Lloyd’s Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA S.A.</li><li>Colonnade Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
+        <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji&nbsp;S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń&nbsp;S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li><span translate="no">Lloyd’s</span> Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA&nbsp;S.A.</li><li><span translate="no">Colonnade</span> Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
         <p><strong>Wynagrodzenie.</strong> Agent otrzymuje od zakładu ubezpieczeń prowizję, która jest uwzględniona w&nbsp;składce. Może też otrzymywać od zakładu ubezpieczeń inny rodzaj wynagrodzenia.</p>
         <p><strong>Powiązania kapitałowe.</strong> Agent nie ma akcji ani udziałów zakładu ubezpieczeń dających co najmniej 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie ma udziałów agenta dających co najmniej 10% głosów na zgromadzeniu wspólników.</p>
-        <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
+        <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres <span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466&nbsp;Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
         <p><strong>Kontakt z&nbsp;agentem:</strong> <a href="mailto:zarzad@auraexpert.pl">zarzad@auraexpert.pl</a>, <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>. Wpis agenta (numer 11229690/A) sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>.</p>
       </div>
     </details>
@@ -827,12 +827,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <symbol id="lux-bezpieczenstwo" viewBox="0 0 96 96"><title>Bezpieczeństwo danych</title><path d="M44 43C38 48 29 43 29 36C29 30 33 26 39 26C39 14 57 14 57 26C63 26 67 30 67 36C67 43 58 48 52 43V77H45V48" /><path d="M43 35C36 40 32 30 39 30H44V25C44 19 52 19 52 25V30H57C64 30 60 40 53 35" /><path d="M45 52H52M52 63H62V68H58V72H62V77H52" /></symbol>
 </svg>
 
+<script src="strefa.js"></script>
 <script>
 /* Makieta: przełączanie ekranów (hash), przejścia formularzy, odliczanie, ścieżki rejestracji
    (pracodawca / szukam pracy / salon z polisą włączający „Dam pracę” – logowanie.html?dla=salon#s-sms),
-   walidacja kodów, NIP (suma kontrolna) i numeru, stany SMS. Bez JS wszystkie ekrany są widoczne pod sobą. */
+   walidacja kodów, NIP (suma kontrolna) i numeru, stany SMS. Bez JS wszystkie ekrany są widoczne pod sobą.
+   Wspólne wzorce (błędy przy polach z ogłoszeniem, aria-disabled, regiony ogłoszeń) – strefa.js (raport 16, 3.3). */
 (function () {
   'use strict';
+  var S = window.bpStrefa, NB = S.NB, setErr = S.setErr, fokusBledu = S.fokusBledu;
   var screens = Array.prototype.slice.call(document.querySelectorAll('.screen'));
   var mockLinks = document.querySelectorAll('.mock-bar nav a');
   var timers = {};
@@ -855,65 +858,59 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     screens.forEach(function (s) { s.classList.toggle('is-active', s === target); });
     mockLinks.forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('href') === '#' + target.id ? 'true' : 'false'); });
     ['regulamin-tresc', 'klauzula', 'regulamin-dp', 'regulamin-sp', 'punkty-kontaktowe'].forEach(function (x) { byId(x).hidden = location.hash !== '#' + x; });
-    if (target.id === 's-kod') { countdown('resend', 59); }
-    if (target.id === 's-rej-kod') { countdown('rej-resend', 59); }
+    if (target.id === 's-kod') { countdown('resend', 59, ''); }
+    if (target.id === 's-rej-kod') { countdown('rej-resend', 59, ''); }
     if (target.id === 's-sms') { resetSms(); }
     if (focus) { var h = target.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus(); } }
   }
   function go(id) { history.pushState(null, '', '#' + id); show(id, true); }
 
-  /* odliczanie do ponownej wysyłki kodu (e-mail: 59 s, SMS: 60 s) */
-  function countdown(key, secs) {
+  /* odliczanie do ponownej wysyłki kodu (e-mail: 59 s, SMS: 60 s). Licznik ma role="timer" i aria-live="off" – czytnik nie
+     ogłasza go co sekundę (opis przycisku podaje bieżący czas). Ogłaszamy tylko start (po „Wyślij kod ponownie”: kod wysłany
+     i czas do kolejnej wysyłki) i koniec („Możesz już wysłać kod ponownie”). Przycisk jest zablokowany przez aria-disabled,
+     więc fokus zostaje na nim także po kliknięciu. */
+  function countdown(key, secs, start) {
     var btn = byId(key), left = byId(key + '-left'), info = byId(key + '-info');
-    var t = secs; clearInterval(timers[key]); btn.disabled = true; info.hidden = false;
+    var t = secs; clearInterval(timers[key]); S.zablokuj(btn); info.hidden = false; btn.setAttribute('aria-describedby', key + '-info');
     function fmt(n) { return Math.floor(n / 60) + ':' + (n % 60 < 10 ? '0' : '') + (n % 60); }
     left.textContent = fmt(t);
+    if (start) { S.ogloszenie(start + ' Kolejny kod wyślesz za ' + secs + NB + 's.'); }
     timers[key] = setInterval(function () {
       t -= 1; left.textContent = fmt(t);
-      if (t <= 0) { clearInterval(timers[key]); btn.disabled = false; info.hidden = true; }
+      if (t <= 0) {
+        /* opis „Możliwe za 0:00” znika razem z aria-describedby – ukryta treść wskazana wprost i tak trafiałaby do opisu przycisku */
+        clearInterval(timers[key]); S.odblokuj(btn); info.hidden = true; btn.removeAttribute('aria-describedby');
+        var ekran = btn.closest('.screen');
+        if (ekran && ekran.classList.contains('is-active') && btn.getClientRects().length) { S.ogloszenie('Możesz już wysłać kod ponownie.'); }
+      }
     }, 1000);
   }
-  byId('resend').addEventListener('click', function () { countdown('resend', 59); });
-  byId('rej-resend').addEventListener('click', function () { countdown('rej-resend', 59); });
+  byId('resend').addEventListener('click', function () { countdown('resend', 59, 'Wysłano nowy kod.'); });
+  byId('rej-resend').addEventListener('click', function () { countdown('rej-resend', 59, 'Wysłano nowy kod.'); });
 
-  function setErr(input, errId, msg) {
-    var err = byId(errId);
-    if (!('desc' in input.dataset)) { input.dataset.desc = input.getAttribute('aria-describedby') || ''; }
-    var base = input.dataset.desc;
-    if (msg) {
-      err.textContent = msg; err.hidden = false; input.setAttribute('aria-invalid', 'true');
-      if ((' ' + base + ' ').indexOf(' ' + errId + ' ') < 0) { input.setAttribute('aria-describedby', (base ? base + ' ' : '') + errId); }
-    } else {
-      err.hidden = true; input.removeAttribute('aria-invalid');
-      if (base) { input.setAttribute('aria-describedby', base); } else { input.removeAttribute('aria-describedby'); }
-    }
-    return !msg;
-  }
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var MSG_EMAIL = 'Wpisz adres e-mail w' + NB + 'formacie nazwa@domena.pl.';
+  var MSG_TOTP = 'Wpisz 6-\u2060cyfrowy kod z' + NB + 'aplikacji.';
 
   /* ---------- logowanie ---------- */
   byId('f-email').addEventListener('submit', function (e) {
     e.preventDefault();
-    var input = byId('email'), err = byId('email-err');
-    var ok = EMAIL_RE.test(input.value.trim());
-    input.setAttribute('aria-invalid', ok ? 'false' : 'true');
-    input.setAttribute('aria-describedby', ok ? 'email-hint' : 'email-hint email-err');
-    err.hidden = ok;
-    if (!ok) { input.focus(); return; }
+    var input = byId('email');
+    if (!setErr(input, 'email-err', EMAIL_RE.test(input.value.trim()) ? '' : MSG_EMAIL)) { fokusBledu(input); return; }
     document.querySelector('.js-email').textContent = input.value.trim();
     go('s-kod');
   });
   byId('f-kod').addEventListener('submit', function (e) {
     e.preventDefault();
     var c = byId('kod');
-    if (!setErr(c, 'kod-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz sześć cyfr z e-maila.')) { c.focus(); return; }
+    if (!setErr(c, 'kod-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz 6' + NB + 'cyfr z' + NB + 'e-maila.')) { fokusBledu(c); return; }
     go('s-totp');
   });
   /* drugi składnik: kod z aplikacji (6 cyfr) – z głównego albo zapasowego urządzenia (00, D28a; kodów zapasowych nie ma); w produkcji POST, kod nigdy w adresie */
   byId('f-totp').addEventListener('submit', function (e) {
     e.preventDefault();
     var c = byId('totp');
-    if (!setErr(c, 'totp-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz sześciocyfrowy kod z aplikacji.')) { c.focus(); return; }
+    if (!setErr(c, 'totp-err', /^\d{6}$/.test(c.value.trim()) ? '' : MSG_TOTP)) { fokusBledu(c); return; }
     location.href = 'panel.html';
   });
   byId('f-zapr').addEventListener('submit', function (e) { e.preventDefault(); go('s-pierwsze'); });
@@ -921,15 +918,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     e.preventDefault();
     var box = byId('regulamin'), code = byId('totp-new'), bad = [];
     if (!setErr(box, 'reg-err', box.checked ? '' : 'Zaakceptuj regulamin, aby przejść dalej.')) { bad.push(box); }
-    if (!setErr(code, 'totp-new-err', /^\d{6}$/.test(code.value.trim()) ? '' : 'Wpisz sześciocyfrowy kod z aplikacji – bez niego nie włączymy drugiego składnika.')) { bad.push(code); }
-    if (bad.length) { bad[0].focus(); return; }
+    if (!setErr(code, 'totp-new-err', /^\d{6}$/.test(code.value.trim()) ? '' : 'Wpisz 6-\u2060cyfrowy kod z' + NB + 'aplikacji' + NB + '– bez niego nie włączymy drugiego składnika.')) { bad.push(code); }
+    if (bad.length) { fokusBledu(bad[0]); return; }
     go('s-zapas');
   });
   /* zapasowa aplikacja (00, D28a): opcjonalna – „Pomiń” prowadzi do pulpitu, przypomnienie zostaje w „Ustawieniach” */
   byId('f-zapas').addEventListener('submit', function (e) {
     e.preventDefault();
     var c = byId('totp-zapas');
-    if (!setErr(c, 'totp-zapas-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz sześciocyfrowy kod z zapasowej aplikacji albo wybierz „Pomiń”.')) { c.focus(); return; }
+    if (!setErr(c, 'totp-zapas-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz 6-\u2060cyfrowy kod z' + NB + 'zapasowej aplikacji albo wybierz „Pomiń”.')) { fokusBledu(c); return; }
     location.href = 'panel.html';
   });
 
@@ -938,7 +935,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var input = form.querySelector('input[type="email"]');
-      if (!setErr(input, input.id + '-err', EMAIL_RE.test(input.value.trim()) ? '' : 'Wpisz adres e-mail w formacie nazwa@domena.pl.')) { input.focus(); return; }
+      if (!setErr(input, input.id + '-err', EMAIL_RE.test(input.value.trim()) ? '' : MSG_EMAIL)) { fokusBledu(input); return; }
       setFlow(form.getAttribute('data-flow-set'));
       document.querySelector('#s-rej-kod .js-rej-email-out').textContent = input.value.trim();
       go('s-rej-kod');
@@ -947,7 +944,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   byId('f-rej-kod').addEventListener('submit', function (e) {
     e.preventDefault();
     var c = byId('rej-kod');
-    if (!setErr(c, 'rej-kod-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz sześć cyfr z e-maila.')) { c.focus(); return; }
+    if (!setErr(c, 'rej-kod-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz 6' + NB + 'cyfr z' + NB + 'e-maila.')) { fokusBledu(c); return; }
     go(flow === 'p' ? 's-rp-nip' : 's-sms');
   });
 
@@ -962,9 +959,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   byId('f-nip').addEventListener('submit', function (e) {
     e.preventDefault();
     var n = byId('nip'), btn = byId('nip-btn'), st = byId('nip-status');
-    if (!setErr(n, 'nip-err', nipOk(n.value) ? '' : 'NIP nieprawidłowy – sprawdź cyfry. Numer ma 10 cyfr i cyfrę kontrolną.')) { n.focus(); return; }
-    btn.disabled = true; st.textContent = 'Sprawdzamy w rejestrze…';
-    setTimeout(function () { btn.disabled = false; st.textContent = ''; go('s-rp-firma'); }, 600);
+    if (S.zablokowany(btn)) { return; }
+    if (!setErr(n, 'nip-err', nipOk(n.value) ? '' : 'NIP nieprawidłowy' + NB + '– sprawdź cyfry. Numer ma 10' + NB + 'cyfr i' + NB + 'cyfrę kontrolną.')) { fokusBledu(n); return; }
+    S.zablokuj(btn); st.textContent = 'Sprawdzamy w' + NB + 'rejestrze…';
+    setTimeout(function () { S.odblokuj(btn); st.textContent = ''; go('s-rp-firma'); }, 600);
   });
   byId('f-firma').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -972,12 +970,13 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     var reserved = /(aura|beauty\s*polisa|ergo|hestia|colonnade|lux\s*med|enel[\s-]*med)/i;
     if (!setErr(nm, 'nazwa-err', reserved.test(nm.value) ? 'Ta nazwa zawiera nazwę zastrzeżoną. Podaj inną nazwę handlową albo zostaw pole puste.' : '')) { bad.push(nm); }
     if (!setErr(box, 'reg-dp-err', box.checked ? '' : 'Zaakceptuj regulamin „Dam pracę”, aby przejść dalej.')) { bad.push(box); }
-    if (bad.length) { bad[0].focus(); return; }
+    if (bad.length) { fokusBledu(bad[0]); return; }
     go('s-sms');
   });
 
   /* ---------- telefon i kod SMS ---------- */
   var tries = 5;
+  var MSG_LIMIT = 'Zbyt wiele prób. Ten kod już nie działa' + NB + '– wyślij nowy.';
   function resetSms() {
     var js = document.documentElement.classList.contains('js');
     if (js && !byId('f-tel').hidden) { byId('sms-step').hidden = true; }
@@ -985,26 +984,25 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   byId('f-tel').addEventListener('submit', function (e) {
     e.preventDefault();
     var t = byId('tel'), d = t.value.replace(/[\s-]/g, '').replace(/^(\+?48)/, '');
-    if (!setErr(t, 'tel-err', /^[4-8]\d{8}$/.test(d) ? '' : 'Podaj polski numer komórkowy – 9 cyfr, bez +48.')) { t.focus(); return; }
+    if (!setErr(t, 'tel-err', /^[4-8]\d{8}$/.test(d) ? '' : 'Podaj polski numer komórkowy' + NB + '– 9' + NB + 'cyfr, bez +48.')) { fokusBledu(t); return; }
     byId('sms-last').textContent = d.slice(-3);
     byId('f-tel').hidden = true; byId('sms-step').hidden = false; tries = 5;
     setErr(byId('sms'), 'sms-err', '');
-    countdown('sms-resend', 60);
+    countdown('sms-resend', 60, '');
     byId('sms').focus();
   });
-  byId('sms-resend').addEventListener('click', function () { tries = 5; setErr(byId('sms'), 'sms-err', ''); countdown('sms-resend', 60); byId('sms-sent').focus(); });
+  byId('sms-resend').addEventListener('click', function () { tries = 5; setErr(byId('sms'), 'sms-err', ''); countdown('sms-resend', 60, 'Wysłano nowy SMS z' + NB + 'kodem.'); /* fokus zostaje na przycisku (aria-disabled), jak przy kodzie z e-maila – jedno ogłoszenie na akcję (runda 2 weryfikacji) */ });
   byId('sms-change').addEventListener('click', function () { byId('sms-step').hidden = true; byId('f-tel').hidden = false; clearInterval(timers['sms-resend']); byId('tel').focus(); });
   byId('f-sms').addEventListener('submit', function (e) {
     e.preventDefault();
     var c = byId('sms'), v = c.value.trim();
-    if (tries <= 0) { setErr(c, 'sms-err', 'Zbyt wiele prób. Kod został unieważniony – wyślij nowy kod.'); c.focus(); return; }
-    if (!/^\d{6}$/.test(v)) { setErr(c, 'sms-err', 'Wpisz sześć cyfr z SMS.'); c.focus(); return; }
+    if (tries <= 0) { setErr(c, 'sms-err', MSG_LIMIT); fokusBledu(c); return; }
+    if (!/^\d{6}$/.test(v)) { setErr(c, 'sms-err', 'Wpisz 6' + NB + 'cyfr z' + NB + 'SMS.'); fokusBledu(c); return; }
     if (v === '000000') {
       tries -= 1;
-      var w = tries === 1 ? 'próba' : (tries >= 2 && tries <= 4 ? 'próby' : 'prób');
-      setErr(c, 'sms-err', tries > 0 ? 'Kod jest nieprawidłowy. Pozostały ' + tries + ' ' + w + '.' : 'Zbyt wiele prób. Kod został unieważniony – wyślij nowy kod.');
-      if (tries === 1) { byId('sms-err').textContent = 'Kod jest nieprawidłowy. Pozostała 1 próba.'; }
-      c.select(); return;
+      var w = tries === 1 ? 'Pozostała 1' + NB + 'próba' : 'Pozostały ' + tries + NB + (tries >= 2 && tries <= 4 ? 'próby' : 'prób');
+      setErr(c, 'sms-err', tries > 0 ? 'Kod jest nieprawidłowy. ' + w + '. Sprawdź SMS i' + NB + 'wpisz kod ponownie albo wyślij nowy kod.' : MSG_LIMIT);
+      fokusBledu(c); c.select(); return;
     }
     setErr(c, 'sms-err', '');
     clearInterval(timers['sms-resend']);
@@ -1017,7 +1015,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   byId('f-rp-totp').addEventListener('submit', function (e) {
     e.preventDefault();
     var c = byId('rp-totp');
-    if (!setErr(c, 'rp-totp-err', /^\d{6}$/.test(c.value.trim()) ? '' : 'Wpisz sześciocyfrowy kod z aplikacji.')) { c.focus(); return; }
+    if (!setErr(c, 'rp-totp-err', /^\d{6}$/.test(c.value.trim()) ? '' : MSG_TOTP)) { fokusBledu(c); return; }
     go('s-rp-gotowe');
   });
   byId('f-zgody').addEventListener('submit', function (e) {
@@ -1025,7 +1023,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     var a = byId('pelnoletnia'), r = byId('reg-sp'), bad = [];
     if (!setErr(a, 'pelnoletnia-err', a.checked ? '' : 'Ogłoszenia „Szukam pracy” mogą dodawać tylko osoby pełnoletnie.')) { bad.push(a); }
     if (!setErr(r, 'reg-sp-err', r.checked ? '' : 'Zaakceptuj regulamin „Szukam pracy”, aby założyć konto.')) { bad.push(r); }
-    if (bad.length) { bad[0].focus(); return; }
+    if (bad.length) { fokusBledu(bad[0]); return; }
     go('s-rs-gotowe');
   });
 
@@ -1038,42 +1036,43 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 {
  "polisa": {
   "t": "Polisa",
-  "d": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę.",
+  "d": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę.",
   "u": "../slownik.html#haslo-polisa",
   "o": 1
  },
  "odpowiedzialnosc-cywilna": {
   "t": "OC (ubezpieczenie odpowiedzialności cywilnej)",
-  "d": "Ubezpieczenie, które płaci za Ciebie, gdy wyrządzisz szkodę komuś innemu (osobie trzeciej) i odpowiadasz za nią – np. klientce, u której zabieg spowodował uraz. Ubezpieczyciel wypłaca poszkodowanemu odszkodowanie do wysokości sumy gwarancyjnej, w zakresie i z wyłączeniami z warunków ubezpieczenia.",
+  "d": "Ubezpieczenie, które płaci za Ciebie, gdy wyrządzisz szkodę komuś innemu (osobie trzeciej) i odpowiadasz za nią – np. klientce, u której zabieg spowodował uraz. Ubezpieczyciel wypłaca poszkodowanemu odszkodowanie do wysokości sumy gwarancyjnej, w zakresie i z wyłączeniami z warunków ubezpieczenia.",
   "u": "../slownik.html#haslo-odpowiedzialnosc-cywilna",
   "o": 1
  },
  "drugi-skladnik": {
   "t": "Drugi składnik logowania (TOTP)",
-  "d": "Dodatkowe zabezpieczenie konta. Strefa nie ma haseł: najpierw podajesz sześciocyfrowy kod z e-maila, a potem – jako drugi składnik – kod z aplikacji uwierzytelniającej, który zmienia się co 30 sekund (TOTP – jednorazowy kod zależny od czasu); sam dostęp do skrzynki e-mail nie wystarczy więc, by ktoś wszedł na konto.",
+  "d": "Dodatkowe zabezpieczenie konta. Strefa nie ma haseł: najpierw podajesz 6-⁠cyfrowy kod z e-maila, a potem – jako drugi składnik – kod z aplikacji uwierzytelniającej, który zmienia się co 30 sekund (TOTP – jednorazowy kod zależny od czasu); sam dostęp do skrzynki e-mail nie wystarczy więc, by ktoś wszedł na konto.",
   "u": "../slownik.html#haslo-drugi-skladnik"
  },
  "doradca": {
-  "t": "Doradca Aura Expert",
-  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
+  "t": "Doradca Aura Expert",
+  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
   "u": "../slownik.html#haslo-doradca"
  },
  "role-w-strefie": {
-  "t": "Właściciel konta i pracownik (role w Strefie)",
-  "d": "Właściciel konta salonu widzi polisy, dokumenty i zgłoszenia szkód, zaprasza pracowników i publikuje ogłoszenia. Pracownik – zaproszony e-mailem przez właściciela (zaproszenie jest ważne 7 dni) – widzi tylko „Szkolenia” i ogłoszenia salonu w „Dam pracę”, bez polis.",
+  "t": "Właściciel konta i pracownik (role w Strefie)",
+  "d": "Właściciel konta salonu widzi polisy, dokumenty i zgłoszenia szkód, zaprasza pracowników i publikuje ogłoszenia. Pracownik – zaproszony e-mailem przez właściciela (zaproszenie jest ważne 7 dni) – widzi tylko „Szkolenia” i ogłoszenia salonu w „Dam pracę”, bez polis.",
   "u": "../slownik.html#haslo-role-w-strefie"
  },
  "strefa-klienta": {
   "t": "Strefa Klienta",
-  "d": "Konto w BeautyPolisa: polisy i dokumenty salonu w jednym miejscu, sprawy w toku (np. APK i wniosek przy odnowieniu OC), zgłoszenia szkód oraz dostęp do „Dam pracę” i „Szkoleń”. Konto klienta z polisą aktywuje Aura Expert po zawarciu ubezpieczenia – zaproszenie przychodzi e-mailem.",
+  "d": "Konto w BeautyPolisa: polisy i dokumenty salonu w jednym miejscu, sprawy w toku (np. APK i wniosek przy odnowieniu OC), zgłoszenia szkód oraz dostęp do „Dam pracę” i „Szkoleń”. Konto klienta z polisą aktywuje Aura Expert po zawarciu ubezpieczenia – zaproszenie przychodzi e-mailem.",
   "u": "../slownik.html#haslo-strefa-klienta"
  }
 }
 </script>
 <script>
 /* Dymek z definicją pojęcia (gen_terminy.py – nie edytuj ręcznie).
-   Bez JS oznaczenie jest linkiem do słownika. Z JS: link dostaje rolę przycisku (aria-haspopup="dialog", aria-expanded, aria-controls),
-   klik / Enter / Spacja otwiera niemodalny dialog (role="dialog" + aria-labelledby/aria-describedby – w środku link i przycisk, więc nie tooltip).
+   Bez JS oznaczenie jest linkiem do słownika. Z JS zostaje linkiem (czytnik ogłasza link, a pojęcie jest na liście linków strony),
+   dostaje aria-haspopup="dialog", aria-expanded i aria-controls; klik / Enter otwiera niemodalny dialog (role="dialog" +
+   aria-labelledby/aria-describedby – w środku link „Więcej w słowniku” do hasła i przycisk, więc nie tooltip). Spacja – jak przy linku.
    Fokus przechodzi do dialogu; Esc i „Zamknij” zamykają i oddają fokus pojęciu; Tab za ostatnim elementem i Shift+Tab przed pierwszym też wracają do pojęcia;
    klik poza dymkiem zamyka. Najechanie myszą niczego nie otwiera ani nie zamyka (WCAG 1.4.13: dymek nie znika, gdy kursor jest nad nim).
    Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Okno od 600 × 600 px: dymek pod ostatnią linią pojęcia albo nad
@@ -1095,21 +1094,24 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   var mqWaski=window.matchMedia('(max-width:599px),(max-height:599px)'), biezace=null, GORA=88, M=12;
   pojecia.forEach(function(a){
     if(!D[a.getAttribute('data-termin')])return;
-    a.setAttribute('role','button');a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
+    a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
   });
+  /* położenie: najpierw wszystkie odczyty (jedno przeliczenie układu), potem zapisy; wysokość treści z scrollHeight + ramka,
+     więc nie trzeba zdejmować max-height przed pomiarem */
   function pozycja(){
     if(!biezace||box.hidden)return;
-    box.style.maxHeight='';box.style.overflowY='';
-    if(mqWaski.matches){box.style.top='';box.style.left='';return}
+    if(mqWaski.matches){box.style.maxHeight='';box.style.overflowY='';box.style.top='';box.style.left='';return}
     var rs=biezace.getClientRects(), r1=rs[0]||biezace.getBoundingClientRect(), r2=rs[rs.length-1]||r1;
-    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.offsetHeight;
-    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y;
+    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.scrollHeight+(box.offsetHeight-box.clientHeight);
+    var sx=window.scrollX, sy=window.scrollY;
+    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y, maxH=0;
     if(h<=pod){y=r2.bottom+10}
     else if(h<=nad){r=r1;y=r1.top-10-h}
-    else if(pod>=nad){y=r2.bottom+10;box.style.maxHeight=Math.max(160,pod)+'px';box.style.overflowY='auto'}
-    else{r=r1;box.style.maxHeight=Math.max(160,nad)+'px';box.style.overflowY='auto';y=r1.top-10-box.offsetHeight}
+    else if(pod>=nad){y=r2.bottom+10;maxH=Math.max(160,pod)}
+    else{r=r1;maxH=Math.max(160,nad);y=r1.top-10-Math.min(h,maxH)}
     var x=Math.min(Math.max(16,r.left),vw-w-16);
-    box.style.left=Math.round(x+window.scrollX)+'px';box.style.top=Math.round(y+window.scrollY)+'px';
+    box.style.maxHeight=maxH?maxH+'px':'';box.style.overflowY=maxH?'auto':'';
+    box.style.left=Math.round(x+sx)+'px';box.style.top=Math.round(y+sy)+'px';
   }
   function otworz(a){
     var d=D[a.getAttribute('data-termin')]; if(!d)return;
@@ -1133,8 +1135,6 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if(biezace&&!box.contains(e.target))zamknijDymek(false);
   });
   document.addEventListener('keydown',function(e){
-    var a=e.target.closest&&e.target.closest('a.bp-termin[data-termin]');
-    if(a&&(e.key===' '||e.key==='Spacebar')&&D[a.getAttribute('data-termin')]){e.preventDefault();if(biezace===a)zamknijDymek(true);else otworz(a);return}
     if(!biezace)return;
     if(e.key==='Escape'||e.key==='Esc'){e.preventDefault();zamknijDymek(true);return}
     if(e.key==='Tab'&&box.contains(document.activeElement)){

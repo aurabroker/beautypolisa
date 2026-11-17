@@ -7,7 +7,7 @@
 <meta name="description" content="Makieta: katalog szkoleń BeautyPolisa z filtrami, strona szkolenia z zapisem i listą rezerwową, „Moje szkolenia” salonu, widok organizatora szkoleń oraz plany organizatorów (promocja na otwarcie portalu); szkolenia płatne: sprzedawcą jest organizator, płatność u operatora, zamówienia, zwroty i wypłaty organizatora.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#141C33">
+<meta name="theme-color" content="#EDE5D8">
 <meta name="color-scheme" content="only light">
 <!-- Produkcja: publiczne /szkolenia i /szkolenia/<slug> (index&nbsp;– Założenie Z-6; schema.org EducationEvent; dane z cache bez sesji,
      stan zapisu użytkownika w osobnym fragmencie dynamicznym no-store). /strefa-klienta/szkolenia i /strefa-klienta/organizator/* –
@@ -59,7 +59,8 @@
 .when .m{font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-ink)}
 .when .y{font-size:var(--text-xs);color:var(--color-taupe)}
 .tr-main{display:grid;gap:6px;min-width:0}
-.tr-main h3{font-size:1.45rem;line-height:1.2}
+.tr-main h3{font-size:1.45rem;line-height:1.2;overflow-wrap:anywhere}
+.list .grow > strong,#org-tabela th[scope="row"]{overflow-wrap:anywhere}
 .tr-main h3 a{color:var(--color-navy);text-decoration:none}
 .tr-main h3 a:hover{text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:1px;text-underline-offset:5px}
 .tr-meta{font-size:var(--text-sm);line-height:1.55;color:var(--color-ink)}
@@ -99,12 +100,7 @@
 .who{display:grid;gap:0;padding:10px 14px;border-left:2px solid var(--color-gold);background:rgba(255,255,255,.6);font-size:var(--text-sm)}
 .who strong{font-weight:500}
 
-/* rozwijane mini-formularze (details – działają bez JS) */
-.mini > summary{list-style:none}
-.mini > summary::-webkit-details-marker{display:none}
-.mini[open] > summary{border-color:var(--color-navy);background:#fff}
-.mini-body{display:grid;gap:12px;margin-top:8px;padding:14px 16px;border:1px solid var(--bp-line-gold-soft);border-radius:var(--radius-btn);background:#fff;min-width:min(100%,18rem)}
-.mini-body .field input{min-height:44px}
+/* rozwijane mini-formularze (details – działają bez JS): wspólne reguły .mini są w strefa.css */
 .cell-actions .actions{align-items:flex-start}
 .org-table .cell-actions{width:15.5rem}
 .org-table .cell-actions .actions{display:grid;justify-items:start;gap:6px}
@@ -231,7 +227,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
 /* dymek: kryjące ivory (bez backdrop-filter – nie liczy się do limitu 3 tafli), złota linia, cień */
-.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
+.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;overscroll-behavior:contain;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
 .bp-dymek[hidden]{display:none}
 .bp-dymek:focus{outline:none}
 .bp-dymek:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
@@ -263,7 +259,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <!-- Adnotacja makiety: w produkcji usuwana -->
 <div class="mock-bar" role="note">
   <strong>Makieta</strong>
-  <span>„Szkolenia” – katalog, zapisy, widok organizatora (D-D), plany organizatorów (P1d) i&nbsp;szkolenia płatne (decyzja 13.11.2026: sprzedawcą jest organizator, portal bez prowizji w&nbsp;promocji; płatności&nbsp;– symulacja). Szkolenia, organizatorzy, osoby, daty planów i&nbsp;numery faktur są fikcyjne, stan na 12&nbsp;listopada 2026&nbsp;r.</span>
+  <span>„Szkolenia”&nbsp;– katalog, zapisy, widok organizatora (D-D), plany organizatorów (P1d) i&nbsp;szkolenia płatne (decyzja 13.11.2026: sprzedawcą jest organizator, portal bez prowizji w&nbsp;promocji; płatności&nbsp;– symulacja). Szkolenia, organizatorzy, osoby, daty planów i&nbsp;numery faktur są fikcyjne, stan na 12&nbsp;listopada 2026&nbsp;r.</span>
   <nav aria-label="Ekrany makiety">
     <a href="#katalog">Katalog</a>
     <a href="#dla-organizatorow">Plany organizatorów</a>
@@ -301,8 +297,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg><span class="nav-toggle-label">Menu</span>
     </button>
     <a class="brand" href="panel.html#pulpit" aria-label="Strefa Klienta BeautyPolisa – pulpit">
-      <span class="logo-chip"><img src="../../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="133" height="20"></span>
-      <span class="zone-name">Strefa Klienta<small>created by Aura Expert</small></span>
+      <span class="logo-chip"><img src="../img/logo-beautypolisa-320.png" alt="BeautyPolisa" width="133" height="20" translate="no"></span>
+      <span class="zone-name">Strefa Klienta<small>created by <span translate="no">Aura&nbsp;Expert</span></small></span>
     </a>
     <span class="topbar-spacer"></span>
     <details class="account" id="account">
@@ -362,7 +358,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <hr>
     <div class="sidenav-foot">
       <span class="label-caps">Opiekun</span>
-      <span>Doradca Aura Expert</span>
+      <span>Doradca <span translate="no">Aura&nbsp;Expert</span></span>
       <a class="link-quiet" href="../makieta-v3.html#kontakt">Napisz do doradcy</a>
     </div>
   </nav>
@@ -393,7 +389,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <p class="small">Moduł działa normalnie&nbsp;– ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.</p>
         <input type="hidden" name="zakladka" value="szkolenia"><input type="hidden" name="widoczna" value="tak">
         <div class="actions owner-only"><button class="btn btn-navy btn-sm" type="submit">Pokaż zakładkę</button></div>
-        <p class="small employee-only">Zakładkę może pokazać właścicielka konta – Anna Przykładowa – w&nbsp;ustawieniach salonu.</p>
+        <p class="small employee-only">Zakładkę może pokazać właścicielka konta&nbsp;– Anna Przykładowa&nbsp;– w&nbsp;ustawieniach salonu.</p>
       </form>
       <p class="alert alert--success tab-note-ok" tabindex="-1" hidden>Zakładka Szkolenia jest znowu widoczna w&nbsp;menu i&nbsp;na pulpicie Strefy salonu.</p>
     </div>
@@ -407,7 +403,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <div>
             <p class="eyebrow">Szkolenia</p>
             <h1 id="t-katalog">Szkolenia <em>dla branży beauty</em></h1>
-            <p class="lead">Katalog szkoleń zweryfikowanych organizatorów&nbsp;– firm szkoleniowych i&nbsp;salonów. Każde szkolenie przed publikacją przechodzi moderację Aura Expert, a&nbsp;w&nbsp;katalogu są wyłącznie szkolenia organizatorów z&nbsp;aktywnym planem. Zapisujesz się z&nbsp;konta salonu.</p>
+            <p class="lead">Katalog szkoleń zweryfikowanych organizatorów&nbsp;– firm szkoleniowych i&nbsp;salonów. Każde szkolenie przed publikacją przechodzi moderację <span translate="no">Aura&nbsp;Expert</span>, a&nbsp;w&nbsp;katalogu są wyłącznie szkolenia organizatorów z&nbsp;aktywnym planem. Zapisujesz się z&nbsp;konta salonu.</p>
           </div>
           <a class="link-lux" href="#moje-szkolenia">Moje szkolenia</a>
         </div>
@@ -465,7 +461,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <p class="label-caps">Obsługa klienta&nbsp;· online</p>
               <h3><a href="#szkolenie">Obsługa klientki i&nbsp;komunikacja w&nbsp;salonie (przykład)</a></h3>
               <p class="tr-meta"><time datetime="2026-11-26T18:00">26&nbsp;listopada 2026&nbsp;r., 18:00–20:00</time>&nbsp;· spotkanie online</p>
-              <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
+              <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez <span translate="no">Aura&nbsp;Expert</span> (dane firmy)</span></p>
             </div>
             <div class="tr-side">
               <p class="price">Bezpłatne</p>
@@ -479,7 +475,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <p class="label-caps">Bezpieczeństwo i&nbsp;higiena&nbsp;· stacjonarne</p>
               <h3><a href="#szkolenie">Higiena i&nbsp;bezpieczeństwo zabiegów (przykład)</a></h3>
               <p class="tr-meta"><time datetime="2026-12-03T10:00">3&nbsp;grudnia 2026&nbsp;r., 10:00–15:00</time>&nbsp;· Warszawa</p>
-              <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
+              <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez <span translate="no">Aura&nbsp;Expert</span> (dane firmy)</span></p>
             </div>
             <div class="tr-side">
               <p class="price">Bezpłatne</p>
@@ -493,7 +489,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <p class="label-caps">Techniki zabiegowe&nbsp;· stacjonarne</p>
               <h3><a href="#szkolenie">Pielęgnacja dłoni&nbsp;– warsztat dla zespołu (przykład)</a></h3>
               <p class="tr-meta"><time datetime="2026-12-09T10:00">9&nbsp;grudnia 2026&nbsp;r., 10:00–14:00</time>&nbsp;· Kraków</p>
-              <p class="org"><strong>Salon Przykładowy</strong> <span class="xsmall muted">salon</span> <span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
+              <p class="org"><strong>Salon Przykładowy</strong> <span class="xsmall muted">salon</span> <span class="badge badge--verified">Organizator zweryfikowany przez <span translate="no">Aura&nbsp;Expert</span> (dane firmy)</span></p>
             </div>
             <div class="tr-side">
               <p class="price">Bezpłatne</p>
@@ -507,7 +503,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <p class="label-caps">Techniki zabiegowe&nbsp;· online</p>
               <h3><a href="#szkolenie">Stylizacja brwi&nbsp;– techniki pracy (przykład)</a></h3>
               <p class="tr-meta"><time datetime="2027-01-14T17:00">14&nbsp;stycznia 2027&nbsp;r., 17:00–20:00</time>&nbsp;· spotkanie online</p>
-              <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
+              <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez <span translate="no">Aura&nbsp;Expert</span> (dane firmy)</span></p>
             </div>
             <div class="tr-side">
               <p class="price">280&nbsp;zł brutto (przykład) <small>sprzedawca: organizator&nbsp;· płatność u&nbsp;organizatora</small></p>
@@ -521,7 +517,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <p class="label-caps">Bezpieczeństwo i&nbsp;higiena&nbsp;· hybrydowe</p>
               <h3><a href="#rezerwowa">Pierwsza pomoc w&nbsp;salonie beauty (przykład)</a></h3>
               <p class="tr-meta"><time datetime="2027-01-22T09:00">22&nbsp;stycznia 2027&nbsp;r., 9:00–13:00</time>&nbsp;· Poznań i&nbsp;online</p>
-              <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
+              <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez <span translate="no">Aura&nbsp;Expert</span> (dane firmy)</span></p>
             </div>
             <div class="tr-side">
               <p class="price">350&nbsp;zł brutto (przykład) <small>sprzedawca: organizator&nbsp;· płatność u&nbsp;organizatora</small></p>
@@ -535,7 +531,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <p class="label-caps">Techniki zabiegowe&nbsp;· stacjonarne</p>
               <h3><a href="#szkolenie-platne">Stylizacja rzęs&nbsp;– lifting i&nbsp;laminacja (przykład)</a></h3>
               <p class="tr-meta"><time datetime="2027-01-28T10:00">28&nbsp;stycznia 2027&nbsp;r., 10:00–16:00</time>&nbsp;· Warszawa</p>
-              <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
+              <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa</span> <span class="badge badge--verified">Organizator zweryfikowany przez <span translate="no">Aura&nbsp;Expert</span> (dane firmy)</span></p>
             </div>
             <div class="tr-side">
               <p class="price">450&nbsp;zł brutto (przykład) <small>sprzedawca: organizator&nbsp;· płatność online</small></p>
@@ -550,12 +546,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <span class="mock-note step-label">Pusty stan (wzór)</span>
           <svg class="lux-icon" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>
           <strong>Brak szkoleń dla wybranych filtrów</strong>
-          <p>Zmień termin albo formę szkolenia. Nowe szkolenia pojawiają się w&nbsp;katalogu po akceptacji Aura Expert.</p>
+          <p>Zmień termin albo formę szkolenia. Nowe szkolenia pojawiają się w&nbsp;katalogu po akceptacji <span translate="no">Aura&nbsp;Expert</span>.</p>
           <button class="btn btn-ghost btn-sm js-clear" type="button">Wyczyść filtry</button>
         </div>
 
         <div class="results-foot">
-          <p class="xsmall muted">Kolejność wyłącznie według terminu&nbsp;– bez wyróżnień i&nbsp;płatnych pozycji. Plan organizatora decyduje tylko o&nbsp;tym, czy jego szkolenia są w&nbsp;katalogu: po końcu planu znikają z&nbsp;katalogu i&nbsp;nie przyjmują zapisów, a&nbsp;osoby zapisane zachowują miejsca. Znaczek „Organizator zweryfikowany przez Aura Expert (dane firmy)” potwierdza dane firmy organizatora, a&nbsp;nie ocenia jakości szkolenia.</p>
+          <p class="xsmall muted">Kolejność wyłącznie według terminu&nbsp;– bez wyróżnień i&nbsp;płatnych pozycji. Plan organizatora decyduje tylko o&nbsp;tym, czy jego szkolenia są w&nbsp;katalogu: po końcu planu znikają z&nbsp;katalogu i&nbsp;nie przyjmują zapisów, a&nbsp;osoby zapisane zachowują miejsca. Znaczek „Organizator zweryfikowany przez <span translate="no">Aura&nbsp;Expert</span> (dane firmy)” potwierdza dane firmy organizatora, a&nbsp;nie ocenia jakości szkolenia.</p>
         </div>
       </section>
 
@@ -568,7 +564,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </div>
           <span class="badge badge--role">Promocja na otwarcie portalu</span>
         </div>
-        <p class="small">Firma szkoleniowa albo salon może zostać organizatorem. Konto organizatora zakłada Aura Expert po weryfikacji firmy&nbsp;– <a class="bp-termin" href="../slownik.html#haslo-polisa" data-termin="polisa">polisa</a> nie jest potrzebna. <span class="mock-note">Założenie Z-16</span> Szkolenia trafiają do katalogu po moderacji i&nbsp;tylko przy aktywnym planie.</p>
+        <p class="small">Firma szkoleniowa albo salon może zostać organizatorem. Konto organizatora zakłada <span translate="no">Aura&nbsp;Expert</span> po weryfikacji firmy&nbsp;– <a class="bp-termin" href="../slownik.html#haslo-polisa" data-termin="polisa">polisa</a> nie jest potrzebna. <span class="mock-note">Założenie Z-16</span> Szkolenia trafiają do katalogu po moderacji i&nbsp;tylko przy aktywnym planie.</p>
         <ul class="plan-grid" aria-label="Plany organizatora – ceny na otwarcie portalu">
           <li class="plan">
             <h3>12&nbsp;miesięcy</h3>
@@ -583,9 +579,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </ul>
         <ul class="plan-facts">
           <li>Plan obejmuje szkolenia, które zaczynają się w&nbsp;jego okresie. <span class="mock-note">Założenie Z-41</span></li>
-          <li>Plan ustawia <a class="bp-termin" href="../slownik.html#haslo-doradca" data-termin="doradca">doradca Aura Expert</a>, a&nbsp;fakturę za plan wystawia Aura Expert poza portalem&nbsp;– za plan nie płacisz online. Sprzedaż szkoleń płatnych: płatność u&nbsp;operatora, prowizja portalu 0% w&nbsp;promocji. <span class="mock-note">Założenie Z-22</span></li>
+          <li>Plan ustawia <a class="bp-termin" href="../slownik.html#haslo-doradca" data-termin="doradca">doradca Aura&nbsp;Expert</a>, a&nbsp;fakturę za plan wystawia <span translate="no">Aura&nbsp;Expert</span> poza portalem&nbsp;– za plan nie płacisz online. Sprzedaż szkoleń płatnych: płatność u&nbsp;operatora, prowizja portalu 0% w&nbsp;promocji. <span class="mock-note">Założenie Z-22</span></li>
           <li>Plan nie daje wyróżnienia ani wyższej pozycji&nbsp;– kolejność w&nbsp;katalogu zawsze według terminu.</li>
-          <li>Pozostałe warunki&nbsp;– do ustalenia z&nbsp;Aura Expert. <span class="mock-note">Do ustalenia&nbsp;– Q16</span></li>
+          <li>Pozostałe warunki&nbsp;– do ustalenia z&nbsp;<span translate="no">Aura&nbsp;Expert</span>. <span class="mock-note">Do ustalenia&nbsp;– Q16</span></li>
         </ul>
         <div class="actions"><a class="btn btn-navy btn-sm" href="../makieta-v3.html#kontakt">Napisz do doradcy</a></div>
       </section>
@@ -621,19 +617,19 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <div><h2 class="card-title" id="t-org">Organizator</h2><p class="card-sub">Nazwa pochodzi ze zweryfikowanego profilu organizatora</p></div>
             </div>
             <p class="org"><strong>Organizator przykładowy</strong> <span class="xsmall muted">firma szkoleniowa&nbsp;· Warszawa</span></p>
-            <p><span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
-            <p class="small">Aura Expert sprawdziła dane firmy w&nbsp;rejestrze (NIP, KRS albo CEIDG) i&nbsp;zawarła z&nbsp;organizatorem umowę. Znaczek potwierdza tożsamość firmy, nie jakość szkolenia. <span class="mock-note">Założenie</span></p>
+            <p><span class="badge badge--verified">Organizator zweryfikowany przez <span translate="no">Aura&nbsp;Expert</span> (dane firmy)</span></p>
+            <p class="small"><span translate="no">Aura&nbsp;Expert</span> sprawdziła dane firmy w&nbsp;rejestrze (NIP, KRS albo CEIDG) i&nbsp;zawarła z&nbsp;organizatorem umowę. Znaczek potwierdza tożsamość firmy, nie jakość szkolenia. <span class="mock-note">Założenie</span></p>
             <details class="mini">
               <summary class="link-quiet">Informacja organizatora o&nbsp;danych osobowych</summary>
               <div class="mini-body small">
                 <p><a class="bp-termin" href="../slownik.html#haslo-klauzula-informacyjna" data-termin="klauzula-informacyjna">Administrator danych</a> uczestników: Organizator przykładowy (dane firmy w&nbsp;profilu organizatora). Cel: przeprowadzenie szkolenia i&nbsp;– przy szkoleniu płatnym&nbsp;– wystawienie faktury. Organizator nie wykorzystuje danych do marketingu ani rekrutacji.</p>
-                <p class="xsmall muted">Treść przygotowuje organizator; role Aura Expert i&nbsp;organizatora potwierdzi prawnik i&nbsp;IOD. <span class="mock-note">Do weryfikacji&nbsp;– Q1</span></p>
+                <p class="xsmall muted">Treść przygotowuje organizator; role <span translate="no">Aura&nbsp;Expert</span> i&nbsp;organizatora potwierdzi prawnik i&nbsp;IOD. <span class="mock-note">Do weryfikacji&nbsp;– Q1</span></p>
               </div>
             </details>
             <hr class="rule">
             <details class="mini" id="zglos">
               <summary class="btn btn-quiet btn-sm">Zgłoś nadużycie</summary>
-              <form class="mini-body form" id="f-abuse" action="#szkolenie" method="post" novalidate>
+              <form class="mini-body form" id="f-abuse" action="#szkolenie" method="post" novalidate data-niezapisane>
                 <div class="field">
                   <label for="ab-powod">Powód</label>
                   <select id="ab-powod" name="powod" required>
@@ -643,6 +639,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                     <option>Treść niezgodna z&nbsp;prawem lub wprowadzająca w&nbsp;błąd</option>
                     <option>Inny powód</option>
                   </select>
+                  <p class="field-error" id="ab-powod-err" hidden></p>
                 </div>
                 <div class="field">
                   <label for="ab-uzas">Uzasadnienie</label>
@@ -650,7 +647,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                   <p class="hint" id="ab-hint">Opisz krótko, co budzi wątpliwości. Nie podawaj danych osobowych.</p>
                 </div>
                 <button class="btn btn-ghost btn-sm" type="submit">Wyślij zgłoszenie</button>
-                <p class="small" id="ab-ok" role="status" hidden>Zgłoszenie przyjęte. Sprawdzi je zespół Aura Expert.</p>
+                <p class="small" id="ab-ok" role="status" hidden>Zgłoszenie przyjęte. Sprawdzi je zespół <span translate="no">Aura&nbsp;Expert</span>.</p>
               </form>
             </details>
           </section>
@@ -692,7 +689,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                 <p class="mini-body small">Administrator: Organizator przykładowy. Cel: przeprowadzenie szkolenia i&nbsp;– przy szkoleniu płatnym&nbsp;– wystawienie faktury. Bez marketingu i&nbsp;rekrutacji. Treść przygotowuje organizator.</p>
               </details>
             </div>
-            <p class="xsmall muted">Wersję tej informacji zapisujemy razem z&nbsp;zapisem. Role RODO (organizator jako administrator, rola Aura Expert) potwierdzi prawnik i&nbsp;IOD. <span class="mock-note">Do weryfikacji&nbsp;– Q1</span></p>
+            <p class="xsmall muted">Wersję tej informacji zapisujemy razem z&nbsp;zapisem. Role RODO (organizator jako administrator, rola <span translate="no">Aura&nbsp;Expert</span>) potwierdzi prawnik i&nbsp;IOD. <span class="mock-note">Do weryfikacji&nbsp;– Q1</span></p>
             <form class="form-foot" id="f-zapis" action="#zapisano" method="post">
               <button class="btn btn-navy" type="submit">Potwierdzam zapis</button>
               <a class="link-quiet" href="#szkolenie">Anuluj</a>
@@ -726,7 +723,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <p><span class="badge badge--ok" data-status>Zapisano</span></p>
             <div class="private">
               <span class="label-caps">Widoczne tylko dla zapisanych</span>
-              <strong>Sala szkoleniowa (przykład), ul.&nbsp;Przykładowa 1, 00-001 Warszawa</strong>
+              <strong>Sala szkoleniowa (przykład), ul.&nbsp;Przykładowa 1, 00-001&nbsp;Warszawa</strong>
               <span>Wejście od dziedzińca, I&nbsp;piętro. Weź własny fartuch. (przykład)</span>
             </div>
             <div class="actions">
@@ -737,7 +734,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
               <p class="small">–</p>
             </div>
-            <p class="xsmall muted">Rezygnacja jednym przyciskiem zwalnia miejsce. Pierwsza osoba z&nbsp;listy rezerwowej dostaje je automatycznie i&nbsp;<span class="nowrap">e-mail</span> „Zwolniło się miejsce”.</p>
+            <p class="xsmall muted">Rezygnacja zwalnia miejsce po 10&nbsp;sekundach&nbsp;– do tego czasu możesz ją cofnąć. Potem pierwsza osoba z&nbsp;listy rezerwowej dostaje miejsce automatycznie i&nbsp;<span class="nowrap">e-mail</span> „Zwolniło się miejsce”.</p>
           </section>
 
           <!-- wariant: brak wolnych miejsc → lista rezerwowa -->
@@ -760,7 +757,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <section class="card surface" aria-labelledby="t-gosc">
             <span class="mock-note">Wariant: gość (publiczny katalog)</span>
             <h2 class="card-title" id="t-gosc">Zapis z&nbsp;konta salonu</h2>
-            <p class="small">Zapisać się mogą właściciele i&nbsp;pracownicy salonów, które mają konto w&nbsp;<a class="bp-termin" href="../slownik.html#haslo-strefa-klienta" data-termin="strefa-klienta">Strefie Klienta</a> BeautyPolisa.</p>
+            <p class="small">Zapisać się mogą właściciele i&nbsp;pracownicy salonów, które mają konto w&nbsp;<a class="bp-termin" href="../slownik.html#haslo-strefa-klienta" data-termin="strefa-klienta">Strefie Klienta</a> <span translate="no">BeautyPolisa</span>.</p>
             <a class="btn btn-ghost btn-block" href="logowanie.html">Zaloguj się, aby się zapisać</a>
           </section>
         </aside>
@@ -796,14 +793,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <!-- DSA art. 30 (identyfikowalność przedsiębiorców): dane sprzedawcy wyłącznie ze zweryfikowanego profilu organizatora (12.1) -->
           <section class="card surface frame" id="sprzedawca" aria-labelledby="t-sprz" tabindex="-1">
             <div class="card-head">
-              <div><h2 class="card-title" id="t-sprz">Sprzedawca: organizator</h2><p class="card-sub">Umowę zawierasz z&nbsp;organizatorem. BeautyPolisa (Aura Expert) udostępnia katalog i&nbsp;nie jest stroną umowy.</p></div>
+              <div><h2 class="card-title" id="t-sprz">Sprzedawca: organizator</h2><p class="card-sub">Umowę zawierasz z&nbsp;organizatorem. <span translate="no">BeautyPolisa</span> (<span translate="no">Aura&nbsp;Expert</span>) udostępnia katalog i&nbsp;nie jest stroną umowy.</p></div>
             </div>
-            <p><span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
+            <p><span class="badge badge--verified">Organizator zweryfikowany przez <span translate="no">Aura&nbsp;Expert</span> (dane firmy)</span></p>
             <dl class="kv kv--rows">
               <div><dt>Firma</dt><dd>Organizator Przykładowy sp.&nbsp;z&nbsp;o.o.<br><span class="xsmall muted">przy szkoleniach: Organizator przykładowy</span></dd></div>
               <div><dt>NIP</dt><dd>000-000-00-00 (przykład)</dd></div>
-              <div><dt>Rejestr</dt><dd>KRS 0000000000 (przykład)</dd></div>
-              <div><dt>Adres</dt><dd>ul.&nbsp;Przykładowa 1, 00-001 Warszawa (przykład)</dd></div>
+              <div><dt>Rejestr</dt><dd>KRS&nbsp;0000000000 (przykład)</dd></div>
+              <div><dt>Adres</dt><dd>ul.&nbsp;Przykładowa 1, 00-001&nbsp;Warszawa (przykład)</dd></div>
               <div><dt>Kontakt</dt><dd>kontakt@organizator-przykladowy.example<br>+48&nbsp;000&nbsp;000&nbsp;000 (przykład)</dd></div>
               <div><dt>Regulamin</dt><dd>Regulamin szkoleń organizatora, wersja 1.2 (przykład)<br><span class="xsmall muted">odstąpienie, rezygnacja, zwroty, reklamacje, faktury</span></dd></div>
               <div id="rodo-org" tabindex="-1"><dt>Dane osobowe</dt><dd>Informacja organizatora o&nbsp;danych osobowych, wersja 1.0 (przykład)<br><span class="xsmall muted">organizator jest administratorem danych uczestników i&nbsp;danych do faktury</span></dd></div>
@@ -822,7 +819,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                 <p class="xsmall muted">Treść regulaminu przygotowuje organizator; wersję zapisujemy przy zamówieniu. Ustawowe prawo odstąpienia ma pierwszeństwo przed zasadami rezygnacji organizatora. Wyjątki (usługa z&nbsp;oznaczonym terminem, szkolenie przed upływem 14&nbsp;dni, kupujący z&nbsp;NIP)&nbsp;– do weryfikacji prawnej. <span class="mock-note">Do weryfikacji prawnej&nbsp;– Q31</span></p>
               </div>
             </details>
-            <p class="xsmall muted">Nazwę firmy, NIP i&nbsp;rejestr bierzemy ze zweryfikowanego profilu: Aura Expert sprawdziła firmę w&nbsp;rejestrze i&nbsp;zawarła z&nbsp;nią umowę organizatora. Adres, kontakt, regulamin i&nbsp;oświadczenie organizator podaje w&nbsp;warunkach sprzedaży, a&nbsp;zespół Aura Expert sprawdza je przed publikacją. <span class="mock-note">DSA art.&nbsp;30&nbsp;– do weryfikacji prawnej</span></p>
+            <p class="xsmall muted">Nazwę firmy, NIP i&nbsp;rejestr bierzemy ze zweryfikowanego profilu: <span translate="no">Aura&nbsp;Expert</span> sprawdziła firmę w&nbsp;rejestrze i&nbsp;zawarła z&nbsp;nią umowę organizatora. Adres, kontakt, regulamin i&nbsp;oświadczenie organizator podaje w&nbsp;warunkach sprzedaży, a&nbsp;zespół <span translate="no">Aura&nbsp;Expert</span> sprawdza je przed publikacją. <span class="mock-note">DSA art.&nbsp;30&nbsp;– do weryfikacji prawnej</span></p>
           </section>
         </div>
 
@@ -844,7 +841,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <div class="seats"><span>Wolne miejsca: 4 z&nbsp;16</span><span class="seats-bar" aria-hidden="true"><i class="f75"></i></span></div>
             <ul class="pay-facts">
               <li>Sprzedawca: <strong>Organizator przykładowy</strong>&nbsp;– wystawia fakturę i&nbsp;odpowiada za szkolenie.</li>
-              <li>Płacisz BLIK-iem, kartą albo szybkim przelewem na stronie operatora płatności. Pieniądze trafiają do organizatora, nie do BeautyPolisa. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></li>
+              <li>Płacisz BLIK-iem, kartą albo szybkim przelewem na stronie operatora płatności. Pieniądze trafiają do organizatora, nie do <span translate="no">BeautyPolisa</span>. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></li>
               <li>Cena zawiera wszystkie opłaty. Portal nie dolicza opłat do ceny. <span class="mock-note">O&nbsp;ile potwierdzą to operator i&nbsp;model</span></li>
             </ul>
             <a class="btn btn-navy btn-block" href="#zamowienie">Zapisz się i&nbsp;zapłać</a>
@@ -901,7 +898,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <div class="grid">
 
           <!-- krok 1: dane uczestnika, dane do faktury, zgody -->
-          <form class="card surface form pay-step" id="zam-dane" data-pay="dane" data-trasa="/strefa-klienta/szkolenia/[slug]/zamowienie" action="#zam-platnosc" method="post" novalidate aria-labelledby="t-zam-dane" tabindex="-1">
+          <form class="card surface form pay-step" id="zam-dane" data-niezapisane data-pay="dane" data-trasa="/strefa-klienta/szkolenia/[slug]/zamowienie" action="#zam-platnosc" method="post" novalidate aria-labelledby="t-zam-dane" tabindex="-1">
             <span class="mock-note step-label">Krok 1: dane i&nbsp;zgody</span>
             <h2 class="card-title" id="t-zam-dane">Dane uczestnika i&nbsp;do faktury</h2>
             <div class="alert alert--error" id="zam-err" role="alert" tabindex="-1" hidden>
@@ -974,7 +971,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <div class="field">
                 <label for="fv-kod">Kod pocztowy</label>
                 <input type="text" id="fv-kod" name="kod" inputmode="numeric" maxlength="6" autocomplete="postal-code" value="00-002" aria-describedby="fv-kod-hint">
-                <p class="hint" id="fv-kod-hint">Np. 00-001</p>
+                <p class="hint" id="fv-kod-hint">5&nbsp;cyfr, np. 00-001; myślnik nie jest potrzebny.</p>
                 <p class="field-error" id="fv-kod-err" hidden></p>
               </div>
               <div class="field">
@@ -986,7 +983,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <p class="xsmall muted">Dane do faktury otrzyma organizator&nbsp;– to on wystawia fakturę. Jeśli kupujesz w&nbsp;imieniu firmy, prawo odstąpienia zwykle nie przysługuje. Wyjątek: jednoosobowa działalność, dla której umowa nie ma charakteru zawodowego. <span class="mock-note">Tekst do akceptacji prawnika&nbsp;– Q31</span></p>
 
             <!-- informacja o sprzedawcy (Omnibus) to informacja, a nie zgoda – bez pola wyboru; wersja zapisuje się w zamówieniu -->
-            <p class="small"><strong>Sprzedawcą jest organizator</strong>&nbsp;– Organizator Przykładowy sp.&nbsp;z&nbsp;o.o. Aura Expert (BeautyPolisa) nie jest stroną umowy: odpowiada za konto, zamówienie i&nbsp;<span class="nowrap">e-maile</span>, a&nbsp;organizator&nbsp;– za szkolenie, fakturę, zwroty i&nbsp;reklamacje.</p>
+            <p class="small"><strong>Sprzedawcą jest organizator</strong>&nbsp;– Organizator Przykładowy sp.&nbsp;z&nbsp;o.o. <span translate="no">Aura&nbsp;Expert</span> (<span translate="no">BeautyPolisa</span>) nie jest stroną umowy: odpowiada za konto, zamówienie i&nbsp;<span class="nowrap">e-maile</span>, a&nbsp;organizator&nbsp;– za szkolenie, fakturę, zwroty i&nbsp;reklamacje.</p>
             <fieldset class="field consents">
               <legend>Regulamin organizatora</legend>
               <label class="check-row" for="zg-reg"><input type="checkbox" id="zg-reg" name="regulamin" value="1.2" required>Akceptuję regulamin szkoleń organizatora Organizator przykładowy (wersja 1.2), w&nbsp;tym zasady odstąpienia, rezygnacji i&nbsp;zwrotów.</label>
@@ -1002,10 +999,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <p>Przy tym zamówieniu Twoje dane przetwarzają:</p>
               <ul class="pay-facts">
                 <li><strong>Organizator przykładowy</strong> (sprzedawca)&nbsp;– imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;dane do faktury: umowa, lista uczestników, faktura i&nbsp;księgowość. Faktury przechowuje według swoich obowiązków księgowych. <a class="link-quiet" href="#rodo-org">Informacja organizatora</a></li>
-                <li><strong>Aura Expert</strong> (BeautyPolisa)&nbsp;– konto, zamówienie, bezpieczeństwo i&nbsp;dziennik zdarzeń, uzgadnianie płatności z&nbsp;operatorem i&nbsp;obowiązki platformy. Dane kupującego usuwamy 90&nbsp;dni po szkoleniu; zamówienie bez danych osobowych zostaje dłużej, do rozliczeń. <a class="link-quiet" href="logowanie.html#klauzula">Klauzula informacyjna</a></li>
+                <li><strong><span translate="no">Aura&nbsp;Expert</span></strong> (<span translate="no">BeautyPolisa</span>)&nbsp;– konto, zamówienie, bezpieczeństwo i&nbsp;dziennik zdarzeń, uzgadnianie płatności z&nbsp;operatorem i&nbsp;obowiązki platformy. Dane kupującego usuwamy 90&nbsp;dni po szkoleniu; zamówienie bez danych osobowych zostaje dłużej, do rozliczeń. <a class="link-quiet" href="logowanie.html#klauzula">Klauzula informacyjna</a></li>
                 <li><strong>Operator płatności</strong>&nbsp;– płatność, zwroty, przeciwdziałanie oszustwom i&nbsp;praniu pieniędzy; jest odrębnym administratorem. Informację operatora podamy po jego wyborze.</li>
               </ul>
-              <p class="xsmall muted">Role Aura Expert (administrator albo podmiot przetwarzający przy danych do faktury) i&nbsp;okresy przechowywania potwierdzą prawnik i&nbsp;IOD. <span class="mock-note">Do weryfikacji&nbsp;– Q1, Q35</span></p>
+              <p class="xsmall muted">Role <span translate="no">Aura&nbsp;Expert</span> (administrator albo podmiot przetwarzający przy danych do faktury) i&nbsp;okresy przechowywania potwierdzą prawnik i&nbsp;IOD. <span class="mock-note">Do weryfikacji&nbsp;– Q1, Q35</span></p>
               <details class="mini">
                 <summary class="link-quiet">Odstąpienie, rezygnacja i&nbsp;zwroty (skrót regulaminu)</summary>
                 <p class="mini-body small">Konsument może odstąpić od umowy w&nbsp;ciągu 14&nbsp;dni bez podania przyczyny&nbsp;– pełny zwrot w&nbsp;ciągu 14&nbsp;dni. Rezygnacja po tym terminie: do 14&nbsp;dni przed szkoleniem&nbsp;– pełny zwrot; od 13 do 3&nbsp;dni&nbsp;– 50%; później&nbsp;– bez zwrotu. Odwołanie przez organizatora&nbsp;– pełny zwrot. (przykład z&nbsp;regulaminu organizatora)</p>
@@ -1031,7 +1028,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <div><dt>Szkolenie</dt><dd>Stylizacja rzęs&nbsp;– lifting i&nbsp;laminacja (przykład)<br><span class="xsmall muted"><time datetime="2027-01-28T10:00">28.01.2027, 10:00–16:00</time>&nbsp;· Warszawa</span></dd></div>
               <div><dt>Uczestnik</dt><dd>Anna Przykładowa</dd></div>
               <div><dt>Kupujesz jako</dt><dd id="sum-fv">osoba prywatna: Anna Przykładowa</dd></div>
-              <div><dt>Sprzedawca</dt><dd>Organizator Przykładowy sp.&nbsp;z&nbsp;o.o., NIP 000-000-00-00 (przykład)</dd></div>
+              <div><dt>Sprzedawca</dt><dd>Organizator Przykładowy sp.&nbsp;z&nbsp;o.o., NIP&nbsp;000-000-00-00 (przykład)</dd></div>
               <div class="total"><dt>Do zapłaty</dt><dd>450,00&nbsp;zł brutto</dd></div>
             </dl>
             <p class="xsmall muted">Cena zawiera wszystkie opłaty. Portal nie dolicza opłat do ceny. <span class="mock-note">O&nbsp;ile potwierdzą to operator i&nbsp;model</span></p>
@@ -1050,7 +1047,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                 <button class="btn btn-navy" type="submit">Zamawiam i&nbsp;płacę 450,00&nbsp;zł</button>
                 <a class="link-quiet" href="#zamowienie">Zmień dane</a>
               </div>
-              <p class="xsmall muted">Przejdziesz na stronę operatora płatności. BeautyPolisa nie widzi kodu BLIK ani danych karty, a&nbsp;pieniądze trafiają na konto organizatora u&nbsp;operatora (<span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span>). Brzmienie przycisku zamówienia&nbsp;– <span class="mock-note">do weryfikacji prawnej</span></p>
+              <p class="xsmall muted">Przejdziesz na stronę operatora płatności. <span translate="no">BeautyPolisa</span> nie widzi kodu BLIK ani danych karty, a&nbsp;pieniądze trafiają na konto organizatora u&nbsp;operatora (<span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span>). Brzmienie przycisku zamówienia&nbsp;– <span class="mock-note">do weryfikacji prawnej</span></p>
             </form>
 
             <div class="sim" id="sim-operator" tabindex="-1">
@@ -1092,7 +1089,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <p><span class="badge badge--ok">Opłacone&nbsp;· zapisano</span></p>
             <div class="private">
               <span class="label-caps">Widoczne tylko dla zapisanych</span>
-              <strong>Sala szkoleniowa (przykład), ul.&nbsp;Przykładowa 1, 00-001 Warszawa</strong>
+              <strong>Sala szkoleniowa (przykład), ul.&nbsp;Przykładowa 1, 00-001&nbsp;Warszawa</strong>
               <span>Weź własne narzędzia do stylizacji. (przykład)</span>
             </div>
             <ul class="pay-facts">
@@ -1139,7 +1136,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <ul>
             <li><span><strong>Sprzedawca to organizator.</strong> Umowę zawierasz z&nbsp;Organizator Przykładowy sp.&nbsp;z&nbsp;o.o.; on wystawia fakturę i&nbsp;rozpatruje reklamacje.</span></li>
             <li><span><strong>Płatność u&nbsp;operatora.</strong> BLIK, karta albo szybki przelew&nbsp;– na stronie licencjonowanego operatora płatności. <span class="mock-note">Operator nie jest wybrany</span></span></li>
-            <li><span><strong>Pieniądze trafiają do organizatora.</strong> BeautyPolisa ich nie przyjmuje i&nbsp;nie przechowuje danych kart. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></span></li>
+            <li><span><strong>Pieniądze trafiają do organizatora.</strong> <span translate="no">BeautyPolisa</span> ich nie przyjmuje i&nbsp;nie przechowuje danych kart. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></span></li>
             <li><span><strong>Cena zawiera wszystkie opłaty.</strong> Portal nie dolicza opłat do ceny. <span class="mock-note">O&nbsp;ile potwierdzą to operator i&nbsp;model</span></span></li>
             <li><span><strong>Zwroty.</strong> Odstąpienie od umowy (konsument, 14&nbsp;dni)&nbsp;– pełny zwrot; rezygnacja później&nbsp;– według regulaminu organizatora; odwołanie szkolenia&nbsp;– pełny zwrot dla wszystkich.</span></li>
           </ul>
@@ -1280,16 +1277,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                 <details class="mini">
                   <summary class="btn btn-ghost btn-sm">Odstępuję od umowy<span class="sr-only">: Stylizacja rzęs</span></summary>
                   <div class="mini-body">
-                    <p class="small">Jako konsument możesz odstąpić od umowy bez podania przyczyny do <time datetime="2026-11-27">27.11.2026</time>. Organizator nie może odmówić: zwraca całą kwotę tą samą metodą płatności w&nbsp;ciągu 14&nbsp;dni od otrzymania oświadczenia. Potwierdzenie wyślemy <span class="nowrap">e-mailem</span>.</p>
-                    <button class="btn btn-danger btn-sm js-cancel" type="button" data-badge="Odstąpienie&#160;– zwrot do 27.11.2026" data-msg="Oświadczenie o&#160;odstąpieniu od umowy („Stylizacja rzęs (przykład)”) doręczone organizatorowi 13.11.2026 (przykład). Organizator zwróci całą kwotę najpóźniej do 27.11.2026. Potwierdzenie wysłaliśmy e-mailem.">Odstępuję od umowy</button>
+                    <p class="small" id="odst-skutek-1">Jako konsument możesz odstąpić od umowy bez podania przyczyny do <time datetime="2026-11-27">27.11.2026</time>. Organizator nie może odmówić: zwraca całą kwotę tą samą metodą płatności w&nbsp;ciągu 14&nbsp;dni od otrzymania oświadczenia. Potwierdzenie wyślemy <span class="nowrap">e-mailem</span>.</p>
+                    <div class="actions"><button class="btn btn-danger btn-sm js-cancel" type="button" data-badge="Odstąpienie&#160;– zwrot do 27.11.2026" data-msg="Oświadczenie o&#160;odstąpieniu od umowy („Stylizacja rzęs (przykład)”) doręczone organizatorowi 13.11.2026 (przykład). Organizator zwróci całą kwotę najpóźniej do 27.11.2026. Potwierdzenie wysłaliśmy e-mailem." aria-describedby="odst-skutek-1">Odstępuję od umowy</button><button class="btn btn-quiet btn-sm" type="button" data-zamknij>Anuluj</button></div>
                     <p class="xsmall muted">Tylko dla kupujących-konsumentów (i&nbsp;jednoosobowej działalności na prawach konsumenta), w&nbsp;terminie. <span class="mock-note">Do weryfikacji prawnej&nbsp;– Q31</span></p>
                   </div>
                 </details>
                 <details class="mini">
                   <summary class="btn btn-quiet btn-sm">Poproś o&nbsp;rezygnację<span class="sr-only">: Stylizacja rzęs</span></summary>
                   <div class="mini-body">
-                    <p class="small">Po terminie odstąpienia albo przy zakupie na firmę o&nbsp;zwrocie decyduje organizator według swojego regulaminu. Do jego decyzji miejsce zostaje Twoje.</p>
-                    <button class="btn btn-danger btn-sm js-cancel" type="button" data-badge="Prośba o&#160;rezygnację&#160;– czeka na organizatora" data-msg="Wysłaliśmy organizatorowi prośbę o&#160;rezygnację ze „Stylizacji rzęs (przykład)”. O&#160;jego decyzji i&#160;ewentualnym zwrocie napiszemy e-mailem.">Wyślij prośbę</button>
+                    <p class="small" id="rez-skutek-1">Po terminie odstąpienia albo przy zakupie na firmę o&nbsp;zwrocie decyduje organizator według swojego regulaminu. Do jego decyzji miejsce zostaje Twoje.</p>
+                    <div class="actions"><button class="btn btn-danger btn-sm js-cancel" type="button" data-badge="Prośba o&#160;rezygnację&#160;– czeka na organizatora" data-msg="Wysłaliśmy organizatorowi prośbę o&#160;rezygnację ze „Stylizacji rzęs (przykład)”. O&#160;jego decyzji i&#160;ewentualnym zwrocie napiszemy e-mailem." aria-describedby="rez-skutek-1">Wyślij prośbę</button><button class="btn btn-quiet btn-sm" type="button" data-zamknij>Anuluj</button></div>
                   </div>
                 </details>
               </div>
@@ -1337,12 +1334,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               </div>
             </li>
           </ul>
-          <p class="xsmall muted">Fakturę wystawia organizator (sprzedawca)&nbsp;– BeautyPolisa nie wystawia faktur za szkolenia. Plik faktury pokazujemy, jeśli organizator go doda. Reklamacje i&nbsp;pytania o&nbsp;fakturę kieruj do organizatora. Swoje zamówienia, faktury i&nbsp;odstąpienie widzisz tutaj także wtedy, gdy stracisz dostęp do konta salonu. Dane kupującego usuwamy z&nbsp;portalu 90&nbsp;dni po szkoleniu&nbsp;– pobierz plik faktury i&nbsp;zachowaj go u&nbsp;siebie; okres przechowywania pliku faktury w&nbsp;portalu&nbsp;– do decyzji. <span class="mock-note">Założenie Z-46&nbsp;– Q35</span></p>
+          <p class="xsmall muted">Fakturę wystawia organizator (sprzedawca)&nbsp;– <span translate="no">BeautyPolisa</span> nie wystawia faktur za szkolenia. Plik faktury pokazujemy, jeśli organizator go doda. Reklamacje i&nbsp;pytania o&nbsp;fakturę kieruj do organizatora. Swoje zamówienia, faktury i&nbsp;odstąpienie widzisz tutaj także wtedy, gdy stracisz dostęp do konta salonu. Dane kupującego usuwamy z&nbsp;portalu 90&nbsp;dni po szkoleniu&nbsp;– pobierz plik faktury i&nbsp;zachowaj go u&nbsp;siebie; okres przechowywania pliku faktury w&nbsp;portalu&nbsp;– do decyzji. <span class="mock-note">Założenie Z-46&nbsp;– Q35</span></p>
         </div>
 
         <div class="tabpanel owner-only" role="tabpanel" id="p-zespol" data-trasa="/strefa-klienta/szkolenia" aria-labelledby="t-zespol" tabindex="0" hidden>
           <h2 class="sr-only">Zapisy zespołu</h2>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Zapisy zespołu – tabela">
             <table class="data stack">
               <caption>Zapisy osób z&nbsp;Salonu Przykładowego</caption>
               <thead><tr><th scope="col">Osoba</th><th scope="col">Szkolenie</th><th scope="col">Termin</th><th scope="col">Status</th></tr></thead>
@@ -1400,7 +1397,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <div>
             <p class="eyebrow">Organizator szkoleń</p>
             <h1 id="t-orgv">Moje szkolenia <em>jako organizator</em></h1>
-            <p class="lead">Salon Przykładowy&nbsp;– organizator szkoleń. Szkolenie trafia do katalogu po akceptacji Aura Expert i&nbsp;tylko przy aktywnym planie; każda zmiana w&nbsp;opublikowanym szkoleniu wraca do moderacji.</p>
+            <p class="lead">Salon Przykładowy&nbsp;– organizator szkoleń. Szkolenie trafia do katalogu po akceptacji <span translate="no">Aura&nbsp;Expert</span> i&nbsp;tylko przy aktywnym planie; każda zmiana w&nbsp;opublikowanym szkoleniu wraca do moderacji.</p>
             <div class="badges"><span class="badge badge--ok"><span>Plan aktywny do <time datetime="2027-10-20">20.10.2027</time> (przykład)</span></span><a class="link-quiet" href="#plan">Profil i&nbsp;plan</a><span class="badge badge--ok">Konto u&nbsp;operatora: aktywne</span><a class="link-quiet" href="#wyplaty">Sprzedaż i&nbsp;wypłaty</a></div>
           </div>
           <a class="btn btn-navy" href="#dodaj">Dodaj szkolenie</a>
@@ -1409,7 +1406,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
       <div class="alert alert--success" id="org-wyslane" role="status" tabindex="-1" hidden>
         <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
-        <strong class="alert-title">Szkolenie czeka na akceptację Aura Expert</strong>
+        <strong class="alert-title">Szkolenie czeka na akceptację <span translate="no">Aura&nbsp;Expert</span></strong>
         <p class="small"><span id="org-wyslane-tytul">–</span>&nbsp;– po akceptacji pojawi się w&nbsp;katalogu, a&nbsp;Ty dostaniesz <span class="nowrap">e-mail</span>.</p>
       </div>
 
@@ -1417,7 +1414,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <div class="card-head">
           <div><h2 class="card-title" id="t-org-list">Szkolenia</h2><p class="card-sub" id="org-licznik">7 szkoleń&nbsp;· 1 w&nbsp;moderacji, 1&nbsp;szkic</p></div>
         </div>
-        <div class="table-wrap">
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Szkolenia organizatora – tabela">
           <table class="data stack org-table" id="org-tabela">
             <thead><tr><th scope="col">Szkolenie</th><th scope="col">Termin</th><th scope="col">Status</th><th scope="col">Zapisy</th><th scope="col"><span class="sr-only">Akcje</span></th></tr></thead>
             <tbody>
@@ -1435,8 +1432,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                       <form class="mini-body js-capacity" action="#organizator" method="post" novalidate>
                         <div class="field">
                           <label for="cap-1">Liczba miejsc</label>
-                          <input type="number" id="cap-1" name="capacity" min="7" max="200" value="12" inputmode="numeric" aria-describedby="cap-1-hint">
+                          <input type="number" id="cap-1" name="capacity" min="7" max="200" value="12" inputmode="numeric" autocomplete="off" aria-describedby="cap-1-hint">
                           <p class="hint" id="cap-1-hint">Nie mniej niż liczba zapisanych (7). Zwiększenie zapisze osoby z&nbsp;listy rezerwowej.</p>
+                          <p class="field-error" id="cap-1-err" hidden></p>
                         </div>
                         <button class="btn btn-navy btn-sm" type="submit">Zapisz liczbę miejsc</button>
                         <p class="small" role="status" hidden></p>
@@ -1445,9 +1443,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                     <details class="mini">
                       <summary class="btn btn-danger btn-sm">Odwołaj szkolenie</summary>
                       <div class="mini-body">
-                        <p class="small">Zapisane osoby (7) dostaną <span class="nowrap">e-mail</span> o&nbsp;odwołaniu. Odwołania nie można cofnąć.</p>
-                        <button class="btn btn-danger btn-sm js-cancel-event" type="button">Odwołuję szkolenie</button>
-                        <p class="small" role="status" hidden>Szkolenie odwołane. Zapisanym wysłaliśmy <span class="nowrap">e-mail</span>.</p>
+                        <p class="small" id="odwolaj-skutek-1">Zapisane osoby (7) dostaną <span class="nowrap">e-mail</span> o&nbsp;odwołaniu. Odwołania nie można cofnąć.</p>
+                        <div class="actions"><button class="btn btn-danger btn-sm js-cancel-event" type="button" aria-describedby="odwolaj-skutek-1">Odwołuję szkolenie</button><button class="btn btn-quiet btn-sm" type="button" data-zamknij>Anuluj</button></div>
+                        <p class="small" role="status" tabindex="-1" hidden>Szkolenie odwołane. Zapisanym wysłaliśmy <span class="nowrap">e-mail</span>.</p>
                       </div>
                     </details>
                   </div>
@@ -1465,10 +1463,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                     <details class="mini">
                       <summary class="btn btn-danger btn-sm">Odwołaj i&nbsp;zwróć wpłaty</summary>
                       <form class="mini-body js-cancel-paid" action="#organizator" method="post" novalidate>
-                        <p class="small">Zapisane osoby (5) dostaną <span class="nowrap">e-mail</span> o&nbsp;odwołaniu i&nbsp;pełny zwrot: 5&nbsp;×&nbsp;390,00&nbsp;zł. Zwroty zlecimy u&nbsp;operatora z&nbsp;Twojego konta; rezerwacje w&nbsp;toku wygasną. Odwołania nie można cofnąć.</p>
+                        <p class="small" id="odwolaj-skutek-2">Zapisane osoby (5) dostaną <span class="nowrap">e-mail</span> o&nbsp;odwołaniu i&nbsp;pełny zwrot: 5&nbsp;×&nbsp;390,00&nbsp;zł. Zwroty zlecimy u&nbsp;operatora z&nbsp;Twojego konta; rezerwacje w&nbsp;toku wygasną. Odwołania nie można cofnąć.</p>
                         <label class="check-row" for="odw-1"><input type="checkbox" id="odw-1" name="potwierdzam" value="tak">Potwierdzam odwołanie i&nbsp;pełne zwroty</label>
                         <p class="field-error" id="odw-1-err" hidden></p>
-                        <button class="btn btn-danger btn-sm" type="submit">Odwołuję szkolenie</button>
+                        <div class="actions"><button class="btn btn-danger btn-sm" type="submit" aria-describedby="odwolaj-skutek-2">Odwołuję szkolenie</button><button class="btn btn-quiet btn-sm" type="button" data-zamknij>Anuluj</button></div>
                         <p class="small" role="status" hidden>Szkolenie odwołane. Zwroty zlecone: 5&nbsp;– postęp zobaczysz w&nbsp;„Sprzedaż i&nbsp;wypłaty”.</p>
                       </form>
                     </details>
@@ -1478,7 +1476,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <tr>
                 <th scope="row" data-label="Szkolenie">Makijaż okolicznościowy&nbsp;– podstawy (przykład)<br><span class="muted small">online&nbsp;· 120&nbsp;zł brutto (przykład)</span></th>
                 <td data-label="Termin"><time datetime="2027-01-20">20.01.2027</time></td>
-                <td data-label="Status"><div><span class="badge badge--info">W&nbsp;moderacji</span><br><span class="muted small">czeka na akceptację Aura Expert</span></div></td>
+                <td data-label="Status"><div><span class="badge badge--info">W&nbsp;moderacji</span><br><span class="muted small">czeka na akceptację <span translate="no">Aura&nbsp;Expert</span></span></div></td>
                 <td data-label="Zapisy">po publikacji</td>
                 <td class="cell-actions"><button class="btn btn-ghost btn-sm" type="button">Wycofaj do szkicu<span class="sr-only">: Makijaż okolicznościowy</span></button></td>
               </tr>
@@ -1527,7 +1525,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <dl class="kv kv--rows">
             <div><dt>Plan</dt><dd>12&nbsp;miesięcy&nbsp;– 10&nbsp;000&nbsp;zł netto<br><span class="xsmall muted">promocja na otwarcie portalu</span></dd></div>
             <div><dt>Aktywny do</dt><dd><time datetime="2027-10-20">20&nbsp;października 2027&nbsp;r.</time> (przykład)</dd></div>
-            <div><dt>Faktura</dt><dd>od Aura Expert, poza portalem<br>nr FV/2026/10/042 (przykład) <span class="mock-note">Założenie Z-22</span></dd></div>
+            <div><dt>Faktura</dt><dd>od <span translate="no">Aura&nbsp;Expert</span>, poza portalem<br>nr FV/2026/10/042 (przykład) <span class="mock-note">Założenie Z-22</span></dd></div>
           </dl>
           <a class="link-lux" href="#plan">Profil i&nbsp;plan</a>
         </section>
@@ -1535,10 +1533,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <section class="card surface" aria-labelledby="t-zasady">
           <h2 class="card-title" id="t-zasady">Zasady dla organizatorów</h2>
           <ol class="steps">
-            <li><strong>Moderacja przed publikacją</strong><p>Aura Expert sprawdza treść: temat związany z&nbsp;branżą beauty, brak obietnic uprawnień zawodowych, brak linków i&nbsp;numerów telefonów w&nbsp;opisie.</p></li>
+            <li><strong>Moderacja przed publikacją</strong><p><span translate="no">Aura&nbsp;Expert</span> sprawdza treść: temat związany z&nbsp;branżą beauty, brak obietnic uprawnień zawodowych, brak linków i&nbsp;numerów telefonów w&nbsp;opisie.</p></li>
             <li><strong>Katalog tylko przy aktywnym planie</strong><p>Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy do końca planu. Potem znikają z&nbsp;katalogu, a&nbsp;zapisani zachowują miejsca.</p></li>
             <li><strong>Minimum danych uczestników</strong><p>Widzisz imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status&nbsp;– tylko na swoich szkoleniach. Dane służą do przeprowadzenia szkolenia i&nbsp;wystawienia faktury.</p></li>
-            <li><strong>Sprzedajesz Ty, płatność u&nbsp;operatora</strong><p>Przy szkoleniu płatnym jesteś sprzedawcą: uczestnik płaci u&nbsp;operatora płatności na Twoje konto (<span class="mock-note">do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span>), a&nbsp;fakturę wystawiasz sam. Prowizja BeautyPolisa w&nbsp;promocji: 0%. <a class="link-quiet" href="#wyplaty">Sprzedaż i&nbsp;wypłaty</a></p></li>
+            <li><strong>Sprzedajesz Ty, płatność u&nbsp;operatora</strong><p>Przy szkoleniu płatnym jesteś sprzedawcą: uczestnik płaci u&nbsp;operatora płatności na Twoje konto (<span class="mock-note">do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span>), a&nbsp;fakturę wystawiasz sam. Prowizja <span translate="no">BeautyPolisa</span> w&nbsp;promocji: 0%. <a class="link-quiet" href="#wyplaty">Sprzedaż i&nbsp;wypłaty</a></p></li>
           </ol>
         </section>
       </div>
@@ -1553,7 +1551,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <ol class="crumbs" aria-label="Ścieżka"><li><a href="#organizator">Moje szkolenia</a></li><li aria-current="page">Profil i&nbsp;plan</li></ol>
         <p class="eyebrow">Organizator szkoleń</p>
         <h1 id="t-plan">Profil <em>i&nbsp;plan</em></h1>
-        <p class="lead">Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy tylko przy aktywnym planie. Plan ustawia Aura Expert, a&nbsp;fakturę za plan wystawia poza portalem. <span class="mock-note">Założenie Z-22</span></p>
+        <p class="lead">Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy tylko przy aktywnym planie. Plan ustawia <span translate="no">Aura&nbsp;Expert</span>, a&nbsp;fakturę za plan wystawia poza portalem. <span class="mock-note">Założenie Z-22</span></p>
       </header>
 
       <div class="grid grid-main">
@@ -1567,11 +1565,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <dl class="kv kv--rows">
               <div><dt>Aktywny do</dt><dd><time datetime="2027-10-20">20&nbsp;października 2027&nbsp;r.</time> (przykład)</dd></div>
               <div><dt>Okres planu</dt><dd><time datetime="2026-10-20">20.10.2026</time>&nbsp;– <time datetime="2027-10-20">20.10.2027</time> (przykład)</dd></div>
-              <div><dt>Faktura</dt><dd>nr FV/2026/10/042 (przykład)<br><span class="xsmall muted">Wystawia Aura Expert poza portalem. Za plan nie płacisz w&nbsp;portalu.</span> <span class="mock-note">Założenie Z-22</span></dd></div>
+              <div><dt>Faktura</dt><dd>nr FV/2026/10/042 (przykład)<br><span class="xsmall muted">Wystawia <span translate="no">Aura&nbsp;Expert</span> poza portalem. Za plan nie płacisz w&nbsp;portalu.</span> <span class="mock-note">Założenie Z-22</span></dd></div>
               <div><dt>W&nbsp;katalogu</dt><dd>opublikowane szkolenia, które zaczynają się w&nbsp;okresie planu <span class="mock-note">Założenie Z-41</span></dd></div>
               <div><dt>Przypomnienie</dt><dd><span class="nowrap">e-mail</span> 14&nbsp;dni przed końcem planu <span class="mock-note">Założenie</span></dd></div>
             </dl>
-            <p class="xsmall muted">Cenę zapisujemy w&nbsp;planie w&nbsp;dniu jego ustawienia. Plan ustawia, przedłuża i&nbsp;anuluje wyłącznie personel Aura Expert&nbsp;– organizator nie zmienia go sam.</p>
+            <p class="xsmall muted">Cenę zapisujemy w&nbsp;planie w&nbsp;dniu jego ustawienia. Plan ustawia, przedłuża i&nbsp;anuluje wyłącznie personel <span translate="no">Aura&nbsp;Expert</span>&nbsp;– organizator nie zmienia go sam.</p>
           </section>
 
           <div class="variant" id="plan-konczy">
@@ -1579,7 +1577,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <div class="alert alert--info">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
               <strong class="alert-title">Plan kończy się 20&nbsp;października 2027&nbsp;r.</strong>
-              <p class="small">Po tej dacie Twoje szkolenia znikną z&nbsp;katalogu i&nbsp;nie przyjmą nowych zapisów. Osoby zapisane zachowają miejsca, a&nbsp;Ty&nbsp;– dostęp do list uczestników. O&nbsp;kolejny plan poproś doradcę Aura Expert.</p>
+              <p class="small">Po tej dacie Twoje szkolenia znikną z&nbsp;katalogu i&nbsp;nie przyjmą nowych zapisów. Osoby zapisane zachowają miejsca, a&nbsp;Ty&nbsp;– dostęp do list uczestników. O&nbsp;kolejny plan poproś doradcę <span translate="no">Aura&nbsp;Expert</span>.</p>
               <div class="actions"><a class="link-lux" href="../makieta-v3.html#kontakt">Napisz do doradcy</a></div>
             </div>
           </div>
@@ -1589,8 +1587,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <div class="alert alert--warn">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>
               <strong class="alert-title">Brak aktywnego planu&nbsp;– szkolenia nie są widoczne w&nbsp;katalogu</strong>
-              <p class="small">Skontaktuj się z&nbsp;Aura Expert. Do czasu ustawienia planu możesz przygotowywać szkice, ale szkolenia nie trafią do katalogu ani nie przyjmą zapisów. Osoby już zapisane zachowują miejsca i&nbsp;szczegóły szkolenia.</p>
-              <div class="actions"><a class="btn btn-navy btn-sm" href="../makieta-v3.html#kontakt">Skontaktuj się z&nbsp;Aura Expert</a></div>
+              <p class="small">Skontaktuj się z&nbsp;<span translate="no">Aura&nbsp;Expert</span>. Do czasu ustawienia planu możesz przygotowywać szkice, ale szkolenia nie trafią do katalogu ani nie przyjmą zapisów. Osoby już zapisane zachowują miejsca i&nbsp;szczegóły szkolenia.</p>
+              <div class="actions"><a class="btn btn-navy btn-sm" href="../makieta-v3.html#kontakt">Skontaktuj się z&nbsp;<span translate="no">Aura&nbsp;Expert</span></a></div>
             </div>
           </div>
         </div>
@@ -1614,7 +1612,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             </ul>
             <ul class="plan-facts">
               <li>Plan nie limituje liczby szkoleń; w&nbsp;szkicu lub moderacji możesz mieć najwyżej 10&nbsp;naraz. <span class="mock-note">Założenia Z-22, Z-11</span></li>
-              <li>Pozostałe warunki&nbsp;– do ustalenia z&nbsp;Aura Expert. <span class="mock-note">Do ustalenia&nbsp;– Q16</span></li>
+              <li>Pozostałe warunki&nbsp;– do ustalenia z&nbsp;<span translate="no">Aura&nbsp;Expert</span>. <span class="mock-note">Do ustalenia&nbsp;– Q16</span></li>
             </ul>
             <a class="link-lux" href="../makieta-v3.html#kontakt">Zapytaj o&nbsp;plan</a>
           </section>
@@ -1623,18 +1621,18 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <div class="card-head">
               <div><h2 class="card-title" id="t-profil">Profil organizatora</h2><p class="card-sub">Widoczny przy szkoleniach w&nbsp;katalogu</p></div>
             </div>
-            <p><span class="badge badge--verified">Organizator zweryfikowany przez Aura Expert (dane firmy)</span></p>
+            <p><span class="badge badge--verified">Organizator zweryfikowany przez <span translate="no">Aura&nbsp;Expert</span> (dane firmy)</span></p>
             <dl class="kv kv--rows">
               <div><dt>Nazwa przy szkoleniach</dt><dd>Salon Przykładowy</dd></div>
               <div><dt>Rodzaj</dt><dd>salon z&nbsp;kontem w&nbsp;Strefie Klienta</dd></div>
               <div><dt>Miasto</dt><dd>Kraków</dd></div>
               <div><dt>Weryfikacja</dt><dd><time datetime="2026-10-20">20&nbsp;października 2026&nbsp;r.</time> (przykład)</dd></div>
               <div><dt>Umowa organizatora</dt><dd>wersja 1.0 (przykład)</dd></div>
-              <div><dt>Dane sprzedawcy</dt><dd>Salon Przykładowy (przykład), NIP 000-000-00-00, rejestr&nbsp;– z&nbsp;weryfikacji; adres i&nbsp;kontakt&nbsp;– z&nbsp;Twoich warunków sprzedaży. Widoczne przy szkoleniach płatnych. <span class="mock-note">DSA art.&nbsp;30</span></dd></div>
+              <div><dt>Dane sprzedawcy</dt><dd>Salon Przykładowy (przykład), NIP&nbsp;000-000-00-00, rejestr&nbsp;– z&nbsp;weryfikacji; adres i&nbsp;kontakt&nbsp;– z&nbsp;Twoich warunków sprzedaży. Widoczne przy szkoleniach płatnych. <span class="mock-note">DSA art.&nbsp;30</span></dd></div>
               <div><dt>Oświadczenie o&nbsp;zgodności oferty z&nbsp;prawem</dt><dd>złożone <time datetime="2026-11-13">13.11.2026</time> (przykład)&nbsp;– widoczne przy szkoleniach płatnych <span class="mock-note">DSA art.&nbsp;30 ust.&nbsp;1 lit.&nbsp;e</span></dd></div>
               <div><dt>Regulamin szkoleń</dt><dd>wersja 1.0 z&nbsp;<time datetime="2026-11-13">13.11.2026</time> (przykład)<br><span class="xsmall muted">rezygnacja, zwroty, reklamacje; nowa wersja przechodzi moderację, zamówienia zachowują swoją wersję</span></dd></div>
             </dl>
-            <p class="xsmall muted">Nazwę firmy, NIP i&nbsp;rejestr zmienia doradca Aura Expert po weryfikacji. Adres, kontakt, regulamin i&nbsp;oświadczenie podajesz w&nbsp;warunkach sprzedaży&nbsp;– sprawdzamy je przed publikacją. Dane firmy przechowujemy do 6&nbsp;miesięcy po zakończeniu współpracy. <span class="mock-note">DSA art.&nbsp;30 ust.&nbsp;5&nbsp;– do weryfikacji prawnej</span></p>
+            <p class="xsmall muted">Nazwę firmy, NIP i&nbsp;rejestr zmienia doradca <span translate="no">Aura&nbsp;Expert</span> po weryfikacji. Adres, kontakt, regulamin i&nbsp;oświadczenie podajesz w&nbsp;warunkach sprzedaży&nbsp;– sprawdzamy je przed publikacją. Dane firmy przechowujemy do 6&nbsp;miesięcy po zakończeniu współpracy. <span class="mock-note">DSA art.&nbsp;30 ust.&nbsp;5&nbsp;– do weryfikacji prawnej</span></p>
           </section>
         </div>
       </div>
@@ -1651,8 +1649,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <ol class="crumbs" aria-label="Ścieżka"><li><a href="#organizator">Moje szkolenia</a></li><li aria-current="page">Sprzedaż i&nbsp;wypłaty</li></ol>
         <p class="eyebrow">Organizator szkoleń</p>
         <h1 id="t-wyp">Sprzedaż <em>i&nbsp;wypłaty</em></h1>
-        <p class="lead">Przy szkoleniach płatnych jesteś sprzedawcą. Uczestnicy płacą u&nbsp;operatora płatności, a&nbsp;pieniądze trafiają na Twoje konto u&nbsp;operatora&nbsp;– BeautyPolisa ich nie przyjmuje ani nie przekazuje. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></p>
-        <div class="badges"><span class="badge badge--ok">Konto u&nbsp;operatora: aktywne</span><span class="badge badge--role">Prowizja BeautyPolisa: 0% (promocja)</span></div>
+        <p class="lead">Przy szkoleniach płatnych jesteś sprzedawcą. Uczestnicy płacą u&nbsp;operatora płatności, a&nbsp;pieniądze trafiają na Twoje konto u&nbsp;operatora&nbsp;– <span translate="no">BeautyPolisa</span> ich nie przyjmuje ani nie przekazuje. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></p>
+        <div class="badges"><span class="badge badge--ok">Konto u&nbsp;operatora: aktywne</span><span class="badge badge--role">Prowizja <span translate="no">BeautyPolisa</span>: 0% (promocja)</span></div>
       </header>
 
       <div class="grid grid-2">
@@ -1673,7 +1671,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <div><dt>Weryfikacja firmy</dt><dd>zakończona u&nbsp;operatora <time datetime="2026-10-22">22.10.2026</time> (przykład)</dd></div>
           </dl>
           <a class="link-lux" href="#konto-operatora">Otwórz panel operatora</a>
-          <p class="xsmall muted">Saldo, historię wypłat i&nbsp;dokumenty rozliczeniowe operatora sprawdzisz w&nbsp;jego panelu. BeautyPolisa nie zna danych Twojego rachunku. <span class="mock-note">Operator nie jest wybrany</span></p>
+          <p class="xsmall muted">Saldo, historię wypłat i&nbsp;dokumenty rozliczeniowe operatora sprawdzisz w&nbsp;jego panelu. <span translate="no">BeautyPolisa</span> nie zna danych Twojego rachunku. <span class="mock-note">Operator nie jest wybrany</span></p>
 
           <div class="case-variants">
             <div class="variant">
@@ -1708,14 +1706,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
         <section class="card surface plans" aria-labelledby="t-prow">
           <div class="card-head">
-            <div><p class="label-caps">Promocja na otwarcie portalu</p><h2 class="card-title" id="t-prow">Prowizja BeautyPolisa</h2></div>
+            <div><p class="label-caps">Promocja na otwarcie portalu</p><h2 class="card-title" id="t-prow">Prowizja <span translate="no">BeautyPolisa</span></h2></div>
           </div>
           <p class="premium"><strong>0%</strong><span>od sprzedaży szkoleń w&nbsp;okresie promocji</span></p>
           <ul class="plan-facts">
             <li>Cała kwota zamówienia trafia na Twoje konto u&nbsp;operatora; opłaty operatora za transakcje&nbsp;– według Twojej umowy z&nbsp;operatorem. <span class="mock-note">Do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej</span></li>
             <li>Koniec promocji: data do ustalenia. Zmianę prowizji ogłosimy <span class="nowrap">e-mailem</span> co najmniej 15&nbsp;dni wcześniej; nie obejmie zamówień już złożonych. <span class="mock-note">P2B art.&nbsp;3&nbsp;– Q16, Q33</span></li>
             <li>Jeśli zdejmiemy szkolenie albo wstrzymamy sprzedaż, podamy Ci powód. <span class="mock-note">P2B art.&nbsp;4</span></li>
-            <li>Plan organizatora rozliczasz z&nbsp;Aura Expert osobno, fakturą poza portalem.</li>
+            <li>Plan organizatora rozliczasz z&nbsp;<span translate="no">Aura&nbsp;Expert</span> osobno, fakturą poza portalem.</li>
             <li>Fakturę za szkolenie wystawiasz Ty&nbsp;– dokumenty księgowe przechowujesz według swoich obowiązków.</li>
           </ul>
         </section>
@@ -1730,13 +1728,13 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <p class="small">–</p>
         </div>
         <h3 class="card-sub" id="t-tab-zam">Stylizacja brwi henną&nbsp;– warsztat (przykład), <time datetime="2027-01-15">15.01.2027</time></h3>
-        <div class="table-wrap">
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Zamówienia Twoich szkoleń – tabela">
           <table class="data stack org-table" id="tab-zamowienia" aria-labelledby="t-tab-zam">
             <thead><tr><th scope="col">Zamówienie</th><th scope="col">Uczestnik i&nbsp;faktura</th><th scope="col">Kwota</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Akcje</span></th></tr></thead>
             <tbody>
               <tr>
                 <th scope="row" data-label="Zamówienie">BP-SZK-2026-000141<br><span class="muted small">opłacone <time datetime="2026-11-12">12.11.2026</time></span></th>
-                <td data-label="Uczestnik i faktura"><div><strong>Joanna Przykładowa</strong><br><span class="small">firma: Instytut Przykładowy, NIP 000-000-00-00, Kraków (przykład)</span></div></td>
+                <td data-label="Uczestnik i faktura"><div><strong>Joanna Przykładowa</strong><br><span class="small">firma: Instytut Przykładowy, NIP&nbsp;000-000-00-00, Kraków (przykład)</span></div></td>
                 <td data-label="Kwota" class="money">390,00&nbsp;zł</td>
                 <td data-label="Status"><div><span class="badge badge--ok" data-status>Opłacone</span><br><span class="muted small" data-fv>faktura: do dodania</span></div></td>
                 <td class="cell-actions">
@@ -1759,8 +1757,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                       <form class="mini-body js-refund" action="#wyplaty" method="post" novalidate data-max="390.00">
                         <div class="field">
                           <label for="zw-kw-1">Kwota zwrotu w&nbsp;zł</label>
-                          <input type="text" id="zw-kw-1" name="kwota" inputmode="decimal" value="390,00" aria-describedby="zw-kw-1-hint">
-                          <p class="hint" id="zw-kw-1-hint">Najwyżej 390,00&nbsp;zł&nbsp;– według Twojego regulaminu.</p>
+                          <input type="text" id="zw-kw-1" name="kwota" inputmode="decimal" autocomplete="off" value="390,00" aria-describedby="zw-kw-1-hint">
+                          <p class="hint" id="zw-kw-1-hint">Najwyżej 390,00&nbsp;zł&nbsp;– według Twojego regulaminu. Zlecenia zwrotu nie można cofnąć.</p>
                           <p class="field-error" id="zw-kw-1-err" hidden></p>
                         </div>
                         <div class="field">
@@ -1772,7 +1770,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                             <option>Inny powód</option>
                           </select>
                         </div>
-                        <button class="btn btn-danger btn-sm" type="submit">Zleć zwrot u&nbsp;operatora</button>
+                        <div class="actions"><button class="btn btn-danger btn-sm" type="submit" aria-describedby="zw-kw-1-hint">Zleć zwrot u&nbsp;operatora<span class="sr-only">: BP-SZK-2026-000141</span></button><button class="btn btn-quiet btn-sm" type="button" data-zamknij>Anuluj</button></div>
                         <p class="small" role="status" hidden></p>
                       </form>
                     </details>
@@ -1790,8 +1788,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                     <form class="mini-body js-refund" action="#wyplaty" method="post" novalidate data-max="390.00">
                       <div class="field">
                         <label for="zw-kw-2">Kwota zwrotu w&nbsp;zł</label>
-                        <input type="text" id="zw-kw-2" name="kwota" inputmode="decimal" value="390,00" aria-describedby="zw-kw-2-hint">
-                        <p class="hint" id="zw-kw-2-hint">Najwyżej 390,00&nbsp;zł&nbsp;– według Twojego regulaminu.</p>
+                        <input type="text" id="zw-kw-2" name="kwota" inputmode="decimal" autocomplete="off" value="390,00" aria-describedby="zw-kw-2-hint">
+                        <p class="hint" id="zw-kw-2-hint">Najwyżej 390,00&nbsp;zł&nbsp;– według Twojego regulaminu. Zlecenia zwrotu nie można cofnąć.</p>
                         <p class="field-error" id="zw-kw-2-err" hidden></p>
                       </div>
                       <div class="field">
@@ -1803,7 +1801,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                           <option>Inny powód</option>
                         </select>
                       </div>
-                      <button class="btn btn-danger btn-sm" type="submit">Zleć zwrot u&nbsp;operatora</button>
+                      <div class="actions"><button class="btn btn-danger btn-sm" type="submit" aria-describedby="zw-kw-2-hint">Zleć zwrot u&nbsp;operatora<span class="sr-only">: BP-SZK-2026-000142</span></button><button class="btn btn-quiet btn-sm" type="button" data-zamknij>Anuluj</button></div>
                       <p class="small" role="status" hidden></p>
                     </form>
                   </details>
@@ -1815,19 +1813,24 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                 <td data-label="Kwota" class="money">390,00&nbsp;zł</td>
                 <td data-label="Status"><div><span class="badge badge--warn" data-status>Odstąpienie od umowy</span><br><span class="muted small">oświadczenie doręczone <time datetime="2026-11-11">11.11.2026</time>; zwrot całej kwoty do <time datetime="2026-11-25">25.11.2026</time></span></div></td>
                 <td class="cell-actions">
-                  <form class="js-refund" action="#wyplaty" method="post" novalidate data-max="390.00">
-                    <input type="hidden" id="zw-kw-3" name="kwota" value="390,00">
-                    <p class="field-error" id="zw-kw-3-err" hidden></p>
-                    <input type="hidden" name="powod" value="odstapienie">
-                    <button class="btn btn-danger btn-sm" type="submit">Zwróć 390,00&nbsp;zł<span class="sr-only">: BP-SZK-2026-000143</span></button>
-                    <p class="small" role="status" hidden></p>
-                  </form>
-                  <p class="xsmall muted">Odstąpienia nie można odmówić. Po 10&nbsp;dniach bez zwrotu sprawa trafia do zespołu Aura Expert. <span class="mock-note">Q31</span></p>
+                  <!-- akcja nieodwracalna: dwa kroki (raport 16, 3.3) – opis skutku, „Zlecam zwrot” i „Anuluj”; bez JS działa natywnie (details) -->
+                  <details class="mini">
+                    <summary class="btn btn-danger btn-sm">Zwróć 390,00&nbsp;zł<span class="sr-only">: BP-SZK-2026-000143</span></summary>
+                    <form class="mini-body js-refund" action="#wyplaty" method="post" novalidate data-max="390.00">
+                      <p class="small" id="zwrot-skutek-3">Zlecisz u&nbsp;operatora zwrot całej kwoty&nbsp;– 390,00&nbsp;zł dla Ewy Przykładowej (odstąpienie od umowy). Zlecenia zwrotu nie można cofnąć.</p>
+                      <input type="hidden" id="zw-kw-3" name="kwota" value="390,00">
+                      <p class="field-error" id="zw-kw-3-err" hidden></p>
+                      <input type="hidden" name="powod" value="odstapienie">
+                      <div class="actions"><button class="btn btn-danger btn-sm" type="submit" aria-describedby="zwrot-skutek-3">Zlecam zwrot 390,00&nbsp;zł<span class="sr-only">: BP-SZK-2026-000143</span></button><button class="btn btn-quiet btn-sm" type="button" data-zamknij>Anuluj</button></div>
+                      <p class="small" role="status" hidden></p>
+                    </form>
+                  </details>
+                  <p class="xsmall muted">Odstąpienia nie można odmówić. Po 10&nbsp;dniach bez zwrotu sprawa trafia do zespołu <span translate="no">Aura&nbsp;Expert</span>. <span class="mock-note">Q31</span></p>
                 </td>
               </tr>
               <tr>
                 <th scope="row" data-label="Zamówienie">BP-SZK-2026-000139<br><span class="muted small">opłacone <time datetime="2026-11-08">8.11.2026</time></span></th>
-                <td data-label="Uczestnik i faktura"><div><strong>Kamil Przykładowy</strong><br><span class="small">firma: Instytut Przykładowy, NIP 000-000-00-00 (przykład)</span></div></td>
+                <td data-label="Uczestnik i faktura"><div><strong>Kamil Przykładowy</strong><br><span class="small">firma: Instytut Przykładowy, NIP&nbsp;000-000-00-00 (przykład)</span></div></td>
                 <td data-label="Kwota" class="money">390,00&nbsp;zł</td>
                 <td data-label="Status"><div><span class="badge badge--info">Zwrot w&nbsp;toku</span><br><span class="muted small">rezygnacja, pełny zwrot zlecony <time datetime="2026-11-12">12.11.2026</time></span></div></td>
                 <td class="cell-actions"><span class="xsmall muted">Czeka na operatora</span></td>
@@ -1854,11 +1857,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <header class="page-head glass glass--strong frame">
         <ol class="crumbs" aria-label="Ścieżka"><li><a href="#organizator">Moje szkolenia</a></li><li aria-current="page">Dodaj szkolenie</li></ol>
         <h1 id="t-dodaj">Dodaj szkolenie</h1>
-        <p class="lead">Szkolenie trafi do moderacji Aura Expert. Wypełnij treść zwykłym tekstem&nbsp;– bez linków, numerów kont, linków płatności i&nbsp;numerów telefonów.</p>
+        <p class="lead">Szkolenie trafi do moderacji <span translate="no">Aura&nbsp;Expert</span>. Wypełnij treść zwykłym tekstem&nbsp;– bez linków, numerów kont, linków płatności i&nbsp;numerów telefonów.</p>
       </header>
 
       <div class="grid grid-main">
-        <form class="card surface form" id="f-dodaj" action="#organizator" method="post" novalidate aria-labelledby="t-dodaj-form">
+        <form class="card surface form" id="f-dodaj" action="#organizator" method="post" novalidate aria-labelledby="t-dodaj-form" data-niezapisane>
           <h2 class="card-title" id="t-dodaj-form">Szkolenie</h2>
           <div class="alert alert--error" id="dodaj-err" role="alert" tabindex="-1" hidden>
             <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>
@@ -1872,7 +1875,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </div>
           <div class="field">
             <label for="d-tytul">Tytuł</label>
-            <input type="text" id="d-tytul" name="tytul" minlength="5" maxlength="160" required aria-describedby="d-tytul-hint">
+            <input type="text" id="d-tytul" name="tytul" autocomplete="off" minlength="5" maxlength="160" required aria-describedby="d-tytul-hint">
             <p class="hint" id="d-tytul-hint">Od 5 do 160&nbsp;znaków, np. „Pielęgnacja dłoni&nbsp;– warsztat dla zespołu”.</p>
             <p class="field-error" id="d-tytul-err" hidden>Wpisz tytuł szkolenia (co najmniej 5&nbsp;znaków).</p>
           </div>
@@ -1888,13 +1891,13 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               </select>
               <p class="field-error" id="d-temat-err" hidden></p>
             </div>
-            <div class="field">
-              <span class="label">Adresaci</span>
+            <fieldset class="field">
+              <legend>Adresaci</legend>
               <div class="radio-cards">
                 <div class="radio-card"><input type="radio" id="d-adr-all" name="adresaci" value="all_members" checked><label for="d-adr-all">Właściciele i&nbsp;pracownicy salonów</label></div>
                 <div class="radio-card"><input type="radio" id="d-adr-own" name="adresaci" value="owners"><label for="d-adr-own">Tylko właściciele salonów</label></div>
               </div>
-            </div>
+            </fieldset>
           </div>
           <div class="field">
             <label for="d-opis">Krótki opis</label>
@@ -1924,7 +1927,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               </div>
               <div class="field">
                 <label for="d-miejsce">Nazwa miejsca <span>(opcjonalnie)</span></label>
-                <input type="text" id="d-miejsce" name="miejsce" maxlength="120">
+                <input type="text" id="d-miejsce" name="miejsce" autocomplete="off" maxlength="120">
               </div>
               <div class="field">
                 <label for="d-start">Rozpoczęcie</label>
@@ -1950,12 +1953,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <div class="fields-2">
               <div class="field">
                 <label for="d-miejsca">Liczba miejsc</label>
-                <input type="number" id="d-miejsca" name="miejsca" min="1" max="200" inputmode="numeric" required>
+                <input type="number" id="d-miejsca" name="miejsca" min="1" max="200" inputmode="numeric" autocomplete="off" required>
                 <p class="field-error" id="d-miejsca-err" hidden></p>
               </div>
               <div class="field">
                 <label for="d-limit">Limit miejsc na salon</label>
-                <input type="number" id="d-limit" name="limit_na_salon" min="1" max="20" value="3" inputmode="numeric" aria-describedby="d-limit-hint">
+                <input type="number" id="d-limit" name="limit_na_salon" min="1" max="20" value="3" inputmode="numeric" autocomplete="off" aria-describedby="d-limit-hint">
                 <p class="hint" id="d-limit-hint">Domyślnie 3&nbsp;– żeby jeden salon nie zajął wszystkich miejsc. <span class="mock-note">Założenie</span></p>
               </div>
             </div>
@@ -1968,8 +1971,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             </fieldset>
             <div class="field">
               <label for="d-cena">Cena brutto w&nbsp;zł <span>(tylko szkolenie płatne)</span></label>
-              <input type="text" id="d-cena" name="cena" inputmode="decimal" aria-describedby="d-cena-hint">
-              <p class="hint" id="d-cena-hint">Uczestnik zapłaci online u&nbsp;operatora płatności, a&nbsp;Ty jako sprzedawca wystawisz fakturę. Wymaga aktywnego konta w&nbsp;„Sprzedaż i&nbsp;wypłaty”. Prowizja BeautyPolisa w&nbsp;promocji: 0%.</p>
+              <input type="text" id="d-cena" name="cena" inputmode="decimal" autocomplete="off" aria-describedby="d-cena-hint">
+              <p class="hint" id="d-cena-hint">Uczestnik zapłaci online u&nbsp;operatora płatności, a&nbsp;Ty jako sprzedawca wystawisz fakturę. Wymaga aktywnego konta w&nbsp;„Sprzedaż i&nbsp;wypłaty”. Prowizja <span translate="no">BeautyPolisa</span> w&nbsp;promocji: 0%.</p>
               <p class="field-error" id="d-cena-err" hidden></p>
             </div>
           </div>
@@ -1979,7 +1982,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <p class="small">Te informacje zobaczą wyłącznie zapisane osoby i&nbsp;Ty&nbsp;– nie ma ich w&nbsp;publicznym katalogu.</p>
             <div class="field">
               <label for="d-link">Link do spotkania online <span>(online i&nbsp;hybrydowe)</span></label>
-              <input type="url" id="d-link" name="link" inputmode="url" spellcheck="false" aria-describedby="d-link-hint">
+              <input type="url" id="d-link" name="link" inputmode="url" autocomplete="off" spellcheck="false" aria-describedby="d-link-hint">
               <p class="hint" id="d-link-hint">Tylko Zoom, Microsoft Teams albo Google Meet. Uczestnik zobaczy nazwę serwisu przy linku. <span class="mock-note">Założenie</span></p>
               <p class="field-error" id="d-link-err" hidden>Link musi prowadzić do zoom.us, teams.microsoft.com albo meet.google.com i&nbsp;zaczynać się od https://.</p>
             </div>
@@ -2009,11 +2012,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <li>Opublikowane</li>
           </ol>
           <ol class="steps">
-            <li><strong>Wysyłasz do moderacji</strong><p>Do decyzji Aura Expert nie zmienisz treści&nbsp;– możesz wycofać szkolenie do szkicu.</p></li>
+            <li><strong>Wysyłasz do moderacji</strong><p>Do decyzji <span translate="no">Aura&nbsp;Expert</span> nie zmienisz treści&nbsp;– możesz wycofać szkolenie do szkicu.</p></li>
             <li><strong>Akceptacja albo odrzucenie</strong><p>Po akceptacji szkolenie pojawi się w&nbsp;katalogu, jeśli masz aktywny plan, a&nbsp;szkolenie zaczyna się w&nbsp;jego okresie. Odrzucenie zawsze ma powód, który zobaczysz na liście.</p></li>
             <li><strong>Zmiana po publikacji</strong><p>Zmiana treści, terminu, miejsca, ceny albo linku wraca do moderacji. Zapisani zachowują miejsca i&nbsp;dostaną <span class="nowrap">e-mail</span> o&nbsp;zmianie.</p></li>
           </ol>
-          <p class="xsmall muted">Przy szkoleniu i&nbsp;w&nbsp;<span class="nowrap">e-mailach</span> jest link „Zgłoś nadużycie”. Aura Expert może zawiesić organizatora.</p>
+          <p class="xsmall muted">Przy szkoleniu i&nbsp;w&nbsp;<span class="nowrap">e-mailach</span> jest link „Zgłoś nadużycie”. <span translate="no">Aura&nbsp;Expert</span> może zawiesić organizatora.</p>
         </aside>
       </div>
     </section>
@@ -2049,7 +2052,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </div>
         <p class="small" id="csv-ok" role="status" hidden>Plik CSV przygotowany. Eksport zapisaliśmy w&nbsp;historii konta organizatora. <span class="mock-note">W&nbsp;makiecie bez pliku</span></p>
         <form id="f-obecnosc" action="#uczestnicy" method="post">
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Lista uczestników – tabela">
             <table class="data stack">
               <thead><tr><th scope="col">Uczestnik</th><th scope="col">Salon</th><th scope="col">Status</th><th scope="col">Obecność</th></tr></thead>
               <tbody>
@@ -2111,16 +2114,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <ul>
         <li>Na stronie głównej link „Szkolenia” prowadzi do katalogu, a&nbsp;„Dla organizatorów szkoleń” i&nbsp;„Oferta dla organizatorów”&nbsp;– do oferty planów dla firm, które nie są jeszcze organizatorami (<code>#dla-organizatorow</code>). Widok organizatora (<code>#organizator</code>) otwiera się po zalogowaniu, z&nbsp;menu konta. Katalog jest tu pokazany w&nbsp;koncie salonu; wariantu publicznego <code>/szkolenia</code> dla gościa (Z-6: bez paska strefy, „Zaloguj się, aby się zapisać”) ta makieta jeszcze nie ma&nbsp;– do dodania.</li>
         <li><strong>Decyzja <span class="nowrap">P1d</span> (12.11.2026):</strong> organizator płaci za plan&nbsp;– promocja na otwarcie portalu: 10&nbsp;000&nbsp;zł netto za 12&nbsp;miesięcy albo 1&nbsp;000&nbsp;zł netto za miesiąc; pozostałe warunki&nbsp;– do ustalenia (Q16). Szkolenia są w&nbsp;katalogu i&nbsp;przyjmują zapisy tylko przy aktywnym planie (11 §12.4, S12, O5); po końcu planu zapisani zachowują miejsca i&nbsp;szczegóły, a&nbsp;organizator&nbsp;– listę uczestników. Ekrany: blok „Dla organizatorów szkoleń” w&nbsp;katalogu, stan planu w&nbsp;„Moich szkoleniach” organizatora, widok „Profil i&nbsp;plan” z&nbsp;wariantami „kończy się” i&nbsp;„brak aktywnego planu” oraz kontrola terminu w&nbsp;„Dodaj szkolenie”.</li>
-        <li><strong>Założenia <span class="nowrap">Z-22</span> i&nbsp;<span class="nowrap">Z-41</span>:</strong> plan ustawia, przedłuża i&nbsp;anuluje wyłącznie personel w&nbsp;<code>/panel</code>; fakturę wystawia Aura Expert poza portalem (bez płatności online); plan nie limituje liczby szkoleń; plan obejmuje szkolenia zaczynające się w&nbsp;jego okresie; plan bez numeru faktury wygasa po 14&nbsp;dniach (Q22). Daty planu i&nbsp;numer faktury w&nbsp;makiecie są fikcyjne.</li>
-        <li><strong>Decyzja <span class="nowrap">L1</span>:</strong> stopka ma pełną formułę Aura Expert sp.&nbsp;z&nbsp;o.o. (agent ubezpieczeniowy, wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych nr 11229690/A, link do <code>rpu.knf.gov.pl</code>) i&nbsp;kontakt do IOD. Pod formułą rozwijany blok „Informacje o&nbsp;agencie ubezpieczeniowym (IDD)”: 10&nbsp;zakładów ubezpieczeń, wynagrodzenie, brak udziałów ≥&nbsp;10%, reklamacje i&nbsp;Rzecznik Finansowy, kontakt do agenta (ustalenia 13.11.2026).</li>
-        <li><strong>Zakładka „Szkolenia” ukryta w&nbsp;ustawieniach salonu</strong> (<a href="panel.html#zakladki">panel.html#zakladki</a>; prośba zleceniodawcy 16.11.2026): to <strong>preferencja widoku, nie kontrola dostępu</strong>. W&nbsp;Strefie salonu znikają pozycja „Szkolenia” w&nbsp;menu i&nbsp;kafel na pulpicie (dla wszystkich członków salonu), a&nbsp;ekrany działają dalej pod swoimi adresami&nbsp;– u&nbsp;góry ekranu (także przy wejściu z&nbsp;kotwicą, np. <code>#moje-szkolenia</code>) krótka informacja „Zakładka Szkolenia jest ukryta w&nbsp;ustawieniach salonu” ze zdaniem „Moduł działa normalnie – ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.”; właściciel ma „Pokaż zakładkę”, pracownik&nbsp;– informację, kto może ją pokazać. Zapisy, lista rezerwowa, opłacone zamówienia, faktury, przypomnienia i&nbsp;e-maile organizatorów&nbsp;– bez zmian. Katalog jest tu pokazany w&nbsp;koncie salonu, więc też ma informację; publiczny katalog <code>/szkolenia</code> dla gościa i&nbsp;profil organizatora (osobne konto)&nbsp;– bez zmian. Stany: <a href="szkolenia.html?zakladki=bez-szkolen#moje-szkolenia">?zakladki=bez-szkolen</a>, wariant pracownika&nbsp;– <a href="szkolenia.html?rola=pracownik&amp;zakladki=bez-szkolen#moje-szkolenia">?rola=pracownik</a> (menu: Pulpit, Dam pracę, Szkolenia; bez „Zapisów zespołu”).</li>
+        <li><strong>Założenia <span class="nowrap">Z-22</span> i&nbsp;<span class="nowrap">Z-41</span>:</strong> plan ustawia, przedłuża i&nbsp;anuluje wyłącznie personel w&nbsp;<code>/panel</code>; fakturę wystawia <span translate="no">Aura&nbsp;Expert</span> poza portalem (bez płatności online); plan nie limituje liczby szkoleń; plan obejmuje szkolenia zaczynające się w&nbsp;jego okresie; plan bez numeru faktury wygasa po 14&nbsp;dniach (Q22). Daty planu i&nbsp;numer faktury w&nbsp;makiecie są fikcyjne.</li>
+        <li><strong>Decyzja <span class="nowrap">L1</span>:</strong> stopka ma pełną formułę <span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o. (agent ubezpieczeniowy, wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych nr&nbsp;11229690/A, link do <code>rpu.knf.gov.pl</code>) i&nbsp;kontakt do IOD. Pod formułą rozwijany blok „Informacje o&nbsp;agencie ubezpieczeniowym (IDD)”: 10&nbsp;zakładów ubezpieczeń, wynagrodzenie, brak udziałów ≥&nbsp;10%, reklamacje i&nbsp;Rzecznik Finansowy, kontakt do agenta (ustalenia 13.11.2026).</li>
+        <li><strong>Zakładka „Szkolenia” ukryta w&nbsp;ustawieniach salonu</strong> (<a href="panel.html#zakladki">panel.html#zakladki</a>; prośba zleceniodawcy 16.11.2026): to <strong>preferencja widoku, nie kontrola dostępu</strong>. W&nbsp;Strefie salonu znikają pozycja „Szkolenia” w&nbsp;menu i&nbsp;kafel na pulpicie (dla wszystkich członków salonu), a&nbsp;ekrany działają dalej pod swoimi adresami&nbsp;– u&nbsp;góry ekranu (także przy wejściu z&nbsp;kotwicą, np. <code>#moje-szkolenia</code>) krótka informacja „Zakładka Szkolenia jest ukryta w&nbsp;ustawieniach salonu” ze zdaniem „Moduł działa normalnie&nbsp;– ukrycie zmienia tylko menu i&nbsp;pulpit w&nbsp;Strefie salonu.”; właściciel ma „Pokaż zakładkę”, pracownik&nbsp;– informację, kto może ją pokazać. Zapisy, lista rezerwowa, opłacone zamówienia, faktury, przypomnienia i&nbsp;e-maile organizatorów&nbsp;– bez zmian. Katalog jest tu pokazany w&nbsp;koncie salonu, więc też ma informację; publiczny katalog <code>/szkolenia</code> dla gościa i&nbsp;profil organizatora (osobne konto)&nbsp;– bez zmian. Stany: <a href="szkolenia.html?zakladki=bez-szkolen#moje-szkolenia">?zakladki=bez-szkolen</a>, wariant pracownika&nbsp;– <a href="szkolenia.html?rola=pracownik&amp;zakladki=bez-szkolen#moje-szkolenia">?rola=pracownik</a> (menu: Pulpit, Dam pracę, Szkolenia; bez „Zapisów zespołu”).</li>
         <li><strong>Założenie <span class="nowrap">Z-6</span>:</strong> katalog jest publiczny, zapis tylko z&nbsp;konta salonu (gość widzi „Zaloguj się, aby się zapisać”). Czy katalog ma być publiczny&nbsp;– pytanie Q10.</li>
-        <li><strong>Decyzja <span class="nowrap">D-D</span>:</strong> szkolenia dodają salony i&nbsp;firmy szkoleniowe. Organizator nie potrzebuje polisy; konto dostaje z&nbsp;zaproszenia po weryfikacji przez Aura Expert (<strong>Założenie Z-16</strong>). Salon-organizator ma osobny profil i&nbsp;przełącza się w&nbsp;menu konta&nbsp;– ten sam widok ma firma szkoleniowa, np. „Organizator przykładowy”.</li>
-        <li>RODO: organizator jest administratorem danych uczestników swoich szkoleń; rola Aura Expert (odrębny administrator albo podmiot przetwarzający)&nbsp;– do decyzji prawnika i&nbsp;IOD (Q1). Organizator widzi tylko imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status, nazwę salonu tylko przy szkoleniu płatnym; dane usuwane 30&nbsp;dni po szkoleniu (<strong>Założenie Z-17</strong>).</li>
-        <li><strong>Decyzja zleceniodawcy 13.11.2026 (szkolenia płatne):</strong> płatność z&nbsp;poziomu panelu; sprzedawcą jest organizator; BeautyPolisa bez prowizji w&nbsp;okresie promocji (prowizja to parametr&nbsp;– później możliwa, Q16). Model: marketplace z&nbsp;płatnościami dzielonymi u&nbsp;licencjonowanego operatora (np. Przelewy24, PayU, Tpay albo Stripe Connect&nbsp;– <strong>operator nie jest wybrany</strong>): pieniądze płyną od uczestnika na konto organizatora u&nbsp;operatora, Aura Expert nie przyjmuje ani nie przekazuje cudzych środków, weryfikację KYC/KYB organizatora prowadzi operator. Kwalifikację prawną (usługi płatnicze, zezwolenie KNF) potwierdza prawnik&nbsp;– dlatego zdania „pieniądze trafiają do organizatora, BeautyPolisa ich nie przyjmuje” mają w&nbsp;makiecie dopisek „do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej” (organizator jako odbiorca i&nbsp;akceptant z&nbsp;własną umową z&nbsp;operatorem; Q30).</li>
+        <li><strong>Decyzja <span class="nowrap">D-D</span>:</strong> szkolenia dodają salony i&nbsp;firmy szkoleniowe. Organizator nie potrzebuje polisy; konto dostaje z&nbsp;zaproszenia po weryfikacji przez <span translate="no">Aura&nbsp;Expert</span> (<strong>Założenie Z-16</strong>). Salon-organizator ma osobny profil i&nbsp;przełącza się w&nbsp;menu konta&nbsp;– ten sam widok ma firma szkoleniowa, np. „Organizator przykładowy”.</li>
+        <li>RODO: organizator jest administratorem danych uczestników swoich szkoleń; rola <span translate="no">Aura&nbsp;Expert</span> (odrębny administrator albo podmiot przetwarzający)&nbsp;– do decyzji prawnika i&nbsp;IOD (Q1). Organizator widzi tylko imię i&nbsp;nazwisko, <span class="nowrap">e-mail</span> i&nbsp;status, nazwę salonu tylko przy szkoleniu płatnym; dane usuwane 30&nbsp;dni po szkoleniu (<strong>Założenie Z-17</strong>).</li>
+        <li><strong>Decyzja zleceniodawcy 13.11.2026 (szkolenia płatne):</strong> płatność z&nbsp;poziomu panelu; sprzedawcą jest organizator; <span translate="no">BeautyPolisa</span> bez prowizji w&nbsp;okresie promocji (prowizja to parametr&nbsp;– później możliwa, Q16). Model: marketplace z&nbsp;płatnościami dzielonymi u&nbsp;licencjonowanego operatora (np. Przelewy24, PayU, Tpay albo Stripe Connect&nbsp;– <strong>operator nie jest wybrany</strong>): pieniądze płyną od uczestnika na konto organizatora u&nbsp;operatora, <span translate="no">Aura&nbsp;Expert</span> nie przyjmuje ani nie przekazuje cudzych środków, weryfikację KYC/KYB organizatora prowadzi operator. Kwalifikację prawną (usługi płatnicze, zezwolenie KNF) potwierdza prawnik&nbsp;– dlatego zdania „pieniądze trafiają do organizatora, <span translate="no">BeautyPolisa</span> ich nie przyjmuje” mają w&nbsp;makiecie dopisek „do potwierdzenia po wyborze operatora i&nbsp;opinii prawnej” (organizator jako odbiorca i&nbsp;akceptant z&nbsp;własną umową z&nbsp;operatorem; Q30).</li>
         <li><strong>Ekrany płatności:</strong> karta szkolenia płatnego z&nbsp;danymi sprzedawcy (<code>#szkolenie-platne</code>; DSA art.&nbsp;30&nbsp;– dane z&nbsp;weryfikacji organizatora, 12.1), zamówienie (<code>#zamowienie</code>: „Kupuję jako” osoba prywatna albo w&nbsp;imieniu firmy&nbsp;– bez wartości domyślnej, z&nbsp;oświadczeniem o&nbsp;umocowaniu; regulamin organizatora, informacja o&nbsp;sprzedawcy bez pola wyboru, trzy podmioty przetwarzające dane; rezerwacja 15&nbsp;min bez przedłużania, metoda u&nbsp;operatora; stany <code>#zam-w-toku</code>, <code>#zam-oplacone</code>, <code>#zam-nieudane</code>, <code>#zam-wygasla</code>), zakładka „Zamówienia i&nbsp;faktury” w&nbsp;„Moich szkoleniach” (to są „Moje zapisy”; osobno „Odstępuję od umowy” dla konsumenta i&nbsp;„Poproś o&nbsp;rezygnację”), „Sprzedaż i&nbsp;wypłaty” organizatora (<code>#wyplaty</code>: konto u&nbsp;operatora&nbsp;– niepodłączone, weryfikacja, aktywne, wstrzymane; zamówienia, faktura, zwrot) i&nbsp;odwołanie szkolenia płatnego z&nbsp;pełnymi zwrotami w&nbsp;„Moich szkoleniach” organizatora. <strong>Płatność w&nbsp;makiecie to symulacja</strong>&nbsp;– w&nbsp;produkcji ekran operatora.</li>
         <li><strong>Bezpieczeństwo (produkcja):</strong> kwota i&nbsp;waluta wyłącznie z&nbsp;bazy, nigdy z&nbsp;przeglądarki; klucz idempotencji zamówienia; status zmienia tylko webhook po weryfikacji podpisu oraz zgodności zamówienia, kwoty i&nbsp;waluty (powrót przeglądarki pokazuje najwyżej „w&nbsp;toku”); odporność na powtórzenia i&nbsp;kolejność zdarzeń; rezerwacja miejsca atomowo, bez nadsprzedaży; bez danych kart i&nbsp;kodów BLIK w&nbsp;portalu (PCI DSS SAQ A); sekrety operatora w&nbsp;Workers secrets; RLS: uczestnik&nbsp;– swoje zamówienia, organizator&nbsp;– zamówienia swoich szkoleń bez e-maila i&nbsp;danych płatności, personel&nbsp;– odczyt i&nbsp;dziennik; każda zmiana statusu, faktura i&nbsp;zwrot w&nbsp;dzienniku; limity zamówień i&nbsp;zwrotów.</li>
-        <li><strong>Do weryfikacji prawnej:</strong> prawo odstąpienia (14&nbsp;dni i&nbsp;wyjątek dla usług z&nbsp;oznaczonym terminem), informacje przed zawarciem umowy i&nbsp;brzmienie przycisku zamówienia, rola Aura Expert wobec danych (Q1), okres przechowywania danych zamówień w&nbsp;portalu (faktury przechowuje organizator według swoich obowiązków księgowych). Rezerwacja 15&nbsp;min bez przedłużania (Z-43; dane zostają w&nbsp;formularzu, więc można zarezerwować ponownie)&nbsp;– do sprawdzenia w&nbsp;audycie WCAG 2.2.1. Płatność po końcu rezerwacji: zapis przy wolnym miejscu, inaczej pełny zwrot. Szkolenia płatne w&nbsp;portalu bez listy rezerwowej (Q34). Szkolenie płatne z&nbsp;płatnością u&nbsp;organizatora: „Zapisuję się z&nbsp;obowiązkiem zapłaty” albo niewiążąca rezerwacja (Q31). Zmiana prowizji: powiadomienie co najmniej 15&nbsp;dni wcześniej (P2B). Specyfikacja 11 §12.2 i&nbsp;§12.4 nadal opisuje brak płatności online&nbsp;– do aktualizacji osobno.</li>
+        <li><strong>Do weryfikacji prawnej:</strong> prawo odstąpienia (14&nbsp;dni i&nbsp;wyjątek dla usług z&nbsp;oznaczonym terminem), informacje przed zawarciem umowy i&nbsp;brzmienie przycisku zamówienia, rola <span translate="no">Aura&nbsp;Expert</span> wobec danych (Q1), okres przechowywania danych zamówień w&nbsp;portalu (faktury przechowuje organizator według swoich obowiązków księgowych). Rezerwacja 15&nbsp;min bez przedłużania (Z-43; dane zostają w&nbsp;formularzu, więc można zarezerwować ponownie)&nbsp;– do sprawdzenia w&nbsp;audycie WCAG 2.2.1. Płatność po końcu rezerwacji: zapis przy wolnym miejscu, inaczej pełny zwrot. Szkolenia płatne w&nbsp;portalu bez listy rezerwowej (Q34). Szkolenie płatne z&nbsp;płatnością u&nbsp;organizatora: „Zapisuję się z&nbsp;obowiązkiem zapłaty” albo niewiążąca rezerwacja (Q31). Zmiana prowizji: powiadomienie co najmniej 15&nbsp;dni wcześniej (P2B). Specyfikacja 11 §12.2 i&nbsp;§12.4 nadal opisuje brak płatności online&nbsp;– do aktualizacji osobno.</li>
         <li><strong>Założenia <span class="nowrap">Z-5</span> i&nbsp;<span class="nowrap">Z-11</span>:</strong> szkolenie płatne pokazuje cenę brutto, fakturę wystawia organizator (sprzedawca); założenie „bez płatności online w&nbsp;MVP” zastąpiła decyzja z&nbsp;13.11.2026; limit 3&nbsp;miejsc na salon. Ceny, numery zamówień, NIP-y i&nbsp;tematy są przykładowe.</li>
         <li>Filtr „Temat” to zamknięta lista kategorii (<strong>Założenie</strong>)&nbsp;– wymaga kolumny <code>topic</code> w&nbsp;tabeli <code>trainings</code> (do dopisania w&nbsp;11 §7.1 i&nbsp;<code>strefa-klienta.sql</code>). Kolejność wyników wyłącznie według terminu.</li>
         <li>Makieta ma jedną stronę szkolenia („Higiena i&nbsp;bezpieczeństwo zabiegów (przykład)”); „Pierwsza pomoc w&nbsp;salonie beauty (przykład)” prowadzi do wariantu z&nbsp;listą rezerwową.</li>
@@ -2134,23 +2137,23 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
 <footer class="app-footer">
   <div class="app-footer-inner">
-    <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html">Tax Protect</a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="../opieka-medyczna.html">Opieka medyczna</a></nav>
+    <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html"><span translate="no">Tax Protect</span></a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="../opieka-medyczna.html">Opieka medyczna</a></nav>
     <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="../slownik.html">Słownik pojęć</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
-    <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
+    <p><span translate="no">BeautyPolisa</span> created by <span translate="no">Aura&nbsp;Expert</span> (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong><span translate="no">Aura&nbsp;Expert</span> spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem&nbsp;0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem&nbsp;11229690/A.</p>
     <p>Przy zamówieniu szkolenia płatnego dane kupującego przetwarzają także organizator szkolenia (sprzedawca) i&nbsp;operator płatności&nbsp;– role i&nbsp;okresy przechowywania pokazujemy w&nbsp;kroku zamówienia. <span class="mock-note">Q1&nbsp;– do weryfikacji IOD</span></p>
     <!-- L1 (12–13.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy („XII Wydział” – prawidłowo; strona
          ergo.beautypolisa.eu/informacja-o-agencie podaje „XIII” – błąd po tamtej stronie, uwaga dla zleceniodawcy).
          Informacje o agencie (art. 22 ustawy o dystrybucji ubezpieczeń) – źródło: ujawnienie Aura Expert. Blok details.legal-idd
          jest identyczny na stronach publicznych i w Strefie Klienta. -->
-    <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
+    <p><span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
     <details class="legal-idd">
       <summary>Informacje o&nbsp;agencie ubezpieczeniowym (IDD)</summary>
       <div class="legal-idd-body">
         <p><strong>Zakłady ubezpieczeń, na rzecz których działa agent:</strong></p>
-        <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie S.A.</li><li>Lloyd’s Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA S.A.</li><li>Colonnade Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
+        <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji&nbsp;S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń&nbsp;S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li><span translate="no">Lloyd’s</span> Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA&nbsp;S.A.</li><li><span translate="no">Colonnade</span> Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
         <p><strong>Wynagrodzenie.</strong> Agent otrzymuje od zakładu ubezpieczeń prowizję, która jest uwzględniona w&nbsp;składce. Może też otrzymywać od zakładu ubezpieczeń inny rodzaj wynagrodzenia.</p>
         <p><strong>Powiązania kapitałowe.</strong> Agent nie ma akcji ani udziałów zakładu ubezpieczeń dających co najmniej 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie ma udziałów agenta dających co najmniej 10% głosów na zgromadzeniu wspólników.</p>
-        <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
+        <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres <span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466&nbsp;Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
         <p><strong>Kontakt z&nbsp;agentem:</strong> <a href="mailto:zarzad@auraexpert.pl">zarzad@auraexpert.pl</a>, <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>. Wpis agenta (numer 11229690/A) sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>.</p>
       </div>
     </details>
@@ -2168,6 +2171,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <symbol id="lux-w-zakresie" viewBox="0 0 96 96"><title>W zakresie ochrony</title><path d="M22 31C14 51 23 69 44 75L53 80M74 31C82 51 73 69 52 75L43 80" /><path d="M23 33C19 26 24 22 31 19C31 25 28 30 23 33ZM21 43C14 40 14 34 15 29C20 33 23 37 21 43ZM23 54C15 53 13 47 13 42C20 45 23 49 23 54ZM28 64C20 65 16 61 14 56C21 56 26 59 28 64ZM37 72C30 77 24 74 20 70C27 68 32 69 37 72" /><path d="M73 33C77 26 72 22 65 19C65 25 68 30 73 33ZM75 43C82 40 82 34 81 29C76 33 73 37 75 43ZM73 54C81 53 83 47 83 42C76 45 73 49 73 54ZM68 64C76 65 80 61 82 56C75 56 70 59 68 64ZM59 72C66 77 72 74 76 70C69 68 64 69 59 72" /><path d="M35 50L44 59L62 39" /></symbol>
 </svg>
 
+<script src="strefa.js"></script>
 <script>
 /* Makieta: widoki (hash), kontekst salon/organizator, filtry katalogu, kroki zapisu, zakładki, menu, formularze demonstracyjne.
    Bez JS: wszystkie widoki i stany pod sobą, zakładki jako sekcje, filtry jako formularz GET. */
@@ -2183,6 +2187,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   var scrim = null;
 
   function all(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+  /* wspólne wzorce Strefy (strefa.js): błędy przy polach z ogłoszeniem, aria-disabled, potwierdzenia, „Cofnij”, niezapisane zmiany,
+     polskie formaty (Intl) */
+  var S = window.bpStrefa, setErr = S.setErr, fokusBledu = S.fokusBledu;
 
   /* ---------- warstwy modalne: wszystko poza otwartą warstwą dostaje inert; pętla Tab jako zapas ---------- */
   var inerted = [];
@@ -2234,7 +2241,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     /* panel zakładki z adresu (np. #p-zespol) */
     if (el && el.getAttribute('role') === 'tabpanel') {
       var tab = document.getElementById(el.getAttribute('aria-labelledby'));
-      tab.closest('[role="tablist"]').selectTab(tab, false);
+      tab.closest('[role="tablist"]').selectTab(tab, false, true);
     }
     if (focus) {
       var target = view.querySelector('h1');
@@ -2244,15 +2251,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   }
   window.addEventListener('hashchange', function () { closeNav(); var acc = document.getElementById('account'); acc.open = false; render(true); });
 
-  /* ---------- zakładki ---------- */
+  /* ---------- zakładki (adres odzwierciedla wybraną zakładkę: #p-nad, #p-rez, #p-zak, #p-zam, #p-zespol) ---------- */
   all('[role="tablist"]').forEach(function (list) {
     var tabs = all('[role="tab"]', list);
-    function select(tab, focus) {
+    function select(tab, focus, zAdresu) {
       tabs.forEach(function (t) {
         var on = t === tab;
         t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
         document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
       });
+      if (!zAdresu) { history.replaceState(null, '', location.pathname + location.search + '#' + tab.getAttribute('aria-controls')); }
       if (focus) { tab.focus(); }
     }
     tabs.forEach(function (t) {
@@ -2279,9 +2287,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   var count = document.getElementById('wyniki-licznik');
   function plural(n) {
     var d = n % 10, h = n % 100;
-    if (n === 1) { return '1 szkolenie'; }
-    if (d >= 2 && d <= 4 && (h < 12 || h > 14)) { return n + ' szkolenia'; }
-    return n + ' szkoleń';
+    if (n === 1) { return '1' + S.NB + 'szkolenie'; }
+    if (d >= 2 && d <= 4 && (h < 12 || h > 14)) { return n + S.NB + 'szkolenia'; }
+    return n + S.NB + 'szkoleń';
   }
   function applyFilters() {
     var topic = ff.elements.temat.value, month = ff.elements.termin.value;
@@ -2295,53 +2303,99 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     list.hidden = n === 0; empty.hidden = n > 0;
     count.textContent = (n ? plural(n) + '\u00a0· według terminu' : 'Brak szkoleń dla wybranych filtrów');
   }
-  ff.addEventListener('change', applyFilters);
-  ff.addEventListener('submit', function (e) { e.preventDefault(); applyFilters(); });
-  ff.addEventListener('reset', function () { setTimeout(applyFilters, 0); });
+  /* filtry w adresie (raport 16, 3.3): ?temat=…&termin=…&forma=…&wolne=tak#katalog – bez pustych wartości; ?rola i ?zakladki zostają */
+  var NAZWY = ['temat', 'termin', 'forma', 'wolne'];
+  function zapiszFiltry() {
+    var q = new URLSearchParams(location.search);
+    NAZWY.forEach(function (n) { q.delete(n); });
+    all('select, input', ff).forEach(function (el) {
+      if (NAZWY.indexOf(el.name) < 0 || !el.value || ((el.type === 'checkbox' || el.type === 'radio') && !el.checked)) { return; }
+      q.append(el.name, el.value);
+    });
+    var t = q.toString();
+    history.replaceState(history.state, '', location.pathname + (t ? '?' + t : '') + '#katalog');
+  }
+  function wczytajFiltry() {
+    var q = new URLSearchParams(location.search), any = false;
+    all('select, input', ff).forEach(function (el) {
+      if (NAZWY.indexOf(el.name) < 0 || !q.has(el.name)) { return; }
+      var v = q.getAll(el.name);
+      if (el.type === 'checkbox') { el.checked = v.indexOf(el.value) > -1; any = true; }
+      else if (el.tagName === 'SELECT' && all('option', el).some(function (o) { return o.value === v[0]; })) { el.value = v[0]; any = true; }
+    });
+    return any;
+  }
+  ff.addEventListener('change', function () { applyFilters(); zapiszFiltry(); });
+  ff.addEventListener('submit', function (e) { e.preventDefault(); applyFilters(); zapiszFiltry(); });
+  ff.addEventListener('reset', function () { setTimeout(function () { applyFilters(); zapiszFiltry(); }, 0); });
   document.querySelector('.js-clear').addEventListener('click', function () { ff.reset(); ff.elements.temat.focus(); });
   empty.hidden = true;
+  if (wczytajFiltry()) { applyFilters(); }
 
-  /* ---------- zapis i rezygnacja ---------- */
+  /* ---------- zapis i rezygnacja ----------
+     „Zrezygnuj” (zapis albo lista rezerwowa) – od razu, z „Cofnij” przez 10 s (strefa.js); w produkcji miejsce przejmuje lista
+     rezerwowa dopiero po tym czasie. Odstąpienie od umowy i prośba o rezygnację stoją w details.mini (drugi krok z opisem skutku)
+     – po wysłaniu bez cofania, fokus na komunikacie. */
   document.getElementById('f-zapis').addEventListener('submit', function (e) { e.preventDefault(); location.hash = 'zapisano'; });
   all('.js-cancel').forEach(function (b) {
     b.addEventListener('click', function () {
-      var item = b.closest('[data-reg]');
+      var item = b.closest('[data-reg]'), det = b.closest('details.mini');
       var badge = item ? item.querySelector('[data-status]') : null;
+      var stary = badge ? { c: badge.className, t: badge.textContent } : null;
+      var ukryte = item ? all('.js-private, .private', item).filter(function (x) { return !x.hidden; }) : [];
+      var przyciski = item ? all('.js-cancel', item).filter(function (x) { return !x.hidden; }) : [b];
+      if (przyciski.indexOf(b) < 0) { przyciski.push(b); }
       if (badge) { badge.className = 'badge badge--off'; badge.textContent = b.getAttribute('data-badge') || 'Zrezygnowano'; }
-      if (item) { all('.js-private, .private', item).forEach(function (x) { x.hidden = true; }); }
+      ukryte.forEach(function (x) { x.hidden = true; });
+      przyciski.forEach(function (x) { x.hidden = true; });
       var scope = b.closest('.reg-step') || b.closest('.card');
-      var live = scope.querySelector('.js-live');
-      b.hidden = true;
-      if (item) { all('.js-cancel', item).forEach(function (x) { x.hidden = true; }); all('details[open]', item).forEach(function (d) { d.open = false; }); }
-      if (live) { live.querySelector('p').textContent = b.getAttribute('data-msg'); live.hidden = false; live.focus(); }
+      var live = scope.querySelector('.js-live'), tekst = live ? live.querySelector('p') : null;
+      if (det || !live) {
+        if (item) { all('details.mini', item).forEach(function (d) { d.open = false; d.hidden = true; }); }
+        if (live) { tekst.textContent = b.getAttribute('data-msg'); live.hidden = false; live.focus(); }
+        return;
+      }
+      S.pokazStatus(live, b.getAttribute('data-msg'), tekst);
+      var kontekst = b.querySelector('.sr-only');
+      S.cofnij({ po: live, nazwa: 'rezygnacja z zapisu' + (kontekst ? ' na „' + kontekst.textContent.replace(/^:\s*/, '') + '”' : ''), cofnij: function () {
+        if (badge) { badge.className = stary.c; badge.textContent = stary.t; }
+        ukryte.forEach(function (x) { x.hidden = false; });
+        przyciski.forEach(function (x) { x.hidden = false; });
+        tekst.textContent = 'Rezygnacja cofnięta – zapis bez zmian.';
+        return b;
+      } });
     });
   });
 
   /* ---------- zgłoś nadużycie ---------- */
+  /* błąd przy polu (tekst, aria-describedby, ogłoszenie); po wysłaniu przycisk z aria-disabled – fokus zostaje na nim */
   document.getElementById('f-abuse').addEventListener('submit', function (e) {
     e.preventDefault();
-    var sel = document.getElementById('ab-powod');
-    if (!sel.value) { sel.setAttribute('aria-invalid', 'true'); sel.focus(); return; }
-    sel.setAttribute('aria-invalid', 'false');
-    document.getElementById('ab-ok').hidden = false;
-    this.querySelector('button[type="submit"]').disabled = true;
+    var sel = document.getElementById('ab-powod'), btn = this.querySelector('button[type="submit"]'), ok = document.getElementById('ab-ok');
+    if (S.zablokowany(btn)) { return; }
+    if (!setErr(sel, 'ab-powod-err', sel.value ? '' : 'Wybierz powód zgłoszenia z listy.')) { fokusBledu(sel); return; }
+    S.pokazStatus(ok);
+    S.zablokuj(btn, 'Zgłoszenie wysłane');
+    S.czysty(this);
   });
 
   /* ---------- organizator: liczba miejsc, odwołanie, obecność, CSV ---------- */
+  /* liczba miejsc: błąd przy polu i osobne komunikaty – brak liczby, poniżej liczby zapisanych, powyżej maksimum */
   all('.js-capacity').forEach(function (f) {
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       var input = f.querySelector('input'), msg = f.querySelector('[role="status"]');
-      var v = parseInt(input.value, 10), min = parseInt(input.min, 10);
-      var ok = v >= min && v <= parseInt(input.max, 10);
-      input.setAttribute('aria-invalid', ok ? 'false' : 'true');
-      msg.hidden = false;
-      msg.className = ok ? 'small' : 'field-error';
-      msg.textContent = ok ? 'Liczba miejsc: ' + v + '. Zmiana nie wymaga ponownej moderacji.' : 'Liczba miejsc nie może być mniejsza niż ' + min + ' (zapisani).';
+      var raw = input.value.trim(), v = Number(raw), min = parseInt(input.min, 10), max = parseInt(input.max, 10);
+      var em = (raw === '' || !Number.isInteger(v)) ? 'Wpisz liczbę miejsc od ' + min + ' do ' + max + '.'
+        : (v < min ? 'Liczba miejsc nie może być mniejsza niż ' + min + ' – tyle osób jest już zapisanych.'
+        : (v > max ? 'Szkolenie może mieć najwyżej ' + max + ' miejsc.' : ''));
+      if (!setErr(input, input.id + '-err', em)) { msg.hidden = true; fokusBledu(input); return; }
+      S.pokazStatus(msg, 'Liczba miejsc: ' + v + '. Zmiana nie wymaga ponownej moderacji.');
     });
   });
+  /* „Odwołuję szkolenie” znika po kliknięciu – fokus przechodzi na komunikat */
   all('.js-cancel-event').forEach(function (b) {
-    b.addEventListener('click', function () { b.hidden = true; b.nextElementSibling.hidden = false; });
+    b.addEventListener('click', function () { var st = b.closest('.mini-body').querySelector('[role="status"]'); (b.closest('.actions') || b).hidden = true; st.hidden = false; st.focus(); });
   });
   document.getElementById('f-obecnosc').addEventListener('submit', function (e) { e.preventDefault(); document.getElementById('ob-ok').hidden = false; });
   document.getElementById('csv').addEventListener('click', function () { document.getElementById('csv-ok').hidden = false; });
@@ -2352,21 +2406,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   function syncPrice() { price.disabled = !document.getElementById('d-c-paid').checked; }
   all('input[name="cena_rodzaj"]', fd).forEach(function (r) { r.addEventListener('change', syncPrice); });
   syncPrice();
-  /* błąd pod polem: komunikat, aria-invalid i aria-describedby (pole może nie mieć podpowiedzi) */
-  function setErr(input, errId, msg) {
-    var err = document.getElementById(errId);
-    if (!('desc' in input.dataset)) { input.dataset.desc = input.getAttribute('aria-describedby') || ''; }
-    var base = input.dataset.desc;
-    if (msg) {
-      err.textContent = msg; err.hidden = false; input.setAttribute('aria-invalid', 'true');
-      if ((' ' + base + ' ').indexOf(' ' + errId + ' ') < 0) { input.setAttribute('aria-describedby', (base ? base + ' ' : '') + errId); }
-    } else {
-      err.hidden = true; input.removeAttribute('aria-invalid');
-      if (base) { input.setAttribute('aria-describedby', base); } else { input.removeAttribute('aria-describedby'); }
-    }
-    return !msg;
-  }
-  var NB = '\u00a0';
+  /* błąd pod polem: setErr ze strefa.js (komunikat, aria-invalid, aria-describedby; pole może nie mieć podpowiedzi) */
+  var NB = S.NB;
   fd.addEventListener('submit', function (e) {
     e.preventDefault();
     var byId = function (id) { return document.getElementById(id); };
@@ -2382,7 +2423,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     var em = !end.value ? 'Podaj datę i' + NB + 'godzinę zakończenia.' : (start.value && end.value <= start.value ? 'Zakończenie musi być później niż rozpoczęcie.' : '');
     if (!setErr(end, 'd-koniec-err', em)) { bad.push(end); }
     var n = Number(seats.value);
-    if (!setErr(seats, 'd-miejsca-err', (seats.value !== '' && Number.isInteger(n) && n >= 1 && n <= 200) ? '' : 'Podaj liczbę miejsc od 1 do 200.')) { bad.push(seats); }
+    if (!setErr(seats, 'd-miejsca-err', (seats.value !== '' && Number.isInteger(n) && n >= 1 && n <= 200) ? '' : 'Podaj liczbę miejsc od' + NB + '1 do' + NB + '200.')) { bad.push(seats); }
     /* S7: szkolenie płatne ma cenę w ustrukturyzowanym polu (kwota brutto w zł) */
     if (byId('d-c-paid').checked) {
       var p = price.value.trim().replace(/\s/g, '').replace(',', '.');
@@ -2392,8 +2433,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     var badLink = url !== '' && !/^https:\/\/([a-z0-9-]+\.)*(zoom\.us|teams\.microsoft\.com|meet\.google\.com)(\/\S*)?$/i.test(url);
     if (!setErr(link, 'd-link-err', badLink ? 'Link musi prowadzić do zoom.us, teams.microsoft.com albo meet.google.com i' + NB + 'zaczynać się od https://.' : '')) { bad.push(link); }
     var box = byId('dodaj-err');
-    if (bad.length) { box.hidden = false; bad[0].focus(); return; }
+    if (bad.length) { box.hidden = false; fokusBledu(bad[0]); return; }
     box.hidden = true;
+    S.czysty(fd);
     document.getElementById('org-wyslane-tytul').textContent = '„' + title.value.trim() + '”';
     /* nowy wiersz „W moderacji” na liście organizatora (treść jako tekst, bez innerHTML) */
     var tr = document.createElement('tr');
@@ -2404,7 +2446,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       tr.appendChild(c); return c;
     }
     cell('th', 'Szkolenie', title.value.trim());
-    cell('td', 'Termin', document.getElementById('d-start').value ? document.getElementById('d-start').value.slice(0, 10).split('-').reverse().join('.') : '–');
+    cell('td', 'Termin', start.value ? S.data(new Date(start.value)) : '–'); /* Intl.DateTimeFormat pl-PL: 3.12.2026 */
     cell('td', 'Status', 'W\u00a0moderacji', true);
     cell('td', 'Zapisy', 'po publikacji');
     var act = cell('td', '', ''); act.removeAttribute('data-label'); act.className = 'cell-actions';
@@ -2414,7 +2456,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     fd.reset(); syncPrice();
     location.hash = 'org-wyslane';
   });
-  document.getElementById('d-szkic').addEventListener('click', function () { document.getElementById('d-szkic-ok').hidden = false; });
+  document.getElementById('d-szkic').addEventListener('click', function () { var ok = document.getElementById('d-szkic-ok'); S.pokazStatus(ok); S.czysty(fd); });
 
   /* ---------- szkolenie płatne: zamówienie, rezerwacja 15 min, symulacja operatora (makieta) ----------
      Produkcja: rezerwację tworzy serwer (blokada wiersza szkolenia, bez nadsprzedaży; 15 min, parametr 10–30, bez przedłużania – Z-43),
@@ -2439,7 +2481,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   }
   function holdBegin() {
     holdStart = Date.now(); holdEnd = holdStart + HOLD; holdSaid = { 5: false, 1: false };
-    var end = new Date(holdEnd), hm = end.getHours() + ':' + (end.getMinutes() < 10 ? '0' : '') + end.getMinutes();
+    var hm = S.godzina(new Date(holdEnd)); /* Intl.DateTimeFormat pl-PL: 10:45 */
     holdUntil.forEach(function (x) { x.textContent = hm; });
     holdUpdate(); holdTick = setInterval(holdUpdate, 1000);
   }
@@ -2474,6 +2516,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     for (var i = 0; i < 9; i++) { sum += w[i] * Number(d[i]); }
     return sum % 11 === Number(d[9]);
   }
+  /* kod pocztowy (raport 16, 3.3): na iOS klawiatura numeryczna nie ma „-” – przyjmujemy 5 cyfr (także ze spacją
+     albo myślnikiem) i wstawiamy myślnik sami; walidacja sprawdza dopiero postać 00-000 */
+  function kodPocztowy(input) {
+    var d = input.value.replace(/\D/g, '');
+    if (d.length === 5) { input.value = d.slice(0, 2) + '-' + d.slice(2); }
+    return /^\d{2}-\d{3}$/.test(input.value.trim());
+  }
+  document.getElementById('fv-kod').addEventListener('blur', function () { if (this.value.trim()) { kodPocztowy(this); } });
   fz.addEventListener('submit', function (e) {
     e.preventDefault();
     var byId = function (id) { return document.getElementById(id); };
@@ -2491,14 +2541,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     } else if (osoba) { need('fv-imie', 'Wpisz imię i' + NB + 'nazwisko.'); }
     need('fv-ulica', 'Wpisz ulicę i' + NB + 'numer.');
     var kod = byId('fv-kod');
-    if (!setErr(kod, 'fv-kod-err', /^\d{2}-\d{3}$/.test(kod.value.trim()) ? '' : 'Wpisz kod pocztowy w' + NB + 'formacie 00-000.')) { bad.push(kod); }
+    if (!setErr(kod, 'fv-kod-err', kodPocztowy(kod) ? '' : 'Wpisz kod pocztowy: 5' + NB + 'cyfr, np. 00-001.')) { bad.push(kod); }
     need('fv-miasto', 'Wpisz miejscowość.');
     [['zg-reg', 'Zaakceptuj regulamin organizatora, żeby złożyć zamówienie.']].forEach(function (z) {
       var c = byId(z[0]); if (!setErr(c, z[0] + '-err', c.checked ? '' : z[1])) { bad.push(c); }
     });
     var box = byId('zam-err');
-    if (bad.length) { box.hidden = false; bad[0].focus(); return; }
+    if (bad.length) { box.hidden = false; fokusBledu(bad[0]); return; }
     box.hidden = true;
+    S.czysty(fz);
     byId('sum-fv').textContent = firma ? 'w' + NB + 'imieniu firmy (' + (byId('kup-jdg').checked ? 'jednoosobowa działalność' : 'spółka lub inna firma') + '): ' + byId('fv-nazwa').value.trim() + ', NIP ' + byId('fv-nip').value.replace(/[\s-]/g, '') : 'osoba prywatna: ' + byId('fv-imie').value.trim();
     location.hash = 'zam-platnosc';
   });
@@ -2527,7 +2578,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       e.preventDefault();
       var input = f.querySelector('input[type="file"]'), file = input.files && input.files[0];
       var em = !file ? 'Wybierz plik PDF z' + NB + 'fakturą.' : (file.type !== 'application/pdf' ? 'Dodaj plik w' + NB + 'formacie PDF.' : (file.size > 2 * 1024 * 1024 ? 'Plik jest większy niż 2' + NB + 'MB.' : ''));
-      if (!setErr(input, input.id + '-err', em)) { input.focus(); return; }
+      if (!setErr(input, input.id + '-err', em)) { fokusBledu(input); return; }
       var fv = f.closest('tr').querySelector('[data-fv]'); if (fv) { fv.textContent = 'faktura dodana'; }
       done(f, 'Faktura dodana. Uczestnik zobaczy ją w' + NB + '„Moich szkoleniach” i' + NB + 'dostanie e-mail.');
     });
@@ -2538,21 +2589,23 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       var input = f.querySelector('input[name="kwota"]');
       var v = input.value.trim().replace(/\s/g, '').replace(',', '.'), max = parseFloat(f.getAttribute('data-max'));
       var ok = /^\d+(\.\d{1,2})?$/.test(v) && Number(v) > 0 && Number(v) <= max;
-      if (!setErr(input, input.id + '-err', ok ? '' : 'Podaj kwotę od 0,01 do ' + max.toFixed(2).replace('.', ',') + NB + 'zł.')) { input.focus(); return; }
+      /* kwoty: Intl.NumberFormat pl-PL, PLN, grupy cyfr zawsze (S.kwota) */
+      if (!setErr(input, input.id + '-err', ok ? '' : 'Podaj kwotę od ' + S.kwota(0.01) + ' do ' + S.kwota(max) + '.')) { fokusBledu(input); return; }
       var badge = f.closest('tr').querySelector('[data-status]');
       if (badge) { badge.className = 'badge badge--info'; badge.textContent = 'Zwrot w' + NB + 'toku'; }
-      f.querySelector('button[type="submit"]').hidden = true;
-      done(f, 'Zwrot ' + Number(v).toFixed(2).replace('.', ',') + NB + 'zł zlecony u' + NB + 'operatora. Uczestnik dostanie e-mail; status zmieni się po potwierdzeniu operatora.');
+      var akcje = f.querySelector('.actions');
+      if (akcje) { akcje.hidden = true; } else { f.querySelector('button[type="submit"]').hidden = true; }
+      done(f, 'Zwrot ' + S.kwota(Number(v)) + ' zlecony u' + NB + 'operatora. Uczestnik dostanie e-mail; status zmieni się po potwierdzeniu operatora.');
     });
   });
   all('.js-cancel-paid').forEach(function (f) {
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       var c = f.querySelector('input[type="checkbox"]');
-      if (!setErr(c, c.id + '-err', c.checked ? '' : 'Zaznacz potwierdzenie, żeby odwołać szkolenie.')) { c.focus(); return; }
+      if (!setErr(c, c.id + '-err', c.checked ? '' : 'Zaznacz potwierdzenie, żeby odwołać szkolenie.')) { fokusBledu(c); return; }
       var badge = f.closest('tr').querySelector('[data-status]');
       if (badge) { badge.className = 'badge badge--off'; badge.textContent = 'Odwołane'; }
-      f.querySelector('button[type="submit"]').hidden = true; c.closest('label').hidden = true;
+      var sb = f.querySelector('button[type="submit"]'); (sb.closest('.actions') || sb).hidden = true; c.closest('label').hidden = true;
       done(f);
     });
   });
@@ -2603,37 +2656,38 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 {
  "polisa": {
   "t": "Polisa",
-  "d": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę.",
+  "d": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę.",
   "u": "../slownik.html#haslo-polisa",
   "o": 1
  },
  "doradca": {
-  "t": "Doradca Aura Expert",
-  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
+  "t": "Doradca Aura Expert",
+  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
   "u": "../slownik.html#haslo-doradca"
  },
  "dokumentacja-zabiegu": {
   "t": "Dokumentacja zabiegu",
-  "d": "Zapisy, które pokazują, jak przebiegał zabieg: karta klienta, podpisany przez klientkę formularz zgody na zabieg, zdjęcia przed i po, informacje o użytych produktach i urządzeniach. Przy roszczeniu to podstawowy dowód dla ubezpieczyciela – zabezpiecz ją i nie poprawiaj wpisów po fakcie.",
+  "d": "Zapisy, które pokazują, jak przebiegał zabieg: karta klienta, podpisany przez klientkę formularz zgody na zabieg, zdjęcia przed i po, informacje o użytych produktach i urządzeniach. Przy roszczeniu to podstawowy dowód dla ubezpieczyciela – zabezpiecz ją i nie poprawiaj wpisów po fakcie.",
   "u": "../slownik.html#haslo-dokumentacja-zabiegu",
   "o": 1
  },
  "klauzula-informacyjna": {
   "t": "Klauzula informacyjna (RODO)",
-  "d": "Informacja o tym, kto przetwarza Twoje dane (administrator), w jakim celu, na jakiej podstawie, jak długo i jakie masz prawa – RODO wymaga jej przy zbieraniu danych. Administratorem danych w BeautyPolisa i Strefie Klienta jest Aura Expert sp. z o.o.; z inspektorem ochrony danych (IOD) skontaktujesz się pod adresem iod@auraexpert.pl.",
+  "d": "Informacja o tym, kto przetwarza Twoje dane (administrator), w jakim celu, na jakiej podstawie, jak długo i jakie masz prawa – RODO wymaga jej przy zbieraniu danych. Administratorem danych w BeautyPolisa i Strefie Klienta jest Aura Expert sp. z o.o.; z inspektorem ochrony danych (IOD) skontaktujesz się pod adresem iod@auraexpert.pl.",
   "u": "../slownik.html#haslo-klauzula-informacyjna"
  },
  "strefa-klienta": {
   "t": "Strefa Klienta",
-  "d": "Konto w BeautyPolisa: polisy i dokumenty salonu w jednym miejscu, sprawy w toku (np. APK i wniosek przy odnowieniu OC), zgłoszenia szkód oraz dostęp do „Dam pracę” i „Szkoleń”. Konto klienta z polisą aktywuje Aura Expert po zawarciu ubezpieczenia – zaproszenie przychodzi e-mailem.",
+  "d": "Konto w BeautyPolisa: polisy i dokumenty salonu w jednym miejscu, sprawy w toku (np. APK i wniosek przy odnowieniu OC), zgłoszenia szkód oraz dostęp do „Dam pracę” i „Szkoleń”. Konto klienta z polisą aktywuje Aura Expert po zawarciu ubezpieczenia – zaproszenie przychodzi e-mailem.",
   "u": "../slownik.html#haslo-strefa-klienta"
  }
 }
 </script>
 <script>
 /* Dymek z definicją pojęcia (gen_terminy.py – nie edytuj ręcznie).
-   Bez JS oznaczenie jest linkiem do słownika. Z JS: link dostaje rolę przycisku (aria-haspopup="dialog", aria-expanded, aria-controls),
-   klik / Enter / Spacja otwiera niemodalny dialog (role="dialog" + aria-labelledby/aria-describedby – w środku link i przycisk, więc nie tooltip).
+   Bez JS oznaczenie jest linkiem do słownika. Z JS zostaje linkiem (czytnik ogłasza link, a pojęcie jest na liście linków strony),
+   dostaje aria-haspopup="dialog", aria-expanded i aria-controls; klik / Enter otwiera niemodalny dialog (role="dialog" +
+   aria-labelledby/aria-describedby – w środku link „Więcej w słowniku” do hasła i przycisk, więc nie tooltip). Spacja – jak przy linku.
    Fokus przechodzi do dialogu; Esc i „Zamknij” zamykają i oddają fokus pojęciu; Tab za ostatnim elementem i Shift+Tab przed pierwszym też wracają do pojęcia;
    klik poza dymkiem zamyka. Najechanie myszą niczego nie otwiera ani nie zamyka (WCAG 1.4.13: dymek nie znika, gdy kursor jest nad nim).
    Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Okno od 600 × 600 px: dymek pod ostatnią linią pojęcia albo nad
@@ -2655,21 +2709,24 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   var mqWaski=window.matchMedia('(max-width:599px),(max-height:599px)'), biezace=null, GORA=88, M=12;
   pojecia.forEach(function(a){
     if(!D[a.getAttribute('data-termin')])return;
-    a.setAttribute('role','button');a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
+    a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
   });
+  /* położenie: najpierw wszystkie odczyty (jedno przeliczenie układu), potem zapisy; wysokość treści z scrollHeight + ramka,
+     więc nie trzeba zdejmować max-height przed pomiarem */
   function pozycja(){
     if(!biezace||box.hidden)return;
-    box.style.maxHeight='';box.style.overflowY='';
-    if(mqWaski.matches){box.style.top='';box.style.left='';return}
+    if(mqWaski.matches){box.style.maxHeight='';box.style.overflowY='';box.style.top='';box.style.left='';return}
     var rs=biezace.getClientRects(), r1=rs[0]||biezace.getBoundingClientRect(), r2=rs[rs.length-1]||r1;
-    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.offsetHeight;
-    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y;
+    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.scrollHeight+(box.offsetHeight-box.clientHeight);
+    var sx=window.scrollX, sy=window.scrollY;
+    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y, maxH=0;
     if(h<=pod){y=r2.bottom+10}
     else if(h<=nad){r=r1;y=r1.top-10-h}
-    else if(pod>=nad){y=r2.bottom+10;box.style.maxHeight=Math.max(160,pod)+'px';box.style.overflowY='auto'}
-    else{r=r1;box.style.maxHeight=Math.max(160,nad)+'px';box.style.overflowY='auto';y=r1.top-10-box.offsetHeight}
+    else if(pod>=nad){y=r2.bottom+10;maxH=Math.max(160,pod)}
+    else{r=r1;maxH=Math.max(160,nad);y=r1.top-10-Math.min(h,maxH)}
     var x=Math.min(Math.max(16,r.left),vw-w-16);
-    box.style.left=Math.round(x+window.scrollX)+'px';box.style.top=Math.round(y+window.scrollY)+'px';
+    box.style.maxHeight=maxH?maxH+'px':'';box.style.overflowY=maxH?'auto':'';
+    box.style.left=Math.round(x+sx)+'px';box.style.top=Math.round(y+sy)+'px';
   }
   function otworz(a){
     var d=D[a.getAttribute('data-termin')]; if(!d)return;
@@ -2693,8 +2750,6 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if(biezace&&!box.contains(e.target))zamknijDymek(false);
   });
   document.addEventListener('keydown',function(e){
-    var a=e.target.closest&&e.target.closest('a.bp-termin[data-termin]');
-    if(a&&(e.key===' '||e.key==='Spacebar')&&D[a.getAttribute('data-termin')]){e.preventDefault();if(biezace===a)zamknijDymek(true);else otworz(a);return}
     if(!biezace)return;
     if(e.key==='Escape'||e.key==='Esc'){e.preventDefault();zamknijDymek(true);return}
     if(e.key==='Tab'&&box.contains(document.activeElement)){

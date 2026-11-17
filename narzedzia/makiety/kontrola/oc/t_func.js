@@ -40,11 +40,12 @@ const ALIASY_WYC = W.wycofane.map((w) => [w.slug, 'podologia']);
   {
     const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
     await p.goto(FILE, { waitUntil: 'networkidle' });
-    const dom = await p.evaluate(() => [...document.querySelectorAll('.zlista')].map((g) => ({
-      id: g.id, h3: g.querySelector('h3').textContent, termin: g.querySelectorAll('a.bp-termin').length,
+    // brzmienie 1:1; twarde spacje (polska typografia, typografia.py – raport 16, 3.1) porównywane jako spacje
+    const dom = await p.evaluate(() => { const sp = (t) => t.replace(/\u00a0/g, ' '); return [...document.querySelectorAll('.zlista')].map((g) => ({
+      id: g.id, h3: sp(g.querySelector('h3').textContent), termin: g.querySelectorAll('a.bp-termin').length,
       items: [...g.querySelectorAll('.zlist > li')].map((l) => ({ id: l.id, value: l.getAttribute('value'), nr: l.querySelector('.z-nr').textContent,
-        nazwa: l.querySelector('.z-name').textContent, inna: l.querySelector('.z-inna') ? l.querySelector('.z-inna').getAttribute('href') : null })),
-    })));
+        nazwa: sp(l.querySelector('.z-name').textContent), inna: l.querySelector('.z-inna') ? l.querySelector('.z-inna').getAttribute('href') : null })),
+    })); });
     ma('sekcje list', JSON.stringify(dom.map((d) => d.id)) === JSON.stringify(Z.listy.map((l) => l.kotwica)), dom.map((d) => d.id));
     let n = 0;
     for (const l of LISTY) {
@@ -66,7 +67,7 @@ const ALIASY_WYC = W.wycofane.map((w) => [w.slug, 'podologia']);
     ma('porównane pozycje: 49 + 63 + 8', n === 120, n);
     const pod = dom.find((x) => x.id === 'podologia');
     ma('podologia bez pozycji, z informacją o dokumentach programu', pod && pod.items.length === 0 &&
-      (await p.textContent('#podologia')).includes('Lista zabiegów podologicznych jest w dokumentach programu'));
+      (await p.textContent('#podologia')).replace(/\u00a0/g, ' ').includes('Lista zabiegów podologicznych jest w dokumentach programu'));
     const dup = await p.evaluate(() => { const a = [...document.querySelectorAll('[id]')].map((e) => e.id); return a.filter((x, i) => a.indexOf(x) !== i); });
     ma('id bez powtórzeń', dup.length === 0, dup);
     const naglowki = await p.evaluate(() => [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].filter((h) => h.checkVisibility()).map((h) => +h.tagName[1]));

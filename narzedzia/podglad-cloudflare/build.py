@@ -14,10 +14,13 @@ OUT = pathlib.Path(__file__).resolve().parent / 'public'
 Z_PDF = '--bez-pdf' not in sys.argv
 if OUT.exists(): shutil.rmtree(OUT)
 (OUT / 'img').mkdir(parents=True); (OUT / 'strefa').mkdir()
-for p in (V3 / 'img').glob('*.webp'): shutil.copy(p, OUT / 'img' / p.name)
+# zdjęcia scen (.webp), logo 320×48, ikony strony i obraz udostępniania (.png, .jpg – raport 15, Z24 i Z25)
+for p in (V3 / 'img').iterdir():
+    if p.suffix in ('.webp', '.png', '.jpg'): shutil.copy(p, OUT / 'img' / p.name)
 shutil.copy(REPO / 'BeautyPolisa_logo_podstawowe_poziome.png', OUT / 'logo.png')
 shutil.copy(V3 / 'strefa/strefa.css', OUT / 'strefa/strefa.css')
 shutil.copy(V3 / 'strefa/zakladki.js', OUT / 'strefa/zakladki.js')   # „Zakładki w Strefie” – wspólny skrypt panel/dam-prace/szkolenia
+shutil.copy(V3 / 'strefa/strefa.js', OUT / 'strefa/strefa.js')       # wspólne wzorce Strefy (raport 16, 3.3) – wszystkie 4 strony
 # strony obok index.html; produkty mają produkcyjnie adres /ubezpieczenia/<nazwa> (mapowany na plik podglądu)
 PRODUKTY = ['oc-beauty', 'tax-protect', 'utrata-dochodu', 'nnw-dzieci', 'grupowe-ergo', 'opieka-medyczna']
 STRONY = PRODUKTY + ['slownik']

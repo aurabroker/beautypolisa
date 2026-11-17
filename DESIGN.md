@@ -6,7 +6,7 @@ language: pl
 status: "kierunek wizualny zatwierdzony przez zleceniodawcę"
 preview: docs/koncepcja/design/v3/design-preview.html
 rationale: docs/koncepcja/10-design-v3-old-money.md
-# Tokeny 1:1 z :root makiet (docs/koncepcja/design/v3/makieta-v3.html:252–281, tak samo na 8 stronach publicznych).
+# Tokeny 1:1 z :root makiet (docs/koncepcja/design/v3/makieta-v3.html:263–292, tak samo na 8 stronach publicznych).
 # Klucze = nazwy właściwości CSS. Schematu front matter nie sprawdzono z oryginalną specyfikacją Stitch (host niedostępny z sesji) – zob. „Znane rozbieżności” #14.
 colors:
   "--color-midnight": "#141C33"
@@ -42,8 +42,10 @@ typography:
   "--text-serif-sm": "1.2rem"
   "--text-serif-md": "1.45rem"
   "--text-h3": "1.65rem"
-  "--text-h2": "clamp(2.25rem,1.35rem + 3.4vw,4.25rem)"
-  "--text-h1": "clamp(2.75rem,1.4rem + 4.6vw,5.25rem)"
+  "--text-h2": "clamp(2.125rem,1.45rem + 2.65vw,3.375rem)"
+  "--text-h1": "clamp(2.25rem,1.2rem + 4.15vw,5rem)"
+  "--text-h1-podstrona": "clamp(2.25rem,.6rem + 4.4vw,4.4rem)"
+  "--text-h3-kafel": "clamp(1.9rem,1.45rem + 1.4vw,2.3rem)"
   "--text-display-numeral": "3.4rem"
   "--text-price": "clamp(3rem,2.4rem + 2vw,4.2rem)"
   "--tracking-label": ".2em"
@@ -81,9 +83,9 @@ motion:
 
 | Co | Plik |
 |---|---|
-| Strona główna – pełny CSS systemu | `docs/koncepcja/design/v3/makieta-v3.html` (bloki `<style>` w liniach 234–1196, w tym `gen:wspolne-css` i `gen:slownik-css`) |
+| Strona główna – pełny CSS systemu | `docs/koncepcja/design/v3/makieta-v3.html` (bloki `<style>` w liniach 245–1402, w tym `gen:wspolne-css` i `gen:slownik-css`) |
 | Podstrony publiczne | `docs/koncepcja/design/v3/oc-beauty.html`, `tax-protect.html`, `utrata-dochodu.html`, `nnw-dzieci.html`, `grupowe-ergo.html`, `opieka-medyczna.html`, `slownik.html` |
-| Strefa Klienta | `docs/koncepcja/design/v3/strefa/strefa.css` + `strefa/logowanie.html`, `panel.html`, `dam-prace.html`, `szkolenia.html` |
+| Strefa Klienta | `docs/koncepcja/design/v3/strefa/strefa.css` + `strefa/logowanie.html`, `panel.html`, `dam-prace.html`, `szkolenia.html`; wspólne zachowania makiet: `strefa/strefa.js` (błędy przy polach, `aria-disabled`, potwierdzenia akcji nieodwracalnych, „Cofnij”, niezapisane zmiany, formaty `Intl` – raport 16, 3.3) i `strefa/zakladki.js` („Zakładki w Strefie”, 00 D44) |
 | Tokeny (kopia referencyjna, nie jest dołączana do stron) | `docs/koncepcja/design/v3/tokens-v3.css` |
 | Ikony | `docs/koncepcja/design/v3/ikony-v3-sprite.svg`, `ikony/*.svg`, `ikony-v3-manifest.json` |
 | Zdjęcia scen | `docs/koncepcja/design/v3/img/` |
@@ -167,9 +169,9 @@ Pochodne alfa używane jako literały (bez osobnych tokenów): krawędź jasnego
 
 | Gradient | Gdzie |
 |---|---|
-| `linear-gradient(150deg, var(--color-navy) 0%, var(--color-midnight) 100%)` (także `160deg`) | granatowe karty kryjące (`.member-card`, `.promo`, `.end-card`; Strefa `.banner`, `.invite`, `.promo-tag`) |
+| `linear-gradient(150deg, var(--color-navy) 0%, var(--color-midnight) 100%)` | tylko Strefa Klienta: `.banner`, `.invite`, `.promo-tag`. Na stronach publicznych od 17.11.2026 bez gradientów na kartach: `.member-card`, `.promo` i `.end-card` mają płaskie `var(--color-navy)` (raport 15, Z16, Z21) |
 | `linear-gradient(90deg,transparent,var(--color-gold),transparent)` | linia ozdobna `.rule` |
-| `linear-gradient(90deg,rgba(247,243,236,.35),rgba(247,243,236,0) 55%)` | woalka hero `.hero::after` |
+| ~~`linear-gradient(90deg,…)`~~ | woalka hero `.hero::after` – usunięta 17.11.2026 (raport 15, Z16): panel hero ma tło `--bp-glass-ivory-tint` |
 | `linear-gradient(90deg,var(--color-gold-light),rgba(217,192,137,.25))` | linia „Jak to działa” `.how-line` |
 
 ### Strefa Klienta – kolory dodatkowe (`strefa/strefa.css`)
@@ -194,7 +196,7 @@ Pochodne alfa używane jako literały (bez osobnych tokenów): krawędź jasnego
 ### Reguły użycia koloru
 
 - Złoty tekst tylko na ciemnym tle (`--color-gold-light`). Na jasnym złoto (`--color-gold`, `--bp-line-gold*`) rysuje linie i ramy, ale nie niesie treści.
-- Eyebrow i etykiety sekcji (`.eyebrow`, `.partners p`, `.brand small` – lista w `makieta-v3.html:344–346`): na tle kryjącym – taupe; na szkle z rozmyciem lub na zdjęciu – navy; na ciemnym – gold light. Tafla bez rozmycia `.glass--tint` (krycie .84) działa jak tło kryjące: eyebrow list zabiegów na OC jest na niej taupe (`oc-beauty.html:1008`, 6,4:1).
+- Eyebrow i etykiety sekcji (`.eyebrow`, `.partners p`, `.brand small` – lista w `makieta-v3.html:355–357`): na tle kryjącym – taupe; na szkle z rozmyciem lub na zdjęciu – navy; na ciemnym – gold light. Tafla bez rozmycia `.glass--tint` (krycie .84) działa jak tło kryjące: eyebrow list zabiegów na OC jest na niej taupe (`oc-beauty.html:1008`, 6,4:1).
 - Podpisy drugorzędne mogą być taupe także na szkle: na kaflach produktów `.ledger--kafle` (krycie `.glass--strong` bez rozmycia: `.tag`, `.pp-pre`, `.pp-unit`), na `.glass` (`.calc legend small`, `.suma-nota`, `.zab-opis`, `.pro-text > span`) i na jasnych polach w tafli `rgba(255,255,255,.45–.88)` (`.opt label small`, `.opt-kwota`, `.co-opis`, `.zab-input::placeholder`, `.zab-chip small`) – zawsze przy kontraście ≥ 4,5:1 zmierzonym na wyrenderowanym tle. Pomiar 16.11.2026 (1440 i 390 px): księga na jedwabiu 5,2–5,4:1 (po zmianie na osobne kafle bez rozmycia, 320–1440 px: 5,1–5,2:1), kalkulator i kafle zawodów na marmurze 6,0–6,2:1. W Strefie etykiety wersalikami `.label-caps` (np. `.sidenav-title`) są taupe na `.glass--strong` (krycie .88; 6,3:1). Taupe bezpośrednio na zdjęciu (bez tafli) nie występuje w żadnej makiecie (strony publiczne i Strefa).
 - Kontrast tekstu na szkle i zdjęciach mierzy się na wyrenderowanej stronie (nie z wartości tokenów) – wszystkie teksty muszą przejść AA.
 - Kolor nigdy nie jest jedynym nośnikiem informacji: statusy mają znak i tekst, pojęcia ze słownika – kropkowane podkreślenie, zaznaczenie kafelka – obrys i cień wewnętrzny.
@@ -212,20 +214,19 @@ Pochodne alfa używane jako literały (bez osobnych tokenów): krawędź jasnego
 | `--font-caps` | `'Poppins','Poppins Caps Fallback','Poppins Fallback 2',system-ui,sans-serif` | 500 | wersaliki: eyebrow, przyciski, nawigacja, etykiety pól |
 
 - Makiety ładują Google Fonts z `display=swap`: `family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500`. Produkcja: `next/font`, samohostowane, `display: swap`, podzbiór `latin-ext`, bez zewnętrznego Google Fonts.
-- Fonty zastępcze mają dopasowane metryki (`size-adjust`, `ascent-override`, `descent-override`, `line-gap-override` – `makieta-v3.html:243–249`), więc podmiana fontu nie przesuwa układu. Przykład: Poppins Fallback = Arial z `size-adjust: 112%`, Cormorant Fallback = Times New Roman Bold z `size-adjust: 91.7%`.
+- Fonty zastępcze mają dopasowane metryki (`size-adjust`, `ascent-override`, `descent-override`, `line-gap-override` – `makieta-v3.html:254–260`), więc podmiana fontu nie przesuwa układu. Przykład: Poppins Fallback = Arial z `size-adjust: 112%`, Cormorant Fallback = Times New Roman Bold z `size-adjust: 91.7%`.
 - Wagi 300 i 700 nie istnieją w systemie. Kursywa szeryfowa – zawsze 500. Strefa ma trzy wyjątki z niezaładowanymi wagami (przeglądarka je syntetyzuje) – „Znane rozbieżności” #4.
 
 ### Hierarchia (strony publiczne)
 
 | Element | Token / wartość | Rozmiar | Krój i waga | Interlinia | Rozstrzelenie | Kolor |
 |---|---|---|---|---|---|---|
-| H1 | `--text-h1` = `clamp(2.75rem,1.4rem + 4.6vw,5.25rem)` | 44–84 px | serif 600, akcent `em` kursywa 500 | .98 | −.012em | navy |
-| H1 panelu hero podstron | `clamp(2.5rem,1.4rem + 3.6vw,4.4rem)` | 40–70,4 px | serif 600 | 1 | −.012em | navy |
-| H2 | `--text-h2` = `clamp(2.25rem,1.35rem + 3.4vw,4.25rem)` | 36–68 px | serif 600, `em` kursywa 500 | 1.02 | −.005em | navy; na ciemnym ivory |
-| H2 FAQ | `clamp(2.25rem,1.5rem + 2.2vw,3.25rem)` | 36–52 px | serif 600 | 1.02 | −.005em | navy |
-| H3 | `--text-h3` = `1.65rem` | 26,4 px | serif 600 | 1.15 | −.005em | navy; na ciemnym ivory |
-| H3 kafelka produktu | `clamp(1.9rem,1.45rem + 1.4vw,2.3rem)` | 30,4–36,8 px | serif 600 | 1.1 | – | navy |
-| Legenda, wynik „Taryfa”, nazwa zawodu | `--text-serif-md` = `1.45rem` | 23,2 px | serif 600 | 1.1–1.2 | – | navy / ivory |
+| H1 | `--text-h1` = `clamp(2.25rem,1.2rem + 4.15vw,5rem)` | 36–80 px (od 17.11.2026, raport 15 Z37 i Z2: dok. 10 §4 – do 80 px, na telefonie mniej, żeby główny przycisk mieścił się w 1. ekranie) | serif 600, akcent `em` kursywa 500 | .98 | −.012em | navy |
+| H1 podstron (panel hero) | `--text-h1-podstrona` = `clamp(2.25rem,.6rem + 4.4vw,4.4rem)` – jedyny rozmiar H1 podstron (`.page-hero .hero-panel h1`, reguła w `gen:wspolne-css`; bez lokalnych rozmiarów w CSS stron – raport 15 Z37, runda 2 weryfikacji); mniejszy niż `--text-h1`, bo panel hero podstron ma od 64em dwie kolumny (tekst i liczby) i musi zmieścić się w 1. ekranie (Z1, Z2) | 36–70,4 px | serif 600 | 1 | −.012em | navy |
+| H2 | `--text-h2` = `clamp(2.125rem,1.45rem + 2.65vw,3.375rem)` – każdy H2 w `<main>` (także FAQ, „Inne ubezpieczenia”, pasek szkody, karta końcowa, litery słownika; reguła w `gen:wspolne-css`) poza nagłówkiem okna klauzuli | 34–54 px | serif 600, `em` kursywa 500 | 1.02 | −.005em | navy; na ciemnym ivory |
+| H3 | `--text-h3` = `1.65rem` – każdy H3 w `<main>` poza nazwą kafelka produktu (reguła w `gen:wspolne-css`, raport 15 Z37) | 26,4 px | serif 600 | 1.15 | −.005em | navy; na ciemnym ivory |
+| H3 kafelka produktu (wyjątek – nazwa produktu w kafelku strony głównej `.product h3`) | `--text-h3-kafel` = `clamp(1.9rem,1.45rem + 1.4vw,2.3rem)` | 30,4–36,8 px | serif 600 | 1.1 | – | navy |
+| H4 (`main h4`), legenda, wynik „Taryfa”, nazwa zawodu | `--text-serif-md` = `1.45rem` | 23,2 px | serif 600 | 1.1–1.2 | – | navy / ivory |
 | Podpis tabeli, partnerzy | `--text-serif-sm` = `1.2rem` | 19,2 px | serif 600 | 1.25 | – | navy |
 | Pytanie FAQ (`summary`) | `1.4rem` | 22,4 px | serif 600 | 1.25 | – | navy |
 | Duża cyfra rozdziału `.chapter-no` | `clamp(7rem,4.2rem + 9vw,14.5rem)`; < 768 px `clamp(5.5rem,3rem + 14vw,8rem)` | 112–232 px | serif 500 kursywa | 1 | −.02em | `rgba(184,151,90,.2)`; na ciemnym `rgba(217,192,137,.13)`; `aria-hidden` |
@@ -273,6 +274,8 @@ Pochodne alfa używane jako literały (bez osobnych tokenów): krawędź jasnego
 - Półpauza w zakresach, a po niej łącznik słowa U+2060 (`&#8288;`), żeby zakres się nie łamał: „6–&#8288;8&nbsp;osób”, „2–&#8288;100&nbsp;osób”. Ten sam łącznik po dywizie w „e-&#8288;mail”.
 - Półpauza ze spacjami jako myślnik („Składka ze stałej taryfy – według rodzaju działalności”).
 - Nagłówki i akapity: `text-wrap: balance` (h1–h3) i `text-wrap: pretty` (p).
+- **Generatory** stosują jeden moduł `narzedzia/makiety/typografia.py` (od 17.11.2026, raport 16, rozdz. 3.1): twarde spacje po jednoliterowych wyrazach (także kilku z rzędu), w grupach cyfr, przed „zł”, „r.”, „osób”, „pozycji”, „miesięcy”, po „nr”, „poz.”, „art.”, „NIP”, „REGON”, w „sp.&nbsp;z&nbsp;o.o.”, „ERGO&nbsp;Hestia”, „LUX&nbsp;MED”, przed półpauzą-myślnikiem; pauza „ — ” → „ – ”, „...” → „…”, "proste" → „polskie”. `html()` dla HTML (`&nbsp;`), `tekst()` dla danych wstawianych przez `textContent` (U+00A0), `JS` (`bpTypografia`) dla skryptów stron. Brzmienie (listy zabiegów 1:1, klauzula, zdania CRM) się nie zmienia – kontrole porównują tekst z twardą spacją jak ze spacją (`typografia.porownaj`). FAQ: twarde spacje tylko w widocznym HTML, FAQPage w JSON-LD bez nich.
+- Nazwy marek w menu, stopce i logo mają `translate="no"` (`typografia.marki()`): BeautyPolisa, Aura Expert, Beauty Razem, ERGO Hestia, ERGO Razem, ERGO Życie w Biznesie, ENEL-MED, LUX MED, Colonnade, Tax Protect, Leadenhall, CEU, Lloyd’s.
 
 ---
 
@@ -286,26 +289,27 @@ Baza `.btn`: `inline-flex`, `gap: 12px`, **`min-height: 50px`**, `padding: 14px 
 
 | Wariant | Tło / tekst / obrys | Najechanie | Fokus | Gdzie |
 |---|---|---|---|---|
-| `.btn-navy` | navy / ivory / navy | `--color-navy-deep`; przy `(hover:hover) and (pointer:fine)` złota linia `--color-gold-light` 1 px rośnie od środka 10 px nad dolną krawędzią do `calc(100% - 56px)` w `.5s var(--ease-lux)` | obwódka 2 px navy, odstęp 3 px (+ ta sama złota linia) | główna akcja na jasnym |
+| `.btn-navy` | navy / ivory / navy | `--color-navy-deep`; przy `(hover:hover) and (pointer:fine)` złota linia `--color-gold-light` 1 px (`::after`, 10 px nad dolną krawędzią, 28 px od boków) rysuje się od środka przez `transform: scaleX()` w `.5s var(--ease-lux)` (od 17.11.2026 – wcześniej `background-size`) | obwódka 2 px navy, odstęp 3 px (+ ta sama złota linia) | główna akcja na jasnym |
 | `.btn-ghost` | `rgba(247,243,236,.4)` / navy / `rgba(42,59,104,.45)` | tło `rgba(247,243,236,.8)`, obrys navy | jak wyżej | druga akcja na szkle lub zdjęciu |
 | `.btn-ivory` | ivory / navy / ivory | parchment | obwódka gold light | główna akcja na ciemnym (panel wyniku, pasek akcji) |
-| `.btn-ghost-dark` | przezroczyste / ivory / `rgba(217,192,137,.6)` | obrys i tekst gold light | obwódka gold light | druga akcja na ciemnym |
+| `.btn-ghost-dark` | przezroczyste / ivory / `rgba(217,192,137,.6)` | tekst zostaje ivory, obrys gold light, tło `rgba(217,192,137,.14)` (hover nie słabszy od spoczynku) | obwódka gold light | druga akcja na ciemnym |
 | nieaktywny (`.result .btn[aria-disabled="true"]`) | przezroczyste / parchment / `rgba(217,192,137,.5)`, `cursor: not-allowed` | – | jak aktywny (pozostaje w kolejności Tab) | wysyłka kalkulatora przy brakach |
 
-- Nieaktywny przycisk ma `aria-disabled="true"`, nie `disabled` – po kliknięciu fokus trafia na brakujące pole. Etykieta zawsze mówi, czego brakuje (teksty `CTA_BRAK`, `makieta-v3.html:2208`: „Najpierw zaznacz rodzaj działalności”, „Najpierw podaj liczbę osób”, „Najpierw wybierz sumę gwarancyjną”, „Najpierw zaznacz zabiegi wymagające ankiety”); „Poproś o polisę” wraca dopiero przy komplecie danych.
+- Nieaktywny przycisk ma `aria-disabled="true"`, nie `disabled` – po kliknięciu fokus trafia na brakujące pole. Etykieta zawsze mówi, czego brakuje (teksty `CTA_BRAK`, `makieta-v3.html:2373`: „Najpierw zaznacz rodzaj działalności”, „Najpierw podaj liczbę osób”, „Najpierw wybierz sumę gwarancyjną”, „Najpierw zaznacz zabiegi wymagające ankiety”); „Poproś o polisę” wraca dopiero przy komplecie danych.
 - Poniżej 480 px przyciski w grupach akcji (`.hero-actions`, `.lead-form`, `.cta-row`, `.tariff-actions` i podobne) mają pełną szerokość; w panelu wyniku zawsze.
 - Przycisk z ikoną: `.lux-icon--sm` (22 px) w `currentColor`.
+- Stan wciśnięty `:active` (raport 15, Z18): przesunięcie o 1 px (`translateY(1px)`, bez animacji; przy ograniczonym ruchu bez przesunięcia), `.btn-navy` – tło midnight, `.btn-ghost` – parchment z obrysem navy, `.btn-ivory` – `#E2D7C5`, `.btn-ghost-dark` – `rgba(217,192,137,.24)`; także pasek akcji. `touch-action: manipulation` i `-webkit-tap-highlight-color: rgba(42,59,104,.12)` (na ciemnym `rgba(217,192,137,.2)`) na wszystkich elementach interaktywnych.
 - **Strefa Klienta** (`strefa/strefa.css:116–140`): `.btn` `min-height: 48px`, `padding: 12px 24px`, `gap: 10px`, przejście `var(--bp-dur)` (.2s); `.btn-sm` 44 px (`10px 16px`, `.14em`); `.btn-ghost` na `rgba(255,255,255,.55)` → `#fff`; `.btn-quiet` przezroczysty ze złotym podkreśleniem; `.btn-danger` tekst `--bp-error`, obrys `rgba(122,46,46,.5)`, najechanie `--bp-error-bg`; nieaktywny `.btn[disabled], .btn[aria-disabled="true"]` – taupe, obrys `rgba(95,87,77,.45)`; `.btn-block` 100%.
 
 ### 4.2 Linki
 
 | Klasa | Wygląd | Stany |
 |---|---|---|
-| `.link-lux` | wersaliki `--text-xs`, `--tracking-label`, navy, `min-height: 44px`, po tekście linia 28×1 px | najechanie: linia 44 px (`width var(--bp-dur-2)`); na ciemnym gold light |
-| `.link-quiet` | `--text-sm` navy, podkreślenie `--color-gold` 1 px, `text-underline-offset: 5px`, `min-height: 44px` | na ciemnym parchment, podkreślenie `rgba(217,192,137,.6)` |
-| link w tekście | navy, `text-decoration-color: var(--color-gold)`, offset 3–4 px | na ciemnym gold light, najechanie ivory |
-| `.main-nav a` | caps `--text-xs`, `--tracking-nav`, ink, `min-height: 44px` | najechanie navy + złote podkreślenie, offset 6 px |
-| `.footer-nav a` | parchment `.9rem`, `min-height: 34px` (44 px przy `pointer: coarse`) | najechanie ivory + złote podkreślenie; `[aria-current="page"]` ivory + podkreślenie |
+| `.link-lux` (link-akcja; od 17.11.2026 jeden wygląd linku-akcji – raport 15, Z39, reguła w `gen:wspolne-css`) | `--font-sans` 500 `--text-sm`, bez wersalików i bez kreski za tekstem (dawniej etykieta „KALKULATOR ——”), podkreślenie `--bp-link-podkreslenie` 1 px, `text-underline-offset: 5px`, `min-height: 44px`; kolor tekstu: navy, na ciemnym parchment (podkreślenie `--bp-link-podkreslenie-ciemne`), na jasnych kaflach w ciemnej scenie – jak na jasnym | najechanie: podkreślenie 2 px |
+| `.link-quiet` | `--text-sm` navy, podkreślenie `--color-gold` 1 px, `text-underline-offset: 5px`, `min-height: 44px` | najechanie: podkreślenie 2 px (jak każdy link w treści i okruszki); na ciemnym parchment, podkreślenie `rgba(217,192,137,.6)` |
+| link w tekście (`main p a`, `main dd a` bez klasy) | navy (bez taupe i ink – Z39), podkreślenie `--bp-link-podkreslenie` (`--color-gold`) 1 px, offset 4 px | na ciemnym (`.dark`, `.result`, `.promo`, `.member-card`) parchment z podkreśleniem `--bp-link-podkreslenie-ciemne` (`rgba(217,192,137,.7)`); najechanie: podkreślenie 2 px |
+| `.main-nav a` | caps `--text-xs`, `--tracking-nav`, ink, `min-height: 44px` | najechanie navy + złota linia rysowana od lewej (`::after`, `scaleX`, .4s; raport 15, Z27) |
+| `.footer-nav a` | parchment `.9rem`, `min-height: 34px` (44 px przy `pointer: coarse`) | najechanie ivory + złote podkreślenie pojawiające się płynnie (kolor linii, `var(--bp-dur-2)`; tak samo `summary` FAQ i nazwa kafla produktu); `[aria-current="page"]` ivory + podkreślenie |
 | `.skip` („Przejdź do treści”) | navy, tekst ivory, `top: -60px` → `12px` przy fokusie, `z-index: var(--bp-z-skip)` | – |
 
 ### 4.3 Fokus
@@ -313,6 +317,7 @@ Baza `.btn`: `inline-flex`, `gap: 12px`, **`min-height: 50px`**, `padding: 14px 
 - Globalnie `:focus-visible { outline: 2px solid var(--color-navy); outline-offset: 3px }`; w `.dark`, `.result`, `.member-card`, pasku akcji – `--color-gold-light`.
 - Pola: obwódka 2 px navy, odstęp 2 px i obramowanie navy. Kafelek wyboru: obwódka 2 px na `label` (`input:focus-visible + label`), odstęp 2 px.
 - Komórki w tafli z `overflow: clip` mają obwódkę do środka: `-4px` (`.pro`, `.clue summary`), `-5px` (`.calc-tab`), `-2px` (`.table-scroll`, `.zab-chip-x`); kafelek produktu – `:has(.product-link:focus-visible)` obwódka 2 px navy z odstępem `-6px` i tłem ivory (kafel kryjący; dawniej w jednej tafli `rgba(255,255,255,.55)`).
+- Strefa: w jasnym menu konta (`.topbar .account-panel`) obwódka navy, nie złota; pole z prefiksem „+48” – obwódka na całej kontrolce (`.with-prefix:focus-within`).
 - Fokus nigdy nie jest zasłonięty: nagłówek nie chowa się przy fokusie w środku (`.site-header:focus-within{transform:none}`), `scroll-padding-top` i `scroll-padding-bottom` rezerwują miejsce pod belką i paskami (WCAG 2.4.11).
 
 ### 4.4 Tafle szkła
@@ -328,7 +333,11 @@ Baza `.btn`: `inline-flex`, `gap: 12px`, **`min-height: 50px`**, `padding: 14px 
 
 ### 4.5 Karty kryjące (bez rozmycia)
 
-Tło ivory albo gradient granatowy (`150deg`/`160deg`, navy → midnight), wewnętrzna rama przez `::before` z `inset: var(--bp-frame-inset)`, cień `0 30px 60px -40px rgba(20,28,51,α)` w trzech wariantach alfy: `.4` – `.clause` (OC), `.scope-card` (Tax, NNW, opieka), `.apply` (grupowe), `.op-card` (opieka); `.45` – `.ledger` (utrata dochodu); `.5` – `.route--main` (utrata dochodu). Przykłady: `.clause` (OC), `.scope-card` (Tax), `.apply` (grupowe), `.op-card` (opieka), `.route--main` i `.ledger` (utrata dochodu), `.result`, `.promo`, `.end-card`, `.member-card` (promień 10 px, `rotate: -1.5deg`, przy najechaniu 0° i −4 px w górę w `.6s`), w Strefie `.banner`, `.invite`, `.promo-tag`. Karty z samym obrysem: `.rel-card`, `.panel`, `.vcard`, `.cmp-attr`, `.sl-litera`.
+Od 17.11.2026 (raport 15, Z16, Z21, Z38; reguła w `gen:wspolne-css`) poza czterema wariantami szkła (D14, 4.4) są tylko **jedna karta pełna, jedna notka i jedna karta granatowa**:
+
+- **Karta pełna** – tło `--bp-karta-tlo` (`--color-ivory`), złota linia 1 px `--bp-karta-linia` (`rgba(184,151,90,.5)`), promień `--radius-card` (6 px), jeden cień `--bp-karta-cien` (`0 24px 48px -38px rgba(20,28,51,.45)`); wewnętrzna rama `.frame` tam, gdzie była. Klasy: `.clause` (OC), `.scope-card` (Tax, NNW, opieka), `.apply`, `.panel`, `.vcard` (grupowe), `.op-card`, `.cmp-attr` (opieka), `.route`, `li.job`, `figure.ledger` (utrata dochodu), `.mind` (Tax, NNW, opieka), `.rel-card` (wszystkie podstrony), `.sl-litera`, `.sl-narzedzia` (słownik). Dawniej 6 wyglądów (z cieniem albo bez, linia 35 / 50% albo żadna, przezroczysta `.mind`).
+- **Notka** – tło `--bp-notka-tlo` (`rgba(237,229,216,.55)`), lewa kreska 2 px `--bp-notka-kreska` (`--color-gold`), bez cienia i bez promienia: `.scope-extra` (Tax), `.scope-aside` (utrata dochodu), `.haslo-przyklad` (słownik).
+- **Karta granatowa** – płaskie tło `--color-navy` (bez gradientu, raport 15 Z16), tekst parchment: `.result`, `.promo`, `.end-card.dark`, `.member-card` (karta Strefy Klienta na stronie głównej: promień 6 px, `rotate: none`, przy najechaniu tylko uniesienie o 2 px; bez podpisu „Dane przykładowe” – raport 15, Z21). Strefa Klienta (`strefa.css`) ma własne `.banner`, `.invite`, `.promo-tag` z gradientem `150deg` (tabela gradientów).
 
 ### 4.6 Kafelek produktu (księga produktów)
 
@@ -346,7 +355,7 @@ Tło ivory albo gradient granatowy (`150deg`/`160deg`, navy → midnight), wewn�
 - `.opt input` niewidoczny na całym kafelku (`opacity: 0`, `z-index: 1`); `label`: `min-height: 56px`, `padding: 12px 16px`, `--radius-btn`, tło `rgba(255,255,255,.45)`, obrys `--bp-line-navy`, `--text-sm`, przejście `var(--bp-dur-1)`.
 - **Zaznaczony:** obrys navy, tło `rgba(255,255,255,.85)`, `box-shadow: inset 0 0 0 1px var(--color-navy)`. **Fokus:** obwódka 2 px navy, odstęp 2 px. **Kolory wymuszone:** `border: 3px solid Highlight`.
 - Odmiany: `.opt--center` (serif 1.15rem navy, wyśrodkowany; < 480 px 1rem); `.opt--check` (kwadratowy znacznik 18×18 px, promień 2 px; zaznaczony – navy z `inset 0 0 0 3px var(--color-ivory)` – odróżnia wielokrotny wybór); `.opt--suma` (druga linia `.opt-kwota` `--text-xs` taupe → navy po zaznaczeniu).
-- `.check-row`: natywny checkbox 20×20 px, `accent-color: var(--color-navy)`, `min-height: 44px` (40 px w listach: `.ankieta-lista .check-row` – `makieta-v3.html:693`, `.zab-list .check-row` w `dialog.zab-sheet` – `strefa/dam-prace.html:245`); `.zakres-opcja` – opcja z opisem w obrysie `--bp-line-navy`, po zaznaczeniu obrys navy i tło `.8`.
+- `.check-row`: natywny checkbox 20×20 px, `accent-color: var(--color-navy)`, `min-height: 44px` (40 px w listach: `.ankieta-lista .check-row` – `makieta-v3.html:706`, `.zab-list .check-row` w `dialog.zab-sheet` – `strefa/dam-prace.html:245`); `.zakres-opcja` – opcja z opisem w obrysie `--bp-line-navy`, po zaznaczeniu obrys navy i tło `.8`.
 - **Bez wartości domyślnych:** żadna opcja nie jest zaznaczona przy wejściu na stronę.
 
 ### 4.8 Wynik kalkulatora i pasek ceny
@@ -357,13 +366,14 @@ Tło ivory albo gradient granatowy (`150deg`/`160deg`, navy → midnight), wewn�
 - Ogłaszanie: jeden `role="status"` (sr-only) na kalkulator, z opóźnieniem 450 ms – tylko przy zmianie kroku przewodnika albo wyniku (klik bez zmiany nie jest ogłaszany); numer kroku tylko przy zmianie kroku (od 16.11.2026).
 - `.calc-peek` (< 1024 px): przyklejony do dołu, `z-index: var(--bp-z-sticky)`, `min-height: 56px`, navy, obrys `rgba(217,192,137,.55)`, cień `0 14px 30px -14px rgba(20,28,51,.7)`; jedna linia z kwotą; dopóki brakuje kroku kalkulatora OC – wskazówka przewodnika w dwóch krótkich liniach („Krok N z 3 · Teraz” wersalikami gold light, „Zaznacz …” serif 1.1rem ivory; wysokość ≤ 72 px), `href` do brakującego kroku; dawniej w stanie `empty` `visibility: hidden`; `aria-hidden` (czytnik dostaje wynik z panelu).
 - **Przewodnik po krokach** (kalkulator OC, od 16.11.2026 – 00 D46): kroki 1 rodzaj działalności → 2 liczba osób → 3 suma gwarancyjna, bieżący = pierwszy brakujący (kolejność dowolna, nic nie jest blokowane). Klasy nadaje skrypt (`.kroki-on` na `.calc-form`, `.krok` i `data-krok-stan="teraz|gotowe|dalej"` na polach); bez JS nic z tego nie działa. Pole kroku: `padding: 14px var(--krok-p) 18px` (`--krok-p: clamp(10px,1.6vw,18px)`; ten sam odstęp poziomy mają wyszukiwarka i zakres dodatkowy), obramowanie 1 px przezroczyste, `--radius-card`. Bieżący (`aria-current="step"`): obrys gold + `box-shadow: 0 0 0 1px var(--color-gold), 0 18px 40px -28px rgba(20,28,51,.45)`, tło `rgba(255,255,255,.6)`; numer `.krok-nr` (koło 32 px, `aria-hidden`) navy z cyfrą ivory i obwódką `0 0 0 3px rgba(217,192,137,.55)`; wiersz `.krok-stan` (opis grupy – `aria-describedby`) „Krok N z 3 · Teraz: zaznacz …” `--text-sm` 600 navy, zawsze jedna linia (< 640 px bez dopisku „: zaznacz …”, który zostaje dla czytnika). Wykonany: koło z „✓”, „Krok N z 3 · Gotowe” navy. Dalszy: koło z przerywanym obrysem taupe, legenda i wiersz taupe (przygaszenie kolorem, nie przezroczystością). Legenda kroku z `float` (nie leży na krawędzi ramki). Pod polem wyniku `#wynik-krok`: pasek 3 odcinków (3 px; wykonany gold light, bieżący ivory, dalszy `rgba(217,192,137,.3)`, `aria-hidden`) i „Krok N z 3: …” wersalikami gold light. Jednorazowy puls obwódki przy zmianie kroku: `::after` `inset: -6px`, obrys 2 px gold, promień 10 px, `krok-puls` 1.2s `--ease-lux` (opacity + transform), tylko przy `prefers-reduced-motion: no-preference`. Bez przewijania i bez przenoszenia fokusu. Kolory wymuszone: bieżący `border: 2px solid Highlight`, koło bieżącego `Highlight`; `prefers-contrast: more` – obwódka navy.
-- **Przełącznik kalkulatorów `.calc-switch`** (`glass--tint`, zakładki ARIA; bez JS ukryty): `width: min(100%,800px)`, `padding: 8px`, `gap: 8px` (6 px < 480 px); `.calc-tab` `min-height: 88px` (76 px < 480 px), obrys `--bp-line-navy`, `--radius-btn`, tło `rgba(255,255,255,.45)`, nazwa Cormorant 600 `clamp(1.2rem,1.05rem + .75vw,1.65rem)` (1.15rem < 480 px), kwota `small` kursywa `clamp(1.05rem,.98rem + .35vw,1.3rem)` taupe; wybrany (`aria-selected="true"`) – obrys navy, `inset 0 0 0 1px var(--color-navy)`, tło `.85`, tekst navy, złota linia 1 px 8 px nad dolną krawędzią (`.6s`); od 16.11.2026 (00 D46; dawniej 560 px, 64 px, nazwa wersalikami `--text-xs`).
+- **Przełącznik kalkulatorów `.calc-switch`** (`glass--tint`, zakładki ARIA; bez JS ukryty): `width: min(100%,800px)`, `padding: 8px` (4 px < 480 px), `gap: 8px` (6 px < 480 px); `.calc-tab` `min-height: 88px` (104 px < 480 px – od 17.11.2026 kafle na telefonie fizycznie większe, dawniej 76 px), obrys `--bp-line-navy`, `--radius-btn`, tło `rgba(255,255,255,.45)`, nazwa Cormorant 600 `clamp(1.2rem,1.05rem + .75vw,1.65rem)` (1.15rem < 480 px), kwota `small` kursywa `clamp(1.05rem,.98rem + .35vw,1.3rem)` taupe; wybrany (`aria-selected="true"`) – obrys navy, `inset 0 0 0 1px var(--color-navy)`, tło `.85`, tekst navy, złota linia 1 px 8 px nad dolną krawędzią (`.6s`); od 16.11.2026 (00 D46; dawniej 560 px, 64 px, nazwa wersalikami `--text-xs`).
 
 ### 4.9 Wyszukiwarka zabiegów, chipy i plakietki
 
 - Combobox ARIA 1.2 (`role="combobox"`, lista `role="listbox"`, bez automatycznego wyboru). `.zab-input`: `min-height: 52px`, lupa 20 px (kreska 1.6) po lewej, tło `rgba(255,255,255,.82)`, obrys `--bp-line-field`; po rozwinięciu dolne narożniki proste.
 - `.zab-pop`: kryjące ivory, obrys navy, cień `0 22px 44px -22px rgba(20,28,51,.5)`, `z-index: 5` – **nie jest taflą**. `.zab-list` `max-height: min(440px,58vh)`; `.zab-opt` `min-height: 48px`, najechanie parchment, `.is-active` navy z tekstem ivory.
 - `.zab-badge`: pigułka 999 px, obrys navy, `--text-xs` 500 („Lista nr 2”, „Listy nr 1 i 2”, „Ankieta, poz. h)”); w aktywnej pozycji gold light. Plakietka podaje tylko numer listy albo pozycję ankiety – nie ocenia zakresu ochrony.
+- **Chip nawigacji po liście i filtra** (od 17.11.2026 jeden wygląd – raport 15, Z39, reguła w `gen:wspolne-css`): skok do list na stronie OC (`.zjump a`), indeks A–Z słownika (`.sl-az a`), podpowiedzi specjalizacji na opiece (`.spec-quick button`) – `min-height: 44px`, obrys `--bp-karta-linia` 1 px, promień `--radius-btn`, tło `rgba(255,255,255,.55)`, `--font-sans` 500 `--text-sm` navy, bez wersalików; najechanie – obrys navy, tło 85%; litera bez haseł – obrys przerywany, taupe (stan).
 - `.zab-chip` (wybrane zabiegi): pigułka 999 px, obrys navy, tło `rgba(255,255,255,.88)`, `--text-sm` navy, `small` taupe; przycisk usuwania `.zab-chip-x` 34×34 px, okrągły, najechanie parchment, `aria-label="Usuń z wybranych: …"`.
 - Strefa (`dam-prace.html`): `.chip` jako kafelek filtra `min-height: 44px` z ikoną 28 px, zaznaczony navy z ikoną gold light; `.zab-chip` `min-height: 36px` (44 px przy `pointer: coarse`).
 
@@ -383,17 +393,21 @@ Tło ivory albo gradient granatowy (`150deg`/`160deg`, navy → midnight), wewn�
 | `.fields-2` | 2 kolumny od 640 px; `.fields-3` 3 kolumny od 720 px (Strefa) |
 | zgody `.check-row.consent` | checkbox wyrównany do góry, tekst `--text-sm` ink |
 | `.radio-card` (Strefa) | `min-height: 52px`, `#fff`, kółko 18 px; zaznaczony navy z `inset 4px #fff` |
-| `.switch` (Strefa) | 44×24 px, promień 12 px; `[aria-checked="true"]` tło navy. Starszy wzorzec (`button role="switch"`), dziś tylko wyłączony przełącznik TOTP; nowych przełączników na nim nie budujemy |
+| `.switch` (Strefa) | 44×24 px, promień 12 px; `[aria-checked="true"]` tło navy; gałka `::after` przesuwa się przez `transform` (od 17.11.2026), najechanie – poświata `0 0 0 3px rgba(42,59,104,.15)`. Starszy wzorzec (`button role="switch"`), dziś tylko wyłączony przełącznik TOTP; nowych przełączników na nim nie budujemy |
 | `input.toggle` (Strefa, „Zakładki w Strefie” – 00 D44; `strefa/strefa.css`) | natywny `input type="checkbox" role="switch"` – stan z `checked`, bez `aria-checked`; 48×28 px (cel ≥ 24 px, WCAG 2.5.8), promień 14 px, obrys 1 px navy, tło `#fff`; gałka 18 px navy, po włączeniu tło navy, gałka ivory przesunięta o 20 px (`transition: transform`); `:focus-visible` – obwódka 2 px navy; `:disabled` – `opacity: .55`, `cursor: not-allowed`; najechanie (tylko `(hover:hover) and (pointer:fine)`) – poświata 3 px `rgba(42,59,104,.15)`; `forced-colors` – Canvas / Highlight. Zawsze z widoczną `<label for>` (`.toggle-label`), tekstem stanu obok (`.toggle-state`, np. „Widoczna” / „Ukryta”) i opisem przez `aria-describedby`; układ wiersza `.toggle-row` (etykieta, opis, informacja – przełącznik po prawej, poniżej 600 px pod etykietą). Wzorzec dla nowych przełączników |
 | `.ts-slot` (Turnstile) | `min-height: 65px`, `max-width: 300px`, obrys przerywany |
 
 Komunikaty błędów są konkretne, z przykładem: „Sprawdź adres e-mail, np. anna@salon.pl.”, „Zaznacz rodzaj działalności.”, „Podaj liczbę osób wykonujących zabiegi.”.
+
+Wysyłka (opieka medyczna, wzór dla formularzy; raport 16, 3.1): na czas żądania przycisk `disabled` z tekstem „Wysyłanie…” i `aria-busy="true"` na formularzu; błąd sieci – dane zostają w polach, przycisk znowu działa, komunikat podaje następny krok (ponów albo zadzwoń); po pierwszej zmianie pola – ostrzeżenie `beforeunload`, zdejmowane po wysłaniu. Pola NIP i e-mail z `spellcheck="false"`, placeholdery kończą się „…”. **Odstępstwo (świadome):** po wysłaniu z błędami fokus trafia na listę błędów u góry (`role="alert"`, linki do pól – wzorzec GOV.UK), nie na pierwsze błędne pole.
 
 ### 4.11 Komunikaty i stany
 
 | Klasa | Styl |
 |---|---|
 | `.lead-status:not(:empty)` (sukces formularza) | obrys `--bp-line-gold`, tło `rgba(255,255,255,.6)`, serif 600 1.3rem navy; `role="status"`, `tabindex="-1"` |
+| `.lead-blad` (błąd wysyłki formularza kontaktu, `role="alert"`) | lewa linia 2 px `--bp-error`, tło `rgba(255,255,255,.85)`; stała w DOM, pusta – ukryta (`:empty`); podaje następny krok („spróbuj ponownie… możesz też zadzwonić”), dane zostają w polach; na czas wysyłki przycisk `disabled`, „Wysyłanie…”, `aria-busy` |
+| `.pole-brak` (brak w kalkulatorze OC po kliknięciu nieaktywnego przycisku) | `--text-sm`, `--bp-error`; akapit w `fieldset` pod legendą, powiązany `aria-describedby` z polami grupy, znika po uzupełnieniu |
 | `.form-status` / `.form-errors` (opieka) | lewa linia 2 px navy / `--bp-error`; lista błędów z linkami do pól |
 | wzorzec notatki (`.lead-calc`, `.zempty`, `.haslo-przyklad`) | lewa złota linia 2 px + jasne tło |
 | `.alert` (Strefa) | siatka z ikoną 22 px, lewa krawędź 3 px, tytuł serif 600 1.25rem; `--info` navy na `--bp-surface`, `--success` navy na `#F3F5F9`, `--warn` gold na `#FBF6EA`, `--error` `--bp-error` na `--bp-error-bg` |
@@ -406,20 +420,22 @@ Komunikaty błędów są konkretne, z przykładem: „Sprawdź adres e-mail, np.
 - `.tariff-table` w tafli `glass--tint`; `caption` serif `--text-serif-sm` navy; komórki `padding: 10px 8px` (podstrony `12px 8px`), linia `--bp-line-gold-soft`, kwoty do prawej i bez łamania; `thead th` `--text-xs` 500 navy; `th[scope="row"]` z `small` (opis taryfy) ink.
 - Zawsze w `.table-scroll` (`overflow-x: auto`, `role="region"`, `tabindex="0"`, `aria-label`) – zabezpieczenie WCAG 1.4.10. Poniżej 480 px nagłówki kolumn się łamią, `padding-inline: 4px` (3 px < 360 px).
 - Wiersz wyceny indywidualnej `.row-ind`: linia `--bp-line-gold`, tekst wyśrodkowany navy. Wybrany wiersz w porównaniu (`.rate-table .is-sel`) – parchment `.85`; to stan wyboru użytkownika, nie wyróżnienie.
-- Strefa `table.data`: `thead` wersaliki `.12em` taupe z linią `--bp-line-gold`; `.stack` < 720 px – wiersze jako karty z `data-label`.
+- Strefa `table.data`: `thead` wersaliki `.12em` taupe z linią `--bp-line-gold`; `.stack` < 720 px – wiersze jako karty z `data-label`; w kartach znaczki `.badge` łamią się (`white-space: normal`), komórki `overflow-wrap: anywhere`, a poniżej 420 px etykieta stoi nad wartością (jedna kolumna) – `.table-wrap` bez przewijania w poziomie od 320 px (od 17.11.2026). Szeroka tabela od 720 px przewija się w `.table-wrap` z `tabindex="0" role="region" aria-label="… – tabela"` (WCAG 2.1.1); `strefa.js` zdejmuje `tabindex`, gdy tabela mieści się w karcie.
+- Strefa: pola daty (`input[type=date]`, `datetime-local`) – obrys fokusu także przy `:focus-within` (przycisk kalendarza w polu). Potwierdzenie `details.mini` – akapit skutku ma `id`, a przycisk wykonania `aria-describedby` na nim; zawsze z przyciskiem „Anuluj” (`data-zamknij`).
 
 ### 4.13 FAQ i `details`
 
 - `.faq` – jedna tafla `.glass`; `details` z `padding: 0 28px`, linie `--bp-line-gold-soft`; `summary` `min-height: 64px`, serif 600 1.4rem navy (< 480 px 1.25rem – tylko podstrony, np. `oc-beauty.html:454`; strona główna zostaje przy 1.4rem – rozbieżność #12); krzyżyk z dwóch linii 16×16 px obraca się o 45° (`var(--bp-dur-2) var(--ease-lux)`), w kolorach wymuszonych znak „+”.
-- Płynne rozwijanie przez `::details-content` + `interpolate-size: allow-keywords`, `block-size .45s var(--ease-lux)` – tylko przy `prefers-reduced-motion: no-preference`.
+- Płynne rozwijanie przez `::details-content` + `interpolate-size: allow-keywords`, `block-size .45s var(--ease-lux)` – tylko przy `prefers-reduced-motion: no-preference`. To świadomy wyjątek od zasady „tylko transform i opacity” dla krótkich odpowiedzi FAQ; długie listy (`.zdetails` z listami zabiegów, pełne tabele `.full`, `.full-list`) rozwijają się bez animacji (raport 16, 3.2).
+- Tafla `.faq.glass` poza sceną ze zdjęciem (podstrony) jest bez rozmycia – tło `--bp-glass-ivory-tint` (raport 15, Z15: szkło zawsze leży na zdjęciu). Odpowiedzi w HTML mają twarde spacje, FAQPage w JSON-LD – nie.
 - Siatka nagłówek/pytania `4fr / 7fr` od 1024 px, nagłówek przyklejony przy oknie ≥ 1024×700 px.
 
 ### 4.14 Nawigacja
 
 - **Nagłówek** `.site-header`: `fixed`, `top: 14px` (8 px < 768 px), `z-index: var(--bp-z-header)`. `.header-bar` – `glass--strong`, `min-height: 68px`, `padding: 10px 14px 10px 22px`, obrys `rgba(184,151,90,.55)`. Logo 24 px wysokości (proporcja 3000×450) z podpisem „created by Aura Expert”.
 - Tryb kompaktowy `[data-compact="1"]` po przewinięciu > 40 px: tło `rgba(247,243,236,.95)`, podpis logo znika, przycisk w nagłówku przechodzi w pełne navy. `[data-hidden="1"]`: `translateY(calc(-100% - 20px))`, `var(--bp-dur-3) var(--ease-lux)` – chowa się przy przewijaniu w dół od 320 px, ale nigdy przy ograniczonym ruchu, oknie ≤ 500 px wysokości, otwartym menu ani fokusie w środku.
-- **Menu „Ubezpieczenia” (≥ 1200 px)** – wzorzec disclosure (przycisk z `aria-expanded`, bez `role="menu"`): `.mega` kryjące ivory, obrys `rgba(184,151,90,.55)`, `--radius-card`, siatka 3×2 (ikona 32 px + nazwa serif 1.3rem + opis `--text-sm` taupe + cena); bieżąca pozycja parchment + `inset 2px 0 0 var(--color-gold)` + „Jesteś tutaj”; najechanie otwiera po 180 ms, zamyka po 320 ms (tylko jako dodatek do kliknięcia).
-- **Szuflada (< 1200 px)** – `details.menu`: `summary` 48×48 px z obrysem `rgba(42,59,104,.3)`; `.menu-panel` kryjące ivory, `max-height: calc(100dvh - 104px)`; na górze „Oblicz składkę OC” (`btn-navy`, pełna szerokość), potem 6 produktów (ikona 22 px, nazwa, cena; wiersz ≥ 52 px); bieżący produkt parchment + złoty pasek 2 px + `aria-current`.
+- **Menu „Ubezpieczenia” (≥ 75em – 1200 px przy czcionce 16 px; przy domyślnej 20–24 px próg rośnie z etykietami, `--bp-container: 77.5rem`)** – wzorzec disclosure (przycisk z `aria-expanded`, bez `role="menu"`): `.mega` kryjące ivory, obrys `rgba(184,151,90,.55)`, `--radius-card`, siatka 3×2 (ikona 32 px + nazwa serif 1.3rem + opis `--text-sm` taupe + cena); bieżąca pozycja parchment + `inset 2px 0 0 var(--color-gold)` + „Jesteś tutaj”; najechanie otwiera po 180 ms, zamyka po 320 ms (tylko jako dodatek do kliknięcia).
+- **Szuflada (< 75em)** – `details.menu`: `summary` 48×48 px z obrysem `rgba(42,59,104,.3)` (najechanie – obrys navy; otwarta – etykieta „Zamknij” i ikona X, skrypt `gen:wspolne-js`); poniżej 768 px otwarta szuflada zajmuje cały ekran (ivory, bez `backdrop-filter`, strona pod nią się nie przewija; raport 15, Z41); `.menu-panel` kryjące ivory, `max-height: calc(100dvh - 104px)`; na górze „Oblicz składkę OC” (`btn-navy`, pełna szerokość), potem 6 produktów (ikona 22 px, nazwa, cena; wiersz ≥ 52 px); bieżący produkt parchment + złoty pasek 2 px + `aria-current`.
 - **Okruszki** `.crumbs`: separator „›” taupe, linki navy ze złotym podkreśleniem, `min-height: 32px` (Strefa: „/” gold, 24 px).
 - **Strefa Klienta:** `.topbar` – ciemne szkło `rgba(20,28,51,.78)`, przyklejony, `--bp-topbar-h: 68px`; `.sidenav` – `glass--strong`, pozycje `min-height: 46px`, bieżąca – tło `.85` + złoty pasek 2 px; < 1024 px szuflada `min(320px,86vw)` na ivory (`z-index: 80`, zasłona `rgba(20,28,51,.5)`); `.tabs` – zakładki ARIA 46 px, zaznaczona linia 2 px navy; `.pager` 44×44 px.
 
@@ -429,35 +445,36 @@ Komunikaty błędów są konkretne, z przykładem: „Sprawdź adres e-mail, np.
 - `position: fixed`, `left/right: max(12px, env(safe-area-inset-*))`, `bottom: calc(10px + env(safe-area-inset-bottom))`, `z-index: var(--bp-z-sticky)`; jedna kryjąca płyta midnight (bez rozmycia), obrys `rgba(217,192,137,.5)`, `--radius-card`, cień `0 14px 30px -12px rgba(20,28,51,.75)`, `padding` i `gap` 6 px.
 - Dwa przyciski `min-height: 48px`: `.pa-glowny` (ivory, tekst navy, `flex: 1 1 8rem`) i `.pa-tel` (obrys gold `.6`, tekst ivory, ikona słuchawki 18 px gold light, numer `--text-xs` gold light z cyframi tabelarycznymi).
 - Wjazd `translateY(calc(100% + 24px + safe-area))` → `none` w `var(--bp-dur-3) var(--ease-lux)`; ukryty ma `visibility: hidden` + `inert`.
-- Chowa się, gdy widać pasek ceny, formularz kontaktu, kartę końcową, przyciski hero lub taryfy albo stopkę; przy fokusie w polu, otwartej klawiaturze i otwartej szufladzie. Miejsce rezerwuje `html.has-pasek{scroll-padding-bottom: calc(92px + env(safe-area-inset-bottom))}`, nie `padding` na `body`.
+- Chowa się, gdy widać pasek ceny, formularz kontaktu, kalkulator OC (`form#calc`), wyszukiwarkę zabiegów (`.zsearch`) lub specjalizacji (`#spec-form`), kartę końcową, przyciski hero lub taryfy albo stopkę (raport 15, Z22); przy fokusie w polu, otwartej klawiaturze i otwartej szufladzie. Miejsce rezerwuje `html.has-pasek{scroll-padding-bottom: calc(92px + env(safe-area-inset-bottom))}`, nie `padding` na `body`.
 
 ### 4.16 Pojęcie ze słownika i dymek (`gen_terminy.py`)
 
 - `a.bp-termin`: kolor tekstu bez zmian, kropkowane podkreślenie 1,5 px `currentColor`, offset .24em; najechanie – ciągłe, gold; `[aria-expanded="true"]` tło `rgba(217,192,137,.3)`; na ciemnym podkreślenie gold light, tło `.18`; fokus 2 px `currentColor`. Bez JS – zwykły link do `slownik.html#haslo-…`.
 - Oznaczać tylko w `<p>`/`<li>` w `<main>` – nigdy w hero, nagłówkach, przyciskach, formularzach, tabelach ani stopce prawnej.
 - `.bp-dymek`: niemodalny `role="dialog"`, `z-index: 85` (nad paskiem akcji), `width: min(380px, calc(100vw - 32px))`, `padding: 16px 20px 12px`, kryjące ivory, obrys `rgba(184,151,90,.75)`, promień 6 px, cień `0 0 0 1px rgba(42,59,104,.06), 0 2px 4px rgba(20,28,51,.1), 0 22px 44px -18px rgba(20,28,51,.6)`, tekst `--text-body`/1.6; tytuł serif 600 1.4rem navy z linią `rgba(184,151,90,.45)`; „Objaśnienie ogólne – wiążą OWU produktu i umowa.” `--text-sm` taupe; „Więcej w słowniku” `min-height: 44px`; zamknięcie 44×44 px. Bez `backdrop-filter`.
-- Otwiera i zamyka kliknięcie, Enter albo Spacja; Esc i „Zamknij” oddają fokus pojęciu; najechanie niczego nie otwiera ani nie zamyka (WCAG 1.4.13).
+- Pojęcie zostaje linkiem (bez `role="button"`; `aria-haspopup="dialog"`, `aria-expanded`, `aria-controls`) – jest na liście linków czytnika. Otwiera i zamyka kliknięcie albo Enter (Spacja – jak przy linku); Esc i „Zamknij” oddają fokus pojęciu; najechanie niczego nie otwiera ani nie zamyka (WCAG 1.4.13).
 - Okno < 600 px szerokości **lub** wysokości: panel u dołu (`position: fixed`, `bottom: calc(12px + safe-area)`, `max-width: 560px`, `max-height: min(70vh,560px)`, przewijanie wewnątrz).
 
 ### 4.17 Dialogi i szuflady
 
 | Klasa | Styl |
 |---|---|
-| `dialog.klauzula` | natywny `showModal`; `width: min(calc(100% - 32px),780px)`, `max-height: min(calc(100dvh - 32px),920px)`, kryjące ivory, obrys `--bp-line-gold`, `--radius-card`, cień `0 40px 80px -30px rgba(20,28,51,.65)`; `::backdrop` `rgba(20,28,51,.72)`; treść przewija się w `region` z `tabindex="0"`; wejście `.4s var(--ease-lux)`, 14 px (Strefa `.2s`, 10 px) |
+| `dialog.klauzula` | natywny `showModal`; `width: min(calc(100% - 32px - safe-area w poziomie),780px)`, `max-height: min(calc(100dvh - 32px),920px)`, kryjące ivory, obrys `--bp-line-gold`, `--radius-card`, cień `0 40px 80px -30px rgba(20,28,51,.65)`; `::backdrop` `rgba(20,28,51,.72)`; treść przewija się w `region` z `tabindex="0"`; wejście `.4s var(--ease-lux)`, 14 px (Strefa `.2s`, 10 px) |
 | `dialog.zab-sheet` (Strefa) | `width: min(680px, calc(100% - 32px))`, `height: min(780px, calc(100dvh - 48px))`; < 640 px pełny ekran; `::backdrop` `rgba(20,28,51,.55)` |
 | `.drawer` (Strefa) | panel `min(560px,100%)` z prawej, cień `-30px 0 60px -30px rgba(20,28,51,.6)`, zasłona `rgba(20,28,51,.5)`, `z-index: 80`, wejście `.2s` (24 px) |
 
 ### 4.18 Stopka i informacje o agencie
 
-- `.site-footer` na scenie jedwabiu: `padding-block: clamp(56px,8vw,96px) 40px` (`makieta-v3.html:857`); `.footer-panel` w `glass--dark`, `padding: clamp(28px,4vw,48px)`.
+- `.site-footer` na scenie jedwabiu: `padding-block: clamp(56px,8vw,96px) 40px` (`makieta-v3.html:871`); `.footer-panel` w `glass--dark`, `padding: clamp(28px,4vw,48px)`.
 - `.logo-chip` – logo 22 px na jasnym polu `rgba(247,243,236,.96)` z ramą `rgba(184,151,90,.55)` (do czasu logo na ciemne tło).
 - `.footer-nav` – 2 kolumny, 4 od 1024 px, 1 < 480 px; `.footer-title` wersaliki `.22em` gold light.
-- `.legal` – `--text-xs`/1.7 parchment, linia `rgba(217,192,137,.3)`, linki gold light. **Obowiązkowa treść:** pełna formuła spółki z numerem KRS i sądem rejestrowym („Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego”), NIP, REGON, kapitał; status **agenta ubezpieczeniowego** (nie brokera); numer wpisu w Rejestrze Pośredników Ubezpieczeniowych z odnośnikiem do `rpu.knf.gov.pl`; `details.legal-idd` „Informacje o agencie ubezpieczeniowym (IDD)” (zakłady, wynagrodzenie, powiązania, reklamacje, Rzecznik Finansowy); zdanie o braku oferty w rozumieniu art. 66 KC. Treść wzorcowa: `makieta-v3.html:1919–1937`; skrót w stopce, pełna formuła na `/informacje-prawne`.
+- `.legal` – `--text-xs`/1.7 parchment, linia `rgba(217,192,137,.3)`, linki gold light. **Obowiązkowa treść:** pełna formuła spółki z numerem KRS i sądem rejestrowym („Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego”), NIP, REGON, kapitał; status **agenta ubezpieczeniowego** (nie brokera); numer wpisu w Rejestrze Pośredników Ubezpieczeniowych z odnośnikiem do `rpu.knf.gov.pl`; `details.legal-idd` „Informacje o agencie ubezpieczeniowym (IDD)” (zakłady, wynagrodzenie, powiązania, reklamacje, Rzecznik Finansowy); zdanie o braku oferty w rozumieniu art. 66 KC. Treść wzorcowa: `makieta-v3.html:2137–2156`; skrót w stopce, pełna formuła na `/informacje-prawne`.
 - Stopkę Strefy (`.app-footer`, tło `rgba(247,243,236,.86)`) zamyka ten sam blok `.legal-idd`.
+- Dane rejestrowe i adres z twardymi spacjami („NIP&nbsp;…”, „REGON&nbsp;…”, „pod numerem&nbsp;…”, „lokal&nbsp;28”, „01-466&nbsp;Warszawa”), nazwy marek z `translate="no"`. Logo w nagłówku i stopce: `img/logo-beautypolisa-320.png` (320×48, raport 15, Z25; docelowo SVG).
 
 ### 4.19 Ikony
 
-- Sprite `ikony-v3-sprite.svg`: 23 symbole `<symbol id="lux-…" viewBox="0 0 96 96">` – produkty (`oc-beauty`, `tax-protect`, `utrata-dochodu`, `nnw-dzieci`, `grupowe-ergo`, `opieka-medyczna`), zawody (`kosmetolog`, `fryzjer`, `podolog`, `linergistka`, `stylistka-paznokci`, `tatuazysta`), rodzaje działalności (`gabinet-kosmetyczny`, `salon-masazu`), interfejs (`kalkulator`, `dokumenty`, `doradca`, `szkoda`, `szybka-wycena`, `bezpieczenstwo`, `wskaznik`, `w-zakresie`, `serce`).
+- Sprite `ikony-v3-sprite.svg`: 25 symboli `<symbol id="lux-…" viewBox="0 0 96 96">` – produkty (`oc-beauty`, `tax-protect`, `utrata-dochodu`, `nnw-dzieci`, `grupowe-ergo`, `opieka-medyczna`), zawody (`kosmetolog`, `fryzjer`, `podolog`, `linergistka`, `stylistka-paznokci`, `tatuazysta`, od 16.11.2026 `trycholog`, `masazysta` – 00 D46 e), rodzaje działalności (`gabinet-kosmetyczny`, `salon-masazu`), interfejs (`kalkulator`, `dokumenty`, `doradca`, `szkoda`, `szybka-wycena`, `bezpieczenstwo`, `wskaznik`, `w-zakresie`, `serce`).
 - `.lux-icon{width:44px;height:44px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;color:var(--color-navy)}`; na ciemnym gold light; w przycisku `currentColor`. Ikona zawsze `aria-hidden="true"`.
 
 | Rozmiar | Kreska | Klasa / miejsce |
@@ -479,7 +496,11 @@ Komunikaty błędów są konkretne, z przykładem: „Sprawdź adres e-mail, np.
 ### Kontener i rytm
 
 - `.container{width:100%;max-width:var(--bp-container);margin-inline:auto;padding-inline:var(--bp-gutter)}` – 1240 px, margines `clamp(16px,4vw,40px)`. Strefa: 1280 px, `clamp(16px,3vw,32px)`, `.app` = menu boczne `--bp-side-w` (252 px) + treść, `gap: 24px`.
+- **Rytm sekcji (od 17.11.2026, raport 15 Z8, Z9, Z10; blok `gen:wspolne-css` i `gen:wspolne-js`):** od 64em szerokości i 37.5em wysokości okna każda sekcja główna poza hero i sekcjami-dokumentami z K6 (listy zabiegów, klauzula, hasła słownika) ma 1 albo 2 ekrany – skrypt mierzy treść przy `padding-block: clamp(48px,7svh,96px)` (albo 24 px, gdy dopiero wtedy mieści się w ekranie) i ustawia `data-ekrany="1"` / `"2"` (`min-height` 100 / 200svh, treść pośrodku; tolerancja ≈ 1 ekran do 1,1, ≈ 2 ekrany do 2,02). Sekcja dłuższa niż 2 ekrany jest dzielona na osobne `section` z własnym H2 (ERGO: warianty, pakiety, MediOpieka, dodatki ERGO Razem; podstrony: pytania i sekcja zamykająca `#zamkniecie` osobno; strona główna: kalkulator od 1200 px ciaśniej). Bez JS, na telefonie i w niskim oknie – naturalna wysokość.
 - Sekcje: `.section{padding-block:clamp(72px,11vw,168px)}`; `.section--flush-top` łączy sekcje na tej samej scenie bez szwu; hero podstron `clamp(124px,13vw,172px) 0 clamp(56px,8vw,104px)`; stopka `padding-block: clamp(56px,8vw,96px) 40px`.
+- **Pierwszy ekran podstron (`.page-hero`, od 17.11.2026, raport 15 Z1, Z2, Z3, Z7, Z29; blok `gen:wspolne-css`):** od 48em hero ma `min-height:100svh`, siatkę i panel pośrodku – dół panelu co najmniej 24 px nad dolną krawędzią okna (1440×900, 1024×768, 820×1180); `padding-top: clamp(92px,7vw,104px)`, dół 24 px. Od 64em panel zajmuje cały kontener i ma dwie kolumny: `.hero-copy` (okruszki, eyebrow, H1, lead, akcje, `.hero-note`) i `.hero-aside` (liczby `dl.figures` w pionie, złota linia z lewej) – bez pustego pasa po prawej. Lead to jedno zdanie z twardym faktem (kwota ze stałej taryfy), dalsze zdania w `.hero-note` pod przyciskami. Poniżej 48em: panel `padding: 22px 20px 24px`, odstępy 16 px, okruszki zwinięte do „‹ rodzic” – główny przycisk mieści się w 1. ekranie od 320×640. Strona główna < 480 px: pas zdjęcia 80vw, panel zachodzi na nie o 72 px.
+- **Sekcja zamykająca podstron (Z8):** pytania (H2), „Inne ubezpieczenia” (`#powiazane`, H3) i karta końcowa (`#dalej`, H3) to bloki jednej sekcji (`.zamkniecie-blok`); kotwice bez zmian. Na stronie głównej pasek „Coś się wydarzyło w salonie?” (H2, `#szkoda`) i pytania (H3) są jedną sekcją `#faq`, a „Na otwarcie portalu” – osobną sekcją `#na-otwarcie` (H2).
+- **Tafle jednostronne (Z12):** `.zrules`, `.mind`, `.scope-aside`, `.variants-box`, `.plan-panel` sięgają od lewej do prawej linii kontenera; miara tekstu w środku `62rem`.
 - `.section-head`: `display: grid; gap: 18px; max-width: 44rem; margin-bottom: clamp(40px,6vw,88px)` (podstrony `clamp(36px,5vw,72px)` / `46rem`); wyśrodkowany tylko przy kalkulatorze (`--center`).
 - Padding tafli zawsze płynny: hero i panel kontaktu `clamp(28px,4vw,56px)`, kalkulator `clamp(22px,3.5vw,48px)`, wynik i baner `clamp(26px,3vw,40px)`, stopka `clamp(28px,4vw,48px)`. Komórki tafli: produkt `36px 34px 30px`, zawód `32px 22px 28px`, krok `40px 34px 34px`.
 - Najczęstsze odstępy (gap/padding/margin w px): 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 40, 44 – to nie jest zamknięta skala. CSS ma też pojedyncze literały spoza listy: 1, 3, 5, 7, 9, 13, 42, 46, 48, 50, 52, 56, 58 px (np. `.menu summary` `padding: 0 13px`, `.zab-input` `padding-left: 46px`, `.zab-chip` `padding: 3px 3px 3px 14px`) i odsunięcia hero (112, 140 px). Rytm sekcji to literały `clamp()` – bez osobnych tokenów.
@@ -489,7 +510,7 @@ Komunikaty błędów są konkretne, z przykładem: „Sprawdź adres e-mail, np.
 | Siatka | Kolumny |
 |---|---|
 | Księga produktów `.ledger` | 3 → 2 (< 1024) → 1 (< 640); `.ledger--kafle` `gap: clamp(16px,2vw,24px)` |
-| Zawody `.pros` | 3 → 2 (< 1024) → 1 (< 480; wiersz z ikoną 48 px) |
+| Zawody `.pros` | osiem kart (od 16.11.2026; 00 D46 e): 4 → 2 (< 1024) → 1 (< 480; wiersz z ikoną 48 px) – zawsze pełne wiersze; podpis „Rodzaj: …” `text-wrap: balance` |
 | Kroki `.steps` | strona główna 3 → 1 (< 1024); podstrony 1 → 2 (≥ 768) → 4 (≥ 1200) |
 | Kalkulator `.calc` | `1.55fr / 1fr`, `gap: clamp(22px,3vw,40px)` → 1 (< 1024) |
 | FAQ, klauzula | `4fr / 7fr` od 1024 |
@@ -532,7 +553,7 @@ Dialogi `<dialog>` leżą w top layer, poza skalą.
 
 1. Kolor podkładu sceny (`--color-parchment` / `--color-midnight`).
 2. Zdjęcie (ładowane leniwie przez klasę `.bg-on`; hero jako `<img>`) i ziarno `--grain` (desktop ≥ 1024 px).
-3. Woalki (`.hero::after`, na podstronach `rgba(20,28,51,.74)` pod nagłówkiem sekcji na jedwabiu).
+3. Woalki (na podstronach `rgba(20,28,51,.74)` pod nagłówkiem sekcji na jedwabiu).
 4. Duża cyfra rozdziału.
 5. Tafla szkła (`backdrop-filter`).
 6. Wewnętrzna złota rama `::before`.
@@ -572,7 +593,7 @@ Tylko cztery wartości: `blur(var(--blur-glass)) saturate(140%)` (24 px), `blur(
 | `--radius-btn` 3 px | przyciski, pola, kafelki wyboru, pasek ceny |
 | `calc(var(--radius-card) - 3px)` = 3 px | ramy wewnętrzne |
 | 2 px | znaczniki, `.badge`, znacznik `.opt--check` |
-| 10 px | karta członkowska; kafle produktów `.ledger--kafle .product` (strona główna, od 16.11.2026); puls obwódki kroku kalkulatora (`.krok::after`); licznik `.sidenav .count` (Strefa, `strefa/strefa.css:210`) |
+| 10 px | kafle produktów `.ledger--kafle .product` (strona główna, od 16.11.2026 – świadomy wyjątek na uwagę zleceniodawcy „rogi zaoblone”; karta członkowska ma od 17.11.2026 `--radius-card` 6 px); puls obwódki kroku kalkulatora (`.krok::after`); licznik `.sidenav .count` (Strefa, `strefa/strefa.css:210`) |
 | 12 px / 14 px | `.switch` / `input.toggle` (Strefa) |
 | 999 px | pigułki (chipy, plakietki) |
 | 50% | koła (`.zab-chip-x`, kółka radia) |
@@ -591,14 +612,15 @@ Rama wewnętrzna: 1 px `--bp-line-gold` / `--bp-line-gold-on-dark`, odsunięta o
 | `.5s` / `.6s` | złota linia przycisku / zakładka kalkulatora, karta członkowska |
 | `.4s` | wejście dialogu |
 | `.45s` | rozwijanie `details` |
-| 3.6s `cubic-bezier(.22,.61,.2,1)` | `hero-zoom` (scale 1.14 → 1) |
+| 1.1s `cubic-bezier(.22,.61,.2,1)` | `hero-zoom` (scale 1.14 → 1; do 16.11.2026 – 3,6 s, raport 15 Z20) |
 | 420 ms / 600 ms | „tyknięcie” ceny / linia wyniku (Web Animations) |
 | 1.2s `--ease-lux` | jednorazowy puls obwódki bieżącego kroku kalkulatora OC (`krok-puls`, opacity + transform) |
 | 180 ms / 320 ms | otwarcie / zamknięcie menu po najechaniu |
 | Strefa: `--bp-dur` .2s | wszystko (≤ 200 ms) |
 
 - Animuje się wyłącznie `transform` (`translate`, `scale`) i `opacity`. Tekst nigdy nie zostaje półprzezroczysty (krycie pełne po 11vh przewinięcia).
-- Ruch sterowany przewijaniem (`animation-timeline: scroll()/view()`) zamknięty w `@supports` i `@media (prefers-reduced-motion: no-preference)`; rezerwa – `IntersectionObserver` (`html.io-reveal`) i rAF (`html.sl-js`). Bez WebGL, bez bibliotek, bez przejmowania przewijania.
+- Ruch sterowany przewijaniem (`animation-timeline: scroll()/view()`) zamknięty w `@supports` i `@media (prefers-reduced-motion: no-preference)`; rezerwa – `IntersectionObserver` (`html.io-reveal`; najpierw odczyt położeń wszystkich bloków, potem zapis klas) i rAF (`html.sl-js`, tylko linie „Jednego dnia” i kroków na stronie głównej).
+- Od 17.11.2026 (raport 15, Z19) bez paralaksy zdjęcia hero i bez dryfu cyfr rozdziałów. Linia postępu czytania w belce (`.header-bar::after`, `scroll(root)`) zostaje jako jedyny wyjątek nawigacyjny. Rama panelu hero wchodzi przez `opacity` i `scale` (`bp-frame-in`), nie `clip-path`. Bez WebGL, bez bibliotek, bez przejmowania przewijania.
 - `prefers-reduced-motion: reduce`: `transition: none !important; animation: none !important; scroll-behavior: auto`; nagłówek się nie chowa, cena nie „tyka”. W druku stany końcowe.
 
 ---
@@ -638,7 +660,7 @@ Rama wewnętrzna: 1 px `--bp-line-gold` / `--bp-line-gold-on-dark`, odsunięta o
   - Nie dawaj czwartej tafli z rozmyciem do widoku – zamiast tego `glass--tint` albo kryjąca karta.
 - **Typografia i kształt**
   - Nie schodź poniżej 12 px; nie używaj wag 300 i 700 ani prostego Cormorant 500.
-  - Nie zaokrąglaj mocniej niż 6 px (wyjątki z CSS: pigułki 999 px, karta członkowska, kafle produktów na stronie głównej i licznik `.sidenav .count` w Strefie 10 px, przełączniki `.switch` 12 px i `input.toggle` 14 px, koła 50%).
+  - Nie zaokrąglaj mocniej niż 6 px (wyjątki z CSS: pigułki 999 px, kafle produktów na stronie głównej i licznik `.sidenav .count` w Strefie 10 px, przełączniki `.switch` 12 px i `input.toggle` 14 px, koła 50%).
   - Nie używaj prostych cudzysłowów, dywizu w zakresach ani łamania „zł” od kwoty.
 - **Interakcja**
   - Nie uzależniaj działania od najechania (menu i dymek otwiera kliknięcie; efekty hover tylko przy `(hover:hover) and (pointer:fine)`).
@@ -653,7 +675,7 @@ Rama wewnętrzna: 1 px `--bp-line-gold` / `--bp-line-gold-on-dark`, odsunięta o
 
 ### Progi (wartości z `@media`)
 
-Komentarz w tokenach mówi o 480 / 768 / 1024 / 1200 px; w CSS progi są zapisane jako `max-width: 479/767/1023/1199px` i `min-width: 1024/1200px`, plus progi pomocnicze. Tabela obejmuje wszystkie progi z `@media` w makietach (stan 16.11.2026).
+Komentarz w tokenach mówi o 480 / 768 / 1024 / 1200 px; w CSS progi są zapisane jako `max-width: 479/767/1023px` i `min-width: 1024/1200px`, plus progi pomocnicze; przełączenie belka/szuflada od 17.11.2026 w em: `max-width: 74.99em` / `min-width: 75em` (raport 16, 3.1). Tabela obejmuje wszystkie progi z `@media` w makietach (stan 16.11.2026).
 
 | Próg | Co się zmienia |
 |---|---|
@@ -673,12 +695,14 @@ Komentarz w tokenach mówi o 480 / 768 / 1024 / 1200 px; w CSS progi są zapisan
 | **`max-width: 1023px` / `min-width: 1024px`** | kalkulator w 1 kolumnie + `.calc-peek` / kalkulator 2 kolumny, wynik przyklejony, ziarno, siatki 4/7, przyklejone nagłówki (gdy wysokość ≥ 700 px), Strefa: menu boczne zamiast szuflady |
 | `max-width: 1099px` (Strefa, `dam-prace.html`) | nagłówek publiczny bez nawigacji, linku do Strefy i przycisku (`.pub-nav`, `.pub-client`, `.pub-cta`) |
 | `max-width: 1180px` (Strefa, `szkolenia.html`) | filtry `.filters` w 2 kolumnach |
-| **`max-width: 1199px` / `min-width: 1200px`** | szuflada `details.menu` / pełna nawigacja z menu „Ubezpieczenia”; podstrony: kroki w 4 kolumnach |
+| **`max-width: 74.99em` / `min-width: 75em`** (1200 px przy czcionce 16 px) | szuflada `details.menu` / pełna nawigacja z menu „Ubezpieczenia” |
+| `min-width: 1200px` | podstrony: kroki w 4 kolumnach |
 | `max-height: 500px` | nagłówek `position: absolute` (nie przykleja się), brak paska akcji |
 | `max-width: 599px`, `max-height: 599px` | dymek jako panel u dołu |
 | `min-height: 700px` (z `min-width: 1024px`) | przyklejone nagłówki sekcji i panele (FAQ, „Jeden dzień”, słownik); klauzula od `min-height: 880px` |
 | `(hover:hover) and (pointer:fine)` | efekty najechania (złota linia przycisku, kafelki) |
-| `(pointer: coarse)` | linki stopki 44 px, chipy 44 px |
+| `(pointer: coarse)` | linki stopki, okruszki, `summary` „Informacje o agencie…”, odsyłacze „także na liście nr …” i chipy – 44 px (raport 15, Z5); słownik: linki haseł i indeks A–Z 44 px (także < 1024 px, Z4) |
+| `(pointer: fine)` | `html{overscroll-behavior-y:none}` – bez „odbijania” strony na gładziku |
 
 ### Cele dotyku
 
@@ -689,18 +713,19 @@ Komentarz w tokenach mówi o 480 / 768 / 1024 / 1200 px; w CSS progi są zapisan
 | `.opt label` | 56 px; `.zab-opt`, pola 48 px; `.zab-input` 52 px; wiersz szuflady 52 px; `summary` FAQ 64 px; zakładki kalkulatora 64 px |
 | `.footer-nav a` | 34 px (44 px przy `pointer: coarse`) |
 | `.zab-chip-x` | 34×34 px |
-| okruszki | 32 px (Strefa 24 px) |
-| `.legal-idd > summary` | 24 px (minimum WCAG 2.5.8) |
+| okruszki | 32 px, 44 px przy `pointer: coarse` (Strefa 24 px) |
+| `.legal-idd > summary` | 24 px (minimum WCAG 2.5.8), 44 px przy `pointer: coarse` |
+| słownik: `.haslo-linki a`, indeks A–Z | 44 px, odstęp 8 px (< 1024 px i `pointer: coarse`); szerszy ekran z myszą – 32 / 40 px |
 
 ### Zachowanie komponentów
 
-- **Menu:** ≥ 1200 px – nawigacja w belce i panel `.mega` (disclosure); < 1200 px – szuflada `details.menu` z przyciskiem „Oblicz składkę OC” i listą produktów z cenami. Zamknięcie panelu po przewinięciu o > 120 px.
+- **Menu:** ≥ 75em – nawigacja w belce i panel `.mega` (disclosure); < 75em – szuflada (< 768 px na cały ekran) `details.menu` z przyciskiem „Oblicz składkę OC” i listą produktów z cenami. Zamknięcie panelu po przewinięciu o > 120 px.
 - **Nagłówek:** kompaktowy po 40 px przewinięcia; chowa się przy przewijaniu w dół od 320 px (nigdy przy ograniczonym ruchu, oknie ≤ 500 px, otwartym menu ani fokusie w środku).
 - **Pasek akcji:** tylko < 768 px i przy oknie > 500 px wysokości; znika przy elementach, które dublują jego akcję, przy stopce, polu z fokusem i klawiaturze (`visualViewport` < 72%).
 - **Pasek ceny `.calc-peek`:** tylko < 1024 px, jedna linia (wskazówka przewodnika – dwie krótkie linie), wysokość ≤ 72 px mniejsza niż `scroll-padding-bottom` 84 px – nie zasłania pól przy przechodzeniu klawiszem Tab.
 - **Tabele:** przewijanie wewnątrz `.table-scroll`; porównanie `.cmp-table` od 1024 px, poniżej karty `.cmp-attr`; Strefa `.stack` < 720 px.
 - **Dialogi:** `width: min(calc(100% - 32px), …)`; `.zab-sheet` pełny ekran < 640 px; dymek jako panel < 600 px szerokości lub wysokości.
-- **Zawsze:** brak poziomego przewijania od 320 do 1440 px (także przy odstępach tekstu z WCAG 1.4.12 i powiększeniu 200%); `env(safe-area-inset-*)` w paskach i dymku (`viewport-fit=cover`).
+- **Zawsze:** brak poziomego przewijania od 320 do 1440 px (także przy odstępach tekstu z WCAG 1.4.12 i powiększeniu 200%: `.hero-panel` w `minmax(0,1fr)`, kwoty `.figures dd` łamią się poniżej 540 px, `overflow-wrap: break-word` w h1–h3 i leadzie, logo `.brand` kurczy się); `env(safe-area-inset-*)` (`viewport-fit=cover`) w `.container`, belce, szufladzie, stopce, dialogu klauzuli, pasku akcji i dymku, w Strefie w `.topbar`, `.app`, `.app-footer`, `.auth-top`, `.pub-header` i szufladach.
 
 ---
 
@@ -721,7 +746,7 @@ Błąd .............. --bp-error         #7A2E2E
 Szkło ............. .glass (ivory .7, blur 24) · .glass--strong (.9) · .glass--dark (midnight .56, blur 22) · .glass--tint (bez blur)
 ```
 
-**Szybka ściąga typografii:** nagłówki `--font-serif` 600 navy (H1 `--text-h1`, H2 `--text-h2`, H3 `--text-h3`), akcent `<em>` kursywa 500; tekst `--font-sans` 400 `--text-base`/1.7 ink; eyebrow i przyciski `--font-caps` 500 `--text-xs` wersaliki `--tracking-label`; minimum 12 px. Promienie: karty 6 px, przyciski i pola 3 px.
+**Szybka ściąga typografii:** nagłówki `--font-serif` 600 navy (H1 `--text-h1`, na podstronach `--text-h1-podstrona`; H2 `--text-h2`; H3 `--text-h3`, nazwa kafelka produktu `--text-h3-kafel`), akcent `<em>` kursywa 500; tekst `--font-sans` 400 `--text-base`/1.7 ink; eyebrow i przyciski `--font-caps` 500 `--text-xs` wersaliki `--tracking-label`; minimum 12 px. Promienie: karty 6 px, przyciski i pola 3 px.
 
 ### Lista kontrolna przed oddaniem ekranu
 
@@ -766,14 +791,14 @@ Różnice zastane w źródłach. DESIGN.md je opisuje i wskazuje, co przyjąć w
 |---|---|---|---|
 | 1 | Nazwy tokenów: dok. 10 (rozdz. 3, D13) używa `--midnight`, `--navy`…, CSS – `--color-midnight`, `--color-navy`… (nazwy `@theme` Tailwind 4) | dok. 10:30–42; `tokens-v3.css:4`; `makieta-v3.html:254–256` | nazwy z CSS |
 | 2 | `.glass--strong`: dok. 10 – „ivory 82%”; strony publiczne `rgba(247,243,236,.9)`; Strefa `.88` | dok. 10:65; `makieta-v3.html:269`; `strefa/strefa.css:43` | `.9` (publiczne), `.88` (Strefa) – według kontekstu |
-| 3 | Rozmiary nagłówków: dok. 10 – H1 44–80 px, H2 34–54 px, H3 26 px; CSS – H1 44–84 px, H2 36–68 px, H3 26,4 px | dok. 10:48; `makieta-v3.html:261–262` | wartości z CSS (tabela w sekcji 3) |
+| 3 | Rozmiary nagłówków: dok. 10 – H1 44–80 px, H2 34–54 px, H3 26 px; CSS do 16.11.2026 – H1 44–84 px, H2 36–68 px, H3 26,4 px. **Rozstrzygnięte 17.11.2026 (raport 15, Z37):** tokeny według §4 (H1 do 80 px, H2 34–54 px, H3 26,4 px), H1 na telefonie od 36 px (Z2); lokalne rozmiary H2–H4 w CSS stron zastępuje reguła w `gen:wspolne-css` | dok. 10:48; `tokens-v3.css`; `gen_wspolne.py` | tabela w sekcji 3 |
 | 4 | Wagi: dok. 10 rozdz. 4 wymienia Poppins 300/400/500 i Cormorant 500/600; ładowane są tylko Cormorant 600 i 500 kursywa oraz Poppins 400/500 (także w Strefie). Niezaładowane wagi: `.mega-name` – prosty Cormorant 500; Strefa: `.monogram` – `font: italic 600 1.05rem` (Cormorant kursywa 600, syntetyzowana), `.badge--error::before` i `.field-error::before` – Poppins 600 | dok. 10:48–49, 183; `gen_wspolne.py:162`; `makieta-v3.html:1167`; `strefa/strefa.css:186`, `328`, `376` | tylko ładowane wagi; `.mega-name` do poprawy w generatorze, trzy selektory Strefy w `strefa.css` |
 | 5 | Fonty zastępcze: Strefa nie ma `Cormorant Fallback 2` ani `Poppins Fallback 2` | `strefa/strefa.css:20–23`, `31–33` | pełne stosy z sekcji 3 |
 | 6 | Progi: komentarz „480 / 768 / 1024 / 1200” nie oddaje wszystkich progów w `@media` | `tokens-v3.css:53`; `makieta-v3.html:280` | tabela progów z sekcji 8 |
 | 7 | `tokens-v3.css` nie zawiera przycisków, choć dok. 10 rozdz. 11 tak podaje; blok `@theme` nie ma tokenów `--bp-*`; mobilne rozmycie obejmuje tam tylko `.glass`, a w makietach także `.glass--dark` | dok. 10:139; `tokens-v3.css:62`; `makieta-v3.html:911–912` | CSS makiet |
 | 8 | Strefa ma własną skalę: `--bp-line-navy` `.18` vs `.22`, `--bp-glass-midnight` `.78` vs `.56`, `.btn` 48/12/24 vs 50/14/28 px, `.eyebrow::before` 32 vs 36 px, `.link-lux` 24→40 vs 28→44 px, inne `.lead`, `.logo-chip`, `.crumbs`, `.skip` (−80 vs −60 px), czas .2s i dialog .2s/10 px vs .4s/14 px – celowe „dostrojenie do aplikacji” | `strefa/strefa.css:3–5`, `44`, `48`, `116–140` | skala Strefy w aplikacji, publiczna na stronach publicznych |
 | 9 | Kolizje nazw klas: `.ledger` (siatka produktów vs karta rachunku na utracie dochodu), `.steps` (3 znaczenia), `.kv`, `.chip` (dwie wersje w Strefie), `.zab-chip`, `.zab-list` | `.ledger`: `makieta-v3.html:474`, `utrata-dochodu.html:250`; `.steps`: `makieta-v3.html:747`, `utrata-dochodu.html:334`, `strefa/strefa.css:395`; `.kv`: `grupowe-ergo.html:527`, `strefa/strefa.css:273`; `.chip`: `strefa/dam-prace.html:101`, `strefa/szkolenia.html:40`; `.zab-chip`: `makieta-v3.html:669`, `strefa/dam-prace.html:251`; `.zab-list`: `makieta-v3.html:653`, `strefa/dam-prace.html:244` | w kodzie produkcyjnym nazwy z przedrostkiem komponentu |
-| 10 | Czas wejścia hero: dok. 10 – najwyżej 1,15 s; `.figures` kończy się po 1,25 s, `.partners` po 1,65 s | dok. 10:175; `makieta-v3.html:1017–1018` | ≤ 1,15 s, tylko ozdoby |
+| 10 | Czas wejścia hero: dok. 10 – najwyżej 1,15 s; do 16.11.2026 `.figures` kończyło się po 1,25 s, `.partners` po 1,65 s, `hero-zoom` trwał 3,6 s. **Rozstrzygnięte 17.11.2026 (raport 15, Z20):** `hero-zoom` 1,1 s, bez `note-in` na liczbach i partnerach | dok. 10:175; `makieta-v3.html` | ≤ 1,15 s, tylko ozdoby |
 | 11 | Literały zamiast tokenów: `#fff`, `#F3F5F9`, `#FBF6EA`, pochodne `rgba`, `z-index` 2/5/85, rytm sekcji bez tokenów | `strefa/strefa.css:340–341`; `makieta-v3.html:652`, `1174` | wartości jak w CSS; przy przenoszeniu do Tailwind – nowe tokeny o tych samych wartościach |
 | 12 | Drobne różnice podstron: `.dark .chapter-no` `.13` vs `.14`; `overflow: clip` vs tylko `hidden`; padding taryf `10px 8px` vs `12px 8px`; `.hero-panel` 640 vs 780 px (`grupowe-ergo` 860 px); `.section-head` `44rem` vs `46rem`; tło pola `.75` vs `.85` (opieka) vs `#fff` (Strefa); FAQ `summary` < 480 px – 1.25rem na podstronach, 1.4rem na stronie głównej (brak reguły) | `makieta-v3.html:417`, `441`, `687`, `797`, `890–910`; `oc-beauty.html:201`, `225`, `341`, `454`; `opieka-medyczna.html:639`; `grupowe-ergo.html:456` | wartości strony głównej, chyba że ekran jest podstroną tego samego typu |
 | 13 | Fiolet: nie występuje w żadnym pliku CSS | wszystkie arkusze v3 | zgodne z zasadą „brak fioletu” |

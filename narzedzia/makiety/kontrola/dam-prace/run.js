@@ -216,10 +216,10 @@ async function urlGet(b) {
 // Karta ogłoszenia z wycofanym id: nazwa z dopiskiem (00, Q1), klasa zab-tag-wycofany.
 async function urlWycofane(b) {
   log('\n=== GET ze starym (wycofanym) identyfikatorem: ?zabieg=g3-18 i ?zabieg=g3-18&zabieg=g1-17 (JS on, 1440 i 390)');
-  const nazwa = (id) => WYC.find((x) => x.id === id).nazwa + DOPISEK;
+  const nazwa = (id) => WYC.find((x) => x.id === id).nazwa + DOPISEK;  // w stan() i kartach twarda spacja (typografia.py, od 17.11.2026) = spacja
   const stan = () => ({
     vis: [...document.querySelectorAll('#lista-ofert > .offer')].map((o) => o.getClientRects().length > 0 && !document.getElementById('lista-ofert').hidden),
-    chips: [...document.querySelectorAll('#zab-oferty .zab-chip')].map((c) => c.textContent.trim()),
+    chips: [...document.querySelectorAll('#zab-oferty .zab-chip')].map((c) => c.textContent.replace(/\u00a0/g, ' ').trim()),
     ukryte: [...document.querySelectorAll('#zab-oferty input[type=hidden][name=zabieg]')].map((i) => i.value),
     btn: document.querySelector('#zab-oferty .zab-open').textContent.trim(),
   });
@@ -259,7 +259,7 @@ async function urlWycofane(b) {
     const p = await ctx.newPage();
     await p.goto(BASE + '#oferty', { waitUntil: 'load' });
     const k = await p.evaluate(() => [...document.querySelectorAll('#lista-ofert .zab-tags')].map((t) => ({
-      ids: t.getAttribute('data-ids').split(' '), wyc: [...t.querySelectorAll('li.zab-tag-wycofany')].map((l) => l.textContent),
+      ids: t.getAttribute('data-ids').split(' '), wyc: [...t.querySelectorAll('li.zab-tag-wycofany')].map((l) => l.textContent.replace(/\u00a0/g, ' ')),
       kolor: (t.querySelector('li.zab-tag-wycofany') ? getComputedStyle(t.querySelector('li.zab-tag-wycofany')).color : null),
       zwykly: getComputedStyle(t.querySelector('li')).color })).filter((x) => x.ids.some((id) => /^g3-/.test(id))));
     log('karty z wycofanymi id (' + (js ? 'z JS' : 'bez JS') + '):', JSON.stringify(k));

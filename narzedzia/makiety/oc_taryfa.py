@@ -24,6 +24,9 @@ import re
 import sys
 from decimal import Decimal, ROUND_HALF_UP
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import typografia as ty  # noqa: E402
+
 REPO = pathlib.Path(__file__).resolve().parents[2]
 SN = REPO / 'docs/koncepcja/snippets'
 TARYFA = SN / 'taryfa-oc-beauty.json'
@@ -124,9 +127,9 @@ def reguly_kategorii():
 
 def nota_taryfy():
     """Nota pod tabelą taryfy (tekst z encjami HTML)."""
-    return ('6–8&nbsp;osób wykonujących zabiegi – składka z&nbsp;taryfy wyższa o&nbsp;%s (klauzula ochrony prawnej +%d&nbsp;zł bez tej dopłaty). '
-            'Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.'
-            % (doplata_proc(), T['ochrona_prawna']['skladka']))
+    return ty.html('6–8&nbsp;osób wykonujących zabiegi – składka z&nbsp;taryfy wyższa o&nbsp;%s (klauzula ochrony prawnej +%d&nbsp;zł bez tej dopłaty). '
+                   'Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.'
+                   % (doplata_proc(), T['ochrona_prawna']['skladka']))
 
 
 def teksty_crm(klucz):
@@ -157,13 +160,13 @@ def tabela_taryfy(aria_label):
     nb = lambda s: e(s).replace(NB, '&nbsp;')
     out = ['<div class="table-scroll" role="region" tabindex="0" aria-label="%s">' % e(aria_label),
            '<table>',
-           '  <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią – do 5&nbsp;osób wykonujących zabiegi</caption>',
+           '  <caption>%s</caption>' % ty.html('Składka roczna według taryfy programu OC z ERGO Hestią – do 5 osób wykonujących zabiegi'),
            '  <thead><tr><th scope="col">Taryfa (zakres na certyfikacie)</th>'
            + ''.join('<th scope="col">%s</th>' % nb(suma_tys(s)) for s in T['sumy']) + '</tr></thead>',
            '  <tbody>']
     for k in T['kategorie']:
         out.append('    <tr><th scope="row">%s<small>%s</small></th>%s</tr>'
-                   % (e(k['nazwa']), e(OPIS_KATEGORII[k['klucz']]),
+                   % (ty.html(e(k['nazwa'])), ty.html(e(OPIS_KATEGORII[k['klucz']])),
                       ''.join('<td>%s</td>' % nb(zl(k['skladka'][str(s)])) for s in T['sumy'])))
     out += ['  </tbody>', '</table>', '</div>', '<p class="tariff-note">%s</p>' % nota_taryfy()]
     return out

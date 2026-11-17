@@ -11,11 +11,11 @@ export const Product = z.enum([
   "nnw-dzieci", "grupowe-ergo", "opieka-medyczna",
 ]);
 
-// Slugi = adresy /dla-kogo/* z sekcji SEO. Rodzaj gramatyczny slugów (kosmetolog/linergistka)
-// i ewentualne dodanie "stylistka-rzes" – do ujednolicenia wspólnie z sekcją SEO [do decyzji].
+// Slugi = adresy /dla-kogo/* z sekcji SEO (8 stron; trycholog i masazysta od 16.11.2026 – 00, D46 e). Rodzaj gramatyczny
+// slugów (kosmetolog/linergistka) i ewentualne dodanie "stylistka-rzes" – do ujednolicenia wspólnie z sekcją SEO [do decyzji].
 export const Profession = z.enum([
   "kosmetolog", "fryzjer", "podolog", "linergistka",
-  "stylistka-paznokci", "tatuazysta", "inny",
+  "stylistka-paznokci", "tatuazysta", "trycholog", "masazysta", "inny",
 ]);
 
 // Telefon: normalizacja (spacje, myślniki, nawiasy) → E.164; 9 cyfr bez prefiksu = +48.

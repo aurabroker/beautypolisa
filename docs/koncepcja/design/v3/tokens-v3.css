@@ -32,7 +32,8 @@
   --font-caps:'Poppins','Poppins Caps Fallback','Poppins Fallback 2',system-ui,sans-serif;
   --text-xs:.75rem; --text-sm:.875rem; --text-body:.9375rem; --text-base:1rem; --text-lead:clamp(1.0625rem,1rem + .25vw,1.125rem);
   --text-serif-sm:1.2rem; --text-serif-md:1.45rem; --text-h3:1.65rem;
-  --text-h2:clamp(2.25rem,1.35rem + 3.4vw,4.25rem); --text-h1:clamp(2.75rem,1.4rem + 4.6vw,5.25rem);
+  --text-h2:clamp(2.125rem,1.45rem + 2.65vw,3.375rem); --text-h1:clamp(2.25rem,1.2rem + 4.15vw,5rem);
+  --text-h1-podstrona:clamp(2.25rem,.6rem + 4.4vw,4.4rem); --text-h3-kafel:clamp(1.9rem,1.45rem + 1.4vw,2.3rem);
   --text-display-numeral:3.4rem; --text-price:clamp(3rem,2.4rem + 2vw,4.2rem);
   --tracking-label:.2em; --tracking-nav:.16em;
   --radius-card:6px; --radius-btn:3px;
@@ -45,12 +46,12 @@
   --bp-line-gold-on-dark:rgba(217,192,137,.32); --bp-line-gold-on-dark-soft:rgba(217,192,137,.2);
   --bp-line-navy:rgba(42,59,104,.22); --bp-line-field:rgba(42,59,104,.7);
   --bp-error:#7A2E2E;
-  --bp-frame-inset:9px; --bp-container:1240px; --bp-gutter:clamp(16px,4vw,40px);
+  --bp-frame-inset:9px; --bp-container:77.5rem; --bp-gutter:clamp(16px,4vw,40px);
   --bp-z-sticky:55; --bp-z-header:60; --bp-z-skip:100;
   --bp-dur-1:.2s; --bp-dur-2:.3s; --bp-dur-3:.45s;
   /* ziarno: statyczny szum SVG, alfa ≤ .07 zapisana w pliku (CSP: img-src data:) */
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 .07 0 0 0 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
-  /* breakpointy: 480 / 768 / 1024 / 1200 px – w @media jako liczby */
+  /* breakpointy: 480 / 768 / 1024 / 1200 px – w @media jako liczby; przełączenie belka/szuflada – 75em (rośnie z czcionką domyślną) */
 }
 
 /* ---------- Szkło ---------- */
@@ -69,6 +70,10 @@
 .lux-icon--md{width:32px;height:32px;stroke-width:3}
 .lux-icon--sm{width:22px;height:22px;stroke-width:4}
 .dark .lux-icon{color:var(--color-gold-light)}
+
+/* ---------- Stan „wciśnięty” (raport 15, Z18): przesunięcie o 1 px i ciemniejsze tło – bez animacji ---------- */
+.btn:active{transform:translateY(1px)}
+.btn-navy:active{background-color:var(--color-midnight);border-color:var(--color-midnight)}
 
 /* ---------- Ruch: tylko jako ulepszenie ---------- */
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
@@ -95,8 +100,18 @@
   --text-serif-sm: 1.2rem;
   --text-serif-md: 1.45rem;
   --text-h3: 1.65rem;
-  --text-h2: clamp(2.25rem,1.35rem + 3.4vw,4.25rem);
-  --text-h1: clamp(2.75rem,1.4rem + 4.6vw,5.25rem);
+  --text-h2: clamp(2.125rem,1.45rem + 2.65vw,3.375rem);
+  --text-h1: clamp(2.25rem,1.2rem + 4.15vw,5rem);
+  --text-h1-podstrona: clamp(2.25rem,.6rem + 4.4vw,4.4rem); /* H1 panelu hero podstron (Z37, runda 2) */
+  --text-h3-kafel: clamp(1.9rem,1.45rem + 1.4vw,2.3rem);   /* nazwa kafelka produktu na stronie głównej */
+  /* jedna karta pełna, jedna notka, linki (raport 15, Z38, Z39) */
+  --bp-karta-tlo: var(--color-ivory);
+  --bp-karta-linia: rgba(184,151,90,.5);
+  --bp-karta-cien: 0 24px 48px -38px rgba(20,28,51,.45);
+  --bp-notka-tlo: rgba(237,229,216,.55);
+  --bp-notka-kreska: var(--color-gold);
+  --bp-link-podkreslenie: var(--color-gold);
+  --bp-link-podkreslenie-ciemne: rgba(217,192,137,.7);
   --text-display-numeral: 3.4rem;
   --text-price: clamp(3rem,2.4rem + 2vw,4.2rem);
   --tracking-label: .2em;

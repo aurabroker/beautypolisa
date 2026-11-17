@@ -374,6 +374,15 @@ table.data td.r,table.data th.r{text-align:right}
   table.data.stack th[scope="row"]{grid-template-columns:minmax(0,1fr);padding-bottom:8px;font-size:var(--text-body)}
   table.data.stack th[scope="row"]::before{display:none}
   table.data.stack td.cell-actions{grid-template-columns:minmax(0,1fr)}
+  /* znaczki statusu w wierszu ułożonym w pionie łamią się w komórce – bez tego „Kończy się za 49 dni” / „Zaproszenie oczekuje”
+     wychodziły poza .table-wrap i chowały się pod przewijaniem karty (320–375 px; WCAG 1.4.10, 2.1.1) */
+  table.data.stack td > *,table.data.stack th > *{min-width:0}
+  table.data.stack .badge{white-space:normal;max-width:100%}
+  table.data.stack th,table.data.stack td{overflow-wrap:anywhere}
+}
+/* najwęższe telefony (< 420 px): etykieta nad wartością – kolumna wartości na całą szerokość, .table-wrap bez przewijania od 320 px */
+@media (max-width:419px){
+  table.data.stack th,table.data.stack td{grid-template-columns:minmax(0,1fr);gap:2px}
 }
 
 /* ---------- statusy: tekst + znak ---------- */
@@ -432,6 +441,8 @@ fieldset.field > legend{padding:0;margin-bottom:6px}
 .field select{appearance:none;-webkit-appearance:none;padding-right:42px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%232A3B68' stroke-width='1.4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
 .field input[readonly]{background:var(--color-parchment);border-style:dashed;color:var(--color-ink)}
 .field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{outline:2px solid var(--color-navy);outline-offset:2px;border-color:var(--color-navy)}
+/* pole daty: czwarte zatrzymanie Tab to przycisk kalendarza wewnątrz pola – :focus-visible pola wtedy nie pasuje, obrys znikał (WCAG 2.4.7) */
+.field input[type=date]:focus-within,.field input[type=datetime-local]:focus-within{outline:2px solid var(--color-navy);outline-offset:2px;border-color:var(--color-navy)}
 .field [aria-invalid="true"]{border-color:var(--bp-error);box-shadow:inset 0 0 0 1px var(--bp-error)}
 .hint{font-size:var(--text-xs);line-height:1.6;color:var(--color-taupe)}
 .field-error{display:flex;gap:8px;align-items:flex-start;font-size:.8125rem;line-height:1.5;color:var(--bp-error)}
@@ -740,3 +751,122 @@ html:has(.klauzula[open]){overflow:hidden}
   .app{display:block}
   .js .view{display:grid!important}
 }
+
+/* =====================================================================
+   Wzorce wspólne (raport 16: rozdz. 3.2 i uwagi do strefa.css w 3.3; 16.11.2026) – nadpisują reguły wyżej
+   ===================================================================== */
+/* safe-area przy viewport-fit=cover: pasek, treść, stopka i szuflady nie wchodzą pod wycięcie ekranu w poziomie */
+.topbar,.app,.app-footer,.auth-top,.pub-header{padding-left:max(var(--bp-gutter),env(safe-area-inset-left));padding-right:max(var(--bp-gutter),env(safe-area-inset-right))}
+.drawer-panel{padding-right:env(safe-area-inset-right)}
+.drawer-foot{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+.app-footer{padding-bottom:calc(28px + env(safe-area-inset-bottom))}
+.klauzula{width:min(calc(100% - 32px - env(safe-area-inset-left) - env(safe-area-inset-right)),780px)}
+/* dotyk: bez powiększania podwójnym tapnięciem, stonowane podświetlenie, bez „odbijania” strony na gładziku */
+a,button,summary,label,input,select,textarea,[role="button"]{touch-action:manipulation}
+html{-webkit-tap-highlight-color:rgba(42,59,104,.12)}
+.topbar,.dark,.banner{-webkit-tap-highlight-color:rgba(217,192,137,.2)}
+@media (pointer:fine){html{overscroll-behavior-y:none}}
+/* fokus w jasnym menu konta: granat zamiast złota (złoto na ivory ma 1,6:1) */
+.topbar .account-panel :focus-visible{outline-color:var(--color-navy)}
+/* pole z prefiksem „+48” – obrys fokusu obejmuje całą kontrolkę */
+.with-prefix:focus-within{outline:2px solid var(--color-navy);outline-offset:2px;border-radius:var(--radius-btn)}
+.field .with-prefix input:focus-visible{outline:none}
+/* hover: linki ciche, okruszki, stopka, przycisk menu, karty wyboru, „Informacje o agencie” */
+.link-quiet,.crumbs a,.app-footer a{transition:text-decoration-thickness var(--bp-dur),color var(--bp-dur)}
+@media (hover:hover){
+  .link-quiet:not([disabled]):hover,.crumbs a:hover,.app-footer a:hover{text-decoration:underline;text-decoration-thickness:2px}
+  .nav-toggle:hover{border-color:var(--color-gold-light)}
+  .radio-card input:hover + label{border-color:var(--color-navy)}
+  .legal-idd > summary:hover{text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:4px}
+  .switch:not([disabled]):hover::before{box-shadow:0 0 0 3px rgba(42,59,104,.15)}
+}
+/* .btn-ghost-dark: hover mocniejszy od spoczynku – tekst ivory, mocniejsza ramka i tło */
+.btn-ghost-dark:hover{color:var(--color-ivory);border-color:var(--color-gold-light);background-color:rgba(217,192,137,.14)}
+/* stan „wciśnięty” (raport 15, Z18) */
+.btn:not([disabled]):not([aria-disabled="true"]):active{transform:translateY(1px)}
+.btn-navy:not([disabled]):active{background-color:var(--color-midnight);border-color:var(--color-midnight)}
+/* ruch tylko na transform: kreska .link-lux i podkreślenie .btn-navy (zamiast width i background-size) */
+.link-lux::after{transform-origin:left;transition:transform var(--bp-dur) var(--ease-lux)}
+.link-lux:hover::after{width:24px;transform:scaleX(1.6667)}
+@media (hover:hover) and (pointer:fine){
+  .btn-navy{position:relative;background-image:none}
+  .btn-navy::after{content:"";position:absolute;left:24px;right:24px;bottom:9px;height:1px;background:var(--color-gold-light);transform:scaleX(0);transition:transform .2s var(--ease-lux);pointer-events:none}
+  .btn-navy:hover::after,.btn-navy:focus-visible::after{transform:scaleX(1)}
+  .btn-navy[disabled]::after,.btn-navy[aria-disabled="true"]::after{display:none}
+}
+/* stary przełącznik .switch: gałka jako osobny element z transform (dawniej podmiana całego tła – bez animacji) */
+.switch{position:relative}
+.switch::before{background:#fff}
+.switch[aria-checked="true"]::before{background:var(--color-navy)}
+.switch::after{content:"";position:absolute;left:4px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--color-navy);transition:transform var(--bp-dur) var(--ease-lux)}
+.switch[aria-checked="true"]::after{transform:translateX(21px);background:var(--color-ivory)}
+.switch[disabled]::after{opacity:.6}
+/* menu boczne na telefonie: przewijanie nie przechodzi na stronę */
+@media (max-width:1023px){
+  .js .sidenav.is-open{overscroll-behavior:contain;padding-left:max(10px,env(safe-area-inset-left))}
+  html.js:has(.sidenav.is-open){overflow:hidden}
+}
+/* długie dane od użytkownika (e-mail, nazwa salonu) bez wychodzenia poza ramkę i bez rozpychania paska */
+.alert strong,.who,.notice-box,.private{overflow-wrap:anywhere}
+.account > summary,.account-name{min-width:0}
+.account-name strong{max-width:24ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* <strong> w roli nagłówka – równe wiersze */
+.alert strong.alert-title,.shortcut strong,.banner strong,.empty strong,.steps strong,.statement strong,.howto strong{text-wrap:balance}
+@media (prefers-reduced-motion:reduce){.btn:active{transform:none}}
+@media (forced-colors:active){.btn-navy::after{background:CanvasText}.switch::after{background:CanvasText}}
+
+/* =====================================================================
+   Strony Strefy (raport 16, rozdz. 3.3 – logowanie, panel, dam-prace, szkolenia; 17.11.2026). Zachowania – strefa.js
+   ===================================================================== */
+/* rozwijane potwierdzenia i mini-formularze (details – działają bez JS; dawniej tylko w szkolenia.html):
+   akcja nieodwracalna = summary z nazwą akcji → opis skutku → przycisk wykonania + „Anuluj” ([data-zamknij], Esc) */
+.mini > summary{list-style:none}
+.mini > summary::-webkit-details-marker{display:none}
+.mini[open] > summary{border-color:var(--color-navy);background:#fff}
+.mini-body{display:grid;gap:12px;margin-top:8px;padding:14px 16px;border:1px solid var(--bp-line-gold-soft);border-radius:var(--radius-btn);background:#fff;min-width:min(100%,18rem)}
+/* potwierdzenie w komórce akcji tabeli ułożonej jako tabela (od 720 px; klasę tr.mini-pod ustawia strefa.js): panel pod treścią
+   wiersza, przy prawej krawędzi, najwyżej 34rem – kolumna akcji nie rośnie, a tabela nie przewija się w poziomie (runda 2
+   weryfikacji: „Sprzedaż i wypłaty” 882 → 995 px po otwarciu „Zwrot”). Komórki wiersza dostają dolny odstęp = wysokość panelu */
+table.data tr.mini-pod{position:relative}
+table.data tr.mini-pod > th,table.data tr.mini-pod > td{vertical-align:top;padding-bottom:calc(var(--mini-h,0px) + 24px)}
+table.data tr.mini-pod .cell-actions details.mini[open] > .mini-body{position:absolute;right:14px;bottom:12px;width:min(calc(100% - 28px),34rem);min-width:0;margin-top:0;box-shadow:var(--shadow-surface)}
+.mini-body .field input{min-height:44px}
+.mini-body .actions{gap:8px 10px}
+.mini-body > p{text-wrap:pretty}
+/* pasek „Cofnij” po akcji odwracalnej (zamknięcie ogłoszenia, usunięcie szkicu, rezygnacja z zapisu) – 10 s */
+.undo{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+/* blokada przez aria-disabled (fokus zostaje na przycisku, strefa.js blokuje kliknięcie) */
+.link-quiet[aria-disabled="true"]{color:var(--color-taupe);text-decoration-color:rgba(95,87,77,.5);cursor:not-allowed}
+@media (hover:hover){.link-quiet[aria-disabled="true"]:hover{text-decoration-thickness:1px}}
+/* długie dane od użytkowników (tytuły ogłoszeń i szkoleń, nazwy w okruszkach i tabelach) łamią się zamiast rozpychać stronę;
+   min-width – zwykłe wyrazy tytułów w tabeli nie łamią się w środku */
+.crumbs li,.page-head h1,table.data th[scope="row"]{overflow-wrap:anywhere}
+@media (min-width:720px){table.data th[scope="row"]{min-width:11rem}}
+/* tabela w wąskiej karcie (.table-wrap.cq – „Osoby i zaproszenia” obok formularza „Zaproś osobę”): układ .stack według szerokości
+   obszaru tabeli, nie okna – od 1024 px karta ma 359–508 px, a kolumna akcji („Odbierz dostęp”, „Wyślij ponownie”) wypadała poza
+   widok przewijanej tabeli (runda 2 weryfikacji) */
+.table-wrap.cq{container:tabela / inline-size}
+@container tabela (max-width:47.5rem){
+  table.data.stack thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  table.data.stack,table.data.stack tbody,table.data.stack tr,table.data.stack th,table.data.stack td{display:block;width:100%}
+  table.data.stack tr{padding:12px 0;border-bottom:1px solid var(--bp-line-gold-soft)}
+  table.data.stack tbody tr:last-child{border-bottom:0}
+  table.data.stack th,table.data.stack td{display:grid;grid-template-columns:minmax(0,8.5rem) minmax(0,1fr);gap:12px;padding:4px 0;border:0;min-width:0}
+  table.data.stack [data-label]::before{content:attr(data-label);font:500 var(--text-xs)/1.6 var(--font-caps);letter-spacing:.1em;text-transform:uppercase;color:var(--color-taupe)}
+  table.data.stack td.r{text-align:left}
+  table.data.stack th,table.data.stack td{justify-items:start}
+  table.data.stack th[scope="row"]{grid-template-columns:minmax(0,1fr);padding-bottom:8px;font-size:var(--text-body)}
+  table.data.stack th[scope="row"]::before{display:none}
+  table.data.stack td.cell-actions{grid-template-columns:minmax(0,1fr)}
+  table.data.stack td > *,table.data.stack th > *{min-width:0}
+  table.data.stack .badge{white-space:normal;max-width:100%}
+  table.data.stack th,table.data.stack td{overflow-wrap:anywhere}
+}
+@container tabela (max-width:26rem){
+  table.data.stack th,table.data.stack td{grid-template-columns:minmax(0,1fr);gap:2px}
+}
+/* odliczanie do ponownej wysyłki kodu (logowanie): licznik bez ogłaszania co sekundę, start i koniec – w regionie sr-only */
+.resend-info .num{font-variant-numeric:tabular-nums}
+/* nazwy marek w <span translate="no"> (tłumacz przeglądarki ich nie przekłada) nie tworzą osobnych elementów w układach flex i grid
+   (znaczki, przyciski, nagłówki spraw) – tekst łamie się tak samo jak bez znacznika */
+span[translate="no"]{display:contents}

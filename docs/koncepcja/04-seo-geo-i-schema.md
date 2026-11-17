@@ -34,7 +34,7 @@ Model **hub-and-spoke**: produkt jest szprychą huba `/ubezpieczenia`, zawód �
 | `/kalkulator/oc` | narzędzie leadowe | transakcyjna | „kalkulator OC salon kosmetyczny” | WebPage, BreadcrumbList | formularz (Turnstile); link wychodzący „Nie masz polisy? Zarejestruj się na beautyrazem.pl/polisa” (00, D32) |
 | `/#kalkulator-tax` (zakładka Tax Protect w kalkulatorze na stronie głównej; makieta `design/v3/makieta-v3.html#kalkulator-tax`; 02 §2.3) | narzędzie leadowe (kotwica, nie osobny adres – poza sitemapą) | transakcyjna | – | – (strona `/`) | formularz (Turnstile) → doradca prowadzi wniosek; bez linku do APK (00, D32) |
 | `/dla-kogo` | hub segmentów | informacyjna | „ubezpieczenie dla kosmetyczki” | CollectionPage, BreadcrumbList | linki do zawodów |
-| `/dla-kogo/<zawod>` (6) | landing segmentowy | informacyjno-komercyjna | „ubezpieczenie dla podologa” itd. | WebPage (`about`→Service), FAQPage, BreadcrumbList | „Policz składkę” |
+| `/dla-kogo/<zawod>` (8) | landing segmentowy | informacyjno-komercyjna | „ubezpieczenie dla podologa” itd. | WebPage (`about`→Service), FAQPage, BreadcrumbList | „Policz składkę” |
 | `/baza-wiedzy` (+`/strona/<n>`) | hub + paginacja | informacyjna | „ubezpieczenia beauty poradnik” | CollectionPage, BreadcrumbList | lead magnet (05) |
 | `/baza-wiedzy/<slug>` | artykuł | informacyjna (long tail) | pytania użytkowników | Article, BreadcrumbList, opc. FAQPage | kontekstowe CTA |
 | `/o-nas` | o firmie | E-E-A-T | „BeautyPolisa Aura Expert” | AboutPage, Organization, Person | kontakt |
@@ -88,7 +88,7 @@ Przykłady (długości sprawdzone skryptem):
 | Strona | Title (≤60) | Meta description (≤155) |
 |---|---|---|
 | `/` | Ubezpieczenia dla branży beauty \| BeautyPolisa | Ubezpieczenia dla salonów beauty: OC zawodowe ERGO Hestia, Tax Protect, utrata dochodu, NNW dzieci, grupowe, opieka medyczna. Zamów kontakt z doradcą. |
-| `/ubezpieczenia/oc-beauty` | OC dla branży beauty (ERGO Hestia) \| BeautyPolisa | OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Policz składkę. |
+| `/ubezpieczenia/oc-beauty` | OC dla branży beauty (ERGO Hestia) \| BeautyPolisa | OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Oblicz składkę. |
 | `/ubezpieczenia/tax-protect` | Tax Protect (Colonnade) dla salonów beauty \| BeautyPolisa | Ubezpieczenie karno-skarbowe i podatkowe dla właścicieli salonów: ochrona właściciela i zarządu oraz koszty sporu podatkowego firmy. Zapytaj o wariant. |
 | `/ubezpieczenia/utrata-dochodu` | Utrata dochodu – ubezpieczenie dla beauty \| BeautyPolisa | Ubezpieczenie utraty dochodu dla kosmetologów, fryzjerów i stylistek na B2B. Świadczenie przy niezdolności do pracy, karencja, wyłączenia – po ludzku. |
 | `/ubezpieczenia/nnw-dzieci` | NNW dla dzieci – ochrona przez cały rok \| BeautyPolisa | NNW dla dzieci (Colonnade): ochrona 24 h na całym świecie, jedna składka za rok – 40, 94 lub 175 zł za osobę. Zakup online w czterech krokach. |
@@ -484,7 +484,7 @@ Kolumna „zgodność” jest ważniejsza niż „wzmianka”: błędna odpowied
 
 **Duplikacja z utratadochodu.pl (00, D33).** Strona `/ubezpieczenia/utrata-dochodu` opiera się na faktach z naszego serwisu utratadochodu.pl. Jeśli akapity zostaną przeniesione 1:1, wyszukiwarka wybierze jedną z wersji jako kanoniczną i druga straci widoczność. Rozwiązanie: własny, krótszy tekst pod branżę beauty z self-canonical, szczegóły i strony zawodów tylko na utratadochodu.pl z linkami z beautypolisa.eu, kontrola powtórzeń przy przeglądzie treści (pkt 1).
 
-**Cienka treść.** Sześć stron `/dla-kogo/*` to kandydaci na puste szablony; utrata dochodu ma od 12.11.2026 treść z utratadochodu.pl (00, D33), a NNW dzieci i grupowe ERGO od 13.11.2026 – treść programów z tabelami wariantów (00, D35, D36). Strona bez unikalnej substancji nie startuje (albo `noindex` z „wkrótce”); artykuły poniżej ~600 słów łączymy lub dopisujemy do FAQ.
+**Cienka treść.** Osiem stron `/dla-kogo/*` (od 16.11.2026 z trychologiem i masażystą – 00, D46 e) to kandydaci na puste szablony; utrata dochodu ma od 12.11.2026 treść z utratadochodu.pl (00, D33), a NNW dzieci i grupowe ERGO od 13.11.2026 – treść programów z tabelami wariantów (00, D35, D36). Strona bez unikalnej substancji nie startuje (albo `noindex` z „wkrótce”); artykuły poniżej ~600 słów łączymy lub dopisujemy do FAQ.
 
 **YMYL i E-E-A-T.** Ubezpieczenia to w wytycznych oceny jakości Google kategoria „Your Money or Your Life” – treści są oceniane surowiej pod kątem autora i źródeł, a błędy obniżają ocenę całej witryny. Dla zespołu: imienny autor i recenzent z kwalifikacjami na `/o-nas`; każda liczba ze źródłem; brak superlatyw; treści tworzone z pomocą AI przechodzą ten sam przegląd – odpowiada podpisana osoba; informacja o dystrybutorze i o tym, że portal nie zawiera umów, na każdej stronie produktowej (standardy w 05, wymogi IDD w sekcji prawnej). GEO wzmacnia ryzyko: asystent zacytuje błędną składkę równie chętnie jak poprawną i nie da się tego „sprostować” w modelu – dlatego cennik w schemie i FAQ jest generowany, nie przepisywany.
 

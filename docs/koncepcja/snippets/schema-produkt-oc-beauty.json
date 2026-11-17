@@ -19,7 +19,7 @@
   },
   "audience": {
     "@type": "Audience",
-    "audienceType": "salony kosmetyczne, kosmetolodzy, fryzjerzy, podolodzy, linergistki, stylistki paznokci, tatuażyści, salony masażu"
+    "audienceType": "salony kosmetyczne, kosmetolodzy, fryzjerzy, podolodzy, linergistki, stylistki paznokci, tatuażyści, trycholodzy, masażyści, salony masażu"
   },
   "termsOfService": "https://beautypolisa.eu/dokumenty/owu-oc-beauty-ergo-hestia",
   "availableChannel": {

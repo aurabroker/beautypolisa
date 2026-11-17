@@ -8,9 +8,13 @@
 //     ani wyniku nie zmienia; bez przewijania i bez przenoszenia fokusu; wiersz stanu w jednej linii, kafelki bieżącego kroku nie
 //     przesuwają się po kliknięciu; jednorazowy puls obwódki (animacja krok-puls) – brak przy prefers-reduced-motion: reduce;
 //     bez JS – brak podświetlenia, numerów i wskazówek, wszystkie pola widoczne.
-//   * sekcja III: przełącznik „OC dla branży beauty / Tax Protect” – role tab/tablist, aria-selected, wysokość ≥ 88 px (≥ 76 px
-//     poniżej 480 px), na telefonie cała szerokość kontenera.
+//   * sekcja III: przełącznik „OC dla branży beauty / Tax Protect” – role tab/tablist, aria-selected, wysokość ≥ 88 px (≥ 104 px
+//     poniżej 480 px, tafla 4 px, kafel ≥ 47% kontenera), na telefonie cała szerokość kontenera.
 //   * sekcja II: 6 kafli z odstępem ≥ 16 px w poziomie i w pionie, promień 10 px, bez backdrop-filter.
+//   * sekcja IV (uwaga zleceniodawcy 16.11.2026: „dodajmy Trycholog w Sekcji IV – i musimy dodać jeszcze Masażysta”; 00 D46 e):
+//     8 kart zawodów (ostatnie: Trycholog – data-rodzaj kosmetyczny, Masażysta – masaz) z ikonami lux-trycholog i lux-masazysta
+//     z sprite'a strony (symbol z treścią, ikona 48–54 px); siatka 4 (≥ 1024 px) / 2 (≥ 480 px) / 1 kolumna – zawsze pełne wiersze,
+//     karty w obrębie tafli, tekst karty bez przelewania.
 //   * 320, 390, 768, 1280, 1440 px: brak przewijania w poziomie, axe-core (WCAG 2.2 AA: wcag2a, wcag2aa, wcag21a, wcag21aa,
 //     wcag22aa) na całej stronie – w stanie startowym i z bieżącym krokiem 2 (kalkulator po zaznaczeniu rodzaju działalności).
 // Uruchom: node narzedzia/makiety/kontrola/oc/t_przewodnik.js   (kod wyjścia 1 przy błędzie; wymaga npm install w narzedzia/makiety)
@@ -150,6 +154,34 @@ const puls = (p) => p.evaluate(() => document.getAnimations().filter((a) => a.an
     await ctx.close();
   }
 
+  // ---------- 2b. szybka zmiana wyniku zaraz po zmianie kroku (raport weryfikacji, runda 1): Spacja na „do 5 osób” (krok 2 → 3),
+  //     od razu dwie strzałki w prawo do „więcej niż 8 osób” – komunikat w opóźnieniu jest zastępowany, ale „Krok 3 z 3…” zostaje
+  //     (numer kroku zależy od ostatnio OGŁOSZONEGO kroku, nie od poprzedniego wywołania)
+  {
+    const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+    await p.goto(PAGE);
+    await p.waitForTimeout(300);
+    await klik(p, 'r-kosmetyczny');
+    await p.waitForTimeout(300);
+    await nasluch(p);
+    await p.focus('#o-1-5');
+    await p.keyboard.press('Space');
+    await p.keyboard.press('ArrowRight');
+    await p.keyboard.press('ArrowRight');
+    await p.waitForTimeout(700);
+    let o = await ogl(p);
+    ok((await p.evaluate(() => document.activeElement.id)) === 'o-9-plus', 'szybkie strzałki: fokus na „więcej niż 8 osób”');
+    ok(o.length === 1 && /^Składka do indywidualnej wyceny.* Krok 3 z\s3: wybierz sumę gwarancyjną\.$/.test(o[0]),
+      'szybka zmiana po zmianie kroku: jedno ogłoszenie z wynikiem i „Krok 3 z 3”: ' + JSON.stringify(o));
+    // następna zmiana w tym samym kroku – już bez numeru kroku (krok 3 został ogłoszony)
+    await p.keyboard.press('ArrowLeft');
+    await p.waitForTimeout(700);
+    o = await ogl(p);
+    ok(o.length === 2 && !/Krok/.test(o[1]), 'kolejna zmiana w ogłoszonym kroku: bez numeru kroku: ' + JSON.stringify(o.slice(1)));
+    await ctx.close();
+  }
+
   // ---------- 3. ograniczony ruch: bez pulsu
   {
     const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
@@ -191,11 +223,13 @@ const puls = (p) => p.evaluate(() => document.getAnimations().filter((a) => a.an
     const t = await p.evaluate(() => {
       const sw = document.getElementById('calc-switch'), tabs = [...sw.querySelectorAll('.calc-tab')], c = sw.closest('.container');
       const cs = getComputedStyle(c), inner = c.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-      return { role: sw.getAttribute('role'), roles: tabs.map((x) => x.getAttribute('role') + ':' + x.getAttribute('aria-selected')), h: tabs.map((x) => x.getBoundingClientRect().height),
+      return { role: sw.getAttribute('role'), roles: tabs.map((x) => x.getAttribute('role') + ':' + x.getAttribute('aria-selected')), h: tabs.map((x) => x.getBoundingClientRect().height), ws: tabs.map((x) => x.getBoundingClientRect().width), pad: parseFloat(getComputedStyle(sw).paddingLeft),
         wSw: sw.getBoundingClientRect().width, inner, hidden: sw.hidden, nazwy: tabs.map((x) => x.querySelector('small').getAttribute('aria-hidden')) };
     });
     ok(t.role === 'tablist' && t.roles.join() === 'tab:true,tab:false' && !t.hidden && t.nazwy.join() === 'true,true', `${w}: przełącznik – role i aria-selected bez zmian: ` + JSON.stringify(t));
-    ok(t.h.every((h) => h >= (w < 480 ? 76 : 88)), `${w}: wysokość kafli przełącznika ≥ ${w < 480 ? 76 : 88} px: ` + t.h);
+    ok(t.h.every((h) => h >= (w < 480 ? 104 : 88)), `${w}: wysokość kafli przełącznika ≥ ${w < 480 ? 104 : 88} px: ` + t.h);
+    // poniżej 480 px kafle fizycznie większe (weryfikacja, runda 1): tafla przełącznika 4 px, kafel ≥ 47% szerokości kontenera
+    if (w < 480) ok(t.ws.every((x) => x >= 0.47 * t.inner) && t.pad <= 4, `${w}: szerokość kafli ≥ 47% kontenera, tafla ≤ 4 px: ${t.ws} / ${t.inner}, ${t.pad}`);
     if (w < 768) ok(Math.abs(t.wSw - t.inner) < 1, `${w}: przełącznik na całą szerokość kontenera: ${t.wSw} / ${t.inner}`);
     // kafle produktów
     const k = await p.evaluate(() => {
@@ -215,6 +249,24 @@ const puls = (p) => p.evaluate(() => document.getAnimations().filter((a) => a.an
     ok(k.n === 6 && k.rad === '10px' && k.bf === 0, `${w}: 6 kafli, promień 10 px, bez backdrop-filter: ` + JSON.stringify(k));
     if (w >= 640) ok(k.minX >= 15, `${w}: odstęp kafli w poziomie ≥ 16 px (offset* – liczby całkowite, tolerancja 1 px): ${k.minX}`);
     ok(k.minY >= 15, `${w}: odstęp kafli w pionie ≥ 16 px (offset* – tolerancja 1 px): ${k.minY}`);
+    // sekcja IV: 8 kart zawodów, pełne wiersze, nowe ikony
+    const pr = await p.evaluate(() => {
+      const a = [...document.querySelectorAll('#dla-kogo .pros > .pro')], box = document.querySelector('#dla-kogo .pros');
+      const x0 = Math.min(...a.map((e) => e.offsetLeft));
+      const ik = (id) => { const sym = document.querySelector('svg.sprite symbol#' + id), u = document.querySelector('#dla-kogo .pro use[href="#' + id + '"]');
+        // szerokość z CSS, nie z getBoundingClientRect – wejście kart (rv-rise, scale .96) zmniejsza prostokąt w trakcie animacji
+        const w = u ? Math.round(parseFloat(getComputedStyle(u.closest('svg')).width)) : 0; return { sym: !!sym && sym.querySelectorAll('path,circle,ellipse').length > 0, w }; };
+      return { n: a.length, kol: new Set(a.map((e) => e.offsetLeft)).size, wier: new Set(a.map((e) => e.offsetTop)).size,
+        poza: a.filter((e) => e.offsetLeft - x0 + e.offsetWidth > box.clientWidth + 1).length,
+        przelew: a.filter((e) => e.scrollWidth > e.clientWidth + 1 || [...e.querySelectorAll('strong,span,small')].some((t) => t.scrollWidth > t.clientWidth + 1)).length,
+        nowe: a.slice(-2).map((e) => e.querySelector('strong').textContent + ':' + e.dataset.rodzaj),
+        ikony: [ik('lux-trycholog'), ik('lux-masazysta')] };
+    });
+    const kol = w >= 1024 ? 4 : w >= 480 ? 2 : 1;
+    ok(pr.n === 8 && pr.nowe.join() === 'Trycholog:kosmetyczny,Masażysta:masaz', `${w}: sekcja IV – 8 kart, na końcu Trycholog i Masażysta: ` + JSON.stringify(pr.nowe));
+    ok(pr.kol === kol && pr.kol * pr.wier === 8, `${w}: sekcja IV – ${kol} kolumny, pełne wiersze: ${pr.kol} × ${pr.wier}`);
+    ok(pr.poza === 0 && pr.przelew === 0, `${w}: sekcja IV – karty w tafli, tekst bez przelewania: ` + JSON.stringify(pr));
+    ok(pr.ikony.every((i) => i.sym && i.w >= 48 && i.w <= 54), `${w}: sekcja IV – ikony lux-trycholog i lux-masazysta w sprite'cie, 48–54 px: ` + JSON.stringify(pr.ikony));
     // wiersz stanu w jednej linii we wszystkich stanach; pasek ceny z tą samą wskazówką
     const linie = async () => p.evaluate(() => [...document.querySelectorAll('.krok-stan')].map((e) => Math.round(e.getBoundingClientRect().height / parseFloat(getComputedStyle(e).lineHeight))));
     const l0 = await linie();

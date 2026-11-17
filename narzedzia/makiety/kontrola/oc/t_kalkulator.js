@@ -11,8 +11,10 @@
 //     Kwoty kafelków i opis wyceny indywidualnej liczone tu niezależnie od snippets/oc-skladka.js – z kwot taryfy w fixture.
 //   * „Dla kogo” (decyzja zleceniodawcy 14.11.2026): kafelek profilu zaznacza rodzaj działalności – linergistka i kosmetolog →
 //     Gabinet kosmetologiczny, stylistka paznokci → Gabinet kosmetyczny, fryzjer i barber → Salon fryzjerski, podolog → Gabinet
-//     podologiczny, tatuażysta → Salon tatuażu; kwota przy do 5 osobach i 200 tys. zł z fixture; dwa profile – rodzaje się sumują;
-//     kosmetolog + stylistka paznokci (gabinet kosmetologiczny + gabinet kosmetyczny) → pełna taryfa, 980,00 zł (D45, 16.11.2026).
+//     podologiczny, tatuażysta → Salon tatuażu, trycholog → Gabinet kosmetyczny, masażysta → Salon masażu (dwa ostatnie – uwagi
+//     zleceniodawcy 16.11.2026, 00 D46 e); kwota przy do 5 osobach i 200 tys. zł z fixture; dwa profile – rodzaje się sumują;
+//     kosmetolog + stylistka paznokci (gabinet kosmetologiczny + gabinet kosmetyczny) → pełna taryfa, 980,00 zł (D45, 16.11.2026);
+//     trycholog i masażysta – podstawowa taryfa „Gabinety kosmetyczne i fryzjerskie”, 500,00 zł, także razem (oczekiwania wpisane wprost).
 //   * stan startowy (z JS i bez JS): żadne pole kalkulatora nie jest zaznaczone, brak kwoty, brak plakietek przy sumach.
 //   * zmiany po kliknięciu przycisku (weryfikacja, runda 1): pola #lead i zdanie #kontakt-wynik idą za kalkulatorem (ankieta, suma,
 //     ochrona prawna, chip w wyszukiwarce), stan „brak” je czyści i wyłącza; bez przycisku kalkulatora pola OC nie idą z formularzem
@@ -80,7 +82,7 @@ async function stan(p) {
     const f = $('lead').elements;
     const cta = $('cta-oferta');
     return {
-      taryfa: $('taryfa-blok').hidden ? null : $('taryfa').textContent,
+      taryfa: $('taryfa-blok').hidden ? null : $('taryfa').textContent.replace(/\u00a0/g, ' '),   // nazwa z twardymi spacjami (tw) – porównanie jak spacja
       cena: $('cena').textContent, dop: $('cena-dop').textContent,
       opis: $('cena-opis').hidden ? null : $('cena-opis').textContent,
       cta: cta.textContent, ctaDis: cta.getAttribute('aria-disabled') === 'true',
@@ -124,7 +126,7 @@ async function przypadek(b, c) {
     for (const z of w.podpowiedzi_zawieraja || []) rowne(`${id}: podpowiedzi zawierają ${z}`, opcje.includes(z), true);
     if (w.wybrano) {
       rowne(`${id}: podpowiedzi zawierają ${w.wybrano}`, opcje.includes(w.wybrano), true);
-      const plak = await p.textContent(`#zab-opt-${w.wybrano} .zab-badge`);
+      const plak = (await p.textContent(`#zab-opt-${w.wybrano} .zab-badge`)).replace(/\u00a0/g, ' ');  // twarda spacja = spacja (runda 2: „nr\u00a01”)
       const plakMa = w.listy[0] === 'ankieta' ? null : w.listy.length > 1 ? 'Listy nr 1 i 2' : 'Lista nr ' + w.listy[0].slice(-1);
       if (plakMa) rowne(`${id}: plakietka podpowiedzi`, plak, plakMa);
       else rowne(`${id}: plakietka podpowiedzi (ankieta, pozycja)`, /^Ankieta, poz\. [a-h]\)$/.test(plak), true);
@@ -220,9 +222,10 @@ const KOLEJNOSC_A_H = Z.zabiegi.flatMap((z) => z.pozycje.filter((p) => p.lista =
   .sort((a, b) => a[0].localeCompare(b[0])).map((x) => x[1]);
 function document_order(ids) { return KOLEJNOSC_A_H.filter((i) => ids.includes(i)); }
 
-const DLA_KOGO = [  // decyzja zleceniodawcy 14.11.2026
+const DLA_KOGO = [  // decyzja zleceniodawcy 14.11.2026; trycholog i masażysta – uwagi zleceniodawcy 16.11.2026 (00 D46 e)
   ['Kosmetolog', 'kosmetologiczny'], ['Fryzjer i barber', 'fryzjerski'], ['Podolog', 'podologiczny'],
   ['Linergistka', 'kosmetologiczny'], ['Stylistka paznokci', 'kosmetyczny'], ['Tatuażysta', 'tatuaz'],
+  ['Trycholog', 'kosmetyczny'], ['Masażysta', 'masaz'],
 ];
 async function dlaKogo(b) {
   for (const [zawod, rodzaj] of DLA_KOGO) {
@@ -262,6 +265,20 @@ async function dlaKogo(b) {
     [['kosmetyczny', 'kosmetologiczny'], NAZWA_KAT.pelny, `980,00${NB}zł`]);
   rowne('D45 – kafelki sum: pełna taryfa', d.kafelki, { 100000: `850,00${NB}zł rocznie`, 200000: `980,00${NB}zł rocznie`, 300000: `1${NB}250,00${NB}zł rocznie` });
   await q.close();
+  // trycholog i masażysta (uwagi zleceniodawcy 16.11.2026, 00 D46 e): rodzaje z listy nr 1 → podstawowa taryfa, każdy osobno i razem;
+  // oczekiwania wpisane wprost (nie z fixture)
+  for (const profile of [['Trycholog'], ['Masażysta'], ['Trycholog', 'Masażysta']]) {
+    const r = await b.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+    await r.goto(PAGE, { waitUntil: 'load' });
+    for (const z of profile) await r.click(`.pro[data-rodzaj] >> text="${z}"`);
+    await r.check('#o-1-5'); await r.check('#s-200000');
+    const t = await stan(r);
+    const oczek = { Trycholog: 'kosmetyczny', 'Masażysta': 'masaz' };
+    rowne(`Dla kogo – ${profile.join(' + ')}: rodzaje, podstawowa taryfa i kwota`, [t.rodzaje, t.taryfa, t.cena],
+      [profile.map((z) => oczek[z]).sort(), NAZWA_KAT.kosmetyczny_fryzjerski, `500,00${NB}zł`]);
+    rowne(`Dla kogo – ${profile.join(' + ')}: kafelki sum`, t.kafelki, { 100000: `400,00${NB}zł rocznie`, 200000: `500,00${NB}zł rocznie`, 300000: `650,00${NB}zł rocznie` });
+    await r.close();
+  }
 }
 
 async function poPrzycisku(b) {
@@ -396,7 +413,7 @@ async function startowy(b) {
   await startowy(b);
   await b.close();
   const wszystkie = F.przypadki.length, crmMax = F.przypadki.filter((c) => !c.tylko_portal).length;
-  console.log(`przypadki fixture: ${crm}/${crmMax} porównywalnych z CRM + ${portal}/${wszystkie - crmMax} stanów interfejsu portalu (tylko_portal); „Dla kogo”: ${DLA_KOGO.length} profili + 2 profile razem + D45 (kosmetolog + stylistka paznokci); zmiany po przycisku; asercje: ${asercje}`);
+  console.log(`przypadki fixture: ${crm}/${crmMax} porównywalnych z CRM + ${portal}/${wszystkie - crmMax} stanów interfejsu portalu (tylko_portal); „Dla kogo”: ${DLA_KOGO.length} profili + 2 profile razem + D45 (kosmetolog + stylistka paznokci) + trycholog i masażysta (osobno i razem); zmiany po przycisku; asercje: ${asercje}`);
   if (bledy.length) {
     console.log('BŁĘDY (' + bledy.length + '):\n' + bledy.join('\n'));
     process.exit(1);

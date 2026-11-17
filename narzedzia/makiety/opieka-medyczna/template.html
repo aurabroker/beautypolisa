@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pl">
+<html lang="pl" data-type="service">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -12,8 +12,19 @@
 <meta property="og:url" content="https://beautypolisa.eu/ubezpieczenia/opieka-medyczna">
 <meta property="og:title" content="Opieka medyczna ENEL-MED i LUX MED dla salonu | BeautyPolisa">
 <meta property="og:description" content="%%DESCRIPTION%%">
-<meta name="theme-color" content="#141C33">
+<meta name="theme-color" content="#F7F3EC">
 <meta name="color-scheme" content="only light">
+<!-- udostępnianie i rodzaj strony (raport 15, Z24): obraz 1200×630 bez tekstu (kadr zdjęcia hero), ikona – serce z logo;
+     produkcyjnie przez metadata Next.js; adres obrazu docelowy -->
+<meta property="og:image" content="https://beautypolisa.eu/img/og-beautypolisa.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jasny gabinet beauty: granatowy fotel zabiegowy, marmurowy stolik z kosmetykami i piwonie przy oknie">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="page-type" content="service">
+<meta name="site-kind" content="service">
+<link rel="icon" href="img/ikona-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <!-- Makieta strony produktu: docelowy adres https://beautypolisa.eu/ubezpieczenia/opieka-medyczna (04, mapa URL).
      Blokadę indeksowania (meta robots) dokłada tylko podgląd makiet – nie ten plik. Tag Google – dopiero po zgodzie (decyzja G1), tu go nie ma.
      Źródło faktów (jedyne): dotychczasowa strona zleceniodawcy /medical.html – cennik pData, zestawienie comparisonData,
@@ -28,6 +39,9 @@
      Ceny (decyzja zleceniodawcy 13.11.2026): cennika programu jeszcze nie ma – kwoty z medical.html są tylko PRZYKŁADEM.
      Kwoty wyłącznie w elementach data-przyklad="tak" ze znacznikiem „przykład”; bez kwot w meta, og:, JSON-LD, FAQ, otwarciu i CTA.
      Opis kwot: wyłącznie „przykładowe” / „przykład” (makieta, brak cennika) – bez słów sugerujących przybliżony cennik. -->
+<!-- tło hero (marmur) jest elementem LCP: klasa bg-on wpisana w sekcję hero + preload (raport 16, 3.2) -->
+<link rel="preload" as="image" href="img/tlo-marmur-len.webp" media="(min-width:768px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/tlo-marmur-len-1024.webp" media="(max-width:767px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
@@ -63,9 +77,10 @@
 .seg-opt input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
 .seg-opt span{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 16px;border:1px solid var(--bp-line-field);border-radius:var(--radius-btn);background:rgba(255,255,255,.8);font:500 var(--text-sm)/1.2 var(--font-sans);color:var(--color-ink);white-space:nowrap;transition:background-color var(--bp-dur-1),color var(--bp-dur-1),border-color var(--bp-dur-1)}
 .seg-opt input:hover + span{border-color:var(--color-navy)}
+@media (max-width:539px){.seg-opt span{white-space:normal}}   /* tekst powiększony do 200% bez przewijania w poziomie (raport 16, 3.2) */
 .seg-opt input:checked + span{background:var(--color-navy);border-color:var(--color-navy);color:var(--color-ivory)}
 .seg-opt input[type="checkbox"] + span::before{content:"";width:14px;height:14px;flex:none;border:1px solid currentColor;border-radius:2px}
-.seg-opt input[type="checkbox"]:checked + span::before{content:"✓";display:inline-flex;align-items:center;justify-content:center;font-size:var(--text-xs);line-height:1}
+.seg-opt input[type="checkbox"]:checked + span::before{content:"✓";content:"✓" / "";display:inline-flex;align-items:center;justify-content:center;font-size:var(--text-xs);line-height:1}
 .seg-opt input:focus-visible + span{outline:2px solid var(--color-navy);outline-offset:3px}
 .seg [aria-invalid="true"] + span{border-color:var(--bp-error);box-shadow:inset 0 0 0 1px var(--bp-error)}
 
@@ -144,7 +159,7 @@
 @media (min-width:1024px){.cmp-table-wrap{display:block}.cmp-attrs{display:none}}
 
 /* ---------- IV · wyszukiwarka specjalizacji ---------- */
-.spec-panel{padding:clamp(20px,3vw,36px);display:grid;gap:20px}
+.spec-panel{padding:clamp(20px,3vw,36px);display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
 .spec-search{display:grid;gap:8px;max-width:40rem}
 .spec-search label{font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-navy)}
 .spec-row{display:flex;flex-wrap:wrap;gap:10px}
@@ -153,7 +168,7 @@
 .spec-search input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
 .spec-search input:focus-visible{outline:2px solid var(--color-navy);outline-offset:2px;border-color:var(--color-navy)}
 .spec-search .btn{min-height:52px;padding-inline:20px}
-.spec-count{font-size:var(--text-sm);line-height:1.5;color:var(--color-ink)}
+.spec-count{font-size:var(--text-sm);line-height:1.5;color:var(--color-ink);overflow-wrap:anywhere}
 .spec-count strong{font-weight:500;color:var(--color-navy)}
 .spec-quick{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:var(--text-sm)}
 .spec-quick button{min-height:44px;padding:6px 14px;border:1px solid var(--bp-line-gold);border-radius:var(--radius-btn);background:var(--color-ivory);font:400 var(--text-sm)/1.2 var(--font-sans);color:var(--color-navy);cursor:pointer}
@@ -180,7 +195,7 @@
 .spec-src{font-size:var(--text-sm);line-height:1.55;color:var(--color-ink)}
 .spec-conflict{font-size:var(--text-sm);line-height:1.55;color:var(--color-ink)}
 .spec-conflict .mock-note{margin-left:0;margin-right:4px;white-space:normal}
-.spec-empty{padding:16px 18px;border-left:2px solid var(--color-gold);background:rgba(237,229,216,.55);font-size:var(--text-sm)}
+.spec-empty{padding:16px 18px;border-left:2px solid var(--color-gold);background:rgba(237,229,216,.55);font-size:var(--text-sm);overflow-wrap:anywhere}
 .spec-empty a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
 
 /* ---------- V · jak to działa: jedwab, jedna ciemna tafla z czterema krokami (jak nnw-dzieci.html) ---------- */
@@ -199,6 +214,9 @@
 .form-panel{padding:clamp(22px,3.5vw,44px)}
 .lead-form{display:grid;gap:20px}
 .form-pick{padding:12px 16px;border-left:2px solid var(--color-gold);background:rgba(237,229,216,.55);font-size:var(--text-sm);color:var(--color-ink)}
+.form-pick:empty{display:none}   /* region statusu stale w DOM – pierwsza zmiana jest ogłaszana */
+.lead-form[aria-busy="true"] button[type="submit"]{cursor:progress}
+.form-status .send-error{color:var(--bp-error)}
 .fields-2{display:grid;gap:16px}
 .field{display:grid;gap:6px;align-content:start}
 .field label{font:500 var(--text-xs)/1.4 var(--font-caps);letter-spacing:.14em;text-transform:uppercase;color:var(--color-navy)}
@@ -297,7 +315,7 @@
   <div class="container">
     <div class="header-bar glass glass--strong">
       <a class="brand" href="makieta-v3.html" aria-label="BeautyPolisa – strona główna">
-        <img src="../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="160" height="24">
+        <img src="img/logo-beautypolisa-320.png" alt="BeautyPolisa" width="160" height="24" translate="no">
         <small>created by Aura Expert</small>
       </a>
       <nav class="main-nav" aria-label="Menu główne">
@@ -330,7 +348,7 @@
           <a href="strefa/dam-prace.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-dokumenty"/></svg>Dam&nbsp;pracę</a>
           <a href="strefa/logowanie.html#s-rs-email"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Szukam pracy</a>
           <a href="strefa/szkolenia.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Szkolenia</a>
-          <a class="btn btn-navy" href="#zapytanie">Zapytaj o ofertę</a>
+          <a class="btn btn-navy" href="#zapytanie">Zapytaj doradcę<span class="sr-only"> o&nbsp;opiekę medyczną</span></a>
         </nav>
       </details>
     </div>
@@ -341,9 +359,10 @@
 
   <!-- PROLOG · otwarcie: dwa przyciski (wzorzec nnw-dzieci) – jeden produkt, bez „dróg”; zakresy Partner/Rodzina opisuje sekcja I.
        Liczby w .figures: bez kwot (cennik w przygotowaniu) – dwie sieci, trzy zakresy, cztery pakiety w porównaniu; równorzędnie, bez rekomendacji. -->
-  <section class="scene scene--marble scene--pos-ct page-hero" aria-labelledby="hero-title">
+  <section class="scene scene--marble scene--pos-ct page-hero bg-on" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero-panel glass frame">
+        <div class="hero-copy">
         <nav class="crumbs" aria-label="Okruszki">
           <!-- produkcyjnie: / › /ubezpieczenia › /ubezpieczenia/opieka-medyczna (BreadcrumbList w JSON-LD) -->
           <ol>
@@ -354,24 +373,28 @@
         </nav>
         <p class="eyebrow">ENEL-MED · LUX MED · abonamenty medyczne</p>
         <h1 id="hero-title">Opieka medyczna <em>dla zespołu salonu</em></h1>
-        <p class="lead">Program dla branży beauty: abonamenty medyczne ENEL-MED i LUX MED dla pracowników salonu – w zakresie Partner albo Rodzina także dla ich bliskich. Porównaj pakiety, sprawdź specjalizacje i zapytaj doradcę Aura Expert o ofertę – cenę dla Twojego zespołu przygotuje doradca.</p>
+        <p class="lead">Program dla branży beauty: abonamenty medyczne ENEL-MED i LUX MED dla pracowników salonu – w zakresie Partner albo Rodzina także dla ich bliskich.</p>
         <div class="hero-actions">
           <a class="btn btn-navy" href="#porownanie">Porównaj pakiety</a>
           <a class="btn btn-ghost" href="#zapytanie">Zapytaj doradcę</a>
         </div>
-        <p class="hero-note">Pracujesz sama/sam albo w&nbsp;zespole 1–2 osób? <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a> o&nbsp;możliwość. <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
+        <p class="hero-note">Porównaj pakiety, sprawdź specjalizacje i zapytaj doradcę Aura Expert o ofertę – cenę dla Twojego zespołu przygotuje doradca.</p>
+        </div>
+        <!-- zespół 1–2 osób: zdanie z odesłaniem do doradcy jest w sekcji I (#dla-kogo, .scope-solo) – w otwarciu najwyżej 2 akcje (raport 15, Z34) -->
+        <div class="hero-aside">
         <dl class="figures">
           <div><dt>Sieci medyczne: ENEL-MED i&nbsp;LUX MED</dt><dd>2</dd></div>
           <div><dt>Zakresy: Singiel, Partner, Rodzina</dt><dd>3</dd></div>
           <div><dt>Pakiety w&nbsp;porównaniu</dt><dd>4</dd></div>
         </dl>
         <p class="figures-note"><span class="mock-note">cennik programu w&nbsp;przygotowaniu – cenę dla zespołu przygotuje doradca po zapytaniu</span></p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- I · DLA KOGO: fakty z medical.html („Dla Twojego Salonu” / „Dla Twoich Ludzi”) bez twierdzeń bez dowodu;
-       hasła źródła wymagające potwierdzenia – w „O czym pamiętać” z adnotacją. -->
+       hasła źródła wymagające potwierdzenia – w „Ważne warunki” z adnotacją. -->
   <section class="section band" id="dla-kogo" aria-labelledby="dk-title">
     <div class="container">
       <div class="section-head">
@@ -394,7 +417,7 @@
             <li><strong>Pakiety podstawowe.</strong> ENEL-MED Basic i LUX MED Podstawowa znajdziesz w porównaniu zakresów. <span class="mock-note">ceny pakietów – cennik programu w&nbsp;przygotowaniu</span></li>
             <li><strong>Koszty w firmie.</strong> Sposób rozliczenia abonamentu w salonie (koszt, przychód pracownika) <span class="mock-note">do potwierdzenia z księgowym/prawnikiem</span></li>
           </ul>
-          <p class="scope-solo">Pracujesz sama/sam albo w&nbsp;zespole 1–2 osób? <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a>. <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
+          <p class="scope-solo">Pracujesz samodzielnie albo w&nbsp;zespole 1–2 osób? <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a>. <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
           <p class="scope-actions"><a class="link-lux" href="#ceny">Zobacz przykładowe stawki</a></p>
         </article>
         <article class="scope-card rv-rise" id="dla-rodziny" aria-labelledby="dr-title">
@@ -412,7 +435,7 @@
         </article>
       </div>
       <div class="mind">
-        <h3 id="mind-title">O czym pamiętać</h3>
+        <h3 id="mind-title">Ważne warunki</h3>
         <ul>
           <li>Świadczenia medyczne zapewniają ENEL-MED S.A. oraz LUX MED sp. z o.o. Pełne warunki określają dokumenty operatora (w&nbsp;dotychczasowej stopce programu: OWU). <span class="mock-note">forma prawna produktu (abonament medyczny czy ubezpieczenie zdrowotne), nazwy dokumentów (regulamin / OWU) i rola Aura Expert przy tej sprzedaży – do potwierdzenia (obowiązki IDD)</span></li>
           <li>Dotychczasowa strona wymienia też wizyty u ginekologa, dermatologa i okulisty bez skierowania, e-wizyty z e-receptą oraz stomatologię. <span class="mock-note">dostępność w poszczególnych pakietach i warunki – do potwierdzenia</span></li>
@@ -466,8 +489,8 @@
         <div class="price-note">
           <p><strong>Kwoty powyżej to przykład</strong> z&nbsp;makiety, nie cennik programu – ten jest w&nbsp;przygotowaniu. Cenę dla Twojego zespołu przygotuje doradca po zapytaniu.</p>
           <p><strong>Od 51 osób</strong> – wycena indywidualna: doradca przygotuje ofertę dla większego zespołu.</p>
-          <p class="price-actions"><a class="btn btn-navy" href="#zapytanie" data-to-form data-op="porownanie">Zapytaj doradcę o&nbsp;cenę</a></p>
-          <p><strong>Mniej niż 3 osoby?</strong> <a href="#zapytanie" data-to-form data-team="1-2">Zapytaj doradcę</a> o&nbsp;możliwość. <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
+          <p class="price-actions"><a class="btn btn-navy" href="#zapytanie" data-to-form>Zapytaj doradcę<span class="sr-only"> o&nbsp;cenę abonamentu</span></a></p>
+          <p><strong>Mniej niż 3 osoby?</strong> O&nbsp;możliwość zapytasz doradcę w&nbsp;formularzu poniżej (opcja „mniej niż 3”). <span class="mock-note">do potwierdzenia (przykładowe stawki od 3&nbsp;osób)</span></p>
                   </div>
       </div>
     </div>
@@ -525,7 +548,7 @@
         <form class="spec-search" id="spec-form" role="search" aria-label="Specjalizacje i zabiegi w pakietach" hidden>
           <label for="spec-q">Specjalizacja lub zabieg</label>
           <div class="spec-row">
-            <input type="search" id="spec-q" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. kardiolog, dermatolog, biopsja" aria-describedby="spec-count" aria-controls="spec-list">
+            <input type="search" id="spec-q" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. kardiolog, dermatolog, biopsja…" aria-describedby="spec-count" aria-controls="spec-list">
             <button class="btn btn-ghost" type="button" id="spec-all" aria-controls="spec-list" aria-expanded="false">Pokaż wszystkie (%%SPEC_COUNT%%)</button>
           </div>
           <p class="spec-count" id="spec-count" role="status">Pozycji w wyszukiwarce: <strong>%%SPEC_COUNT%%</strong></p>
@@ -564,7 +587,7 @@
             <h3>Zapytanie</h3>
             <span class="step-where">Formularz na tej stronie</span>
             <p>Podaj NIP firmy, kontakt, wybraną sieć – albo prośbę o porównanie – liczbę osób i zakres.</p>
-            <p class="links"><a class="link-lux" href="#zapytanie">Przejdź do formularza</a></p>
+            <p class="links"><a class="link-lux" href="#zapytanie">Zapytaj doradcę<span class="sr-only"> – formularz zapytania o&nbsp;opiekę medyczną</span></a></p>
           </li>
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">2</span>
@@ -617,14 +640,14 @@
           <input type="hidden" name="product" value="opieka-medyczna">
           <input type="hidden" name="legalVersions.privacyNotice" value="rodo-v1-2026-11">
           <input type="hidden" name="legalVersions.distributorNotice" value="idd-v2-2026-11">
-          <p class="form-pick" id="form-pick" role="status" hidden></p>
+          <p class="form-pick" id="form-pick" role="status"></p>
           <div class="form-errors" id="form-errors" tabindex="-1" role="alert"></div>
 
           <div class="fields-2">
             <div class="field">
               <label for="m-nip">NIP firmy</label>
-              <input id="m-nip" name="nip" inputmode="numeric" autocomplete="off" required pattern="[0-9 \-]{10,13}" maxlength="13" aria-describedby="m-nip-hint m-nip-status">
-              <p class="field-hint" id="m-nip-hint">Sprawdzimy NIP w rejestrze REGON (GUS) i uzupełnimy nazwę firmy.</p>
+              <input id="m-nip" name="nip" inputmode="numeric" autocomplete="off" spellcheck="false" required pattern="[0-9 \-]{10,13}" maxlength="13" aria-describedby="m-nip-hint m-nip-status">
+              <p class="field-hint" id="m-nip-hint">System sprawdzi NIP w rejestrze REGON (GUS) i uzupełni nazwę firmy.</p>
               <p class="nip-status" id="m-nip-status" aria-live="polite"></p>
               <p class="field-error" id="m-nip-err" hidden></p>
             </div>
@@ -635,7 +658,7 @@
           </div>
           <div class="field"><label for="m-imie">Imię i&nbsp;nazwisko</label><input id="m-imie" name="fullName" autocomplete="name" required minlength="2" maxlength="120"><p class="field-error" id="m-imie-err" hidden></p></div>
           <div class="fields-2">
-            <div class="field"><label for="m-email">E-mail</label><input id="m-email" name="email" type="email" autocomplete="email" required maxlength="254"><p class="field-error" id="m-email-err" hidden></p></div>
+            <div class="field"><label for="m-email">E-mail</label><input id="m-email" name="email" type="email" autocomplete="email" spellcheck="false" required maxlength="254"><p class="field-error" id="m-email-err" hidden></p></div>
             <div class="field"><label for="m-tel">Telefon</label><input id="m-tel" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="20" aria-describedby="m-tel-hint"><p class="field-hint" id="m-tel-hint">Np. 600 000 000 albo z kierunkowym +48.</p><p class="field-error" id="m-tel-err" hidden></p></div>
           </div>
 
@@ -682,7 +705,7 @@
           <div class="hp" aria-hidden="true"><label for="m-extra">Nie wypełniaj tego pola</label><input id="m-extra" name="extraInfo" tabindex="-1" autocomplete="off"></div>
           <!-- produkcja: widżet Cloudflare Turnstile (tryb zarządzany) w tym miejscu, przed przyciskiem; token → turnstileToken -->
           <div class="ts-slot" aria-hidden="true"><strong>Turnstile</strong><span>Miejsce na weryfikację Cloudflare Turnstile (makieta).</span></div>
-          <button class="btn btn-navy" type="submit"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg>Wyślij zapytanie</button>
+          <button class="btn btn-navy" type="submit" id="m-wyslij"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-doradca"/></svg><span class="m-wyslij-t">Wyślij zapytanie</span></button>
           <p class="lead-notice">Administratorem danych podanych w&nbsp;formularzu jest Aura Expert sp. z&nbsp;o.o. Przetwarzamy je, aby przygotować ofertę abonamentu medycznego i&nbsp;odpowiedzieć na zapytanie (art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;b RODO). Kontakt z&nbsp;inspektorem ochrony danych: <a href="mailto:iod@auraexpert.pl">iod@auraexpert.pl</a>. Pełna informacja: <a href="/rodo">polityka prywatności</a>; informacje o&nbsp;agencie ubezpieczeniowym: <a href="/dokumenty">dokumenty</a>. <span class="mock-note">czy dane trafiają do ENEL-MED / LUX MED w celu wyceny – do potwierdzenia</span></p>
         </form>
         <div class="form-status" id="form-status" role="status" tabindex="-1"></div>
@@ -691,7 +714,7 @@
     </div>
   </section>
 
-  <!-- VII · PYTANIA: widoczne pytania = FAQPage w JSON-LD (ten sam tekst; linki tylko w HTML; bez twardych spacji w odpowiedziach). -->
+  <!-- VII · PYTANIA: widoczne pytania = FAQPage w JSON-LD (ten sam tekst; linki i twarde spacje tylko w HTML – raport 16, 3.2). -->
   <section class="section band" id="faq" aria-labelledby="faq-title">
     <div class="container faq-grid">
       <div class="section-head faq-head">
@@ -701,16 +724,16 @@
         <p><span class="mock-note">odpowiedzi na podstawie dotychczasowej strony programu – do potwierdzenia przed publikacją</span></p>
       </div>
       <div class="faq glass">
-        <!--nb-off-->
         %%FAQ%%
-        <!--nb-on-->
       </div>
     </div>
   </section>
 
-  <!-- POWIĄZANE: opisy kart 1:1 z innych stron produktowych (bez nowych faktów). -->
-  <section class="section" id="powiazane" aria-labelledby="pow-title">
-    <div class="container">
+  <!-- SEKCJA ZAMYKAJĄCA (raport 15, Z8; runda 2 weryfikacji): „Inne ubezpieczenia” i karta końcowa – jedna sekcja; pytania to osobna
+       sekcja wyżej (razem miały 2,23–2,55 ekranu przy 1440×900) -->
+  <section class="section section--flush-top band" id="zamkniecie" aria-labelledby="pow-title">
+    <!-- POWIĄZANE: opisy kart 1:1 z innych stron produktowych (bez nowych faktów). -->
+    <div class="container zamkniecie-blok" id="powiazane">
       <div class="related-head">
         <p class="eyebrow">Dla Ciebie i&nbsp;Twojego salonu</p>
         <h2 id="pow-title" class="rv-curtain">Inne ubezpieczenia <em>w&nbsp;BeautyPolisa</em></h2>
@@ -732,9 +755,9 @@
           <div class="rel-links"><a class="link-lux" href="utrata-dochodu.html">Poznaj ubezpieczenie<span class="sr-only">: utrata dochodu</span></a></div>
         </article>
         <article class="rel-card rv-rise" aria-labelledby="rel-nnw">
-          <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><h3 id="rel-nnw">NNW dzieci</h3></div>
+          <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><h3 id="rel-nnw">NNW dla dzieci</h3></div>
           <p>Ubezpieczenie następstw nieszczęśliwych wypadków dla dzieci w&nbsp;programie z&nbsp;Colonnade: ochrona 24&nbsp;godziny na dobę na całym świecie, jedna składka za rok – 40, 94 albo 175&nbsp;zł za osobę. Polisę kupujesz online na platformie ubezpieczyciela Colonnade.</p>
-          <div class="rel-links"><a class="link-lux" href="nnw-dzieci.html">Poznaj NNW dzieci</a></div>
+          <div class="rel-links"><a class="link-lux" href="nnw-dzieci.html">Poznaj NNW dla dzieci</a></div>
         </article>
         <article class="rel-card rv-rise" aria-labelledby="rel-gr">
           <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><h3 id="rel-gr">Grupowe ERGO dla beauty</h3></div>
@@ -743,17 +766,14 @@
         </article>
       </div>
     </div>
-  </section>
-
-  <!-- EPILOG · CTA: kryjąca karta (bez nowej tafli szkła) -->
-  <section class="section section--flush-top" id="dalej" aria-labelledby="end-title">
-    <div class="container">
+    <!-- EPILOG · CTA: kryjąca karta (bez nowej tafli szkła) -->
+    <div class="container zamkniecie-blok" id="dalej">
       <div class="end-card dark">
         <p class="eyebrow">Na koniec</p>
-        <h2 id="end-title" class="rv-curtain">Zapytaj o ofertę <em>dla swojego zespołu</em></h2>
+        <h3 id="end-title" class="rv-curtain">Zapytaj o ofertę <em>dla swojego zespołu</em></h3>
         <p>Podaj NIP, liczbę osób i zakres – doradca Aura Expert przygotuje ofertę ENEL-MED, LUX MED albo porównanie obu sieci. Możesz też zadzwonić.</p>
         <div class="end-actions">
-          <a class="btn btn-ivory" href="#zapytanie">Zapytaj o ofertę</a>
+          <a class="btn btn-ivory" href="#zapytanie">Zapytaj doradcę<span class="sr-only"> o&nbsp;ofertę dla zespołu</span></a>
           <a class="btn btn-ghost-dark" href="tel:+48504400901">Zadzwoń: +48&nbsp;504&nbsp;400&nbsp;901</a>
         </div>
       </div>
@@ -775,11 +795,21 @@
 /* ===== Opieka medyczna: dane (te same co tabele statyczne – generowane z medical.html) ===== */
 var MED=(function(){try{return JSON.parse(document.getElementById('med-data').textContent)}catch(e){return null}})();
 
+/* Stan widoku w adresie (?zespol=&zakres=&porownaj=&q=, history.replaceState z zachowaniem #kotwicy); formularz czyta też ?operator= */
+function medAdres(k,v){
+  try{var u=new URL(location.href);if(v)u.searchParams.set(k,v);else u.searchParams.delete(k);
+    if(u.href!==location.href)history.replaceState(history.state,'',u.pathname+u.search+u.hash)}catch(e){}
+}
+function medParam(k){try{return new URLSearchParams(location.search).get(k)}catch(e){return null}}
+/* kwoty w polskim formacie: separator tysięcy i twarda spacja przed „zł” (Intl, grupowanie także 4 cyfr) */
+var MED_ZL=(function(){try{var f=new Intl.NumberFormat('pl-PL',{style:'currency',currency:'PLN',maximumFractionDigits:0,useGrouping:'always'});return function(n){return f.format(n).replace(/ /g,'\u00a0')}}catch(e){return function(n){return n+'\u00a0zł'}}})();
+
 /* Przykładowe stawki: przełącznik zespołu i zakresu → liczba nad tabelą, wyróżnienie wiersza/kolumny, komunikat dla czytników */
 var MedPrices=(function(){
   var sec=document.getElementById('ceny'); if(!sec||!MED) return null;
   var ctl=document.getElementById('ceny-wybor'), live=document.getElementById('ceny-status');
   ctl.hidden=false;
+  ['zespol','zakres'].forEach(function(k){var v=medParam(k),r=v&&sec.querySelector('input[name="ceny-'+k+'"][value="'+v.replace(/[^a-z0-9+-]/g,'')+'"]');if(r)r.checked=true});
   function val(n){var r=sec.querySelector('input[name="'+n+'"]:checked');return r?r.value:null}
   function set(n,v){var r=sec.querySelector('input[name="'+n+'"][value="'+v+'"]');if(r){r.checked=true;render(true)}}
   function render(announce){
@@ -787,14 +817,14 @@ var MedPrices=(function(){
     var sl=MED.scopeLabels[scope], tl=MED.teams[team];
     [].forEach.call(sec.querySelectorAll('.op-card'),function(card){
       var op=card.getAttribute('data-op'), fig=card.querySelector('[data-fig]'), cap=card.querySelector('[data-fig-cap]');
-      if(team==='51+'){fig.textContent='Wycena indywidualna';cap.textContent='zespół od 51 osób – ofertę przygotuje doradca';parts.push(MED.ops[op].pkg+': wycena indywidualna')}
-      else{var p=MED.prices[team][op][idx];fig.textContent=p+' zł';cap.textContent=MED.scopeUnits[scope]+' miesięcznie · '+sl+' · zespół '+tl+' osób';parts.push(MED.ops[op].pkg+' '+p+' zł')}
+      if(team==='51+'){fig.textContent='Wycena indywidualna';cap.textContent='zespół od 51\u00a0osób\u00a0– ofertę przygotuje doradca';parts.push(MED.ops[op].pkg+': wycena indywidualna')}
+      else{var p=MED.prices[team][op][idx];fig.textContent=MED_ZL(p);cap.textContent=MED.scopeUnits[scope]+' miesięcznie · '+sl+' · zespół '+tl+'\u00a0osób';parts.push(MED.ops[op].pkg+' '+MED_ZL(p))}
       [].forEach.call(card.querySelectorAll('tr[data-team]'),function(tr){tr.classList.toggle('is-sel',tr.getAttribute('data-team')===team)});
       [].forEach.call(card.querySelectorAll('[data-scope]'),function(c){c.classList.toggle('is-col',team!=='51+'&&c.getAttribute('data-scope')===scope)});
     });
-    if(announce) live.textContent='Przykładowe stawki (cennik w przygotowaniu) – zespół '+tl+' osób, zakres '+sl+': '+parts.join(', ')+(team==='51+'?'.':' miesięcznie '+MED.scopeUnits[scope]+'.');
+    if(announce) live.textContent='Przykładowe stawki (cennik w\u00a0przygotowaniu)\u00a0– zespół '+tl+'\u00a0osób, zakres '+sl+': '+parts.join(', ')+(team==='51+'?'.':' miesięcznie '+MED.scopeUnits[scope]+'.');
   }
-  sec.addEventListener('change',function(e){if(e.target.name==='ceny-zespol'||e.target.name==='ceny-zakres')render(true)});
+  sec.addEventListener('change',function(e){if(e.target.name==='ceny-zespol'||e.target.name==='ceny-zakres'){render(true);medAdres(e.target.name.slice(5),e.target.value)}});
   render(false);
   return {team:function(){return val('ceny-zespol')},scope:function(){return val('ceny-zakres')},setScope:function(v){set('ceny-zakres',v)}};
 })();
@@ -808,7 +838,7 @@ document.addEventListener('click',function(e){
 var MedForm=(function(){
   var form=document.getElementById('med-form'); if(!form||!MED) return null;
   var pick=document.getElementById('form-pick');
-  var opNames={enel:'ENEL-MED',lux:'LUX MED',porownanie:'porównanie ENEL-MED i LUX MED'};
+  var opNames={enel:'ENEL-MED',lux:'LUX\u00a0MED',porownanie:'porównanie ENEL-MED i\u00a0LUX\u00a0MED'};
   function check(name,v){var r=form.querySelector('input[name="'+name+'"][value="'+v+'"]');if(r){r.checked=true;r.dispatchEvent(new Event('change',{bubbles:true}));return true}return false}
   function apply(op,team,scope,fromPrices){
     var ok=[];
@@ -817,7 +847,6 @@ var MedForm=(function(){
     if(scope&&check('medScope',scope))ok.push('zakres: '+MED.scopeLabels[scope]);
     if(!ok.length) return;
     pick.textContent=(fromPrices?'Wybrano przy przykładowych stawkach – ':'Wstępnie wybrano – ')+ok.join(', ')+'. Możesz to zmienić poniżej.';
-    pick.hidden=false;
   }
   document.addEventListener('click',function(e){
     var a=e.target.closest('[data-to-form]'); if(!a) return;
@@ -839,6 +868,8 @@ var MedForm=(function(){
   ctl.hidden=false;
   var boxes=[].slice.call(ctl.querySelectorAll('input[name="porownaj"]'));
   function selected(){return boxes.filter(function(b){return b.checked}).map(function(b){return b.value})}
+  (function(){var v=(medParam('porownaj')||'').split(',').filter(function(id){return boxes.some(function(b){return b.value===id})});
+    if(v.length>=2)boxes.forEach(function(b){b.checked=v.indexOf(b.value)>-1})})();
   function render(){
     var sel=selected();
     [].forEach.call(sec.querySelectorAll('[data-pkg]'),function(el){
@@ -848,14 +879,14 @@ var MedForm=(function(){
     [].forEach.call(sec.querySelectorAll('[data-diff]'),function(el){
       var me=el.getAttribute('data-diff'), mine=MED.pkgs[me], miss=[];
       sel.forEach(function(o){if(o===me)return;MED.pkgs[o].forEach(function(s){if(mine.indexOf(s)<0&&miss.indexOf(s)<0)miss.push(s)})});
-      el.textContent=miss.length?miss.join(', '):'–';
+      var t=miss.join(', ');el.textContent=t?t.charAt(0).toUpperCase()+t.slice(1):'–';
     });
   }
   ctl.addEventListener('change',function(e){
     var b=e.target; if(b.name!=='porownaj') return;
     if(!b.checked&&selected().length<2){b.checked=true;live.textContent='Porównanie wymaga co najmniej dwóch pakietów.';return}
     live.textContent='Porównujesz: '+selected().map(function(id){return MED.pkgNames[id]}).join(', ')+'.';
-    render();
+    render();medAdres('porownaj',selected().join(','));
   });
   render();
 })();
@@ -879,11 +910,12 @@ var MedForm=(function(){
     if(q&&!n){
       empty.hidden=false;
       empty.innerHTML='';
-      empty.appendChild(document.createTextNode('Nie ma „'+input.value.trim()+'” w danych programu na tej stronie. '));
-      var a=document.createElement('a');a.href='#zapytanie';a.textContent='Zapytaj doradcę o tę specjalizację';empty.appendChild(a);
+      empty.appendChild(document.createTextNode('Nie ma „'+input.value.trim()+'” w\u00a0danych programu na tej stronie. '));
+      var a=document.createElement('a'),sr=document.createElement('span');a.href='#zapytanie';a.textContent='Zapytaj doradcę';sr.className='sr-only';sr.textContent=' o\u00a0tę specjalizację';a.appendChild(sr);empty.appendChild(a);
       empty.appendChild(document.createTextNode('.'));
     } else empty.hidden=true;
-    count.innerHTML=q?('Wyniki dla „'+escapeHtml(input.value.trim())+'”: <strong>'+n+'</strong> z '+TOTAL):(showAll?'Pokazano wszystkie pozycje: <strong>'+TOTAL+'</strong>':'Pozycji w wyszukiwarce: <strong>'+TOTAL+'</strong> – wpisz nazwę albo wybierz podpowiedź.');
+    count.innerHTML=q?('Wyniki dla „'+escapeHtml(input.value.trim())+'”: <strong>'+n+'</strong> z\u00a0'+TOTAL):(showAll?'Pokazano wszystkie pozycje: <strong>'+TOTAL+'</strong>':'Pozycji w\u00a0wyszukiwarce: <strong>'+TOTAL+'</strong>\u00a0– wpisz nazwę albo wybierz podpowiedź.');
+    medAdres('q',input.value.trim());
   }
   function escapeHtml(s){return s.replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   form.hidden=false; quick.hidden=false;
@@ -891,34 +923,48 @@ var MedForm=(function(){
   input.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(render,150)});
   input.addEventListener('keydown',function(e){if(e.key==='Escape'&&input.value){input.value='';render()}});
   all.addEventListener('click',function(){if(input.value){input.value='';showAll=true}else showAll=!showAll;render()});
-  quick.addEventListener('click',function(e){var b=e.target.closest('button[data-q]');if(!b)return;input.value=b.getAttribute('data-q');render();input.focus()});
+  /* fokus w polu tylko przy myszy – na telefonie klawiatura zasłoniłaby pokazane wyniki */
+  quick.addEventListener('click',function(e){var b=e.target.closest('button[data-q]');if(!b)return;input.value=b.getAttribute('data-q');render();if(window.matchMedia('(pointer:fine)').matches)input.focus()});
   /* głęboki link #spec-… pokazuje pozycję */
   function fromHash(){var id=location.hash.slice(1);if(id.indexOf('spec-')===0&&document.getElementById(id)&&id!=='spec-list'&&id!=='spec-q'&&id!=='spec-form'&&id!=='spec-title'){showAll=true;input.value='';render()}}
   window.addEventListener('hashchange',fromHash);
+  (function(){var v=medParam('q');if(v&&!input.value)input.value=v})();
   render(); fromHash();
 })();
 
 /* Formularz zapytania: walidacja – lista błędów u góry (linki do pól, fokus) + komunikat przy polu/grupie (.field-error,
    id dopisywane do aria-describedby i usuwane po poprawieniu); NIP – suma kontrolna i opis sprawdzenia w REGON (makieta);
    wersje treści zaznaczonych zgód; wysyłka zatrzymana (preventDefault) – komunikat bez obiecywania terminu, formularz chowany
-   (bez podwójnego wysłania), przycisk „Wyślij kolejne zapytanie”. */
+   (bez podwójnego wysłania), przycisk „Wyślij kolejne zapytanie”.
+   Stan wysyłania (raport 16, 3.1): na czas żądania przycisk wyłączony z tekstem „Wysyłanie…” i aria-busy na formularzu; błąd sieci –
+   dane zostają, przycisk znowu działa, komunikat podaje następny krok (w makiecie: ?symulacja=blad-wysylki). Ostrzeżenie przed
+   opuszczeniem strony po pierwszej zmianie (beforeunload), zdejmowane po wysłaniu.
+   Odstępstwo (świadome, wzorzec GOV.UK – DESIGN.md): po wysłaniu z błędami fokus trafia na listę błędów u góry (role=alert,
+   linki do pól), nie na pierwsze pole – lista podaje wszystkie poprawki naraz. */
 (function(){
   var form=document.getElementById('med-form'); if(!form) return;
   form.noValidate=true;
   var nip=document.getElementById('m-nip'), nipSt=document.getElementById('m-nip-status');
   var errs=document.getElementById('form-errors'), status=document.getElementById('form-status'), again=document.getElementById('form-again');
-  var submitted=false;
+  var submitted=false, zmiany=false, wysylanie=false;
+  var btn=document.getElementById('m-wyslij'), btnT=btn&&btn.querySelector('.m-wyslij-t');
+  function zmieniono(e){if(e.isTrusted&&!wysylanie)zmiany=true}
+  form.addEventListener('input',zmieniono);form.addEventListener('change',zmieniono);
+  window.addEventListener('beforeunload',function(e){if(zmiany&&!form.hidden){e.preventDefault();e.returnValue=''}});
+  /* produkcja: fetch POST /api/leads (token Turnstile, idempotencyKey); makieta: opóźnienie i opcjonalny błąd sieci */
+  function wyslij(){return new Promise(function(ok,blad){setTimeout(function(){medParam('symulacja')==='blad-wysylki'?blad(new Error('siec')):ok()},600)})}
+  function zajety(on){wysylanie=on;form.setAttribute('aria-busy',on?'true':'false');if(btn){btn.disabled=on;if(btnT)btnT.textContent=on?'Wysyłanie…':'Wyślij zapytanie'}}
   function digits(s){return s.replace(/[\s-]/g,'')}
   function nipOk(s){var d=digits(s);if(!/^\d{10}$/.test(d))return false;var w=[6,5,7,2,3,4,5,6,7],sum=0;for(var i=0;i<9;i++)sum+=w[i]*+d[i];return sum%11===+d[9]}
   function groupVal(n){var r=form.querySelector('input[name="'+n+'"]:checked');return r?r.value:''}
   /* reguły: id pola/grupy → [sprawdzenie, komunikat] */
   var RULES=[
-    {id:'m-nip',ok:function(){return nipOk(nip.value)},msg:function(){return digits(nip.value)?'NIP jest niepoprawny – sprawdź 10 cyfr numeru.':'Podaj NIP firmy (10 cyfr).'}},
-    {id:'m-imie',ok:function(){return document.getElementById('m-imie').value.trim().length>=2},msg:function(){return 'Podaj imię i nazwisko.'}},
+    {id:'m-nip',ok:function(){return nipOk(nip.value)},msg:function(){return digits(nip.value)?'NIP jest niepoprawny\u00a0– sprawdź 10\u00a0cyfr numeru.':'Podaj NIP firmy (10\u00a0cyfr).'}},
+    {id:'m-imie',ok:function(){return document.getElementById('m-imie').value.trim().length>=2},msg:function(){return 'Podaj imię i\u00a0nazwisko.'}},
     {id:'m-email',ok:function(){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('m-email').value.trim())},msg:function(){return 'Podaj adres e-mail, np. salon@example.pl.'}},
-    {id:'m-tel',ok:function(){return /^(\+[1-9]\d{7,14}|\d{9})$/.test(document.getElementById('m-tel').value.replace(/[\s()-]/g,''))},msg:function(){return 'Podaj numer telefonu, np. 600 000 000 albo +48 600 000 000.'}},
+    {id:'m-tel',ok:function(){return /^(\+[1-9]\d{7,14}|\d{9})$/.test(document.getElementById('m-tel').value.replace(/[\s()-]/g,''))},msg:function(){return 'Podaj numer telefonu, np. 600\u00a0000\u00a0000 albo +48\u00a0600\u00a0000\u00a0000.'}},
     {id:'m-operator',group:'medOperator',ok:function(){return !!groupVal('medOperator')},msg:function(){return 'Wybierz sieć medyczną albo „Chcę porównać”.'}},
-    {id:'m-zespol',group:'medTeam',ok:function(){return !!groupVal('medTeam')},msg:function(){return 'Wybierz liczbę osób w zespole.'}},
+    {id:'m-zespol',group:'medTeam',ok:function(){return !!groupVal('medTeam')},msg:function(){return 'Wybierz liczbę osób w\u00a0zespole.'}},
     {id:'m-zakres',group:'medScope',ok:function(){return !!groupVal('medScope')},msg:function(){return 'Wybierz zakres: Singiel, Partner albo Rodzina.'}}
   ];
   function ruleFor(el){for(var i=0;i<RULES.length;i++){var r=RULES[i];if(r.group?el.name===r.group:el.id===r.id)return r}return null}
@@ -939,7 +985,7 @@ var MedForm=(function(){
   function summary(list){
     errs.innerHTML='';
     if(!list.length)return;
-    var h=document.createElement('strong');h.textContent='Formularz wymaga poprawek – przejdź do pola:';
+    var h=document.createElement('strong');h.textContent='Formularz wymaga poprawek\u00a0– przejdź do pola:';
     var ul=document.createElement('ul');
     list.forEach(function(it){
       var li=document.createElement('li'), a=document.createElement('a');
@@ -976,7 +1022,7 @@ var MedForm=(function(){
     if(d.length<10){nipSt.textContent='';if(!submitted)setError(r,'');return}
     if(!nipOk(nip.value)){nipSt.textContent='';setError(r,'Sprawdź NIP – to nie jest poprawny numer (suma kontrolna się nie zgadza).');return}
     setError(r,'');
-    nipSt.innerHTML='NIP ma poprawny format. <span class="mock-note">makieta: rejestr REGON (GUS) nie jest tu odpytywany – w wersji produkcyjnej w tym miejscu pojawi się nazwa firmy z rejestru albo prośba o wpisanie jej ręcznie</span>';
+    nipSt.innerHTML='NIP ma poprawny format. <span class="mock-note" aria-hidden="true">makieta: rejestr REGON (GUS) nie jest tu odpytywany&nbsp;– w&nbsp;wersji produkcyjnej w&nbsp;tym miejscu pojawi się nazwa firmy z&nbsp;rejestru albo prośba o&nbsp;wpisanie jej ręcznie</span>';
     recheck(nip);
   });
   form.addEventListener('change',function(e){
@@ -994,16 +1040,24 @@ var MedForm=(function(){
     status.textContent='';
     if(problems.length){summary(problems);errs.focus();return}
     summary([]);
-    /* produkcja: fetch POST /api/leads z tokenem Turnstile i idempotencyKey; bez przekierowań */
-    form.hidden=true;
-    status.innerHTML='<strong>Dziękujemy – zapytanie gotowe do wysłania.</strong> Doradca Aura Expert skontaktuje się z Tobą telefonicznie lub e-mailem, żeby omówić ofertę. <span class="mock-note">makieta: dane nie zostały nigdzie wysłane</span>';
-    again.hidden=false;
-    status.focus();
+    if(wysylanie) return;
+    zajety(true);
+    wyslij().then(function(){
+      zajety(false);zmiany=false;
+      form.hidden=true;
+      status.innerHTML='<strong>Dziękujemy&nbsp;– zapytanie gotowe do wysłania.</strong> Doradca <span translate="no">Aura&nbsp;Expert</span> skontaktuje się z&nbsp;Tobą telefonicznie lub e-mailem, żeby omówić ofertę. <span class="mock-note" aria-hidden="true">makieta: dane nie zostały nigdzie wysłane</span>';
+      again.hidden=false;
+      status.focus();
+    },function(){
+      zajety(false);
+      status.innerHTML='<strong class="send-error">Nie udało się wysłać zapytania.</strong> Twoje dane zostały w&nbsp;formularzu&nbsp;– sprawdź połączenie z&nbsp;internetem i&nbsp;wyślij jeszcze raz albo zadzwoń: <a href="tel:+48504400901">+48\u00a0504\u00a0400\u00a0901</a>.';
+      if(btn)btn.focus();
+    });
   });
   again.querySelector('button').addEventListener('click',function(){
     form.reset(); submitted=false; RULES.forEach(function(r){setError(r,'')}); summary([]);
     nipSt.textContent=''; [].forEach.call(form.querySelectorAll('input[name^="consents.textVersions."]'),function(h){h.value=''});
-    var pick=document.getElementById('form-pick'); if(pick){pick.hidden=true;pick.textContent=''}
+    var pick=document.getElementById('form-pick'); if(pick)pick.textContent='';
     status.textContent=''; again.hidden=true; form.hidden=false; nip.focus();
   });
 })();

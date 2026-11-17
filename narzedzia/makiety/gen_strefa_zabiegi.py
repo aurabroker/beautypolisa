@@ -15,6 +15,9 @@ i archiwum snippets/zabiegi-oc-beauty-wycofane.json (bez ręcznego przepisywania
                                          treść chipów zabiegów na kartach ogłoszeń (nazwy z pliku; do N chipów + „i N innych”);
                                          kolejność jak na listach programu (stała, bez „trafności”), wycofane na końcu z dopiskiem
                                          „pozycja wycofana z listy” – generator porządkuje też data-ids
+Polska typografia (raport 16, 3.1): nazwy pozycji i sekcji w HTML przez typografia.esc() (twarde spacje po „i/w/z”, po „nr”,
+przed „–”; JSON bez zmian); blok gen:zabiegi-data niesie też funkcję bpTypografia() (typografia.JS) – skrypt strony stosuje ją
+do nazw w chipach i podglądzie ogłoszenia.
 Podmienia wyłącznie treść między znacznikami (idempotentnie). Lista 1:1 (walidacja zabiegi_model.py), bez synonimów,
 nazwy pozycji jak na danej liście. Uruchom: python3 -I gen_strefa_zabiegi.py [--check]
 --check: nic nie zapisuje, kończy się kodem 1, gdy blok w makiecie różni się od wygenerowanego.
@@ -23,6 +26,7 @@ import html, json, pathlib, re, sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import zabiegi_model as zm  # noqa: E402
+import typografia as ty  # noqa: E402
 from oc_frazy import sprawdz, tekst_html, raport  # noqa: E402
 
 ROOT = str(pathlib.Path(__file__).resolve().parents[2] / 'docs/koncepcja')  # repozytorium/docs/koncepcja
@@ -74,7 +78,8 @@ def data_block(J, W, sekcje):
     body = ('{"listy":' + json.dumps(listy, ensure_ascii=False, separators=(',', ':'))
             + ',\n"zabiegi":[\n' + ',\n'.join(rows) + '\n],\n"wycofane":[\n' + ',\n'.join(wyc) + '\n]}')
     body = body.replace('<', '\\u003c')  # nic nie zamknie <script> przedwcześnie
-    return '<script type="application/json" id="zabiegi-data">\n' + body + '\n</script>'
+    return ('<script type="application/json" id="zabiegi-data">\n' + body + '\n</script>\n'
+            '<script>/* polska typografia nazw zabiegów w chipach (narzedzia/makiety/typografia.py, JS) */\n' + ty.JS + '\n</script>')
 
 
 def checkbox_block(key, checked, sekcje, aktywne):
@@ -87,12 +92,12 @@ def checkbox_block(key, checked, sekcje, aktywne):
         is_open = ' open' if any(i in checked for i, _ in s['pozycje']) else ''
         out.append('  <details class="zab-grp" data-lista="%s"%s>' % (s['klucz'], is_open))
         out.append('    <summary><span class="zab-grp-name">%s</span><span class="zab-grp-meta"><span class="zab-grp-n">%d&nbsp;%s</span><span class="zab-grp-sel"></span></span></summary>'
-                   % (esc(s['nazwa']), n, plural(n, 'pozycja', 'pozycje', 'pozycji')))
+                   % (ty.esc(s['nazwa'], quote=True), n, plural(n, 'pozycja', 'pozycje', 'pozycji')))
         out.append('    <fieldset class="zab-list">')
-        out.append('      <legend class="sr-only">%s</legend>' % esc(s['nazwa']))
+        out.append('      <legend class="sr-only">%s</legend>' % ty.esc(s['nazwa'], quote=True))
         for i, nazwa in s['pozycje']:
             out.append('      <label class="check-row"><input type="checkbox" name="zabieg" value="%s"%s> <span>%s</span></label>'
-                       % (i, ' checked' if i in checked else '', esc(nazwa)))
+                       % (i, ' checked' if i in checked else '', ty.esc(nazwa, quote=True)))
         out.append('    </fieldset>')
         out.append('  </details>')
     out.append('</div>')
@@ -100,13 +105,14 @@ def checkbox_block(key, checked, sekcje, aktywne):
 
 
 def more_label(k):
-    return 'i %d %s' % (k, plural(k, 'inny', 'inne', 'innych'))
+    """„i N innych” w HTML – twarda spacja po „i” (typografia.esc; ta sama postać daje moreLabel() w skrypcie strony)."""
+    return ty.esc('i %d %s' % (k, plural(k, 'inny', 'inne', 'innych')))
 
 
 def tag_li(i, names, wycofane):
     if i in wycofane:
-        return '<li class="zab-tag-wycofany">%s (%s)</li>' % (esc(wycofane[i]), DOPISEK_WYCOFANE)
-    return '<li>%s</li>' % esc(names[i])
+        return '<li class="zab-tag-wycofany">%s</li>' % ty.esc('%s (%s)' % (wycofane[i], DOPISEK_WYCOFANE), quote=True)
+    return '<li>%s</li>' % ty.esc(names[i], quote=True)
 
 
 def tags_inner(ids, limit, more, names, wycofane):

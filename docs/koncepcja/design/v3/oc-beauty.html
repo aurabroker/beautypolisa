@@ -1,21 +1,35 @@
 <!doctype html>
-<html lang="pl">
+<html lang="pl" data-type="service">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>OC dla branży beauty (ERGO Hestia) | BeautyPolisa</title>
-<meta name="description" content="OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Policz składkę.">
+<meta name="description" content="OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Oblicz składkę.">
 <link rel="canonical" href="https://beautypolisa.eu/ubezpieczenia/oc-beauty">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:site_name" content="BeautyPolisa">
 <meta property="og:url" content="https://beautypolisa.eu/ubezpieczenia/oc-beauty">
 <meta property="og:title" content="OC dla branży beauty (ERGO Hestia) | BeautyPolisa">
-<meta property="og:description" content="OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Policz składkę.">
-<meta name="theme-color" content="#141C33">
+<meta property="og:description" content="OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Oblicz składkę.">
+<meta name="theme-color" content="#F7F3EC">
 <meta name="color-scheme" content="only light">
+<!-- udostępnianie i rodzaj strony (raport 15, Z24): obraz 1200×630 bez tekstu (kadr zdjęcia hero), ikona – serce z logo;
+     produkcyjnie przez metadata Next.js; adres obrazu docelowy -->
+<meta property="og:image" content="https://beautypolisa.eu/img/og-beautypolisa.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jasny gabinet beauty: granatowy fotel zabiegowy, marmurowy stolik z kosmetykami i piwonie przy oknie">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="page-type" content="service">
+<meta name="site-kind" content="service">
+<link rel="icon" href="img/ikona-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <!-- Makieta strony produktu: docelowy adres https://beautypolisa.eu/ubezpieczenia/oc-beauty (04, mapa URL).
      Blokadę indeksowania (meta robots) dokłada tylko podgląd makiet – nie ten plik. Tag Google: jak na stronie głównej (decyzja G1) – dopiero po zgodzie, tu go nie ma. -->
+<!-- tło hero (marmur) jest elementem LCP: klasa bg-on wpisana w sekcję hero + preload (raport 16, 3.2) -->
+<link rel="preload" as="image" href="img/tlo-marmur-len.webp" media="(min-width:768px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/tlo-marmur-len-1024.webp" media="(max-width:767px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
@@ -46,7 +60,7 @@
   --font-caps:'Poppins','Poppins Caps Fallback','Poppins Fallback 2',system-ui,sans-serif;
   --text-xs:.75rem; --text-sm:.875rem; --text-body:.9375rem; --text-base:1rem; --text-lead:clamp(1.0625rem,1rem + .25vw,1.125rem);
   --text-serif-sm:1.2rem; --text-serif-md:1.45rem; --text-h3:1.65rem;
-  --text-h2:clamp(2.25rem,1.35rem + 3.4vw,4.25rem); --text-h1:clamp(2.75rem,1.4rem + 4.6vw,5.25rem);
+  --text-h2:clamp(2.125rem,1.45rem + 2.65vw,3.375rem); --text-h1:clamp(2.25rem,1.2rem + 4.15vw,5rem);
   --text-display-numeral:3.4rem; --text-price:clamp(3rem,2.4rem + 2vw,4.2rem);
   --tracking-label:.2em; --tracking-nav:.16em;
   --radius-card:6px; --radius-btn:3px;
@@ -59,12 +73,12 @@
   --bp-line-gold-on-dark:rgba(217,192,137,.32); --bp-line-gold-on-dark-soft:rgba(217,192,137,.2);
   --bp-line-navy:rgba(42,59,104,.22); --bp-line-field:rgba(42,59,104,.7);
   --bp-error:#7A2E2E;
-  --bp-frame-inset:9px; --bp-container:1240px; --bp-gutter:clamp(16px,4vw,40px);
+  --bp-frame-inset:9px; --bp-container:77.5rem; --bp-gutter:clamp(16px,4vw,40px);
   --bp-z-sticky:55; --bp-z-header:60; --bp-z-skip:100;
   --bp-dur-1:.2s; --bp-dur-2:.3s; --bp-dur-3:.45s;
   /* ziarno: statyczny szum SVG, alfa ≤ .07 zapisana w pliku (CSP: img-src data:) */
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 .07 0 0 0 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
-  /* breakpointy: 480 / 768 / 1024 / 1200 px – w @media jako liczby */
+  /* breakpointy: 480 / 768 / 1024 / 1200 px – w @media jako liczby; przełączenie belka/szuflada – 75em (rośnie z czcionką domyślną) */
 }
 
 /* ---------- baza ---------- */
@@ -88,7 +102,7 @@ a{color:inherit}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .sprite{position:absolute;width:0;height:0;overflow:hidden}
 
-/* ---------- sceny: zdjęcie dopiero z klasą .bg-on (poza heroem), złote szwy między scenami ---------- */
+/* ---------- sceny: zdjęcie dopiero z klasą .bg-on (hero: klasa w HTML i preload), złote szwy między scenami ---------- */
 .scene{position:relative;background-size:cover;background-position:center;background-repeat:no-repeat;isolation:isolate}
 .scene--hero{background-color:var(--color-parchment)}
 .scene--silk{background-color:var(--color-midnight)}
@@ -192,14 +206,14 @@ main > .scene:not(.scene--hero),.site-footer{border-top:1px solid rgba(217,192,1
 .menu-panel a:not(.btn){display:flex;align-items:center;gap:14px;min-height:52px;border-bottom:1px solid var(--bp-line-gold-soft);text-decoration:none;color:var(--color-ink);font:500 .8rem/1.3 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase}
 .menu-panel .rule{margin-block:10px 4px}
 .menu-panel .btn{width:100%;margin-top:18px}
-@media (max-width:1199px){.main-nav,.client-link,.header-cta{display:none}.menu{display:block}}
+@media (max-width:74.99em){.main-nav,.client-link,.header-cta{display:none}.menu{display:block}}
 @media (max-height:500px){.site-header{position:absolute}}
 
 
 /* ---------- prolog strony produktu: marmur i jedna tafla ---------- */
 .page-hero{padding:clamp(124px,13vw,172px) 0 clamp(56px,8vw,104px)}
 .hero-panel{max-width:780px;padding:clamp(26px,4vw,56px);display:grid;gap:24px}
-.hero-panel h1{font-size:clamp(2.5rem,1.4rem + 3.6vw,4.4rem);line-height:1}
+.hero-panel h1{line-height:1}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px}
 .crumbs ol{display:flex;flex-wrap:wrap;align-items:center;gap:0 10px;list-style:none;margin:0;padding:0;font-size:var(--text-sm);line-height:1.4;color:var(--color-ink)}
 .crumbs li{display:inline-flex;align-items:center;gap:10px}
@@ -232,8 +246,8 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   -webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 min(32px,var(--bp-gutter)),#000 calc(100% - min(32px,var(--bp-gutter))),transparent),linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 28px),transparent);mask-composite:intersect}
 @media (prefers-contrast:more),(prefers-reduced-transparency:reduce){.scene--silk .section-head::after{background:var(--color-midnight)}}
 @media (forced-colors:active){.scene--silk .section-head::after{display:none}}
-.chapter-no{position:absolute;z-index:-1;top:-.5em;right:0;--drift:70px;font:italic 500 clamp(7rem,4.2rem + 9vw,14.5rem)/1 var(--font-serif);letter-spacing:-.02em;color:rgba(184,151,90,.2);pointer-events:none;user-select:none;-webkit-user-select:none;white-space:nowrap}
-@media (max-width:767px){.chapter-no{--drift:36px;top:-.35em;font-size:clamp(5.5rem,3rem + 14vw,8rem)}}
+.chapter-no{position:absolute;z-index:-1;top:-.5em;right:0;font:italic 500 clamp(7rem,4.2rem + 9vw,14.5rem)/1 var(--font-serif);letter-spacing:-.02em;color:rgba(184,151,90,.2);pointer-events:none;user-select:none;-webkit-user-select:none;white-space:nowrap}
+@media (max-width:767px){.chapter-no{top:-.35em;font-size:clamp(5.5rem,3rem + 14vw,8rem)}}
 .band{background:var(--color-parchment);border-top:1px solid rgba(217,192,137,.45);border-bottom:1px solid rgba(217,192,137,.45)}
 
 /* ---------- I · lista zabiegów: wyszukiwarka, skok do grup, cztery karty bez rozmycia ---------- */
@@ -256,7 +270,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .zjump a span{font:italic 500 1.05rem/1 var(--font-serif);letter-spacing:0;text-transform:none;color:var(--color-taupe);font-variant-numeric:lining-nums}
 .zjump a:hover{border-color:var(--color-navy);background:rgba(255,255,255,.9)}
 .zlisty{display:grid;gap:clamp(20px,3vw,32px)}
-.zlista{position:relative;padding:clamp(22px,3.5vw,44px);scroll-margin-top:104px}
+.zlista{position:relative;padding:clamp(22px,3.5vw,44px);scroll-margin-top:104px}   /* bez content-visibility: szacowana wysokość list psuła przewijanie do kotwic aliasów przy 360 px (raport 16, 3.3 – sprawdzone t_func.js) */
 .zlista-head{display:grid;gap:20px;padding-bottom:24px;border-bottom:1px solid var(--bp-line-gold)}
 .zlista--dokument .zlista-head{padding-bottom:0;border-bottom:0}
 .zlista-title{display:grid;gap:12px;max-width:46rem}
@@ -282,7 +296,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .z-inna{grid-column:2;justify-self:start;display:inline-flex;align-items:center;min-height:24px;font-size:var(--text-xs);line-height:1.4;color:var(--color-taupe);text-decoration-color:var(--color-gold);text-underline-offset:3px}
 .z-inna:hover{color:var(--color-navy)}
 .zlist > li:target,.zlist > li:has(> .z-alias:target){background:rgba(255,255,255,.92);box-shadow:inset 3px 0 0 var(--color-navy);color:var(--color-navy);font-weight:500}
-.zempty{padding:22px 24px;border-left:2px solid var(--color-gold);background:rgba(255,255,255,.6);font-size:var(--text-body);color:var(--color-ink)}
+.zempty{overflow-wrap:anywhere;padding:22px 24px;border-left:2px solid var(--color-gold);background:rgba(255,255,255,.6);font-size:var(--text-body);color:var(--color-ink)}
 .zempty a,.zrules p a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
 .zback{margin-top:14px}
 .zrules{display:grid;gap:16px;margin-top:clamp(28px,4vw,48px);padding:clamp(22px,3vw,36px);max-width:62rem}
@@ -327,7 +341,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .table-scroll{overflow-x:auto;overscroll-behavior-x:contain}
 .table-scroll:focus-visible{outline-offset:-2px}
 .tariff-table table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:var(--text-sm)}
-.tariff-table caption{text-align:left;padding-bottom:10px;font:600 var(--text-serif-sm)/1.25 var(--font-serif);color:var(--color-navy)}
+.tariff-table caption{text-wrap:balance;text-align:left;padding-bottom:10px;font:600 var(--text-serif-sm)/1.25 var(--font-serif);color:var(--color-navy)}
 .tariff-table th,.tariff-table td{padding:10px 8px;border-bottom:1px solid var(--bp-line-gold-soft);text-align:right;vertical-align:top}
 .tariff-table thead th{font-weight:500;font-size:var(--text-xs);color:var(--color-navy);white-space:nowrap}
 .tariff-table th[scope="row"],.tariff-table thead th:first-child{text-align:left;padding-left:0}
@@ -361,7 +375,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .faq{overflow:hidden;overflow:clip}
 .faq details{padding:0 28px}
 .faq details + details{border-top:1px solid var(--bp-line-gold-soft)}
-.faq summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:18px;cursor:pointer;color:var(--color-navy);min-height:64px;padding-block:18px;font-family:var(--font-serif);font-size:1.4rem;line-height:1.25;font-weight:600}
+.faq summary{list-style:none;display:flex;text-wrap:balance;align-items:center;justify-content:space-between;gap:18px;cursor:pointer;color:var(--color-navy);min-height:64px;padding-block:18px;font-family:var(--font-serif);font-size:1.4rem;line-height:1.25;font-weight:600}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"";flex:none;width:16px;height:16px;background:linear-gradient(currentColor,currentColor) center/100% 1px no-repeat,linear-gradient(currentColor,currentColor) center/1px 100% no-repeat;transition:transform var(--bp-dur-2) var(--ease-lux)}
 .faq details[open] summary::after{transform:rotate(45deg)}
@@ -474,7 +488,6 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 @keyframes rise{from{translate:0 56px;scale:.96}to{translate:0 0;scale:1}}
 @keyframes fade-in{from{opacity:0}to{opacity:1}}
 @keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-@keyframes drift{from{translate:0 var(--drift)}to{translate:0 calc(-1 * var(--drift))}}
 @keyframes frame-draw{from{clip-path:polygon(0 0,0 0,0 0)}to{clip-path:polygon(0 0,200% 0,0 200%)}}
 @keyframes note-in{from{opacity:.001;translate:0 24px}to{opacity:1;translate:0 0}}
 @media screen and (prefers-reduced-motion:no-preference){
@@ -493,7 +506,6 @@ h1,h2,h3{font-variant-numeric:lining-nums}
     .site-footer .footer-nav > .rv-rise:nth-child(4){animation-range:entry 30% entry 100%;animation-range:entry 30% entry 100%,entry 0% entry min(100%,11vh)}
     :is(.section-head,.end-card) > .eyebrow{view-timeline:--eyebrow block}
     :is(.section-head,.end-card) > .eyebrow::before{animation:draw linear both;animation-timeline:--eyebrow;animation-range:entry 0% cover 40%}
-    .chapter-no{animation:drift linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
   }
   html.io-reveal .rv-curtain:not(.is-in){opacity:0;translate:0 .6em}
   html.io-reveal .rv-rise:not(.is-in){opacity:0;translate:0 56px;scale:.96}
@@ -503,13 +515,12 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   html.io-reveal .footer-nav > .rv-rise:nth-child(2){transition-delay:.12s}
   html.io-reveal .footer-nav > .rv-rise:nth-child(3){transition-delay:.24s}
   html.io-reveal .footer-nav > .rv-rise:nth-child(4){transition-delay:.36s}
-  html.sl-js .chapter-no{translate:0 var(--drift-y,0px)}
 }
 /* odpowiedzi i listy rozwijane płynnie tam, gdzie jest ::details-content */
 @supports selector(::details-content){
   @media (prefers-reduced-motion:no-preference){
     .faq details,.zdetails{interpolate-size:allow-keywords}
-    .faq details::details-content,.zdetails::details-content{block-size:0;overflow:clip;transition:block-size .45s var(--ease-lux),content-visibility .45s allow-discrete}
+    .faq details::details-content,.zdetails::details-content{block-size:0;overflow:clip;overflow-clip-margin:6px;transition:block-size .45s var(--ease-lux),content-visibility .45s allow-discrete}
     .faq details[open]::details-content,.zdetails[open]::details-content{block-size:auto}
   }
 }
@@ -543,9 +554,11 @@ h1,h2,h3{font-variant-numeric:lining-nums}
   *,*::before,*::after{animation:none!important;transition:none!important}
   html.io-reveal .rv-curtain,html.io-reveal .rv-rise{opacity:1!important;translate:none!important;scale:none!important}
   html.io-reveal .rv-eyebrow::before{transform:none!important}
-  html.sl-js .chapter-no{translate:none!important}
   .site-header,.ztools{display:none!important}
 }
+/* droga do polisy w 3 krokach (Z30): od 64em trzy kolumny */
+@media (min-width:768px){.steps.steps--3{grid-template-columns:minmax(0,1fr)}}
+@media (min-width:1024px){.steps.steps--3{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 <noscript><style>
 .scene--silk{background-image:url(img/tlo-jedwab.webp)}.scene--marble{background-image:url(img/tlo-marmur-len.webp)}
@@ -563,7 +576,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    "url": "https://beautypolisa.eu/ubezpieczenia/oc-beauty",
    "inLanguage": "pl-PL",
    "name": "OC dla branży beauty (ERGO Hestia) | BeautyPolisa",
-   "description": "OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Policz składkę.",
+   "description": "OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, sumy 100–300 tys. zł, stała taryfa. Oblicz składkę.",
    "breadcrumb": {
     "@id": "https://beautypolisa.eu/ubezpieczenia/oc-beauty#breadcrumb"
    },
@@ -618,7 +631,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
    },
    "audience": {
     "@type": "Audience",
-    "audienceType": "salony kosmetyczne, kosmetolodzy, fryzjerzy, podolodzy, linergistki, stylistki paznokci, tatuażyści, salony masażu"
+    "audienceType": "salony kosmetyczne, kosmetolodzy, fryzjerzy, podolodzy, linergistki, stylistki paznokci, tatuażyści, trycholodzy, masażyści, salony masażu"
    },
    "termsOfService": "https://beautypolisa.eu/dokumenty/owu-oc-beauty-ergo-hestia",
    "availableChannel": {
@@ -742,7 +755,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
      "name": "Czy zabiegi wymagające ankiety ERGO Hestii można ubezpieczyć?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „Zabiegi z użyciem toksyny botulinowej”, „Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego” i „Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)” – wszystkie 8 pozycji znajdziesz w sekcji Zabiegi wymagające ankiety ERGO Hestii. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne: Dyplom kosmetologa dla każdej osoby — tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i szkół policealnych nie są dyplomem. Certyfikat ze szkolenia z każdego zabiegu, który wykonuje dana osoba — szkolenie ukończone co najmniej 12 miesięcy przed początkiem ochrony. Zostaw kontakt przez formularz – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka."
+      "text": "Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „Zabiegi z użyciem toksyny botulinowej”, „Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego” i „Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)” – wszystkie 8 pozycji znajdziesz w sekcji Zabiegi wymagające ankiety ERGO Hestii. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne: Dyplom kosmetologa dla każdej osoby – tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i szkół policealnych nie są dyplomem. Certyfikat ze szkolenia z każdego zabiegu, który wykonuje dana osoba – szkolenie ukończone co najmniej 12 miesięcy przed początkiem ochrony. Zostaw kontakt przez formularz – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka."
      }
     }
    ]
@@ -754,7 +767,7 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 <!-- gen:wspolne-css -->
 <style>
 /* ===== Wspólne komponenty stron publicznych (gen_wspolne.py – nie edytuj ręcznie) ===== */
-/* --- menu „Ubezpieczenia” (≥ 1200 px): wzorzec disclosure, panel ivory bez backdrop-filter (nie liczy się do limitu tafli) --- */
+/* --- menu „Ubezpieczenia” (≥ 75em – 1200 px przy domyślnej czcionce 16 px; przy 20–24 px próg rośnie razem z etykietami): wzorzec disclosure, panel ivory bez backdrop-filter (nie liczy się do limitu tafli) --- */
 .main-nav .nav-produkty-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:0;padding:0 10px;background:none;border:0;border-radius:var(--radius-btn);font:500 var(--text-xs)/1 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase;text-decoration:none;color:var(--color-ink);white-space:nowrap;cursor:pointer}
 .main-nav .nav-produkty-btn:hover,.main-nav .nav-produkty-btn[aria-expanded="true"],.nav-produkty[data-biezacy] > .nav-produkty-btn{color:var(--color-navy);text-decoration:underline;text-underline-offset:6px;text-decoration-color:var(--color-gold)}
 .nav-produkty-btn svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform var(--bp-dur-2) var(--ease-lux)}
@@ -764,7 +777,9 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .mega-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;padding-bottom:12px;border-bottom:1px solid var(--color-gold)}
 .mega-title{margin:0;font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
 .main-nav .mega a{display:revert;min-height:0;padding:0;font:inherit;letter-spacing:normal;text-transform:none;white-space:normal;color:inherit;text-decoration:none}
-.main-nav .mega .mega-all{display:inline-flex;align-items:center;min-height:24px;font:500 var(--text-sm)/1.3 var(--font-sans);color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px}
+.main-nav .mega .mega-all{display:inline-flex;align-items:center;min-height:24px;font:500 var(--text-sm)/1.3 var(--font-sans);color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px;transition:text-decoration-thickness var(--bp-dur-1)}
+/* hover: „Wszystkie ubezpieczenia” i przycisk z data-biezacy (podkreślony już w spoczynku) – grubsza linia (raport 16, 3.1) */
+.main-nav .mega .mega-all:hover,.nav-produkty[data-biezacy] > .nav-produkty-btn:hover{text-decoration-thickness:2px}
 .main-nav .mega-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 20px;margin:14px 0 0;padding:0;list-style:none}
 .main-nav .mega .mega-item{display:grid;grid-template-columns:32px minmax(0,1fr);column-gap:16px;align-items:start;height:100%;padding:14px 14px 16px;border-radius:var(--radius-card);color:var(--color-ink);transition:background-color var(--bp-dur-1)}
 .main-nav .mega .mega-item:hover{background:var(--color-parchment)}
@@ -781,8 +796,8 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 .main-nav .mega .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 24px;font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;text-decoration:none;white-space:nowrap}
 .main-nav .mega .btn-navy,.main-nav .mega .btn-navy:hover{color:var(--color-ivory)}
 .main-nav .mega .btn-ghost,.main-nav .mega .btn-ghost:hover{color:var(--color-navy)}
-@media (max-width:1199px){.mega{display:none!important}}
-/* --- szuflada (< 1200 px): „Oblicz składkę OC” na górze + 6 produktów z ceną --- */
+@media (max-width:74.99em){.mega{display:none!important}}
+/* --- szuflada (< 75em): „Oblicz składkę OC” na górze + 6 produktów z ceną --- */
 .menu-panel .btn.mm-oblicz{width:100%;margin:4px 0 14px}
 .mm-tytul{margin:0;padding:4px 0 2px;font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
 .mm-produkty{margin:0 0 6px;padding:0;list-style:none}
@@ -815,6 +830,172 @@ h1,h2,h3{font-variant-numeric:lining-nums}
 @media (prefers-reduced-motion:reduce){.pasek-akcji,.pasek-akcji[data-on="1"],.nav-produkty-btn svg{transition:none!important}}
 @media (forced-colors:active){.mega,.pasek-akcji{border-color:CanvasText}.main-nav .mega .mega-item[aria-current="page"]{outline:2px solid Highlight}}
 @media print{.pasek-akcji,.mega{display:none!important}}
+/* ===== Wzorce wspólne bazowego CSS stron (raport 16, rozdz. 3.2; raport 15: Z5, Z15, Z16, Z18, Z27, Z41) =====
+   Blok stoi na końcu <head>, więc nadpisuje ręczne kopie bazowego CSS (tax-protect.html i kopie, opieka-medyczna/common.css).
+   Ruch tylko na transform i opacity (zmiany samych kolorów – tylko malowanie); prefers-reduced-motion wyłącza przejścia jak dotąd. */
+/* safe-area przy viewport-fit=cover: w poziomie na iPhonie treść, belka i szuflada nie wchodzą pod wycięcie ekranu */
+.container{padding-left:max(var(--bp-gutter),env(safe-area-inset-left));padding-right:max(var(--bp-gutter),env(safe-area-inset-right))}
+.menu-panel{padding-bottom:calc(22px + env(safe-area-inset-bottom))}
+.site-footer{padding-bottom:calc(40px + env(safe-area-inset-bottom))}
+.klauzula{width:min(calc(100% - 32px - env(safe-area-inset-left) - env(safe-area-inset-right)),780px)}
+/* dotyk: bez powiększania podwójnym tapnięciem, stonowane podświetlenie tapnięcia, bez „odbijania” strony na gładziku */
+a,button,summary,label,input,select,textarea,[role="button"]{touch-action:manipulation}
+html{-webkit-tap-highlight-color:rgba(42,59,104,.12)}
+:is(.dark,.pasek-akcji,.end-card){-webkit-tap-highlight-color:rgba(217,192,137,.2)}
+@media (pointer:fine){html{overscroll-behavior-y:none}}
+/* długie słowa i tekst powiększony do 200%: hero bez przewijania w poziomie (minmax(0,1fr), kwoty łamią się poniżej 540 px) */
+.hero-panel{grid-template-columns:minmax(0,1fr)}
+h1,h2,h3,.lead{overflow-wrap:break-word}
+@media (max-width:539px){.figures dd{white-space:normal}.figures > div,.figures > div:first-child{flex-wrap:wrap}.figures dt{min-width:0}}
+.mock-note{white-space:normal}   /* adnotacje makiety łamią się przy powiększonym tekście */
+/* logo kurczy się przy dużej czcionce domyślnej (24 px), przycisk „Menu” zostaje w belce */
+.brand{flex:0 1 auto;min-width:0}
+.brand small{white-space:normal}
+.menu{flex:none}
+/* hover: linki w treści, okruszki, „Wróć…” (.link-quiet) – grubsza linia; szuflada i „Menu” – kolor i ramka */
+.link-quiet,.crumbs a{transition:text-decoration-thickness var(--bp-dur-1),color var(--bp-dur-1)}
+@media (hover:hover){
+  a:not(.btn):not(.link-lux):hover{text-decoration-thickness:2px}
+  .menu-panel > a:not(.btn):hover{color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px}
+  .menu summary:hover{border-color:var(--color-navy)}
+}
+/* .btn-ghost-dark: hover mocniejszy od spoczynku – tekst zostaje ivory, wzmacnia się ramka i tło */
+.btn-ghost-dark:hover{color:var(--color-ivory);border-color:var(--color-gold-light);background-color:rgba(217,192,137,.14)}
+/* Z18: stan „wciśnięty” przycisków */
+.btn:active,.pasek-akcji a:active{transform:translateY(1px)}
+.btn-navy:active{background-color:var(--color-midnight);border-color:var(--color-midnight)}
+.btn-ghost:active{background-color:var(--color-parchment);border-color:var(--color-navy)}
+.btn-ivory:active{background-color:#E2D7C5}
+.btn-ghost-dark:active{background-color:rgba(217,192,137,.24)}
+/* Z27: podkreślenia nawigacji, stopki i pytań pojawiają się płynnie (kolor linii), w nawigacji linia się rysuje (scaleX); logo – krycie */
+.footer-nav a,.faq summary,.product-link{text-decoration-line:underline;text-decoration-color:transparent;text-decoration-thickness:1px;transition:color var(--bp-dur-2),text-decoration-color var(--bp-dur-2) var(--ease-lux)}
+.footer-nav a{text-underline-offset:5px}
+.faq summary,.product-link{text-underline-offset:6px}
+.main-nav > ul > li > a,.client-link{position:relative}
+.main-nav > ul > li > a::after,.client-link::after{content:"";position:absolute;left:10px;right:10px;bottom:10px;height:1px;background:var(--color-gold);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease-lux);pointer-events:none}
+.client-link::after{left:18px;right:6px}
+@media (hover:hover){
+  .main-nav > ul > li > a:hover,.client-link:hover{text-decoration:none}
+  .main-nav > ul > li > a:hover::after,.client-link:hover::after{transform:scaleX(1)}
+}
+.brand img{transition:opacity var(--bp-dur-2)}
+.brand:hover img{opacity:.78}
+/* kreska .link-lux i podkreślenie .btn-navy: transform zamiast width i background-size (bez przeliczania układu) */
+.link-lux::after{transform-origin:left;transition:transform var(--bp-dur-2) var(--ease-lux)}
+.link-lux:hover::after{width:28px;transform:scaleX(1.5715)}
+@media (hover:hover) and (pointer:fine){
+  .btn-navy{position:relative;background-image:none}
+  .btn-navy::after{content:"";position:absolute;left:28px;right:28px;bottom:10px;height:1px;background:var(--color-gold-light);transform:scaleX(0);transition:transform .5s var(--ease-lux);pointer-events:none}
+  .header-cta .btn-navy::after{left:20px;right:20px}
+  .btn-navy:hover::after,.btn-navy:focus-visible::after{transform:scaleX(1)}
+}
+/* rama panelu hero: opacity i scale zamiast clip-path */
+@keyframes bp-frame-in{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+@media screen and (prefers-reduced-motion:no-preference){.hero-panel.frame::before{animation-name:bp-frame-in}}
+/* długie listy rozwijane (zabiegi OC, pełne tabele) bez animacji block-size; FAQ – świadomy wyjątek (krótkie odpowiedzi) */
+@supports selector(::details-content){.zdetails::details-content,.full::details-content,.full-list::details-content{transition:none}}
+/* Z15: pytania na płaskim tle (poza sceną ze zdjęciem) bez rozmycia – szkło zawsze leży na zdjęciu (§6) */
+.faq.glass:not(.scene .faq){-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--bp-glass-ivory-tint)}
+/* Z16: karta końcowa – płaski token zamiast gradientu */
+.end-card{background:var(--color-navy)}
+/* Z5: cele dotyku 44 px na ekranach dotykowych (okruszki, „Informacje o agencie…”, odsyłacze „także na liście nr …”) */
+@media (pointer:coarse){
+  .crumbs a{min-height:44px}
+  .legal-idd > summary{min-height:44px;padding-block:10px}
+  a.z-inna{display:inline-flex;align-items:center;min-height:44px}
+}
+/* Z1, Z2, Z3, Z7, Z29: pierwszy ekran podstron (.page-hero). Hero zajmuje ekran (min-height 100svh), panel stoi pośrodku
+   i kończy się co najmniej 24 px nad dolną krawędzią okna. Od 64em panel na całą szerokość kontenera: z lewej tekst i akcje
+   (.hero-copy), z prawej liczby (.hero-aside) – bez pustego pasa. Na telefonie lead to jedno zdanie z twardym faktem (dalsze zdania
+   – .hero-note pod przyciskami), mniejszy H1, ciaśniejszy panel i okruszki zwinięte do „‹ rodzic”: główny przycisk w 1. ekranie od 320×640 */
+.page-hero{padding-top:clamp(92px,7vw,104px);padding-bottom:24px}
+/* siatka tylko od 48em: poniżej scena ma przyklejoną warstwę tła (::before, position:sticky) – w siatce byłaby elementem siatki */
+@media (min-width:48em){.page-hero{min-height:100svh;display:grid;align-items:center}}
+.page-hero .hero-copy{display:grid;gap:inherit;min-width:0;align-content:start}
+.page-hero .hero-aside{display:grid;gap:12px;min-width:0;align-content:center}
+/* H1 panelu hero podstron – token --text-h1-podstrona (tokens-v3.css, DESIGN.md; Z37, runda 2: bez lokalnych rozmiarów); definicja
+   także tu, bo strony mają własne kopie :root */
+:root{--text-h1-podstrona:clamp(2.25rem,.6rem + 4.4vw,4.4rem);--text-h3-kafel:clamp(1.9rem,1.45rem + 1.4vw,2.3rem)}
+.page-hero .hero-panel h1{font-size:var(--text-h1-podstrona)}
+.page-hero .hero-note{font-size:var(--text-sm);line-height:1.6;color:var(--color-ink);max-width:42rem}
+@media (min-width:64em){
+  .page-hero .hero-panel{max-width:none;grid-template-columns:minmax(0,1fr) minmax(14rem,18rem);column-gap:clamp(36px,4.5vw,72px);row-gap:20px;padding-block:clamp(28px,3vw,48px)}
+  .page-hero .hero-aside{padding-left:clamp(28px,3vw,44px);border-left:1px solid rgba(184,151,90,.55)}
+  .page-hero .hero-aside .figures{flex-direction:column;padding-top:0;border-top:0}
+  .page-hero .hero-aside .figures > div,.page-hero .hero-aside .figures > div:first-child{padding:16px 0;border-left:0}
+  .page-hero .hero-aside .figures > div + div{border-top:1px solid var(--bp-line-gold-soft)}
+  .page-hero .hero-aside .figures dd{font-size:clamp(1.9rem,1.2rem + 1.1vw,2.4rem);white-space:normal}
+}
+@media (max-width:47.99em){
+  .page-hero{padding-top:94px}
+  .page-hero .hero-panel{gap:16px;padding:22px 20px 24px}
+  .page-hero .crumbs li:not(:nth-last-child(2)){display:none}
+  .page-hero .crumbs li:nth-last-child(2)::before{content:none}
+  .page-hero .crumbs li:nth-last-child(2) a::before{content:"‹\00a0";content:"‹\00a0" / ""}
+}
+/* Z37: jedna skala nagłówków (dok. 10 §4, DESIGN.md): H2 = --text-h2 (34–54 px), H3 = --text-h3 (26,4 px; wyjątek – nazwa kafelka
+   produktu na stronie głównej: --text-h3-kafel), H4 = --text-serif-md; bez lokalnych rozmiarów w CSS stron. Nagłówek okna klauzuli zostaje mniejszy. */
+main h2:not(.klauzula h2){font-size:var(--text-h2)}
+main h3:not(.product h3){font-size:var(--text-h3)}
+main h4:not(.bp-bez-skali){font-size:var(--text-serif-md)}
+/* Z12: tafle od lewej do prawej linii kontenera (bez jednostronnego pasa przy 1440 px); miara tekstu w środku ograniczona */
+.zrules,.mind,.scope-aside,.variants-box,.plan-panel,.cta-row + .ext-note{max-width:none}
+:is(.zrules,.mind,.scope-aside) > :is(p,ul,h3,.cta-row){max-width:62rem}
+/* Z8: sekcja zamykająca podstron (section#zamkniecie, section--flush-top) – „Inne ubezpieczenia” (H2) i karta końcowa jako bloki
+   jednej sekcji; pytania – osobna sekcja przed nią (runda 2 weryfikacji: razem miały 2,23–2,55 ekranu) */
+.zamkniecie-blok{margin-top:clamp(56px,7vw,104px)}
+/* Z10: rytm sekcji – od 64em szerokości i 37.5em wysokości okna każda sekcja główna (poza hero i sekcjami-dokumentami z K6:
+   listy zabiegów, klauzula, hasła słownika) ma dokładnie 1 albo 2 ekrany. Skrypt (gen:wspolne-js) mierzy wysokość treści przy
+   przyciętym padding-block (dawniej clamp(72px,11vw,168px), czyli 158 px przy 1440 px) i ustawia data-ekrany="1" albo "2";
+   sekcja, która mieści się w ekranie dopiero przy 24 px odstępu (data-ciasno), dostaje 1 ekran zamiast 2 (tolerancja ≈ 1 ekran:
+   do 1,1 – raport 15, N1); treść stoi pośrodku sekcji. Bez JS, na telefonie i w niskim oknie – naturalna wysokość jak dotąd */
+@media (min-width:64em) and (min-height:37.5em){
+  main section[data-ekrany]{display:flex;flex-direction:column;justify-content:center;padding-block:clamp(48px,7svh,96px)}
+  main section[data-ekrany][data-ciasno]{padding-block:24px}
+  main section[data-ekrany] > *{flex:none}
+  main section[data-ekrany="1"]{min-height:100svh}
+  main section[data-ekrany="2"]{min-height:200svh}
+}
+.end-card h3{max-width:40rem}
+/* Z38 (raport 15): jedna karta pełna i jedna notka poza szkłem – cztery warianty szkła z D14 bez zmian. Karta: ivory, złota linia 1 px,
+   promień 6 px, jeden cień (dawniej 6 wyglądów: z cieniem albo bez, linia 35 / 50% albo żadna, przezroczysta .mind). Notka: pergamin 55%,
+   lewa złota kreska 2 px, bez cienia i promienia. Tokeny także w tokens-v3.css i DESIGN.md (4.5) */
+:root{--bp-karta-tlo:var(--color-ivory);--bp-karta-linia:rgba(184,151,90,.5);--bp-karta-cien:0 24px 48px -38px rgba(20,28,51,.45);
+  --bp-notka-tlo:rgba(237,229,216,.55);--bp-notka-kreska:var(--color-gold);
+  --bp-link-podkreslenie:var(--color-gold);--bp-link-podkreslenie-ciemne:rgba(217,192,137,.7)}
+main :is(.clause,.op-card,.rel-card,.route,.scope-card,.apply,figure.ledger,.mind,.panel,.sl-narzedzia,li.job,.vcard,.cmp-attr,.sl-litera){
+  background-color:var(--bp-karta-tlo);border:1px solid var(--bp-karta-linia);border-radius:var(--radius-card);box-shadow:var(--bp-karta-cien)}
+main :is(.scope-extra,.scope-aside,.haslo-przyklad){background:var(--bp-notka-tlo);border:0;border-left:2px solid var(--bp-notka-kreska);border-radius:0;box-shadow:none}
+/* Z39 (raport 15): jeden zestaw elementów w roli przycisku – para .btn (bez zmian); jeden chip do nawigacji po liście i filtrów (skok do
+   list OC, indeks A–Z słownika, podpowiedzi specjalizacji – dawniej 3 wyglądy); jeden link-akcja: zwykły tekst z podkreśleniem, bez etykiety
+   w wersalikach z kreską („KALKULATOR ——”); jeden token podkreślenia linków na jasnym tle i jeden na ciemnym; linki w tekście granatowe */
+main :is(.zjump a,.sl-az a[href],.spec-quick button){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;
+  border:1px solid var(--bp-karta-linia);border-radius:var(--radius-btn);background:rgba(255,255,255,.55);color:var(--color-navy);
+  font:500 var(--text-sm)/1.2 var(--font-sans);letter-spacing:normal;text-transform:none;text-decoration:none;cursor:pointer}
+main :is(.zjump a,.spec-quick button){padding:8px 14px}
+main .zjump a span{font:inherit;font-weight:400;color:inherit}
+main :is(.sl-az a:not([href]),.sl-az-off){font:400 var(--text-sm)/1.2 var(--font-sans)}
+@media (hover:hover) and (pointer:fine){main :is(.zjump a,.sl-az a[href],.spec-quick button):hover{border-color:var(--color-navy);background:rgba(255,255,255,.85);text-decoration:none}}
+main .link-lux{gap:8px;font:500 var(--text-sm)/1.4 var(--font-sans);letter-spacing:normal;text-transform:none;
+  text-decoration:underline;text-decoration-color:var(--bp-link-podkreslenie);text-decoration-thickness:1px;text-underline-offset:5px}
+main .link-lux::after{content:none}
+main :is(p,dd) a:not([class]){color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--bp-link-podkreslenie);text-decoration-thickness:1px;text-underline-offset:4px}
+/* na ciemnym tle (sceny .dark, wynik kalkulatora, karta promocji i karta Strefy): tekst parchment, podkreślenie złote 70%; jasne
+   powierzchnie wewnątrz ciemnej sceny (kafle produktów .ledger--light, jasne szkło) – jak na jasnym tle */
+main :is(.dark,.result,.promo,.member-card) :is(.link-lux,.link-quiet,p a:not([class]),dd a:not([class])){color:var(--color-parchment);text-decoration-color:var(--bp-link-podkreslenie-ciemne)}
+main .dark :is(.ledger--light,.glass:not(.glass--dark)) :is(.link-lux,.link-quiet,p a:not([class]),dd a:not([class])){color:var(--color-navy);text-decoration-color:var(--bp-link-podkreslenie)}
+@media (hover:hover) and (pointer:fine){main :is(.link-lux,.link-quiet,p a:not([class]),dd a:not([class])):hover{text-decoration-thickness:2px}}
+/* Z41: szuflada poniżej 768 px – pełny ekran (ivory, bez backdrop-filter), stan otwarcia widoczny w przycisku („Zamknij”, ikona X – skrypt) */
+@media (max-width:767px){
+  html:has(details.menu[open]){overflow:hidden}
+  .site-header:has(details.menu[open]) .header-bar{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--color-ivory)}
+  .site-header:has(details.menu[open]) .brand,details.menu[open] > summary{position:relative;z-index:2}
+  details.menu[open] .menu-panel{position:fixed;inset:0;z-index:1;max-height:none;height:100dvh;border:0;border-radius:0;box-shadow:none;background:var(--color-ivory);
+    padding:calc(110px + env(safe-area-inset-top)) max(var(--bp-gutter),env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) max(var(--bp-gutter),env(safe-area-inset-left))}
+}
+details.menu[open] > summary{border-color:var(--color-navy)}
+@media (prefers-reduced-motion:reduce){.btn:active,.pasek-akcji a:active{transform:none}}
+@media (forced-colors:active){.main-nav > ul > li > a::after,.client-link::after,.btn-navy::after{background:CanvasText}}
 </style>
 <!-- /gen:wspolne-css -->
 <!-- gen:slownik-css -->
@@ -832,7 +1013,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
 /* dymek: kryjące ivory (bez backdrop-filter – nie liczy się do limitu 3 tafli), złota linia, cień */
-.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
+.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;overscroll-behavior:contain;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
 .bp-dymek[hidden]{display:none}
 .bp-dymek:focus{outline:none}
 .bp-dymek:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
@@ -865,7 +1046,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <div class="container">
     <div class="header-bar glass glass--strong">
       <a class="brand" href="makieta-v3.html" aria-label="BeautyPolisa – strona główna">
-        <img src="../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="160" height="24">
+        <img src="img/logo-beautypolisa-320.png" alt="BeautyPolisa" width="160" height="24" translate="no">
         <small>created by Aura Expert</small>
       </a>
       <nav class="main-nav" aria-label="Menu główne">
@@ -877,12 +1058,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <div class="mega" id="menu-produkty" hidden>
               <div class="mega-head"><p class="mega-title">Ubezpieczenia dla branży beauty</p><a class="mega-all" href="makieta-v3.html#ubezpieczenia">Wszystkie ubezpieczenia</a></div>
               <ul class="mega-grid">
-                <li><a class="mega-item" href="oc-beauty.html" aria-current="page" aria-labelledby="mp-oc-beauty-n" aria-describedby="mp-oc-beauty-d mp-oc-beauty-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name" id="mp-oc-beauty-n">OC dla branży beauty<span class="mega-tu" aria-hidden="true">Jesteś tutaj</span></span><span class="mega-desc" id="mp-oc-beauty-d">OC za szkody wyrządzone klientom podczas zabiegów – składka ze stałej taryfy ERGO Hestia.</span><span class="mega-price" id="mp-oc-beauty-c"><span class="mega-cena">od 400&nbsp;zł rocznie</span></span></span></a></li>
-                <li><a class="mega-item" href="tax-protect.html" aria-labelledby="mp-tax-protect-n" aria-describedby="mp-tax-protect-d mp-tax-protect-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name" id="mp-tax-protect-n">Tax Protect</span><span class="mega-desc" id="mp-tax-protect-d">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (Colonnade).</span><span class="mega-price" id="mp-tax-protect-c"><span class="mega-cena">od 1&nbsp;532&nbsp;zł rocznie</span></span></span></a></li>
-                <li><a class="mega-item" href="utrata-dochodu.html" aria-labelledby="mp-utrata-dochodu-n" aria-describedby="mp-utrata-dochodu-d mp-utrata-dochodu-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name" id="mp-utrata-dochodu-n">Utrata dochodu</span><span class="mega-desc" id="mp-utrata-dochodu-d">Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy – Lloyd’s przez Leadenhall i&nbsp;CEU.</span><span class="mega-price" id="mp-utrata-dochodu-c"><span class="mega-cena">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></span></a></li>
-                <li><a class="mega-item" href="nnw-dzieci.html" aria-labelledby="mp-nnw-dzieci-n" aria-describedby="mp-nnw-dzieci-d mp-nnw-dzieci-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name" id="mp-nnw-dzieci-n">NNW dla dzieci</span><span class="mega-desc" id="mp-nnw-dzieci-d">Ochrona dziecka od następstw nieszczęśliwych wypadków – całą dobę (Colonnade).</span><span class="mega-price" id="mp-nnw-dzieci-c"><span class="mega-cena">od 40&nbsp;zł rocznie za dziecko</span><span class="mega-dop">Zakup online u&nbsp;Colonnade</span></span></span></a></li>
-                <li><a class="mega-item" href="grupowe-ergo.html" aria-labelledby="mp-grupowe-ergo-n" aria-describedby="mp-grupowe-ergo-d mp-grupowe-ergo-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name" id="mp-grupowe-ergo-n">Grupowe ERGO dla beauty</span><span class="mega-desc" id="mp-grupowe-ergo-d">Ubezpieczenie na życie dla zespołu (2–&#8288;100 osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</span><span class="mega-price" id="mp-grupowe-ergo-c"><span class="mega-cena">Zespół: od 58&nbsp;zł za osobę / mies.</span><span class="mega-cena">ERGO Razem: od 57&nbsp;zł / mies.</span></span></span></a></li>
-                <li><a class="mega-item" href="opieka-medyczna.html" aria-labelledby="mp-opieka-medyczna-n" aria-describedby="mp-opieka-medyczna-d mp-opieka-medyczna-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name" id="mp-opieka-medyczna-n">Opieka medyczna</span><span class="mega-desc" id="mp-opieka-medyczna-d">Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price" id="mp-opieka-medyczna-c"><span class="mega-cena">Cenę przygotuje doradca</span></span></span></a></li>
+                <li><a class="mega-item" href="oc-beauty.html" aria-current="page" aria-labelledby="mp-oc-beauty-n" aria-describedby="mp-oc-beauty-d mp-oc-beauty-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name" id="mp-oc-beauty-n">OC dla branży beauty<span class="mega-tu" aria-hidden="true">Jesteś tutaj</span></span><span class="mega-desc" id="mp-oc-beauty-d">OC za szkody wyrządzone klientom podczas zabiegów&nbsp;– składka ze stałej taryfy <span translate="no">ERGO&nbsp;Hestia</span>.</span><span class="mega-price" id="mp-oc-beauty-c"><span class="mega-cena">od 400&nbsp;zł rocznie</span></span></span></a></li>
+                <li><a class="mega-item" href="tax-protect.html" aria-labelledby="mp-tax-protect-n" aria-describedby="mp-tax-protect-d mp-tax-protect-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name" id="mp-tax-protect-n"><span translate="no">Tax Protect</span></span><span class="mega-desc" id="mp-tax-protect-d">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (<span translate="no">Colonnade</span>).</span><span class="mega-price" id="mp-tax-protect-c"><span class="mega-cena">od 1&nbsp;532&nbsp;zł rocznie</span></span></span></a></li>
+                <li><a class="mega-item" href="utrata-dochodu.html" aria-labelledby="mp-utrata-dochodu-n" aria-describedby="mp-utrata-dochodu-d mp-utrata-dochodu-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name" id="mp-utrata-dochodu-n">Utrata dochodu</span><span class="mega-desc" id="mp-utrata-dochodu-d">Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy&nbsp;– <span translate="no">Lloyd’s</span> przez <span translate="no">Leadenhall</span> i&nbsp;<span translate="no">CEU</span>.</span><span class="mega-price" id="mp-utrata-dochodu-c"><span class="mega-cena">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></span></a></li>
+                <li><a class="mega-item" href="nnw-dzieci.html" aria-labelledby="mp-nnw-dzieci-n" aria-describedby="mp-nnw-dzieci-d mp-nnw-dzieci-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name" id="mp-nnw-dzieci-n">NNW dla dzieci</span><span class="mega-desc" id="mp-nnw-dzieci-d">Ochrona dziecka od następstw nieszczęśliwych wypadków&nbsp;– całą dobę (<span translate="no">Colonnade</span>).</span><span class="mega-price" id="mp-nnw-dzieci-c"><span class="mega-cena">od 40&nbsp;zł rocznie za osobę</span><span class="mega-dop">Zakup online u&nbsp;<span translate="no">Colonnade</span></span></span></span></a></li>
+                <li><a class="mega-item" href="grupowe-ergo.html" aria-labelledby="mp-grupowe-ergo-n" aria-describedby="mp-grupowe-ergo-d mp-grupowe-ergo-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name" id="mp-grupowe-ergo-n">Grupowe ERGO dla beauty</span><span class="mega-desc" id="mp-grupowe-ergo-d">Ubezpieczenie na życie dla zespołu (2–&#8288;100&nbsp;osób) albo <span translate="no">ERGO&nbsp;Razem</span> dla Ciebie i&nbsp;rodziny.</span><span class="mega-price" id="mp-grupowe-ergo-c"><span class="mega-cena">Zespół: od 58&nbsp;zł za osobę&nbsp;/&nbsp;mies.</span><span class="mega-cena"><span translate="no">ERGO&nbsp;Razem</span>: od 57&nbsp;zł&nbsp;/&nbsp;mies.</span></span></span></a></li>
+                <li><a class="mega-item" href="opieka-medyczna.html" aria-labelledby="mp-opieka-medyczna-n" aria-describedby="mp-opieka-medyczna-d mp-opieka-medyczna-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name" id="mp-opieka-medyczna-n">Opieka medyczna</span><span class="mega-desc" id="mp-opieka-medyczna-d">Abonamenty <span translate="no">ENEL-&#8288;MED</span> lub <span translate="no">LUX&nbsp;MED</span> dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price" id="mp-opieka-medyczna-c"><span class="mega-cena">Cenę przygotuje doradca</span></span></span></a></li>
               </ul>
               <div class="mega-foot"><a class="btn btn-navy" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a><a class="btn btn-ghost" href="makieta-v3.html#kalkulator-tax">Oblicz składkę Tax Protect</a></div>
             </div>
@@ -904,10 +1085,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <p class="mm-tytul" id="mm-produkty-t">Ubezpieczenia</p>
           <ul class="mm-produkty" aria-labelledby="mm-produkty-t">
             <li><a href="oc-beauty.html" aria-current="page"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mm-text"><span class="mm-name">OC dla branży beauty</span><span class="mm-price">od 400&nbsp;zł rocznie</span></span></a></li>
-            <li><a href="tax-protect.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mm-text"><span class="mm-name">Tax Protect</span><span class="mm-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
+            <li><a href="tax-protect.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mm-text"><span class="mm-name"><span translate="no">Tax Protect</span></span><span class="mm-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
             <li><a href="utrata-dochodu.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mm-text"><span class="mm-name">Utrata dochodu</span><span class="mm-price">składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></a></li>
-            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie za dziecko</span></span></a></li>
-            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 58&nbsp;zł za osobę / mies.</span></span></a></li>
+            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie za osobę</span></span></a></li>
+            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 58&nbsp;zł za osobę&nbsp;/&nbsp;mies.</span></span></a></li>
             <li><a href="opieka-medyczna.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mm-text"><span class="mm-name">Opieka medyczna</span><span class="mm-price">cenę przygotuje doradca</span></span></a></li>
           </ul>
           <!-- /gen:menu-mobilne -->
@@ -932,9 +1113,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <main id="tresc">
 
   <!-- PROLOG · otwarcie: tylko fakty z makiety, schema-produkt-oc-beauty.json i schema-faq-oc-beauty.json -->
-  <section class="scene scene--marble scene--pos-ct page-hero" aria-labelledby="hero-title">
+  <section class="scene scene--marble scene--pos-ct page-hero bg-on" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero-panel glass frame">
+        <div class="hero-copy">
         <nav class="crumbs" aria-label="Okruszki">
           <!-- produkcyjnie: / › /ubezpieczenia › /ubezpieczenia/oc-beauty (BreadcrumbList w JSON-LD) -->
           <ol>
@@ -943,18 +1125,22 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <li><span aria-current="page">OC dla branży beauty</span></li>
           </ol>
         </nav>
-        <p class="eyebrow">Program ERGO Hestia · Fundacja Beauty Razem</p>
+        <p class="eyebrow">Program ERGO&nbsp;Hestia · Fundacja Beauty Razem</p>
         <h1 id="hero-title">Ubezpieczenie OC dla branży beauty</h1>
-        <p class="lead">Program OC ERGO Hestii nr WA50/003353/24/A, realizowany we współpracy z&nbsp;Fundacją Beauty Razem. Suma gwarancyjna do wyboru: 100, 200 lub 300&nbsp;tys.&nbsp;zł. Składka wynika ze stałej taryfy programu – zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i&nbsp;sumy.</p>
+        <p class="lead">OC za szkody wyrządzone klientom podczas zabiegów&nbsp;– od 400&nbsp;zł rocznie, ze stałej taryfy programu ERGO&nbsp;Hestii.</p>
         <div class="hero-actions">
-          <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Policz składkę</a>
+          <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a>
           <a class="btn btn-ghost" href="#zabiegi">Sprawdź swój zabieg</a>
         </div>
+        <p class="hero-note">Program OC ERGO&nbsp;Hestii nr&nbsp;WA50/003353/24/A, realizowany we współpracy z&nbsp;Fundacją Beauty Razem. Suma gwarancyjna do wyboru: 100, 200 albo 300&nbsp;tys.&nbsp;zł. Składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i&nbsp;sumy.</p>
+        </div>
+        <div class="hero-aside">
         <dl class="figures">
           <div><dt>Składka OC rocznie</dt><dd>od 400&nbsp;zł</dd></div>
           <div><dt>Sumy gwarancyjne</dt><dd>100–300&nbsp;tys.&nbsp;zł</dd></div>
           <div><dt>Listy zabiegów nr&nbsp;1 i&nbsp;2</dt><dd><span data-gen="liczba-lista-1">49</span> + <span data-gen="liczba-lista-2">63</span><span data-gen="pozycje-lista-2" class="sr-only"> pozycje</span></dd></div>
         </dl>
+        </div>
       </div>
     </div>
   </section>
@@ -979,7 +1165,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <form class="zsearch" id="z-szukaj-form" role="search" aria-label="Zabiegi w programie" hidden>
           <label for="z-szukaj">Wpisz nazwę zabiegu</label>
           <div class="zsearch-row">
-            <input type="search" id="z-szukaj" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. mezoterapia, henna, manicure" aria-describedby="z-licznik">
+            <input type="search" id="z-szukaj" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. mezoterapia, henna, manicure…" aria-describedby="z-licznik">
             <button class="btn btn-ghost" type="reset" id="z-wyczysc" hidden>Wyczyść</button>
           </div>
           <p class="zcount" id="z-licznik" aria-live="polite" aria-atomic="true">Lista nr&nbsp;1: <strong data-gen="liczba-lista-1">49</strong> · lista nr&nbsp;2: <strong data-gen="liczba-lista-2">63</strong> · ankieta: <strong data-gen="liczba-ankieta">8</strong></p>
@@ -988,8 +1174,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <nav class="zjump" aria-labelledby="z-skok-tytul">
           <p id="z-skok-tytul">Przejdź do listy</p>
           <ul>
-            <li><a href="#lista-1">Lista nr 1 <span>49</span><span class="sr-only"> pozycji</span></a></li>
-            <li><a href="#lista-2">Lista nr 2 <span>63</span><span class="sr-only"> pozycje</span></a></li>
+            <li><a href="#lista-1">Lista nr&nbsp;1 <span>49</span><span class="sr-only"> pozycji</span></a></li>
+            <li><a href="#lista-2">Lista nr&nbsp;2 <span>63</span><span class="sr-only"> pozycje</span></a></li>
             <li><a href="#ankieta">Ankieta <span>8</span><span class="sr-only"> pozycji</span></a></li>
             <li><a href="#podologia">Podologia</a></li>
           </ul>
@@ -1005,63 +1191,63 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <span class="z-alias" id="grupa-1"></span>
           <div class="zlista-head">
             <div class="zlista-title">
-              <p class="eyebrow">Załącznik nr 1 · 49 pozycji</p>
-              <h3 id="lista-1-tytul">Lista zabiegów – gabinety kosmetyczne i fryzjerskie</h3>
+              <p class="eyebrow">Załącznik nr&nbsp;1 · 49&nbsp;pozycji</p>
+              <h3 id="lista-1-tytul">Lista zabiegów&nbsp;– gabinety kosmetyczne i&nbsp;fryzjerskie</h3>
             </div>
             <p class="zlista-doc"><a class="link-lux" href="dokumenty/oc-beauty/lista-zabiegow-nr-1-kosmetyczne-fryzjerskie-aneks-5.pdf">Pobierz listę&nbsp;nr&nbsp;1 (PDF, Aneks&nbsp;nr&nbsp;5)</a></p>
           </div>
           <details class="zdetails" open>
-            <summary><span>Pozycje listy nr 1 (<span data-z-ile>49</span>)</span></summary>
+            <summary><span>Pozycje listy nr&nbsp;1 (<span data-z-ile>49</span>)</span></summary>
             <ol class="zlist">
               <li id="barbering" value="1"><span class="z-nr">1.</span> <span class="z-name">Barbering</span></li>
-              <li id="depilacja-pasta-cukrowa" value="2"><span class="z-nr">2.</span> <span class="z-name">Depilacja pastą cukrową</span> <a class="z-inna" href="#depilacja-pasta-cukrowa-lista-2">także na liście nr 2, poz.&nbsp;3</a></li>
-              <li id="depilacja-woskiem" value="3"><span class="z-nr">3.</span> <span class="z-name">Depilacja woskiem</span> <a class="z-inna" href="#depilacja-woskiem-lista-2">także na liście nr 2, poz.&nbsp;4</a></li>
-              <li id="dermabrazja-i-peeling-skory-glowy" value="4"><span class="z-nr">4.</span> <span class="z-name">Dermabrazja i peeling skóry głowy</span></li>
-              <li id="diagnoza-skory-glowy-i-usg-wlosa" value="5"><span class="z-nr">5.</span> <span class="z-name">Diagnoza skóry głowy i USG włosa</span></li>
-              <li id="elektrostymulacja" value="6"><span class="z-nr">6.</span> <span class="z-name">Elektrostymulacja</span> <a class="z-inna" href="#elektrostymulacja-lista-2">także na liście nr 2, poz.&nbsp;8</a></li>
-              <li id="endermologia-masaz-podcisnieniowy" value="7"><span class="z-nr">7.</span> <span class="z-name">Endermologia – masaż podciśnieniowy</span></li>
+              <li id="depilacja-pasta-cukrowa" value="2"><span class="z-nr">2.</span> <span class="z-name">Depilacja pastą cukrową</span> <a class="z-inna" href="#depilacja-pasta-cukrowa-lista-2">także na liście nr&nbsp;2, poz.&nbsp;3</a></li>
+              <li id="depilacja-woskiem" value="3"><span class="z-nr">3.</span> <span class="z-name">Depilacja woskiem</span> <a class="z-inna" href="#depilacja-woskiem-lista-2">także na liście nr&nbsp;2, poz.&nbsp;4</a></li>
+              <li id="dermabrazja-i-peeling-skory-glowy" value="4"><span class="z-nr">4.</span> <span class="z-name">Dermabrazja i&nbsp;peeling skóry głowy</span></li>
+              <li id="diagnoza-skory-glowy-i-usg-wlosa" value="5"><span class="z-nr">5.</span> <span class="z-name">Diagnoza skóry głowy i&nbsp;USG włosa</span></li>
+              <li id="elektrostymulacja" value="6"><span class="z-nr">6.</span> <span class="z-name">Elektrostymulacja</span> <a class="z-inna" href="#elektrostymulacja-lista-2">także na liście nr&nbsp;2, poz.&nbsp;8</a></li>
+              <li id="endermologia-masaz-podcisnieniowy" value="7"><span class="z-nr">7.</span> <span class="z-name">Endermologia&nbsp;– masaż podciśnieniowy</span></li>
               <li id="golenie-glowy" value="8"><span class="z-nr">8.</span> <span class="z-name">Golenie głowy</span></li>
-              <li id="henna" value="9"><span class="z-nr">9.</span> <span class="z-name">Henna</span> <a class="z-inna" href="#henna-lista-2">także na liście nr 2, poz.&nbsp;10</a></li>
-              <li id="koloryzacja-i-dekoloryzacja-wlosow" value="10"><span class="z-nr">10.</span> <span class="z-name">Koloryzacja i dekoloryzacja włosów</span></li>
-              <li id="kosmetyczna-diagnostyka-trychologiczna" value="11"><span class="z-nr">11.</span> <span class="z-name">Kosmetyczna diagnostyka trychologiczna</span> <a class="z-inna" href="#kosmetyczna-diagnostyka-trychologiczna-lista-2">także na liście nr 2, poz.&nbsp;59</a></li>
-              <li id="kosmetyczny-zabieg-trychologiczny" value="12"><span class="z-nr">12.</span> <span class="z-name">Kosmetyczny zabieg trychologiczny</span> <a class="z-inna" href="#kosmetyczny-zabieg-trychologiczny-lista-2">także na liście nr 2, poz.&nbsp;58</a></li>
-              <li id="kuracje-nawilzajace-regenerujace-i-odbudowujace-wlosy" value="13"><span class="z-alias" id="kuracje-nawilzajace-i-odbudowujace-wlosy"></span><span class="z-nr">13.</span> <span class="z-name">Kuracje nawilżające, regenerujące i odbudowujące włosy</span></li>
-              <li id="laminowanie-brwi-i-rzes" value="14"><span class="z-nr">14.</span> <span class="z-name">Laminowanie brwi i rzęs</span> <a class="z-inna" href="#laminowanie-brwi-i-rzes-lista-2">także na liście nr 2, poz.&nbsp;16</a></li>
+              <li id="henna" value="9"><span class="z-nr">9.</span> <span class="z-name">Henna</span> <a class="z-inna" href="#henna-lista-2">także na liście nr&nbsp;2, poz.&nbsp;10</a></li>
+              <li id="koloryzacja-i-dekoloryzacja-wlosow" value="10"><span class="z-nr">10.</span> <span class="z-name">Koloryzacja i&nbsp;dekoloryzacja włosów</span></li>
+              <li id="kosmetyczna-diagnostyka-trychologiczna" value="11"><span class="z-nr">11.</span> <span class="z-name">Kosmetyczna diagnostyka trychologiczna</span> <a class="z-inna" href="#kosmetyczna-diagnostyka-trychologiczna-lista-2">także na liście nr&nbsp;2, poz.&nbsp;59</a></li>
+              <li id="kosmetyczny-zabieg-trychologiczny" value="12"><span class="z-nr">12.</span> <span class="z-name">Kosmetyczny zabieg trychologiczny</span> <a class="z-inna" href="#kosmetyczny-zabieg-trychologiczny-lista-2">także na liście nr&nbsp;2, poz.&nbsp;58</a></li>
+              <li id="kuracje-nawilzajace-regenerujace-i-odbudowujace-wlosy" value="13"><span class="z-alias" id="kuracje-nawilzajace-i-odbudowujace-wlosy"></span><span class="z-nr">13.</span> <span class="z-name">Kuracje nawilżające, regenerujące i&nbsp;odbudowujące włosy</span></li>
+              <li id="laminowanie-brwi-i-rzes" value="14"><span class="z-nr">14.</span> <span class="z-name">Laminowanie brwi i&nbsp;rzęs</span> <a class="z-inna" href="#laminowanie-brwi-i-rzes-lista-2">także na liście nr&nbsp;2, poz.&nbsp;16</a></li>
               <li id="laminowanie-wlosow" value="15"><span class="z-nr">15.</span> <span class="z-name">Laminowanie włosów</span></li>
               <li id="makijaz" value="16"><span class="z-nr">16.</span> <span class="z-name">Makijaż</span></li>
-              <li id="manicure" value="17"><span class="z-nr">17.</span> <span class="z-name">Manicure</span> <a class="z-inna" href="#manicure-lista-2">także na liście nr 2, poz.&nbsp;19</a></li>
-              <li id="manualne-oczyszczanie-twarzy" value="18"><span class="z-nr">18.</span> <span class="z-name">Manualne oczyszczanie twarzy</span> <a class="z-inna" href="#manualne-oczyszczanie-twarzy-lista-2">także na liście nr 2, poz.&nbsp;23</a></li>
-              <li id="masaz-banka-chinska" value="19"><span class="z-nr">19.</span> <span class="z-name">Masaż bańką chińską</span> <a class="z-inna" href="#masaz-banka-chinska-lista-2">także na liście nr 2, poz.&nbsp;20</a></li>
-              <li id="masaz-endodermiczny-i-drenaz-limfatyczny" value="20"><span class="z-nr">20.</span> <span class="z-name">Masaż endodermiczny i drenaż limfatyczny</span></li>
-              <li id="masaz-manualny-ciala-w-tym-masaz-glowy-i-twarzy" value="21"><span class="z-alias" id="masaz-manualny-ciala-i-twarzy"></span><span class="z-nr">21.</span> <span class="z-name">Masaż manualny ciała, w tym masaż głowy i twarzy</span></li>
-              <li id="mycie-i-suszenie-wlosow" value="22"><span class="z-nr">22.</span> <span class="z-name">Mycie i suszenie włosów</span></li>
+              <li id="manicure" value="17"><span class="z-nr">17.</span> <span class="z-name">Manicure</span> <a class="z-inna" href="#manicure-lista-2">także na liście nr&nbsp;2, poz.&nbsp;19</a></li>
+              <li id="manualne-oczyszczanie-twarzy" value="18"><span class="z-nr">18.</span> <span class="z-name">Manualne oczyszczanie twarzy</span> <a class="z-inna" href="#manualne-oczyszczanie-twarzy-lista-2">także na liście nr&nbsp;2, poz.&nbsp;23</a></li>
+              <li id="masaz-banka-chinska" value="19"><span class="z-nr">19.</span> <span class="z-name">Masaż bańką chińską</span> <a class="z-inna" href="#masaz-banka-chinska-lista-2">także na liście nr&nbsp;2, poz.&nbsp;20</a></li>
+              <li id="masaz-endodermiczny-i-drenaz-limfatyczny" value="20"><span class="z-nr">20.</span> <span class="z-name">Masaż endodermiczny i&nbsp;drenaż limfatyczny</span></li>
+              <li id="masaz-manualny-ciala-w-tym-masaz-glowy-i-twarzy" value="21"><span class="z-alias" id="masaz-manualny-ciala-i-twarzy"></span><span class="z-nr">21.</span> <span class="z-name">Masaż manualny ciała, w&nbsp;tym masaż głowy i&nbsp;twarzy</span></li>
+              <li id="mycie-i-suszenie-wlosow" value="22"><span class="z-nr">22.</span> <span class="z-name">Mycie i&nbsp;suszenie włosów</span></li>
               <li id="oczyszczanie-wlosow" value="23"><span class="z-nr">23.</span> <span class="z-name">Oczyszczanie włosów</span></li>
-              <li id="pasemka-i-baleyage" value="24"><span class="z-nr">24.</span> <span class="z-name">Pasemka i baleyage</span></li>
+              <li id="pasemka-i-baleyage" value="24"><span class="z-nr">24.</span> <span class="z-name">Pasemka i&nbsp;baleyage</span></li>
               <li id="pedicure-kosmetyczny" value="25"><span class="z-nr">25.</span> <span class="z-name">Pedicure kosmetyczny</span></li>
-              <li id="piercing-przekluwanie-innych-czesci-ciala" value="26"><span class="z-alias" id="piercing-przekluwanie"></span><span class="z-nr">26.</span> <span class="z-name">Piercing – przekłuwanie innych części ciała</span> <a class="z-inna" href="#piercing-przekluwanie-innych-czesci-ciala-lista-2">także na liście nr 2, poz.&nbsp;39</a></li>
-              <li id="presoterapia" value="27"><span class="z-nr">27.</span> <span class="z-name">Presoterapia</span> <a class="z-inna" href="#presoterapia-lista-2">także na liście nr 2, poz.&nbsp;41</a></li>
-              <li id="przekluwanie-uszu" value="28"><span class="z-nr">28.</span> <span class="z-name">Przekłuwanie uszu</span> <a class="z-inna" href="#przekluwanie-uszu-lista-2">także na liście nr 2, poz.&nbsp;42</a></li>
-              <li id="przedluzanie-i-zageszczanie-rzes" value="29"><span class="z-nr">29.</span> <span class="z-name">Przedłużanie i zagęszczanie rzęs</span> <a class="z-inna" href="#przedluzanie-i-zageszczanie-rzes-lista-2">także na liście nr 2, poz.&nbsp;40</a></li>
+              <li id="piercing-przekluwanie-innych-czesci-ciala" value="26"><span class="z-alias" id="piercing-przekluwanie"></span><span class="z-nr">26.</span> <span class="z-name">Piercing&nbsp;– przekłuwanie innych części ciała</span> <a class="z-inna" href="#piercing-przekluwanie-innych-czesci-ciala-lista-2">także na liście nr&nbsp;2, poz.&nbsp;39</a></li>
+              <li id="presoterapia" value="27"><span class="z-nr">27.</span> <span class="z-name">Presoterapia</span> <a class="z-inna" href="#presoterapia-lista-2">także na liście nr&nbsp;2, poz.&nbsp;41</a></li>
+              <li id="przekluwanie-uszu" value="28"><span class="z-nr">28.</span> <span class="z-name">Przekłuwanie uszu</span> <a class="z-inna" href="#przekluwanie-uszu-lista-2">także na liście nr&nbsp;2, poz.&nbsp;42</a></li>
+              <li id="przedluzanie-i-zageszczanie-rzes" value="29"><span class="z-nr">29.</span> <span class="z-name">Przedłużanie i&nbsp;zagęszczanie rzęs</span> <a class="z-inna" href="#przedluzanie-i-zageszczanie-rzes-lista-2">także na liście nr&nbsp;2, poz.&nbsp;40</a></li>
               <li id="przedluzanie-wlosow" value="30"><span class="z-nr">30.</span> <span class="z-name">Przedłużanie włosów</span></li>
               <li id="prostowanie-wlosow-na-stale" value="31"><span class="z-nr">31.</span> <span class="z-name">Prostowanie włosów na stałe</span></li>
               <li id="retusz-siwizny" value="32"><span class="z-nr">32.</span> <span class="z-name">Retusz siwizny</span></li>
               <li id="sauna-na-wlosy" value="33"><span class="z-nr">33.</span> <span class="z-name">Sauna na włosy</span></li>
-              <li id="strzyzenie-nozyczkami-maszynka-brzytwa-oraz-metoda-split-ender-i-hair-dusting" value="34"><span class="z-alias" id="strzyzenie-nozyczki-maszynka-brzytwa-split-ender"></span><span class="z-nr">34.</span> <span class="z-name">Strzyżenie nożyczkami, maszynką, brzytwą oraz metodą Split-ender i Hair-dusting; trymowanie</span></li>
+              <li id="strzyzenie-nozyczkami-maszynka-brzytwa-oraz-metoda-split-ender-i-hair-dusting" value="34"><span class="z-alias" id="strzyzenie-nozyczki-maszynka-brzytwa-split-ender"></span><span class="z-nr">34.</span> <span class="z-name">Strzyżenie nożyczkami, maszynką, brzytwą oraz metodą Split-ender i&nbsp;Hair-dusting; trymowanie</span></li>
               <li id="trwala-ondulacja" value="35"><span class="z-nr">35.</span> <span class="z-name">Trwała ondulacja</span></li>
-              <li id="wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych" value="36"><span class="z-alias" id="zabiegi-z-zastosowaniem-skladnikow-aktywnych"></span><span class="z-nr">36.</span> <span class="z-name">Wykonywanie zabiegów kosmetycznych z zastosowaniem składników aktywnych</span> <a class="z-inna" href="#wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych-lista-2">także na liście nr 2, poz.&nbsp;49</a></li>
-              <li id="zabieg-pielegnacyjny-wlosow-z-uzyciem-fal-ultradzwiekowych" value="37"><span class="z-nr">37.</span> <span class="z-name">Zabieg pielęgnacyjny włosów z użyciem fal ultradźwiękowych</span></li>
+              <li id="wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych" value="36"><span class="z-alias" id="zabiegi-z-zastosowaniem-skladnikow-aktywnych"></span><span class="z-nr">36.</span> <span class="z-name">Wykonywanie zabiegów kosmetycznych z&nbsp;zastosowaniem składników aktywnych</span> <a class="z-inna" href="#wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych-lista-2">także na liście nr&nbsp;2, poz.&nbsp;49</a></li>
+              <li id="zabieg-pielegnacyjny-wlosow-z-uzyciem-fal-ultradzwiekowych" value="37"><span class="z-nr">37.</span> <span class="z-name">Zabieg pielęgnacyjny włosów z&nbsp;użyciem fal ultradźwiękowych</span></li>
               <li id="zabieg-rekonstrukcji-wlosow" value="38"><span class="z-nr">38.</span> <span class="z-name">Zabieg rekonstrukcji włosów</span></li>
-              <li id="zabieg-regeneracyjny-wlosow-z-uzyciem-podczerwieni" value="39"><span class="z-nr">39.</span> <span class="z-name">Zabieg regeneracyjny włosów z użyciem podczerwieni</span></li>
+              <li id="zabieg-regeneracyjny-wlosow-z-uzyciem-podczerwieni" value="39"><span class="z-nr">39.</span> <span class="z-name">Zabieg regeneracyjny włosów z&nbsp;użyciem podczerwieni</span></li>
               <li id="zabiegi-keratynowe" value="40"><span class="z-nr">40.</span> <span class="z-name">Zabiegi keratynowe</span></li>
               <li id="zabiegi-przeciwlupiezowe" value="41"><span class="z-nr">41.</span> <span class="z-name">Zabiegi przeciwłupieżowe</span></li>
-              <li id="zabiegi-wykorzystujace-terapeutyczne-dzialanie-swiatla-swiatlo-led-i-jego" value="42"><span class="z-alias" id="zabiegi-led-terapeutyczne"></span><span class="z-nr">42.</span> <span class="z-name">Zabiegi wykorzystujące terapeutyczne działanie światła – światło LED i jego pochodnych</span></li>
+              <li id="zabiegi-wykorzystujace-terapeutyczne-dzialanie-swiatla-swiatlo-led-i-jego" value="42"><span class="z-alias" id="zabiegi-led-terapeutyczne"></span><span class="z-nr">42.</span> <span class="z-name">Zabiegi wykorzystujące terapeutyczne działanie światła&nbsp;– światło LED i&nbsp;jego pochodnych</span></li>
               <li id="zageszczanie-wlosow" value="43"><span class="z-nr">43.</span> <span class="z-name">Zagęszczanie włosów</span></li>
               <li id="warkocze-syntetyczne" value="44"><span class="z-nr">44.</span> <span class="z-name">Warkocze syntetyczne</span></li>
-              <li id="masaz-kobido" value="45"><span class="z-nr">45.</span> <span class="z-name">Masaż kobido</span> <a class="z-inna" href="#masaz-kobido-lista-2">także na liście nr 2, poz.&nbsp;25</a></li>
-              <li id="masaz-miesniowo-powieziowy" value="46"><span class="z-nr">46.</span> <span class="z-name">Masaż mięśniowo-powięziowy</span> <a class="z-inna" href="#masaz-miesniowo-powieziowy-lista-2">także na liście nr 2, poz.&nbsp;61</a></li>
-              <li id="masaz-transbukalny" value="47"><span class="z-nr">47.</span> <span class="z-name">Masaż transbukalny</span> <a class="z-inna" href="#masaz-transbukalny-lista-2">także na liście nr 2, poz.&nbsp;60</a></li>
-              <li id="suche-iglowanie" value="48"><span class="z-nr">48.</span> <span class="z-name">Suche igłowanie</span> <a class="z-inna" href="#suche-iglowanie-lista-2">także na liście nr 2, poz.&nbsp;62</a></li>
-              <li id="opalanie-natryskowe" value="49"><span class="z-nr">49.</span> <span class="z-name">Opalanie natryskowe</span> <a class="z-inna" href="#opalanie-natryskowe-lista-2">także na liście nr 2, poz.&nbsp;35</a></li>
+              <li id="masaz-kobido" value="45"><span class="z-nr">45.</span> <span class="z-name">Masaż kobido</span> <a class="z-inna" href="#masaz-kobido-lista-2">także na liście nr&nbsp;2, poz.&nbsp;25</a></li>
+              <li id="masaz-miesniowo-powieziowy" value="46"><span class="z-nr">46.</span> <span class="z-name">Masaż mięśniowo-powięziowy</span> <a class="z-inna" href="#masaz-miesniowo-powieziowy-lista-2">także na liście nr&nbsp;2, poz.&nbsp;61</a></li>
+              <li id="masaz-transbukalny" value="47"><span class="z-nr">47.</span> <span class="z-name">Masaż transbukalny</span> <a class="z-inna" href="#masaz-transbukalny-lista-2">także na liście nr&nbsp;2, poz.&nbsp;60</a></li>
+              <li id="suche-iglowanie" value="48"><span class="z-nr">48.</span> <span class="z-name">Suche igłowanie</span> <a class="z-inna" href="#suche-iglowanie-lista-2">także na liście nr&nbsp;2, poz.&nbsp;62</a></li>
+              <li id="opalanie-natryskowe" value="49"><span class="z-nr">49.</span> <span class="z-name">Opalanie natryskowe</span> <a class="z-inna" href="#opalanie-natryskowe-lista-2">także na liście nr&nbsp;2, poz.&nbsp;35</a></li>
             </ol>
             <p class="zback"><a class="link-quiet" href="#zabiegi">Wróć na początek listy</a></p>
           </details>
@@ -1070,39 +1256,39 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <span class="z-alias" id="grupa-2"></span>
           <div class="zlista-head">
             <div class="zlista-title">
-              <p class="eyebrow">Załącznik nr 2 · 63 pozycje</p>
-              <h3 id="lista-2-tytul">Lista zabiegów – gabinety kosmetyczne i kosmetologiczne</h3>
+              <p class="eyebrow">Załącznik nr&nbsp;2 · 63&nbsp;pozycje</p>
+              <h3 id="lista-2-tytul">Lista zabiegów&nbsp;– gabinety kosmetyczne i&nbsp;kosmetologiczne</h3>
             </div>
             <p class="zlista-doc"><a class="link-lux" href="dokumenty/oc-beauty/lista-zabiegow-nr-2-kosmetyczne-kosmetologiczne-aneks-5.pdf">Pobierz listę&nbsp;nr&nbsp;2 (PDF, Aneks&nbsp;nr&nbsp;5)</a></p>
           </div>
           <details class="zdetails" open>
-            <summary><span>Pozycje listy nr 2 (<span data-z-ile>63</span>)</span></summary>
+            <summary><span>Pozycje listy nr&nbsp;2 (<span data-z-ile>63</span>)</span></summary>
             <ol class="zlist">
               <li id="chemiczne-usuwanie-makijazu-permanentnego" value="1"><span class="z-nr">1.</span> <span class="z-name">Chemiczne usuwanie makijażu permanentnego</span></li>
               <li id="cool-lifting" value="2"><span class="z-nr">2.</span> <span class="z-name">Cool Lifting</span></li>
-              <li id="depilacja-pasta-cukrowa-lista-2" value="3"><span class="z-nr">3.</span> <span class="z-name">Depilacja pastą cukrową</span> <a class="z-inna" href="#depilacja-pasta-cukrowa">także na liście nr 1, poz.&nbsp;2</a></li>
-              <li id="depilacja-woskiem-lista-2" value="4"><span class="z-nr">4.</span> <span class="z-name">Depilacja woskiem</span> <a class="z-inna" href="#depilacja-woskiem">także na liście nr 1, poz.&nbsp;3</a></li>
+              <li id="depilacja-pasta-cukrowa-lista-2" value="3"><span class="z-nr">3.</span> <span class="z-name">Depilacja pastą cukrową</span> <a class="z-inna" href="#depilacja-pasta-cukrowa">także na liście nr&nbsp;1, poz.&nbsp;2</a></li>
+              <li id="depilacja-woskiem-lista-2" value="4"><span class="z-nr">4.</span> <span class="z-name">Depilacja woskiem</span> <a class="z-inna" href="#depilacja-woskiem">także na liście nr&nbsp;1, poz.&nbsp;3</a></li>
               <li id="elektroliza" value="5"><span class="z-nr">5.</span> <span class="z-name">Elektroliza</span></li>
               <li id="elektrokoagulacja" value="6"><span class="z-nr">6.</span> <span class="z-name">Elektrokoagulacja</span></li>
               <li id="elektroporacja" value="7"><span class="z-nr">7.</span> <span class="z-name">Elektroporacja</span></li>
-              <li id="elektrostymulacja-lista-2" value="8"><span class="z-nr">8.</span> <span class="z-name">Elektrostymulacja</span> <a class="z-inna" href="#elektrostymulacja">także na liście nr 1, poz.&nbsp;6</a></li>
-              <li id="fala-akustyczna-i-energia-wysokiej-czestotliwosci" value="9"><span class="z-nr">9.</span> <span class="z-name">Fala akustyczna i energia wysokiej częstotliwości</span></li>
-              <li id="henna-lista-2" value="10"><span class="z-nr">10.</span> <span class="z-name">Henna</span> <a class="z-inna" href="#henna">także na liście nr 1, poz.&nbsp;9</a></li>
+              <li id="elektrostymulacja-lista-2" value="8"><span class="z-nr">8.</span> <span class="z-name">Elektrostymulacja</span> <a class="z-inna" href="#elektrostymulacja">także na liście nr&nbsp;1, poz.&nbsp;6</a></li>
+              <li id="fala-akustyczna-i-energia-wysokiej-czestotliwosci" value="9"><span class="z-nr">9.</span> <span class="z-name">Fala akustyczna i&nbsp;energia wysokiej częstotliwości</span></li>
+              <li id="henna-lista-2" value="10"><span class="z-nr">10.</span> <span class="z-name">Henna</span> <a class="z-inna" href="#henna">także na liście nr&nbsp;1, poz.&nbsp;9</a></li>
               <li id="infuzja-tlenowa" value="11"><span class="z-nr">11.</span> <span class="z-name">Infuzja tlenowa</span></li>
               <li id="jonoforeza" value="12"><span class="z-nr">12.</span> <span class="z-name">Jonoforeza</span></li>
               <li id="karboksyterapia" value="13"><span class="z-nr">13.</span> <span class="z-name">Karboksyterapia</span></li>
               <li id="kawitacja-ultradzwiekowa" value="14"><span class="z-nr">14.</span> <span class="z-name">Kawitacja ultradźwiękowa</span></li>
               <li id="kriolipoliza" value="15"><span class="z-nr">15.</span> <span class="z-name">Kriolipoliza</span></li>
-              <li id="laminowanie-brwi-i-rzes-lista-2" value="16"><span class="z-nr">16.</span> <span class="z-name">Laminowanie brwi i rzęs</span> <a class="z-inna" href="#laminowanie-brwi-i-rzes">także na liście nr 1, poz.&nbsp;14</a></li>
+              <li id="laminowanie-brwi-i-rzes-lista-2" value="16"><span class="z-nr">16.</span> <span class="z-name">Laminowanie brwi i&nbsp;rzęs</span> <a class="z-inna" href="#laminowanie-brwi-i-rzes">także na liście nr&nbsp;1, poz.&nbsp;14</a></li>
               <li id="makijaz-okolicznosciowy" value="17"><span class="z-nr">17.</span> <span class="z-name">Makijaż okolicznościowy</span></li>
               <li id="makijaz-permanentny" value="18"><span class="z-nr">18.</span> <span class="z-name">Makijaż permanentny</span></li>
-              <li id="manicure-lista-2" value="19"><span class="z-nr">19.</span> <span class="z-name">Manicure</span> <a class="z-inna" href="#manicure">także na liście nr 1, poz.&nbsp;17</a></li>
-              <li id="masaz-banka-chinska-lista-2" value="20"><span class="z-nr">20.</span> <span class="z-name">Masaż bańką chińską</span> <a class="z-inna" href="#masaz-banka-chinska">także na liście nr 1, poz.&nbsp;19</a></li>
+              <li id="manicure-lista-2" value="19"><span class="z-nr">19.</span> <span class="z-name">Manicure</span> <a class="z-inna" href="#manicure">także na liście nr&nbsp;1, poz.&nbsp;17</a></li>
+              <li id="masaz-banka-chinska-lista-2" value="20"><span class="z-nr">20.</span> <span class="z-name">Masaż bańką chińską</span> <a class="z-inna" href="#masaz-banka-chinska">także na liście nr&nbsp;1, poz.&nbsp;19</a></li>
               <li id="masaz-endodermiczny" value="21"><span class="z-nr">21.</span> <span class="z-name">Masaż endodermiczny</span></li>
               <li id="masaz-podcisnieniowy" value="22"><span class="z-nr">22.</span> <span class="z-name">Masaż podciśnieniowy</span></li>
-              <li id="manualne-oczyszczanie-twarzy-lista-2" value="23"><span class="z-nr">23.</span> <span class="z-name">Manualne oczyszczanie twarzy</span> <a class="z-inna" href="#manualne-oczyszczanie-twarzy">także na liście nr 1, poz.&nbsp;18</a></li>
+              <li id="manualne-oczyszczanie-twarzy-lista-2" value="23"><span class="z-nr">23.</span> <span class="z-name">Manualne oczyszczanie twarzy</span> <a class="z-inna" href="#manualne-oczyszczanie-twarzy">także na liście nr&nbsp;1, poz.&nbsp;18</a></li>
               <li id="masaz-manualny-ciala" value="24"><span class="z-nr">24.</span> <span class="z-name">Masaż manualny ciała</span></li>
-              <li id="masaz-kobido-lista-2" value="25"><span class="z-nr">25.</span> <span class="z-name">Masaż Kobido</span> <a class="z-inna" href="#masaz-kobido">także na liście nr 1, poz.&nbsp;45</a></li>
+              <li id="masaz-kobido-lista-2" value="25"><span class="z-nr">25.</span> <span class="z-name">Masaż Kobido</span> <a class="z-inna" href="#masaz-kobido">także na liście nr&nbsp;1, poz.&nbsp;45</a></li>
               <li id="mezoterapia-beziglowa" value="26"><span class="z-nr">26.</span> <span class="z-name">Mezoterapia bezigłowa</span></li>
               <li id="mezoterapia-iglowa" value="27"><span class="z-nr">27.</span> <span class="z-name">Mezoterapia igłowa</span></li>
               <li id="mezoterapia-mikroiglowa" value="28"><span class="z-nr">28.</span> <span class="z-name">Mezoterapia mikroigłowa</span></li>
@@ -1110,36 +1296,36 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <li id="microblading" value="30"><span class="z-nr">30.</span> <span class="z-name">Microblading</span></li>
               <li id="mikronakluwanie" value="31"><span class="z-nr">31.</span> <span class="z-name">Mikronakłuwanie</span></li>
               <li id="mikropigmentacja-rekonstrukcyjna" value="32"><span class="z-nr">32.</span> <span class="z-name">Mikropigmentacja rekonstrukcyjna</span></li>
-              <li id="mikrodermabrazja-korundowa-i-diamentowa" value="33"><span class="z-nr">33.</span> <span class="z-name">Mikrodermabrazja korundowa i diamentowa</span></li>
+              <li id="mikrodermabrazja-korundowa-i-diamentowa" value="33"><span class="z-nr">33.</span> <span class="z-name">Mikrodermabrazja korundowa i&nbsp;diamentowa</span></li>
               <li id="oczyszczanie-wodorowo-tlenowe" value="34"><span class="z-nr">34.</span> <span class="z-name">Oczyszczanie wodorowo-tlenowe</span></li>
-              <li id="opalanie-natryskowe-lista-2" value="35"><span class="z-nr">35.</span> <span class="z-name">Opalanie natryskowe</span> <a class="z-inna" href="#opalanie-natryskowe">także na liście nr 1, poz.&nbsp;49</a></li>
+              <li id="opalanie-natryskowe-lista-2" value="35"><span class="z-nr">35.</span> <span class="z-name">Opalanie natryskowe</span> <a class="z-inna" href="#opalanie-natryskowe">także na liście nr&nbsp;1, poz.&nbsp;49</a></li>
               <li id="oxybrazja" value="36"><span class="z-nr">36.</span> <span class="z-name">Oxybrazja</span></li>
-              <li id="pedicure-kosmetyczny-w-zakresie-zabiegow-niezastrzezonych-dla-podologow" value="37"><span class="z-alias" id="pedicure-kosmetyczny-niezastrzezony-dla-podologow"></span><span class="z-nr">37.</span> <span class="z-name">Pedicure kosmetyczny w zakresie zabiegów niezastrzeżonych dla podologów</span></li>
+              <li id="pedicure-kosmetyczny-w-zakresie-zabiegow-niezastrzezonych-dla-podologow" value="37"><span class="z-alias" id="pedicure-kosmetyczny-niezastrzezony-dla-podologow"></span><span class="z-nr">37.</span> <span class="z-name">Pedicure kosmetyczny w&nbsp;zakresie zabiegów niezastrzeżonych dla podologów</span></li>
               <li id="peeling-weglowy" value="38"><span class="z-nr">38.</span> <span class="z-name">Peeling węglowy</span></li>
-              <li id="piercing-przekluwanie-innych-czesci-ciala-lista-2" value="39"><span class="z-nr">39.</span> <span class="z-name">Piercing – przekłuwanie innych części ciała</span> <a class="z-inna" href="#piercing-przekluwanie-innych-czesci-ciala">także na liście nr 1, poz.&nbsp;26</a></li>
-              <li id="przedluzanie-i-zageszczanie-rzes-lista-2" value="40"><span class="z-nr">40.</span> <span class="z-name">Przedłużanie i zagęszczanie rzęs</span> <a class="z-inna" href="#przedluzanie-i-zageszczanie-rzes">także na liście nr 1, poz.&nbsp;29</a></li>
-              <li id="presoterapia-lista-2" value="41"><span class="z-nr">41.</span> <span class="z-name">Presoterapia</span> <a class="z-inna" href="#presoterapia">także na liście nr 1, poz.&nbsp;27</a></li>
-              <li id="przekluwanie-uszu-lista-2" value="42"><span class="z-nr">42.</span> <span class="z-name">Przekłuwanie uszu</span> <a class="z-inna" href="#przekluwanie-uszu">także na liście nr 1, poz.&nbsp;28</a></li>
+              <li id="piercing-przekluwanie-innych-czesci-ciala-lista-2" value="39"><span class="z-nr">39.</span> <span class="z-name">Piercing&nbsp;– przekłuwanie innych części ciała</span> <a class="z-inna" href="#piercing-przekluwanie-innych-czesci-ciala">także na liście nr&nbsp;1, poz.&nbsp;26</a></li>
+              <li id="przedluzanie-i-zageszczanie-rzes-lista-2" value="40"><span class="z-nr">40.</span> <span class="z-name">Przedłużanie i&nbsp;zagęszczanie rzęs</span> <a class="z-inna" href="#przedluzanie-i-zageszczanie-rzes">także na liście nr&nbsp;1, poz.&nbsp;29</a></li>
+              <li id="presoterapia-lista-2" value="41"><span class="z-nr">41.</span> <span class="z-name">Presoterapia</span> <a class="z-inna" href="#presoterapia">także na liście nr&nbsp;1, poz.&nbsp;27</a></li>
+              <li id="przekluwanie-uszu-lista-2" value="42"><span class="z-nr">42.</span> <span class="z-name">Przekłuwanie uszu</span> <a class="z-inna" href="#przekluwanie-uszu">także na liście nr&nbsp;1, poz.&nbsp;28</a></li>
               <li id="radiofrekwencja-mikroiglowa" value="43"><span class="z-nr">43.</span> <span class="z-name">Radiofrekwencja mikroigłowa</span></li>
               <li id="radiotermoliza-zmian-skornych" value="44"><span class="z-nr">44.</span> <span class="z-name">Radiotermoliza zmian skórnych</span></li>
               <li id="roznorodne-peelingi-chemiczne" value="45"><span class="z-nr">45.</span> <span class="z-name">Różnorodne peelingi chemiczne</span></li>
               <li id="sauny-infrared" value="46"><span class="z-nr">46.</span> <span class="z-name">Sauny infrared</span></li>
               <li id="sonoforeza" value="47"><span class="z-nr">47.</span> <span class="z-name">Sonoforeza</span></li>
               <li id="tatuaz" value="48"><span class="z-nr">48.</span> <span class="z-name">Tatuaż</span></li>
-              <li id="wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych-lista-2" value="49"><span class="z-nr">49.</span> <span class="z-name">Wykonywanie zabiegów kosmetycznych z zastosowaniem składników aktywnych</span> <a class="z-inna" href="#wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych">także na liście nr 1, poz.&nbsp;36</a></li>
-              <li id="wykonywanie-zabiegow-na-twarz-i-cialo-z-zastosowaniem-fali-radiowej" value="50"><span class="z-nr">50.</span> <span class="z-name">Wykonywanie zabiegów na twarz i ciało z zastosowaniem fali radiowej</span></li>
-              <li id="zabiegi-wykorzystujace-swiatlo-ipl-fotoodmladzanie-likwidowanie-przebarwien" value="51"><span class="z-alias" id="zabiegi-ipl-fotoodmladzanie-przebarwienia-teleangiektazje-depilacja"></span><span class="z-nr">51.</span> <span class="z-name">Zabiegi wykorzystujące światło IPL: fotoodmładzanie, likwidowanie przebarwień, terapia trądziku, zamykanie naczyń – teleangiektazje, usuwanie zbędnego owłosienia</span></li>
-              <li id="zabiegi-wykorzystujace-terapeutyczne-dzialanie-swiatla-swiatlo-led" value="52"><span class="z-nr">52.</span> <span class="z-name">Zabiegi wykorzystujące terapeutyczne działanie światła – światło LED</span></li>
-              <li id="zabiegi-z-zastosowaniem-fali-radiowej" value="53"><span class="z-alias" id="zabiegi-fala-radiowa"></span><span class="z-nr">53.</span> <span class="z-name">Zabiegi z zastosowaniem fali radiowej</span></li>
-              <li id="zabiegi-z-zastosowaniem-lasera-frakcyjnego-nieablacyjnego-laser-subablacyjny" value="54"><span class="z-alias" id="zabiegi-laserem-frakcyjnym-nieablacyjnym"></span><span class="z-nr">54.</span> <span class="z-name">Zabiegi z zastosowaniem lasera frakcyjnego nieablacyjnego, laser subablacyjny</span></li>
-              <li id="zabiegi-z-wykorzystaniem-laserow-nieablacyjnych-w-tym-laserowe-zamykanie-naczyn" value="55"><span class="z-alias" id="zabiegi-laserem-nieablacyjnym-naczynia-tatuaz-depilacja"></span><span class="z-nr">55.</span> <span class="z-name">Zabiegi z wykorzystaniem laserów nieablacyjnych, w tym laserowe zamykanie naczyń – teleangiektazje, usuwanie tatuażu i makijażu permanentnego, usuwanie zbędnego owłosienia</span></li>
-              <li id="zabiegi-z-zastosowaniem-podczerwieni" value="56"><span class="z-nr">56.</span> <span class="z-name">Zabiegi z zastosowaniem podczerwieni</span></li>
-              <li id="zastosowanie-pradow-malej-i-duzej-czestotliwosci" value="57"><span class="z-nr">57.</span> <span class="z-name">Zastosowanie prądów małej i dużej częstotliwości</span></li>
-              <li id="kosmetyczny-zabieg-trychologiczny-lista-2" value="58"><span class="z-nr">58.</span> <span class="z-name">Kosmetyczny zabieg trychologiczny</span> <a class="z-inna" href="#kosmetyczny-zabieg-trychologiczny">także na liście nr 1, poz.&nbsp;12</a></li>
-              <li id="kosmetyczna-diagnostyka-trychologiczna-lista-2" value="59"><span class="z-nr">59.</span> <span class="z-name">Kosmetyczna diagnostyka trychologiczna</span> <a class="z-inna" href="#kosmetyczna-diagnostyka-trychologiczna">także na liście nr 1, poz.&nbsp;11</a></li>
-              <li id="masaz-transbukalny-lista-2" value="60"><span class="z-nr">60.</span> <span class="z-name">Masaż transbukalny</span> <a class="z-inna" href="#masaz-transbukalny">także na liście nr 1, poz.&nbsp;47</a></li>
-              <li id="masaz-miesniowo-powieziowy-lista-2" value="61"><span class="z-nr">61.</span> <span class="z-name">Masaż mięśniowo-powięziowy</span> <a class="z-inna" href="#masaz-miesniowo-powieziowy">także na liście nr 1, poz.&nbsp;46</a></li>
-              <li id="suche-iglowanie-lista-2" value="62"><span class="z-nr">62.</span> <span class="z-name">Suche igłowanie</span> <a class="z-inna" href="#suche-iglowanie">także na liście nr 1, poz.&nbsp;48</a></li>
+              <li id="wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych-lista-2" value="49"><span class="z-nr">49.</span> <span class="z-name">Wykonywanie zabiegów kosmetycznych z&nbsp;zastosowaniem składników aktywnych</span> <a class="z-inna" href="#wykonywanie-zabiegow-kosmetycznych-z-zastosowaniem-skladnikow-aktywnych">także na liście nr&nbsp;1, poz.&nbsp;36</a></li>
+              <li id="wykonywanie-zabiegow-na-twarz-i-cialo-z-zastosowaniem-fali-radiowej" value="50"><span class="z-nr">50.</span> <span class="z-name">Wykonywanie zabiegów na twarz i&nbsp;ciało z&nbsp;zastosowaniem fali radiowej</span></li>
+              <li id="zabiegi-wykorzystujace-swiatlo-ipl-fotoodmladzanie-likwidowanie-przebarwien" value="51"><span class="z-alias" id="zabiegi-ipl-fotoodmladzanie-przebarwienia-teleangiektazje-depilacja"></span><span class="z-nr">51.</span> <span class="z-name">Zabiegi wykorzystujące światło IPL: fotoodmładzanie, likwidowanie przebarwień, terapia trądziku, zamykanie naczyń&nbsp;– teleangiektazje, usuwanie zbędnego owłosienia</span></li>
+              <li id="zabiegi-wykorzystujace-terapeutyczne-dzialanie-swiatla-swiatlo-led" value="52"><span class="z-nr">52.</span> <span class="z-name">Zabiegi wykorzystujące terapeutyczne działanie światła&nbsp;– światło LED</span></li>
+              <li id="zabiegi-z-zastosowaniem-fali-radiowej" value="53"><span class="z-alias" id="zabiegi-fala-radiowa"></span><span class="z-nr">53.</span> <span class="z-name">Zabiegi z&nbsp;zastosowaniem fali radiowej</span></li>
+              <li id="zabiegi-z-zastosowaniem-lasera-frakcyjnego-nieablacyjnego-laser-subablacyjny" value="54"><span class="z-alias" id="zabiegi-laserem-frakcyjnym-nieablacyjnym"></span><span class="z-nr">54.</span> <span class="z-name">Zabiegi z&nbsp;zastosowaniem lasera frakcyjnego nieablacyjnego, laser subablacyjny</span></li>
+              <li id="zabiegi-z-wykorzystaniem-laserow-nieablacyjnych-w-tym-laserowe-zamykanie-naczyn" value="55"><span class="z-alias" id="zabiegi-laserem-nieablacyjnym-naczynia-tatuaz-depilacja"></span><span class="z-nr">55.</span> <span class="z-name">Zabiegi z&nbsp;wykorzystaniem laserów nieablacyjnych, w&nbsp;tym laserowe zamykanie naczyń&nbsp;– teleangiektazje, usuwanie tatuażu i&nbsp;makijażu permanentnego, usuwanie zbędnego owłosienia</span></li>
+              <li id="zabiegi-z-zastosowaniem-podczerwieni" value="56"><span class="z-nr">56.</span> <span class="z-name">Zabiegi z&nbsp;zastosowaniem podczerwieni</span></li>
+              <li id="zastosowanie-pradow-malej-i-duzej-czestotliwosci" value="57"><span class="z-nr">57.</span> <span class="z-name">Zastosowanie prądów małej i&nbsp;dużej częstotliwości</span></li>
+              <li id="kosmetyczny-zabieg-trychologiczny-lista-2" value="58"><span class="z-nr">58.</span> <span class="z-name">Kosmetyczny zabieg trychologiczny</span> <a class="z-inna" href="#kosmetyczny-zabieg-trychologiczny">także na liście nr&nbsp;1, poz.&nbsp;12</a></li>
+              <li id="kosmetyczna-diagnostyka-trychologiczna-lista-2" value="59"><span class="z-nr">59.</span> <span class="z-name">Kosmetyczna diagnostyka trychologiczna</span> <a class="z-inna" href="#kosmetyczna-diagnostyka-trychologiczna">także na liście nr&nbsp;1, poz.&nbsp;11</a></li>
+              <li id="masaz-transbukalny-lista-2" value="60"><span class="z-nr">60.</span> <span class="z-name">Masaż transbukalny</span> <a class="z-inna" href="#masaz-transbukalny">także na liście nr&nbsp;1, poz.&nbsp;47</a></li>
+              <li id="masaz-miesniowo-powieziowy-lista-2" value="61"><span class="z-nr">61.</span> <span class="z-name">Masaż mięśniowo-powięziowy</span> <a class="z-inna" href="#masaz-miesniowo-powieziowy">także na liście nr&nbsp;1, poz.&nbsp;46</a></li>
+              <li id="suche-iglowanie-lista-2" value="62"><span class="z-nr">62.</span> <span class="z-name">Suche igłowanie</span> <a class="z-inna" href="#suche-iglowanie">także na liście nr&nbsp;1, poz.&nbsp;48</a></li>
               <li id="needle-shaping" value="63"><span class="z-nr">63.</span> <span class="z-name">Needle shaping</span></li>
             </ol>
             <p class="zback"><a class="link-quiet" href="#zabiegi">Wróć na początek listy</a></p>
@@ -1149,22 +1335,22 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <span class="z-alias" id="grupa-4"></span>
           <div class="zlista-head">
             <div class="zlista-title">
-              <p class="eyebrow">Brzmienie Aneksu nr&nbsp;5 · 8 pozycji</p>
-              <h3 id="ankieta-tytul">Zabiegi wymagające ankiety ERGO Hestii</h3>
+              <p class="eyebrow">Brzmienie Aneksu nr&nbsp;5 · 8&nbsp;pozycji</p>
+              <h3 id="ankieta-tytul">Zabiegi wymagające ankiety ERGO&nbsp;Hestii</h3>
               <p class="zlista-desc">Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel na podstawie ankiety.</p>
             </div>
           </div>
           <details class="zdetails" open>
             <summary><span>Pozycje a–h (<span data-z-ile>8</span>)</span></summary>
             <ol class="zlist" type="a">
-              <li id="zabiegi-z-uzyciem-wypelniaczy-na-bazie-kwasu-hialuronowego" value="1"><span class="z-alias" id="wypelniacze-kwas-hialuronowy"></span><span class="z-nr">a)</span> <span class="z-name">Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego</span></li>
+              <li id="zabiegi-z-uzyciem-wypelniaczy-na-bazie-kwasu-hialuronowego" value="1"><span class="z-alias" id="wypelniacze-kwas-hialuronowy"></span><span class="z-nr">a)</span> <span class="z-name">Zabiegi z&nbsp;użyciem wypełniaczy na bazie kwasu hialuronowego</span></li>
               <li id="zabiegi-lipolizy-iniekcyjnej" value="2"><span class="z-alias" id="lipoliza-iniekcyjna"></span><span class="z-nr">b)</span> <span class="z-name">Zabiegi lipolizy iniekcyjnej</span></li>
-              <li id="zabiegi-z-uzyciem-fibryny-osocza-bogatoplytkowego-i-wypelniaczy-autologicznych" value="3"><span class="z-alias" id="zabiegi-osoczem-bogatoplytkowym-prp"></span><span class="z-nr">c)</span> <span class="z-name">Zabiegi z użyciem fibryny, osocza bogatopłytkowego i wypełniaczy autologicznych</span></li>
-              <li id="zabiegi-urzadzeniami-opartymi-na-technologii-hifu-skupiona-wiazka-fal" value="4"><span class="z-alias" id="zabiegi-technologia-hifu"></span><span class="z-nr">d)</span> <span class="z-name">Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)</span></li>
-              <li id="zabiegi-z-uzyciem-urzadzen-wykorzystujacych-technologie-plasma" value="5"><span class="z-alias" id="zabiegi-technologia-plasma"></span><span class="z-nr">e)</span> <span class="z-name">Zabiegi z użyciem urządzeń wykorzystujących technologię PLASMA</span></li>
-              <li id="zabiegi-laserami-ablacyjnymi-i-frakcyjno-ablacyjnymi" value="6"><span class="z-alias" id="zabiegi-laserem-ablacyjnym"></span><span class="z-nr">f)</span> <span class="z-name">Zabiegi laserami ablacyjnymi i frakcyjno-ablacyjnymi</span></li>
-              <li id="zabiegi-z-uzyciem-nici-pdo-plla-i-pla-cl" value="7"><span class="z-alias" id="zabiegi-z-uzyciem-nici-pdo"></span><span class="z-nr">g)</span> <span class="z-name">Zabiegi z użyciem nici PDO, PLLA i PLA/CL</span></li>
-              <li id="zabiegi-z-uzyciem-toksyny-botulinowej" value="8"><span class="z-nr">h)</span> <span class="z-name">Zabiegi z użyciem toksyny botulinowej</span></li>
+              <li id="zabiegi-z-uzyciem-fibryny-osocza-bogatoplytkowego-i-wypelniaczy-autologicznych" value="3"><span class="z-alias" id="zabiegi-osoczem-bogatoplytkowym-prp"></span><span class="z-nr">c)</span> <span class="z-name">Zabiegi z&nbsp;użyciem fibryny, osocza bogatopłytkowego i&nbsp;wypełniaczy autologicznych</span></li>
+              <li id="zabiegi-urzadzeniami-opartymi-na-technologii-hifu-skupiona-wiazka-fal" value="4"><span class="z-alias" id="zabiegi-technologia-hifu"></span><span class="z-nr">d)</span> <span class="z-name">Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o&nbsp;dużym natężeniu)</span></li>
+              <li id="zabiegi-z-uzyciem-urzadzen-wykorzystujacych-technologie-plasma" value="5"><span class="z-alias" id="zabiegi-technologia-plasma"></span><span class="z-nr">e)</span> <span class="z-name">Zabiegi z&nbsp;użyciem urządzeń wykorzystujących technologię PLASMA</span></li>
+              <li id="zabiegi-laserami-ablacyjnymi-i-frakcyjno-ablacyjnymi" value="6"><span class="z-alias" id="zabiegi-laserem-ablacyjnym"></span><span class="z-nr">f)</span> <span class="z-name">Zabiegi laserami ablacyjnymi i&nbsp;frakcyjno-ablacyjnymi</span></li>
+              <li id="zabiegi-z-uzyciem-nici-pdo-plla-i-pla-cl" value="7"><span class="z-alias" id="zabiegi-z-uzyciem-nici-pdo"></span><span class="z-nr">g)</span> <span class="z-name">Zabiegi z&nbsp;użyciem nici PDO, PLLA i&nbsp;PLA/CL</span></li>
+              <li id="zabiegi-z-uzyciem-toksyny-botulinowej" value="8"><span class="z-nr">h)</span> <span class="z-name">Zabiegi z&nbsp;użyciem toksyny botulinowej</span></li>
             </ol>
             <p class="zback"><a class="link-quiet" href="#zabiegi">Wróć na początek listy</a></p>
           </details>
@@ -1205,7 +1391,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <div class="zlista-head">
             <div class="zlista-title">
               <p class="eyebrow">Dokumenty programu</p>
-              <h3 id="podologia-tytul">Lista zabiegów – podologiczne</h3>
+              <h3 id="podologia-tytul">Lista zabiegów&nbsp;– podologiczne</h3>
               <p class="zlista-desc">Lista zabiegów podologicznych jest w&nbsp;dokumentach programu. <a href="makieta-v3.html?produkt=oc-beauty#kontakt">Zapytaj doradcę o&nbsp;listę zabiegów podologicznych</a>.</p>
             </div>
           </div>
@@ -1217,15 +1403,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <h3>Rodzaj działalności, liczba osób i&nbsp;ankieta</h3>
         <!-- GEN:zabiegi-reguly (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
         <ul>
-          <li>Taryfę wyznacza rodzaj działalności: tylko gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem) – „Gabinety kosmetyczne i fryzjerskie”; tylko gabinet kosmetologiczny lub salon tatuażu (także razem) – „Gabinety kosmetologiczne”; gabinet podologiczny (z innymi rodzajami lub bez) albo gabinet kosmetyczny, salon fryzjerski lub salon masażu razem z gabinetem kosmetologicznym lub salonem tatuażu – „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”.</li>
-          <li>6–8&nbsp;osób wykonujących zabiegi – składka z&nbsp;taryfy wyższa o&nbsp;25% (ochrona prawna +92&nbsp;zł bez tej dopłaty).</li>
-          <li>Więcej niż 8&nbsp;osób wykonujących zabiegi – wycena indywidualna.</li>
-          <li>Zabiegi wymagające ankiety ERGO Hestii – cała składka do indywidualnej wyceny.</li>
+          <li>Taryfę wyznacza rodzaj działalności: tylko gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)&nbsp;– „Gabinety kosmetyczne i&nbsp;fryzjerskie”; tylko gabinet kosmetologiczny lub salon tatuażu (także razem)&nbsp;– „Gabinety kosmetologiczne”; gabinet podologiczny (z&nbsp;innymi rodzajami lub bez) albo gabinet kosmetyczny, salon fryzjerski lub salon masażu razem z&nbsp;gabinetem kosmetologicznym lub salonem tatuażu&nbsp;– „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i&nbsp;podologiczne”.</li>
+          <li>6–8&nbsp;osób wykonujących zabiegi&nbsp;– składka z&nbsp;taryfy wyższa o&nbsp;25% (ochrona prawna +92&nbsp;zł bez tej dopłaty).</li>
+          <li>Więcej niż 8&nbsp;osób wykonujących zabiegi&nbsp;– wycena indywidualna.</li>
+          <li>Zabiegi wymagające ankiety ERGO&nbsp;Hestii&nbsp;– cała składka do indywidualnej wyceny.</li>
         </ul>
         <!-- /GEN:zabiegi-reguly -->
-        <p>Listy pokazują brzmienie pozycji z&nbsp;załączników do programu. <a class="bp-termin" href="slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">Zakres ochrony i&nbsp;wyłączenia</a> określają warunki ubezpieczenia programu. Zabiegi wymagające <a class="bp-termin" href="slownik.html#haslo-ankieta-indywidualnej-oceny-ryzyka" data-termin="ankieta-indywidualnej-oceny-ryzyka">ankiety ERGO Hestii</a> podlegają ocenie ryzyka przez ubezpieczyciela.</p>
+        <p>Listy pokazują brzmienie pozycji z&nbsp;załączników do programu. <a class="bp-termin" href="slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">Zakres ochrony i&nbsp;wyłączenia</a> określają warunki ubezpieczenia programu. Zabiegi wymagające <a class="bp-termin" href="slownik.html#haslo-ankieta-indywidualnej-oceny-ryzyka" data-termin="ankieta-indywidualnej-oceny-ryzyka">ankiety ERGO&nbsp;Hestii</a> podlegają ocenie ryzyka przez ubezpieczyciela.</p>
         <div class="cta-row">
-          <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Policz składkę</a>
+          <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a>
           <a class="link-lux" href="makieta-v3.html?produkt=oc-beauty#kontakt">Nie ma Twojego zabiegu? Zapytaj doradcę</a>
         </div>
       </div>
@@ -1243,8 +1429,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <h2 id="op-title" class="rv-curtain">Klauzula ochrony prawnej <em>(+92&nbsp;zł rocznie)</em></h2>
         </div>
         <div class="clause-intro">
-          <p><a class="bp-termin" href="slownik.html#haslo-ochrona-prawna" data-termin="ochrona-prawna">Klauzula ochrony prawnej</a> to rozszerzenie OC w&nbsp;programie o&nbsp;koszty ochrony prawnej – na przykład koszty adwokata lub radcy prawnego – w&nbsp;postępowaniach przed sądami polskimi, w&nbsp;których występujesz jako pozwany, podejrzany lub oskarżony, także w&nbsp;postępowaniu dyscyplinarnym.</p>
-          <p>Dokupujesz ją do polisy OC za 92&nbsp;zł rocznie. Pełną treść <a class="bp-termin" href="slownik.html#haslo-klauzula" data-termin="klauzula">klauzuli</a>, z&nbsp;wyłączeniami, publikujemy bez skrótów.</p>
+          <p><a class="bp-termin" href="slownik.html#haslo-ochrona-prawna" data-termin="ochrona-prawna">Klauzula ochrony prawnej</a> to rozszerzenie OC w&nbsp;programie o&nbsp;koszty ochrony prawnej&nbsp;– na przykład koszty adwokata lub radcy prawnego&nbsp;– w&nbsp;postępowaniach przed sądami polskimi, w&nbsp;których występujesz jako pozwany, podejrzany lub oskarżony, także w&nbsp;postępowaniu dyscyplinarnym.</p>
+          <p>Dokupujesz ją do polisy OC za 92&nbsp;zł rocznie. Pełna treść <a class="bp-termin" href="slownik.html#haslo-klauzula" data-termin="klauzula">klauzuli</a>, z&nbsp;wyłączeniami&nbsp;– poniżej, bez skrótów.</p>
         </div>
         <dl class="clause-facts">
           <div><dt>Składka za klauzulę</dt><dd>92&nbsp;zł rocznie</dd></div>
@@ -1256,48 +1442,48 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <!-- GEN:klauzula (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
         <header class="clause-head">
           <p class="clause-label">Pełna treść klauzuli</p>
-          <h3 id="klauzula-tytul">Rozszerzenie zakresu ubezpieczenia o koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgodą Ubezpieczyciela ochroną zgodnie z § 6 ust. 3</h3>
+          <h3 id="klauzula-tytul">Rozszerzenie zakresu ubezpieczenia o&nbsp;koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgodą Ubezpieczyciela ochroną zgodnie z&nbsp;§&nbsp;6 ust.&nbsp;3</h3>
         </header>
         <ol class="clause-text">
-          <li>Z zachowaniem pozostałych, niezmienionych niniejszą klauzulą postanowień umowy ubezpieczenia określonych w Warunkach Ubezpieczenia, strony postanowiły rozszerzyć zakres ubezpieczenia o koszty ochrony prawnej, poniesione przez Ubezpieczonego w celu obrony jego praw w postępowaniach przed sądami polskimi prowadzonych z jego udziałem w charakterze pozwanego, podejrzanego lub oskarżonego, w tym w postępowaniu dyscyplinarnym.</li>
-          <li>Ochroną ubezpieczeniową na podstawie niniejszej klauzuli objęte są koszty ochrony prawnej, poniesione przez Ubezpieczonego w postępowaniu wszczętym na terenie RP w okresie ubezpieczenia, o ile dotyczy ono czynności zawodowych Ubezpieczonego przyjętych do ubezpieczenia na podstawie niniejszej umowy. W razie wątpliwości za datę wszczęcia postępowania uważa się chwilę, w której właściwy organ, urząd lub funkcjonariusz podjął pierwszą czynność wobec Ubezpieczonego, nawet jeśli nie była ona potwierdzona na piśmie i nie stanowiła formalnego wszczęcia postępowania w świetle obowiązujących przepisów.</li>
-          <li>Przez koszty ochrony prawnej rozumie się w szczególności:
+          <li>Z&nbsp;zachowaniem pozostałych, niezmienionych niniejszą klauzulą postanowień umowy ubezpieczenia określonych w&nbsp;Warunkach Ubezpieczenia, strony postanowiły rozszerzyć zakres ubezpieczenia o&nbsp;koszty ochrony prawnej, poniesione przez Ubezpieczonego w&nbsp;celu obrony jego praw w&nbsp;postępowaniach przed sądami polskimi prowadzonych z&nbsp;jego udziałem w&nbsp;charakterze pozwanego, podejrzanego lub oskarżonego, w&nbsp;tym w&nbsp;postępowaniu dyscyplinarnym.</li>
+          <li>Ochroną ubezpieczeniową na podstawie niniejszej klauzuli objęte są koszty ochrony prawnej, poniesione przez Ubezpieczonego w&nbsp;postępowaniu wszczętym na terenie RP w&nbsp;okresie ubezpieczenia, o&nbsp;ile dotyczy ono czynności zawodowych Ubezpieczonego przyjętych do ubezpieczenia na podstawie niniejszej umowy. W&nbsp;razie wątpliwości za datę wszczęcia postępowania uważa się chwilę, w&nbsp;której właściwy organ, urząd lub funkcjonariusz podjął pierwszą czynność wobec Ubezpieczonego, nawet jeśli nie była ona potwierdzona na piśmie i&nbsp;nie stanowiła formalnego wszczęcia postępowania w&nbsp;świetle obowiązujących przepisów.</li>
+          <li>Przez koszty ochrony prawnej rozumie się w&nbsp;szczególności:
             <ul>
               <li>koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej,</li>
-              <li>koszty związane z uzyskaniem opinii biegłych lub rzeczoznawców albo innych dokumentów stanowiących środki dowodowe,</li>
+              <li>koszty związane z&nbsp;uzyskaniem opinii biegłych lub rzeczoznawców albo innych dokumentów stanowiących środki dowodowe,</li>
               <li>koszty zasądzone od Ubezpieczonego na rzecz strony przeciwnej,</li>
-              <li>pozostałe koszty i opłaty sądowe lub administracyjne, o ile służą one ochronie praw Ubezpieczonego w związku z prowadzonym postępowaniem.</li>
+              <li>pozostałe koszty i&nbsp;opłaty sądowe lub administracyjne, o&nbsp;ile służą one ochronie praw Ubezpieczonego w&nbsp;związku z&nbsp;prowadzonym postępowaniem.</li>
             </ul>
           </li>
-          <li>Przez koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej rozumie się koszty jednego adwokata lub radcy prawnego z tytułu zastępstwa procesowego lub obrony, pokrywane do wysokości ustalonej zgodnie z odpowiednimi przepisami regulującymi wysokość minimalnego wynagrodzenia za czynności adwokata lub radcy prawnego, jeśli takie obowiązują.</li>
-          <li>Z zakresu ubezpieczenia wyłączone są koszty:
+          <li>Przez koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej rozumie się koszty jednego adwokata lub radcy prawnego z&nbsp;tytułu zastępstwa procesowego lub obrony, pokrywane do wysokości ustalonej zgodnie z&nbsp;odpowiednimi przepisami regulującymi wysokość minimalnego wynagrodzenia za czynności adwokata lub radcy prawnego, jeśli takie obowiązują.</li>
+          <li>Z&nbsp;zakresu ubezpieczenia wyłączone są koszty:
             <ul>
-              <li>poniesione w postępowaniu wszczętym w okresie ubezpieczenia, w wyniku apelacji lub wniesienia innego środka zaskarżenia albo wznowienia postępowania, o ile dotyczą postępowania prowadzonego przed rozpoczęciem okresu odpowiedzialności Ubezpieczyciela,</li>
-              <li>powstałe w następstwie korzystania z usług osób nieuprawnionych do świadczenia pomocy prawnej,</li>
-              <li>związane ze świadomym udzieleniem przez Ubezpieczonego nieprawdziwych lub wprowadzających w błąd informacji, albo dostarczeniem sfałszowanych dokumentów,</li>
-              <li>poniesione w postępowaniu wszczętym na wniosek osób bliskich Ubezpieczonego, osób i podmiotów pozostających z nim w stosunku zależności wynikającej z zatrudnienia ich przez Ubezpieczonego lub z innej podstawy,</li>
+              <li>poniesione w&nbsp;postępowaniu wszczętym w&nbsp;okresie ubezpieczenia, w&nbsp;wyniku apelacji lub wniesienia innego środka zaskarżenia albo wznowienia postępowania, o&nbsp;ile dotyczą postępowania prowadzonego przed rozpoczęciem okresu odpowiedzialności Ubezpieczyciela,</li>
+              <li>powstałe w&nbsp;następstwie korzystania z&nbsp;usług osób nieuprawnionych do świadczenia pomocy prawnej,</li>
+              <li>związane ze świadomym udzieleniem przez Ubezpieczonego nieprawdziwych lub wprowadzających w&nbsp;błąd informacji, albo dostarczeniem sfałszowanych dokumentów,</li>
+              <li>poniesione w&nbsp;postępowaniu wszczętym na wniosek osób bliskich Ubezpieczonego, osób i&nbsp;podmiotów pozostających z&nbsp;nim w&nbsp;stosunku zależności wynikającej z&nbsp;zatrudnienia ich przez Ubezpieczonego lub z&nbsp;innej podstawy,</li>
               <li>poniesione na pokrycie kar sądowych lub administracyjnych nałożonych na Ubezpieczonego.</li>
             </ul>
           </li>
-          <li>Z zakresu ubezpieczenia wyłączone są ponadto koszty poniesione:
+          <li>Z&nbsp;zakresu ubezpieczenia wyłączone są ponadto koszty poniesione:
             <ul>
-              <li>w postępowaniach z zakresu prawa funduszy inwestycyjnych, prawa obligacji, papierów wartościowych oraz z zakresu prawa pracy,</li>
-              <li>w postępowaniach z zakresu prawa patentowego, autorskiego, znaków towarowych, pozostałego prawa własności intelektualnej i przemysłowej, prawa ochrony konkurencji (antymonopolowego) oraz prawa dotyczącego zasad konkurencji,</li>
-              <li>w postępowaniach z umów poręczenia i przejęcia długów,</li>
-              <li>w postępowaniach z zakresu prawa podatkowego, celnego oraz dotyczącego innych opłat publicznoprawnych, a także prawa karno-skarbowego,</li>
-              <li>w postępowaniu układowym, naprawczym albo upadłościowym,</li>
-              <li>w postępowaniach w związku z posiadaniem pojazdów mechanicznych,</li>
-              <li>w postępowaniach pomiędzy stronami umowy ubezpieczenia.</li>
+              <li>w&nbsp;postępowaniach z&nbsp;zakresu prawa funduszy inwestycyjnych, prawa obligacji, papierów wartościowych oraz z&nbsp;zakresu prawa pracy,</li>
+              <li>w&nbsp;postępowaniach z&nbsp;zakresu prawa patentowego, autorskiego, znaków towarowych, pozostałego prawa własności intelektualnej i&nbsp;przemysłowej, prawa ochrony konkurencji (antymonopolowego) oraz prawa dotyczącego zasad konkurencji,</li>
+              <li>w&nbsp;postępowaniach z&nbsp;umów poręczenia i&nbsp;przejęcia długów,</li>
+              <li>w&nbsp;postępowaniach z&nbsp;zakresu prawa podatkowego, celnego oraz dotyczącego innych opłat publicznoprawnych, a&nbsp;także prawa karno-skarbowego,</li>
+              <li>w&nbsp;postępowaniu układowym, naprawczym albo upadłościowym,</li>
+              <li>w&nbsp;postępowaniach w&nbsp;związku z&nbsp;posiadaniem pojazdów mechanicznych,</li>
+              <li>w&nbsp;postępowaniach pomiędzy stronami umowy ubezpieczenia.</li>
             </ul>
           </li>
-          <li>W odniesieniu do postępowań karnych ochrona ubezpieczeniowa dotyczy wyłącznie czynów, w których karane jest nieumyślne popełnienie danego czynu; w przypadku stwierdzenia winy umyślnej w prawomocnym orzeczeniu sądu, Ubezpieczycielowi przysługuje roszczenie regresowe do Ubezpieczonego o zwrot uprzednio wypłaconych świadczeń.</li>
-          <li>Jeżeli przeciwko Ubezpieczonemu wszczęte zostało postępowanie, o którym mowa w niniejszej klauzuli, albo jeżeli istnieje bezpośrednie zagrożenie wszczęciem takiego postępowania, Ubezpieczony obowiązany jest niezwłocznie zawiadomić o tym Ubezpieczyciela, przekazując mu wszelkie informacje i dokumenty w sprawie.</li>
-          <li>W ramach udzielonej ochrony Ubezpieczyciel dokonuje oceny sytuacji faktycznej i prawnej oraz podejmuje decyzję o uznaniu lub nieuznaniu roszczenia Ubezpieczonego i wypłacie lub odmowie wypłaty świadczenia w postaci refundacji kosztów ochrony prawnej.</li>
-          <li>Ubezpieczonemu przysługuje prawo swobodnego wyboru adwokata lub radcy prawnego w zakresie obrony, reprezentowania lub wspierania jego interesów w postępowaniu sądowym. Koszty ochrony prawnej pokrywane są przez Ubezpieczyciela na podstawie rachunków wystawionych na Ubezpieczonego, o ile dotyczą kosztów objętych ubezpieczeniem, zgodnie z niniejszą klauzulą.</li>
-          <li>Suma ubezpieczenia dla kosztów ochrony prawnej pokrywanych przez Ubezpieczyciela na podstawie niniejszej klauzuli zostaje wskazana w umowie ubezpieczenia i stanowi górną granicę odpowiedzialności Ubezpieczyciela.</li>
-          <li>Za rozszerzenie zakresu ubezpieczenia w sposób określony w niniejszej klauzuli Ubezpieczony opłaci dodatkową składkę w wysokości ustalonej w umowie ubezpieczenia.</li>
+          <li>W&nbsp;odniesieniu do postępowań karnych ochrona ubezpieczeniowa dotyczy wyłącznie czynów, w&nbsp;których karane jest nieumyślne popełnienie danego czynu; w&nbsp;przypadku stwierdzenia winy umyślnej w&nbsp;prawomocnym orzeczeniu sądu, Ubezpieczycielowi przysługuje roszczenie regresowe do Ubezpieczonego o&nbsp;zwrot uprzednio wypłaconych świadczeń.</li>
+          <li>Jeżeli przeciwko Ubezpieczonemu wszczęte zostało postępowanie, o&nbsp;którym mowa w&nbsp;niniejszej klauzuli, albo jeżeli istnieje bezpośrednie zagrożenie wszczęciem takiego postępowania, Ubezpieczony obowiązany jest niezwłocznie zawiadomić o&nbsp;tym Ubezpieczyciela, przekazując mu wszelkie informacje i&nbsp;dokumenty w&nbsp;sprawie.</li>
+          <li>W&nbsp;ramach udzielonej ochrony Ubezpieczyciel dokonuje oceny sytuacji faktycznej i&nbsp;prawnej oraz podejmuje decyzję o&nbsp;uznaniu lub nieuznaniu roszczenia Ubezpieczonego i&nbsp;wypłacie lub odmowie wypłaty świadczenia w&nbsp;postaci refundacji kosztów ochrony prawnej.</li>
+          <li>Ubezpieczonemu przysługuje prawo swobodnego wyboru adwokata lub radcy prawnego w&nbsp;zakresie obrony, reprezentowania lub wspierania jego interesów w&nbsp;postępowaniu sądowym. Koszty ochrony prawnej pokrywane są przez Ubezpieczyciela na podstawie rachunków wystawionych na Ubezpieczonego, o&nbsp;ile dotyczą kosztów objętych ubezpieczeniem, zgodnie z&nbsp;niniejszą klauzulą.</li>
+          <li>Suma ubezpieczenia dla kosztów ochrony prawnej pokrywanych przez Ubezpieczyciela na podstawie niniejszej klauzuli zostaje wskazana w&nbsp;umowie ubezpieczenia i&nbsp;stanowi górną granicę odpowiedzialności Ubezpieczyciela.</li>
+          <li>Za rozszerzenie zakresu ubezpieczenia w&nbsp;sposób określony w&nbsp;niniejszej klauzuli Ubezpieczony opłaci dodatkową składkę w&nbsp;wysokości ustalonej w&nbsp;umowie ubezpieczenia.</li>
         </ol>
-        <p class="clause-foot">Klauzula do programu ubezpieczenia OC dla branży beauty nr WA50/003353/24/A (ERGO Hestia). Pozostałe postanowienia umowy określają Warunki Ubezpieczenia programu.</p>
+        <p class="clause-foot">Klauzula do programu ubezpieczenia OC dla branży beauty nr&nbsp;WA50/003353/24/A (ERGO&nbsp;Hestia). Pozostałe postanowienia umowy określają Warunki Ubezpieczenia programu.</p>
         <!-- /GEN:klauzula -->
       </article>
     </div>
@@ -1311,26 +1497,26 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <span class="chapter-no" aria-hidden="true">III</span>
         <p class="eyebrow">Taryfa programu</p>
         <h2 id="tar-title" class="rv-curtain">Ile kosztuje OC <em>w&nbsp;programie</em></h2>
-        <p class="lead">Składki są stałe – wynikają z&nbsp;taryfy programu i&nbsp;zależą od rodzaju działalności gabinetu. Przy kilku rodzajach działalności decyduje opis pod nazwą taryfy, np. gabinet kosmetyczny razem z&nbsp;gabinetem kosmetologicznym to taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i&nbsp;podologiczne”. Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO Hestii – <a class="bp-termin" href="slownik.html#haslo-wycena-indywidualna" data-termin="wycena-indywidualna">wycena indywidualna</a>.</p>
+        <p class="lead">Składki są stałe&nbsp;– wynikają z&nbsp;taryfy programu i&nbsp;zależą od rodzaju działalności gabinetu. Przy kilku rodzajach działalności decyduje opis pod nazwą taryfy, np. gabinet kosmetyczny razem z&nbsp;gabinetem kosmetologicznym to taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i&nbsp;podologiczne”. Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO&nbsp;Hestii&nbsp;– <a class="bp-termin" href="slownik.html#haslo-wycena-indywidualna" data-termin="wycena-indywidualna">wycena indywidualna</a>.</p>
       </div>
       <div class="tariff-table glass glass--tint">
         <!-- GEN:taryfa (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
         <div class="table-scroll" role="region" tabindex="0" aria-label="Taryfa OC dla branży beauty">
         <table>
-          <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO Hestią – do 5&nbsp;osób wykonujących zabiegi</caption>
+          <caption>Składka roczna według taryfy programu OC z&nbsp;ERGO&nbsp;Hestią&nbsp;– do 5&nbsp;osób wykonujących zabiegi</caption>
           <thead><tr><th scope="col">Taryfa (zakres na certyfikacie)</th><th scope="col">100&nbsp;tys.&nbsp;zł</th><th scope="col">200&nbsp;tys.&nbsp;zł</th><th scope="col">300&nbsp;tys.&nbsp;zł</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Gabinety kosmetyczne i fryzjerskie<small>tylko gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)</small></th><td>400&nbsp;zł</td><td>500&nbsp;zł</td><td>650&nbsp;zł</td></tr>
+            <tr><th scope="row">Gabinety kosmetyczne i&nbsp;fryzjerskie<small>tylko gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)</small></th><td>400&nbsp;zł</td><td>500&nbsp;zł</td><td>650&nbsp;zł</td></tr>
             <tr><th scope="row">Gabinety kosmetologiczne<small>tylko gabinet kosmetologiczny lub salon tatuażu (także razem)</small></th><td>650&nbsp;zł</td><td>790&nbsp;zł</td><td>950&nbsp;zł</td></tr>
-            <tr><th scope="row">Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne<small>gabinet podologiczny (z innymi rodzajami lub bez) albo gabinet kosmetyczny, salon fryzjerski lub salon masażu razem z gabinetem kosmetologicznym lub salonem tatuażu</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1&nbsp;250&nbsp;zł</td></tr>
+            <tr><th scope="row">Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i&nbsp;podologiczne<small>gabinet podologiczny (z&nbsp;innymi rodzajami lub bez) albo gabinet kosmetyczny, salon fryzjerski lub salon masażu razem z&nbsp;gabinetem kosmetologicznym lub salonem tatuażu</small></th><td>850&nbsp;zł</td><td>980&nbsp;zł</td><td>1&nbsp;250&nbsp;zł</td></tr>
           </tbody>
         </table>
         </div>
-        <p class="tariff-note">6–8&nbsp;osób wykonujących zabiegi – składka z&nbsp;taryfy wyższa o&nbsp;25% (klauzula ochrony prawnej +92&nbsp;zł bez tej dopłaty). Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.</p>
+        <p class="tariff-note">6–8&nbsp;osób wykonujących zabiegi&nbsp;– składka z&nbsp;taryfy wyższa o&nbsp;25% (klauzula ochrony prawnej +92&nbsp;zł bez tej dopłaty). Więcej niż 8&nbsp;osób albo zabiegi wymagające ankiety ERGO&nbsp;Hestii&nbsp;– wycena indywidualna.</p>
         <!-- /GEN:taryfa -->
       </div>
       <div class="tariff-actions">
-        <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Policz składkę</a>
+        <a class="btn btn-navy" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a>
         <a class="link-lux" href="#zabiegi">Sprawdź swój zabieg na listach</a>
       </div>
     </div>
@@ -1345,40 +1531,37 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="section-head">
         <span class="chapter-no" aria-hidden="true">IV</span>
         <p class="eyebrow">Jak kupić</p>
-        <h2 id="kupic-title" class="rv-curtain">Od kalkulatora <em>do polisy w&nbsp;czterech krokach</em></h2>
-        <p class="lead">Najpierw <a class="bp-termin" href="slownik.html#haslo-apk" data-termin="apk">analiza potrzeb</a>, potem wniosek – tak wymagają przepisy o&nbsp;dystrybucji ubezpieczeń (IDD). <a class="bp-termin" href="slownik.html#haslo-doradca" data-termin="doradca">Doradca Aura Expert</a> prowadzi Cię przez każdy krok.</p>
+        <h2 id="kupic-title" class="rv-curtain">Od składki do polisy <em>w&nbsp;trzech krokach</em></h2>
+        <p class="lead">Najpierw <a class="bp-termin" href="slownik.html#haslo-apk" data-termin="apk">analiza potrzeb</a>, potem wniosek&nbsp;– tak wymagają przepisy o&nbsp;dystrybucji ubezpieczeń (IDD). <a class="bp-termin" href="slownik.html#haslo-doradca" data-termin="doradca">Doradca Aura&nbsp;Expert</a> prowadzi Cię przez każdy krok.</p>
       </div>
       <div class="how glass glass--dark">
-        <ol class="steps">
+        <!-- droga do polisy: te same 3 kroki co na stronie głównej (raport 15, Z30; §8 pkt 6), jeden odnośnik do formularza (Z34) -->
+        <ol class="steps steps--3">
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">1</span>
-            <h3>Kalkulator albo formularz</h3>
-            <p>Policz składkę w&nbsp;kalkulatorze albo zostaw kontakt w&nbsp;formularzu i&nbsp;wybierz temat „OC dla branży beauty”.</p>
-            <p class="links"><a class="link-lux" href="makieta-v3.html#kalkulator">Kalkulator</a><a class="link-lux" href="makieta-v3.html?produkt=oc-beauty#kontakt">Formularz</a></p>
+            <h3>Oblicz składkę</h3>
+            <span class="step-where">Kalkulator OC</span>
+            <p>Zaznacz rodzaj działalności, liczbę osób i&nbsp;<a class="bp-termin" href="slownik.html#haslo-suma-gwarancyjna" data-termin="suma-gwarancyjna">sumę gwarancyjną</a>. Składkę z&nbsp;taryfy widzisz od razu, bez logowania.</p>
+            <p class="links"><a class="link-lux" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a></p>
           </li>
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">2</span>
-            <h3>E-mail od doradcy</h3>
+            <h3>Zostaw kontakt</h3>
             <span class="step-where">portal.beautypolisa.eu</span>
-            <p>Doradca Aura Expert prześle Ci e-mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu.</p>
+            <p>Wynik kalkulatora trafi do doradcy razem ze zgłoszeniem (temat „OC dla branży beauty”). Doradca Aura&nbsp;Expert prześle Ci e-&#8288;mail z&nbsp;osobistym linkiem do analizy potrzeb (APK) i&nbsp;wniosku w&nbsp;serwisie portal.beautypolisa.eu.</p>
+            <p class="links"><a class="link-lux" href="makieta-v3.html?produkt=oc-beauty#kontakt">Wypełnij formularz<span class="sr-only"> kontaktu – OC dla branży beauty</span></a></p>
           </li>
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">3</span>
-            <h3>Analiza potrzeb, wniosek i&nbsp;podpis</h3>
-            <span class="step-where">Pod osobistym linkiem</span>
-            <p>Pod linkiem wypełniasz analizę potrzeb i&nbsp;wniosek, a&nbsp;potem je podpisujesz.</p>
-          </li>
-          <li class="step rv-rise">
-            <span class="numeral" aria-hidden="true">4</span>
-            <h3>Polisa</h3>
-            <span class="step-where">ERGO Hestia · Strefa Klienta</span>
-            <p>Po wystawieniu polisy dostajesz ją razem z&nbsp;dokumentami. Polisę i&nbsp;dokumenty masz też w&nbsp;<a class="bp-termin" href="slownik.html#haslo-strefa-klienta" data-termin="strefa-klienta">Strefie Klienta</a>.</p>
+            <h3>Podpisz i&nbsp;odbierz polisę</h3>
+            <span class="step-where">ERGO&nbsp;Hestia · Strefa Klienta</span>
+            <p>Pod linkiem wypełniasz analizę potrzeb i&nbsp;wniosek, a&nbsp;potem je podpisujesz. Polisę dostajesz razem z&nbsp;dokumentami, a&nbsp;masz je też w&nbsp;<a class="bp-termin" href="slownik.html#haslo-strefa-klienta" data-termin="strefa-klienta">Strefie Klienta</a>.</p>
             <p class="links"><a class="link-lux" href="strefa/logowanie.html">Strefa Klienta</a></p>
           </li>
         </ol>
         <div class="how-note">
-          <p><strong>Link do analizy potrzeb i&nbsp;wniosku jest osobisty.</strong> Zawsze prowadzi do portal.beautypolisa.eu i&nbsp;ma datę ważności – nie przekazuj go innym. Link prowadzi do innej strony? Nie otwieraj go i&nbsp;<a href="makieta-v3.html?produkt=oc-beauty#kontakt">napisz do nas</a>.</p>
-          <p>Link wygasł albo nie dotarł? <a href="makieta-v3.html?produkt=oc-beauty#kontakt">Napisz przez formularz</a> – doradca odpowie. Masz konto w&nbsp;Strefie Klienta? Sprawę dokończysz też w&nbsp;sekcji „Sprawy w&nbsp;toku”.</p>
+          <p><strong>Link do analizy potrzeb i&nbsp;wniosku jest osobisty.</strong> Zawsze prowadzi do portal.beautypolisa.eu i&nbsp;ma datę ważności&nbsp;– nie przekazuj go innym. Link prowadzi do innej strony? Nie otwieraj go i&nbsp;zapytaj doradcę przez formularz z&nbsp;kroku 2.</p>
+          <p>Link wygasł albo nie dotarł? Doradca odpowie na zgłoszenie z&nbsp;formularza. Masz konto w&nbsp;Strefie Klienta? Sprawę dokończysz też w&nbsp;sekcji „Sprawy w&nbsp;toku”.</p>
           <p>Nie masz polisy? <a href="https://beautyrazem.pl/polisa">Zarejestruj się na beautyrazem.pl/polisa</a>. Członkostwo w&nbsp;Beauty Razem nie jest wymagane.</p>
         </div>
       </div>
@@ -1391,23 +1574,25 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <div class="container faq-grid">
       <div class="section-head faq-head">
         <p class="eyebrow">Pytania</p>
-        <h2 id="faq-title" class="rv-curtain">Pytania <em>o&nbsp;OC beauty</em></h2>
+        <h2 id="faq-title" class="rv-curtain">Pytania <em>o&nbsp;OC dla branży beauty</em></h2>
       </div>
       <div class="faq glass">
         <!-- GEN:faq (wygenerowane – narzedzia/makiety/gen_oc_beauty.py; nie edytować ręcznie) -->
-        <details id="pytanie-1"><summary>Co obejmuje OC dla branży beauty w programie ERGO Hestia?</summary><p>Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w tym klientom, w związku z wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i pokrewnych – w zakresie i z wyłączeniami określonymi w ogólnych warunkach ubezpieczenia oraz w warunkach programu nr WA50/003353/24/A realizowanego we współpracy z Fundacją Beauty Razem. Zabiegi objęte programem wymieniają listy zabiegów nr 1 i nr 2 w brzmieniu Aneksu nr 5; zabiegi wymagające ankiety ERGO Hestii (8 pozycji) podlegają ocenie ubezpieczyciela. Pełny zakres znajdziesz w dokumentach OWU na stronie <a href="/dokumenty">beautypolisa.eu/dokumenty</a>.</p></details>
-        <details id="pytanie-2"><summary>Od czego zależy składka i co jest na listach zabiegów?</summary><p>Składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i sumy gwarancyjnej. Taryfę wyznacza rodzaj działalności: tylko gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem) – „Gabinety kosmetyczne i fryzjerskie”; tylko gabinet kosmetologiczny lub salon tatuażu (także razem) – „Gabinety kosmetologiczne”; gabinet podologiczny (z innymi rodzajami lub bez) albo gabinet kosmetyczny, salon fryzjerski lub salon masażu razem z gabinetem kosmetologicznym lub salonem tatuażu – „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”. Na przykład gabinet kosmetyczny razem z gabinetem kosmetologicznym to taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”.</p> <p>Listy zabiegów programu: „Lista zabiegów – gabinety kosmetyczne i fryzjerskie” (49 pozycji) i „Lista zabiegów – gabinety kosmetyczne i kosmetologiczne” (63 pozycje); część zabiegów (20) jest na obu listach. Zabiegi wymagające ankiety ERGO Hestii (8 pozycji) – wycena indywidualna. Lista zabiegów podologicznych jest w dokumentach programu. Wszystkie pozycje w brzmieniu Aneksu nr 5 znajdziesz w sekcji <a href="#zabiegi">Listy zabiegów w programie</a>.</p></details>
-        <details id="pytanie-3"><summary>Ile kosztuje OC w programie dla branży beauty?</summary><p>Według stałej taryfy programu, gdy zabiegi wykonuje do 5 osób, składka roczna wynosi od 400&nbsp;zł (taryfa „Gabinety kosmetyczne i fryzjerskie”, suma gwarancyjna 100&nbsp;000&nbsp;zł) do 1&nbsp;250&nbsp;zł (taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”, suma gwarancyjna 300&nbsp;000&nbsp;zł). Gdy zabiegi wykonuje 6–8 osób, składka z taryfy jest wyższa o 25% – np. 987,50&nbsp;zł zamiast 790&nbsp;zł w taryfie „Gabinety kosmetologiczne” przy sumie gwarancyjnej 200&nbsp;000&nbsp;zł. Klauzula ochrony prawnej kosztuje dodatkowo 92&nbsp;zł rocznie, bez tej dopłaty. Więcej niż 8 osób wykonujących zabiegi oraz zabiegi wymagające ankiety ERGO Hestii – wycena indywidualna.</p></details>
-        <details id="pytanie-4"><summary>Czym jest klauzula ochrony prawnej i ile kosztuje?</summary><p>To rozszerzenie OC w programie o koszty ochrony prawnej w postępowaniach przed sądami polskimi, w których ubezpieczony występuje jako pozwany, podejrzany lub oskarżony, także w postępowaniu dyscyplinarnym. Postępowanie musi być wszczęte na terenie RP w okresie ubezpieczenia i dotyczyć czynności zawodowych objętych umową. Klauzula kosztuje dodatkowo 92&nbsp;zł rocznie. Pełną treść, w tym wyłączenia, znajdziesz w sekcji <a href="#ochrona-prawna">Klauzula ochrony prawnej</a>.</p></details>
-        <details id="pytanie-5"><summary>Czy zabiegi wymagające ankiety ERGO Hestii można ubezpieczyć?</summary><p>Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO Hestii (Aneks nr 5) są m.in. „Zabiegi z użyciem toksyny botulinowej”, „Zabiegi z użyciem wypełniaczy na bazie kwasu hialuronowego” i „Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o dużym natężeniu)” – wszystkie 8 pozycji znajdziesz w sekcji <a href="#ankieta">Zabiegi wymagające ankiety ERGO Hestii</a>. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a kalkulator nie podaje kwoty. Ankieta pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat. Jakie dokumenty są potrzebne:</p> <ul><li>Dyplom kosmetologa dla każdej osoby — tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i szkół policealnych nie są dyplomem.</li> <li>Certyfikat ze szkolenia z każdego zabiegu, który wykonuje dana osoba — szkolenie ukończone co najmniej 12 miesięcy przed początkiem ochrony.</li></ul> <p>Zostaw kontakt przez <a href="makieta-v3.html?produkt=oc-beauty#kontakt">formularz</a> – doradca wyśle Ci e-mail z osobistym linkiem w serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z analizą potrzeb (APK) i wnioskiem. O objęciu ochroną i wysokości składki decyduje ubezpieczyciel po ocenie ryzyka.</p></details>
+        <details id="pytanie-1"><summary>Co obejmuje OC dla branży beauty w&nbsp;programie ERGO&nbsp;Hestia?</summary><p>Program obejmuje odpowiedzialność cywilną za szkody wyrządzone osobom trzecim, w&nbsp;tym klientom, w&nbsp;związku z&nbsp;wykonywaniem zabiegów kosmetycznych, fryzjerskich, podologicznych i&nbsp;pokrewnych&nbsp;– w&nbsp;zakresie i&nbsp;z&nbsp;wyłączeniami określonymi w&nbsp;ogólnych warunkach ubezpieczenia oraz w&nbsp;warunkach programu nr&nbsp;WA50/003353/24/A realizowanego we współpracy z&nbsp;Fundacją Beauty Razem. Zabiegi objęte programem wymieniają listy zabiegów nr&nbsp;1 i&nbsp;nr&nbsp;2 w&nbsp;brzmieniu Aneksu nr&nbsp;5; zabiegi wymagające ankiety ERGO&nbsp;Hestii (8&nbsp;pozycji) podlegają ocenie ubezpieczyciela. Pełny zakres znajdziesz w&nbsp;dokumentach OWU na stronie <a href="/dokumenty">beautypolisa.eu/dokumenty</a>.</p></details>
+        <details id="pytanie-2"><summary>Od czego zależy składka i&nbsp;co jest na listach zabiegów?</summary><p>Składka zależy od rodzaju działalności gabinetu, liczby osób wykonujących zabiegi i&nbsp;sumy gwarancyjnej. Taryfę wyznacza rodzaj działalności: tylko gabinet kosmetyczny, salon fryzjerski lub salon masażu (także razem)&nbsp;– „Gabinety kosmetyczne i&nbsp;fryzjerskie”; tylko gabinet kosmetologiczny lub salon tatuażu (także razem)&nbsp;– „Gabinety kosmetologiczne”; gabinet podologiczny (z&nbsp;innymi rodzajami lub bez) albo gabinet kosmetyczny, salon fryzjerski lub salon masażu razem z&nbsp;gabinetem kosmetologicznym lub salonem tatuażu&nbsp;– „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i&nbsp;podologiczne”. Na przykład gabinet kosmetyczny razem z&nbsp;gabinetem kosmetologicznym to taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i&nbsp;podologiczne”.</p> <p>Listy zabiegów programu: „Lista zabiegów&nbsp;– gabinety kosmetyczne i&nbsp;fryzjerskie” (49&nbsp;pozycji) i&nbsp;„Lista zabiegów&nbsp;– gabinety kosmetyczne i&nbsp;kosmetologiczne” (63&nbsp;pozycje); część zabiegów (20) jest na obu listach. Zabiegi wymagające ankiety ERGO&nbsp;Hestii (8&nbsp;pozycji)&nbsp;– wycena indywidualna. Lista zabiegów podologicznych jest w&nbsp;dokumentach programu. Wszystkie pozycje w&nbsp;brzmieniu Aneksu nr&nbsp;5 znajdziesz w&nbsp;sekcji <a href="#zabiegi">Listy zabiegów w&nbsp;programie</a>.</p></details>
+        <details id="pytanie-3"><summary>Ile kosztuje OC w&nbsp;programie dla branży beauty?</summary><p>Według stałej taryfy programu, gdy zabiegi wykonuje do 5&nbsp;osób, składka roczna wynosi od 400&nbsp;zł (taryfa „Gabinety kosmetyczne i&nbsp;fryzjerskie”, suma gwarancyjna 100&nbsp;000&nbsp;zł) do 1&nbsp;250&nbsp;zł (taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i&nbsp;podologiczne”, suma gwarancyjna 300&nbsp;000&nbsp;zł). Gdy zabiegi wykonuje 6–8&nbsp;osób, składka z&nbsp;taryfy jest wyższa o&nbsp;25%&nbsp;– np. 987,50&nbsp;zł zamiast 790&nbsp;zł w&nbsp;taryfie „Gabinety kosmetologiczne” przy sumie gwarancyjnej 200&nbsp;000&nbsp;zł. Klauzula ochrony prawnej kosztuje dodatkowo 92&nbsp;zł rocznie, bez tej dopłaty. Więcej niż 8&nbsp;osób wykonujących zabiegi oraz zabiegi wymagające ankiety ERGO&nbsp;Hestii&nbsp;– wycena indywidualna.</p></details>
+        <details id="pytanie-4"><summary>Czym jest klauzula ochrony prawnej i&nbsp;ile kosztuje?</summary><p>To rozszerzenie OC w&nbsp;programie o&nbsp;koszty ochrony prawnej w&nbsp;postępowaniach przed sądami polskimi, w&nbsp;których ubezpieczony występuje jako pozwany, podejrzany lub oskarżony, także w&nbsp;postępowaniu dyscyplinarnym. Postępowanie musi być wszczęte na terenie RP w&nbsp;okresie ubezpieczenia i&nbsp;dotyczyć czynności zawodowych objętych umową. Klauzula kosztuje dodatkowo 92&nbsp;zł rocznie. Pełną treść, w&nbsp;tym wyłączenia, znajdziesz w&nbsp;sekcji <a href="#ochrona-prawna">Klauzula ochrony prawnej</a>.</p></details>
+        <details id="pytanie-5"><summary>Czy zabiegi wymagające ankiety ERGO&nbsp;Hestii można ubezpieczyć?</summary><p>Tak, po ocenie ubezpieczyciela. Na liście zabiegów wymagających ankiety ERGO&nbsp;Hestii (Aneks nr&nbsp;5) są m.in. „Zabiegi z&nbsp;użyciem toksyny botulinowej”, „Zabiegi z&nbsp;użyciem wypełniaczy na bazie kwasu hialuronowego” i&nbsp;„Zabiegi urządzeniami opartymi na technologii HIFU (skupiona wiązka fal ultradźwiękowych o&nbsp;dużym natężeniu)”&nbsp;– wszystkie 8&nbsp;pozycji znajdziesz w&nbsp;sekcji <a href="#ankieta">Zabiegi wymagające ankiety ERGO&nbsp;Hestii</a>. Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel, a&nbsp;kalkulator nie podaje kwoty. Ankieta pyta m.in. o&nbsp;wykonywane zabiegi, kwalifikacje i&nbsp;doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i&nbsp;szkodowość z&nbsp;ostatnich 3&nbsp;lat. Jakie dokumenty są potrzebne:</p> <ul><li>Dyplom kosmetologa dla każdej osoby&nbsp;– tylko dyplom ukończenia studiów licencjackich lub magisterskich (kierunek kosmetologia). Świadectwa kursów i&nbsp;szkół policealnych nie są dyplomem.</li> <li>Certyfikat ze szkolenia z&nbsp;każdego zabiegu, który wykonuje dana osoba&nbsp;– szkolenie ukończone co najmniej 12&nbsp;miesięcy przed początkiem ochrony.</li></ul> <p>Zostaw kontakt przez <a href="makieta-v3.html?produkt=oc-beauty#kontakt">formularz</a> – doradca wyśle Ci e-mail z&nbsp;osobistym linkiem w&nbsp;serwisie portal.beautypolisa.eu, gdzie wypełnisz ankietę razem z&nbsp;analizą potrzeb (APK) i&nbsp;wnioskiem. O&nbsp;objęciu ochroną i&nbsp;wysokości składki decyduje ubezpieczyciel po ocenie ryzyka.</p></details>
         <!-- /GEN:faq -->
       </div>
     </div>
   </section>
 
-  <!-- POWIĄZANE: kryjące karty (bez tafli szkła); opisy z faktów stron tax-protect.html, utrata-dochodu.html, nnw-dzieci.html i grupowe-ergo.html. -->
-  <section class="section section--flush-top" id="powiazane" aria-labelledby="pow-title">
-    <div class="container">
+  <!-- SEKCJA ZAMYKAJĄCA (raport 15, Z8; runda 2 weryfikacji): „Inne ubezpieczenia” i karta końcowa – jedna sekcja; pytania to osobna
+       sekcja wyżej (razem miały 2,23–2,55 ekranu przy 1440×900) -->
+  <section class="section section--flush-top" id="zamkniecie" aria-labelledby="pow-title">
+    <!-- POWIĄZANE: kryjące karty (bez tafli szkła); opisy z faktów stron tax-protect.html, utrata-dochodu.html, nnw-dzieci.html i grupowe-ergo.html. -->
+    <div class="container zamkniecie-blok" id="powiazane">
       <div class="related-head">
         <p class="eyebrow">Dla Ciebie i&nbsp;Twojego salonu</p>
         <h2 id="pow-title" class="rv-curtain">Inne ubezpieczenia <em>w&nbsp;BeautyPolisa</em></h2>
@@ -1415,17 +1600,17 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="related">
         <article class="rel-card rv-rise" aria-labelledby="rel-tax">
           <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg><h3 id="rel-tax">Tax Protect</h3></div>
-          <p><a class="bp-termin" href="slownik.html#haslo-ochrona-karnoskarbowa" data-termin="ochrona-karnoskarbowa">Ochrona karnoskarbowa</a> i&nbsp;podatkowa Colonnade ze stałą taryfą. Po kalkulatorze albo formularzu doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p>
+          <p><a class="bp-termin" href="slownik.html#haslo-ochrona-karnoskarbowa" data-termin="ochrona-karnoskarbowa">Ochrona karnoskarbowa</a> i&nbsp;podatkowa Colonnade ze stałą taryfą. Po kalkulatorze albo formularzu doradca Aura&nbsp;Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek.</p>
           <div class="rel-links"><a class="link-lux" href="tax-protect.html">Poznaj Tax Protect</a></div>
         </article>
         <article class="rel-card rv-rise" aria-labelledby="rel-ud">
           <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><h3 id="rel-ud">Utrata dochodu</h3></div>
-          <p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią pracę. Składkę wylicza <a class="bp-termin" href="slownik.html#haslo-ubezpieczyciel" data-termin="ubezpieczyciel">ubezpieczyciel</a> po ocenie ryzyka – wniosek złożysz na utratadochodu.pl albo z&nbsp;doradcą Aura Expert.</p>
+          <p>Ubezpieczenie na wypadek, gdy choroba lub wypadek uniemożliwią pracę. Składkę wylicza ubezpieczyciel po ocenie ryzyka&nbsp;– wniosek złożysz na utratadochodu.pl albo z&nbsp;doradcą Aura&nbsp;Expert.</p>
           <div class="rel-links"><a class="link-lux" href="utrata-dochodu.html">Poznaj ubezpieczenie<span class="sr-only">: utrata dochodu</span></a></div>
         </article>
         <article class="rel-card rv-rise" aria-labelledby="rel-nnw">
           <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><h3 id="rel-nnw">NNW dla dzieci</h3></div>
-          <p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków w&nbsp;Colonnade: ochrona 24&nbsp;godziny na dobę na całym świecie, jedna składka za rok – 40, 94 albo 175&nbsp;zł za osobę. Polisę kupujesz online na platformie Colonnade.</p>
+          <p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków w&nbsp;Colonnade: ochrona 24&nbsp;godziny na dobę na całym świecie, jedna składka za rok&nbsp;– 40, 94 albo 175&nbsp;zł za osobę. Polisę kupujesz online na platformie Colonnade.</p>
           <div class="rel-links">
             <a class="link-lux" href="nnw-dzieci.html">Poznaj NNW dla dzieci</a>
             <a class="link-quiet" href="https://bit.ly/szkolneNNW2026" target="_blank" rel="noopener">Kup online u&nbsp;Colonnade<span class="sr-only"> – strona ubezpieczyciela otworzy się w&nbsp;nowej karcie</span></a>
@@ -1433,22 +1618,26 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </article>
         <article class="rel-card rv-rise" aria-labelledby="rel-gr">
           <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><h3 id="rel-gr">Grupowe ERGO dla beauty</h3></div>
-          <p>Ubezpieczenie na życie w&nbsp;ERGO Hestii. Dla salonu z&nbsp;zespołem (od 2 do 100 osób): ERGO Życie w&nbsp;Biznesie, od 58&nbsp;zł za osobę miesięcznie. Dla Ciebie i&nbsp;rodziny: ERGO Razem, od 57&nbsp;zł miesięcznie.</p>
+          <p>Ubezpieczenie na życie w&nbsp;ERGO&nbsp;Hestii. Dla salonu z&nbsp;zespołem (od 2&nbsp;do 100&nbsp;osób): ERGO&nbsp;Życie w&nbsp;Biznesie, od 58&nbsp;zł za osobę miesięcznie. Dla Ciebie i&nbsp;rodziny: ERGO&nbsp;Razem, od 57&nbsp;zł miesięcznie.</p>
           <div class="rel-links"><a class="link-lux" href="grupowe-ergo.html">Poznaj ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a></div>
+        </article>
+        <article class="rel-card rv-rise" aria-labelledby="rel-om">
+          <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><h3 id="rel-om">Opieka medyczna</h3></div>
+          <p>Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników salonu, a&nbsp;w&nbsp;zakresie Partner albo Rodzina także dla ich bliskich. Cenę dla Twojego zespołu przygotuje doradca.</p>
+          <div class="rel-links">
+            <a class="link-lux" href="opieka-medyczna.html">Poznaj opiekę medyczną</a>
+          </div>
         </article>
       </div>
     </div>
-  </section>
-
-  <!-- EPILOG · CTA: kryjąca karta (bez nowej tafli szkła) -->
-  <section class="section section--flush-top" id="dalej" aria-labelledby="end-title">
-    <div class="container">
+    <!-- EPILOG · CTA: kryjąca karta (bez nowej tafli szkła) -->
+    <div class="container zamkniecie-blok" id="dalej">
       <div class="end-card dark">
         <p class="eyebrow">Na koniec</p>
-        <h2 id="end-title" class="rv-curtain">Policz składkę <em>albo porozmawiaj z&nbsp;doradcą</em></h2>
-        <p>Kalkulator na stronie głównej liczy składkę ze stałej taryfy programu. Przy zabiegach wymagających ankiety ERGO Hestii albo więcej niż 8&nbsp;osobach doradca Aura Expert przygotuje wycenę indywidualną.</p>
+        <h3 id="end-title" class="rv-curtain">Oblicz składkę <em>albo porozmawiaj z&nbsp;doradcą</em></h3>
+        <p>Kalkulator na stronie głównej liczy składkę ze stałej taryfy programu. Przy zabiegach wymagających ankiety ERGO&nbsp;Hestii albo więcej niż 8&nbsp;osobach doradca Aura&nbsp;Expert przygotuje wycenę indywidualną.</p>
         <div class="end-actions">
-          <a class="btn btn-ivory" href="makieta-v3.html#kalkulator">Policz składkę</a>
+          <a class="btn btn-ivory" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a>
           <a class="btn btn-ghost-dark" href="makieta-v3.html?produkt=oc-beauty#kontakt">Zapytaj doradcę</a>
         </div>
       </div>
@@ -1464,16 +1653,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <div class="footer-panel glass glass--dark">
       <div class="footer-grid">
         <div class="footer-brand">
-          <span class="logo-chip"><img src="../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="147" height="22"></span>
-          <p>Program ubezpieczeń dla branży beauty prowadzony przez Aura Expert sp.&nbsp;z&nbsp;o.o. – agenta ubezpieczeniowego.</p>
+          <span class="logo-chip"><img src="img/logo-beautypolisa-320.png" alt="BeautyPolisa" width="147" height="22" translate="no"></span>
+          <p>Program ubezpieczeń dla branży beauty prowadzony przez <span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o.&nbsp;– agenta ubezpieczeniowego.</p>
         </div>
         <nav class="footer-nav" aria-label="Stopka">
-          <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html" aria-current="page">OC dla branży beauty</a></li><li><a href="tax-protect.html">Tax Protect</a></li><li><a href="utrata-dochodu.html">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dla dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO dla beauty</a></li><li><a href="opieka-medyczna.html">Opieka medyczna</a></li></ul></div>
-          <div class="rv-rise"><h2 class="footer-title">Dla kogo</h2><ul><li><a href="/dla-kogo/kosmetolog">Kosmetolog</a></li><li><a href="/dla-kogo/fryzjer">Fryzjer i&nbsp;barber</a></li><li><a href="/dla-kogo/podolog">Podolog</a></li><li><a href="/dla-kogo/linergistka">Linergistka</a></li><li><a href="/dla-kogo/stylistka-paznokci">Stylistka paznokci</a></li><li><a href="/dla-kogo/tatuazysta">Tatuażysta</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html" aria-current="page">OC dla branży beauty</a></li><li><a href="tax-protect.html"><span translate="no">Tax Protect</span></a></li><li><a href="utrata-dochodu.html">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dla dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO dla beauty</a></li><li><a href="opieka-medyczna.html">Opieka medyczna</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Dla kogo</h2><ul><li><a href="/dla-kogo/kosmetolog">Kosmetolog</a></li><li><a href="/dla-kogo/fryzjer">Fryzjer i&nbsp;barber</a></li><li><a href="/dla-kogo/podolog">Podolog</a></li><li><a href="/dla-kogo/linergistka">Linergistka</a></li><li><a href="/dla-kogo/stylistka-paznokci">Stylistka paznokci</a></li><li><a href="/dla-kogo/tatuazysta">Tatuażysta</a></li><li><a href="/dla-kogo/trycholog">Trycholog</a></li><li><a href="/dla-kogo/masazysta">Masażysta</a></li></ul></div>
           <!-- „Zgłoś szkodę”: w makiecie makieta-v3.html#jak-zglosic-szkode, produkcyjnie /szkoda; „Polityka prywatności”: /rodo -->
           <div class="rv-rise"><h2 class="footer-title">BeautyPolisa</h2><ul><li><a href="/o-nas">O&nbsp;nas</a></li><li><a href="/dokumenty">Dokumenty i&nbsp;OWU</a></li><li><a href="slownik.html">Słownik pojęć</a></li><li><a href="makieta-v3.html#jak-zglosic-szkode">Zgłoś szkodę</a></li><li><a href="/rodo">Polityka prywatności</a></li><li><a href="makieta-v3.html#kontakt">Kontakt</a></li></ul></div>
           <!-- produkcyjnie /strefa-klienta/logowanie, /dam-prace, /strefa-klienta/rejestracja/szukam-pracy, /szkolenia, /szkolenia#dla-organizatorow -->
-          <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="https://beautyrazem.pl/polisa">Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa (członkostwo w&nbsp;Beauty Razem nie jest wymagane)</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę – ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy – dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="makieta-v3.html#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="https://beautyrazem.pl/polisa">Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa (członkostwo w&nbsp;<span translate="no">Beauty Razem</span> nie jest wymagane)</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę&nbsp;– ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy&nbsp;– dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="makieta-v3.html#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
         </nav>
       </div>
       <div class="legal">
@@ -1481,16 +1670,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
              ergo.beautypolisa.eu/informacja-o-agencie podaje „XIII” – błąd po tamtej stronie, uwaga dla zleceniodawcy).
              Informacje o agencie (art. 22 ustawy o dystrybucji ubezpieczeń) – źródło: ujawnienie Aura Expert. Blok details.legal-idd
              jest identyczny na stronach publicznych i w Strefie Klienta. -->
-        <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
-        <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
+        <p><span translate="no">BeautyPolisa</span> created by <span translate="no">Aura&nbsp;Expert</span> (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong><span translate="no">Aura&nbsp;Expert</span> spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem&nbsp;0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem&nbsp;11229690/A.</p>
+        <p><span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
         <details class="legal-idd">
           <summary>Informacje o&nbsp;agencie ubezpieczeniowym (IDD)</summary>
           <div class="legal-idd-body">
             <p><strong>Zakłady ubezpieczeń, na rzecz których działa agent:</strong></p>
-            <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie S.A.</li><li>Lloyd’s Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA S.A.</li><li>Colonnade Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
+            <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji&nbsp;S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń&nbsp;S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li><span translate="no">Lloyd’s</span> Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA&nbsp;S.A.</li><li><span translate="no">Colonnade</span> Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
             <p><strong>Wynagrodzenie.</strong> Agent otrzymuje od zakładu ubezpieczeń prowizję, która jest uwzględniona w&nbsp;składce. Może też otrzymywać od zakładu ubezpieczeń inny rodzaj wynagrodzenia.</p>
             <p><strong>Powiązania kapitałowe.</strong> Agent nie ma akcji ani udziałów zakładu ubezpieczeń dających co najmniej 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie ma udziałów agenta dających co najmniej 10% głosów na zgromadzeniu wspólników.</p>
-            <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
+            <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres <span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466&nbsp;Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
             <p><strong>Kontakt z&nbsp;agentem:</strong> <a href="mailto:zarzad@auraexpert.pl">zarzad@auraexpert.pl</a>, <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>. Wpis agenta (numer 11229690/A) sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>.</p>
           </div>
         </details>
@@ -1517,7 +1706,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 </svg>
 <!-- gen:pasek-akcji -->
 <!-- Pasek akcji na telefonie (< 768 px, wysokość okna > 500 px): pokazuje go skrypt gen:wspolne-js po przewinięciu poza pierwszy ekran;
-     chowa się przy polu formularza / klawiaturze, przy widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu,
+     chowa się przy polu formularza / klawiaturze, przy widocznym pasku ceny kalkulatora (.calc-peek), kalkulatorze OC, wyszukiwarkach, formularzu kontaktu,
      karcie końcowej i stopce. Bez JS zostaje ukryty (te same akcje są w treści). -->
 <aside class="pasek-akcji" id="pasek-akcji" aria-label="Szybkie akcje" hidden>
   <a class="pa-glowny" href="makieta-v3.html#kalkulator">Oblicz składkę<span class="sr-only"> OC</span></a>
@@ -1551,6 +1740,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   function match(it,toks){
     return toks.every(function(t){return it.name.indexOf(' '+(t.length>=5?t.slice(0,-1):t))>-1});
   }
+  /* fraza w adresie (?q=…, raport 16, 3.3): link z wynikiem da się wysłać, kotwica (#zabieg) zostaje */
+  function adres(q){
+    try{var u=new URLSearchParams(location.search);if(q)u.set('q',q);else u.delete('q');
+      var t=u.toString(), nowy=location.pathname+(t?'?'+t:'')+location.hash;
+      if(nowy!==location.pathname+location.search+location.hash)history.replaceState(history.state,'',nowy)}catch(e){}
+  }
   function apply(){
     var raw=input.value, q=norm(raw), toks=q?q.split(' '):[], found=0;
     if(q===lastQ&&arguments.length===0) return; lastQ=q;
@@ -1560,8 +1755,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       d.items.forEach(function(it){var hit=!toks.length||match(it,toks);it.li.hidden=!hit;if(hit)n++});
       found+=n;
       d.g.hidden=toks.length>0&&n===0;
-      if(d.jump){d.jump.parentNode.hidden=d.g.hidden;if(d.jumpN)d.jumpN.textContent=toks.length?n+' z '+d.items.length:String(d.items.length)}
-      if(d.sumN)d.sumN.textContent=toks.length?n+' z '+d.items.length:String(d.items.length);
+      if(d.jump){d.jump.parentNode.hidden=d.g.hidden;if(d.jumpN)d.jumpN.textContent=toks.length?n+' z\u00a0'+d.items.length:String(d.items.length)}
+      if(d.sumN)d.sumN.textContent=toks.length?n+' z\u00a0'+d.items.length:String(d.items.length);
       if(d.det){if(toks.length){if(n)d.det.open=true}else if(saved){d.det.open=saved[i]}}
     });
     if(!toks.length) saved=null;
@@ -1569,13 +1764,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     clear.hidden=!raw;
     if(toks.length&&!found){
       empty.textContent='';
-      empty.append('Nie znaleźliśmy zabiegu „'+raw.trim()+'” na listach programu. Sprawdź pisownię albo ');
-      var a=document.createElement('a');a.href='makieta-v3.html?produkt=oc-beauty#kontakt';a.textContent='zapytaj doradcę';empty.append(a,' – sprawdzi, czy i jak program obejmuje Twój zabieg.');
+      empty.append('Zabiegu „'+raw.trim()+'” nie ma na listach programu. Sprawdź pisownię albo ');
+      var a=document.createElement('a');a.href='makieta-v3.html?produkt=oc-beauty#kontakt';a.textContent='zapytaj doradcę';empty.append(a,'\u00a0– sprawdzi, czy i\u00a0jak program obejmuje Twój zabieg.');
       var pod=document.createElement('a');pod.href='#podologia';pod.textContent='sekcja Podologia';
       pod.addEventListener('click',function(){input.value='';apply(true)});
       empty.append(' Lista zabiegów podologicznych jest w\u00a0dokumentach programu (',pod,').');
       empty.hidden=false;
     } else empty.hidden=true;
+    adres(raw.trim());
     clearTimeout(timer);
     timer=setTimeout(function(){
       if(!toks.length){count.innerHTML=START}
@@ -1593,7 +1789,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   }
   window.addEventListener('hashchange',reveal);
   form.hidden=false;
+  try{var q0=new URLSearchParams(location.search).get('q');if(q0&&!input.value)input.value=q0.slice(0,80)}catch(e){}
   if(input.value)apply(true);
+  reveal();
 })();
 
 /* Odnośniki do pozycji w <details> (zabieg z /dla-kogo, lista, alias dawnej kotwicy, pytanie): rozwijają ją przed przewinięciem */
@@ -1669,7 +1867,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   [].forEach.call(document.querySelectorAll('.section-head > .eyebrow,.end-card > .eyebrow'),function(e){e.classList.add('rv-eyebrow')});
   var els=[].slice.call(document.querySelectorAll('.rv-curtain,.rv-rise,.rv-eyebrow')), vh=window.innerHeight;
   function show(e){e.classList.add('is-in')}
-  els.forEach(function(e){if(e.getBoundingClientRect().top<vh)show(e)});
+  /* najpierw wszystkie odczyty położenia, potem zapisy klas (bez wymuszania przeliczeń stylu w pętli) */
+  var tops=els.map(function(e){return e.getBoundingClientRect().top});
+  els.forEach(function(e,i){if(tops[i]<vh)show(e)});
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(en){if(en.isIntersecting){show(en.target);io.unobserve(en.target)}});
   },{rootMargin:'0px 0px -10% 0px'});
@@ -1678,28 +1878,6 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   window.addEventListener('beforeprint',function(){els.forEach(show)});
 })();
 
-/* Dryf cyfr rozdziałów bez animation-timeline: rAF po zdarzeniu scroll (passive), tylko translate */
-(function(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if(window.CSS&&CSS.supports&&CSS.supports('animation-timeline: view()')) return;
-  var nums=[].slice.call(document.querySelectorAll('.chapter-no')).map(function(n){return {el:n,box:n.parentNode,d:parseFloat(getComputedStyle(n).getPropertyValue('--drift'))||60}});
-  if(!nums.length) return;
-  var ticking=false;
-  function clamp(v){return v<0?0:v>1?1:v}
-  function frame(){
-    ticking=false;var vh=window.innerHeight, out=[];
-    nums.forEach(function(n){
-      var r=n.box.getBoundingClientRect();if(r.bottom<-vh||r.top>2*vh)return;
-      out.push([n.el,(n.d*(1-2*clamp((vh-r.top)/(vh+r.height)))).toFixed(1)+'px']);
-    });
-    out.forEach(function(o){o[0].style.setProperty('--drift-y',o[1])});
-  }
-  function request(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
-  document.documentElement.classList.add('sl-js');
-  window.addEventListener('scroll',request,{passive:true});
-  window.addEventListener('resize',request);
-  frame();
-})();
 
 </script>
 <!-- gen:wspolne-js -->
@@ -1733,19 +1911,59 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if(hdr&&hdr.dataset.hidden==='1'){close(false);return}
     if(via!=='hover'&&!panel.contains(document.activeElement)&&Math.abs(window.scrollY-y0)>120)close(false);
   },{passive:true});
-  var mqWide=window.matchMedia('(min-width:1200px)');
+  var mqWide=window.matchMedia('(min-width:75em)');
   function onWide(){if(!mqWide.matches)close(false)}
   if(mqWide.addEventListener)mqWide.addEventListener('change',onWide);else if(mqWide.addListener)mqWide.addListener(onWide);
 })();
 
+/* Szuflada menu (details.menu): widoczny stan otwarcia – etykieta „Zamknij” i ikona X; bez JS – „Menu” w obu stanach (raport 15, Z41) */
+(function(){
+  var menu=document.querySelector('details.menu'); if(!menu) return;
+  var lab=menu.querySelector('.menu-label'), path=menu.querySelector('summary svg path'); if(!lab||!path) return;
+  var d0=path.getAttribute('d'), d1='M6 6l12 12M18 6 6 18', t0=lab.textContent;
+  function sync(){var o=menu.open;lab.textContent=o?'Zamknij':t0;path.setAttribute('d',o?d1:d0)}
+  menu.addEventListener('toggle',sync);sync();
+})();
+
+/* Z10 (raport 15): rytm sekcji 1 albo 2 ekrany – od 64em × 37.5em. Pomiar: wszystkie sekcje główne naraz w stanie pomiaru
+   (data-ekrany="0": przycięty padding, bez min-height), odczyt wysokości, potem zapis 1 (do 1,1 ekranu) / 2 (do 2,02 ekranu; powyżej –
+   bez atrybutu,
+   np. listy zabiegów i hasła słownika – K6). Ponownie po wczytaniu fontów, przy zmianie rozmiaru okna; nie przy rozwijaniu
+   treści (pytania, pełne listy), żeby sekcja nie skakała o ekran */
+(function(){
+  var mq=window.matchMedia('(min-width:64em) and (min-height:37.5em)'), raf=0;
+  var sekcje=[].slice.call(document.querySelectorAll('main section')).filter(function(s){
+    return !(s.parentElement&&s.parentElement.closest('main section'))&&!s.matches('.scene--hero,.page-hero,[data-ekrany-auto]');
+  });
+  if(!sekcje.length) return;
+  function licz(){
+    raf=0;
+    if(!mq.matches){sekcje.forEach(function(s){s.removeAttribute('data-ekrany')});return}
+    sekcje.forEach(function(s){s.setAttribute('data-ekrany','0');s.removeAttribute('data-ciasno')});
+    var H=window.innerHeight, T1=1.1*H, T2=2.02*H, m=sekcje.map(function(s){var cs=getComputedStyle(s);
+      return {h:s.getBoundingClientRect().height,p:parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom)}});
+    sekcje.forEach(function(s,i){
+      var h=m[i].h, t=h-m[i].p+48, n='', c=false;
+      if(h<=T1)n='1';else if(t<=T1){n='1';c=true}else if(h<=T2)n='2';else if(t<=T2){n='2';c=true}
+      if(n){s.setAttribute('data-ekrany',n);if(c)s.setAttribute('data-ciasno','')}else s.removeAttribute('data-ekrany');
+    });
+  }
+  function req(){if(!raf)raf=requestAnimationFrame(licz)}
+  licz();
+  window.addEventListener('resize',req);
+  window.addEventListener('load',req);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(req);
+})();
+
 /* Pasek akcji na telefonie (< 768 px): po przewinięciu poza pierwszy ekran; chowa się przy polu formularza/klawiaturze,
-   otwartej szufladzie menu, widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu, karcie końcowej, akcjach otwarcia i stopce */
+   otwartej szufladzie menu, widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu, karcie końcowej, akcjach otwarcia i stopce,
+   a także nad formularzami kalkulatora OC (form#calc), wyszukiwarką zabiegów (.zsearch) i wyszukiwarką specjalizacji (#spec-form) – raport 15, Z22 */
 (function(){
   var bar=document.getElementById('pasek-akcji'); if(!bar||!('IntersectionObserver' in window)) return;
   /* niskie okno (telefon w poziomie, ≤ 500 px – jak nagłówek): bez paska */
   var root=document.documentElement, mq=window.matchMedia('(max-width:767px) and (min-height:501px)'), menu=document.querySelector('details.menu');
   var FIELD='input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]):not([type=reset]):not([type=range]):not([type=file]):not([type=image]),textarea,select,[contenteditable="true"]';
-  var targets=[].slice.call(document.querySelectorAll('.calc-peek,.lead-form,.end-card,.hero-actions,.tariff-actions,.site-footer'));
+  var targets=[].slice.call(document.querySelectorAll('.calc-peek,.lead-form,.end-card,.hero-actions,.tariff-actions,.site-footer,form#calc,.zsearch,#spec-form'));
   var seen=new Set(), io=null, ticking=false;
   function typing(){var a=document.activeElement;return !!(a&&a.matches&&a.matches(FIELD))}
   function keyboard(){var v=window.visualViewport;return !!(v&&v.height<window.innerHeight*0.72)}
@@ -1795,79 +2013,81 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <script type="application/json" id="slownik-dymki">
 {
  "rodzaj-dzialalnosci": {
-  "t": "Rodzaj działalności (OC beauty)",
-  "d": "Odpowiedź na pytanie „Jaką działalność prowadzisz?” w kalkulatorze OC i w analizie potrzeb: gabinet kosmetyczny, salon fryzjerski, gabinet kosmetologiczny, gabinet podologiczny, salon masażu, salon tatuażu – można zaznaczyć kilka. Z rodzajów działalności wynika taryfa programu, czyli zakres na certyfikacie; sam zabieg z list programu składki nie zmienia.",
+  "t": "Rodzaj działalności (OC dla branży beauty)",
+  "d": "Odpowiedź na pytanie „Jaką działalność prowadzisz?” w kalkulatorze OC i w analizie potrzeb: gabinet kosmetyczny, salon fryzjerski, gabinet kosmetologiczny, gabinet podologiczny, salon masażu, salon tatuażu – można zaznaczyć kilka. Z rodzajów działalności wynika taryfa programu, czyli zakres na certyfikacie; sam zabieg z list programu składki nie zmienia.",
   "u": "slownik.html#haslo-rodzaj-dzialalnosci",
   "o": 1
  },
  "stala-taryfa": {
   "t": "Stała taryfa",
-  "d": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. rodzaj działalności i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
+  "d": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. rodzaj działalności i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
   "u": "slownik.html#haslo-stala-taryfa",
   "o": 1
  },
  "zakres-i-wylaczenia": {
-  "t": "Zakres ochrony i wyłączenia",
-  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
+  "t": "Zakres ochrony i wyłączenia",
+  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
   "u": "slownik.html#haslo-zakres-i-wylaczenia",
   "o": 1
  },
  "ankieta-indywidualnej-oceny-ryzyka": {
   "t": "Ankieta indywidualnej oceny ryzyka",
-  "d": "Formularz ERGO Hestii dla gabinetów, które wykonują zabiegi wymagające ankiety (Aneks nr 5, 8 pozycji). Pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat; na tej podstawie ubezpieczyciel decyduje o ochronie i składce.",
+  "d": "Formularz ERGO Hestii dla gabinetów, które wykonują zabiegi wymagające ankiety (Aneks nr 5, 8 pozycji). Pyta m.in. o wykonywane zabiegi, kwalifikacje i doświadczenie osób, które je wykonują, stosowane formularze zgody na zabieg i szkodowość z ostatnich 3 lat; na tej podstawie ubezpieczyciel decyduje o ochronie i składce.",
   "u": "slownik.html#haslo-ankieta-indywidualnej-oceny-ryzyka",
   "o": 1
  },
  "ochrona-prawna": {
   "t": "Klauzula ochrony prawnej",
-  "d": "Rozszerzenie OC w programie ERGO Hestii o zwrot kosztów obrony – np. adwokata lub radcy prawnego, biegłych, opłat sądowych – w sprawie dotyczącej Twoich czynności zawodowych objętych umową, gdy przed polskim sądem jesteś pozwaną lub pozwanym (sprawa cywilna), podejrzaną lub oskarżoną (sprawa karna), także w postępowaniu dyscyplinarnym; postępowanie musi zostać wszczęte w Polsce w okresie ubezpieczenia. Koszty jednego adwokata lub radcy prawnego zwracane są do wysokości stawek minimalnych; w sprawach karnych – tylko gdy zarzut dotyczy czynu nieumyślnego.",
+  "d": "Rozszerzenie OC w programie ERGO Hestii o zwrot kosztów obrony – np. adwokata lub radcy prawnego, biegłych, opłat sądowych – w sprawie dotyczącej Twoich czynności zawodowych objętych umową, gdy przed polskim sądem jesteś pozwaną lub pozwanym (sprawa cywilna), podejrzaną lub oskarżoną (sprawa karna), także w postępowaniu dyscyplinarnym; postępowanie musi zostać wszczęte w Polsce w okresie ubezpieczenia. Koszty jednego adwokata lub radcy prawnego zwracane są do wysokości stawek minimalnych; w sprawach karnych – tylko gdy zarzut dotyczy czynu nieumyślnego.",
   "u": "slownik.html#haslo-ochrona-prawna",
   "o": 1
  },
  "klauzula": {
   "t": "Klauzula (rozszerzenie zakresu)",
-  "d": "Dodatkowe postanowienie dołączone do umowy, które zmienia jej zakres – najczęściej rozszerza ochronę o coś, czego podstawowe warunki nie obejmują, zwykle za dodatkową składką. Klauzula działa razem z OWU: postanowienia, których nie zmienia, obowiązują bez zmian.",
+  "d": "Dodatkowe postanowienie dołączone do umowy, które zmienia jej zakres – najczęściej rozszerza ochronę o coś, czego podstawowe warunki nie obejmują, zwykle za dodatkową składką. Klauzula działa razem z OWU: postanowienia, których nie zmienia, obowiązują bez zmian.",
   "u": "slownik.html#haslo-klauzula",
   "o": 1
  },
  "wycena-indywidualna": {
   "t": "Wycena indywidualna",
-  "d": "Składka ustalana osobno dla Twojej sytuacji, bo stała taryfa jej nie przewiduje. Liczy się ją po zebraniu dodatkowych informacji, np. z ankiety, a o warunkach decyduje ubezpieczyciel.",
+  "d": "Składka ustalana osobno dla Twojej sytuacji, bo stała taryfa jej nie przewiduje. Liczy się ją po zebraniu dodatkowych informacji, np. z ankiety, a o warunkach decyduje ubezpieczyciel.",
   "u": "slownik.html#haslo-wycena-indywidualna",
   "o": 1
  },
  "apk": {
   "t": "APK (analiza potrzeb klienta)",
-  "d": "Ankieta przed zawarciem umowy, w której ustala się Twoje wymagania i potrzeby – na tej podstawie sprawdza się, czy proponowane ubezpieczenie do nich pasuje. Przy OC dla branży beauty wypełniasz APK pod osobistym linkiem w serwisie portal.beautypolisa.eu, razem z wnioskiem.",
+  "d": "Ankieta przed zawarciem umowy, w której ustala się Twoje wymagania i potrzeby – na tej podstawie sprawdza się, czy proponowane ubezpieczenie do nich pasuje. Przy OC dla branży beauty wypełniasz APK pod osobistym linkiem w serwisie portal.beautypolisa.eu, razem z wnioskiem.",
   "u": "slownik.html#haslo-apk"
  },
  "doradca": {
-  "t": "Doradca Aura Expert",
-  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
+  "t": "Doradca Aura Expert",
+  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
   "u": "slownik.html#haslo-doradca"
+ },
+ "suma-gwarancyjna": {
+  "t": "Suma gwarancyjna",
+  "d": "Górna granica tego, ile ubezpieczyciel zapłaci poszkodowanym w ubezpieczeniu OC – np. klientce, której stała się krzywda podczas zabiegu. W programie OC dla branży beauty wybierasz 100, 200 albo 300 tys. zł; czy suma zmniejsza się o wypłaty w okresie ubezpieczenia, określają warunki programu.",
+  "u": "slownik.html#haslo-suma-gwarancyjna",
+  "o": 1
  },
  "strefa-klienta": {
   "t": "Strefa Klienta",
-  "d": "Konto w BeautyPolisa: polisy i dokumenty salonu w jednym miejscu, sprawy w toku (np. APK i wniosek przy odnowieniu OC), zgłoszenia szkód oraz dostęp do „Dam pracę” i „Szkoleń”. Konto klienta z polisą aktywuje Aura Expert po zawarciu ubezpieczenia – zaproszenie przychodzi e-mailem.",
+  "d": "Konto w BeautyPolisa: polisy i dokumenty salonu w jednym miejscu, sprawy w toku (np. APK i wniosek przy odnowieniu OC), zgłoszenia szkód oraz dostęp do „Dam pracę” i „Szkoleń”. Konto klienta z polisą aktywuje Aura Expert po zawarciu ubezpieczenia – zaproszenie przychodzi e-mailem.",
   "u": "slownik.html#haslo-strefa-klienta"
  },
  "ochrona-karnoskarbowa": {
   "t": "Ochrona karnoskarbowa",
-  "d": "Sekcja 1 Tax Protect: pokrycie kosztów obrony właściciela lub członka zarządu w sprawach o przestępstwa i wykroczenia skarbowe, np. związane z podatkami – m.in. adwokata w dochodzeniu lub śledztwie i porady prawnej przed oficjalnym roszczeniem. Odpowiedzialność karnoskarbowa jest osobista: nie przejmie jej zewnętrzne biuro rachunkowe.",
+  "d": "Sekcja 1 Tax Protect: pokrycie kosztów obrony właściciela lub członka zarządu w sprawach o przestępstwa i wykroczenia skarbowe, np. związane z podatkami – m.in. adwokata w dochodzeniu lub śledztwie i porady prawnej przed oficjalnym roszczeniem. Odpowiedzialność karnoskarbowa jest osobista: nie przejmie jej zewnętrzne biuro rachunkowe.",
   "u": "slownik.html#haslo-ochrona-karnoskarbowa",
   "o": 1
- },
- "ubezpieczyciel": {
-  "t": "Ubezpieczyciel (zakład ubezpieczeń)",
-  "d": "Firma, która udziela ochrony: przyjmuje składkę, rozpatruje zgłoszenia i decyduje o wypłacie. W BeautyPolisa ubezpieczycielami są m.in. dwie spółki ERGO Hestii – Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A. (OC) i Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. (grupowe ERGO) – oraz Colonnade i Lloyd’s Insurance Company; Aura Expert nim nie jest.",
-  "u": "slownik.html#haslo-ubezpieczyciel"
  }
 }
 </script>
 <script>
 /* Dymek z definicją pojęcia (gen_terminy.py – nie edytuj ręcznie).
-   Bez JS oznaczenie jest linkiem do słownika. Z JS: link dostaje rolę przycisku (aria-haspopup="dialog", aria-expanded, aria-controls),
-   klik / Enter / Spacja otwiera niemodalny dialog (role="dialog" + aria-labelledby/aria-describedby – w środku link i przycisk, więc nie tooltip).
+   Bez JS oznaczenie jest linkiem do słownika. Z JS zostaje linkiem (czytnik ogłasza link, a pojęcie jest na liście linków strony),
+   dostaje aria-haspopup="dialog", aria-expanded i aria-controls; klik / Enter otwiera niemodalny dialog (role="dialog" +
+   aria-labelledby/aria-describedby – w środku link „Więcej w słowniku” do hasła i przycisk, więc nie tooltip). Spacja – jak przy linku.
    Fokus przechodzi do dialogu; Esc i „Zamknij” zamykają i oddają fokus pojęciu; Tab za ostatnim elementem i Shift+Tab przed pierwszym też wracają do pojęcia;
    klik poza dymkiem zamyka. Najechanie myszą niczego nie otwiera ani nie zamyka (WCAG 1.4.13: dymek nie znika, gdy kursor jest nad nim).
    Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Okno od 600 × 600 px: dymek pod ostatnią linią pojęcia albo nad
@@ -1889,21 +2109,24 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   var mqWaski=window.matchMedia('(max-width:599px),(max-height:599px)'), biezace=null, GORA=88, M=12;
   pojecia.forEach(function(a){
     if(!D[a.getAttribute('data-termin')])return;
-    a.setAttribute('role','button');a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
+    a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
   });
+  /* położenie: najpierw wszystkie odczyty (jedno przeliczenie układu), potem zapisy; wysokość treści z scrollHeight + ramka,
+     więc nie trzeba zdejmować max-height przed pomiarem */
   function pozycja(){
     if(!biezace||box.hidden)return;
-    box.style.maxHeight='';box.style.overflowY='';
-    if(mqWaski.matches){box.style.top='';box.style.left='';return}
+    if(mqWaski.matches){box.style.maxHeight='';box.style.overflowY='';box.style.top='';box.style.left='';return}
     var rs=biezace.getClientRects(), r1=rs[0]||biezace.getBoundingClientRect(), r2=rs[rs.length-1]||r1;
-    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.offsetHeight;
-    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y;
+    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.scrollHeight+(box.offsetHeight-box.clientHeight);
+    var sx=window.scrollX, sy=window.scrollY;
+    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y, maxH=0;
     if(h<=pod){y=r2.bottom+10}
     else if(h<=nad){r=r1;y=r1.top-10-h}
-    else if(pod>=nad){y=r2.bottom+10;box.style.maxHeight=Math.max(160,pod)+'px';box.style.overflowY='auto'}
-    else{r=r1;box.style.maxHeight=Math.max(160,nad)+'px';box.style.overflowY='auto';y=r1.top-10-box.offsetHeight}
+    else if(pod>=nad){y=r2.bottom+10;maxH=Math.max(160,pod)}
+    else{r=r1;maxH=Math.max(160,nad);y=r1.top-10-Math.min(h,maxH)}
     var x=Math.min(Math.max(16,r.left),vw-w-16);
-    box.style.left=Math.round(x+window.scrollX)+'px';box.style.top=Math.round(y+window.scrollY)+'px';
+    box.style.maxHeight=maxH?maxH+'px':'';box.style.overflowY=maxH?'auto':'';
+    box.style.left=Math.round(x+sx)+'px';box.style.top=Math.round(y+sy)+'px';
   }
   function otworz(a){
     var d=D[a.getAttribute('data-termin')]; if(!d)return;
@@ -1927,8 +2150,6 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if(biezace&&!box.contains(e.target))zamknijDymek(false);
   });
   document.addEventListener('keydown',function(e){
-    var a=e.target.closest&&e.target.closest('a.bp-termin[data-termin]');
-    if(a&&(e.key===' '||e.key==='Spacebar')&&D[a.getAttribute('data-termin')]){e.preventDefault();if(biezace===a)zamknijDymek(true);else otworz(a);return}
     if(!biezace)return;
     if(e.key==='Escape'||e.key==='Esc'){e.preventDefault();zamknijDymek(true);return}
     if(e.key==='Tab'&&box.contains(document.activeElement)){

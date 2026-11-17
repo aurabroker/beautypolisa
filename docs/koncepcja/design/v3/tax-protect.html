@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pl">
+<html lang="pl" data-type="service">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -12,13 +12,27 @@
 <meta property="og:url" content="https://beautypolisa.eu/ubezpieczenia/tax-protect">
 <meta property="og:title" content="Tax Protect – ochrona w sporach z fiskusem | BeautyPolisa">
 <meta property="og:description" content="Tax Protect (Colonnade) dla właścicieli salonów beauty: ochrona karnoskarbowa i jeden spór podatkowy w roku. Stała taryfa od 1 532 zł rocznie.">
-<meta name="theme-color" content="#141C33">
+<meta name="theme-color" content="#F7F3EC">
 <meta name="color-scheme" content="only light">
+<!-- udostępnianie i rodzaj strony (raport 15, Z24): obraz 1200×630 bez tekstu (kadr zdjęcia hero), ikona – serce z logo;
+     produkcyjnie przez metadata Next.js; adres obrazu docelowy -->
+<meta property="og:image" content="https://beautypolisa.eu/img/og-beautypolisa.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jasny gabinet beauty: granatowy fotel zabiegowy, marmurowy stolik z kosmetykami i piwonie przy oknie">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="page-type" content="service">
+<meta name="site-kind" content="service">
+<link rel="icon" href="img/ikona-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <!-- Makieta strony produktu: docelowy adres https://beautypolisa.eu/ubezpieczenia/tax-protect (04, mapa URL).
      Zastępuje treściowo starą stronę /tax-protect.html (formularz-atrapa z udawaną weryfikacją GUS – NIE odtwarzany, K4/K5).
      Blokadę indeksowania (meta robots) dokłada tylko podgląd makiet – nie ten plik. Tag Google: jak na stronie głównej (decyzja G1) – dopiero po zgodzie, tu go nie ma.
      Źródła faktów: tax-protect.html (zakres, opisy), 01-audyt §3.2 (taryfa potwierdzona 12.11.2026), 03-code-review K18 i pytanie 4
      (progi 30%/75%, karencja 21 dni, kary/mandaty – do potwierdzenia z Colonnade; „polisa chroni wstecz” usunięte), snippets/schema-produkt-tax-protect.json. -->
+<!-- tło hero (marmur) jest elementem LCP: klasa bg-on wpisana w sekcję hero + preload (raport 16, 3.2) -->
+<link rel="preload" as="image" href="img/tlo-marmur-len.webp" media="(min-width:768px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/tlo-marmur-len-1024.webp" media="(max-width:767px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
@@ -50,7 +64,7 @@
   --font-caps:'Poppins','Poppins Caps Fallback','Poppins Fallback 2',system-ui,sans-serif;
   --text-xs:.75rem; --text-sm:.875rem; --text-body:.9375rem; --text-base:1rem; --text-lead:clamp(1.0625rem,1rem + .25vw,1.125rem);
   --text-serif-sm:1.2rem; --text-serif-md:1.45rem; --text-h3:1.65rem;
-  --text-h2:clamp(2.25rem,1.35rem + 3.4vw,4.25rem); --text-h1:clamp(2.75rem,1.4rem + 4.6vw,5.25rem);
+  --text-h2:clamp(2.125rem,1.45rem + 2.65vw,3.375rem); --text-h1:clamp(2.25rem,1.2rem + 4.15vw,5rem);
   --text-display-numeral:3.4rem; --text-price:clamp(3rem,2.4rem + 2vw,4.2rem);
   --tracking-label:.2em; --tracking-nav:.16em;
   --radius-card:6px; --radius-btn:3px;
@@ -63,12 +77,12 @@
   --bp-line-gold-on-dark:rgba(217,192,137,.32); --bp-line-gold-on-dark-soft:rgba(217,192,137,.2);
   --bp-line-navy:rgba(42,59,104,.22); --bp-line-field:rgba(42,59,104,.7);
   --bp-error:#7A2E2E;
-  --bp-frame-inset:9px; --bp-container:1240px; --bp-gutter:clamp(16px,4vw,40px);
+  --bp-frame-inset:9px; --bp-container:77.5rem; --bp-gutter:clamp(16px,4vw,40px);
   --bp-z-sticky:55; --bp-z-header:60; --bp-z-skip:100;
   --bp-dur-1:.2s; --bp-dur-2:.3s; --bp-dur-3:.45s;
   /* ziarno: statyczny szum SVG, alfa ≤ .07 zapisana w pliku (CSP: img-src data:) */
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 .07 0 0 0 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
-  /* breakpointy: 480 / 768 / 1024 / 1200 px – w @media jako liczby */
+  /* breakpointy: 480 / 768 / 1024 / 1200 px – w @media jako liczby; przełączenie belka/szuflada – 75em (rośnie z czcionką domyślną) */
 }
 
 /* ---------- baza ---------- */
@@ -185,13 +199,13 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 .menu-panel a:not(.btn){display:flex;align-items:center;gap:14px;min-height:52px;border-bottom:1px solid var(--bp-line-gold-soft);text-decoration:none;color:var(--color-ink);font:500 .8rem/1.3 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase}
 .menu-panel .rule{margin-block:10px 4px}
 .menu-panel .btn{width:100%;margin-top:18px}
-@media (max-width:1199px){.main-nav,.client-link,.header-cta{display:none}.menu{display:block}}
+@media (max-width:74.99em){.main-nav,.client-link,.header-cta{display:none}.menu{display:block}}
 @media (max-height:500px){.site-header{position:absolute}}
 
 /* ---------- prolog strony produktu: marmur i jedna tafla ---------- */
 .page-hero{padding:clamp(124px,13vw,172px) 0 clamp(56px,8vw,104px)}
 .hero-panel{max-width:780px;padding:clamp(26px,4vw,56px);display:grid;gap:24px}
-.hero-panel h1{font-size:clamp(2.5rem,1.4rem + 3.6vw,4.4rem);line-height:1}
+.hero-panel h1{line-height:1}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px}
 .crumbs ol{display:flex;flex-wrap:wrap;align-items:center;gap:0 10px;list-style:none;margin:0;padding:0;font-size:var(--text-sm);line-height:1.4;color:var(--color-ink)}
 .crumbs li{display:inline-flex;align-items:center;gap:10px}
@@ -225,9 +239,9 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
   -webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 min(32px,var(--bp-gutter)),#000 calc(100% - min(32px,var(--bp-gutter))),transparent),linear-gradient(180deg,transparent,#000 28px,#000 calc(100% - 28px),transparent);mask-composite:intersect}
 @media (prefers-contrast:more),(prefers-reduced-transparency:reduce){.scene--silk .section-head::after{background:var(--color-midnight)}}
 @media (forced-colors:active){.scene--silk .section-head::after{display:none}}
-.chapter-no{position:absolute;z-index:-1;top:-.5em;right:0;--drift:70px;font:italic 500 clamp(7rem,4.2rem + 9vw,14.5rem)/1 var(--font-serif);letter-spacing:-.02em;color:rgba(184,151,90,.2);pointer-events:none;user-select:none;-webkit-user-select:none;white-space:nowrap}
+.chapter-no{position:absolute;z-index:-1;top:-.5em;right:0;font:italic 500 clamp(7rem,4.2rem + 9vw,14.5rem)/1 var(--font-serif);letter-spacing:-.02em;color:rgba(184,151,90,.2);pointer-events:none;user-select:none;-webkit-user-select:none;white-space:nowrap}
 .dark .chapter-no{color:rgba(217,192,137,.14)}
-@media (max-width:767px){.chapter-no{--drift:36px;top:-.35em;font-size:clamp(5.5rem,3rem + 14vw,8rem)}}
+@media (max-width:767px){.chapter-no{top:-.35em;font-size:clamp(5.5rem,3rem + 14vw,8rem)}}
 
 /* ---------- I · zakres: dwie kryjące karty (bez rozmycia) + „o czym pamiętać” ---------- */
 .scope{display:grid;gap:clamp(20px,3vw,32px)}
@@ -396,7 +410,6 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 @keyframes rise{from{translate:0 56px;scale:.96}to{translate:0 0;scale:1}}
 @keyframes fade-in{from{opacity:0}to{opacity:1}}
 @keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-@keyframes drift{from{translate:0 var(--drift)}to{translate:0 calc(-1 * var(--drift))}}
 @keyframes frame-draw{from{clip-path:polygon(0 0,0 0,0 0)}to{clip-path:polygon(0 0,200% 0,0 200%)}}
 @keyframes note-in{from{opacity:.001;translate:0 24px}to{opacity:1;translate:0 0}}
 @media screen and (prefers-reduced-motion:no-preference){
@@ -415,7 +428,6 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
     .site-footer .footer-nav > .rv-rise:nth-child(4){animation-range:entry 30% entry 100%;animation-range:entry 30% entry 100%,entry 0% entry min(100%,11vh)}
     :is(.section-head,.end-card) > .eyebrow{view-timeline:--eyebrow block}
     :is(.section-head,.end-card) > .eyebrow::before{animation:draw linear both;animation-timeline:--eyebrow;animation-range:entry 0% cover 40%}
-    .chapter-no{animation:drift linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
   }
   html.io-reveal .rv-curtain:not(.is-in){opacity:0;translate:0 .6em}
   html.io-reveal .rv-rise:not(.is-in){opacity:0;translate:0 56px;scale:.96}
@@ -425,7 +437,6 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
   html.io-reveal .footer-nav > .rv-rise:nth-child(2){transition-delay:.12s}
   html.io-reveal .footer-nav > .rv-rise:nth-child(3){transition-delay:.24s}
   html.io-reveal .footer-nav > .rv-rise:nth-child(4){transition-delay:.36s}
-  html.sl-js .chapter-no{translate:0 var(--drift-y,0px)}
 }
 /* odpowiedzi rozwijane płynnie tam, gdzie jest ::details-content */
 @supports selector(::details-content){
@@ -465,9 +476,11 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
   *,*::before,*::after{animation:none!important;transition:none!important}
   html.io-reveal .rv-curtain,html.io-reveal .rv-rise{opacity:1!important;translate:none!important;scale:none!important}
   html.io-reveal .rv-eyebrow::before{transform:none!important}
-  html.sl-js .chapter-no{translate:none!important}
   .site-header{display:none!important}
 }
+/* droga do polisy w 3 krokach (Z30): od 64em trzy kolumny */
+@media (min-width:768px){.steps.steps--3{grid-template-columns:minmax(0,1fr)}}
+@media (min-width:1024px){.steps.steps--3{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 <noscript><style>
 .scene--silk{background-image:url(img/tlo-jedwab.webp)}.scene--marble{background-image:url(img/tlo-marmur-len.webp)}
@@ -663,7 +676,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
      "name": "Jak kupić Tax Protect?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Policz składkę w kalkulatorze albo zostaw kontakt w formularzu. Doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek: najpierw analiza potrzeb, potem wniosek. Na koniec doradca przekazuje Ci polisę Colonnade razem z OWU Tax Protect."
+      "text": "Oblicz składkę w kalkulatorze albo zostaw kontakt w formularzu. Doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek: najpierw analiza potrzeb, potem wniosek. Na koniec doradca przekazuje Ci polisę Colonnade razem z OWU Tax Protect."
      }
     }
    ]
@@ -674,7 +687,7 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 <!-- gen:wspolne-css -->
 <style>
 /* ===== Wspólne komponenty stron publicznych (gen_wspolne.py – nie edytuj ręcznie) ===== */
-/* --- menu „Ubezpieczenia” (≥ 1200 px): wzorzec disclosure, panel ivory bez backdrop-filter (nie liczy się do limitu tafli) --- */
+/* --- menu „Ubezpieczenia” (≥ 75em – 1200 px przy domyślnej czcionce 16 px; przy 20–24 px próg rośnie razem z etykietami): wzorzec disclosure, panel ivory bez backdrop-filter (nie liczy się do limitu tafli) --- */
 .main-nav .nav-produkty-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:0;padding:0 10px;background:none;border:0;border-radius:var(--radius-btn);font:500 var(--text-xs)/1 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase;text-decoration:none;color:var(--color-ink);white-space:nowrap;cursor:pointer}
 .main-nav .nav-produkty-btn:hover,.main-nav .nav-produkty-btn[aria-expanded="true"],.nav-produkty[data-biezacy] > .nav-produkty-btn{color:var(--color-navy);text-decoration:underline;text-underline-offset:6px;text-decoration-color:var(--color-gold)}
 .nav-produkty-btn svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform var(--bp-dur-2) var(--ease-lux)}
@@ -684,7 +697,9 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 .mega-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;padding-bottom:12px;border-bottom:1px solid var(--color-gold)}
 .mega-title{margin:0;font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
 .main-nav .mega a{display:revert;min-height:0;padding:0;font:inherit;letter-spacing:normal;text-transform:none;white-space:normal;color:inherit;text-decoration:none}
-.main-nav .mega .mega-all{display:inline-flex;align-items:center;min-height:24px;font:500 var(--text-sm)/1.3 var(--font-sans);color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px}
+.main-nav .mega .mega-all{display:inline-flex;align-items:center;min-height:24px;font:500 var(--text-sm)/1.3 var(--font-sans);color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px;transition:text-decoration-thickness var(--bp-dur-1)}
+/* hover: „Wszystkie ubezpieczenia” i przycisk z data-biezacy (podkreślony już w spoczynku) – grubsza linia (raport 16, 3.1) */
+.main-nav .mega .mega-all:hover,.nav-produkty[data-biezacy] > .nav-produkty-btn:hover{text-decoration-thickness:2px}
 .main-nav .mega-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 20px;margin:14px 0 0;padding:0;list-style:none}
 .main-nav .mega .mega-item{display:grid;grid-template-columns:32px minmax(0,1fr);column-gap:16px;align-items:start;height:100%;padding:14px 14px 16px;border-radius:var(--radius-card);color:var(--color-ink);transition:background-color var(--bp-dur-1)}
 .main-nav .mega .mega-item:hover{background:var(--color-parchment)}
@@ -701,8 +716,8 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 .main-nav .mega .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 24px;font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;text-decoration:none;white-space:nowrap}
 .main-nav .mega .btn-navy,.main-nav .mega .btn-navy:hover{color:var(--color-ivory)}
 .main-nav .mega .btn-ghost,.main-nav .mega .btn-ghost:hover{color:var(--color-navy)}
-@media (max-width:1199px){.mega{display:none!important}}
-/* --- szuflada (< 1200 px): „Oblicz składkę OC” na górze + 6 produktów z ceną --- */
+@media (max-width:74.99em){.mega{display:none!important}}
+/* --- szuflada (< 75em): „Oblicz składkę OC” na górze + 6 produktów z ceną --- */
 .menu-panel .btn.mm-oblicz{width:100%;margin:4px 0 14px}
 .mm-tytul{margin:0;padding:4px 0 2px;font:500 var(--text-xs)/1.3 var(--font-caps);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-taupe)}
 .mm-produkty{margin:0 0 6px;padding:0;list-style:none}
@@ -735,6 +750,172 @@ main > .scene,main > .band,.site-footer{border-top:1px solid rgba(217,192,137,.4
 @media (prefers-reduced-motion:reduce){.pasek-akcji,.pasek-akcji[data-on="1"],.nav-produkty-btn svg{transition:none!important}}
 @media (forced-colors:active){.mega,.pasek-akcji{border-color:CanvasText}.main-nav .mega .mega-item[aria-current="page"]{outline:2px solid Highlight}}
 @media print{.pasek-akcji,.mega{display:none!important}}
+/* ===== Wzorce wspólne bazowego CSS stron (raport 16, rozdz. 3.2; raport 15: Z5, Z15, Z16, Z18, Z27, Z41) =====
+   Blok stoi na końcu <head>, więc nadpisuje ręczne kopie bazowego CSS (tax-protect.html i kopie, opieka-medyczna/common.css).
+   Ruch tylko na transform i opacity (zmiany samych kolorów – tylko malowanie); prefers-reduced-motion wyłącza przejścia jak dotąd. */
+/* safe-area przy viewport-fit=cover: w poziomie na iPhonie treść, belka i szuflada nie wchodzą pod wycięcie ekranu */
+.container{padding-left:max(var(--bp-gutter),env(safe-area-inset-left));padding-right:max(var(--bp-gutter),env(safe-area-inset-right))}
+.menu-panel{padding-bottom:calc(22px + env(safe-area-inset-bottom))}
+.site-footer{padding-bottom:calc(40px + env(safe-area-inset-bottom))}
+.klauzula{width:min(calc(100% - 32px - env(safe-area-inset-left) - env(safe-area-inset-right)),780px)}
+/* dotyk: bez powiększania podwójnym tapnięciem, stonowane podświetlenie tapnięcia, bez „odbijania” strony na gładziku */
+a,button,summary,label,input,select,textarea,[role="button"]{touch-action:manipulation}
+html{-webkit-tap-highlight-color:rgba(42,59,104,.12)}
+:is(.dark,.pasek-akcji,.end-card){-webkit-tap-highlight-color:rgba(217,192,137,.2)}
+@media (pointer:fine){html{overscroll-behavior-y:none}}
+/* długie słowa i tekst powiększony do 200%: hero bez przewijania w poziomie (minmax(0,1fr), kwoty łamią się poniżej 540 px) */
+.hero-panel{grid-template-columns:minmax(0,1fr)}
+h1,h2,h3,.lead{overflow-wrap:break-word}
+@media (max-width:539px){.figures dd{white-space:normal}.figures > div,.figures > div:first-child{flex-wrap:wrap}.figures dt{min-width:0}}
+.mock-note{white-space:normal}   /* adnotacje makiety łamią się przy powiększonym tekście */
+/* logo kurczy się przy dużej czcionce domyślnej (24 px), przycisk „Menu” zostaje w belce */
+.brand{flex:0 1 auto;min-width:0}
+.brand small{white-space:normal}
+.menu{flex:none}
+/* hover: linki w treści, okruszki, „Wróć…” (.link-quiet) – grubsza linia; szuflada i „Menu” – kolor i ramka */
+.link-quiet,.crumbs a{transition:text-decoration-thickness var(--bp-dur-1),color var(--bp-dur-1)}
+@media (hover:hover){
+  a:not(.btn):not(.link-lux):hover{text-decoration-thickness:2px}
+  .menu-panel > a:not(.btn):hover{color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px}
+  .menu summary:hover{border-color:var(--color-navy)}
+}
+/* .btn-ghost-dark: hover mocniejszy od spoczynku – tekst zostaje ivory, wzmacnia się ramka i tło */
+.btn-ghost-dark:hover{color:var(--color-ivory);border-color:var(--color-gold-light);background-color:rgba(217,192,137,.14)}
+/* Z18: stan „wciśnięty” przycisków */
+.btn:active,.pasek-akcji a:active{transform:translateY(1px)}
+.btn-navy:active{background-color:var(--color-midnight);border-color:var(--color-midnight)}
+.btn-ghost:active{background-color:var(--color-parchment);border-color:var(--color-navy)}
+.btn-ivory:active{background-color:#E2D7C5}
+.btn-ghost-dark:active{background-color:rgba(217,192,137,.24)}
+/* Z27: podkreślenia nawigacji, stopki i pytań pojawiają się płynnie (kolor linii), w nawigacji linia się rysuje (scaleX); logo – krycie */
+.footer-nav a,.faq summary,.product-link{text-decoration-line:underline;text-decoration-color:transparent;text-decoration-thickness:1px;transition:color var(--bp-dur-2),text-decoration-color var(--bp-dur-2) var(--ease-lux)}
+.footer-nav a{text-underline-offset:5px}
+.faq summary,.product-link{text-underline-offset:6px}
+.main-nav > ul > li > a,.client-link{position:relative}
+.main-nav > ul > li > a::after,.client-link::after{content:"";position:absolute;left:10px;right:10px;bottom:10px;height:1px;background:var(--color-gold);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease-lux);pointer-events:none}
+.client-link::after{left:18px;right:6px}
+@media (hover:hover){
+  .main-nav > ul > li > a:hover,.client-link:hover{text-decoration:none}
+  .main-nav > ul > li > a:hover::after,.client-link:hover::after{transform:scaleX(1)}
+}
+.brand img{transition:opacity var(--bp-dur-2)}
+.brand:hover img{opacity:.78}
+/* kreska .link-lux i podkreślenie .btn-navy: transform zamiast width i background-size (bez przeliczania układu) */
+.link-lux::after{transform-origin:left;transition:transform var(--bp-dur-2) var(--ease-lux)}
+.link-lux:hover::after{width:28px;transform:scaleX(1.5715)}
+@media (hover:hover) and (pointer:fine){
+  .btn-navy{position:relative;background-image:none}
+  .btn-navy::after{content:"";position:absolute;left:28px;right:28px;bottom:10px;height:1px;background:var(--color-gold-light);transform:scaleX(0);transition:transform .5s var(--ease-lux);pointer-events:none}
+  .header-cta .btn-navy::after{left:20px;right:20px}
+  .btn-navy:hover::after,.btn-navy:focus-visible::after{transform:scaleX(1)}
+}
+/* rama panelu hero: opacity i scale zamiast clip-path */
+@keyframes bp-frame-in{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+@media screen and (prefers-reduced-motion:no-preference){.hero-panel.frame::before{animation-name:bp-frame-in}}
+/* długie listy rozwijane (zabiegi OC, pełne tabele) bez animacji block-size; FAQ – świadomy wyjątek (krótkie odpowiedzi) */
+@supports selector(::details-content){.zdetails::details-content,.full::details-content,.full-list::details-content{transition:none}}
+/* Z15: pytania na płaskim tle (poza sceną ze zdjęciem) bez rozmycia – szkło zawsze leży na zdjęciu (§6) */
+.faq.glass:not(.scene .faq){-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--bp-glass-ivory-tint)}
+/* Z16: karta końcowa – płaski token zamiast gradientu */
+.end-card{background:var(--color-navy)}
+/* Z5: cele dotyku 44 px na ekranach dotykowych (okruszki, „Informacje o agencie…”, odsyłacze „także na liście nr …”) */
+@media (pointer:coarse){
+  .crumbs a{min-height:44px}
+  .legal-idd > summary{min-height:44px;padding-block:10px}
+  a.z-inna{display:inline-flex;align-items:center;min-height:44px}
+}
+/* Z1, Z2, Z3, Z7, Z29: pierwszy ekran podstron (.page-hero). Hero zajmuje ekran (min-height 100svh), panel stoi pośrodku
+   i kończy się co najmniej 24 px nad dolną krawędzią okna. Od 64em panel na całą szerokość kontenera: z lewej tekst i akcje
+   (.hero-copy), z prawej liczby (.hero-aside) – bez pustego pasa. Na telefonie lead to jedno zdanie z twardym faktem (dalsze zdania
+   – .hero-note pod przyciskami), mniejszy H1, ciaśniejszy panel i okruszki zwinięte do „‹ rodzic”: główny przycisk w 1. ekranie od 320×640 */
+.page-hero{padding-top:clamp(92px,7vw,104px);padding-bottom:24px}
+/* siatka tylko od 48em: poniżej scena ma przyklejoną warstwę tła (::before, position:sticky) – w siatce byłaby elementem siatki */
+@media (min-width:48em){.page-hero{min-height:100svh;display:grid;align-items:center}}
+.page-hero .hero-copy{display:grid;gap:inherit;min-width:0;align-content:start}
+.page-hero .hero-aside{display:grid;gap:12px;min-width:0;align-content:center}
+/* H1 panelu hero podstron – token --text-h1-podstrona (tokens-v3.css, DESIGN.md; Z37, runda 2: bez lokalnych rozmiarów); definicja
+   także tu, bo strony mają własne kopie :root */
+:root{--text-h1-podstrona:clamp(2.25rem,.6rem + 4.4vw,4.4rem);--text-h3-kafel:clamp(1.9rem,1.45rem + 1.4vw,2.3rem)}
+.page-hero .hero-panel h1{font-size:var(--text-h1-podstrona)}
+.page-hero .hero-note{font-size:var(--text-sm);line-height:1.6;color:var(--color-ink);max-width:42rem}
+@media (min-width:64em){
+  .page-hero .hero-panel{max-width:none;grid-template-columns:minmax(0,1fr) minmax(14rem,18rem);column-gap:clamp(36px,4.5vw,72px);row-gap:20px;padding-block:clamp(28px,3vw,48px)}
+  .page-hero .hero-aside{padding-left:clamp(28px,3vw,44px);border-left:1px solid rgba(184,151,90,.55)}
+  .page-hero .hero-aside .figures{flex-direction:column;padding-top:0;border-top:0}
+  .page-hero .hero-aside .figures > div,.page-hero .hero-aside .figures > div:first-child{padding:16px 0;border-left:0}
+  .page-hero .hero-aside .figures > div + div{border-top:1px solid var(--bp-line-gold-soft)}
+  .page-hero .hero-aside .figures dd{font-size:clamp(1.9rem,1.2rem + 1.1vw,2.4rem);white-space:normal}
+}
+@media (max-width:47.99em){
+  .page-hero{padding-top:94px}
+  .page-hero .hero-panel{gap:16px;padding:22px 20px 24px}
+  .page-hero .crumbs li:not(:nth-last-child(2)){display:none}
+  .page-hero .crumbs li:nth-last-child(2)::before{content:none}
+  .page-hero .crumbs li:nth-last-child(2) a::before{content:"‹\00a0";content:"‹\00a0" / ""}
+}
+/* Z37: jedna skala nagłówków (dok. 10 §4, DESIGN.md): H2 = --text-h2 (34–54 px), H3 = --text-h3 (26,4 px; wyjątek – nazwa kafelka
+   produktu na stronie głównej: --text-h3-kafel), H4 = --text-serif-md; bez lokalnych rozmiarów w CSS stron. Nagłówek okna klauzuli zostaje mniejszy. */
+main h2:not(.klauzula h2){font-size:var(--text-h2)}
+main h3:not(.product h3){font-size:var(--text-h3)}
+main h4:not(.bp-bez-skali){font-size:var(--text-serif-md)}
+/* Z12: tafle od lewej do prawej linii kontenera (bez jednostronnego pasa przy 1440 px); miara tekstu w środku ograniczona */
+.zrules,.mind,.scope-aside,.variants-box,.plan-panel,.cta-row + .ext-note{max-width:none}
+:is(.zrules,.mind,.scope-aside) > :is(p,ul,h3,.cta-row){max-width:62rem}
+/* Z8: sekcja zamykająca podstron (section#zamkniecie, section--flush-top) – „Inne ubezpieczenia” (H2) i karta końcowa jako bloki
+   jednej sekcji; pytania – osobna sekcja przed nią (runda 2 weryfikacji: razem miały 2,23–2,55 ekranu) */
+.zamkniecie-blok{margin-top:clamp(56px,7vw,104px)}
+/* Z10: rytm sekcji – od 64em szerokości i 37.5em wysokości okna każda sekcja główna (poza hero i sekcjami-dokumentami z K6:
+   listy zabiegów, klauzula, hasła słownika) ma dokładnie 1 albo 2 ekrany. Skrypt (gen:wspolne-js) mierzy wysokość treści przy
+   przyciętym padding-block (dawniej clamp(72px,11vw,168px), czyli 158 px przy 1440 px) i ustawia data-ekrany="1" albo "2";
+   sekcja, która mieści się w ekranie dopiero przy 24 px odstępu (data-ciasno), dostaje 1 ekran zamiast 2 (tolerancja ≈ 1 ekran:
+   do 1,1 – raport 15, N1); treść stoi pośrodku sekcji. Bez JS, na telefonie i w niskim oknie – naturalna wysokość jak dotąd */
+@media (min-width:64em) and (min-height:37.5em){
+  main section[data-ekrany]{display:flex;flex-direction:column;justify-content:center;padding-block:clamp(48px,7svh,96px)}
+  main section[data-ekrany][data-ciasno]{padding-block:24px}
+  main section[data-ekrany] > *{flex:none}
+  main section[data-ekrany="1"]{min-height:100svh}
+  main section[data-ekrany="2"]{min-height:200svh}
+}
+.end-card h3{max-width:40rem}
+/* Z38 (raport 15): jedna karta pełna i jedna notka poza szkłem – cztery warianty szkła z D14 bez zmian. Karta: ivory, złota linia 1 px,
+   promień 6 px, jeden cień (dawniej 6 wyglądów: z cieniem albo bez, linia 35 / 50% albo żadna, przezroczysta .mind). Notka: pergamin 55%,
+   lewa złota kreska 2 px, bez cienia i promienia. Tokeny także w tokens-v3.css i DESIGN.md (4.5) */
+:root{--bp-karta-tlo:var(--color-ivory);--bp-karta-linia:rgba(184,151,90,.5);--bp-karta-cien:0 24px 48px -38px rgba(20,28,51,.45);
+  --bp-notka-tlo:rgba(237,229,216,.55);--bp-notka-kreska:var(--color-gold);
+  --bp-link-podkreslenie:var(--color-gold);--bp-link-podkreslenie-ciemne:rgba(217,192,137,.7)}
+main :is(.clause,.op-card,.rel-card,.route,.scope-card,.apply,figure.ledger,.mind,.panel,.sl-narzedzia,li.job,.vcard,.cmp-attr,.sl-litera){
+  background-color:var(--bp-karta-tlo);border:1px solid var(--bp-karta-linia);border-radius:var(--radius-card);box-shadow:var(--bp-karta-cien)}
+main :is(.scope-extra,.scope-aside,.haslo-przyklad){background:var(--bp-notka-tlo);border:0;border-left:2px solid var(--bp-notka-kreska);border-radius:0;box-shadow:none}
+/* Z39 (raport 15): jeden zestaw elementów w roli przycisku – para .btn (bez zmian); jeden chip do nawigacji po liście i filtrów (skok do
+   list OC, indeks A–Z słownika, podpowiedzi specjalizacji – dawniej 3 wyglądy); jeden link-akcja: zwykły tekst z podkreśleniem, bez etykiety
+   w wersalikach z kreską („KALKULATOR ——”); jeden token podkreślenia linków na jasnym tle i jeden na ciemnym; linki w tekście granatowe */
+main :is(.zjump a,.sl-az a[href],.spec-quick button){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;
+  border:1px solid var(--bp-karta-linia);border-radius:var(--radius-btn);background:rgba(255,255,255,.55);color:var(--color-navy);
+  font:500 var(--text-sm)/1.2 var(--font-sans);letter-spacing:normal;text-transform:none;text-decoration:none;cursor:pointer}
+main :is(.zjump a,.spec-quick button){padding:8px 14px}
+main .zjump a span{font:inherit;font-weight:400;color:inherit}
+main :is(.sl-az a:not([href]),.sl-az-off){font:400 var(--text-sm)/1.2 var(--font-sans)}
+@media (hover:hover) and (pointer:fine){main :is(.zjump a,.sl-az a[href],.spec-quick button):hover{border-color:var(--color-navy);background:rgba(255,255,255,.85);text-decoration:none}}
+main .link-lux{gap:8px;font:500 var(--text-sm)/1.4 var(--font-sans);letter-spacing:normal;text-transform:none;
+  text-decoration:underline;text-decoration-color:var(--bp-link-podkreslenie);text-decoration-thickness:1px;text-underline-offset:5px}
+main .link-lux::after{content:none}
+main :is(p,dd) a:not([class]){color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--bp-link-podkreslenie);text-decoration-thickness:1px;text-underline-offset:4px}
+/* na ciemnym tle (sceny .dark, wynik kalkulatora, karta promocji i karta Strefy): tekst parchment, podkreślenie złote 70%; jasne
+   powierzchnie wewnątrz ciemnej sceny (kafle produktów .ledger--light, jasne szkło) – jak na jasnym tle */
+main :is(.dark,.result,.promo,.member-card) :is(.link-lux,.link-quiet,p a:not([class]),dd a:not([class])){color:var(--color-parchment);text-decoration-color:var(--bp-link-podkreslenie-ciemne)}
+main .dark :is(.ledger--light,.glass:not(.glass--dark)) :is(.link-lux,.link-quiet,p a:not([class]),dd a:not([class])){color:var(--color-navy);text-decoration-color:var(--bp-link-podkreslenie)}
+@media (hover:hover) and (pointer:fine){main :is(.link-lux,.link-quiet,p a:not([class]),dd a:not([class])):hover{text-decoration-thickness:2px}}
+/* Z41: szuflada poniżej 768 px – pełny ekran (ivory, bez backdrop-filter), stan otwarcia widoczny w przycisku („Zamknij”, ikona X – skrypt) */
+@media (max-width:767px){
+  html:has(details.menu[open]){overflow:hidden}
+  .site-header:has(details.menu[open]) .header-bar{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--color-ivory)}
+  .site-header:has(details.menu[open]) .brand,details.menu[open] > summary{position:relative;z-index:2}
+  details.menu[open] .menu-panel{position:fixed;inset:0;z-index:1;max-height:none;height:100dvh;border:0;border-radius:0;box-shadow:none;background:var(--color-ivory);
+    padding:calc(110px + env(safe-area-inset-top)) max(var(--bp-gutter),env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) max(var(--bp-gutter),env(safe-area-inset-left))}
+}
+details.menu[open] > summary{border-color:var(--color-navy)}
+@media (prefers-reduced-motion:reduce){.btn:active,.pasek-akcji a:active{transform:none}}
+@media (forced-colors:active){.main-nav > ul > li > a::after,.client-link::after,.btn-navy::after{background:CanvasText}}
 </style>
 <!-- /gen:wspolne-css -->
 <!-- gen:slownik-css -->
@@ -752,7 +933,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
 /* dymek: kryjące ivory (bez backdrop-filter – nie liczy się do limitu 3 tafli), złota linia, cień */
-.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
+.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;overscroll-behavior:contain;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
 .bp-dymek[hidden]{display:none}
 .bp-dymek:focus{outline:none}
 .bp-dymek:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
@@ -786,7 +967,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <div class="container">
     <div class="header-bar glass glass--strong">
       <a class="brand" href="makieta-v3.html" aria-label="BeautyPolisa – strona główna">
-        <img src="../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="160" height="24">
+        <img src="img/logo-beautypolisa-320.png" alt="BeautyPolisa" width="160" height="24" translate="no">
         <small>created by Aura Expert</small>
       </a>
       <nav class="main-nav" aria-label="Menu główne">
@@ -798,12 +979,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <div class="mega" id="menu-produkty" hidden>
               <div class="mega-head"><p class="mega-title">Ubezpieczenia dla branży beauty</p><a class="mega-all" href="makieta-v3.html#ubezpieczenia">Wszystkie ubezpieczenia</a></div>
               <ul class="mega-grid">
-                <li><a class="mega-item" href="oc-beauty.html" aria-labelledby="mp-oc-beauty-n" aria-describedby="mp-oc-beauty-d mp-oc-beauty-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name" id="mp-oc-beauty-n">OC dla branży beauty</span><span class="mega-desc" id="mp-oc-beauty-d">OC za szkody wyrządzone klientom podczas zabiegów – składka ze stałej taryfy ERGO Hestia.</span><span class="mega-price" id="mp-oc-beauty-c"><span class="mega-cena">od 400&nbsp;zł rocznie</span></span></span></a></li>
-                <li><a class="mega-item" href="tax-protect.html" aria-current="page" aria-labelledby="mp-tax-protect-n" aria-describedby="mp-tax-protect-d mp-tax-protect-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name" id="mp-tax-protect-n">Tax Protect<span class="mega-tu" aria-hidden="true">Jesteś tutaj</span></span><span class="mega-desc" id="mp-tax-protect-d">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (Colonnade).</span><span class="mega-price" id="mp-tax-protect-c"><span class="mega-cena">od 1&nbsp;532&nbsp;zł rocznie</span></span></span></a></li>
-                <li><a class="mega-item" href="utrata-dochodu.html" aria-labelledby="mp-utrata-dochodu-n" aria-describedby="mp-utrata-dochodu-d mp-utrata-dochodu-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name" id="mp-utrata-dochodu-n">Utrata dochodu</span><span class="mega-desc" id="mp-utrata-dochodu-d">Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy – Lloyd’s przez Leadenhall i&nbsp;CEU.</span><span class="mega-price" id="mp-utrata-dochodu-c"><span class="mega-cena">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></span></a></li>
-                <li><a class="mega-item" href="nnw-dzieci.html" aria-labelledby="mp-nnw-dzieci-n" aria-describedby="mp-nnw-dzieci-d mp-nnw-dzieci-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name" id="mp-nnw-dzieci-n">NNW dla dzieci</span><span class="mega-desc" id="mp-nnw-dzieci-d">Ochrona dziecka od następstw nieszczęśliwych wypadków – całą dobę (Colonnade).</span><span class="mega-price" id="mp-nnw-dzieci-c"><span class="mega-cena">od 40&nbsp;zł rocznie za dziecko</span><span class="mega-dop">Zakup online u&nbsp;Colonnade</span></span></span></a></li>
-                <li><a class="mega-item" href="grupowe-ergo.html" aria-labelledby="mp-grupowe-ergo-n" aria-describedby="mp-grupowe-ergo-d mp-grupowe-ergo-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name" id="mp-grupowe-ergo-n">Grupowe ERGO dla beauty</span><span class="mega-desc" id="mp-grupowe-ergo-d">Ubezpieczenie na życie dla zespołu (2–&#8288;100 osób) albo ERGO Razem dla Ciebie i&nbsp;rodziny.</span><span class="mega-price" id="mp-grupowe-ergo-c"><span class="mega-cena">Zespół: od 58&nbsp;zł za osobę / mies.</span><span class="mega-cena">ERGO Razem: od 57&nbsp;zł / mies.</span></span></span></a></li>
-                <li><a class="mega-item" href="opieka-medyczna.html" aria-labelledby="mp-opieka-medyczna-n" aria-describedby="mp-opieka-medyczna-d mp-opieka-medyczna-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name" id="mp-opieka-medyczna-n">Opieka medyczna</span><span class="mega-desc" id="mp-opieka-medyczna-d">Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price" id="mp-opieka-medyczna-c"><span class="mega-cena">Cenę przygotuje doradca</span></span></span></a></li>
+                <li><a class="mega-item" href="oc-beauty.html" aria-labelledby="mp-oc-beauty-n" aria-describedby="mp-oc-beauty-d mp-oc-beauty-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mega-text"><span class="mega-name" id="mp-oc-beauty-n">OC dla branży beauty</span><span class="mega-desc" id="mp-oc-beauty-d">OC za szkody wyrządzone klientom podczas zabiegów&nbsp;– składka ze stałej taryfy <span translate="no">ERGO&nbsp;Hestia</span>.</span><span class="mega-price" id="mp-oc-beauty-c"><span class="mega-cena">od 400&nbsp;zł rocznie</span></span></span></a></li>
+                <li><a class="mega-item" href="tax-protect.html" aria-current="page" aria-labelledby="mp-tax-protect-n" aria-describedby="mp-tax-protect-d mp-tax-protect-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mega-text"><span class="mega-name" id="mp-tax-protect-n"><span translate="no">Tax Protect</span><span class="mega-tu" aria-hidden="true">Jesteś tutaj</span></span><span class="mega-desc" id="mp-tax-protect-d">Ochrona karnoskarbowa dla właściciela i&nbsp;podatkowa dla salonu (<span translate="no">Colonnade</span>).</span><span class="mega-price" id="mp-tax-protect-c"><span class="mega-cena">od 1&nbsp;532&nbsp;zł rocznie</span></span></span></a></li>
+                <li><a class="mega-item" href="utrata-dochodu.html" aria-labelledby="mp-utrata-dochodu-n" aria-describedby="mp-utrata-dochodu-d mp-utrata-dochodu-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mega-text"><span class="mega-name" id="mp-utrata-dochodu-n">Utrata dochodu</span><span class="mega-desc" id="mp-utrata-dochodu-d">Prywatne L4: miesięczne świadczenie, gdy choroba lub wypadek wyłączą Cię z&nbsp;pracy&nbsp;– <span translate="no">Lloyd’s</span> przez <span translate="no">Leadenhall</span> i&nbsp;<span translate="no">CEU</span>.</span><span class="mega-price" id="mp-utrata-dochodu-c"><span class="mega-cena">Składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></span></a></li>
+                <li><a class="mega-item" href="nnw-dzieci.html" aria-labelledby="mp-nnw-dzieci-n" aria-describedby="mp-nnw-dzieci-d mp-nnw-dzieci-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mega-text"><span class="mega-name" id="mp-nnw-dzieci-n">NNW dla dzieci</span><span class="mega-desc" id="mp-nnw-dzieci-d">Ochrona dziecka od następstw nieszczęśliwych wypadków&nbsp;– całą dobę (<span translate="no">Colonnade</span>).</span><span class="mega-price" id="mp-nnw-dzieci-c"><span class="mega-cena">od 40&nbsp;zł rocznie za osobę</span><span class="mega-dop">Zakup online u&nbsp;<span translate="no">Colonnade</span></span></span></span></a></li>
+                <li><a class="mega-item" href="grupowe-ergo.html" aria-labelledby="mp-grupowe-ergo-n" aria-describedby="mp-grupowe-ergo-d mp-grupowe-ergo-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mega-text"><span class="mega-name" id="mp-grupowe-ergo-n">Grupowe ERGO dla beauty</span><span class="mega-desc" id="mp-grupowe-ergo-d">Ubezpieczenie na życie dla zespołu (2–&#8288;100&nbsp;osób) albo <span translate="no">ERGO&nbsp;Razem</span> dla Ciebie i&nbsp;rodziny.</span><span class="mega-price" id="mp-grupowe-ergo-c"><span class="mega-cena">Zespół: od 58&nbsp;zł za osobę&nbsp;/&nbsp;mies.</span><span class="mega-cena"><span translate="no">ERGO&nbsp;Razem</span>: od 57&nbsp;zł&nbsp;/&nbsp;mies.</span></span></span></a></li>
+                <li><a class="mega-item" href="opieka-medyczna.html" aria-labelledby="mp-opieka-medyczna-n" aria-describedby="mp-opieka-medyczna-d mp-opieka-medyczna-c"><svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mega-text"><span class="mega-name" id="mp-opieka-medyczna-n">Opieka medyczna</span><span class="mega-desc" id="mp-opieka-medyczna-d">Abonamenty <span translate="no">ENEL-&#8288;MED</span> lub <span translate="no">LUX&nbsp;MED</span> dla pracowników, partnerów i&nbsp;rodzin.</span><span class="mega-price" id="mp-opieka-medyczna-c"><span class="mega-cena">Cenę przygotuje doradca</span></span></span></a></li>
               </ul>
               <div class="mega-foot"><a class="btn btn-navy" href="makieta-v3.html#kalkulator">Oblicz składkę OC</a><a class="btn btn-ghost" href="makieta-v3.html#kalkulator-tax">Oblicz składkę Tax Protect</a></div>
             </div>
@@ -825,10 +1006,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <p class="mm-tytul" id="mm-produkty-t">Ubezpieczenia</p>
           <ul class="mm-produkty" aria-labelledby="mm-produkty-t">
             <li><a href="oc-beauty.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><span class="mm-text"><span class="mm-name">OC dla branży beauty</span><span class="mm-price">od 400&nbsp;zł rocznie</span></span></a></li>
-            <li><a href="tax-protect.html" aria-current="page"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mm-text"><span class="mm-name">Tax Protect</span><span class="mm-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
+            <li><a href="tax-protect.html" aria-current="page"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-tax-protect"/></svg><span class="mm-text"><span class="mm-name"><span translate="no">Tax Protect</span></span><span class="mm-price">od 1&nbsp;532&nbsp;zł rocznie</span></span></a></li>
             <li><a href="utrata-dochodu.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-utrata-dochodu"/></svg><span class="mm-text"><span class="mm-name">Utrata dochodu</span><span class="mm-price">składkę wylicza ubezpieczyciel po ocenie ryzyka</span></span></a></li>
-            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie za dziecko</span></span></a></li>
-            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 58&nbsp;zł za osobę / mies.</span></span></a></li>
+            <li><a href="nnw-dzieci.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><span class="mm-text"><span class="mm-name">NNW dla dzieci</span><span class="mm-price">od 40&nbsp;zł rocznie za osobę</span></span></a></li>
+            <li><a href="grupowe-ergo.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><span class="mm-text"><span class="mm-name">Grupowe ERGO dla beauty</span><span class="mm-price">od 58&nbsp;zł za osobę&nbsp;/&nbsp;mies.</span></span></a></li>
             <li><a href="opieka-medyczna.html"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><span class="mm-text"><span class="mm-name">Opieka medyczna</span><span class="mm-price">cenę przygotuje doradca</span></span></a></li>
           </ul>
           <!-- /gen:menu-mobilne -->
@@ -853,9 +1034,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <main id="tresc">
 
   <!-- PROLOG · otwarcie: fakty z 01-audyt §3.2, snippets/schema-produkt-tax-protect.json i makieta-v3.html (kalkulator Tax) -->
-  <section class="scene scene--marble scene--pos-ct page-hero" aria-labelledby="hero-title">
+  <section class="scene scene--marble scene--pos-ct page-hero bg-on" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero-panel glass frame">
+        <div class="hero-copy">
         <nav class="crumbs" aria-label="Okruszki">
           <!-- produkcyjnie: / › /ubezpieczenia › /ubezpieczenia/tax-protect (BreadcrumbList w JSON-LD) -->
           <ol>
@@ -864,18 +1046,22 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <li><span aria-current="page">Tax Protect</span></li>
           </ol>
         </nav>
-        <p class="eyebrow">Colonnade Insurance S.A. Oddział w&nbsp;Polsce</p>
-        <h1 id="hero-title">Tax Protect – <em>ochrona w&nbsp;sporach z&nbsp;fiskusem</em></h1>
-        <p class="lead">Ubezpieczenie dla właścicieli salonów i&nbsp;firm z&nbsp;branży beauty. Sekcja&nbsp;1 chroni właściciela i&nbsp;zarząd w&nbsp;sprawach karnoskarbowych, sekcja&nbsp;2 – firmę w&nbsp;jednym pełnym sporze podatkowym w&nbsp;roku. Składka wynika ze stałej taryfy: zależy od przychodów firmy i&nbsp;sumy ubezpieczenia.</p>
+        <p class="eyebrow">Colonnade Insurance&nbsp;S.A. Oddział w&nbsp;Polsce</p>
+        <h1 id="hero-title">Tax Protect&nbsp;– <em>ochrona salonu w&nbsp;sporach z&nbsp;fiskusem</em></h1>
+        <p class="lead">Ubezpieczenie dla właścicieli salonów i&nbsp;firm z&nbsp;branży beauty&nbsp;– od 1&nbsp;532&nbsp;zł rocznie, ze stałej taryfy.</p>
         <div class="hero-actions">
-          <a class="btn btn-navy" href="makieta-v3.html#kalkulator-tax">Policz w&nbsp;kalkulatorze</a>
+          <a class="btn btn-navy" href="makieta-v3.html#kalkulator-tax">Oblicz składkę Tax Protect</a>
           <a class="btn btn-ghost" href="#zakres">Sprawdź zakres</a>
         </div>
+        <p class="hero-note">Sekcja&nbsp;1 chroni właściciela i&nbsp;zarząd w&nbsp;sprawach karnoskarbowych, sekcja&nbsp;2&nbsp;– firmę w&nbsp;jednym pełnym sporze podatkowym w&nbsp;roku. Składka zależy od przychodów firmy i&nbsp;sumy ubezpieczenia.</p>
+        </div>
+        <div class="hero-aside">
         <dl class="figures">
           <div><dt>Składka rocznie</dt><dd>od 1&nbsp;532&nbsp;zł</dd></div>
           <div><dt>Suma ubezpieczenia</dt><dd>50 lub 100&nbsp;tys.&nbsp;zł</dd></div>
           <div><dt>Spór podatkowy w&nbsp;roku</dt><dd>1</dd></div>
         </dl>
+        </div>
       </div>
     </div>
   </section>
@@ -889,7 +1075,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <span class="chapter-no" aria-hidden="true">I</span>
         <p class="eyebrow">Zakres ochrony</p>
         <h2 id="zakres-title" class="rv-curtain">Dwie sekcje <em>w&nbsp;jednej polisie</em></h2>
-        <p class="lead">Pierwsza chroni Ciebie jako właściciela lub członka zarządu, druga – Twoją firmę w&nbsp;sporze z&nbsp;urzędem. Wiążący zakres, limity i&nbsp;<a class="bp-termin" href="slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">wyłączenia</a> określają OWU Tax Protect.</p>
+        <p class="lead">Pierwsza chroni Ciebie jako właściciela lub członka zarządu, druga&nbsp;– Twoją firmę w&nbsp;sporze z&nbsp;urzędem. Wiążący zakres, limity i&nbsp;<a class="bp-termin" href="slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">wyłączenia</a> określają OWU Tax Protect.</p>
       </div>
 
       <div class="scope">
@@ -902,9 +1088,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <li><strong>Koszty obrony.</strong> Pokrycie wydatków na adwokata w&nbsp;postępowaniach cywilnych, administracyjnych i&nbsp;arbitrażowych.</li>
             <li><strong>Koszty w&nbsp;postępowaniu karnym i&nbsp;przygotowawczym.</strong> Finansowanie pomocy prawnej w&nbsp;dochodzeniach i&nbsp;śledztwach.</li>
             <li><strong>Porada prawna.</strong> Wsparcie adwokata lub doradcy jeszcze przed oficjalnym roszczeniem.</li>
-            <li><strong>Tryb awaryjny.</strong> Możliwość podjęcia obrony w&nbsp;nagłej sytuacji (np. aresztowanie) bez wcześniejszej zgody <a class="bp-termin" href="slownik.html#haslo-ubezpieczyciel" data-termin="ubezpieczyciel">ubezpieczyciela</a> – refundacja do 30% sumy ubezpieczenia. <span class="mock-note">próg 30% – do potwierdzenia</span></li>
-            <li><strong>Postępowania porządkowe.</strong> Zwrot kar nałożonych przy kontrolach kadrowych i&nbsp;podatkowych. <span class="mock-note">zwrot kar, w&nbsp;tym PIP – do potwierdzenia</span></li>
-            <li><strong>Grzywny i&nbsp;kary.</strong> Refundacja mandatów karnoskarbowych do 75% <a class="bp-termin" href="slownik.html#haslo-suma-ubezpieczenia" data-termin="suma-ubezpieczenia">sumy ubezpieczenia</a>. <span class="mock-note">próg 75% i&nbsp;zakres – do potwierdzenia</span></li>
+            <li><strong>Tryb awaryjny.</strong> Możliwość podjęcia obrony w&nbsp;nagłej sytuacji (np. aresztowanie) bez wcześniejszej zgody <a class="bp-termin" href="slownik.html#haslo-ubezpieczyciel" data-termin="ubezpieczyciel">ubezpieczyciela</a> – refundacja do 30% sumy ubezpieczenia. <span class="mock-note">próg 30%&nbsp;– do potwierdzenia</span></li>
+            <li><strong>Postępowania porządkowe.</strong> Zwrot kar nałożonych przy kontrolach kadrowych i&nbsp;podatkowych. <span class="mock-note">zwrot kar, w&nbsp;tym PIP&nbsp;– do potwierdzenia</span></li>
+            <li><strong>Grzywny i&nbsp;kary.</strong> Refundacja mandatów karnoskarbowych do 75% <a class="bp-termin" href="slownik.html#haslo-suma-ubezpieczenia" data-termin="suma-ubezpieczenia">sumy ubezpieczenia</a>. <span class="mock-note">próg 75% i&nbsp;zakres&nbsp;– do potwierdzenia</span></li>
           </ul>
         </article>
 
@@ -925,9 +1111,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       </div>
 
       <div class="mind">
-        <h3>O&nbsp;czym pamiętać</h3>
+        <h3>Ważne warunki</h3>
         <ul>
-          <li>Sprawy rozpoczęte przed zawarciem umowy lub w&nbsp;<a class="bp-termin" href="slownik.html#haslo-karencja" data-termin="karencja">okresie karencji</a> nie są objęte ochroną. Karencja: 21&nbsp;dni od zawarcia polisy. <span class="mock-note">karencja 21&nbsp;dni – do potwierdzenia</span></li>
+          <li>Sprawy rozpoczęte przed zawarciem umowy lub w&nbsp;<a class="bp-termin" href="slownik.html#haslo-karencja" data-termin="karencja">okresie karencji</a> nie są objęte ochroną. Karencja: 21&nbsp;dni od zawarcia polisy. <span class="mock-note">karencja 21&nbsp;dni&nbsp;– do potwierdzenia</span></li>
           <li>Zewnętrzne biuro rachunkowe nie przejmuje <a class="bp-termin" href="slownik.html#haslo-ochrona-karnoskarbowa" data-termin="ochrona-karnoskarbowa">odpowiedzialności karnoskarbowej</a> właściciela ani zarządu.</li>
           <li>Pełny zakres, limity i&nbsp;wyłączenia określają <a href="/dokumenty/owu-tax-protect-colonnade">OWU Tax Protect</a> – zatwierdzone przez Colonnade 25.01.2023&nbsp;r., stosowane do umów zawartych od 26.01.2023&nbsp;r. Przeczytaj je przed podpisaniem umowy.</li>
         </ul>
@@ -942,12 +1128,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <span class="chapter-no" aria-hidden="true">II</span>
         <p class="eyebrow">Taryfa</p>
         <h2 id="tar-title" class="rv-curtain">Ile kosztuje <em>Tax Protect</em></h2>
-        <p class="lead">Składki są stałe – wynikają z&nbsp;<a class="bp-termin" href="slownik.html#haslo-stala-taryfa" data-termin="stala-taryfa">taryfy</a>, a&nbsp;nie z&nbsp;indywidualnej wyceny. Zależą od przychodów firmy za ostatni zamknięty rok obrotowy i&nbsp;od sumy ubezpieczenia.</p>
+        <p class="lead">Składki są stałe&nbsp;– wynikają z&nbsp;<a class="bp-termin" href="slownik.html#haslo-stala-taryfa" data-termin="stala-taryfa">taryfy</a>, a&nbsp;nie z&nbsp;indywidualnej wyceny. Zależą od przychodów firmy za ostatni zamknięty rok obrotowy i&nbsp;od sumy ubezpieczenia.</p>
       </div>
       <div class="tariff-table glass glass--tint">
         <div class="table-scroll" role="region" tabindex="0" aria-label="Taryfa Tax Protect">
         <table>
-          <caption>Składka roczna Tax Protect według stałej taryfy – 1&nbsp;spór w&nbsp;roku</caption>
+          <caption>Składka roczna Tax Protect według stałej taryfy&nbsp;– 1&nbsp;spór w&nbsp;roku</caption>
           <thead><tr><th scope="col">Przychody firmy</th><th scope="col">Suma 50&nbsp;000&nbsp;zł</th><th scope="col">Suma 100&nbsp;000&nbsp;zł</th></tr></thead>
           <tbody>
             <tr><th scope="row">do&nbsp;250&nbsp;000&nbsp;zł</th><td>1&nbsp;532&nbsp;zł</td><td>2&nbsp;501&nbsp;zł</td></tr>
@@ -958,10 +1144,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </tbody>
         </table>
         </div>
-        <p class="tariff-note">Ochrona 2–4 sporów w&nbsp;roku – wycena indywidualna. Ubezpieczyciel: Colonnade Insurance S.A. Oddział w&nbsp;Polsce, zakres – zgodnie z&nbsp;<a class="bp-termin" href="slownik.html#haslo-owu" data-termin="owu">OWU</a>.</p>
+        <p class="tariff-note">Ochrona 2–4 sporów w&nbsp;roku&nbsp;– wycena indywidualna. Ubezpieczyciel: Colonnade Insurance&nbsp;S.A. Oddział w&nbsp;Polsce, zakres&nbsp;– zgodnie z&nbsp;<a class="bp-termin" href="slownik.html#haslo-owu" data-termin="owu">OWU</a>.</p>
       </div>
       <div class="tariff-actions">
-        <a class="btn btn-navy" href="makieta-v3.html#kalkulator-tax">Policz w&nbsp;kalkulatorze</a>
+        <a class="btn btn-navy" href="makieta-v3.html#kalkulator-tax">Oblicz składkę Tax Protect</a>
         <a class="link-lux" href="makieta-v3.html?produkt=tax-protect#kontakt">Zapytaj o&nbsp;wycenę indywidualną</a>
       </div>
     </div>
@@ -976,39 +1162,36 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="section-head">
         <span class="chapter-no" aria-hidden="true">III</span>
         <p class="eyebrow">Jak kupić</p>
-        <h2 id="kupic-title" class="rv-curtain">Od kalkulatora <em>do polisy w&nbsp;czterech krokach</em></h2>
-        <p class="lead">Najpierw <a class="bp-termin" href="slownik.html#haslo-apk" data-termin="apk">analiza potrzeb</a>, potem wniosek – tak wymagają przepisy o&nbsp;dystrybucji ubezpieczeń (IDD). <a class="bp-termin" href="slownik.html#haslo-doradca" data-termin="doradca">Doradca Aura Expert</a> prowadzi Cię przez każdy krok.</p>
+        <h2 id="kupic-title" class="rv-curtain">Od składki do polisy <em>w&nbsp;trzech krokach</em></h2>
+        <p class="lead">Najpierw <a class="bp-termin" href="slownik.html#haslo-apk" data-termin="apk">analiza potrzeb</a>, potem wniosek&nbsp;– tak wymagają przepisy o&nbsp;dystrybucji ubezpieczeń (IDD). <a class="bp-termin" href="slownik.html#haslo-doradca" data-termin="doradca">Doradca Aura&nbsp;Expert</a> prowadzi Cię przez każdy krok.</p>
       </div>
       <div class="how glass glass--dark">
-        <ol class="steps">
+        <!-- droga do polisy: te same 3 kroki co na stronie głównej (raport 15, Z30; §8 pkt 6) -->
+        <ol class="steps steps--3">
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">1</span>
-            <h3>Kalkulator albo kontakt</h3>
-            <p>Policz składkę w&nbsp;kalkulatorze Tax Protect albo zostaw kontakt w&nbsp;formularzu i&nbsp;wybierz temat „Tax Protect”.</p>
-            <p class="links"><a class="link-lux" href="makieta-v3.html#kalkulator-tax">Kalkulator</a><a class="link-lux" href="makieta-v3.html?produkt=tax-protect#kontakt">Formularz</a></p>
+            <h3>Oblicz składkę</h3>
+            <span class="step-where">Kalkulator Tax Protect</span>
+            <p>Zaznacz przychody firmy i&nbsp;sumę ubezpieczenia. Składkę ze stałej taryfy widzisz od razu, bez logowania.</p>
+            <p class="links"><a class="link-lux" href="makieta-v3.html#kalkulator-tax">Oblicz składkę Tax Protect</a></p>
           </li>
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">2</span>
-            <h3>Kontakt doradcy</h3>
+            <h3>Zostaw kontakt</h3>
             <span class="step-where">Analiza potrzeb</span>
-            <p>Doradca Aura Expert skontaktuje się z&nbsp;Tobą i&nbsp;przeprowadzi analizę Twoich potrzeb (APK). Na tej podstawie sprawdzi, czy Tax Protect im odpowiada.</p>
+            <p>Wynik kalkulatora trafi do doradcy razem ze zgłoszeniem (temat „Tax Protect”). Doradca Aura&nbsp;Expert skontaktuje się z&nbsp;Tobą i&nbsp;przeprowadzi analizę Twoich potrzeb (APK).</p>
+            <p class="links"><a class="link-lux" href="makieta-v3.html?produkt=tax-protect#kontakt">Wypełnij formularz<span class="sr-only"> kontaktu&nbsp;– Tax Protect</span></a></p>
           </li>
           <li class="step rv-rise">
             <span class="numeral" aria-hidden="true">3</span>
-            <h3>Wniosek</h3>
-            <span class="step-where">Z&nbsp;doradcą Aura Expert</span>
-            <p>Doradca Aura Expert poprowadzi wniosek: potwierdzi z&nbsp;Tobą <a class="bp-termin" href="slownik.html#haslo-wariant" data-termin="wariant">wariant</a> i&nbsp;zakres, a&nbsp;potem przygotuje dokumenty do podpisu.</p>
-          </li>
-          <li class="step rv-rise">
-            <span class="numeral" aria-hidden="true">4</span>
-            <h3>Polisa</h3>
+            <h3>Podpisz i&nbsp;odbierz polisę</h3>
             <span class="step-where">Colonnade · Strefa Klienta</span>
-            <p>Doradca przekazuje Ci polisę Colonnade razem z&nbsp;OWU Tax Protect. Polisę i&nbsp;dokumenty masz potem w&nbsp;<a class="bp-termin" href="slownik.html#haslo-strefa-klienta" data-termin="strefa-klienta">Strefie Klienta</a>.</p>
+            <p>Doradca poprowadzi wniosek: potwierdzi z&nbsp;Tobą <a class="bp-termin" href="slownik.html#haslo-wariant" data-termin="wariant">wariant</a> i&nbsp;zakres, a&nbsp;potem przygotuje dokumenty do podpisu. Polisę Colonnade dostajesz razem z&nbsp;OWU Tax Protect, a&nbsp;dokumenty masz potem w&nbsp;<a class="bp-termin" href="slownik.html#haslo-strefa-klienta" data-termin="strefa-klienta">Strefie Klienta</a>.</p>
             <p class="links"><a class="link-lux" href="strefa/logowanie.html">Strefa Klienta</a></p>
           </li>
         </ol>
         <div class="how-note">
-          <p>Masz pytanie przed rozmową? <a href="makieta-v3.html?produkt=tax-protect#kontakt">Napisz przez formularz</a> – doradca Aura Expert skontaktuje się z&nbsp;Tobą.</p>
+          <p>Masz pytanie przed rozmową? Zapytaj doradcę przez formularz z&nbsp;kroku 2&nbsp;– doradca Aura&nbsp;Expert skontaktuje się z&nbsp;Tobą.</p>
         </div>
       </div>
     </div>
@@ -1024,19 +1207,21 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <h2 id="faq-title" class="rv-curtain">Pytania <em>o&nbsp;Tax Protect</em></h2>
       </div>
       <div class="faq glass">
-        <details id="pytanie-1"><summary>Dla kogo jest Tax Protect?</summary><p>Dla właścicieli i zarządów salonów kosmetycznych, fryzjerskich, podologicznych i studiów tatuażu oraz osób prowadzących działalność gospodarczą w branży beauty. Sekcja 1 chroni właściciela i zarząd w sprawach karnoskarbowych, sekcja 2 – firmę w jednym pełnym sporze podatkowym w roku. Ubezpieczycielem jest Colonnade Insurance S.A. Oddział w Polsce.</p></details>
-        <details id="pytanie-2"><summary>Ile kosztuje Tax Protect?</summary><p>Składka wynika ze stałej taryfy i zależy od przychodu firmy za ostatni zamknięty rok obrotowy oraz od sumy ubezpieczenia. Za jeden spór w roku wynosi od 1 532 zł rocznie (przychód do 250 000 zł, suma 50 000 zł) do 2 901 zł rocznie (przychód do 3 000 000 zł, suma 100 000 zł). Przy przychodzie powyżej 3 mln zł albo ochronie 2–4 sporów w roku składkę ustala <a href="#taryfa">wycena indywidualna</a>.</p></details>
-        <details id="pytanie-3"><summary>Ile sporów podatkowych obejmuje polisa?</summary><p>Taryfa obejmuje jeden pełny spór podatkowy w roku – na przykład z urzędem skarbowym lub KAS, z ZUS, z Państwową Inspekcją Pracy albo z PFRON. Jeśli chcesz ubezpieczyć 2–4 spory w roku, poproś o wycenę indywidualną przez <a href="makieta-v3.html?produkt=tax-protect#kontakt">formularz kontaktowy</a>.</p></details>
-        <details id="pytanie-4"><summary>Czy zewnętrzna księgowa zdejmuje ze mnie odpowiedzialność karnoskarbową?</summary><p>Nie. Odpowiedzialność karnoskarbowa dotyczy osób zarządzających salonem – właściciela lub zarządu. Zgodnie z prawem nie można jej przenieść na podmiot zewnętrzny.</p></details>
-        <details id="pytanie-5"><summary>Jak kupić Tax Protect?</summary><p>Policz składkę w <a href="makieta-v3.html#kalkulator-tax">kalkulatorze</a> albo zostaw kontakt w formularzu. Doradca Aura Expert skontaktuje się z Tobą i poprowadzi wniosek: najpierw analiza potrzeb, potem wniosek. Na koniec doradca przekazuje Ci polisę Colonnade razem z OWU Tax Protect.</p></details>
+        <details id="pytanie-1"><summary>Dla kogo jest Tax Protect?</summary><p>Dla właścicieli i&nbsp;zarządów salonów kosmetycznych, fryzjerskich, podologicznych i&nbsp;studiów tatuażu oraz osób prowadzących działalność gospodarczą w&nbsp;branży beauty. Sekcja 1 chroni właściciela i&nbsp;zarząd w&nbsp;sprawach karnoskarbowych, sekcja 2&nbsp;– firmę w&nbsp;jednym pełnym sporze podatkowym w&nbsp;roku. Ubezpieczycielem jest Colonnade Insurance&nbsp;S.A. Oddział w&nbsp;Polsce.</p></details>
+        <details id="pytanie-2"><summary>Ile kosztuje Tax Protect?</summary><p>Składka wynika ze stałej taryfy i&nbsp;zależy od przychodu firmy za ostatni zamknięty rok obrotowy oraz od sumy ubezpieczenia. Za jeden spór w&nbsp;roku wynosi od 1&nbsp;532&nbsp;zł rocznie (przychód do 250&nbsp;000&nbsp;zł, suma 50&nbsp;000&nbsp;zł) do 2&nbsp;901&nbsp;zł rocznie (przychód do 3&nbsp;000&nbsp;000&nbsp;zł, suma 100&nbsp;000&nbsp;zł). Przy przychodzie powyżej 3&nbsp;mln&nbsp;zł albo ochronie 2–4 sporów w&nbsp;roku składkę ustala <a href="#taryfa">wycena indywidualna</a>.</p></details>
+        <details id="pytanie-3"><summary>Ile sporów podatkowych obejmuje polisa?</summary><p>Taryfa obejmuje jeden pełny spór podatkowy w&nbsp;roku&nbsp;– na przykład z&nbsp;urzędem skarbowym lub KAS, z&nbsp;ZUS, z&nbsp;Państwową Inspekcją Pracy albo z&nbsp;PFRON. Jeśli chcesz ubezpieczyć 2–4 spory w&nbsp;roku, poproś o&nbsp;wycenę indywidualną przez <a href="makieta-v3.html?produkt=tax-protect#kontakt">formularz kontaktowy</a>.</p></details>
+        <details id="pytanie-4"><summary>Czy zewnętrzna księgowa zdejmuje ze mnie odpowiedzialność karnoskarbową?</summary><p>Nie. Odpowiedzialność karnoskarbowa dotyczy osób zarządzających salonem&nbsp;– właściciela lub zarządu. Zgodnie z&nbsp;prawem nie można jej przenieść na podmiot zewnętrzny.</p></details>
+        <details id="pytanie-5"><summary>Jak kupić Tax Protect?</summary><p>Oblicz składkę w&nbsp;<a href="makieta-v3.html#kalkulator-tax">kalkulatorze</a> albo zostaw kontakt w&nbsp;formularzu. Doradca Aura&nbsp;Expert skontaktuje się z&nbsp;Tobą i&nbsp;poprowadzi wniosek: najpierw analiza potrzeb, potem wniosek. Na koniec doradca przekazuje Ci polisę Colonnade razem z&nbsp;OWU Tax Protect.</p></details>
       </div>
     </div>
   </section>
 
-  <!-- POWIĄZANE: linki publiczne ustalone 12.11.2026 – OC: rejestracja w programie na beautyrazem.pl/polisa; UD: wniosek na utratadochodu.pl (UTM bez danych osobowych).
-       Utrata dochodu: bez kwot i przedziałów składek (składkę wylicza ubezpieczyciel po ocenie ryzyka). -->
-  <section class="section section--flush-top" id="powiazane" aria-labelledby="pow-title">
-    <div class="container">
+  <!-- SEKCJA ZAMYKAJĄCA (raport 15, Z8; runda 2 weryfikacji): „Inne ubezpieczenia” i karta końcowa – jedna sekcja; pytania to osobna
+       sekcja wyżej (razem miały 2,23–2,55 ekranu przy 1440×900) -->
+  <section class="section section--flush-top" id="zamkniecie" aria-labelledby="pow-title">
+    <!-- POWIĄZANE: linki publiczne ustalone 12.11.2026 – OC: rejestracja w programie na beautyrazem.pl/polisa; UD: wniosek na utratadochodu.pl (UTM bez danych osobowych).
+         Utrata dochodu: bez kwot i przedziałów składek (składkę wylicza ubezpieczyciel po ocenie ryzyka). -->
+    <div class="container zamkniecie-blok" id="powiazane">
       <div class="related-head">
         <p class="eyebrow">Dla właściciela salonu</p>
         <h2 id="pow-title" class="rv-curtain">Inne ubezpieczenia <em>w&nbsp;BeautyPolisa</em></h2>
@@ -1044,7 +1229,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="related">
         <article class="rel-card rv-rise" aria-labelledby="rel-oc">
           <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg><h3 id="rel-oc">OC dla branży beauty</h3></div>
-          <p>Odpowiedzialność cywilna za szkody wyrządzone klientom podczas zabiegów – w&nbsp;programie z&nbsp;ERGO Hestią. Stała taryfa: składka zależy od rodzaju działalności gabinetu, sumy gwarancyjnej i&nbsp;liczby osób wykonujących zabiegi. Członkostwo w&nbsp;Beauty Razem nie jest wymagane.</p>
+          <p>Odpowiedzialność cywilna za szkody wyrządzone klientom podczas zabiegów&nbsp;– w&nbsp;programie z&nbsp;ERGO&nbsp;Hestią. Stała taryfa: składka zależy od rodzaju działalności gabinetu, sumy gwarancyjnej i&nbsp;liczby osób wykonujących zabiegi. Członkostwo w&nbsp;Beauty Razem nie jest wymagane.</p>
           <div class="rel-links">
             <a class="link-lux" href="oc-beauty.html">Poznaj OC<span class="sr-only"> dla branży beauty</span></a>
             <a class="link-quiet" href="https://beautyrazem.pl/polisa">Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa</a>
@@ -1060,7 +1245,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </article>
         <article class="rel-card rv-rise" aria-labelledby="rel-nnw">
           <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-nnw-dzieci"/></svg><h3 id="rel-nnw">NNW dla dzieci</h3></div>
-          <p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków w&nbsp;Colonnade: ochrona 24&nbsp;godziny na dobę na całym świecie, jedna składka za rok – 40, 94 albo 175&nbsp;zł za osobę. Polisę kupujesz online na platformie Colonnade.</p>
+          <p>Ubezpieczenie dziecka od następstw nieszczęśliwych wypadków w&nbsp;Colonnade: ochrona 24&nbsp;godziny na dobę na całym świecie, jedna składka za rok&nbsp;– 40, 94 albo 175&nbsp;zł za osobę. Polisę kupujesz online na platformie Colonnade.</p>
           <div class="rel-links">
             <a class="link-lux" href="nnw-dzieci.html">Poznaj NNW dla dzieci</a>
             <a class="link-quiet" href="https://bit.ly/szkolneNNW2026" target="_blank" rel="noopener">Kup online u&nbsp;Colonnade<span class="sr-only"> – strona ubezpieczyciela otworzy się w&nbsp;nowej karcie</span></a>
@@ -1068,24 +1253,28 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         </article>
         <article class="rel-card rv-rise" aria-labelledby="rel-gr">
           <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg><h3 id="rel-gr">Grupowe ERGO dla beauty</h3></div>
-          <p>Ubezpieczenie na życie w&nbsp;ERGO Hestii. Dla salonu z&nbsp;zespołem (od 2 do 100 osób): ERGO Życie w&nbsp;Biznesie, od 58&nbsp;zł za osobę miesięcznie. Dla Ciebie i&nbsp;rodziny: ERGO Razem, od 57&nbsp;zł miesięcznie.</p>
+          <p>Ubezpieczenie na życie w&nbsp;ERGO&nbsp;Hestii. Dla salonu z&nbsp;zespołem (od 2&nbsp;do 100&nbsp;osób): ERGO&nbsp;Życie w&nbsp;Biznesie, od 58&nbsp;zł za osobę miesięcznie. Dla Ciebie i&nbsp;rodziny: ERGO&nbsp;Razem, od 57&nbsp;zł miesięcznie.</p>
           <div class="rel-links">
             <a class="link-lux" href="grupowe-ergo.html">Poznaj ubezpieczenie<span class="sr-only">: grupowe ERGO dla beauty</span></a>
           </div>
         </article>
+        <article class="rel-card rv-rise" aria-labelledby="rel-om">
+          <div class="rel-top"><svg class="lux-icon" aria-hidden="true"><use href="#lux-opieka-medyczna"/></svg><h3 id="rel-om">Opieka medyczna</h3></div>
+          <p>Abonamenty ENEL-MED lub LUX&nbsp;MED dla pracowników salonu, a&nbsp;w&nbsp;zakresie Partner albo Rodzina także dla ich bliskich. Cenę dla Twojego zespołu przygotuje doradca.</p>
+          <div class="rel-links">
+            <a class="link-lux" href="opieka-medyczna.html">Poznaj opiekę medyczną</a>
+          </div>
+        </article>
       </div>
     </div>
-  </section>
-
-  <!-- EPILOG · CTA: kryjąca karta (bez nowej tafli szkła) -->
-  <section class="section section--flush-top" id="dalej" aria-labelledby="end-title">
-    <div class="container">
+    <!-- EPILOG · CTA: kryjąca karta (bez nowej tafli szkła) -->
+    <div class="container zamkniecie-blok" id="dalej">
       <div class="end-card dark">
         <p class="eyebrow">Na koniec</p>
-        <h2 id="end-title" class="rv-curtain">Policz składkę <em>albo porozmawiaj z&nbsp;doradcą</em></h2>
-        <p>Kalkulator na stronie głównej liczy składkę Tax Protect ze stałej taryfy. Przy przychodach powyżej 3&nbsp;mln&nbsp;zł albo 2–4 sporach w&nbsp;roku doradca Aura Expert przygotuje wycenę indywidualną.</p>
+        <h3 id="end-title" class="rv-curtain">Oblicz składkę <em>albo porozmawiaj z&nbsp;doradcą</em></h3>
+        <p>Kalkulator na stronie głównej liczy składkę Tax Protect ze stałej taryfy. Przy przychodach powyżej 3&nbsp;mln&nbsp;zł albo 2–4 sporach w&nbsp;roku doradca Aura&nbsp;Expert przygotuje wycenę indywidualną.</p>
         <div class="end-actions">
-          <a class="btn btn-ivory" href="makieta-v3.html#kalkulator-tax">Policz w&nbsp;kalkulatorze</a>
+          <a class="btn btn-ivory" href="makieta-v3.html#kalkulator-tax">Oblicz składkę Tax Protect</a>
           <a class="btn btn-ghost-dark" href="makieta-v3.html?produkt=tax-protect#kontakt">Zapytaj doradcę</a>
         </div>
       </div>
@@ -1101,16 +1290,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <div class="footer-panel glass glass--dark">
       <div class="footer-grid">
         <div class="footer-brand">
-          <span class="logo-chip"><img src="../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="147" height="22"></span>
-          <p>Program ubezpieczeń dla branży beauty prowadzony przez Aura Expert sp.&nbsp;z&nbsp;o.o. – agenta ubezpieczeniowego.</p>
+          <span class="logo-chip"><img src="img/logo-beautypolisa-320.png" alt="BeautyPolisa" width="147" height="22" translate="no"></span>
+          <p>Program ubezpieczeń dla branży beauty prowadzony przez <span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o.&nbsp;– agenta ubezpieczeniowego.</p>
         </div>
         <nav class="footer-nav" aria-label="Stopka">
-          <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html">OC dla branży beauty</a></li><li><a href="tax-protect.html" aria-current="page">Tax Protect</a></li><li><a href="utrata-dochodu.html">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dla dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO dla beauty</a></li><li><a href="opieka-medyczna.html">Opieka medyczna</a></li></ul></div>
-          <div class="rv-rise"><h2 class="footer-title">Dla kogo</h2><ul><li><a href="/dla-kogo/kosmetolog">Kosmetolog</a></li><li><a href="/dla-kogo/fryzjer">Fryzjer i&nbsp;barber</a></li><li><a href="/dla-kogo/podolog">Podolog</a></li><li><a href="/dla-kogo/linergistka">Linergistka</a></li><li><a href="/dla-kogo/stylistka-paznokci">Stylistka paznokci</a></li><li><a href="/dla-kogo/tatuazysta">Tatuażysta</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Ubezpieczenia</h2><ul><li><a href="oc-beauty.html">OC dla branży beauty</a></li><li><a href="tax-protect.html" aria-current="page"><span translate="no">Tax Protect</span></a></li><li><a href="utrata-dochodu.html">Utrata dochodu</a></li><li><a href="nnw-dzieci.html">NNW dla dzieci</a></li><li><a href="grupowe-ergo.html">Grupowe ERGO dla beauty</a></li><li><a href="opieka-medyczna.html">Opieka medyczna</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Dla kogo</h2><ul><li><a href="/dla-kogo/kosmetolog">Kosmetolog</a></li><li><a href="/dla-kogo/fryzjer">Fryzjer i&nbsp;barber</a></li><li><a href="/dla-kogo/podolog">Podolog</a></li><li><a href="/dla-kogo/linergistka">Linergistka</a></li><li><a href="/dla-kogo/stylistka-paznokci">Stylistka paznokci</a></li><li><a href="/dla-kogo/tatuazysta">Tatuażysta</a></li><li><a href="/dla-kogo/trycholog">Trycholog</a></li><li><a href="/dla-kogo/masazysta">Masażysta</a></li></ul></div>
           <!-- „Zgłoś szkodę”: w makiecie makieta-v3.html#jak-zglosic-szkode, produkcyjnie /szkoda; „Polityka prywatności”: /rodo -->
           <div class="rv-rise"><h2 class="footer-title">BeautyPolisa</h2><ul><li><a href="/o-nas">O&nbsp;nas</a></li><li><a href="/dokumenty">Dokumenty i&nbsp;OWU</a></li><li><a href="slownik.html">Słownik pojęć</a></li><li><a href="makieta-v3.html#jak-zglosic-szkode">Zgłoś szkodę</a></li><li><a href="/rodo">Polityka prywatności</a></li><li><a href="makieta-v3.html#kontakt">Kontakt</a></li></ul></div>
           <!-- produkcyjnie /strefa-klienta/logowanie, /dam-prace, /strefa-klienta/rejestracja/szukam-pracy, /szkolenia, /szkolenia#dla-organizatorow -->
-          <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="https://beautyrazem.pl/polisa">Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa (członkostwo w&nbsp;Beauty Razem nie jest wymagane)</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę – ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy – dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="makieta-v3.html#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
+          <div class="rv-rise"><h2 class="footer-title">Strefa Klienta</h2><ul><li><a href="strefa/logowanie.html">Zaloguj się</a></li><li><a href="https://beautyrazem.pl/polisa">Nie masz polisy OC? Zarejestruj się na beautyrazem.pl/polisa (członkostwo w&nbsp;<span translate="no">Beauty Razem</span> nie jest wymagane)</a></li><li><a href="strefa/dam-prace.html">Dam&nbsp;pracę&nbsp;– ogłoszenia</a></li><li><a href="strefa/logowanie.html#s-rs-email">Szukam pracy&nbsp;– dodaj ogłoszenie</a></li><li><a href="strefa/szkolenia.html">Szkolenia</a></li><li><a href="strefa/szkolenia.html#dla-organizatorow">Dla organizatorów szkoleń</a></li><li><a href="makieta-v3.html#na-otwarcie">Promocja na otwarcie</a></li></ul></div>
         </nav>
       </div>
       <div class="legal">
@@ -1118,16 +1307,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
              ergo.beautypolisa.eu/informacja-o-agencie podaje „XIII” – błąd po tamtej stronie, uwaga dla zleceniodawcy).
              Informacje o agencie (art. 22 ustawy o dystrybucji ubezpieczeń) – źródło: ujawnienie Aura Expert. Blok details.legal-idd
              jest identyczny na stronach publicznych i w Strefie Klienta. -->
-        <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
-        <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
+        <p><span translate="no">BeautyPolisa</span> created by <span translate="no">Aura&nbsp;Expert</span> (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu: <strong><span translate="no">Aura&nbsp;Expert</span> spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem&nbsp;0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem&nbsp;11229690/A.</p>
+        <p><span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
         <details class="legal-idd">
           <summary>Informacje o&nbsp;agencie ubezpieczeniowym (IDD)</summary>
           <div class="legal-idd-body">
             <p><strong>Zakłady ubezpieczeń, na rzecz których działa agent:</strong></p>
-            <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie S.A.</li><li>Lloyd’s Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA S.A.</li><li>Colonnade Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
+            <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji&nbsp;S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń&nbsp;S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li><span translate="no">Lloyd’s</span> Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA&nbsp;S.A.</li><li><span translate="no">Colonnade</span> Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
             <p><strong>Wynagrodzenie.</strong> Agent otrzymuje od zakładu ubezpieczeń prowizję, która jest uwzględniona w&nbsp;składce. Może też otrzymywać od zakładu ubezpieczeń inny rodzaj wynagrodzenia.</p>
             <p><strong>Powiązania kapitałowe.</strong> Agent nie ma akcji ani udziałów zakładu ubezpieczeń dających co najmniej 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie ma udziałów agenta dających co najmniej 10% głosów na zgromadzeniu wspólników.</p>
-            <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
+            <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres <span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466&nbsp;Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
             <p><strong>Kontakt z&nbsp;agentem:</strong> <a href="mailto:zarzad@auraexpert.pl">zarzad@auraexpert.pl</a>, <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>. Wpis agenta (numer 11229690/A) sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>.</p>
           </div>
         </details>
@@ -1153,7 +1342,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 </svg>
 <!-- gen:pasek-akcji -->
 <!-- Pasek akcji na telefonie (< 768 px, wysokość okna > 500 px): pokazuje go skrypt gen:wspolne-js po przewinięciu poza pierwszy ekran;
-     chowa się przy polu formularza / klawiaturze, przy widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu,
+     chowa się przy polu formularza / klawiaturze, przy widocznym pasku ceny kalkulatora (.calc-peek), kalkulatorze OC, wyszukiwarkach, formularzu kontaktu,
      karcie końcowej i stopce. Bez JS zostaje ukryty (te same akcje są w treści). -->
 <aside class="pasek-akcji" id="pasek-akcji" aria-label="Szybkie akcje" hidden>
   <a class="pa-glowny" href="makieta-v3.html#kalkulator-tax">Oblicz składkę<span class="sr-only"> Tax Protect</span></a>
@@ -1232,7 +1421,9 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   [].forEach.call(document.querySelectorAll('.section-head > .eyebrow,.end-card > .eyebrow'),function(e){e.classList.add('rv-eyebrow')});
   var els=[].slice.call(document.querySelectorAll('.rv-curtain,.rv-rise,.rv-eyebrow')), vh=window.innerHeight;
   function show(e){e.classList.add('is-in')}
-  els.forEach(function(e){if(e.getBoundingClientRect().top<vh)show(e)});
+  /* najpierw wszystkie odczyty położenia, potem zapisy klas (bez wymuszania przeliczeń stylu w pętli) */
+  var tops=els.map(function(e){return e.getBoundingClientRect().top});
+  els.forEach(function(e,i){if(tops[i]<vh)show(e)});
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(en){if(en.isIntersecting){show(en.target);io.unobserve(en.target)}});
   },{rootMargin:'0px 0px -10% 0px'});
@@ -1241,28 +1432,6 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   window.addEventListener('beforeprint',function(){els.forEach(show)});
 })();
 
-/* Dryf cyfr rozdziałów bez animation-timeline: rAF po zdarzeniu scroll (passive), tylko translate */
-(function(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if(window.CSS&&CSS.supports&&CSS.supports('animation-timeline: view()')) return;
-  var nums=[].slice.call(document.querySelectorAll('.chapter-no')).map(function(n){return {el:n,box:n.parentNode,d:parseFloat(getComputedStyle(n).getPropertyValue('--drift'))||60}});
-  if(!nums.length) return;
-  var ticking=false;
-  function clamp(v){return v<0?0:v>1?1:v}
-  function frame(){
-    ticking=false;var vh=window.innerHeight, out=[];
-    nums.forEach(function(n){
-      var r=n.box.getBoundingClientRect();if(r.bottom<-vh||r.top>2*vh)return;
-      out.push([n.el,(n.d*(1-2*clamp((vh-r.top)/(vh+r.height)))).toFixed(1)+'px']);
-    });
-    out.forEach(function(o){o[0].style.setProperty('--drift-y',o[1])});
-  }
-  function request(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
-  document.documentElement.classList.add('sl-js');
-  window.addEventListener('scroll',request,{passive:true});
-  window.addEventListener('resize',request);
-  frame();
-})();
 
 </script>
 <!-- gen:wspolne-js -->
@@ -1296,19 +1465,59 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if(hdr&&hdr.dataset.hidden==='1'){close(false);return}
     if(via!=='hover'&&!panel.contains(document.activeElement)&&Math.abs(window.scrollY-y0)>120)close(false);
   },{passive:true});
-  var mqWide=window.matchMedia('(min-width:1200px)');
+  var mqWide=window.matchMedia('(min-width:75em)');
   function onWide(){if(!mqWide.matches)close(false)}
   if(mqWide.addEventListener)mqWide.addEventListener('change',onWide);else if(mqWide.addListener)mqWide.addListener(onWide);
 })();
 
+/* Szuflada menu (details.menu): widoczny stan otwarcia – etykieta „Zamknij” i ikona X; bez JS – „Menu” w obu stanach (raport 15, Z41) */
+(function(){
+  var menu=document.querySelector('details.menu'); if(!menu) return;
+  var lab=menu.querySelector('.menu-label'), path=menu.querySelector('summary svg path'); if(!lab||!path) return;
+  var d0=path.getAttribute('d'), d1='M6 6l12 12M18 6 6 18', t0=lab.textContent;
+  function sync(){var o=menu.open;lab.textContent=o?'Zamknij':t0;path.setAttribute('d',o?d1:d0)}
+  menu.addEventListener('toggle',sync);sync();
+})();
+
+/* Z10 (raport 15): rytm sekcji 1 albo 2 ekrany – od 64em × 37.5em. Pomiar: wszystkie sekcje główne naraz w stanie pomiaru
+   (data-ekrany="0": przycięty padding, bez min-height), odczyt wysokości, potem zapis 1 (do 1,1 ekranu) / 2 (do 2,02 ekranu; powyżej –
+   bez atrybutu,
+   np. listy zabiegów i hasła słownika – K6). Ponownie po wczytaniu fontów, przy zmianie rozmiaru okna; nie przy rozwijaniu
+   treści (pytania, pełne listy), żeby sekcja nie skakała o ekran */
+(function(){
+  var mq=window.matchMedia('(min-width:64em) and (min-height:37.5em)'), raf=0;
+  var sekcje=[].slice.call(document.querySelectorAll('main section')).filter(function(s){
+    return !(s.parentElement&&s.parentElement.closest('main section'))&&!s.matches('.scene--hero,.page-hero,[data-ekrany-auto]');
+  });
+  if(!sekcje.length) return;
+  function licz(){
+    raf=0;
+    if(!mq.matches){sekcje.forEach(function(s){s.removeAttribute('data-ekrany')});return}
+    sekcje.forEach(function(s){s.setAttribute('data-ekrany','0');s.removeAttribute('data-ciasno')});
+    var H=window.innerHeight, T1=1.1*H, T2=2.02*H, m=sekcje.map(function(s){var cs=getComputedStyle(s);
+      return {h:s.getBoundingClientRect().height,p:parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom)}});
+    sekcje.forEach(function(s,i){
+      var h=m[i].h, t=h-m[i].p+48, n='', c=false;
+      if(h<=T1)n='1';else if(t<=T1){n='1';c=true}else if(h<=T2)n='2';else if(t<=T2){n='2';c=true}
+      if(n){s.setAttribute('data-ekrany',n);if(c)s.setAttribute('data-ciasno','')}else s.removeAttribute('data-ekrany');
+    });
+  }
+  function req(){if(!raf)raf=requestAnimationFrame(licz)}
+  licz();
+  window.addEventListener('resize',req);
+  window.addEventListener('load',req);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(req);
+})();
+
 /* Pasek akcji na telefonie (< 768 px): po przewinięciu poza pierwszy ekran; chowa się przy polu formularza/klawiaturze,
-   otwartej szufladzie menu, widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu, karcie końcowej, akcjach otwarcia i stopce */
+   otwartej szufladzie menu, widocznym pasku ceny kalkulatora (.calc-peek), formularzu kontaktu, karcie końcowej, akcjach otwarcia i stopce,
+   a także nad formularzami kalkulatora OC (form#calc), wyszukiwarką zabiegów (.zsearch) i wyszukiwarką specjalizacji (#spec-form) – raport 15, Z22 */
 (function(){
   var bar=document.getElementById('pasek-akcji'); if(!bar||!('IntersectionObserver' in window)) return;
   /* niskie okno (telefon w poziomie, ≤ 500 px – jak nagłówek): bez paska */
   var root=document.documentElement, mq=window.matchMedia('(max-width:767px) and (min-height:501px)'), menu=document.querySelector('details.menu');
   var FIELD='input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]):not([type=reset]):not([type=range]):not([type=file]):not([type=image]),textarea,select,[contenteditable="true"]';
-  var targets=[].slice.call(document.querySelectorAll('.calc-peek,.lead-form,.end-card,.hero-actions,.tariff-actions,.site-footer'));
+  var targets=[].slice.call(document.querySelectorAll('.calc-peek,.lead-form,.end-card,.hero-actions,.tariff-actions,.site-footer,form#calc,.zsearch,#spec-form'));
   var seen=new Set(), io=null, ticking=false;
   function typing(){var a=document.activeElement;return !!(a&&a.matches&&a.matches(FIELD))}
   function keyboard(){var v=window.visualViewport;return !!(v&&v.height<window.innerHeight*0.72)}
@@ -1358,79 +1567,80 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <script type="application/json" id="slownik-dymki">
 {
  "zakres-i-wylaczenia": {
-  "t": "Zakres ochrony i wyłączenia",
-  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
+  "t": "Zakres ochrony i wyłączenia",
+  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
   "u": "slownik.html#haslo-zakres-i-wylaczenia",
   "o": 1
  },
  "ubezpieczyciel": {
   "t": "Ubezpieczyciel (zakład ubezpieczeń)",
-  "d": "Firma, która udziela ochrony: przyjmuje składkę, rozpatruje zgłoszenia i decyduje o wypłacie. W BeautyPolisa ubezpieczycielami są m.in. dwie spółki ERGO Hestii – Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A. (OC) i Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. (grupowe ERGO) – oraz Colonnade i Lloyd’s Insurance Company; Aura Expert nim nie jest.",
+  "d": "Firma, która udziela ochrony: przyjmuje składkę, rozpatruje zgłoszenia i decyduje o wypłacie. W BeautyPolisa ubezpieczycielami są m.in. dwie spółki ERGO Hestii – Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A. (OC) i Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A. (grupowe ERGO) – oraz Colonnade i Lloyd’s Insurance Company; Aura Expert nim nie jest.",
   "u": "slownik.html#haslo-ubezpieczyciel"
  },
  "suma-ubezpieczenia": {
   "t": "Suma ubezpieczenia",
-  "d": "Kwota, do której ubezpieczyciel wypłaca świadczenie za dane zdarzenie albo pokrywa koszty – najczęściej w ubezpieczeniach na życie, NNW i przy ochronie prawnej. Nie myl jej z sumą gwarancyjną w OC.",
+  "d": "Kwota, do której ubezpieczyciel wypłaca świadczenie za dane zdarzenie albo pokrywa koszty – najczęściej w ubezpieczeniach na życie, NNW i przy ochronie prawnej. Nie myl jej z sumą gwarancyjną w OC.",
   "u": "slownik.html#haslo-suma-ubezpieczenia",
   "o": 1
  },
  "wycena-indywidualna": {
   "t": "Wycena indywidualna",
-  "d": "Składka ustalana osobno dla Twojej sytuacji, bo stała taryfa jej nie przewiduje. Liczy się ją po zebraniu dodatkowych informacji, np. z ankiety, a o warunkach decyduje ubezpieczyciel.",
+  "d": "Składka ustalana osobno dla Twojej sytuacji, bo stała taryfa jej nie przewiduje. Liczy się ją po zebraniu dodatkowych informacji, np. z ankiety, a o warunkach decyduje ubezpieczyciel.",
   "u": "slownik.html#haslo-wycena-indywidualna",
   "o": 1
  },
  "karencja": {
   "t": "Karencja",
-  "d": "Okres liczony od początku ochrony, w którym dane świadczenie jeszcze nie przysługuje – zdarzenie z tego czasu nie da wypłaty. Karencja nie jest tym samym co okres wyczekiwania ani okres ubezpieczenia.",
+  "d": "Okres liczony od początku ochrony, w którym dane świadczenie jeszcze nie przysługuje – zdarzenie z tego czasu nie da wypłaty. Karencja nie jest tym samym co okres wyczekiwania ani okres ubezpieczenia.",
   "u": "slownik.html#haslo-karencja",
   "o": 1
  },
  "ochrona-karnoskarbowa": {
   "t": "Ochrona karnoskarbowa",
-  "d": "Sekcja 1 Tax Protect: pokrycie kosztów obrony właściciela lub członka zarządu w sprawach o przestępstwa i wykroczenia skarbowe, np. związane z podatkami – m.in. adwokata w dochodzeniu lub śledztwie i porady prawnej przed oficjalnym roszczeniem. Odpowiedzialność karnoskarbowa jest osobista: nie przejmie jej zewnętrzne biuro rachunkowe.",
+  "d": "Sekcja 1 Tax Protect: pokrycie kosztów obrony właściciela lub członka zarządu w sprawach o przestępstwa i wykroczenia skarbowe, np. związane z podatkami – m.in. adwokata w dochodzeniu lub śledztwie i porady prawnej przed oficjalnym roszczeniem. Odpowiedzialność karnoskarbowa jest osobista: nie przejmie jej zewnętrzne biuro rachunkowe.",
   "u": "slownik.html#haslo-ochrona-karnoskarbowa",
   "o": 1
  },
  "stala-taryfa": {
   "t": "Stała taryfa",
-  "d": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. rodzaj działalności i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
+  "d": "Tabela, z której wprost wynika składka – bez indywidualnego wyliczania. Wybierasz parametry (np. rodzaj działalności i sumę), a kwota jest z góry znana i taka sama dla każdego, kto wybierze te same parametry.",
   "u": "slownik.html#haslo-stala-taryfa",
   "o": 1
  },
  "owu": {
   "t": "OWU (ogólne warunki ubezpieczenia)",
-  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. Ubezpieczyciel ma obowiązek doręczyć je przed zawarciem umowy.",
+  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. Ubezpieczyciel ma obowiązek doręczyć je przed zawarciem umowy.",
   "u": "slownik.html#haslo-owu",
   "o": 1
  },
  "apk": {
   "t": "APK (analiza potrzeb klienta)",
-  "d": "Ankieta przed zawarciem umowy, w której ustala się Twoje wymagania i potrzeby – na tej podstawie sprawdza się, czy proponowane ubezpieczenie do nich pasuje. To obowiązek każdego dystrybutora ubezpieczeń.",
+  "d": "Ankieta przed zawarciem umowy, w której ustala się Twoje wymagania i potrzeby – na tej podstawie sprawdza się, czy proponowane ubezpieczenie do nich pasuje. To obowiązek każdego dystrybutora ubezpieczeń.",
   "u": "slownik.html#haslo-apk"
  },
  "doradca": {
-  "t": "Doradca Aura Expert",
-  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
+  "t": "Doradca Aura Expert",
+  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
   "u": "slownik.html#haslo-doradca"
  },
  "wariant": {
-  "t": "Wariant i pakiet dodatkowy",
-  "d": "Wariant to gotowy zestaw świadczeń i sum, z którego wybierasz – warianty jednego produktu różnią się zakresem, kwotami i składką. Pakiet dodatkowy (ubezpieczenie dodatkowe) dokłada do wybranego wariantu kolejne świadczenia za osobną składką.",
+  "t": "Wariant i pakiet dodatkowy",
+  "d": "Wariant to gotowy zestaw świadczeń i sum, z którego wybierasz – warianty jednego produktu różnią się zakresem, kwotami i składką. Pakiet dodatkowy (ubezpieczenie dodatkowe) dokłada do wybranego wariantu kolejne świadczenia za osobną składką.",
   "u": "slownik.html#haslo-wariant",
   "o": 1
  },
  "strefa-klienta": {
   "t": "Strefa Klienta",
-  "d": "Konto w BeautyPolisa: polisy i dokumenty salonu w jednym miejscu, sprawy w toku (np. APK i wniosek przy odnowieniu OC), zgłoszenia szkód oraz dostęp do „Dam pracę” i „Szkoleń”. Konto klienta z polisą aktywuje Aura Expert po zawarciu ubezpieczenia – zaproszenie przychodzi e-mailem.",
+  "d": "Konto w BeautyPolisa: polisy i dokumenty salonu w jednym miejscu, sprawy w toku (np. APK i wniosek przy odnowieniu OC), zgłoszenia szkód oraz dostęp do „Dam pracę” i „Szkoleń”. Konto klienta z polisą aktywuje Aura Expert po zawarciu ubezpieczenia – zaproszenie przychodzi e-mailem.",
   "u": "slownik.html#haslo-strefa-klienta"
  }
 }
 </script>
 <script>
 /* Dymek z definicją pojęcia (gen_terminy.py – nie edytuj ręcznie).
-   Bez JS oznaczenie jest linkiem do słownika. Z JS: link dostaje rolę przycisku (aria-haspopup="dialog", aria-expanded, aria-controls),
-   klik / Enter / Spacja otwiera niemodalny dialog (role="dialog" + aria-labelledby/aria-describedby – w środku link i przycisk, więc nie tooltip).
+   Bez JS oznaczenie jest linkiem do słownika. Z JS zostaje linkiem (czytnik ogłasza link, a pojęcie jest na liście linków strony),
+   dostaje aria-haspopup="dialog", aria-expanded i aria-controls; klik / Enter otwiera niemodalny dialog (role="dialog" +
+   aria-labelledby/aria-describedby – w środku link „Więcej w słowniku” do hasła i przycisk, więc nie tooltip). Spacja – jak przy linku.
    Fokus przechodzi do dialogu; Esc i „Zamknij” zamykają i oddają fokus pojęciu; Tab za ostatnim elementem i Shift+Tab przed pierwszym też wracają do pojęcia;
    klik poza dymkiem zamyka. Najechanie myszą niczego nie otwiera ani nie zamyka (WCAG 1.4.13: dymek nie znika, gdy kursor jest nad nim).
    Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Okno od 600 × 600 px: dymek pod ostatnią linią pojęcia albo nad
@@ -1452,21 +1662,24 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   var mqWaski=window.matchMedia('(max-width:599px),(max-height:599px)'), biezace=null, GORA=88, M=12;
   pojecia.forEach(function(a){
     if(!D[a.getAttribute('data-termin')])return;
-    a.setAttribute('role','button');a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
+    a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
   });
+  /* położenie: najpierw wszystkie odczyty (jedno przeliczenie układu), potem zapisy; wysokość treści z scrollHeight + ramka,
+     więc nie trzeba zdejmować max-height przed pomiarem */
   function pozycja(){
     if(!biezace||box.hidden)return;
-    box.style.maxHeight='';box.style.overflowY='';
-    if(mqWaski.matches){box.style.top='';box.style.left='';return}
+    if(mqWaski.matches){box.style.maxHeight='';box.style.overflowY='';box.style.top='';box.style.left='';return}
     var rs=biezace.getClientRects(), r1=rs[0]||biezace.getBoundingClientRect(), r2=rs[rs.length-1]||r1;
-    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.offsetHeight;
-    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y;
+    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.scrollHeight+(box.offsetHeight-box.clientHeight);
+    var sx=window.scrollX, sy=window.scrollY;
+    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y, maxH=0;
     if(h<=pod){y=r2.bottom+10}
     else if(h<=nad){r=r1;y=r1.top-10-h}
-    else if(pod>=nad){y=r2.bottom+10;box.style.maxHeight=Math.max(160,pod)+'px';box.style.overflowY='auto'}
-    else{r=r1;box.style.maxHeight=Math.max(160,nad)+'px';box.style.overflowY='auto';y=r1.top-10-box.offsetHeight}
+    else if(pod>=nad){y=r2.bottom+10;maxH=Math.max(160,pod)}
+    else{r=r1;maxH=Math.max(160,nad);y=r1.top-10-Math.min(h,maxH)}
     var x=Math.min(Math.max(16,r.left),vw-w-16);
-    box.style.left=Math.round(x+window.scrollX)+'px';box.style.top=Math.round(y+window.scrollY)+'px';
+    box.style.maxHeight=maxH?maxH+'px':'';box.style.overflowY=maxH?'auto':'';
+    box.style.left=Math.round(x+sx)+'px';box.style.top=Math.round(y+sy)+'px';
   }
   function otworz(a){
     var d=D[a.getAttribute('data-termin')]; if(!d)return;
@@ -1490,8 +1703,6 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if(biezace&&!box.contains(e.target))zamknijDymek(false);
   });
   document.addEventListener('keydown',function(e){
-    var a=e.target.closest&&e.target.closest('a.bp-termin[data-termin]');
-    if(a&&(e.key===' '||e.key==='Spacebar')&&D[a.getAttribute('data-termin')]){e.preventDefault();if(biezace===a)zamknijDymek(true);else otworz(a);return}
     if(!biezace)return;
     if(e.key==='Escape'||e.key==='Esc'){e.preventDefault();zamknijDymek(true);return}
     if(e.key==='Tab'&&box.contains(document.activeElement)){

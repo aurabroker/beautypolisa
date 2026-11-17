@@ -17,6 +17,9 @@ Kotwice (plan 1.5, uwaga K2): <li id="<slug>"> przy pierwszym wystąpieniu zabie
 dawne slugi, #grupa-1…4 i slugi wycofanych pozycji podologicznych – puste elementy <span class="z-alias" id="…"></span>
 BEZ atrybutu hidden (element z hidden nie przyjmuje przewinięcia do #fragmentu).
 Zakazane frazy (plan 6.8, uwaga K7) – sprawdzane w blokach tego generatora (oc_frazy.py).
+Polska typografia (raport 16, 3.1): widoczny tekst bloków przez typografia.py (twarde spacje po jednoliterowych wyrazach, „nr 1”,
+„poz. 5”, „8 pozycji”, „5 osób”, półpauza zamiast pauzy); brzmienie list, klauzuli i zdań CRM bez zmian, FAQPage (JSON-LD) –
+tekst bez twardych spacji.
 """
 import html, json, re, sys
 from pathlib import Path
@@ -24,6 +27,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import zabiegi_model as zm  # noqa: E402
 import oc_taryfa as ot  # noqa: E402
+import typografia as ty  # noqa: E402
 from oc_frazy import sprawdz, tekst_html, raport  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]  # katalog główny repozytorium
@@ -35,7 +39,7 @@ TEMPLATE = Path(__file__).with_name('gen_oc_beauty.szablon.html')
 URL = 'https://beautypolisa.eu/ubezpieczenia/oc-beauty'
 KONTAKT = 'makieta-v3.html?produkt=oc-beauty#kontakt'
 OPIS_STRONY = ('OC zawodowe dla gabinetów kosmetycznych, fryzjerskich, kosmetologicznych i podologicznych. Program ERGO Hestia, '
-               'sumy 100–300 tys. zł, stała taryfa. Policz składkę.')  # = meta description i og:description (plan, rozdz. 3; check())
+               'sumy 100–300 tys. zł, stała taryfa. Oblicz składkę.')  # = meta description i og:description (plan, rozdz. 3; check())
 
 NB = ' '
 e = lambda s: html.escape(str(s), quote=True)
@@ -126,6 +130,11 @@ def teksty_crm(klucz):
     return ot.teksty_crm(klucz)
 
 
+def bez_pauzy(t):
+    """FAQPage = widoczne pytania: ta sama półpauza co w widocznym tekście (typografia.py: „ — ” → „ – ”), bez twardych spacji."""
+    return t.replace(' — ', ' – ')
+
+
 def faq():
     """[(pytanie, html odpowiedzi, tekst odpowiedzi do FAQPage)] – jedna lista dla widocznych pytań, GEN:jsonld i schema-faq."""
     out = []
@@ -137,12 +146,12 @@ def faq():
         for b in q['odpowiedz']:
             if isinstance(b, str):
                 x = wypelnij(b)
-                h.append('<p>%s</p>' % x)
-                t.append(strip_tags(x))
+                h.append('<p>%s</p>' % ty.html(x))
+                t.append(bez_pauzy(strip_tags(x)))
             else:
                 items = teksty_crm(b['crm'])
-                h.append('<ul>' + ' '.join('<li>%s</li>' % eh(i) for i in items) + '</ul>')
-                t.append(' '.join(items))
+                h.append('<ul>' + ' '.join('<li>%s</li>' % ty.html(eh(i)) for i in items) + '</ul>')
+                t.append(bez_pauzy(' '.join(items)))
         out.append((q['pytanie'], ' '.join(h), ' '.join(t)))  # spacja między blokami: tekst DOM = tekst FAQPage
     return out
 
@@ -157,10 +166,10 @@ def block_jump():
         n = LICZBY[l['klucz']]
         etyk = 'Lista nr %d' % l['numer'] if l.get('numer') else ('Ankieta' if l['klucz'] == 'ankieta' else 'Podologia')
         if n:
-            out.append(f'    <li><a href="#{e(l["kotwica"])}">{etyk} <span>{n}</span>'
+            out.append(f'    <li><a href="#{e(l["kotwica"])}">{ty.html(etyk)} <span>{n}</span>'
                        f'<span class="sr-only"> {plural(n, "pozycja", "pozycje", "pozycji")}</span></a></li>')
         else:
-            out.append(f'    <li><a href="#{e(l["kotwica"])}">{etyk}</a></li>')
+            out.append(f'    <li><a href="#{e(l["kotwica"])}">{ty.html(etyk)}</a></li>')
     out += ['  </ul>', '</nav>']
     return out
 
@@ -196,14 +205,14 @@ def block_listy():
         if l.get('numer'):
             m = re.match(r'(Załącznik nr \d+)\b', l['zalacznik'])
             assert m, l['zalacznik']
-            out.append(f'      <p class="eyebrow">{e(m.group(1))} · {pozycji(n)}</p>')
+            out.append(f'      <p class="eyebrow">{ty.esc(m.group(1) + " · " + pozycji(n))}</p>')
         elif n:
-            out.append(f'      <p class="eyebrow">Brzmienie Aneksu nr&nbsp;5 · {pozycji(n)}</p>')
+            out.append(f'      <p class="eyebrow">Brzmienie Aneksu nr&nbsp;5 · {ty.esc(pozycji(n))}</p>')
         else:
             out.append('      <p class="eyebrow">Dokumenty programu</p>')
-        out.append(f'      <h3 id="{e(a)}-tytul">{e(l["nazwa"])}</h3>')
+        out.append(f'      <h3 id="{e(a)}-tytul">{ty.esc(l["nazwa"])}</h3>')
         if k == 'ankieta':
-            out.append('      <p class="zlista-desc">Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel na podstawie ankiety.</p>')
+            out.append('      <p class="zlista-desc">%s</p>' % ty.esc('Przy tych zabiegach całą składkę wycenia indywidualnie ubezpieczyciel na podstawie ankiety.'))
         elif not n:  # podologia (decyzja Q1): bez listy pozycji – informacja i kontakt
             out.append('      <p class="zlista-desc">Lista zabiegów podologicznych jest w&nbsp;dokumentach programu. '
                        f'<a href="{KONTAKT}">Zapytaj doradcę o&nbsp;listę zabiegów podologicznych</a>.</p>')
@@ -216,7 +225,7 @@ def block_listy():
             litery = l.get('numeracja') == 'litery'
             co = ('listy nr %d' % l['numer']) if l.get('numer') else ('%s–%s' % (items[0][0], items[-1][0]))
             out.append('  <details class="zdetails" open>')
-            out.append(f'    <summary><span>Pozycje {co} (<span data-z-ile>{n}</span>)</span></summary>')
+            out.append(f'    <summary><span>{ty.esc("Pozycje " + co)} (<span data-z-ile>{n}</span>)</span></summary>')
             out.append('    <ol class="zlist"%s>' % (' type="a"' if litery else ''))
             for idx, (nr, nazwa, z) in enumerate(items, 1):
                 kotw = kot[(z['id'], k)]
@@ -225,10 +234,10 @@ def block_listy():
                 inne = ''
                 for lst, nr2 in poz[z['id']]:
                     if lst != k:
-                        inne += (f' <a class="z-inna" href="#{e(kot[(z["id"], lst)])}">także na liście nr {L[lst]["numer"]}, '
+                        inne += (f' <a class="z-inna" href="#{e(kot[(z["id"], lst)])}">także na liście nr&nbsp;{L[lst]["numer"]}, '
                                  f'poz.&nbsp;{nr2}</a>')
                 out.append(f'      <li id="{e(kotw)}" value="{idx if litery else nr}">{aliasy}<span class="z-nr">{znak}</span> '
-                           f'<span class="z-name">{e(nazwa)}</span>{inne}</li>')
+                           f'<span class="z-name">{ty.esc(nazwa)}</span>{inne}</li>')
             out.append('    </ol>')
             out.append('    <p class="zback"><a class="link-quiet" href="#zabiegi">Wróć na początek listy</a></p>')
             out.append('  </details>')
@@ -244,7 +253,7 @@ def block_rules():
         'Więcej niż 8&nbsp;osób wykonujących zabiegi – wycena indywidualna.',
         'Zabiegi wymagające ankiety ERGO Hestii – cała składka do indywidualnej wyceny.',
     ]
-    return ['<ul>'] + [f'  <li>{s}</li>' for s in zdania] + ['</ul>']
+    return ['<ul>'] + [f'  <li>{ty.html(s)}</li>' for s in zdania] + ['</ul>']
 
 
 def block_taryfa():
@@ -254,26 +263,26 @@ def block_taryfa():
 def block_clause():
     out = ['<header class="clause-head">',
            '  <p class="clause-label">Pełna treść klauzuli</p>',
-           f'  <h3 id="klauzula-tytul">{e(K["tytul"])}</h3>']
+           f'  <h3 id="klauzula-tytul">{ty.esc(K["tytul"])}</h3>']
     out.append('</header>')
     out.append('<ol class="clause-text">')
     for p in K['punkty']:
         if p.get('wyliczenie'):
-            out.append(f'  <li>{e(p["tekst"])}')
+            out.append(f'  <li>{ty.esc(p["tekst"])}')
             out.append('    <ul>')
-            out += [f'      <li>{e(w)}</li>' for w in p['wyliczenie']]
+            out += [f'      <li>{ty.esc(w)}</li>' for w in p['wyliczenie']]
             out.append('    </ul>')
             out.append('  </li>')
         else:
-            out.append(f'  <li>{e(p["tekst"])}</li>')
+            out.append(f'  <li>{ty.esc(p["tekst"])}</li>')
     out.append('</ol>')
-    out.append(f'<p class="clause-foot">Klauzula do programu ubezpieczenia OC dla branży beauty nr {e(Z["program"]["numer_programu"])} '
-               '(ERGO Hestia). Pozostałe postanowienia umowy określają Warunki Ubezpieczenia programu.</p>')
+    out.append('<p class="clause-foot">%s</p>' % ty.esc('Klauzula do programu ubezpieczenia OC dla branży beauty nr %s (ERGO Hestia). '
+                                                     'Pozostałe postanowienia umowy określają Warunki Ubezpieczenia programu.' % Z['program']['numer_programu']))
     return out
 
 
 def block_faq():
-    return [f'<details id="pytanie-{i}"><summary>{e(q)}</summary>{a}</details>' for i, (q, a, _) in enumerate(FAQ, 1)]
+    return [f'<details id="pytanie-{i}"><summary>{ty.esc(q)}</summary>{a}</details>' for i, (q, a, _) in enumerate(FAQ, 1)]
 
 
 def home_node(suffix, keys):
@@ -390,16 +399,16 @@ def check(src):
         assert sek, l['kotwica']
         li = re.findall(r'<li id="[^"]+" value="(\d+)">(?:<span class="z-alias"[^>]*></span>)*<span class="z-nr">([^<]+)</span> '
                         r'<span class="z-name">([^<]*)</span>', sek.group(1))
-        ocz = [(str(i if isinstance(nr, str) else nr), (f'{nr})' if isinstance(nr, str) else f'{nr}.'), e(n))
+        ocz = [(str(i if isinstance(nr, str) else nr), (f'{nr})' if isinstance(nr, str) else f'{nr}.'), ty.esc(n))
                for i, (nr, n, _) in enumerate(zm.pozycje_listy(Z, l['klucz']), 1)]
         assert li == ocz, f'lista {l["klucz"]}: pozycje na stronie ≠ JSON'
         assert 'bp-termin' not in sek.group(1), f'lista {l["klucz"]}: oznaczenie pojęcia w nazwie pozycji (K3)'
     assert 'data-syn' not in src and 'z-via' not in src, 'lista 1:1: bez synonimów'
-    # klauzula słowo w słowo
+    # klauzula słowo w słowo (z polską typografią – twarde spacje nie zmieniają brzmienia)
     for p in K['punkty']:
-        assert e(p['tekst']) in src
+        assert ty.esc(p['tekst']) in src
         for w in p.get('wyliczenie', []):
-            assert e(w) in src
+            assert ty.esc(w) in src
     # zakazane frazy (6.8, K7) w blokach generatora; wyjątki: dawne brzmienia ankiety, nazwy z archiwum wycofanych
     wyjatki = [n for z in Z['zabiegi'] for n in z.get('dawne_nazwy', [])] + [w['nazwa'] for w in WYC['wycofane']]
     traf = [(n, t) for n, b in B.items() for t in sprawdz(tekst_html(b), wyjatki)]

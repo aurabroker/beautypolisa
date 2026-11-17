@@ -32,6 +32,7 @@ import html, json, pathlib, re, sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import zabiegi_model as zm  # noqa: E402
 import oc_taryfa as ot  # noqa: E402
+import typografia as ty  # noqa: E402
 from oc_frazy import sprawdz, tekst_html, raport  # noqa: E402
 
 ROOT = str(pathlib.Path(__file__).resolve().parents[2] / 'docs/koncepcja')  # repozytorium/docs/koncepcja
@@ -43,9 +44,22 @@ NB = ' '
 IKONY = {'kosmetyczny': 'lux-gabinet-kosmetyczny', 'fryzjerski': 'lux-fryzjer', 'kosmetologiczny': 'lux-kosmetolog',
          'podologiczny': 'lux-podolog', 'masaz': 'lux-salon-masazu', 'tatuaz': 'lux-tatuazysta'}
 BLOKI_POL = ('kalk-rodzaje', 'kalk-osoby', 'kalk-sumy', 'kalk-ankieta', 'kalk-ankieta-info', 'faq-ankieta-dokumenty')
-# „Dla kogo” (decyzja zleceniodawcy 14.11.2026): ikona profilu → rodzaj działalności, który zaznacza kliknięcie kafelka
+# „Dla kogo” (decyzja zleceniodawcy 14.11.2026; trycholog i masażysta – uwagi zleceniodawcy 16.11.2026, 00 D46 e):
+# ikona profilu → rodzaj działalności, który zaznacza kliknięcie kafelka
 DLA_KOGO = {'lux-kosmetolog': 'kosmetologiczny', 'lux-fryzjer': 'fryzjerski', 'lux-podolog': 'podologiczny',
-            'lux-linergistka': 'kosmetologiczny', 'lux-stylistka-paznokci': 'kosmetyczny', 'lux-tatuazysta': 'tatuaz'}
+            'lux-linergistka': 'kosmetologiczny', 'lux-stylistka-paznokci': 'kosmetyczny', 'lux-tatuazysta': 'tatuaz',
+            'lux-trycholog': 'kosmetyczny', 'lux-masazysta': 'masaz'}
+
+
+SEP_PRZYKLADOW = '; '
+
+
+def rozbij_przyklady(t, nazwy):
+    """Przykłady zabiegów „A; B” → lista nazw pozycji. Separator – średnik (weryfikacja 17.11.2026): nazwa pozycji może sama mieć
+    przecinek („Masaż manualny ciała, w tym masaż głowy i twarzy; Masaż kobido” – przy przecinku czytało się to jak trzy pozycje).
+    None – pusty tekst albo element spoza nazw pozycji list nr 1 i 2."""
+    czesci = t.split(SEP_PRZYKLADOW) if t else []
+    return czesci if czesci and all(c in nazwy for c in czesci) else None
 
 
 def esc(s):
@@ -57,8 +71,9 @@ def eh(s):
 
 
 def sierotki(h):
-    """Twarda spacja po jednoliterowych wyrazach (typografia stron: „w&nbsp;gabinecie”, „z&nbsp;Tobą”)."""
-    return re.sub(r'(^|[\s(])([aiouwzAIOUWZ]) ', r'\1\2&nbsp;', h)
+    """Polska typografia fragmentu HTML (wspólny moduł typografia.py: twarde spacje po jednoliterowych wyrazach – także kilku
+    z rzędu – w „12 miesięcy”, „5 osób”, „nr 5”, przed półpauzą; raport 16, 3.1)."""
+    return ty.html(h)
 
 
 def wcinaj(linie, ind):
@@ -128,7 +143,7 @@ def taryfa_block():
 
 def rodzaje_block(page):
     P = ot.T['pytania']
-    out = ['<legend>%s<small>%s</small></legend>' % (sierotki(eh(P['rodzaje'])), eh(P['rodzaje_podpowiedz'])),
+    out = ['<legend>%s<small>%s</small></legend>' % (sierotki(eh(P['rodzaje'])), sierotki(eh(P['rodzaje_podpowiedz']))),
            '<div class="opt-grid opt-grid--2">']
     for r in ot.T['rodzaje_gabinetu']:
         k = r['klucz']
@@ -136,7 +151,7 @@ def rodzaje_block(page):
         svg = ('<svg class="lux-icon lux-icon--md" aria-hidden="true"><use href="#%s"/></svg>' % ik
                if ik and ('<symbol id="%s"' % ik) in page else '')
         out.append('  <div class="opt opt--check"><input type="checkbox" id="r-%s" name="rodzaj" value="%s"><label for="r-%s">%s<span>%s</span></label></div>'
-                   % (k, k, k, svg, eh(r['nazwa'])))
+                   % (k, k, k, svg, sierotki(eh(r['nazwa']))))
     out.append('</div>')
     return wcinaj(out, 12)
 
@@ -147,7 +162,7 @@ def osoby_block():
     for o in ot.T['liczba_osob']:
         etyk = re.sub(r' (osób)$', NB + r'\1', o['nazwa'])
         out.append('  <div class="opt opt--center"><input type="radio" id="%s" name="osoby" value="%s"><label for="%s">%s</label></div>'
-                   % (ids[o['klucz']], o['klucz'], ids[o['klucz']], eh(etyk)))
+                   % (ids[o['klucz']], o['klucz'], ids[o['klucz']], sierotki(eh(etyk))))
     out.append('</div>')
     return wcinaj(out, 12)
 
@@ -165,7 +180,7 @@ def ankieta_block(J):
     out = ['<ul class="ankieta-lista">']  # litery a)–h) w etykiecie (jak w Aneksie nr 5); lista bez własnej numeracji
     for a in zm.ankieta(J):
         out.append('  <li><label class="check-row"><input type="checkbox" id="%s" name="ankieta" value="%s"> <span><span class="ankieta-lit">%s)</span> %s</span></label></li>'
-                   % (a['id'], a['id'], a['litera'], eh(a['nazwa'])))
+                   % (a['id'], a['id'], a['litera'], ty.esc(a['nazwa'], quote=True)))
     out.append('</ul>')
     return wcinaj(out, 18)
 
@@ -176,8 +191,8 @@ def dokumenty_ul(klasa=''):
 
 
 def ankieta_info_block():
-    out = ['<p>Te zabiegi wymagają ankiety ERGO Hestii. Wypełnisz ją pod osobistym linkiem od doradcy, razem z&nbsp;analizą potrzeb (APK) '
-           'i&nbsp;wnioskiem. Dołączysz dokumenty:</p>'] + dokumenty_ul()
+    out = ['<p>%s</p>' % ty.html('Te zabiegi wymagają ankiety ERGO Hestii. Wypełnisz ją pod osobistym linkiem od doradcy, razem z analizą '
+                                 'potrzeb (APK) i wnioskiem. Dołączysz dokumenty:')] + dokumenty_ul()
     return wcinaj(out, 18)
 
 
@@ -197,11 +212,11 @@ def klauzula_block():
     d = json.load(open(KLA, encoding='utf-8'))
     pk = d['punkty']
     assert len(pk) == 12, len(pk)
-    out = ['          <p class="klauzula-tytul">' + esc(d['tytul']) + '</p>', '          <ol>']
+    out = ['          <p class="klauzula-tytul">' + ty.esc(d['tytul']) + '</p>', '          <ol>']
     for p in pk:
-        li = '            <li>' + esc(p['tekst'])
+        li = '            <li>' + ty.esc(p['tekst'])
         if p.get('wyliczenie'):
-            li += '\n              <ul>\n' + '\n'.join('                <li>' + esc(w) + '</li>' for w in p['wyliczenie']) + '\n              </ul>\n            '
+            li += '\n              <ul>\n' + '\n'.join('                <li>' + ty.esc(w) + '</li>' for w in p['wyliczenie']) + '\n              </ul>\n            '
         out.append(li + '</li>')
     out.append('          </ol>')
     return '\n'.join(out), d['skladka_dodatkowa_zl_rocznie']
@@ -262,7 +277,7 @@ def main():
         assert 'Listy zabiegów programu' in new, 'link pod rodzajami działalności'
         assert 'Klauzula ochrony prawnej (+%d&nbsp;zł/rok)' % doplata in new, 'dopłata przy checkboxie'
         # Q8 (rozstrzygnięcie): opis pola z CRM z limitem w polskiej typografii; limit także w stopce dialogu klauzuli (źródło: program w CRM)
-        assert 'Koszty obrony prawnej, np. w&nbsp;sporze z&nbsp;klientem, do %s.' % eh(ot.zl(op['limit'])) in new, 'opis pola ochrony prawnej (CRM)'
+        assert 'Koszty obrony prawnej, np.&nbsp;w&nbsp;sporze z&nbsp;klientem, do %s.' % eh(ot.zl(op['limit'])) in new, 'opis pola ochrony prawnej (CRM)'
         assert 'Limit: %s' % eh(ot.zl(op['limit'])) in new, 'limit ochrony prawnej w stopce dialogu klauzuli (źródło: program w CRM)'
         # K12: zdanie CRM o zabiegach z innej listy – dosłownie (pierwsze zdanie) przy wyszukiwarce i w FAQ
         k12 = sierotki(eh(ot.zdanie_z_innej_listy()))
@@ -273,7 +288,7 @@ def main():
                          r'<span class="pro-text"><strong>[^<]+</strong><span>([^<]*)</span><small>Rodzaj: ([^<]+)</small></span></a>', new)
         assert sorted((ik, k) for k, ik, _, _ in pro) == sorted(DLA_KOGO.items()), 'Dla kogo: %s' % pro
         assert all(ot.NAZWA_RODZAJU[k] == html.unescape(n).replace(NB, ' ') for k, _, _, n in pro), 'Dla kogo: podpis ≠ nazwa rodzaju z taryfy'
-        # przykłady zabiegów przy profilu: tylko dosłowne nazwy pozycji z list nr 1 i 2, po przecinku (zasada list 1:1, K14);
+        # przykłady zabiegów przy profilu: tylko dosłowne nazwy pozycji z list nr 1 i 2, rozdzielone średnikiem (zasada list 1:1, K14);
         # przy podologu – zdanie Q1 (lista zabiegów podologicznych jest w dokumentach programu, w portalu bez pozycji)
         nazwy_list = {z['nazwa'] for z in J['zabiegi'] if any(p['lista'] in ('lista-1', 'lista-2') for p in z['pozycje'])}
         for k, ik, przyk, _ in pro:
@@ -281,8 +296,7 @@ def main():
             if k == 'podologiczny':
                 assert t == 'Lista zabiegów podologicznych jest w dokumentach programu', 'Dla kogo (%s): %s' % (ik, t)
             else:
-                zle = [n for n in t.split(', ') if n not in nazwy_list]
-                assert not zle, 'Dla kogo (%s): przykład spoza list nr 1 i 2 (nazwy 1:1): %s' % (ik, zle)
+                assert rozbij_przyklady(t, nazwy_list), 'Dla kogo (%s): przykład spoza list nr 1 i 2 (nazwy 1:1): %s' % (ik, t)
         assert 'data-grupa' not in new, 'Dla kogo: dawny atrybut data-grupa'
     else:
         assert 'Dodaj ochronę prawną: +%d&nbsp;zł rocznie' % doplata in new, 'dopłata przy checkboxie'

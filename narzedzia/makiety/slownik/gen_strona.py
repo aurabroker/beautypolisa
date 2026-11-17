@@ -24,6 +24,7 @@ CEL = V3 / 'slownik.html'
 NARZEDZIA = pathlib.Path(__file__).resolve().parents[1]  # narzedzia/makiety (gen_wspolne.py)
 sys.path.insert(0, str(NARZEDZIA))
 import gen_wspolne  # noqa: E402
+import typografia  # noqa: E402
 
 URL = 'https://beautypolisa.eu/slownik'
 TYTUL = 'Słownik pojęć ubezpieczeniowych | BeautyPolisa'
@@ -41,12 +42,9 @@ e = htmlmod.escape
 
 
 def t(s):
-    """Tekst do HTML: escape + polska typografia (twarde spacje po jednoliterowych spójnikach i przed „zł”)."""
-    s = e(s, quote=False)
-    s = re.sub(r'(?<![\w&;])([aiouwzAIOUWZ]) ', r'\1&nbsp;', s)
-    s = re.sub(r'(\d) (zł|tys\.|mln|%|dni|lat|miesięcy|osób)', r'\1&nbsp;\2', s)
-    s = re.sub(r'(§|art\.|nr|pkt|ust\.) (\d)', r'\1&nbsp;\2', s)
-    return s
+    """Tekst do HTML: escape + polska typografia (wspólny moduł narzedzia/makiety/typografia.py: twarde spacje po jednoliterowych
+    wyrazach, w grupach cyfr, przed „zł”, „r.”, „pozycji”, po „nr”, „poz.”, „sp. z o.o.”, przed półpauzą)."""
+    return typografia.esc(s)
 
 
 def szukaj_norm(s):
@@ -321,7 +319,7 @@ CSS_SLOWNIK = r'''<style>
 .sl-chip input:checked + span{background:var(--color-parchment);color:var(--color-navy);font-weight:500}
 .sl-chip input:checked + span::before{background:var(--color-navy);box-shadow:inset 0 0 0 3px #fff}
 .sl-chip input:focus-visible + span{outline:2px solid var(--color-navy);outline-offset:0}
-.sl-licznik{font-size:var(--text-sm);color:var(--color-ink);padding-top:12px;border-top:1px solid var(--bp-line-gold-soft)}
+.sl-licznik{font-size:var(--text-sm);color:var(--color-ink);padding-top:12px;border-top:1px solid var(--bp-line-gold-soft);overflow-wrap:anywhere}
 .sl-licznik strong{font-weight:500}
 /* indeks A–Z */
 .sl-az{display:grid;gap:10px}
@@ -329,11 +327,14 @@ CSS_SLOWNIK = r'''<style>
 .sl-az a,.sl-az-off{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:var(--radius-btn);font:600 1.3rem/1 var(--font-serif);font-variant-numeric:lining-nums}
 .sl-az a{color:var(--color-navy);text-decoration:none;border:1px solid var(--bp-line-gold-soft);background:rgba(255,255,255,.55)}
 .sl-az a:hover{border-color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:4px;text-decoration-thickness:1px}
-.sl-az a:not([href]){color:rgba(95,87,77,.5);border-color:transparent;background:none;cursor:default;text-decoration:none}
-.sl-az-off{color:rgba(95,87,77,.5)}
+/* litera bez haseł (i bez wyników przy filtrze): kontrast tekstu ≥ 4,5:1 (taupe na ivory), „brak” sygnalizuje przerywany obrys
+   i brak tła, nie przezroczystość (weryfikacja 17.11.2026: dawniej rgba(95,87,77,.5) – 2,21:1) */
+.sl-az a:not([href]),.sl-az-off{color:var(--color-taupe);border:1px dashed rgba(95,87,77,.45);background:none;cursor:default;font-weight:400;text-decoration:none}
 /* lista: litera = jedna kryjąca karta, hasła oddzielone liniami włoskowymi */
 .sl-lista{display:grid;gap:clamp(20px,3vw,32px);min-width:0}
 .sl-litera{position:relative;min-width:0;padding:clamp(20px,3vw,36px);border:1px solid var(--bp-line-gold-soft);border-radius:var(--radius-card);background:var(--color-ivory);box-shadow:0 24px 48px -40px rgba(20,28,51,.45)}
+/* 96 haseł naraz (ok. 85 tys. px przy 390 px): litery poza ekranem bez renderowania; kotwice #haslo-… i #litera-… działają (raport 16, 3.1) */
+.sl-litera{content-visibility:auto;contain-intrinsic-size:auto 1500px}
 .sl-litera-t{display:flex;align-items:baseline;gap:14px;padding-bottom:10px;margin-bottom:6px;border-bottom:1px solid var(--color-gold);font-size:clamp(2.6rem,2rem + 2vw,3.6rem);line-height:1}
 .sl-litera-ile{font:500 var(--text-xs)/1 var(--font-caps);letter-spacing:var(--tracking-label);color:var(--color-taupe)}
 .haslo{display:grid;gap:12px;min-width:0;padding-block:22px;border-bottom:1px solid var(--bp-line-gold-soft);overflow-wrap:anywhere}
@@ -354,20 +355,28 @@ CSS_SLOWNIK = r'''<style>
 .haslo-linki{display:flex;flex-wrap:wrap;gap:0 18px;margin:0;padding:0;list-style:none}
 .haslo-linki a{display:inline-flex;align-items:center;min-height:32px;color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:1px;text-underline-offset:4px}
 .haslo-linki a:hover{text-decoration-thickness:2px}
+/* Z4 (raport 15): cele dotyku – telefon i tablet (panel nad listą) oraz ekrany dotykowe: linki „Zobacz też” / „Gdzie w portalu” 44 px
+   z odstępem między wierszami 8 px; indeks A–Z – komórki 44 px, odstęp 8 px */
+@media (max-width:1023px),(pointer:coarse){
+  .haslo-linki{gap:8px 18px}
+  .haslo-linki a{min-height:44px}
+  .sl-az ul{grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px}
+  .sl-az a,.sl-az-off{min-height:44px}
+}
 .haslo-notka .mock-note{display:block;margin-left:0;padding:6px 10px;white-space:normal}
 .haslo-akcje{display:flex}
 .haslo-kopiuj{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 2px;background:none;border:0;font:500 var(--text-xs)/1.2 var(--font-caps);letter-spacing:var(--tracking-nav);text-transform:uppercase;color:var(--color-navy);cursor:pointer}
 .haslo-kopiuj svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .haslo-kopiuj:hover span:not(.sr-only){text-decoration:underline;text-decoration-color:var(--color-gold);text-underline-offset:5px}
 .sl-wroc{padding-top:6px}
-.sl-pusto{display:grid;gap:12px;padding:clamp(22px,3vw,36px);border:1px dashed var(--bp-line-gold);border-radius:var(--radius-card);background:var(--color-ivory)}
+.sl-pusto{display:grid;gap:12px;min-width:0;padding:clamp(22px,3vw,36px);border:1px dashed var(--bp-line-gold);border-radius:var(--radius-card);background:var(--color-ivory);overflow-wrap:anywhere}
 .sl-pusto-t{font:600 var(--text-serif-md)/1.25 var(--font-serif);color:var(--color-navy)}
 .sl-pusto p{max-width:42rem}
 .sl-pusto-akcje{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px}
 .sl-stopka-uwaga{font-size:var(--text-sm);color:var(--color-ink);max-width:46rem;padding:16px 18px;border-left:2px solid var(--color-gold);background:var(--color-ivory)}
 /* epilog */
 .sl-end{padding-block:0 clamp(56px,8vw,104px);background:var(--color-parchment)}
-.end-card{position:relative;display:grid;gap:22px;padding:clamp(28px,4.5vw,60px);border-radius:var(--radius-card);background:linear-gradient(160deg,var(--color-navy) 0%,var(--color-midnight) 100%);color:var(--color-parchment);box-shadow:0 30px 60px -34px rgba(20,28,51,.75)}
+.end-card{position:relative;display:grid;gap:22px;padding:clamp(28px,4.5vw,60px);border-radius:var(--radius-card);background:var(--color-navy);color:var(--color-parchment);box-shadow:0 30px 60px -34px rgba(20,28,51,.75)}
 .end-card::before{content:"";position:absolute;inset:var(--bp-frame-inset);border:1px solid rgba(217,192,137,.45);border-radius:var(--radius-btn);pointer-events:none}
 .end-card h2{font-size:clamp(2.1rem,1.5rem + 2vw,3.3rem);max-width:40rem}
 .end-card p:not(.eyebrow){font-size:var(--text-body);color:var(--color-parchment);max-width:44rem}
@@ -386,7 +395,8 @@ JS_SLOWNIK = r'''<script>
    „Kopiuj link”. Bez JS: pełna lista + indeks (kotwice).
    Kolejność wyników przy wpisanej frazie: najpierw dokładne trafienie terminu lub odmiany, potem początek terminu, potem początek
    wyrazu, na końcu fragment w środku wyrazu (ten tylko dla fraz dłuższych niż 3 znaki – „OC” nie znajduje „ochrona”, a „NW” – „inwalidztwo”).
-   Litery i hasła są wtedy przestawiane w DOM (kolejność czytania = kolejność na ekranie); po wyczyszczeniu frazy wraca kolejność alfabetyczna. */
+   Litery i hasła są wtedy przestawiane w DOM (kolejność czytania = kolejność na ekranie); po wyczyszczeniu frazy wraca kolejność alfabetyczna.
+   Fraza i kategoria są w adresie (?q=…&kategoria=…, history.replaceState z zachowaniem #kotwicy) – link do wyników działa po wklejeniu. */
 (function(){
   var form=document.getElementById('sl-szukaj'), q=document.getElementById('sl-q'), wyczysc=document.getElementById('sl-wyczysc');
   var licznik=document.getElementById('sl-licznik'), pusto=document.getElementById('sl-pusto'), pustoQ=document.getElementById('sl-pusto-q');
@@ -450,10 +460,27 @@ JS_SLOWNIK = r'''<script>
     var wKat=kv?' w kategorii „'+kr.getAttribute('data-nazwa')+'”':'';
     var txt=(!fraza&&!kv)?'Wszystkie hasła: '+widoczne:(widoczne?'Znaleziono '+widoczne+' '+plural(widoczne,'hasło','hasła','haseł')+wKat:'Brak haseł'+(fraza?' dla „'+q.value.trim()+'”':'')+wKat);
     clearTimeout(tLive);
+    zapiszAdres();
     if(ogloszenie===false){licznik.textContent=txt;return}
     tLive=setTimeout(function(){licznik.textContent=txt},350);
   }
   function reset(){q.value='';var w=document.querySelector('input[name="kategoria"][value=""]');if(w)w.checked=true;filtruj()}
+  /* stan filtrów w adresie strony */
+  function zapiszAdres(){
+    try{
+      var u=new URL(location.href), fr=q.value.trim(), kr=radio(), kv=kr&&kr.value;
+      if(fr)u.searchParams.set('q',fr);else u.searchParams.delete('q');
+      if(kv)u.searchParams.set('kategoria',kv);else u.searchParams.delete('kategoria');
+      if(u.href!==location.href)history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+    }catch(err){}
+  }
+  function zAdresu(){
+    try{
+      var par=new URLSearchParams(location.search), pq=par.get('q'), pk=par.get('kategoria'), rk;
+      if(pq!==null&&!q.value)q.value=pq;
+      if(pk&&(rk=document.querySelector('input[name="kategoria"][value="'+pk.replace(/[^a-z0-9-]/g,'')+'"]')))rk.checked=true;
+    }catch(err){}
+  }
   q.addEventListener('input',function(){filtruj()});
   kat.addEventListener('change',function(e){if(e.target.name==='kategoria')filtruj()});
   form.addEventListener('submit',function(e){e.preventDefault();filtruj()});
@@ -467,6 +494,7 @@ JS_SLOWNIK = r'''<script>
   function zHash(e){try{var id=decodeURIComponent(location.hash.slice(1)), el;if(!id)return;el=document.getElementById(id);if(el&&el.classList.contains('haslo-alias'))el=el.closest('.haslo');var ukryte=el&&(el.hidden||(el.closest('.sl-litera')||{}).hidden);pokaz(id);
     if(el&&(!e||ukryte))requestAnimationFrame(function(){el.scrollIntoView({block:'start',behavior:'instant'})})}catch(err){}}
   window.addEventListener('hashchange',zHash);
+  zAdresu();
   filtruj(false);
   /* „Kopiuj link” – adres strony z kotwicą hasła; potwierdzenie w przycisku i w regionie statusu */
   var status=document.getElementById('sl-kopia-status');
@@ -493,6 +521,12 @@ JS_SLOWNIK = r'''<script>
 </script>'''
 
 
+PRELOAD = '''<!-- tło hero (marmur) jest elementem LCP: klasa bg-on wpisana w sekcję hero + preload (raport 16, 3.2) -->
+<link rel="preload" as="image" href="img/tlo-marmur-len.webp" media="(min-width:768px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/tlo-marmur-len-1024.webp" media="(max-width:767px)" fetchpriority="high">
+'''
+
+
 def strona():
     wz = bez_oznaczen(WZOR.read_text(encoding='utf-8'))
     grupy, lista = lista_html()
@@ -506,7 +540,7 @@ def strona():
     fonty = wytnij(wz, r'<link rel="preconnect" href="https://fonts.googleapis.com">.*?rel="stylesheet">', 'fonty')
     kat_n = len(D['kategorie'])
     s = f'''<!doctype html>
-<html lang="pl">
+<html lang="pl" data-type="service">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -519,13 +553,24 @@ def strona():
 <meta property="og:url" content="{URL}">
 <meta property="og:title" content="{TYTUL}">
 <meta property="og:description" content="{e(OPIS)}">
-<meta name="theme-color" content="#141C33">
+<meta name="theme-color" content="#F7F3EC">
 <meta name="color-scheme" content="only light">
+<!-- udostępnianie i rodzaj strony (raport 15, Z24): obraz 1200×630 bez tekstu (kadr zdjęcia hero), ikona – serce z logo;
+     produkcyjnie przez metadata Next.js; adres obrazu docelowy -->
+<meta property="og:image" content="https://beautypolisa.eu/img/og-beautypolisa.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jasny gabinet beauty: granatowy fotel zabiegowy, marmurowy stolik z kosmetykami i piwonie przy oknie">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="page-type" content="service">
+<meta name="site-kind" content="service">
+<link rel="icon" href="img/ikona-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <!-- Makieta strony /slownik – WYGENEROWANA (narzedzia/makiety/slownik/gen_strona.py z snippets/slownik.json; nie edytować ręcznie).
      Nagłówek, stopka, bazowy CSS i skrypt – kopia z tax-protect.html; bloki gen:* – narzedzia/makiety/gen_wspolne.py.
      Pole do_potwierdzenia pokazane jako adnotacja makiety (.mock-note) – w produkcji nie publikujemy go (snippets/slownik.json, $comment).
      Oznaczenia pojęć na innych stronach (dymki) – narzedzia/makiety/slownik/gen_terminy.py. -->
-{fonty}
+{PRELOAD}{fonty}
 {bazowy_css(wz)}
 {CSS_SLOWNIK}
 {noscript}
@@ -545,9 +590,10 @@ def strona():
 <main id="tresc">
 
   <!-- PROLOG: wstęp – objaśnienia, wiążące są OWU i umowa ($comment slownik.json) -->
-  <section class="scene scene--marble scene--pos-ct page-hero" aria-labelledby="hero-title">
+  <section class="scene scene--marble scene--pos-ct page-hero bg-on" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero-panel glass frame">
+        <div class="hero-copy">
         <nav class="crumbs" aria-label="Okruszki">
           <!-- produkcyjnie: / › /slownik (BreadcrumbList w JSON-LD) -->
           <ol>
@@ -558,16 +604,19 @@ def strona():
         <p class="eyebrow">Słownik BeautyPolisa</p>
         <h1 id="hero-title">Słownik <em>pojęć ubezpieczeniowych</em></h1>
         <p class="lead">Pojęcia, które spotkasz na stronach BeautyPolisa, w&nbsp;dokumentach ubezpieczenia i&nbsp;w&nbsp;Strefie Klienta – wyjaśnione prostym językiem, przy części haseł z&nbsp;przykładem.</p>
-        <p class="hero-note">Definicje wyjaśniają pojęcia prostym językiem. O&nbsp;zakresie ochrony decydują ogólne warunki ubezpieczenia (OWU) konkretnego produktu i&nbsp;umowa (polisa) – to objaśnienia, a&nbsp;nie warunki ubezpieczenia.</p>
         <div class="hero-actions">
           <a class="btn btn-navy" href="#indeks">Przejdź do indeksu A–Z</a>
           <a class="btn btn-ghost" href="makieta-v3.html#kontakt">Zapytaj doradcę</a>
         </div>
+        <p class="hero-note">Definicje wyjaśniają pojęcia prostym językiem. O&nbsp;zakresie ochrony decydują ogólne warunki ubezpieczenia (OWU) konkretnego produktu i&nbsp;umowa (polisa) – to objaśnienia, a&nbsp;nie warunki ubezpieczenia.</p>
+        </div>
+        <div class="hero-aside">
         <dl class="figures">
           <div><dt>Haseł w&nbsp;słowniku</dt><dd>{n}</dd></div>
           <div><dt>Kategorii</dt><dd>{kat_n}</dd></div>
           <div><dt>Stan na</dt><dd>{data}</dd></div>
         </dl>
+        </div>
       </div>
     </div>
   </section>
@@ -580,10 +629,10 @@ def strona():
           <div class="sl-pole-wrap">
             <label for="sl-q">Szukaj pojęcia</label>
             <div class="sl-pole">
-              <input type="search" id="sl-q" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. składka, L4, OWU" aria-describedby="sl-q-pomoc sl-licznik">
+              <input type="search" id="sl-q" name="q" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="np. składka, L4, OWU…" aria-describedby="sl-q-pomoc sl-licznik">
               <button class="btn btn-ghost" type="reset" id="sl-wyczysc" hidden>Wyczyść</button>
             </div>
-            <p class="sl-pomoc" id="sl-q-pomoc">Szukamy w&nbsp;nazwach pojęć i&nbsp;ich odmianach – możesz pisać bez polskich znaków.</p>
+            <p class="sl-pomoc" id="sl-q-pomoc">Wyszukiwarka sprawdza nazwy pojęć i&nbsp;ich odmiany – możesz pisać bez polskich znaków.</p>
           </div>
           <p class="sl-licznik" id="sl-licznik" aria-live="polite" aria-atomic="true">Wszystkie hasła: {n}</p>
         </form>
@@ -606,7 +655,7 @@ def strona():
       <div class="sl-lista">
         <div class="sl-pusto" id="sl-pusto" hidden>
           <p class="sl-pusto-t">Brak haseł dla „<span id="sl-pusto-q"></span>”</p>
-          <p>Sprawdź pisownię albo wpisz krótszy fragment słowa – np. „skład” zamiast „składkami”. Szukamy w&nbsp;nazwach pojęć i&nbsp;ich odmianach; jeśli wybrana jest kategoria, wybierz „Wszystkie”.</p>
+          <p>Sprawdź pisownię albo wpisz krótszy fragment słowa – np. „skład” zamiast „składkami”. Wyszukiwarka sprawdza nazwy pojęć i&nbsp;ich odmiany; jeśli wybrana jest kategoria, wybierz „Wszystkie”.</p>
           <div class="sl-pusto-akcje"><button class="btn btn-ghost" type="button" id="sl-pusto-reset">Pokaż wszystkie hasła</button><a class="link-quiet" href="makieta-v3.html#kontakt">Nie ma pojęcia? Zapytaj doradcę</a></div>
         </div>
 {lista}
@@ -619,7 +668,7 @@ def strona():
   <!-- EPILOG -->
   <section class="sl-end" aria-labelledby="end-title">
     <div class="container">
-      <div class="end-card">
+      <div class="end-card dark">
         <p class="eyebrow">Masz pytanie o&nbsp;swoją polisę?</p>
         <h2 id="end-title">Nie ma pojęcia, którego szukasz? <em>Zapytaj doradcę</em></h2>
         <p>Doradca Aura Expert wyjaśni zapisy OWU i&nbsp;polisy dla Twojego salonu. Słownik objaśnia pojęcia ogólnie – o&nbsp;zakresie ochrony decydują warunki konkretnego produktu.</p>
@@ -645,6 +694,10 @@ def strona():
 </body>
 </html>
 '''
+    # treść <main> (także zdania wpisane w szablon powyżej) przez typografia.html() – znaczniki, atrybuty, <script> i <style> bez zmian;
+    # hasła już przeszły przez t(), a funkcja jest idempotentna (weryfikacja 17.11.2026: spacje przed półpauzą, „Aura Expert”)
+    i, j = s.index('<main'), s.index('</main>')
+    s = s[:i] + typografia.html(s[i:j]) + s[j:]
     s = gen_wspolne.przetworz('slownik.html', s)
     assert s.count('<article class="haslo" id="haslo-') == n
     assert 'Tax Protect – ochrona' not in s.split('</head>')[1].split('<footer')[0], 'resztki treści tax-protect w nagłówku/treści'

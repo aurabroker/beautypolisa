@@ -21,6 +21,7 @@ import html, json, pathlib, re, subprocess, sys
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import zabiegi_model as zm  # noqa: E402
+from typografia import porownaj  # noqa: E402  – brzmienie: twarda spacja (polska typografia stron) = spacja
 
 V3 = zm.V3
 err = []
@@ -73,9 +74,9 @@ for l in J['listy']:
         if val != str(i if isinstance(nr, str) else nr):
             blad('%s: value %s' % (gdzie, val))
         nm = re.search(r'<span class="z-nr">([^<]*)</span> <span class="z-name">([^<]*)</span>', body)
-        if not nm or nm.group(1) != (nr + ')' if isinstance(nr, str) else '%d.' % nr) or html.unescape(nm.group(2)) != nazwa:
+        if not nm or nm.group(1) != (nr + ')' if isinstance(nr, str) else '%d.' % nr) or porownaj(html.unescape(nm.group(2))) != nazwa:
             blad('%s: numer/brzmienie ≠ JSON (%r)' % (gdzie, nazwa))
-        inne = re.findall(r'<a class="z-inna" href="#([^"]+)">także na liście nr (\d), poz\.&nbsp;(\d+)</a>', body)
+        inne = re.findall(r'<a class="z-inna" href="#([^"]+)">także na liście nr(?: |&nbsp;)(\d), poz\.&nbsp;(\d+)</a>', body)
         ocz_inne = [(kot[(z['id'], p['lista'])], str(L[p['lista']]['numer']), str(p['nr'])) for p in poz[z['id']] if p['lista'] != l['klucz']]
         if inne != ocz_inne:
             blad('%s: odnośniki do drugiej listy %s ≠ %s' % (gdzie, inne, ocz_inne))
@@ -116,7 +117,7 @@ for key, body in bloki:
     if [k for k, _ in det] != [k for k, _ in sekcje]:
         blad('dam-prace.html blok %s: sekcje %s' % (key, [k for k, _ in det]))
     for k, b in det:
-        got = [(v, html.unescape(n)) for v, n in re.findall(r'<input type="checkbox" name="zabieg" value="([^"]+)"[^>]*> <span>([^<]*)</span>', b)]
+        got = [(v, porownaj(html.unescape(n))) for v, n in re.findall(r'<input type="checkbox" name="zabieg" value="([^"]+)"[^>]*> <span>([^<]*)</span>', b)]
         if got != [(z['id'], n) for _, n, z in zm.pozycje_listy(J, k)]:
             blad('dam-prace.html blok %s, %s: checkboxy ≠ pozycje listy' % (key, k))
 

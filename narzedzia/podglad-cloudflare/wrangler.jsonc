@@ -9,7 +9,7 @@
   "preview_urls": false,
   "rules": [
     { "type": "Text", "globs": ["**/*.html", "**/*.css", "**/*.txt", "**/*.svg", "**/public/**/*.js"], "fallthrough": false },
-    { "type": "Data", "globs": ["**/*.webp", "**/*.png", "**/*.pdf"], "fallthrough": false }
+    { "type": "Data", "globs": ["**/*.webp", "**/*.png", "**/*.jpg", "**/*.pdf"], "fallthrough": false }
   ],
   "observability": { "enabled": false }
 }

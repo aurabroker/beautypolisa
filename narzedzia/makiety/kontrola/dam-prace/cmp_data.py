@@ -8,6 +8,7 @@ REPO = pathlib.Path(__file__).resolve().parents[4]  # katalog główny repozytor
 sys.path.insert(0, str(REPO / 'narzedzia/makiety'))
 import json, re, html  # noqa: E402
 import zabiegi_model as zm  # noqa: E402
+from typografia import porownaj  # noqa: E402  – twarda spacja (polska typografia) = spacja
 
 J = zm.wczytaj()
 W = zm.wczytaj_wycofane()
@@ -39,13 +40,13 @@ for key, attrs, b in blocks:
         err.append(key + ': sekcje %s' % [s[0] for s in sek])
     for k, nazwa, n, body in sek:
         rows = re.findall(r'<input type="checkbox" name="zabieg" value="([^"]+)"( checked)?> <span>(.*?)</span>', body)
-        if [(v, html.unescape(t)) for v, _, t in rows] != [(z['id'], t) for _, t, z in zm.pozycje_listy(J, k)]:
+        if [(v, porownaj(html.unescape(t))) for v, _, t in rows] != [(z['id'], t) for _, t, z in zm.pozycje_listy(J, k)]:
             err.append('%s/%s: checkboxy ≠ pozycje listy' % (key, k))
         if int(n) != len(rows):
             err.append('%s/%s: liczba w nagłówku %s ≠ %d' % (key, k, n, len(rows)))
         if sorted(v for v, c, _ in rows if c) != sorted(v for v, _, _ in rows if v in wybor):
             err.append('%s/%s: checked ≠ wybór %s' % (key, k, wybor))
-    print(key, 'wybór', wybor, 'sekcje', [(k, html.unescape(nz), int(n)) for k, nz, n, _ in sek])
+    print(key, 'wybór', wybor, 'sekcje', [(k, porownaj(html.unescape(nz)), int(n)) for k, nz, n, _ in sek])
 names = {z['id']: z['nazwa'] for z in S}
 names.update({w['id']: w['nazwa'] + ' (pozycja wycofana z listy)' for w in W['wycofane']})
 order = {i: n for n, i in enumerate([z['id'] for z in S] + [w['id'] for w in W['wycofane']])}
@@ -53,7 +54,7 @@ ntag = 0
 for m2 in re.finditer(r'<div class="zab-tags"([^>]*)>(.*?)</div>', page, re.S):
     ntag += 1
     ids = re.search(r'data-ids="([^"]*)"', m2.group(1)).group(1).split()
-    lis = [html.unescape(x) for x in re.findall(r'<li(?: class="zab-tag-wycofany")?>([^<]*)</li>', m2.group(2))]
+    lis = [porownaj(html.unescape(x)) for x in re.findall(r'<li(?: class="zab-tag-wycofany")?>([^<]*)</li>', m2.group(2))]
     bad = [i for i in ids if i not in names]
     if bad:
         err.append('nieznane id ' + str(bad))

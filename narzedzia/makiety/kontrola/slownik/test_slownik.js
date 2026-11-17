@@ -59,7 +59,8 @@ const tafle = () => [...document.querySelectorAll('body *')].filter(e => { const
       if (idx < 0) { wyniki.push(`${s}@${w}: brak widocznego oznaczenia`); await p.close(); continue; }
       const a = p.locator('a.bp-termin').nth(idx);
       const id = await a.getAttribute('data-termin');
-      ok(await a.getAttribute('role') === 'button' && await a.getAttribute('aria-haspopup') === 'dialog', `${s}: rola przycisku`);
+      // raport 16 (3.1, gen_terminy.py): pojęcie zostaje linkiem (bez role="button") z aria-haspopup="dialog" i aria-controls
+      ok(await a.getAttribute('role') === null && await a.getAttribute('aria-haspopup') === 'dialog' && await a.getAttribute('aria-controls') === 'bp-dymek', `${s}: link z aria-haspopup`);
       ok((await a.getAttribute('href')).endsWith('slownik.html#haslo-' + id), `${s}: href ${await a.getAttribute('href')}`);
       await a.scrollIntoViewIfNeeded(); await p.waitForTimeout(400);
       // Enter z klawiatury
@@ -82,9 +83,9 @@ const tafle = () => [...document.querySelectorAll('body *')].filter(e => { const
       st = await p.evaluate(() => ({ open: !document.getElementById('bp-dymek').hidden, back: document.activeElement && document.activeElement.classList.contains('bp-termin') }));
       ok(!st.open && st.back, `${s}@${w}: Esc ${JSON.stringify(st)}`);
       ok(await a.getAttribute('aria-expanded') === 'false', `${s}: aria-expanded po Esc`);
-      // Spacja otwiera, Tab przechodzi przez link i przycisk, Tab za ostatnim wraca do pojęcia
-      await p.keyboard.press(' '); await p.waitForTimeout(80);
-      ok(await p.evaluate(() => !document.getElementById('bp-dymek').hidden), `${s}: Spacja`);
+      // Enter otwiera ponownie (link – Spacja nie jest przechwytywana), Tab przechodzi przez link i przycisk, Tab za ostatnim wraca do pojęcia
+      await p.keyboard.press('Enter'); await p.waitForTimeout(80);
+      ok(await p.evaluate(() => !document.getElementById('bp-dymek').hidden), `${s}: Enter po Esc`);
       await p.keyboard.press('Tab'); const f1 = await p.evaluate(() => document.activeElement.className);
       await p.keyboard.press('Tab'); const f2 = await p.evaluate(() => document.activeElement.className);
       await p.keyboard.press('Tab'); const f3 = await p.evaluate(() => ({ c: document.activeElement.className, open: !document.getElementById('bp-dymek').hidden }));

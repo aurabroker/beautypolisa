@@ -78,3 +78,8 @@ SPEC_MAP = [
     ("psycholog", "Premium (pierwszorazowa)", "Standardowa (online) / Rozszerzona"),
 ]
 PROCEDURES = {"biopsja", "krioterapia", "tamponada", "iniekcja", "szycie rany"}
+
+# Polska norma (raport 16, 3.1): nazwy specjalności małą literą w środku listy – w danych źródła były wielkie litery
+# („Lekarz Rodzinny”, „Chirurg Onkolog”); pierwszą literę listy w komórce porównania podnosi build.py (cell), a w wierszu „Różnice” – skrypt.
+for _p in PACKAGES:
+    _p['specs_list'] = [_s.lower() for _s in _p['specs_list']]

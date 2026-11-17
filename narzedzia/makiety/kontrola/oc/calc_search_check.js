@@ -3,7 +3,7 @@
 //             #cena bez zmian, chip „<nazwa> lista nr 2” w „Wybranych zabiegach” (wybór nie zmienia składki – P2);
 //   „nici”  → podpowiedź poz. g) z plakietką „Ankieta, poz. g)”; wybór zaznacza „Wykonuję zabiegi wymagające ankiety ERGO Hestii”
 //             i pozycję g) (g4-06), panel: „Składka do indywidualnej wyceny”;
-//   dialog klauzuli: 12 punktów, Esc zamyka i oddaje fokus przyciskowi „Treść klauzuli”.
+//   dialog klauzuli: 12 punktów, Esc zamyka i oddaje fokus przyciskowi „Pokaż treść klauzuli”.
 // Uruchom: node narzedzia/makiety/kontrola/oc/calc_search_check.js [ścieżka makieta-v3.html]   (kod wyjścia 1 przy błędzie)
 const { chromium } = require('playwright');
 const path = require('path');
@@ -17,8 +17,10 @@ const plik = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__di
   const cb = p.locator('[role="combobox"]').first();
   const cenaPrzed = await p.textContent('#cena');
   await cb.fill('mezo'); await p.waitForTimeout(200);
-  const opts = await p.locator('[role="option"]').allTextContents();
-  const plak = await p.locator('[role="option"] .zab-badge').allTextContents();
+  // twarda spacja = spacja (runda 2 weryfikacji: plakietki „Lista nr\u00a02”, „Ankieta, poz.\u00a0g)”)
+  const nbsp = (l) => l.map((x) => x.replace(/\u00a0/g, ' '));
+  const opts = nbsp(await p.locator('[role="option"]').allTextContents());
+  const plak = nbsp(await p.locator('[role="option"] .zab-badge').allTextContents());
   ma('„mezo”: podpowiedzi', opts.length > 0 && opts.every((o) => /mezoterapi/i.test(o)));
   ma('„mezo”: plakietki list (bez grup)', plak.length === opts.length && plak.every((x) => /^(Lista nr [12]|Listy nr 1 i 2)$/.test(x)));
   await cb.press('ArrowDown'); await cb.press('Enter'); await p.waitForTimeout(600);
@@ -30,7 +32,7 @@ const plik = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__di
   ma('„mezo”: chip z numerem listy', chips.length === 1 && / lista nr [12]$| listy nr 1 i 2$/.test(chips[0]));
   ma('„mezo”: komunikat „Wybór nie zmienia składki.”', /Wybór nie zmienia składki\.$/.test(status1));
   await cb.fill('nici'); await p.waitForTimeout(200);
-  const nici = await p.locator('[role="option"]').allTextContents();
+  const nici = nbsp(await p.locator('[role="option"]').allTextContents());
   ma('„nici”: poz. g) w brzmieniu Aneksu nr 5', nici.some((o) => o.includes('Zabiegi z użyciem nici PDO, PLLA i PLA/CL') && o.includes('Ankieta, poz. g)')));
   await p.click('#zab-opt-g4-06'); await p.waitForTimeout(600);
   const ank = await p.locator('#ankieta').isChecked(), g = await p.locator('#g4-06').isChecked();
@@ -38,14 +40,14 @@ const plik = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__di
   ma('„nici”: zaznaczone „Wykonuję…” i poz. g)', ank && g);
   ma('„nici”: wycena indywidualna', cena === 'Składka do indywidualnej wyceny');
   const status2 = (await p.textContent('#calc-status')).trim();
-  const btn = p.locator('button:has-text("Treść klauzuli")').first();
+  const btn = p.locator('button:has-text("Pokaż treść klauzuli")').first();
   await btn.click(); await p.waitForTimeout(200);
   const dlg = await p.evaluate(() => { const d = document.querySelector('dialog[open]'); return d ? [d.querySelectorAll('ol > li').length, d.textContent.includes('zgodą Ubezpieczyciela'), d.querySelector('.klauzula-foot').textContent.replace(/\s+/g, ' ').trim()] : null; });
   await p.keyboard.press('Escape'); await p.waitForTimeout(150);
   const closed = await p.evaluate(() => !document.querySelector('dialog[open]') && document.activeElement && document.activeElement.textContent.trim());
   ma('dialog klauzuli: 12 punktów', dlg && dlg[0] === 12 && dlg[1]);
   ma('dialog klauzuli: limit w stopce', dlg && dlg[2].includes('Limit: 100 000 zł'));
-  ma('dialog klauzuli: fokus wraca do „Treść klauzuli”', closed === 'Treść klauzuli ochrony prawnej');
+  ma('dialog klauzuli: fokus wraca do „Pokaż treść klauzuli”', closed === 'Pokaż treść klauzuli ochrony prawnej');
   ma('błędy JS', errs.length === 0);
   console.log({ opts: opts.slice(0, 4), plak: plak.slice(0, 4), chips, status1, nici: nici.slice(0, 2), ankieta: [ank, g], cena, status2: status2.slice(0, 160), dlg, closedFocus: closed, errs });
   await b.close();

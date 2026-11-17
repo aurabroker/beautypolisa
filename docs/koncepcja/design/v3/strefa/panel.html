@@ -7,7 +7,7 @@
 <meta name="description" content="Makieta: pulpit salonu w Strefie Klienta BeautyPolisa – polisy i dokumenty, zgłoszenie szkody, zespół, ustawienia.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#141C33">
+<meta name="theme-color" content="#EDE5D8">
 <meta name="color-scheme" content="only light">
 <!-- Produkcja: /strefa-klienta/* – dynamiczne, no-store, noindex, bez klienta Supabase w przeglądarce; uprawnienia egzekwuje RLS.
      Bez tagu Google (GA4, Zaraz) w Strefie Klienta. W produkcji fonty lokalnie (next/font/local), bez fonts.googleapis.com
@@ -42,7 +42,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin[aria-expanded="true"]{background:rgba(217,192,137,.18)}
 :is(.dark,.banner,[class*="--dark"],[class*="--night"]) a.bp-termin.bp-termin:focus-visible{outline-color:var(--color-gold-light,#D9C089)}
 /* dymek: kryjące ivory (bez backdrop-filter – nie liczy się do limitu 3 tafli), złota linia, cień */
-.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
+.bp-dymek{position:absolute;top:0;left:0;z-index:85;box-sizing:border-box;overscroll-behavior:contain;width:min(380px,calc(100vw - 32px));padding:16px 20px 12px;background:var(--color-ivory,#F7F3EC);color:var(--color-ink,#1B2233);border:1px solid rgba(184,151,90,.75);border-radius:6px;box-shadow:0 0 0 1px rgba(42,59,104,.06),0 2px 4px rgba(20,28,51,.1),0 22px 44px -18px rgba(20,28,51,.6);font:400 var(--text-body,.9375rem)/1.6 var(--font-sans,system-ui,sans-serif);letter-spacing:normal;text-align:left;text-transform:none;white-space:normal}
 .bp-dymek[hidden]{display:none}
 .bp-dymek:focus{outline:none}
 .bp-dymek:focus-visible{outline:2px solid var(--color-navy,#2A3B68);outline-offset:2px}
@@ -74,14 +74,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 <!-- Adnotacja makiety: w produkcji usuwana -->
 <div class="mock-bar" role="note">
   <strong>Makieta</strong>
-  <span>Strefa Klienta – konto salonu, dostępne dla każdego klienta z&nbsp;polisą (D-A, D-B). Dane są fikcyjne, stan na 12&nbsp;listopada 2026&nbsp;r.</span>
+  <span>Strefa Klienta&nbsp;– konto salonu, dostępne dla każdego klienta z&nbsp;polisą (D-A, D-B). Dane są fikcyjne, stan na 12&nbsp;listopada 2026&nbsp;r.</span>
   <nav aria-label="Ekrany makiety">
     <a href="#pulpit">Pulpit właściciela</a>
     <a href="#sprawy">Sprawy w&nbsp;toku</a>
     <a href="#polisy">Polisy i&nbsp;archiwum</a>
     <a href="#polisa-oc">Szczegóły polisy</a>
     <a href="#szkoda">Zgłoszenie szkody</a>
-    <a href="#szkoda-wyslane">Szkoda – wysłane</a>
+    <a href="#szkoda-wyslane">Szkoda&nbsp;– wysłane</a>
     <a href="#zespol">Zespół</a>
     <a href="#pracownik">Pulpit pracownika</a>
     <a href="#ustawienia">Ustawienia</a>
@@ -91,7 +91,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <a href="panel.html?zakladki=bez-pracy#pulpit">Bez zakładki Praca</a>
     <a href="panel.html?zakladki=bez-szkolen#pulpit">Bez Szkoleń</a>
     <a href="panel.html?zakladki=bez-pracy,bez-szkolen#pracownik">Pracownik: obie ukryte</a>
-    <a href="panel.html?rola=pracownik#zakladki">Zakładki – widok pracownika</a>
+    <a href="panel.html?rola=pracownik#zakladki">Zakładki&nbsp;– widok pracownika</a>
     <a href="panel.html?zakladki=wszystkie#zakladki">Wszystkie widoczne</a>
     <a href="panel.html?szukam=wylaczone#zakladki">„Szukam pracy” wyłączone (admin)</a>
   </nav>
@@ -104,8 +104,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg><span class="nav-toggle-label">Menu</span>
     </button>
     <a class="brand" href="#pulpit" aria-label="Strefa Klienta BeautyPolisa – pulpit">
-      <span class="logo-chip"><img src="../../../../../BeautyPolisa_logo_podstawowe_poziome.png" alt="BeautyPolisa" width="133" height="20"></span>
-      <span class="zone-name">Strefa Klienta<small>created by Aura Expert</small></span>
+      <span class="logo-chip"><img src="../img/logo-beautypolisa-320.png" alt="BeautyPolisa" width="133" height="20" translate="no"></span>
+      <span class="zone-name">Strefa Klienta<small>created by <span translate="no">Aura&nbsp;Expert</span></small></span>
     </a>
     <span class="topbar-spacer"></span>
     <details class="account" id="account">
@@ -119,7 +119,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <p class="acc-who"><strong>Salon Przykładowy</strong><span class="owner-only">anna@salon-przykladowy.example</span><span class="employee-only">ewa@salon-przykladowy.example</span></p>
         <p class="label-caps">Przełącz konto</p>
         <a href="#pulpit" aria-current="true"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-kosmetolog"/></svg>Salon Przykładowy</a>
-        <a href="szkolenia.html#organizator" class="owner-only"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Salon Przykładowy – organizator szkoleń</a>
+        <a href="szkolenia.html#organizator" class="owner-only"><svg class="lux-icon lux-icon--sm" aria-hidden="true"><use href="#lux-w-zakresie"/></svg>Salon Przykładowy&nbsp;– organizator szkoleń</a>
         <hr>
         <a href="#ustawienia"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Ustawienia</a>
         <a href="logowanie.html"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></svg>Wyloguj</a>
@@ -161,7 +161,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <hr>
     <div class="sidenav-foot">
       <span class="label-caps">Opiekun</span>
-      <span>Doradca Aura Expert</span>
+      <span>Doradca <span translate="no">Aura&nbsp;Expert</span></span>
       <a class="link-quiet" href="../makieta-v3.html#kontakt">Napisz do doradcy</a>
     </div>
   </nav>
@@ -191,7 +191,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         <svg class="lux-icon" aria-hidden="true"><use href="#lux-doradca"/></svg>
         <div>
           <strong id="t-odnow">Odnowienie w&nbsp;toku&nbsp;– dokończ APK i&nbsp;wniosek</strong>
-          <p><a class="bp-termin" href="../slownik.html#haslo-odpowiedzialnosc-cywilna" data-termin="odpowiedzialnosc-cywilna">OC</a> dla branży beauty, polisa BP/2026/000123 (przykład), ochrona do 31&nbsp;grudnia 2026&nbsp;r. Odnowienie przygotował doradca Aura Expert, a&nbsp;składka wynika z&nbsp;taryfy programu.</p>
+          <p><a class="bp-termin" href="../slownik.html#haslo-odpowiedzialnosc-cywilna" data-termin="odpowiedzialnosc-cywilna">OC</a> dla branży beauty, polisa BP/2026/000123 (przykład), ochrona do 31&nbsp;grudnia 2026&nbsp;r. Odnowienie przygotował doradca <span translate="no">Aura&nbsp;Expert</span>, a&nbsp;składka wynika z&nbsp;taryfy programu.</p>
         </div>
         <a class="btn btn-ivory" href="#sprawy">Przejdź do sprawy</a>
       </div>
@@ -205,12 +205,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
            nie jest otwierany. -->
       <section class="card surface owner-only" id="sprawy" aria-labelledby="t-sprawy">
         <div class="card-head">
-          <div><h2 class="card-title" id="t-sprawy">Sprawy w&nbsp;toku</h2><p class="card-sub">Analiza potrzeb (APK) i&nbsp;wniosek o&nbsp;polisę OC przygotowane przez doradcę Aura Expert</p></div>
+          <div><h2 class="card-title" id="t-sprawy">Sprawy w&nbsp;toku</h2><p class="card-sub">Analiza potrzeb (APK) i&nbsp;wniosek o&nbsp;polisę OC przygotowane przez doradcę <span translate="no">Aura&nbsp;Expert</span></p></div>
         </div>
         <ul class="list cases">
           <li>
             <div class="grow">
-              <h3 class="case-title"><span class="label-caps">Odnowienie</span> OC dla branży beauty&nbsp;– program ERGO Hestia</h3>
+              <h3 class="case-title"><span class="label-caps">Odnowienie</span> OC dla branży beauty&nbsp;– program <span translate="no">ERGO&nbsp;Hestia</span></h3>
               <span class="meta">Link ważny do <time datetime="2026-12-31">31&nbsp;grudnia 2026&nbsp;r.</time> · stan: APK wypełniona, wniosek do podpisu</span>
             </div>
             <form class="row-actions js-case-open" action="#sprawy" method="post">
@@ -225,7 +225,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <p class="case-status small js-case-status" role="status" hidden><span class="mock-note">Makieta</span> W&nbsp;produkcji: POST <code>/strefa-klienta/sprawy/[id]/dokoncz</code> → 303 na <code>portal.beautypolisa.eu/w/XXXXXXXXXX</code>. Makieta nie otwiera tego adresu.</p>
           </li>
         </ul>
-        <p class="case-note small" id="sprawy-domena"><svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg><span>Przycisk otwiera serwis <strong>portal.beautypolisa.eu</strong>&nbsp;– tam wypełnisz <a class="bp-termin" href="../slownik.html#haslo-apk" data-termin="apk">APK</a> i&nbsp;wniosek i&nbsp;je podpiszesz. Link do sprawy jest osobisty, ma termin ważności i&nbsp;zawsze prowadzi do tej domeny; nie przekazuj go innym osobom. Przed pokazaniem danych i&nbsp;przed podpisem poprosimy o&nbsp;kod wysłany na adres e-mail podany w&nbsp;sprawie; na ten adres przyszedł też link do sprawy. Aura Expert nigdy nie poprosi Cię o&nbsp;link ani o&nbsp;kod przez telefon. <a class="bp-termin" href="../slownik.html#haslo-polisa" data-termin="polisa">Polisa</a> pojawi się w&nbsp;Strefie Klienta po wystawieniu.</span></p>
+        <p class="case-note small" id="sprawy-domena"><svg class="lux-icon" aria-hidden="true"><use href="#lux-bezpieczenstwo"/></svg><span>Przycisk otwiera serwis <strong>portal.beautypolisa.eu</strong>&nbsp;– tam wypełnisz <a class="bp-termin" href="../slownik.html#haslo-apk" data-termin="apk">APK</a> i&nbsp;wniosek i&nbsp;je podpiszesz. Link do sprawy jest osobisty, ma termin ważności i&nbsp;zawsze prowadzi do tej domeny; nie przekazuj go innym osobom. Przed pokazaniem danych i&nbsp;przed podpisem poprosimy o&nbsp;kod wysłany na adres e-mail podany w&nbsp;sprawie; na ten adres przyszedł też link do sprawy. <span translate="no">Aura&nbsp;Expert</span> nigdy nie poprosi Cię o&nbsp;link ani o&nbsp;kod przez telefon. <a class="bp-termin" href="../slownik.html#haslo-polisa" data-termin="polisa">Polisa</a> pojawi się w&nbsp;Strefie Klienta po wystawieniu.</span></p>
 
         <!-- Warianty karty (11 §4.4a pkt 4; 12 §5.3) – w strefie właściciel widzi tylko jeden, bieżący stan sprawy -->
         <div class="case-variants">
@@ -233,12 +233,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <ul class="list cases">
             <li>
               <div class="grow">
-                <h3 class="case-title"><span class="mock-note">Wariant: link po terminie</span><span class="label-caps">Odnowienie</span> OC dla branży beauty&nbsp;– program ERGO Hestia</h3>
+                <h3 class="case-title"><span class="mock-note">Wariant: link po terminie</span><span class="label-caps">Odnowienie</span> OC dla branży beauty&nbsp;– program <span translate="no">ERGO&nbsp;Hestia</span></h3>
                 <span class="meta">Link wygasł <time datetime="2026-11-10">10&nbsp;listopada 2026&nbsp;r.</time> · stan: otwarto, APK niewypełniona</span>
               </div>
               <!-- produkcja: tworzy lead z kontekstem konta i sprawy (jak P5); nowy link wysyła CRM e-mailem na adres ze sprawy -->
               <form class="row-actions js-case-newlink" action="#sprawy" method="post">
-                <button class="btn btn-ghost btn-sm" type="submit">Poproś doradcę o&nbsp;nowy link<span class="sr-only"> – odnowienie OC</span></button>
+                <button class="btn btn-ghost btn-sm" type="submit"><span class="js-etykieta">Poproś doradcę o&nbsp;nowy link</span><span class="sr-only"> – odnowienie OC</span></button>
               </form>
               <ol class="track" aria-label="Stan sprawy: odnowienie OC, link po terminie">
                 <li class="done">Wysłano<span class="sr-only"> – zrobione</span></li>
@@ -246,11 +246,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                 <li>APK wypełniona</li>
                 <li>Wniosek złożony</li>
               </ol>
-              <p class="case-status small js-case-status" role="status" hidden>Prośba trafiła do doradcy Aura Expert. Nowy link przyjdzie e-mailem na adres podany w&nbsp;sprawie.</p>
+              <p class="case-status small js-case-status" role="status" hidden>Prośba trafiła do doradcy <span translate="no">Aura&nbsp;Expert</span>. Nowy link przyjdzie e-mailem na adres podany w&nbsp;sprawie.</p>
             </li>
             <li>
               <div class="grow">
-                <h3 class="case-title"><span class="mock-note">Wariant: wniosek złożony</span><span class="label-caps">Odnowienie</span> OC dla branży beauty&nbsp;– program ERGO Hestia</h3>
+                <h3 class="case-title"><span class="mock-note">Wariant: wniosek złożony</span><span class="label-caps">Odnowienie</span> OC dla branży beauty&nbsp;– program <span translate="no">ERGO&nbsp;Hestia</span></h3>
                 <span class="meta">Wniosek złożony <time datetime="2026-11-12">12&nbsp;listopada 2026&nbsp;r.</time></span>
               </div>
               <p class="case-done small">Wniosek złożony. Polisa pojawi się tutaj po wystawieniu.</p>
@@ -282,7 +282,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <svg class="lux-icon" aria-hidden="true"><use href="#lux-oc-beauty"/></svg>
             <div>
               <h3 id="t-oc">OC dla branży beauty</h3>
-              <p>Program ERGO Hestii nr WA50/003353/24/A (z&nbsp;Fundacją Beauty Razem)</p>
+              <p>Program <span translate="no">ERGO&nbsp;Hestii</span> nr&nbsp;WA50/003353/24/A (z&nbsp;Fundacją <span translate="no">Beauty Razem</span>)</p>
             </div>
             <div class="badges"><span class="badge badge--ok">Aktywna</span><span class="badge badge--warn">Kończy się za 49&nbsp;dni</span></div>
           </div>
@@ -298,7 +298,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <strong>882,00&nbsp;zł</strong>
             <span>składka roczna: 790&nbsp;zł z&nbsp;taryfy programu + 92&nbsp;zł klauzula ochrony prawnej</span>
           </div>
-          <p class="xsmall muted">Zakres i&nbsp;<a class="bp-termin" href="../slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">wyłączenia</a> określają warunki ubezpieczenia programu. Dane polisy pochodzą z&nbsp;CRM Aura Expert.</p>
+          <p class="xsmall muted">Zakres i&nbsp;<a class="bp-termin" href="../slownik.html#haslo-zakres-i-wylaczenia" data-termin="zakres-i-wylaczenia">wyłączenia</a> określają warunki ubezpieczenia programu. Dane polisy pochodzą z&nbsp;CRM <span translate="no">Aura&nbsp;Expert</span>.</p>
           <div class="actions">
             <a class="btn btn-navy js-drawer-open" href="#polisa-oc">Szczegóły i&nbsp;dokumenty</a>
             <a class="btn btn-ghost" href="#szkoda">Zgłoś szkodę</a>
@@ -311,21 +311,21 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <svg class="lux-icon" aria-hidden="true"><use href="#lux-grupowe-ergo"/></svg>
               <div>
                 <h3 id="t-grp">Grupowe ERGO dla beauty</h3>
-                <p>ERGO Hestia</p>
+                <p><span translate="no">ERGO&nbsp;Hestia</span></p>
               </div>
               <div class="badges"><span class="badge badge--ok">Aktywna</span></div>
             </div>
             <dl class="kv">
               <div><dt>Numer polisy</dt><dd>BP/2026/000087 (przykład)</dd></div>
-              <div><dt>Okres ochrony</dt><dd>1&nbsp;marca 2026&nbsp;r. – 28&nbsp;lutego 2027&nbsp;r.</dd></div>
-              <div><dt>Składka</dt><dd>według cennika programu – w&nbsp;dokumencie polisy</dd></div>
+              <div><dt>Okres ochrony</dt><dd>1&nbsp;marca 2026&nbsp;r.&nbsp;– 28&nbsp;lutego 2027&nbsp;r.</dd></div>
+              <div><dt>Składka</dt><dd>według cennika programu&nbsp;– w&nbsp;dokumencie polisy</dd></div>
             </dl>
             <a class="link-lux" href="#polisy">Szczegóły i&nbsp;dokumenty<span class="sr-only">: Grupowe ERGO dla beauty</span></a>
           </article>
-          <a class="shortcut surface" href="#polisy" data-tab="t-archiwum">
+          <a class="shortcut surface" href="#p-archiwum">
             <svg class="lux-icon" aria-hidden="true"><use href="#lux-tax-protect"/></svg>
             <strong>Archiwum</strong>
-            <span>1 polisa wygasła: Tax Protect (Colonnade). Wygasłe polisy zostają w&nbsp;archiwum razem z&nbsp;dokumentami.</span>
+            <span>1 polisa wygasła: <span translate="no">Tax Protect</span> (<span translate="no">Colonnade</span>). Wygasłe polisy zostają w&nbsp;archiwum razem z&nbsp;dokumentami.</span>
           </a>
         </div>
       </div>
@@ -358,8 +358,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <div class="grid grid-2">
         <section class="card surface" aria-labelledby="t-zesp-mini">
           <div class="card-head">
-            <div><h2 class="card-title" id="t-zesp-mini">Zespół</h2><p class="card-sub">2 osoby z&nbsp;dostępem, 1&nbsp;zaproszenie czeka na przyjęcie</p></div>
-            <a class="btn btn-ghost btn-sm" href="#zespol">Zarządzaj</a>
+            <div><h2 class="card-title" id="t-zesp-mini">Zespół</h2><p class="card-sub">2&nbsp;osoby z&nbsp;dostępem, 1&nbsp;zaproszenie czeka na przyjęcie</p></div>
+            <a class="btn btn-ghost btn-sm" href="#zespol">Zarządzaj zespołem</a>
           </div>
           <ul class="list">
             <li><div class="person"><span class="monogram" aria-hidden="true">AP</span><div><strong>Anna Przykładowa</strong><span>właścicielka</span></div></div></li>
@@ -374,7 +374,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </div>
           <ul class="list" data-historia-mini>
             <li><div class="grow"><strong>Ogłoszenie wysłane do akceptacji: „Recepcjonistka / recepcjonista (przykład)”</strong><span class="meta"><time datetime="2026-11-11">11&nbsp;listopada 2026&nbsp;r.</time> · Anna Przykładowa</span></div></li>
-            <li><div class="grow"><strong>Pobrano dokument: OWU – OC dla branży beauty</strong><span class="meta"><time datetime="2026-11-10">10&nbsp;listopada 2026&nbsp;r.</time> · Anna Przykładowa</span></div></li>
+            <li><div class="grow"><strong>Pobrano dokument: OWU&nbsp;– OC dla branży beauty</strong><span class="meta"><time datetime="2026-11-10">10&nbsp;listopada 2026&nbsp;r.</time> · Anna Przykładowa</span></div></li>
             <li><div class="grow"><strong>Wysłano zaproszenie: kasia@salon-przykladowy.example</strong><span class="meta"><time datetime="2026-11-09">9&nbsp;listopada 2026&nbsp;r.</time> · Anna Przykładowa</span></div></li>
           </ul>
         </section>
@@ -388,7 +388,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <header class="page-head glass glass--strong frame">
         <ol class="crumbs" aria-label="Ścieżka"><li><a href="#pulpit">Pulpit</a></li><li aria-current="page">Polisy</li></ol>
         <h1 id="t-polisy">Polisy</h1>
-        <p class="lead">Aktualne i&nbsp;archiwalne polisy salonu. Polisy i&nbsp;dokumenty dodaje doradca Aura Expert – dane polisy zmienia się przez doradcę.</p>
+        <p class="lead">Aktualne i&nbsp;archiwalne polisy salonu. Polisy i&nbsp;dokumenty dodaje doradca <span translate="no">Aura&nbsp;Expert</span>&nbsp;– dane polisy zmienia się przez doradcę.</p>
       </header>
 
       <div class="card surface">
@@ -400,12 +400,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
         <div class="tabpanel" role="tabpanel" id="p-aktualne" aria-labelledby="t-aktualne" tabindex="0">
           <h2 class="sr-only">Aktualne polisy</h2>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Aktualne polisy – tabela">
             <table class="data stack">
               <thead><tr><th scope="col">Produkt</th><th scope="col">Numer polisy</th><th scope="col">Okres ochrony</th><th scope="col" class="r">Składka roczna</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Akcje</span></th></tr></thead>
               <tbody>
                 <tr>
-                  <th scope="row" data-label="Produkt">OC dla branży beauty<br><span class="muted small">ERGO Hestia</span></th>
+                  <th scope="row" data-label="Produkt">OC dla branży beauty<br><span class="muted small"><span translate="no">ERGO&nbsp;Hestia</span></span></th>
                   <td data-label="Numer">BP/2026/000123 (przykład)</td>
                   <td data-label="Okres">1.01–31.12.2026</td>
                   <td data-label="Składka" class="r money">882,00&nbsp;zł</td>
@@ -413,7 +413,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                   <td class="cell-actions"><a class="btn btn-ghost btn-sm js-drawer-open" href="#polisa-oc">Szczegóły<span class="sr-only"> polisy OC dla branży beauty</span></a></td>
                 </tr>
                 <tr>
-                  <th scope="row" data-label="Produkt">Grupowe ERGO dla beauty<br><span class="muted small">ERGO Hestia</span></th>
+                  <th scope="row" data-label="Produkt">Grupowe ERGO dla beauty<br><span class="muted small"><span translate="no">ERGO&nbsp;Hestia</span></span></th>
                   <td data-label="Numer">BP/2026/000087 (przykład)</td>
                   <td data-label="Okres">1.03.2026–28.02.2027</td>
                   <td data-label="Składka" class="r">w&nbsp;dokumencie polisy</td>
@@ -427,16 +427,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
         <div class="tabpanel" role="tabpanel" id="p-archiwum" aria-labelledby="t-archiwum" tabindex="0" hidden>
           <h2 class="sr-only">Archiwum polis</h2>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Archiwum polis – tabela">
             <table class="data stack">
               <thead><tr><th scope="col">Produkt</th><th scope="col">Numer polisy</th><th scope="col">Okres ochrony</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Akcje</span></th></tr></thead>
               <tbody>
                 <tr>
-                  <th scope="row" data-label="Produkt">Tax Protect<br><span class="muted small">Colonnade</span></th>
+                  <th scope="row" data-label="Produkt"><span translate="no">Tax Protect</span><br><span class="muted small"><span translate="no">Colonnade</span></span></th>
                   <td data-label="Numer">BP/2025/000045 (przykład)</td>
                   <td data-label="Okres">1.01–31.12.2025</td>
                   <td data-label="Status"><span class="badge badge--off">Wygasła</span></td>
-                  <td class="cell-actions"><a class="btn btn-ghost btn-sm" href="#polisy">Dokumenty<span class="sr-only"> polisy Tax Protect</span></a></td>
+                  <td class="cell-actions"><a class="btn btn-ghost btn-sm" href="#polisy">Dokumenty<span class="sr-only"> polisy <span translate="no">Tax Protect</span></span></a></td>
                 </tr>
               </tbody>
             </table>
@@ -463,12 +463,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <header class="page-head glass glass--strong frame">
         <ol class="crumbs" aria-label="Ścieżka"><li><a href="#pulpit">Pulpit</a></li><li><a href="#polisy">Polisy</a></li><li aria-current="page">Zgłoszenie szkody</li></ol>
         <h1 id="t-szkoda">Zgłoś szkodę</h1>
-        <p class="lead">Formularz nie ma pola opisu. Szczegóły zdarzenia – zwykle dotyczące zdrowia klientki lub klienta – doradca Aura Expert zbierze telefonicznie i&nbsp;przekaże zgłoszenie do ubezpieczyciela.</p>
+        <p class="lead">Formularz nie ma pola opisu. Szczegóły zdarzenia&nbsp;– zwykle dotyczące zdrowia klientki lub klienta&nbsp;– doradca <span translate="no">Aura&nbsp;Expert</span> zbierze telefonicznie i&nbsp;przekaże zgłoszenie do ubezpieczyciela.</p>
       </header>
 
       <div class="grid grid-main">
         <div class="grid">
-          <form class="card surface form" id="f-szkoda" action="#szkoda-wyslane" method="post" novalidate aria-labelledby="t-szkoda-form">
+          <form class="card surface form" id="f-szkoda" action="#szkoda-wyslane" method="post" novalidate aria-labelledby="t-szkoda-form" data-niezapisane>
             <h2 class="card-title" id="t-szkoda-form">Zgłoszenie</h2>
             <div class="fields-2">
               <div class="field">
@@ -513,7 +513,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               </div>
               <div class="field">
                 <label for="sz-email">E-mail</label>
-                <input type="email" id="sz-email" name="email" autocomplete="email" value="anna@salon-przykladowy.example" required>
+                <input type="email" id="sz-email" name="email" autocomplete="email" inputmode="email" spellcheck="false" value="anna@salon-przykladowy.example" required>
                 <p class="field-error" id="sz-email-err" hidden></p>
               </div>
               <div class="field">
@@ -523,7 +523,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             </div>
             <div class="alert alert--info">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
-              <p class="small">Nie wpisuj tu danych o&nbsp;zdrowiu ani danych klientki lub klienta. Zgłoszenie trafi do doradcy Aura Expert, który przekaże je ubezpieczycielowi.</p>
+              <p class="small">Nie wpisuj tu danych o&nbsp;zdrowiu ani danych klientki lub klienta. Zgłoszenie trafi do doradcy <span translate="no">Aura&nbsp;Expert</span>, który przekaże je ubezpieczycielowi.</p>
             </div>
             <div class="form-foot"><button class="btn btn-navy" type="submit">Wyślij zgłoszenie</button><a class="link-quiet" href="#pulpit">Anuluj</a></div>
           </form>
@@ -532,7 +532,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <section class="card surface is-pending" id="szkoda-wyslane" aria-labelledby="t-wyslane" tabindex="-1">
             <div class="alert alert--success" role="status">
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
-              <strong class="alert-title" id="t-wyslane">Zgłoszenie SZ-2026-000123 (przykład) zostało przyjęte</strong>
+              <strong class="alert-title" id="t-wyslane">Doradca dostał zgłoszenie SZ-2026-000123 (przykład)</strong>
               <p class="small">Potwierdzenie wysłaliśmy na adres anna@salon-przykladowy.example. Doradca skontaktuje się z&nbsp;Tobą telefonicznie, aby zebrać szczegóły.</p>
             </div>
             <p class="label-caps">Status zgłoszenia</p>
@@ -551,11 +551,11 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <ol class="steps">
             <li><strong>Zabezpiecz <a class="bp-termin" href="../slownik.html#haslo-dokumentacja-zabiegu" data-termin="dokumentacja-zabiegu">dokumentację zabiegu</a></strong><p>Karta klienta, podpisany formularz zgody, zdjęcia przed i&nbsp;po, informacje o&nbsp;produktach i&nbsp;urządzeniach. Nie poprawiaj wpisów po fakcie.</p></li>
             <li><strong>Przyjmij <a class="bp-termin" href="../slownik.html#haslo-roszczenie" data-termin="roszczenie">roszczenie</a>, nie uznawaj winy</strong><p>Poproś o&nbsp;roszczenie na piśmie i&nbsp;potwierdź jego odbiór. Nie zawieraj ugody na własną rękę.</p></li>
-            <li><strong>Zgłoś szkodę niezwłocznie</strong><p>Terminy zgłoszenia określają OWU – im szybciej, tym lepiej.</p></li>
+            <li><strong>Zgłoś szkodę niezwłocznie</strong><p>Terminy zgłoszenia określają OWU&nbsp;– im szybciej, tym lepiej.</p></li>
             <li><strong>Przygotuj komplet dokumentów</strong><p>Doradca powie, co przekazać ubezpieczycielowi. Brakujące dokumenty wydłużają likwidację szkody.</p></li>
             <li><strong>Współpracuj z&nbsp;likwidatorem</strong><p>Odpowiadaj na wezwania ubezpieczyciela w&nbsp;wyznaczonych terminach.</p></li>
           </ol>
-          <p class="xsmall muted">Zakres ochrony – zgodnie z&nbsp;<a class="bp-termin" href="../slownik.html#haslo-owu" data-termin="owu">OWU</a>.</p>
+          <p class="xsmall muted">Zakres ochrony&nbsp;– zgodnie z&nbsp;<a class="bp-termin" href="../slownik.html#haslo-owu" data-termin="owu">OWU</a>.</p>
         </aside>
       </div>
     </section>
@@ -567,21 +567,21 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <header class="page-head glass glass--strong frame">
         <ol class="crumbs" aria-label="Ścieżka"><li><a href="#pulpit">Pulpit</a></li><li aria-current="page">Zespół</li></ol>
         <h1 id="t-zespol">Zespół</h1>
-        <p class="lead">Osoby z&nbsp;dostępem do Strefy Klienta salonu. Pracownicy widzą „Szkolenia” i&nbsp;ogłoszenia salonu w&nbsp;„Dam pracę” – bez polis i&nbsp;dokumentów.</p>
+        <p class="lead">Osoby z&nbsp;dostępem do Strefy Klienta salonu. Pracownicy widzą „Szkolenia” i&nbsp;ogłoszenia salonu w&nbsp;„Dam pracę”&nbsp;– bez polis i&nbsp;dokumentów.</p>
       </header>
 
       <div class="alert alert--warn" id="potwierdz-sklad">
         <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="1.5"/><path d="M4 9h16M9 3v4M15 3v4M9 14.5l2 2 4-4"/></svg>
         <strong class="alert-title">Potwierdź skład zespołu</strong>
         <p class="small">Raz w&nbsp;roku potwierdzasz, że lista osób z&nbsp;dostępem jest aktualna. Ostatnie potwierdzenie: <time datetime="2025-11-04">4&nbsp;listopada 2025&nbsp;r.</time> (przykład). <span class="mock-note">Założenie</span></p>
-        <p class="small js-team-status" role="status" hidden>Dziękujemy. Skład zespołu potwierdzony 12&nbsp;listopada 2026&nbsp;r.</p>
-        <div class="actions js-team-actions"><button class="btn btn-navy btn-sm" type="button" id="team-ok">Zespół jest aktualny</button><a class="link-quiet" href="#osoby">Najpierw przejrzę listę</a></div>
+        <p class="small js-team-status" role="status" tabindex="-1" hidden></p>
+        <div class="actions js-team-actions"><button class="btn btn-navy btn-sm" type="button" id="team-ok">Zespół jest aktualny</button><a class="link-quiet" href="#osoby">Przejrzyj listę</a></div>
       </div>
 
       <div class="grid grid-main">
         <section class="card surface" id="osoby" aria-labelledby="t-osoby">
           <div class="card-head"><div><h2 class="card-title" id="t-osoby">Osoby i&nbsp;zaproszenia</h2><p class="card-sub">2 aktywne osoby, 1&nbsp;zaproszenie oczekuje</p></div></div>
-          <div class="table-wrap">
+          <div class="table-wrap cq" tabindex="0" role="region" aria-label="Osoby i zaproszenia – tabela">
             <table class="data stack">
               <thead><tr><th scope="col">Osoba</th><th scope="col">Rola</th><th scope="col">Ostatnie logowanie</th><th scope="col"><span class="sr-only">Akcje</span></th></tr></thead>
               <tbody>
@@ -594,22 +594,32 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
                 <tr>
                   <th scope="row" data-label="Osoba"><div class="person"><span class="monogram" aria-hidden="true">EP</span><div><strong>Ewa Przykładowa</strong><span>ewa@salon-przykladowy.example</span></div></div></th>
                   <td data-label="Rola"><span class="badge badge--role">Pracownik</span></td>
-                  <td data-label="Logowanie"><time datetime="2026-11-07">7 listopada 2026&nbsp;r.</time></td>
-                  <td class="cell-actions"><button class="btn btn-danger btn-sm" type="button">Odbierz dostęp<span class="sr-only">: Ewa Przykładowa</span></button></td>
+                  <td data-label="Logowanie"><time datetime="2026-11-07">7&nbsp;listopada 2026&nbsp;r.</time></td>
+                  <td class="cell-actions">
+                    <!-- akcja nieodwracalna: dwa kroki (raport 16, 3.3) – opis skutku i przycisk wykonania; produkcja: POST, wpis w „Historii konta” -->
+                    <details class="mini">
+                      <summary class="btn btn-danger btn-sm">Odbierz dostęp<span class="sr-only">: Ewa Przykładowa</span></summary>
+                      <div class="mini-body">
+                        <p class="small" id="odbierz-skutek-1">Ewa Przykładowa straci dostęp do Strefy salonu, a&nbsp;jej zapisy na szkolenia bezpłatne zostaną anulowane. Szkolenia płatne, które kupiła, zostają. Dostęp przywrócisz tylko nowym zaproszeniem.</p>
+                        <div class="actions"><button class="btn btn-danger btn-sm js-odbierz" type="button" aria-describedby="odbierz-skutek-1">Odbieram dostęp<span class="sr-only">: Ewa Przykładowa</span></button><button class="btn btn-quiet btn-sm" type="button" data-zamknij>Anuluj</button></div>
+                      </div>
+                    </details>
+                    <p class="small js-odbierz-status" role="status" tabindex="-1" hidden></p>
+                  </td>
                 </tr>
                 <tr>
                   <th scope="row" data-label="Osoba"><div class="person"><span class="monogram" aria-hidden="true">K</span><div><strong>Kasia</strong><span>kasia@salon-przykladowy.example</span></div></div></th>
                   <td data-label="Rola"><span class="badge badge--info">Zaproszenie oczekuje</span></td>
-                  <td data-label="Ważne do"><time datetime="2026-11-16">16 listopada 2026&nbsp;r.</time></td>
+                  <td data-label="Ważne do"><time datetime="2026-11-16">16&nbsp;listopada 2026&nbsp;r.</time></td>
                   <td class="cell-actions"><div class="actions"><button class="btn btn-ghost btn-sm" type="button">Wyślij ponownie</button><button class="btn btn-quiet btn-sm" type="button">Cofnij zaproszenie<span class="sr-only">: kasia@salon-przykladowy.example</span></button></div></td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p class="xsmall muted">Odebranie dostępu anuluje zapisy tej osoby na szkolenia bezpłatne. Szkolenia płatne, które kupiła, zostają: rezygnację albo odstąpienie składa tylko ona i&nbsp;zachowuje dostęp do swoich zamówień i&nbsp;faktur. Pracownik, który nie loguje się przez 12&nbsp;miesięcy, traci dostęp automatycznie – dostaniesz o&nbsp;tym e-mail. Limit: 15&nbsp;aktywnych osób i&nbsp;10&nbsp;oczekujących zaproszeń. <span class="mock-note">Założenie</span></p>
+          <p class="xsmall muted">Odebranie dostępu anuluje zapisy tej osoby na szkolenia bezpłatne. Szkolenia płatne, które kupiła, zostają: rezygnację albo odstąpienie składa tylko ona i&nbsp;zachowuje dostęp do swoich zamówień i&nbsp;faktur. Pracownik, który nie loguje się przez 12&nbsp;miesięcy, traci dostęp automatycznie&nbsp;– dostaniesz o&nbsp;tym e-mail. Limit: 15&nbsp;aktywnych osób i&nbsp;10&nbsp;oczekujących zaproszeń. <span class="mock-note">Założenie</span></p>
         </section>
 
-        <form class="card surface form" id="f-invite" action="#zespol" method="post" novalidate aria-labelledby="t-zapros">
+        <form class="card surface form" id="f-invite" action="#zespol" method="post" novalidate aria-labelledby="t-zapros" data-niezapisane>
           <h2 class="card-title" id="t-zapros">Zaproś osobę</h2>
           <div class="field">
             <label for="inv-email">Adres e-mail</label>
@@ -623,10 +633,10 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </div>
           <div class="field">
             <span class="label">Rola</span>
-            <p class="small">Pracownik – szkolenia i&nbsp;podgląd ogłoszeń salonu. Drugiego właściciela dodaje doradca Aura Expert.</p>
+            <p class="small">Pracownik&nbsp;– szkolenia i&nbsp;podgląd ogłoszeń salonu. Drugiego właściciela dodaje doradca <span translate="no">Aura&nbsp;Expert</span>.</p>
           </div>
           <button class="btn btn-navy" type="submit">Wyślij zaproszenie</button>
-          <p class="notice">Zaproszenie jest ważne 7&nbsp;dni. Możesz je wysłać ponownie – poprzedni link przestanie działać.</p>
+          <p class="notice">Zaproszenie jest ważne 7&nbsp;dni. Możesz je wysłać ponownie&nbsp;– poprzedni link przestanie działać.</p>
           <div class="alert alert--success" id="inv-ok" role="status" hidden>
             <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
             <p class="small">Zaproszenie wysłane na adres <strong id="inv-ok-email">–</strong>. Jest ważne do 19&nbsp;listopada 2026&nbsp;r.</p>
@@ -668,8 +678,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               <span class="badge badge--ok">Zapisano</span>
             </li>
             <li>
-              <div class="grow"><strong>Stylizacja brwi – techniki pracy (przykład)</strong><span class="meta"><time datetime="2027-01-14">14&nbsp;stycznia 2027&nbsp;r.</time> · online · Organizator przykładowy</span></div>
-              <span class="badge badge--info">Lista rezerwowa – pozycja 2</span>
+              <div class="grow"><strong>Stylizacja brwi&nbsp;– techniki pracy (przykład)</strong><span class="meta"><time datetime="2027-01-14">14&nbsp;stycznia 2027&nbsp;r.</time> · online · Organizator przykładowy</span></div>
+              <span class="badge badge--info">Lista rezerwowa&nbsp;– pozycja 2</span>
             </li>
           </ul>
           <a class="link-lux" href="szkolenia.html">Katalog szkoleń</a>
@@ -677,7 +687,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
         <section class="card surface" aria-labelledby="t-ogl-salonu" data-zakladka="praca">
           <div class="card-head">
-            <div><h2 class="card-title" id="t-ogl-salonu">Ogłoszenia salonu</h2><p class="card-sub">Tylko do odczytu – publikuje i&nbsp;edytuje właściciel konta</p></div>
+            <div><h2 class="card-title" id="t-ogl-salonu">Ogłoszenia salonu</h2><p class="card-sub">Tylko do odczytu&nbsp;– publikuje i&nbsp;edytuje właściciel konta</p></div>
           </div>
           <ul class="list">
             <li>
@@ -718,15 +728,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       <header class="page-head glass glass--strong frame">
         <ol class="crumbs" aria-label="Ścieżka"><li><a href="#pulpit">Pulpit</a></li><li aria-current="page">Ustawienia</li></ol>
         <h1 id="t-ust">Ustawienia</h1>
-        <p class="lead">Logowanie, urządzenia, zgody i&nbsp;zakładki w&nbsp;Strefie salonu. Strefa nie ma haseł – logujesz się kodem z&nbsp;e-maila i&nbsp;kodem z&nbsp;aplikacji.</p>
+        <p class="lead">Logowanie, urządzenia, zgody i&nbsp;zakładki w&nbsp;Strefie salonu. Strefa nie ma haseł&nbsp;– logujesz się kodem z&nbsp;e-maila i&nbsp;kodem z&nbsp;aplikacji.</p>
       </header>
 
       <div class="grid grid-2">
         <section class="card surface" aria-labelledby="t-konto">
           <h2 class="card-title" id="t-konto">Konto</h2>
           <dl class="kv kv--rows">
-            <div><dt>Adres e-mail</dt><dd><span class="owner-only">anna@salon-przykladowy.example</span><span class="employee-only">ewa@salon-przykladowy.example</span><br><span class="xsmall muted">Zmianę adresu wykonuje doradca Aura Expert.</span></dd></div>
-            <div><dt>Rola</dt><dd><span class="owner-only">Właścicielka – Salon Przykładowy</span><span class="employee-only">Pracownik – Salon Przykładowy</span></dd></div>
+            <div><dt>Adres e-mail</dt><dd><span class="owner-only">anna@salon-przykladowy.example</span><span class="employee-only">ewa@salon-przykladowy.example</span><br><span class="xsmall muted">Zmianę adresu wykonuje doradca <span translate="no">Aura&nbsp;Expert</span>.</span></dd></div>
+            <div><dt>Rola</dt><dd><span class="owner-only">Właścicielka&nbsp;– Salon Przykładowy</span><span class="employee-only">Pracownik&nbsp;– Salon Przykładowy</span></dd></div>
             <div class="owner-only"><dt>Telefon</dt><dd><span class="nowrap">•••&nbsp;•••&nbsp;123</span><br><span class="xsmall muted" id="phone-hint">Potwierdzony kodem SMS. Numer potwierdza konto pracodawcy w&nbsp;„Dam pracę”; zapisujemy tylko skrót numeru i&nbsp;3&nbsp;ostatnie cyfry.</span><br><button class="link-quiet" type="button" id="phone-change" aria-describedby="phone-hint">Zmień numer</button></dd></div>
             <div><dt>Regulamin</dt><dd>Wersja 1.0 (przykład), zaakceptowana <time datetime="2025-11-04">4&nbsp;listopada 2025&nbsp;r.</time></dd></div>
             <div><dt>Dane osobowe</dt><dd><a href="logowanie.html#klauzula">Klauzula informacyjna</a></dd></div>
@@ -749,7 +759,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <!-- 11 §6.1 K4, §8: dodanie i usunięcie czynnika tylko w sesji aal2 po ponownym podaniu kodu TOTP; zdarzenie w dzienniku audytu i e-mail do właściciela konta -->
           <div class="actions"><button class="btn btn-navy btn-sm" type="button" aria-describedby="totp-backup-hint totp-add-hint">Dodaj zapasowe urządzenie</button><button class="btn btn-ghost btn-sm" type="button" aria-describedby="totp-add-hint">Zmień aplikację</button></div>
           <p class="xsmall muted" id="totp-add-hint">Poprosimy o&nbsp;kod z&nbsp;obecnej aplikacji. O&nbsp;dodaniu lub usunięciu urządzenia powiadomimy Cię e-mailem.</p>
-          <p class="xsmall muted">Nie masz dostępu do żadnego urządzenia z&nbsp;aplikacją? Dostęp przywróci <a class="bp-termin" href="../slownik.html#haslo-doradca" data-termin="doradca">doradca Aura Expert</a> po weryfikacji tożsamości&nbsp;– <a href="../makieta-v3.html#kontakt">napisz do doradcy</a>.</p>
+          <p class="xsmall muted">Nie masz dostępu do żadnego urządzenia z&nbsp;aplikacją? Dostęp przywróci <a class="bp-termin" href="../slownik.html#haslo-doradca" data-termin="doradca">doradca Aura&nbsp;Expert</a> po weryfikacji tożsamości&nbsp;– <a href="../makieta-v3.html#kontakt">napisz do doradcy</a>.</p>
           <p class="xsmall"><span class="mock-note">Wariant pracownika</span> Pracownik ma tu aktywny przełącznik „Włącz / Wyłącz”.</p>
         </section>
       </div>
@@ -779,13 +789,13 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
            dam-prace.html i szkolenia.html. -->
       <section class="card surface" id="zakladki" aria-labelledby="t-zakladki">
         <div class="card-head">
-          <div><h2 class="card-title" id="t-zakladki">Zakładki w&nbsp;Strefie</h2><p class="card-sub">Ukryj zakładki, z&nbsp;których salon nie korzysta – menu i&nbsp;pulpit będą prostsze dla wszystkich osób z&nbsp;dostępem do Strefy salonu.</p></div>
+          <div><h2 class="card-title" id="t-zakladki">Zakładki w&nbsp;Strefie</h2><p class="card-sub">Ukryj zakładki, z&nbsp;których salon nie korzysta&nbsp;– menu i&nbsp;pulpit będą prostsze dla wszystkich osób z&nbsp;dostępem do Strefy salonu.</p></div>
         </div>
         <form class="toggles" id="f-zakladki" action="panel.html#zakladki" method="post" data-zakladki-form aria-labelledby="t-zakladki">
           <input type="hidden" name="formularz" value="zakladki">
-          <p class="small employee-only" id="zak-ro">Zakładki ustawia właścicielka konta – Anna Przykładowa. Zmiana dotyczy wszystkich osób w&nbsp;salonie.</p>
+          <p class="small employee-only" id="zak-ro">Zakładki ustawia właścicielka konta&nbsp;– Anna Przykładowa. Zmiana dotyczy wszystkich osób w&nbsp;salonie.</p>
           <div class="toggle-row">
-            <label class="toggle-label" for="zak-praca">Praca – Dam pracę<span data-szukam-pracy> i&nbsp;Szukam pracy</span></label>
+            <label class="toggle-label" for="zak-praca">Praca&nbsp;– Dam pracę<span data-szukam-pracy> i&nbsp;Szukam pracy</span></label>
             <div class="toggle-ctrl">
               <input class="toggle" type="checkbox" role="switch" id="zak-praca" name="widoczne" value="praca" checked data-zakladka-przelacznik aria-describedby="zak-praca-opis zak-praca-info">
               <span class="toggle-state" id="zak-praca-stan">Widoczna</span>
@@ -802,12 +812,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             </div>
             <p class="small toggle-opis" id="zak-szkolenia-opis">Wyłącz, jeśli salon nie korzysta ze szkoleń. Zakładkę włączysz tu w&nbsp;każdej chwili.</p>
             <p class="small toggle-info" id="zak-szkolenia-info"><span class="owner-only">Salon ma 6&nbsp;nadchodzących zapisów, w&nbsp;tym 2&nbsp;na listach rezerwowych i&nbsp;1&nbsp;opłacone zamówienie</span><span class="employee-only">Masz 1&nbsp;nadchodzący zapis i&nbsp;1&nbsp;miejsce na liście rezerwowej</span>&nbsp;– zostają bez zmian; znajdziesz je pod adresem <a href="szkolenia.html#moje-szkolenia">/strefa-klienta/szkolenia</a>.</p>
-            <p class="xsmall toggle-mock"><span class="mock-note">Makieta: zdanie tylko wtedy, gdy salon ma nadchodzący zapis (u&nbsp;właściciela – zapisy salonu, u&nbsp;pracownika – własne)</span></p>
+            <p class="xsmall toggle-mock"><span class="mock-note">Makieta: zdanie tylko wtedy, gdy salon ma nadchodzący zapis (u&nbsp;właściciela&nbsp;– zapisy salonu, u&nbsp;pracownika&nbsp;– własne)</span></p>
           </div>
           <div class="toggles-foot">
             <p class="small" id="zak-live" role="status"></p>
             <div class="no-js-only"><button class="btn btn-navy btn-sm" type="submit">Zapisz</button></div>
-            <p class="xsmall"><span class="mock-note" data-zakladki-adnotacja>Makieta: preferencja widoku, nie kontrola dostępu</span> Ukrycie zmienia tylko menu, pulpit i&nbsp;skróty w&nbsp;Strefie salonu&nbsp;– moduły działają pod swoimi adresami, a&nbsp;uprawnienia i&nbsp;dane są bez zmian. Stan zapisuje przeglądarka i&nbsp;widzą go wszystkie strony Strefy; stany z&nbsp;adresu: ?zakladki=bez-pracy, bez-szkolen, wszystkie (parametr zapisuje stan i&nbsp;znika z&nbsp;adresu); widok pracownika: ?rola=pracownik; globalny przełącznik „Szukam pracy” wyłączony: ?szukam=wylaczone (etykieta „Praca – Dam pracę”).</p>
+            <p class="xsmall"><span class="mock-note" data-zakladki-adnotacja>Makieta: preferencja widoku, nie kontrola dostępu</span> Ukrycie zmienia tylko menu, pulpit i&nbsp;skróty w&nbsp;Strefie salonu&nbsp;– moduły działają pod swoimi adresami, a&nbsp;uprawnienia i&nbsp;dane są bez zmian. Stan zapisuje przeglądarka i&nbsp;widzą go wszystkie strony Strefy; stany z&nbsp;adresu: ?zakladki=bez-pracy, bez-szkolen, wszystkie (parametr zapisuje stan i&nbsp;znika z&nbsp;adresu); widok pracownika: ?rola=pracownik; globalny przełącznik „Szukam pracy” wyłączony: ?szukam=wylaczone (etykieta „Praca&nbsp;– Dam pracę”).</p>
           </div>
         </form>
       </section>
@@ -817,14 +827,14 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <div><h2 class="card-title" id="t-sesje">Ostatnie logowania</h2><p class="card-sub">Logowanie z&nbsp;nowego urządzenia potwierdzamy e-mailem.</p></div>
           <button class="btn btn-danger btn-sm" type="button" id="logout-all">Wyloguj na wszystkich urządzeniach</button>
         </div>
-        <p class="small js-logout-status" role="status" hidden>Wylogowano ze wszystkich urządzeń. Na tym urządzeniu zalogujesz się ponownie kodem z&nbsp;e-maila.</p>
+        <p class="small js-logout-status" role="status" tabindex="-1" hidden>Wylogowano ze wszystkich urządzeń. Na tym urządzeniu zalogujesz się ponownie kodem z&nbsp;e-maila.</p>
         <div class="table-wrap" tabindex="0" role="region" aria-label="Ostatnie logowania – tabela">
           <table class="data stack">
             <thead><tr><th scope="col">Urządzenie</th><th scope="col">Data</th><th scope="col">Stan</th></tr></thead>
             <tbody>
               <tr><th scope="row" data-label="Urządzenie">Chrome · Windows</th><td data-label="Data"><time datetime="2026-11-12T09:12">12&nbsp;listopada 2026&nbsp;r., 9:12</time></td><td data-label="Stan"><span class="badge badge--ok">To urządzenie</span></td></tr>
-              <tr><th scope="row" data-label="Urządzenie">Safari · iPhone</th><td data-label="Data"><time datetime="2026-11-08T19:40">8 listopada 2026&nbsp;r., 19:40</time></td><td data-label="Stan"><span class="badge badge--info">Aktywna sesja</span></td></tr>
-              <tr><th scope="row" data-label="Urządzenie">Firefox · macOS</th><td data-label="Data"><time datetime="2026-10-21T14:05">21 października 2026&nbsp;r., 14:05</time></td><td data-label="Stan"><span class="badge badge--off">Wylogowano</span></td></tr>
+              <tr><th scope="row" data-label="Urządzenie">Safari · iPhone</th><td data-label="Data"><time datetime="2026-11-08T19:40">8&nbsp;listopada 2026&nbsp;r., 19:40</time></td><td data-label="Stan"><span class="badge badge--info">Aktywna sesja</span></td></tr>
+              <tr><th scope="row" data-label="Urządzenie">Firefox · macOS</th><td data-label="Data"><time datetime="2026-10-21T14:05">21&nbsp;października 2026&nbsp;r., 14:05</time></td><td data-label="Stan"><span class="badge badge--off">Wylogowano</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -839,7 +849,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <tbody>
               <tr class="hist-wzor"><td data-label="Data"><time datetime="2026-11-12">12.11.2026</time></td><td data-label="Zdarzenie"><span class="mock-note">Wzór wpisu</span> Ukryto zakładkę Praca (Dam pracę<span data-szukam-pracy> i&nbsp;Szukam pracy</span>) w&nbsp;Strefie salonu</td><td data-label="Osoba">Anna Przykładowa</td></tr>
               <tr><td data-label="Data"><time datetime="2026-11-11">11.11.2026</time></td><td data-label="Zdarzenie">Ogłoszenie wysłane do akceptacji: „Recepcjonistka / recepcjonista (przykład)”</td><td data-label="Osoba">Anna Przykładowa</td></tr>
-              <tr><td data-label="Data"><time datetime="2026-11-10">10.11.2026</time></td><td data-label="Zdarzenie">Pobrano dokument: OWU – OC dla branży beauty</td><td data-label="Osoba">Anna Przykładowa</td></tr>
+              <tr><td data-label="Data"><time datetime="2026-11-10">10.11.2026</time></td><td data-label="Zdarzenie">Pobrano dokument: OWU&nbsp;– OC dla branży beauty</td><td data-label="Osoba">Anna Przykładowa</td></tr>
               <tr><td data-label="Data"><time datetime="2026-11-09">9.11.2026</time></td><td data-label="Zdarzenie">Wysłano zaproszenie: kasia@salon-przykladowy.example</td><td data-label="Osoba">Anna Przykładowa</td></tr>
               <tr><td data-label="Data"><time datetime="2026-11-03">3.11.2026</time></td><td data-label="Zdarzenie">Zapis na szkolenie</td><td data-label="Osoba">Ewa Przykładowa</td></tr>
               <tr><td data-label="Data"><time datetime="2026-11-02">2.11.2026</time></td><td data-label="Zdarzenie">Wysłano przypomnienie o&nbsp;odnowieniu polisy OC</td><td data-label="Osoba">system</td></tr>
@@ -863,16 +873,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <aside class="mock-annot" aria-labelledby="t-annot">
       <h2 id="t-annot">Uwagi do makiety</h2>
       <ul>
-        <li><strong>Założenie:</strong> konto aktywuje Aura Expert po zawarciu polisy dowolnego produktu (D-A). Polisy (numer, okres) pochodzą z&nbsp;CRM Aura Expert (<code>crm_renewals.nr_polisy</code> / <code>polisa_id</code>; 00, D32), ręczne wprowadzanie w&nbsp;<code>/panel</code> – tryb przejściowy; bez integracji z&nbsp;ubezpieczycielem w&nbsp;MVP.</li>
-        <li>„Sprawy w&nbsp;toku” (11 §4.4a; 00, D32): tylko właściciel z&nbsp;sesją <code>aal2</code>, pracownik nie widzi. Etap 1&nbsp;– wyłącznie sprawy OC dla branży beauty. Stan: wysłano → otwarto → APK wypełniona → wniosek złożony. Warianty pokazane pod listą: po terminie <code>wazny_do</code> zamiast „Dokończ” przycisk „Poproś doradcę o&nbsp;nowy link”; po złożeniu wniosku – „Wniosek złożony. Polisa pojawi się tutaj po wystawieniu”; jeden neutralny komunikat dla każdej odmowy. Trasa <code>/strefa-klienta/sprawy</code> pokazuje tę samą listę co karta na pulpicie (w&nbsp;makiecie pozycja menu prowadzi do kotwicy <code>#sprawy</code>). „Dokończ APK i&nbsp;wniosek” to formularz POST <code>/strefa-klienta/sprawy/[id]/dokoncz</code> → 303 na <code>https://portal.beautypolisa.eu/w/XXXXXXXXXX</code>; kod nie trafia do HTML, a&nbsp;makieta nie otwiera tego adresu. Gdy sprawa odnowienia jest otwarta, baner i&nbsp;szuflada polisy prowadzą do „Spraw w&nbsp;toku” zamiast „Odnów z&nbsp;doradcą” (11 §4.5).</li>
-        <li>Drugi składnik (00, D28a): bez kodów zapasowych&nbsp;– zapasem jest drugie zarejestrowane urządzenie z&nbsp;aplikacją uwierzytelniającą; po utracie wszystkich urządzeń reset przez doradcę po weryfikacji tożsamości (procedura – Q25, regulamin).</li>
-        <li>Klauzula ochrony prawnej na karcie polisy OC i&nbsp;w&nbsp;szczegółach: „Treść klauzuli” otwiera natywny <code>&lt;dialog&gt;</code> z&nbsp;dosłowną treścią z&nbsp;<code>snippets/klauzula-ochrona-prawna.json</code> (znaczniki <code>gen:klauzula</code>); bez JS – odnośnik do <code>oc-beauty.html#ochrona-prawna</code>.</li>
-        <li>Kwoty OC wyłącznie z&nbsp;taryfy (snippets/taryfa-oc-beauty.json, wycena jak w&nbsp;CRM): Gabinety kosmetologiczne, suma 200&nbsp;tys.&nbsp;zł: 790&nbsp;zł, +92&nbsp;zł ochrona prawna = 882,00&nbsp;zł (do 5&nbsp;osób wykonujących zabiegi). Zakres na karcie polisy = nazwa taryfy z&nbsp;certyfikatu (wynika z&nbsp;rodzaju działalności). Grupowe ERGO i&nbsp;Tax Protect bez kwot.</li>
+        <li><strong>Założenie:</strong> konto aktywuje <span translate="no">Aura&nbsp;Expert</span> po zawarciu polisy dowolnego produktu (D-A). Polisy (numer, okres) pochodzą z&nbsp;CRM <span translate="no">Aura&nbsp;Expert</span> (<code>crm_renewals.nr_polisy</code> / <code>polisa_id</code>; 00, D32), ręczne wprowadzanie w&nbsp;<code>/panel</code> – tryb przejściowy; bez integracji z&nbsp;ubezpieczycielem w&nbsp;MVP.</li>
+        <li>„Sprawy w&nbsp;toku” (11 §4.4a; 00, D32): tylko właściciel z&nbsp;sesją <code>aal2</code>, pracownik nie widzi. Etap 1&nbsp;– wyłącznie sprawy OC dla branży beauty. Stan: wysłano → otwarto → APK wypełniona → wniosek złożony. Warianty pokazane pod listą: po terminie <code>wazny_do</code> zamiast „Dokończ” przycisk „Poproś doradcę o&nbsp;nowy link”; po złożeniu wniosku&nbsp;– „Wniosek złożony. Polisa pojawi się tutaj po wystawieniu”; jeden neutralny komunikat dla każdej odmowy. Trasa <code>/strefa-klienta/sprawy</code> pokazuje tę samą listę co karta na pulpicie (w&nbsp;makiecie pozycja menu prowadzi do kotwicy <code>#sprawy</code>). „Dokończ APK i&nbsp;wniosek” to formularz POST <code>/strefa-klienta/sprawy/[id]/dokoncz</code> → 303 na <code>https://portal.beautypolisa.eu/w/XXXXXXXXXX</code>; kod nie trafia do HTML, a&nbsp;makieta nie otwiera tego adresu. Gdy sprawa odnowienia jest otwarta, baner i&nbsp;szuflada polisy prowadzą do „Spraw w&nbsp;toku” zamiast „Odnów z&nbsp;doradcą” (11 §4.5).</li>
+        <li>Drugi składnik (00, D28a): bez kodów zapasowych&nbsp;– zapasem jest drugie zarejestrowane urządzenie z&nbsp;aplikacją uwierzytelniającą; po utracie wszystkich urządzeń reset przez doradcę po weryfikacji tożsamości (procedura&nbsp;– Q25, regulamin).</li>
+        <li>Klauzula ochrony prawnej na karcie polisy OC i&nbsp;w&nbsp;szczegółach: „Treść klauzuli” otwiera natywny <code>&lt;dialog&gt;</code> z&nbsp;dosłowną treścią z&nbsp;<code>snippets/klauzula-ochrona-prawna.json</code> (znaczniki <code>gen:klauzula</code>); bez JS&nbsp;– odnośnik do <code>oc-beauty.html#ochrona-prawna</code>.</li>
+        <li>Kwoty OC wyłącznie z&nbsp;taryfy (snippets/taryfa-oc-beauty.json, wycena jak w&nbsp;CRM): Gabinety kosmetologiczne, suma 200&nbsp;tys.&nbsp;zł: 790&nbsp;zł, +92&nbsp;zł ochrona prawna = 882,00&nbsp;zł (do 5&nbsp;osób wykonujących zabiegi). Zakres na karcie polisy = nazwa taryfy z&nbsp;certyfikatu (wynika z&nbsp;rodzaju działalności). Grupowe ERGO i&nbsp;<span translate="no">Tax Protect</span> bez kwot.</li>
         <li>Po wygaśnięciu ostatniej polisy konto zostaje, a&nbsp;polisy przechodzą do archiwum (D-B).</li>
         <li>„Szukam pracy” (P1a)&nbsp;– aktywne od startu: zakładka w&nbsp;„Dam pracę” (<code>dam-prace.html#szukam-pracy</code>) i&nbsp;podpunkt w&nbsp;menu bocznym, tylko dla właściciela konta (salon z&nbsp;polisą ma poziom&nbsp;2 z&nbsp;urzędu); pracownik ich nie widzi. Przełącznik <code>szukam_pracy</code> zostaje&nbsp;– wyłącza go tylko admin, a&nbsp;wtedy zakładka i&nbsp;linki znikają.</li>
-        <li><strong>Zakładki w&nbsp;Strefie (prośba zleceniodawcy 16.11.2026):</strong> w&nbsp;„Ustawieniach” (<code>#zakladki</code>) właściciel ukrywa zakładki „Praca – Dam pracę i&nbsp;Szukam pracy” i&nbsp;„Szkolenia”, np. gdy salon prowadzą jedna lub dwie osoby. To <strong>preferencja widoku, nie kontrola dostępu</strong>: znikają tylko wejścia do modułu w&nbsp;Strefie tego salonu (menu boczne i&nbsp;szuflada, kafle i&nbsp;skróty na pulpicie; pozostałe kafle „Na skróty” dzielą cały wiersz) – dla wszystkich jego członków. Moduły zostają w&nbsp;pełni wdrożone: bezpośredni adres działa i&nbsp;pokazuje u&nbsp;góry „Zakładka … jest ukryta w&nbsp;ustawieniach salonu” (właściciel: „Pokaż zakładkę”), ogłoszenia zostają opublikowane, wiadomości od kandydatów dochodzą, zapisy i&nbsp;opłacone zamówienia są bez zmian, e-maile modułów wychodzą; publiczne <code>/dam-prace</code> i&nbsp;katalog <code>/szkolenia</code>&nbsp;– bez zmian. Zmiana od razu, bez okna potwierdzenia, z&nbsp;komunikatem w&nbsp;aria-live i&nbsp;wpisem w&nbsp;„Historii konta”; pracownik widzi stan tylko do odczytu, a&nbsp;na swoim pulpicie&nbsp;– podpowiedź (jedna zakładka ukryta) albo pusty stan (obie). Zdanie o&nbsp;aktywnych ogłoszeniach albo nadchodzących zapisach pod opisem przełącznika pokazujemy tylko wtedy, gdy salon je ma. Bez JS formularz wysyła <code>formularz=zakladki</code> i&nbsp;zbiór <code>widoczne</code> (brak pola = obie ukryte), a&nbsp;„Pokaż zakładkę”&nbsp;– <code>zakladka</code> i&nbsp;<code>widoczna</code> (11 §5.1). Produkcja: <code>client_accounts.ukryte_zakladki</code>, <code>app_client_set_tab_visibility()</code> (tylko właściciel, wpis w&nbsp;<code>client_audit_log</code>); RLS i&nbsp;funkcje modułów bez zmian. Globalny przełącznik <code>szukam_pracy</code> (11.9.6) ma pierwszeństwo: wyłączony&nbsp;– przełącznik nazywa się „Praca – Dam pracę”, wpis w&nbsp;historii „Ukryto zakładkę Praca (Dam pracę) w&nbsp;Strefie salonu”, a&nbsp;„Szukam pracy” znika z&nbsp;menu i&nbsp;kafla (stan <a href="panel.html?szukam=wylaczone#zakladki"><code>?szukam=wylaczone</code></a>). Makieta: stan w&nbsp;localStorage (<code>zakladki.js</code>), stany z&nbsp;adresu <code>?zakladki=bez-pracy</code>, <code>bez-szkolen</code>, <code>bez-pracy,bez-szkolen</code>, <code>wszystkie</code>; wariant pracownika: <code>?rola=pracownik</code> albo „Pulpit pracownika”.</li>
+        <li><strong>Zakładki w&nbsp;Strefie (prośba zleceniodawcy 16.11.2026):</strong> w&nbsp;„Ustawieniach” (<code>#zakladki</code>) właściciel ukrywa zakładki „Praca&nbsp;– Dam pracę i&nbsp;Szukam pracy” i&nbsp;„Szkolenia”, np. gdy salon prowadzą jedna lub dwie osoby. To <strong>preferencja widoku, nie kontrola dostępu</strong>: znikają tylko wejścia do modułu w&nbsp;Strefie tego salonu (menu boczne i&nbsp;szuflada, kafle i&nbsp;skróty na pulpicie; pozostałe kafle „Na skróty” dzielą cały wiersz)&nbsp;– dla wszystkich jego członków. Moduły zostają w&nbsp;pełni wdrożone: bezpośredni adres działa i&nbsp;pokazuje u&nbsp;góry „Zakładka … jest ukryta w&nbsp;ustawieniach salonu” (właściciel: „Pokaż zakładkę”), ogłoszenia zostają opublikowane, wiadomości od kandydatów dochodzą, zapisy i&nbsp;opłacone zamówienia są bez zmian, e-maile modułów wychodzą; publiczne <code>/dam-prace</code> i&nbsp;katalog <code>/szkolenia</code>&nbsp;– bez zmian. Zmiana od razu, bez okna potwierdzenia, z&nbsp;komunikatem w&nbsp;aria-live i&nbsp;wpisem w&nbsp;„Historii konta”; pracownik widzi stan tylko do odczytu, a&nbsp;na swoim pulpicie&nbsp;– podpowiedź (jedna zakładka ukryta) albo pusty stan (obie). Zdanie o&nbsp;aktywnych ogłoszeniach albo nadchodzących zapisach pod opisem przełącznika pokazujemy tylko wtedy, gdy salon je ma. Bez JS formularz wysyła <code>formularz=zakladki</code> i&nbsp;zbiór <code>widoczne</code> (brak pola = obie ukryte), a&nbsp;„Pokaż zakładkę”&nbsp;– <code>zakladka</code> i&nbsp;<code>widoczna</code> (11 §5.1). Produkcja: <code>client_accounts.ukryte_zakladki</code>, <code>app_client_set_tab_visibility()</code> (tylko właściciel, wpis w&nbsp;<code>client_audit_log</code>); RLS i&nbsp;funkcje modułów bez zmian. Globalny przełącznik <code>szukam_pracy</code> (11.9.6) ma pierwszeństwo: wyłączony&nbsp;– przełącznik nazywa się „Praca&nbsp;– Dam pracę”, wpis w&nbsp;historii „Ukryto zakładkę Praca (Dam pracę) w&nbsp;Strefie salonu”, a&nbsp;„Szukam pracy” znika z&nbsp;menu i&nbsp;kafla (stan <a href="panel.html?szukam=wylaczone#zakladki"><code>?szukam=wylaczone</code></a>). Makieta: stan w&nbsp;localStorage (<code>zakladki.js</code>), stany z&nbsp;adresu <code>?zakladki=bez-pracy</code>, <code>bez-szkolen</code>, <code>bez-pracy,bez-szkolen</code>, <code>wszystkie</code>; wariant pracownika: <code>?rola=pracownik</code> albo „Pulpit pracownika”.</li>
         <li>Pierwsze wejście właściciela do „Dam pracę” (4.8): NIP salonu z&nbsp;konta → sprawdzenie w&nbsp;GUS → telefon z&nbsp;kodem SMS (<code>dam-prace.html#wlacz-dam-prace</code>). Potwierdzony numer widać w&nbsp;„Ustawieniach”. Pracodawca bez polisy ma własny kontekst w&nbsp;<code>dam-prace.html?konto=pracodawca</code>.</li>
-        <li>Szkło: pasek górny, menu boczne i&nbsp;nagłówek strony – najwyżej 3&nbsp;tafle w&nbsp;widoku; dane i&nbsp;formularze na kryjących powierzchniach.</li>
+        <li>Szkło: pasek górny, menu boczne i&nbsp;nagłówek strony&nbsp;– najwyżej 3&nbsp;tafle w&nbsp;widoku; dane i&nbsp;formularze na kryjących powierzchniach.</li>
         <li>Bez JavaScriptu wszystkie ekrany są widoczne pod sobą, zakładki jako sekcje, a&nbsp;szczegóły polisy otwierają się przez <code>:target</code>.</li>
       </ul>
     </aside>
@@ -893,25 +903,26 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     </div>
     <div class="drawer-body">
       <dl class="kv kv--rows">
-        <div><dt>Ubezpieczyciel</dt><dd>ERGO Hestia&nbsp;– program ERGO Hestii nr WA50/003353/24/A (z&nbsp;Fundacją Beauty Razem)</dd></div>
+        <div><dt>Ubezpieczyciel</dt><dd><span translate="no">ERGO&nbsp;Hestia</span>&nbsp;– program <span translate="no">ERGO&nbsp;Hestii</span> nr&nbsp;WA50/003353/24/A (z&nbsp;Fundacją <span translate="no">Beauty Razem</span>)</dd></div>
         <div><dt>Numer polisy</dt><dd>BP/2026/000123 (przykład)</dd></div>
-        <div><dt>Okres ochrony</dt><dd>1&nbsp;stycznia – 31&nbsp;grudnia 2026&nbsp;r.</dd></div>
+        <div><dt>Okres ochrony</dt><dd>1&nbsp;stycznia&nbsp;– 31&nbsp;grudnia 2026&nbsp;r.</dd></div>
         <div><dt>Zakres</dt><dd>Gabinety kosmetologiczne</dd></div>
         <div><dt>Suma gwarancyjna</dt><dd>200&nbsp;000&nbsp;zł</dd></div>
         <div><dt>Klauzula ochrony prawnej</dt><dd>tak, +92&nbsp;zł<br><a class="link-quiet js-klauzula" href="../oc-beauty.html#ochrona-prawna">Treść klauzuli<span class="sr-only"> ochrony prawnej</span></a></dd></div>
         <div><dt>Osoby wykonujące zabiegi</dt><dd>do 5&nbsp;osób</dd></div>
         <div><dt>Składka roczna</dt><dd><strong>882,00&nbsp;zł</strong> (790&nbsp;zł z&nbsp;taryfy + 92&nbsp;zł)</dd></div>
       </dl>
-      <p class="xsmall muted">Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu. Dane polisy pochodzą z&nbsp;CRM Aura Expert; zmianę zgłoś doradcy.</p>
+      <p class="xsmall muted">Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu. Dane polisy pochodzą z&nbsp;CRM <span translate="no">Aura&nbsp;Expert</span>; zmianę zgłoś doradcy.</p>
 
       <div>
         <h3>Dokumenty</h3>
         <ul class="list">
-          <li class="doc-row"><svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg><div class="grow"><strong>Polisa BP/2026/000123</strong><span class="meta">PDF · dodano <time datetime="2025-12-18">18.12.2025</time></span></div><a class="btn btn-ghost btn-sm" href="#polisa-oc">Pobierz PDF<span class="sr-only">: polisa</span></a></li>
-          <li class="doc-row"><svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg><div class="grow"><strong>OWU – OC dla branży beauty</strong><span class="meta">PDF · dodano <time datetime="2025-12-18">18.12.2025</time></span></div><a class="btn btn-ghost btn-sm" href="#polisa-oc">Pobierz PDF<span class="sr-only">: OWU</span></a></li>
-          <li class="doc-row"><svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg><div class="grow"><strong>Aneks nr 1 (przykład)</strong><span class="meta">PDF · dodano <time datetime="2026-03-02">2.03.2026</time></span></div><a class="btn btn-ghost btn-sm" href="#polisa-oc">Pobierz PDF<span class="sr-only">: aneks nr 1</span></a></li>
+          <li class="doc-row"><svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg><div class="grow"><strong>Polisa BP/2026/000123</strong><span class="meta">PDF · dodano <time datetime="2025-12-18">18.12.2025</time></span></div><a class="btn btn-ghost btn-sm" href="#polisa-oc"><span class="js-etykieta">Pobierz PDF</span><span class="sr-only">: polisa</span></a></li>
+          <li class="doc-row"><svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg><div class="grow"><strong>OWU&nbsp;– OC dla branży beauty</strong><span class="meta">PDF · dodano <time datetime="2025-12-18">18.12.2025</time></span></div><a class="btn btn-ghost btn-sm" href="#polisa-oc"><span class="js-etykieta">Pobierz PDF</span><span class="sr-only">: OWU</span></a></li>
+          <li class="doc-row"><svg class="lux-icon" aria-hidden="true"><use href="#lux-dokumenty"/></svg><div class="grow"><strong>Aneks nr&nbsp;1 (przykład)</strong><span class="meta">PDF · dodano <time datetime="2026-03-02">2.03.2026</time></span></div><a class="btn btn-ghost btn-sm" href="#polisa-oc"><span class="js-etykieta">Pobierz PDF</span><span class="sr-only">: aneks nr&nbsp;1</span></a></li>
         </ul>
         <p class="xsmall muted">Plik pobierasz przez jednorazowy link ważny 60&nbsp;sekund. Pobranie zapisujemy w&nbsp;historii konta.</p>
+        <p class="sr-only" id="pobieranie-status" role="status"></p>
       </div>
     </div>
     <!-- „Odnów z doradcą” (11 §4.5) tylko bez otwartej sprawy odnowienia tej polisy; tu sprawa jest w toku – przycisk prowadzi do „Spraw w toku” -->
@@ -935,73 +946,73 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   </div>
   <div class="klauzula-body" role="region" tabindex="0" aria-label="Treść klauzuli ochrony prawnej">
 <!-- gen:klauzula -->
-    <p class="klauzula-tytul">Rozszerzenie zakresu ubezpieczenia o koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgodą Ubezpieczyciela ochroną zgodnie z § 6 ust. 3</p>
+    <p class="klauzula-tytul">Rozszerzenie zakresu ubezpieczenia o&nbsp;koszty ochrony prawnej poniesione przez Ubezpieczonego, inne niż objęte za pisemną zgodą Ubezpieczyciela ochroną zgodnie z&nbsp;§&nbsp;6 ust.&nbsp;3</p>
     <ol>
-      <li>Z zachowaniem pozostałych, niezmienionych niniejszą klauzulą postanowień umowy ubezpieczenia określonych w Warunkach Ubezpieczenia, strony postanowiły rozszerzyć zakres ubezpieczenia o koszty ochrony prawnej, poniesione przez Ubezpieczonego w celu obrony jego praw w postępowaniach przed sądami polskimi prowadzonych z jego udziałem w charakterze pozwanego, podejrzanego lub oskarżonego, w tym w postępowaniu dyscyplinarnym.</li>
-      <li>Ochroną ubezpieczeniową na podstawie niniejszej klauzuli objęte są koszty ochrony prawnej, poniesione przez Ubezpieczonego w postępowaniu wszczętym na terenie RP w okresie ubezpieczenia, o ile dotyczy ono czynności zawodowych Ubezpieczonego przyjętych do ubezpieczenia na podstawie niniejszej umowy. W razie wątpliwości za datę wszczęcia postępowania uważa się chwilę, w której właściwy organ, urząd lub funkcjonariusz podjął pierwszą czynność wobec Ubezpieczonego, nawet jeśli nie była ona potwierdzona na piśmie i nie stanowiła formalnego wszczęcia postępowania w świetle obowiązujących przepisów.</li>
-      <li>Przez koszty ochrony prawnej rozumie się w szczególności:
+      <li>Z&nbsp;zachowaniem pozostałych, niezmienionych niniejszą klauzulą postanowień umowy ubezpieczenia określonych w&nbsp;Warunkach Ubezpieczenia, strony postanowiły rozszerzyć zakres ubezpieczenia o&nbsp;koszty ochrony prawnej, poniesione przez Ubezpieczonego w&nbsp;celu obrony jego praw w&nbsp;postępowaniach przed sądami polskimi prowadzonych z&nbsp;jego udziałem w&nbsp;charakterze pozwanego, podejrzanego lub oskarżonego, w&nbsp;tym w&nbsp;postępowaniu dyscyplinarnym.</li>
+      <li>Ochroną ubezpieczeniową na podstawie niniejszej klauzuli objęte są koszty ochrony prawnej, poniesione przez Ubezpieczonego w&nbsp;postępowaniu wszczętym na terenie RP w&nbsp;okresie ubezpieczenia, o&nbsp;ile dotyczy ono czynności zawodowych Ubezpieczonego przyjętych do ubezpieczenia na podstawie niniejszej umowy. W&nbsp;razie wątpliwości za datę wszczęcia postępowania uważa się chwilę, w&nbsp;której właściwy organ, urząd lub funkcjonariusz podjął pierwszą czynność wobec Ubezpieczonego, nawet jeśli nie była ona potwierdzona na piśmie i&nbsp;nie stanowiła formalnego wszczęcia postępowania w&nbsp;świetle obowiązujących przepisów.</li>
+      <li>Przez koszty ochrony prawnej rozumie się w&nbsp;szczególności:
         <ul>
           <li>koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej,</li>
-          <li>koszty związane z uzyskaniem opinii biegłych lub rzeczoznawców albo innych dokumentów stanowiących środki dowodowe,</li>
+          <li>koszty związane z&nbsp;uzyskaniem opinii biegłych lub rzeczoznawców albo innych dokumentów stanowiących środki dowodowe,</li>
           <li>koszty zasądzone od Ubezpieczonego na rzecz strony przeciwnej,</li>
-          <li>pozostałe koszty i opłaty sądowe lub administracyjne, o ile służą one ochronie praw Ubezpieczonego w związku z prowadzonym postępowaniem.</li>
+          <li>pozostałe koszty i&nbsp;opłaty sądowe lub administracyjne, o&nbsp;ile służą one ochronie praw Ubezpieczonego w&nbsp;związku z&nbsp;prowadzonym postępowaniem.</li>
         </ul>
       </li>
-      <li>Przez koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej rozumie się koszty jednego adwokata lub radcy prawnego z tytułu zastępstwa procesowego lub obrony, pokrywane do wysokości ustalonej zgodnie z odpowiednimi przepisami regulującymi wysokość minimalnego wynagrodzenia za czynności adwokata lub radcy prawnego, jeśli takie obowiązują.</li>
-      <li>Z zakresu ubezpieczenia wyłączone są koszty:
+      <li>Przez koszty usług podmiotów uprawnionych do świadczenia pomocy prawnej rozumie się koszty jednego adwokata lub radcy prawnego z&nbsp;tytułu zastępstwa procesowego lub obrony, pokrywane do wysokości ustalonej zgodnie z&nbsp;odpowiednimi przepisami regulującymi wysokość minimalnego wynagrodzenia za czynności adwokata lub radcy prawnego, jeśli takie obowiązują.</li>
+      <li>Z&nbsp;zakresu ubezpieczenia wyłączone są koszty:
         <ul>
-          <li>poniesione w postępowaniu wszczętym w okresie ubezpieczenia, w wyniku apelacji lub wniesienia innego środka zaskarżenia albo wznowienia postępowania, o ile dotyczą postępowania prowadzonego przed rozpoczęciem okresu odpowiedzialności Ubezpieczyciela,</li>
-          <li>powstałe w następstwie korzystania z usług osób nieuprawnionych do świadczenia pomocy prawnej,</li>
-          <li>związane ze świadomym udzieleniem przez Ubezpieczonego nieprawdziwych lub wprowadzających w błąd informacji, albo dostarczeniem sfałszowanych dokumentów,</li>
-          <li>poniesione w postępowaniu wszczętym na wniosek osób bliskich Ubezpieczonego, osób i podmiotów pozostających z nim w stosunku zależności wynikającej z zatrudnienia ich przez Ubezpieczonego lub z innej podstawy,</li>
+          <li>poniesione w&nbsp;postępowaniu wszczętym w&nbsp;okresie ubezpieczenia, w&nbsp;wyniku apelacji lub wniesienia innego środka zaskarżenia albo wznowienia postępowania, o&nbsp;ile dotyczą postępowania prowadzonego przed rozpoczęciem okresu odpowiedzialności Ubezpieczyciela,</li>
+          <li>powstałe w&nbsp;następstwie korzystania z&nbsp;usług osób nieuprawnionych do świadczenia pomocy prawnej,</li>
+          <li>związane ze świadomym udzieleniem przez Ubezpieczonego nieprawdziwych lub wprowadzających w&nbsp;błąd informacji, albo dostarczeniem sfałszowanych dokumentów,</li>
+          <li>poniesione w&nbsp;postępowaniu wszczętym na wniosek osób bliskich Ubezpieczonego, osób i&nbsp;podmiotów pozostających z&nbsp;nim w&nbsp;stosunku zależności wynikającej z&nbsp;zatrudnienia ich przez Ubezpieczonego lub z&nbsp;innej podstawy,</li>
           <li>poniesione na pokrycie kar sądowych lub administracyjnych nałożonych na Ubezpieczonego.</li>
         </ul>
       </li>
-      <li>Z zakresu ubezpieczenia wyłączone są ponadto koszty poniesione:
+      <li>Z&nbsp;zakresu ubezpieczenia wyłączone są ponadto koszty poniesione:
         <ul>
-          <li>w postępowaniach z zakresu prawa funduszy inwestycyjnych, prawa obligacji, papierów wartościowych oraz z zakresu prawa pracy,</li>
-          <li>w postępowaniach z zakresu prawa patentowego, autorskiego, znaków towarowych, pozostałego prawa własności intelektualnej i przemysłowej, prawa ochrony konkurencji (antymonopolowego) oraz prawa dotyczącego zasad konkurencji,</li>
-          <li>w postępowaniach z umów poręczenia i przejęcia długów,</li>
-          <li>w postępowaniach z zakresu prawa podatkowego, celnego oraz dotyczącego innych opłat publicznoprawnych, a także prawa karno-skarbowego,</li>
-          <li>w postępowaniu układowym, naprawczym albo upadłościowym,</li>
-          <li>w postępowaniach w związku z posiadaniem pojazdów mechanicznych,</li>
-          <li>w postępowaniach pomiędzy stronami umowy ubezpieczenia.</li>
+          <li>w&nbsp;postępowaniach z&nbsp;zakresu prawa funduszy inwestycyjnych, prawa obligacji, papierów wartościowych oraz z&nbsp;zakresu prawa pracy,</li>
+          <li>w&nbsp;postępowaniach z&nbsp;zakresu prawa patentowego, autorskiego, znaków towarowych, pozostałego prawa własności intelektualnej i&nbsp;przemysłowej, prawa ochrony konkurencji (antymonopolowego) oraz prawa dotyczącego zasad konkurencji,</li>
+          <li>w&nbsp;postępowaniach z&nbsp;umów poręczenia i&nbsp;przejęcia długów,</li>
+          <li>w&nbsp;postępowaniach z&nbsp;zakresu prawa podatkowego, celnego oraz dotyczącego innych opłat publicznoprawnych, a&nbsp;także prawa karno-skarbowego,</li>
+          <li>w&nbsp;postępowaniu układowym, naprawczym albo upadłościowym,</li>
+          <li>w&nbsp;postępowaniach w&nbsp;związku z&nbsp;posiadaniem pojazdów mechanicznych,</li>
+          <li>w&nbsp;postępowaniach pomiędzy stronami umowy ubezpieczenia.</li>
         </ul>
       </li>
-      <li>W odniesieniu do postępowań karnych ochrona ubezpieczeniowa dotyczy wyłącznie czynów, w których karane jest nieumyślne popełnienie danego czynu; w przypadku stwierdzenia winy umyślnej w prawomocnym orzeczeniu sądu, Ubezpieczycielowi przysługuje roszczenie regresowe do Ubezpieczonego o zwrot uprzednio wypłaconych świadczeń.</li>
-      <li>Jeżeli przeciwko Ubezpieczonemu wszczęte zostało postępowanie, o którym mowa w niniejszej klauzuli, albo jeżeli istnieje bezpośrednie zagrożenie wszczęciem takiego postępowania, Ubezpieczony obowiązany jest niezwłocznie zawiadomić o tym Ubezpieczyciela, przekazując mu wszelkie informacje i dokumenty w sprawie.</li>
-      <li>W ramach udzielonej ochrony Ubezpieczyciel dokonuje oceny sytuacji faktycznej i prawnej oraz podejmuje decyzję o uznaniu lub nieuznaniu roszczenia Ubezpieczonego i wypłacie lub odmowie wypłaty świadczenia w postaci refundacji kosztów ochrony prawnej.</li>
-      <li>Ubezpieczonemu przysługuje prawo swobodnego wyboru adwokata lub radcy prawnego w zakresie obrony, reprezentowania lub wspierania jego interesów w postępowaniu sądowym. Koszty ochrony prawnej pokrywane są przez Ubezpieczyciela na podstawie rachunków wystawionych na Ubezpieczonego, o ile dotyczą kosztów objętych ubezpieczeniem, zgodnie z niniejszą klauzulą.</li>
-      <li>Suma ubezpieczenia dla kosztów ochrony prawnej pokrywanych przez Ubezpieczyciela na podstawie niniejszej klauzuli zostaje wskazana w umowie ubezpieczenia i stanowi górną granicę odpowiedzialności Ubezpieczyciela.</li>
-      <li>Za rozszerzenie zakresu ubezpieczenia w sposób określony w niniejszej klauzuli Ubezpieczony opłaci dodatkową składkę w wysokości ustalonej w umowie ubezpieczenia.</li>
+      <li>W&nbsp;odniesieniu do postępowań karnych ochrona ubezpieczeniowa dotyczy wyłącznie czynów, w&nbsp;których karane jest nieumyślne popełnienie danego czynu; w&nbsp;przypadku stwierdzenia winy umyślnej w&nbsp;prawomocnym orzeczeniu sądu, Ubezpieczycielowi przysługuje roszczenie regresowe do Ubezpieczonego o&nbsp;zwrot uprzednio wypłaconych świadczeń.</li>
+      <li>Jeżeli przeciwko Ubezpieczonemu wszczęte zostało postępowanie, o&nbsp;którym mowa w&nbsp;niniejszej klauzuli, albo jeżeli istnieje bezpośrednie zagrożenie wszczęciem takiego postępowania, Ubezpieczony obowiązany jest niezwłocznie zawiadomić o&nbsp;tym Ubezpieczyciela, przekazując mu wszelkie informacje i&nbsp;dokumenty w&nbsp;sprawie.</li>
+      <li>W&nbsp;ramach udzielonej ochrony Ubezpieczyciel dokonuje oceny sytuacji faktycznej i&nbsp;prawnej oraz podejmuje decyzję o&nbsp;uznaniu lub nieuznaniu roszczenia Ubezpieczonego i&nbsp;wypłacie lub odmowie wypłaty świadczenia w&nbsp;postaci refundacji kosztów ochrony prawnej.</li>
+      <li>Ubezpieczonemu przysługuje prawo swobodnego wyboru adwokata lub radcy prawnego w&nbsp;zakresie obrony, reprezentowania lub wspierania jego interesów w&nbsp;postępowaniu sądowym. Koszty ochrony prawnej pokrywane są przez Ubezpieczyciela na podstawie rachunków wystawionych na Ubezpieczonego, o&nbsp;ile dotyczą kosztów objętych ubezpieczeniem, zgodnie z&nbsp;niniejszą klauzulą.</li>
+      <li>Suma ubezpieczenia dla kosztów ochrony prawnej pokrywanych przez Ubezpieczyciela na podstawie niniejszej klauzuli zostaje wskazana w&nbsp;umowie ubezpieczenia i&nbsp;stanowi górną granicę odpowiedzialności Ubezpieczyciela.</li>
+      <li>Za rozszerzenie zakresu ubezpieczenia w&nbsp;sposób określony w&nbsp;niniejszej klauzuli Ubezpieczony opłaci dodatkową składkę w&nbsp;wysokości ustalonej w&nbsp;umowie ubezpieczenia.</li>
     </ol>
 <!-- /gen:klauzula -->
   </div>
   <div class="klauzula-foot">
-    <p>Klauzula do programu ERGO Hestii nr WA50/003353/24/A (z&nbsp;Fundacją Beauty Razem). Dopłata: 92&nbsp;zł rocznie. Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p>
+    <p>Klauzula do programu <span translate="no">ERGO&nbsp;Hestii</span> nr&nbsp;WA50/003353/24/A (z&nbsp;Fundacją <span translate="no">Beauty Razem</span>). Dopłata: 92&nbsp;zł rocznie. Zakres i&nbsp;wyłączenia określają warunki ubezpieczenia programu.</p>
     <a class="link-lux" href="../oc-beauty.html#ochrona-prawna">Klauzula na stronie OC</a>
   </div>
 </dialog>
 
 <footer class="app-footer">
   <div class="app-footer-inner">
-    <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html">Tax Protect</a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="../opieka-medyczna.html">Opieka medyczna</a></nav>
+    <nav aria-label="Ubezpieczenia"><a href="../oc-beauty.html">OC dla branży beauty</a><a href="../tax-protect.html"><span translate="no">Tax Protect</span></a><a href="../utrata-dochodu.html">Utrata dochodu</a><a href="../nnw-dzieci.html">NNW dzieci</a><a href="../grupowe-ergo.html">Grupowe ERGO</a><a href="../opieka-medyczna.html">Opieka medyczna</a></nav>
     <nav aria-label="Stopka"><a href="../makieta-v3.html">Strona główna</a><a href="dam-prace.html">Dam pracę</a><a href="szkolenia.html">Szkolenia</a><a href="logowanie.html">Strefa Klienta</a><a href="../makieta-v3.html#kontakt">Kontakt z&nbsp;doradcą</a><a href="../slownik.html">Słownik pojęć</a><a href="logowanie.html#klauzula">Klauzula informacyjna</a><a href="logowanie.html#regulamin-dp">Regulamin „Dam pracę”</a><a href="logowanie.html#regulamin-sp">Regulamin „Szukam pracy”</a><a href="logowanie.html#punkty-kontaktowe">Punkty kontaktowe (DSA)</a></nav>
-    <p>BeautyPolisa created by Aura Expert (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong>Aura Expert spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal 28, wpisana do Krajowego Rejestru Sądowego pod numerem 0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP 5242793544, REGON 363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem 11229690/A.</p>
+    <p><span translate="no">BeautyPolisa</span> created by <span translate="no">Aura&nbsp;Expert</span> (<a href="https://www.auraexpert.pl">www.auraexpert.pl</a>). Operator serwisu i&nbsp;administrator danych w&nbsp;Strefie Klienta: <strong><span translate="no">Aura&nbsp;Expert</span> spółka z&nbsp;ograniczoną odpowiedzialnością</strong> z&nbsp;siedzibą w&nbsp;Warszawie przy ul.&nbsp;Bolkowskiej 2A lokal&nbsp;28, wpisana do Krajowego Rejestru Sądowego pod numerem&nbsp;0000599840 przez Sąd Rejonowy dla m.st. Warszawy, XII Wydział Gospodarczy Krajowego Rejestru Sądowego, NIP&nbsp;5242793544, REGON&nbsp;363673048, kapitał zakładowy 5&nbsp;000&nbsp;zł. Spółka jest wpisana do Rejestru Pośredników Ubezpieczeniowych pod numerem&nbsp;11229690/A.</p>
     <p>Przy zamówieniu szkolenia płatnego dane kupującego przetwarzają także organizator szkolenia (sprzedawca) i&nbsp;operator płatności&nbsp;– role i&nbsp;okresy przechowywania pokazujemy w&nbsp;kroku zamówienia. <span class="mock-note">Q1&nbsp;– do weryfikacji IOD</span></p>
     <!-- L1 (12–13.11.2026): pełna formuła spółki – brzmienie od zleceniodawcy („XII Wydział” – prawidłowo; strona
          ergo.beautypolisa.eu/informacja-o-agencie podaje „XIII” – błąd po tamtej stronie, uwaga dla zleceniodawcy).
          Informacje o agencie (art. 22 ustawy o dystrybucji ubezpieczeń) – źródło: ujawnienie Aura Expert. Blok details.legal-idd
          jest identyczny na stronach publicznych i w Strefie Klienta. -->
-    <p>Aura Expert sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
+    <p><span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o. jest <strong>agentem ubezpieczeniowym</strong> i&nbsp;działa w&nbsp;imieniu i&nbsp;na rzecz zakładów ubezpieczeń wymienionych niżej w&nbsp;„Informacjach o&nbsp;agencie ubezpieczeniowym”. Wpis w&nbsp;Rejestrze Pośredników Ubezpieczeniowych, prowadzonym przez Komisję Nadzoru Finansowego, sprawdzisz na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a> (numer 11229690/A).</p>
     <details class="legal-idd">
       <summary>Informacje o&nbsp;agencie ubezpieczeniowym (IDD)</summary>
       <div class="legal-idd-body">
         <p><strong>Zakłady ubezpieczeń, na rzecz których działa agent:</strong></p>
-        <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie S.A.</li><li>Lloyd’s Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń ERGO Hestia S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie ERGO Hestia S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA S.A.</li><li>Colonnade Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
+        <ul><li>UNUM Życie Towarzystwo Ubezpieczeń i&nbsp;Reasekuracji&nbsp;S.A.</li><li>Generali Życie Towarzystwo Ubezpieczeń&nbsp;S.A.</li><li>UNIQA Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li><span translate="no">Lloyd’s</span> Insurance Company SA/NV</li><li>SALTUS Towarzystwo Ubezpieczeń na Życie&nbsp;S.A.</li><li>SALTUS Towarzystwo Ubezpieczeń Wzajemnych</li><li>Sopockie Towarzystwo Ubezpieczeń <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Sopockie Towarzystwo Ubezpieczeń na Życie <span translate="no">ERGO&nbsp;Hestia</span>&nbsp;S.A.</li><li>Towarzystwo Ubezpieczeń na Życie WARTA&nbsp;S.A.</li><li><span translate="no">Colonnade</span> Insurance Société Anonyme Oddział w&nbsp;Polsce</li></ul>
         <p><strong>Wynagrodzenie.</strong> Agent otrzymuje od zakładu ubezpieczeń prowizję, która jest uwzględniona w&nbsp;składce. Może też otrzymywać od zakładu ubezpieczeń inny rodzaj wynagrodzenia.</p>
         <p><strong>Powiązania kapitałowe.</strong> Agent nie ma akcji ani udziałów zakładu ubezpieczeń dających co najmniej 10% głosów na walnym zgromadzeniu. Żaden zakład ubezpieczeń nie ma udziałów agenta dających co najmniej 10% głosów na zgromadzeniu wspólników.</p>
-        <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres Aura Expert sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466 Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
+        <p><strong>Reklamacje</strong> na działalność agenta w&nbsp;zakresie niezwiązanym z&nbsp;ochroną ubezpieczeniową możesz złożyć: pisemnie&nbsp;– osobiście albo pocztą na adres <span translate="no">Aura&nbsp;Expert</span> sp.&nbsp;z&nbsp;o.o., ul.&nbsp;Bolkowska 2A/28, 01-466&nbsp;Warszawa; ustnie&nbsp;– telefonicznie pod numerem <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a> albo osobiście do protokołu; e-mailem na adres <a href="mailto:reklamacje@auraexpert.pl">reklamacje@auraexpert.pl</a>. Możesz też złożyć skargę. Spór klienta będącego osobą fizyczną z&nbsp;agentem w&nbsp;zakresie niezwiązanym z&nbsp;udzielaną ochroną ubezpieczeniową może zakończyć pozasądowe postępowanie przed Rzecznikiem Finansowym (<a href="https://www.rf.gov.pl/">www.rf.gov.pl</a>); udział agenta w&nbsp;takim postępowaniu jest obowiązkowy.</p>
         <p><strong>Kontakt z&nbsp;agentem:</strong> <a href="mailto:zarzad@auraexpert.pl">zarzad@auraexpert.pl</a>, <a href="tel:+48504400901">+48&nbsp;504&nbsp;400&nbsp;901</a>. Wpis agenta (numer 11229690/A) sprawdzisz w&nbsp;Rejestrze Pośredników Ubezpieczeniowych na stronie <a href="https://rpu.knf.gov.pl/">rpu.knf.gov.pl</a>.</p>
       </div>
     </details>
@@ -1024,10 +1035,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   <symbol id="lux-bezpieczenstwo" viewBox="0 0 96 96"><title>Bezpieczeństwo danych</title><path d="M44 43C38 48 29 43 29 36C29 30 33 26 39 26C39 14 57 14 57 26C63 26 67 30 67 36C67 43 58 48 52 43V77H45V48" /><path d="M43 35C36 40 32 30 39 30H44V25C44 19 52 19 52 25V30H57C64 30 60 40 53 35" /><path d="M45 52H52M52 63H62V68H58V72H62V77H52" /></symbol>
 </svg>
 
+<script src="strefa.js"></script>
 <script>
 /* Makieta: widoki (hash), rola pracownika, zakładki, szuflada, okno klauzuli, menu, formularze demonstracyjne.
    Bez JS: wszystkie widoki pod sobą, zakładki jako sekcje, szuflada przez :target. */
 (function () {
+  var S = window.bpStrefa, NB = S.NB, setErr = S.setErr, fokusBledu = S.fokusBledu;
   var root = document.documentElement;
   var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
   var mockLinks = document.querySelectorAll('.mock-bar nav a');
@@ -1087,22 +1100,35 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     document.getElementById('szkoda-wyslane').classList.toggle('is-pending', !sent);
     document.getElementById('f-szkoda').hidden = sent;
     if (id === 'polisa-oc') { openDrawer(null); } else if (drawer.classList.contains('is-open')) { closeDrawer(false); }
+    /* panel zakładki z adresu (#p-szkody, #p-archiwum – np. link ze słownika): właściwa zakładka, fokus na niej */
+    var tabFor = r.el && r.el.getAttribute('role') === 'tabpanel' ? document.getElementById(r.el.getAttribute('aria-labelledby')) : null;
+    if (tabFor) { tabFor.closest('[role="tablist"]').selectTab(tabFor, false, true); }
+    /* pierwsze wczytanie z adresem panelu (#p-szkody, #p-archiwum): przeglądarka przewija do samego panelu, a rząd zakładek
+       chowa się pod paskiem górnym (runda 2 weryfikacji) – karta od rzędu zakładek pod paskiem (scroll-padding-top), także po
+       przewinięciu przeglądarki do kotwicy przy zdarzeniu load */
+    if (tabFor && !focus) {
+      var karta = tabFor.closest('.card') || tabFor.closest('[role="tablist"]');
+      var pokazZakladki = function () { if (location.hash === '#' + id) { karta.scrollIntoView({ block: 'start' }); } };
+      pokazZakladki();
+      if (document.readyState !== 'complete') { window.addEventListener('load', function () { requestAnimationFrame(pokazZakladki); }, { once: true }); }
+    }
     if (focus && id !== 'polisa-oc') {
-      var target = (r.el && r.el !== r.view && r.el.tabIndex >= -1 && r.el.id !== 'tresc') ? r.el : r.view.querySelector('h1');
+      var target = tabFor || ((r.el && r.el !== r.view && r.el.tabIndex >= -1 && r.el.id !== 'tresc') ? r.el : r.view.querySelector('h1'));
       if (target) { if (!target.hasAttribute('tabindex')) { target.setAttribute('tabindex', '-1'); } target.focus({ preventScroll: false }); }
     }
   }
   window.addEventListener('hashchange', function () { closeNav(); render(true); });
 
-  /* ---------- zakładki ---------- */
+  /* ---------- zakładki (adres odzwierciedla wybraną zakładkę: #p-aktualne, #p-archiwum, #p-szkody) ---------- */
   document.querySelectorAll('[role="tablist"]').forEach(function (list) {
     var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
-    function select(tab, focus) {
+    function select(tab, focus, zAdresu) {
       tabs.forEach(function (t) {
         var on = t === tab;
         t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
         document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
       });
+      if (!zAdresu) { history.replaceState(null, '', '#' + tab.getAttribute('aria-controls')); }
       if (focus) { tab.focus(); }
     }
     tabs.forEach(function (t, i) {
@@ -1117,12 +1143,6 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
       });
     });
     list.selectTab = select;
-  });
-  document.querySelectorAll('[data-tab]').forEach(function (a) {
-    a.addEventListener('click', function () {
-      var tab = document.getElementById(a.getAttribute('data-tab'));
-      if (tab) { tab.closest('[role="tablist"]').selectTab(tab, false); }
-    });
   });
 
   /* ---------- szuflada ---------- */
@@ -1153,8 +1173,16 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   drawer.querySelectorAll('.drawer-foot a').forEach(function (a) {
     a.addEventListener('click', function () { drawer.classList.remove('is-open'); root.classList.remove('drawer-lock'); release(); });
   });
+  /* pobieranie: zmienia się tylko widoczna etykieta (nazwa linku z kontekstem dla czytnika zostaje), stan – w role="status" w szufladzie */
+  var pobSt = document.getElementById('pobieranie-status');
   drawer.querySelectorAll('.doc-row .btn').forEach(function (a) {
-    a.addEventListener('click', function (e) { e.preventDefault(); a.textContent = 'Pobieranie…'; setTimeout(function () { a.textContent = 'Pobierz PDF'; }, 1200); });
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (a.getAttribute('aria-busy') === 'true') { return; }
+      var l = a.querySelector('.js-etykieta'), nazwa = a.closest('.doc-row').querySelector('strong').textContent;
+      a.setAttribute('aria-busy', 'true'); l.textContent = 'Pobieranie…'; pobSt.textContent = 'Pobieranie: ' + nazwa + '…';
+      setTimeout(function () { l.textContent = 'Pobierz PDF'; a.removeAttribute('aria-busy'); pobSt.textContent = ''; }, 1200);
+    });
   });
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') { return; }
@@ -1195,75 +1223,85 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 
   /* ---------- formularze demonstracyjne ---------- */
   /* „Odnów z doradcą” – tylko w wariancie bez otwartej sprawy odnowienia (11 §4.5) */
+  /* po wysłaniu przycisk dostaje aria-disabled (nie disabled) – fokus zostaje na nim, a stan ogłasza role="status" */
   var renew = document.querySelector('.js-renew');
   if (renew) {
     renew.addEventListener('submit', function (e) {
       e.preventDefault();
-      document.querySelector('.js-renew-status').hidden = false;
-      this.querySelector('button').disabled = true;
-      this.querySelector('button').textContent = 'Prośba wysłana';
+      var b = this.querySelector('button'), st = document.querySelector('.js-renew-status');
+      if (S.zablokowany(b)) { return; }
+      S.zablokuj(b, 'Prośba wysłana'); S.pokazStatus(st);
     });
   }
   /* „Sprawy w toku”: makieta nie otwiera portal.beautypolisa.eu – w produkcji POST /strefa-klienta/sprawy/[id]/dokoncz → 303 (11 §4.4a) */
   document.querySelectorAll('.js-case-open, .js-case-newlink').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var st = form.parentNode.querySelector('.js-case-status');
-      if (st) { st.hidden = false; }
+      var st = form.parentNode.querySelector('.js-case-status'), b = form.querySelector('button');
+      if (S.zablokowany(b)) { return; }
       if (form.classList.contains('js-case-newlink')) {
-        var b = form.querySelector('button');
-        b.disabled = true; b.textContent = 'Prośba wysłana';
-      }
+        S.zablokuj(b, 'Prośba wysłana');
+        if (st) { S.pokazStatus(st); }
+      } else if (st) { st.hidden = false; }
     });
   });
+  /* „Zespół jest aktualny”: przyciski znikają, więc fokus przechodzi na komunikat (nie spada na <body>) */
   document.getElementById('team-ok').addEventListener('click', function () {
-    document.querySelector('.js-team-status').hidden = false;
+    var st = document.querySelector('.js-team-status');
+    st.textContent = 'Skład zespołu potwierdzony 12' + NB + 'listopada 2026' + NB + 'r.';
+    st.hidden = false;
     document.querySelector('.js-team-actions').hidden = true;
+    st.focus();
   });
   document.getElementById('logout-all').addEventListener('click', function () {
-    document.querySelector('.js-logout-status').hidden = false;
+    var st = document.querySelector('.js-logout-status');
+    S.pokazStatus(st);
   });
-  /* błąd pod polem (aria-invalid + aria-describedby), jak w logowanie.html */
-  function setErr(input, errId, msg) {
-    var err = document.getElementById(errId);
-    if (!('desc' in input.dataset)) { input.dataset.desc = input.getAttribute('aria-describedby') || ''; }
-    var base = input.dataset.desc;
-    if (msg) {
-      err.textContent = msg; err.hidden = false; input.setAttribute('aria-invalid', 'true');
-      if ((' ' + base + ' ').indexOf(' ' + errId + ' ') < 0) { input.setAttribute('aria-describedby', (base ? base + ' ' : '') + errId); }
-    } else {
-      err.hidden = true; input.removeAttribute('aria-invalid');
-      if (base) { input.setAttribute('aria-describedby', base); } else { input.removeAttribute('aria-describedby'); }
-    }
-    return !msg;
-  }
+  /* „Odbierz dostęp” – akcja nieodwracalna w dwóch krokach (details.mini: skutek, „Odbieram dostęp”, „Anuluj”) */
+  document.querySelectorAll('.js-odbierz').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var td = b.closest('td'), tr = b.closest('tr'), det = b.closest('details');
+      var kto = tr.querySelector('.person strong').textContent;
+      var badge = tr.querySelector('td[data-label="Rola"] .badge');
+      if (badge) { badge.className = 'badge badge--off'; badge.textContent = 'Dostęp odebrany'; }
+      det.open = false; det.hidden = true;
+      var st = td.querySelector('.js-odbierz-status');
+      st.textContent = 'Dostęp odebrany' + NB + '– ' + kto + ' nie zaloguje się już do Strefy salonu. Zapisy na szkolenia bezpłatne anulowane.';
+      st.hidden = false; st.focus();
+    });
+  });
   /* zgłoszenie szkody: wymagane data (nie z przyszłości), rodzaj, imię i nazwisko, telefon, e-mail */
   document.getElementById('f-szkoda').addEventListener('submit', function (e) {
     e.preventDefault();
     var f = this.elements, bad = [];
     var d = f.data_zdarzenia.value;
-    if (!setErr(f.data_zdarzenia, 'sz-data-err', !d ? 'Podaj datę zdarzenia – może być przybliżona.' : (d > f.data_zdarzenia.max ? 'Data zdarzenia nie może być późniejsza niż dziś.' : ''))) { bad.push(f.data_zdarzenia); }
-    if (!setErr(f.rodzaj, 'sz-rodzaj-err', f.rodzaj.value ? '' : 'Wybierz rodzaj zdarzenia z listy.')) { bad.push(f.rodzaj); }
-    if (!setErr(f.imie, 'sz-imie-err', f.imie.value.trim().length >= 3 ? '' : 'Wpisz imię i nazwisko.')) { bad.push(f.imie); }
+    if (!setErr(f.data_zdarzenia, 'sz-data-err', !d ? 'Podaj datę zdarzenia' + NB + '– może być przybliżona.' : (d > f.data_zdarzenia.max ? 'Data zdarzenia nie może być późniejsza niż dziś.' : ''))) { bad.push(f.data_zdarzenia); }
+    if (!setErr(f.rodzaj, 'sz-rodzaj-err', f.rodzaj.value ? '' : 'Wybierz rodzaj zdarzenia z' + NB + 'listy.')) { bad.push(f.rodzaj); }
+    if (!setErr(f.imie, 'sz-imie-err', f.imie.value.trim().length >= 3 ? '' : 'Wpisz imię i' + NB + 'nazwisko.')) { bad.push(f.imie); }
     var tel = f.telefon.value.replace(/[\s()+-]/g, '').replace(/^48(?=\d{9}$)/, '');
-    if (!setErr(f.telefon, 'sz-tel-err', /^\d{9}$/.test(tel) ? '' : 'Podaj numer telefonu – 9 cyfr. Doradca zadzwoni, aby zebrać szczegóły.')) { bad.push(f.telefon); }
-    if (!setErr(f.email, 'sz-email-err', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim()) ? '' : 'Wpisz adres e-mail w formacie nazwa@domena.pl.')) { bad.push(f.email); }
-    if (bad.length) { bad[0].focus(); return; }
+    if (!setErr(f.telefon, 'sz-tel-err', /^\d{9}$/.test(tel) ? '' : 'Podaj numer telefonu' + NB + '– 9' + NB + 'cyfr. Doradca zadzwoni, aby zebrać szczegóły.')) { bad.push(f.telefon); }
+    if (!setErr(f.email, 'sz-email-err', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim()) ? '' : 'Wpisz adres e-mail w' + NB + 'formacie nazwa@domena.pl.')) { bad.push(f.email); }
+    if (bad.length) { fokusBledu(bad[0]); return; }
+    S.czysty(this);
     location.hash = 'szkoda-wyslane';
   });
   document.getElementById('phone-change').addEventListener('click', function () {
-    document.querySelector('.js-phone-status').hidden = false;
+    var st = document.querySelector('.js-phone-status');
+    S.pokazStatus(st);
   });
   document.getElementById('f-invite').addEventListener('submit', function (e) {
     e.preventDefault();
-    var input = document.getElementById('inv-email'), err = document.getElementById('inv-email-err');
-    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
-    input.setAttribute('aria-invalid', ok ? 'false' : 'true');
-    input.setAttribute('aria-describedby', ok ? 'inv-email-hint' : 'inv-email-hint inv-email-err');
-    err.hidden = ok;
-    if (!ok) { input.focus(); return; }
-    document.getElementById('inv-ok-email').textContent = input.value.trim();
-    document.getElementById('inv-ok').hidden = false;
+    var input = document.getElementById('inv-email');
+    var adres = input.value.trim();
+    if (!setErr(input, 'inv-email-err', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(adres) ? '' : 'Wpisz adres e-mail w' + NB + 'formacie nazwa@domena.pl.')) { fokusBledu(input); return; }
+    var ok = document.getElementById('inv-ok'), p = ok.querySelector('p');
+    ok.hidden = false; p.textContent = '';
+    setTimeout(function () {
+      var b = document.createElement('strong'); b.id = 'inv-ok-email'; b.textContent = adres;
+      p.appendChild(document.createTextNode('Zaproszenie wysłane na adres ')); p.appendChild(b);
+      p.appendChild(document.createTextNode('. Jest ważne do 19' + NB + 'listopada 2026' + NB + 'r.'));
+    }, 60);
+    S.czysty(this);
     this.reset();
   });
 
@@ -1293,72 +1331,73 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
 {
  "odpowiedzialnosc-cywilna": {
   "t": "OC (ubezpieczenie odpowiedzialności cywilnej)",
-  "d": "Ubezpieczenie, które płaci za Ciebie, gdy wyrządzisz szkodę komuś innemu (osobie trzeciej) i odpowiadasz za nią – np. klientce, u której zabieg spowodował uraz. Ubezpieczyciel wypłaca poszkodowanemu odszkodowanie do wysokości sumy gwarancyjnej, w zakresie i z wyłączeniami z warunków ubezpieczenia.",
+  "d": "Ubezpieczenie, które płaci za Ciebie, gdy wyrządzisz szkodę komuś innemu (osobie trzeciej) i odpowiadasz za nią – np. klientce, u której zabieg spowodował uraz. Ubezpieczyciel wypłaca poszkodowanemu odszkodowanie do wysokości sumy gwarancyjnej, w zakresie i z wyłączeniami z warunków ubezpieczenia.",
   "u": "../slownik.html#haslo-odpowiedzialnosc-cywilna",
   "o": 1
  },
  "apk": {
   "t": "APK (analiza potrzeb klienta)",
-  "d": "Ankieta przed zawarciem umowy, w której ustala się Twoje wymagania i potrzeby – na tej podstawie sprawdza się, czy proponowane ubezpieczenie do nich pasuje. To obowiązek każdego dystrybutora ubezpieczeń.",
+  "d": "Ankieta przed zawarciem umowy, w której ustala się Twoje wymagania i potrzeby – na tej podstawie sprawdza się, czy proponowane ubezpieczenie do nich pasuje. To obowiązek każdego dystrybutora ubezpieczeń.",
   "u": "../slownik.html#haslo-apk"
  },
  "polisa": {
   "t": "Polisa",
-  "d": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę.",
+  "d": "Dokument, którym ubezpieczyciel potwierdza zawarcie umowy ubezpieczenia. Znajdziesz w nim m.in. numer, okres ochrony, sumę i składkę.",
   "u": "../slownik.html#haslo-polisa",
   "o": 1
  },
  "zakres-i-wylaczenia": {
-  "t": "Zakres ochrony i wyłączenia",
-  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
+  "t": "Zakres ochrony i wyłączenia",
+  "d": "Zakres ochrony to sytuacje i koszty, za które ubezpieczyciel płaci. Wyłączenia czytaj przed podpisaniem umowy, nie po odmowie.",
   "u": "../slownik.html#haslo-zakres-i-wylaczenia",
   "o": 1
  },
  "dokumentacja-zabiegu": {
   "t": "Dokumentacja zabiegu",
-  "d": "Zapisy, które pokazują, jak przebiegał zabieg: karta klienta, podpisany przez klientkę formularz zgody na zabieg, zdjęcia przed i po, informacje o użytych produktach i urządzeniach. Przy roszczeniu to podstawowy dowód dla ubezpieczyciela – zabezpiecz ją i nie poprawiaj wpisów po fakcie.",
+  "d": "Zapisy, które pokazują, jak przebiegał zabieg: karta klienta, podpisany przez klientkę formularz zgody na zabieg, zdjęcia przed i po, informacje o użytych produktach i urządzeniach. Przy roszczeniu to podstawowy dowód dla ubezpieczyciela – zabezpiecz ją i nie poprawiaj wpisów po fakcie.",
   "u": "../slownik.html#haslo-dokumentacja-zabiegu",
   "o": 1
  },
  "roszczenie": {
   "t": "Roszczenie",
-  "d": "Żądanie zapłaty albo innego świadczenia. Klientka może mieć roszczenie wobec salonu (np. o pokrycie kosztów leczenia po zabiegu), a Ty – wobec ubezpieczyciela (o wypłatę z polisy).",
+  "d": "Żądanie zapłaty albo innego świadczenia. Klientka może mieć roszczenie wobec salonu (np. o pokrycie kosztów leczenia po zabiegu), a Ty – wobec ubezpieczyciela (o wypłatę z polisy).",
   "u": "../slownik.html#haslo-roszczenie",
   "o": 1
  },
  "owu": {
   "t": "OWU (ogólne warunki ubezpieczenia)",
-  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. Ubezpieczyciel ma obowiązek doręczyć je przed zawarciem umowy.",
+  "d": "Wzorzec umowy przygotowany przez ubezpieczyciela: opisuje, co jest chronione, czego ubezpieczenie nie obejmuje, jakie są limity, terminy i obowiązki stron. Ubezpieczyciel ma obowiązek doręczyć je przed zawarciem umowy.",
   "u": "../slownik.html#haslo-owu",
   "o": 1
  },
  "zgloszenie-szkody": {
   "t": "Zgłoszenie szkody",
-  "d": "Poinformowanie ubezpieczyciela o zdarzeniu, z którego może być wypłata – od tego zaczyna się likwidacja szkody. Szkodę z OC możesz zgłosić przez BeautyPolisa – doradca zbierze szczegóły telefonicznie i przekaże zgłoszenie ubezpieczycielowi – albo bezpośrednio u ubezpieczyciela.",
+  "d": "Poinformowanie ubezpieczyciela o zdarzeniu, z którego może być wypłata – od tego zaczyna się likwidacja szkody. Szkodę z OC możesz zgłosić przez BeautyPolisa – doradca zbierze szczegóły telefonicznie i przekaże zgłoszenie ubezpieczycielowi – albo bezpośrednio u ubezpieczyciela.",
   "u": "../slownik.html#haslo-zgloszenie-szkody",
   "o": 1
  },
  "role-w-strefie": {
-  "t": "Właściciel konta i pracownik (role w Strefie)",
-  "d": "Właściciel konta salonu widzi polisy, dokumenty i zgłoszenia szkód, zaprasza pracowników i publikuje ogłoszenia. Pracownik – zaproszony e-mailem przez właściciela (zaproszenie jest ważne 7 dni) – widzi tylko „Szkolenia” i ogłoszenia salonu w „Dam pracę”, bez polis.",
+  "t": "Właściciel konta i pracownik (role w Strefie)",
+  "d": "Właściciel konta salonu widzi polisy, dokumenty i zgłoszenia szkód, zaprasza pracowników i publikuje ogłoszenia. Pracownik – zaproszony e-mailem przez właściciela (zaproszenie jest ważne 7 dni) – widzi tylko „Szkolenia” i ogłoszenia salonu w „Dam pracę”, bez polis.",
   "u": "../slownik.html#haslo-role-w-strefie"
  },
  "drugi-skladnik": {
   "t": "Drugi składnik logowania (TOTP)",
-  "d": "Dodatkowe zabezpieczenie konta. Strefa nie ma haseł: najpierw podajesz sześciocyfrowy kod z e-maila, a potem – jako drugi składnik – kod z aplikacji uwierzytelniającej, który zmienia się co 30 sekund (TOTP – jednorazowy kod zależny od czasu); sam dostęp do skrzynki e-mail nie wystarczy więc, by ktoś wszedł na konto.",
+  "d": "Dodatkowe zabezpieczenie konta. Strefa nie ma haseł: najpierw podajesz 6-⁠cyfrowy kod z e-maila, a potem – jako drugi składnik – kod z aplikacji uwierzytelniającej, który zmienia się co 30 sekund (TOTP – jednorazowy kod zależny od czasu); sam dostęp do skrzynki e-mail nie wystarczy więc, by ktoś wszedł na konto.",
   "u": "../slownik.html#haslo-drugi-skladnik"
  },
  "doradca": {
-  "t": "Doradca Aura Expert",
-  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
+  "t": "Doradca Aura Expert",
+  "d": "Osoba z Aura Expert, która prowadzi Twoją sprawę: kontaktuje się po formularzu, przeprowadza analizę potrzeb, przygotowuje wniosek i dokumenty, pomaga przy zgłoszeniu szkody. Działa w imieniu agenta ubezpieczeniowego, czyli na rzecz ubezpieczycieli – nie jest brokerem ani doradcą podatkowym czy prawnym.",
   "u": "../slownik.html#haslo-doradca"
  }
 }
 </script>
 <script>
 /* Dymek z definicją pojęcia (gen_terminy.py – nie edytuj ręcznie).
-   Bez JS oznaczenie jest linkiem do słownika. Z JS: link dostaje rolę przycisku (aria-haspopup="dialog", aria-expanded, aria-controls),
-   klik / Enter / Spacja otwiera niemodalny dialog (role="dialog" + aria-labelledby/aria-describedby – w środku link i przycisk, więc nie tooltip).
+   Bez JS oznaczenie jest linkiem do słownika. Z JS zostaje linkiem (czytnik ogłasza link, a pojęcie jest na liście linków strony),
+   dostaje aria-haspopup="dialog", aria-expanded i aria-controls; klik / Enter otwiera niemodalny dialog (role="dialog" +
+   aria-labelledby/aria-describedby – w środku link „Więcej w słowniku” do hasła i przycisk, więc nie tooltip). Spacja – jak przy linku.
    Fokus przechodzi do dialogu; Esc i „Zamknij” zamykają i oddają fokus pojęciu; Tab za ostatnim elementem i Shift+Tab przed pierwszym też wracają do pojęcia;
    klik poza dymkiem zamyka. Najechanie myszą niczego nie otwiera ani nie zamyka (WCAG 1.4.13: dymek nie znika, gdy kursor jest nad nim).
    Klik z Ctrl/Cmd/Shift lub środkowym przyciskiem – zwykły link do słownika. Okno od 600 × 600 px: dymek pod ostatnią linią pojęcia albo nad
@@ -1380,21 +1419,24 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   var mqWaski=window.matchMedia('(max-width:599px),(max-height:599px)'), biezace=null, GORA=88, M=12;
   pojecia.forEach(function(a){
     if(!D[a.getAttribute('data-termin')])return;
-    a.setAttribute('role','button');a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
+    a.setAttribute('aria-haspopup','dialog');a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','bp-dymek');
   });
+  /* położenie: najpierw wszystkie odczyty (jedno przeliczenie układu), potem zapisy; wysokość treści z scrollHeight + ramka,
+     więc nie trzeba zdejmować max-height przed pomiarem */
   function pozycja(){
     if(!biezace||box.hidden)return;
-    box.style.maxHeight='';box.style.overflowY='';
-    if(mqWaski.matches){box.style.top='';box.style.left='';return}
+    if(mqWaski.matches){box.style.maxHeight='';box.style.overflowY='';box.style.top='';box.style.left='';return}
     var rs=biezace.getClientRects(), r1=rs[0]||biezace.getBoundingClientRect(), r2=rs[rs.length-1]||r1;
-    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.offsetHeight;
-    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y;
+    var vw=document.documentElement.clientWidth, vh=window.innerHeight, w=box.offsetWidth, h=box.scrollHeight+(box.offsetHeight-box.clientHeight);
+    var sx=window.scrollX, sy=window.scrollY;
+    var pod=vh-M-(r2.bottom+10), nad=r1.top-10-GORA, r=r2, y, maxH=0;
     if(h<=pod){y=r2.bottom+10}
     else if(h<=nad){r=r1;y=r1.top-10-h}
-    else if(pod>=nad){y=r2.bottom+10;box.style.maxHeight=Math.max(160,pod)+'px';box.style.overflowY='auto'}
-    else{r=r1;box.style.maxHeight=Math.max(160,nad)+'px';box.style.overflowY='auto';y=r1.top-10-box.offsetHeight}
+    else if(pod>=nad){y=r2.bottom+10;maxH=Math.max(160,pod)}
+    else{r=r1;maxH=Math.max(160,nad);y=r1.top-10-Math.min(h,maxH)}
     var x=Math.min(Math.max(16,r.left),vw-w-16);
-    box.style.left=Math.round(x+window.scrollX)+'px';box.style.top=Math.round(y+window.scrollY)+'px';
+    box.style.maxHeight=maxH?maxH+'px':'';box.style.overflowY=maxH?'auto':'';
+    box.style.left=Math.round(x+sx)+'px';box.style.top=Math.round(y+sy)+'px';
   }
   function otworz(a){
     var d=D[a.getAttribute('data-termin')]; if(!d)return;
@@ -1418,8 +1460,6 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     if(biezace&&!box.contains(e.target))zamknijDymek(false);
   });
   document.addEventListener('keydown',function(e){
-    var a=e.target.closest&&e.target.closest('a.bp-termin[data-termin]');
-    if(a&&(e.key===' '||e.key==='Spacebar')&&D[a.getAttribute('data-termin')]){e.preventDefault();if(biezace===a)zamknijDymek(true);else otworz(a);return}
     if(!biezace)return;
     if(e.key==='Escape'||e.key==='Esc'){e.preventDefault();zamknijDymek(true);return}
     if(e.key==='Tab'&&box.contains(document.activeElement)){

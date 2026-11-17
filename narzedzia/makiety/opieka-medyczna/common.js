@@ -65,34 +65,13 @@
   [].forEach.call(document.querySelectorAll('.section-head > .eyebrow,.end-card > .eyebrow'),function(e){e.classList.add('rv-eyebrow')});
   var els=[].slice.call(document.querySelectorAll('.rv-curtain,.rv-rise,.rv-eyebrow')), vh=window.innerHeight;
   function show(e){e.classList.add('is-in')}
-  els.forEach(function(e){if(e.getBoundingClientRect().top<vh)show(e)});
+  /* najpierw wszystkie odczyty położenia, potem zapisy klas (bez wymuszania przeliczeń stylu w pętli) */
+  var tops=els.map(function(e){return e.getBoundingClientRect().top});
+  els.forEach(function(e,i){if(tops[i]<vh)show(e)});
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(en){if(en.isIntersecting){show(en.target);io.unobserve(en.target)}});
   },{rootMargin:'0px 0px -10% 0px'});
   els.forEach(function(e){if(!e.classList.contains('is-in'))io.observe(e)});
   document.documentElement.classList.add('io-reveal');
   window.addEventListener('beforeprint',function(){els.forEach(show)});
-})();
-
-/* Dryf cyfr rozdziałów bez animation-timeline: rAF po zdarzeniu scroll (passive), tylko translate */
-(function(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if(window.CSS&&CSS.supports&&CSS.supports('animation-timeline: view()')) return;
-  var nums=[].slice.call(document.querySelectorAll('.chapter-no')).map(function(n){return {el:n,box:n.parentNode,d:parseFloat(getComputedStyle(n).getPropertyValue('--drift'))||60}});
-  if(!nums.length) return;
-  var ticking=false;
-  function clamp(v){return v<0?0:v>1?1:v}
-  function frame(){
-    ticking=false;var vh=window.innerHeight, out=[];
-    nums.forEach(function(n){
-      var r=n.box.getBoundingClientRect();if(r.bottom<-vh||r.top>2*vh)return;
-      out.push([n.el,(n.d*(1-2*clamp((vh-r.top)/(vh+r.height)))).toFixed(1)+'px']);
-    });
-    out.forEach(function(o){o[0].style.setProperty('--drift-y',o[1])});
-  }
-  function request(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
-  document.documentElement.classList.add('sl-js');
-  window.addEventListener('scroll',request,{passive:true});
-  window.addEventListener('resize',request);
-  frame();
 })();
