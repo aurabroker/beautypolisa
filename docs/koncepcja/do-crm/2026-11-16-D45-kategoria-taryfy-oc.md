@@ -24,7 +24,7 @@ Portal stosuje decyzję jako zasadę ogólną, tak jak dawny portal („grupy 1 
 
 Różnica wobec obecnej reguły: dziś pełną taryfę daje z Załącznikiem nr 2 tylko `fryzjerski`. Po zmianie dają ją też `kosmetyczny` i `masaz`.
 
-> Do potwierdzenia przed wdrożeniem w CRM: czy ta sama zasada obejmuje salon masażu i salon tatuażu (decyzja zleceniodawcy dosłownie mówi o „salonie kosmetycznym i kosmetologicznym razem”; portal przyjął zasadę ogólną). Jeśli zleceniodawca zawęzi ją do pary `kosmetyczny` + `kosmetologiczny`, w tabeli z p. 3 zostają tylko wiersze z tymi dwoma rodzajami, a portal zostanie poprawiony tak samo.
+> **Potwierdzone przez zleceniodawcę 18.11.2026:** „każde połączenie co najmniej dwóch list zabiegowych daje stawkę z kolumny 3, więc najwyższe stawki”. Zasada obejmuje wszystkie rodzaje, także salon masażu i salon tatuażu – wdrożyć w CRM całą tabelę z p. 3 (9 połączeń).
 
 ## 2. Gdzie w kodzie
 
