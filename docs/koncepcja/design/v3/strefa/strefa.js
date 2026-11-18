@@ -127,11 +127,21 @@
     var tabela = w.getComputedStyle(tr).display === 'table-row';
     if (det.open && tabela) {
       Array.prototype.forEach.call(tr.querySelectorAll('.cell-actions details.mini[open]'), function (o) { if (o !== det) { o.open = false; } });
+      /* panel przy prawej krawędzi widocznej części przewijanego obszaru (runda 3 weryfikacji): przy tabeli szerszej niż obszar
+         prawa krawędź wiersza leży poza widokiem – panel wystawał, a pole pliku i przycisk były ucięte */
+      var wrap = tr.closest('.table-wrap');
+      if (wrap && wrap.scrollWidth > wrap.clientWidth + 1) {
+        tr.style.setProperty('--mini-r', Math.max(14, tr.offsetWidth - wrap.scrollLeft - wrap.clientWidth + 14) + 'px');
+        tr.style.setProperty('--mini-w', Math.max(0, wrap.clientWidth - 28) + 'px');
+      } else {
+        tr.style.removeProperty('--mini-r');
+        tr.style.removeProperty('--mini-w');
+      }
       tr.classList.add('mini-pod');
       tr.style.setProperty('--mini-h', body.offsetHeight + 'px');
     } else if (!tr.querySelector('.cell-actions details.mini[open]') || !tabela) {
       tr.classList.remove('mini-pod');
-      tr.style.removeProperty('--mini-h');
+      ['--mini-h', '--mini-r', '--mini-w'].forEach(function (x) { tr.style.removeProperty(x); });
     }
   }
   d.addEventListener('toggle', function (e) {
@@ -146,6 +156,11 @@
   w.addEventListener('resize', function () {
     Array.prototype.forEach.call(d.querySelectorAll('td.cell-actions details.mini[open]'), ukladMini);
   });
+  /* przewinięcie obszaru tabeli w poziomie (także fokusem) – panel zostaje w widocznej części */
+  d.addEventListener('scroll', function (e) {
+    var t = e.target;
+    if (t && t.nodeType === 1 && t.matches('.table-wrap')) { Array.prototype.forEach.call(t.querySelectorAll('td.cell-actions details.mini[open]'), ukladMini); }
+  }, true);
 
   /* ---------- „Cofnij” ----------
      o.po      – element, za którym staje pasek „Cofnij” (zwykle komunikat role="status");
@@ -259,6 +274,24 @@
   function data(dt) { return fData ? fData.format(dt) : dt.getDate() + '.' + (dt.getMonth() + 1) + '.' + dt.getFullYear(); }
   function godzina(dt) { return fGodz ? fGodz.format(dt) : dt.getHours() + ':' + (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes(); }
 
+  /* ---------- panel zakładki z adresu przy pierwszym wczytaniu (np. panel.html#p-szkody, szkolenia.html#p-zam) ----------
+     Przeglądarka przewija do samego panelu, a rząd zakładek chowa się pod paskiem górnym (runda 2 weryfikacji – panel.html;
+     runda 3 – szkolenia.html): karta od rzędu zakładek pod paskiem (html scroll-padding-top), także po przewinięciu przeglądarki
+     do kotwicy przy zdarzeniu load. Gdy tuż przed kartą stoi informacja o ukrytej zakładce (zakladki.js, D44 – przenosi ją przy
+     load, przed tym wywołaniem), przewija do informacji: informacja u góry okna, karta z zakładkami zaraz pod nią */
+  function pokazZakladki(tab, id) {
+    var karta = tab && (tab.closest('.card') || tab.closest('[role="tablist"]'));
+    if (!karta) { return; }
+    function pokaz() {
+      if (w.location.hash !== '#' + id) { return; }
+      var przed = karta.previousElementSibling;
+      var cel = przed && przed.matches('[data-zakladka-uwaga]') && przed.getClientRects().length ? przed : karta;
+      cel.scrollIntoView({ block: 'start' });
+    }
+    pokaz();
+    if (d.readyState !== 'complete') { w.addEventListener('load', function () { w.requestAnimationFrame(pokaz); }, { once: true }); }
+  }
+
   /* ---------- przewijane tabele: zatrzymanie Tab tylko wtedy, gdy region naprawdę się przewija ----------
      .table-wrap[role="region"][aria-label] ma w HTML tabindex="0" (bez JS przewijanie z klawiatury działa zawsze – WCAG 2.1.1);
      skrypt zdejmuje tabindex, gdy tabela mieści się w karcie (np. układ .stack na telefonie), i oddaje go, gdy tabela znowu się
@@ -281,6 +314,6 @@
   w.bpStrefa = {
     NB: NB, setErr: setErr, fokusBledu: fokusBledu, ogloszenie: ogloszenie, pokazStatus: pokazStatus,
     zablokuj: zablokuj, odblokuj: odblokuj, zablokowany: zablokowany, zamknijMini: zamknijMini,
-    cofnij: cofnij, czysty: czysty, kwota: kwota, zakresKwot: zakresKwot, data: data, godzina: godzina
+    cofnij: cofnij, czysty: czysty, kwota: kwota, zakresKwot: zakresKwot, data: data, godzina: godzina, pokazZakladki: pokazZakladki
   };
 })(window, document);

@@ -9,7 +9,8 @@ Reguły (tylko tekst – znaczniki, komentarze, <script> i <style> zostają bez 
      „tys. zł”, „/ mies.”; grupy cyfr („1 000 000 zł”, „504 400 901”);
   3. skrót + liczba („nr 5”; „nr” także przed symbolem z wielkiej litery – „nr WA50/003353/24/A”; „poz. 17”, „art. 22”, „§ 3”, „pkt 4”, „ust. 1”, „NIP …”, „REGON …”, „numerem …”, „lokal 28”),
      kod pocztowy z miastem („01-466 Warszawa”), „sp. z o.o.”, „S.A.” po nazwie;
-  4. półpauza jako myślnik nie zaczyna wiersza („lista nr 1 – gabinety”: twarda spacja przed „–”); pauza „ — ” → półpauza „ – ”;
+  4. półpauza jako myślnik nie zaczyna wiersza („lista nr 1 – gabinety”: twarda spacja przed „–”, także na granicy elementu liniowego:
+     „</strong> – dalej”, „tekst <em>– dalej</em>”); pauza „ — ” → półpauza „ – ”;
   5. nazwy marek bez łamania: „ERGO Hestia” (odmiana), „ERGO Razem”, „ERGO Życie”, „LUX MED”, „Aura Expert”;
   6. „...” → „…”, proste cudzysłowy "…" → „…”.
 Słowa, kolejność i znaki interpunkcyjne zostają – zmieniają się tylko odstępy (i kreska z reguły 4); brzmienie list zabiegów,
@@ -81,6 +82,15 @@ _ZNACZNIK_LINIOWY = re.compile(r'<(?:a|abbr|b|bdi|bdo|cite|code|data|dfn|em|i|kb
                                re.I)
 
 
+# reguła 4 na granicy znacznika elementu liniowego (runda 3 weryfikacji): „</strong> – wsparcie” i „Trzy warianty <em>– składka</em>” –
+# spacja przed półpauzą-myślnikiem stała między tekstem a znacznikiem, więc „–” mogło zacząć wiersz
+_ZAMYKAJACY_LINIOWY = re.compile(r'</(?:a|abbr|b|bdi|bdo|cite|code|data|dfn|em|i|kbd|mark|q|s|samp|small|span|strong|sub|sup|time|u|var)\s*>',
+                                 re.I)
+_MYSLNIK_POCZATEK = re.compile(r'^[ \t]+(?=[–—][ \t])')
+_MYSLNIK_W_ZNACZNIKU = re.compile(r'^[–—][ \t]')
+_SPACJA_KONIEC = re.compile(r'(?<=[^\s>])[ \t]+$')
+
+
 def html(s):
     """Fragment HTML → ten sam fragment z polską typografią w tekście (znaczniki i atrybuty bez zmian)."""
     czesci = _ZNACZNIK.split(s)
@@ -92,6 +102,12 @@ def html(s):
         t = _popraw(cz, '&nbsp;')
         if i + 1 < len(czesci) and _ZNACZNIK_LINIOWY.match(czesci[i + 1]):
             t = _JEDNOLITEROWE_KONIEC.sub(r'\1&nbsp;', t)
+            # „tekst <em>– dalej</em>”: półpauza na początku elementu liniowego
+            if i + 2 < len(czesci) and _MYSLNIK_W_ZNACZNIKU.match(czesci[i + 2]):
+                t = _SPACJA_KONIEC.sub('&nbsp;', t)
+        # „</strong> – dalej”: półpauza po elemencie liniowym
+        if i > 0 and _ZAMYKAJACY_LINIOWY.match(czesci[i - 1]):
+            t = _MYSLNIK_POCZATEK.sub('&nbsp;', t)
         out.append(t)
     return ''.join(out)
 
@@ -180,6 +196,10 @@ def kontrola():
         ('2026-11-16 i 00-950 Warszawa', '2026-11-16 i&nbsp;00-950&nbsp;Warszawa'),
         ('NIP 5252645060, REGON 363541990, pod numerem 0000599840, lokal 28', 'NIP&nbsp;5252645060, REGON&nbsp;363541990, pod numerem&nbsp;0000599840, lokal&nbsp;28'),
         ('np. składka, L4, OWU...', 'np. składka, L4, OWU…'),
+        ('<strong>A</strong> – b', '<strong>A</strong>&nbsp;– b'),
+        ('Trzy warianty <em>– składka</em>', 'Trzy warianty&nbsp;<em>– składka</em>'),
+        ('ERGO Razem <em>– grupa otwarta</em>', 'ERGO&nbsp;Razem&nbsp;<em>– grupa otwarta</em>'),
+        ('<a href="#x">6</a>–8 osób i <br> – x', '<a href="#x">6</a>–8&nbsp;osób i <br> – x'),
     ]
     bledy = []
     for wej, ocz in przyklady:

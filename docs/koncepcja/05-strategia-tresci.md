@@ -141,13 +141,13 @@ Tam, gdzie jesteśmy pierwotnym źródłem, treść musi być w stu procentach z
 | Informacyjna „co to / jak działa” | oc kosmetyczki, ubezpieczenie karno skarbowe, prywatne l4 jdg | poradnik, wyjaśnienie, słownik | `/baza-wiedzy/<slug>` | link do produktu + zapis na aktualizacje |
 | Informacyjna „jak zrobić” | zgoda na zabieg kosmetyczny wzór, kontrola sanepidu salon kosmetyczny | checklista, poradnik procesowy, generator | `/baza-wiedzy/<slug>`, `/szkoda` | lead magnet (PDF za e-mail) |
 | Komercyjna – porównanie | ubezpieczenie grupowe czy pakiet medyczny, abonament medyczny dla firm porównanie | porównanie z tabelą | `/baza-wiedzy/<slug>` → `/ubezpieczenia/*` | „zapytaj o ofertę” |
-| Komercyjna – dla zawodu | oc kosmetologa, oc fryzjera, oc podologa, oc linergistki, oc tatuażysty | strona persony | `/dla-kogo/<zawod>` | kalkulator z zaznaczonym rodzajem działalności (00, D43 g) |
+| Komercyjna – dla zawodu | oc kosmetologa, oc fryzjera, oc podologa, oc linergistki, oc tatuażysty, oc trychologa, oc masażysty | strona persony | `/dla-kogo/<zawod>` | kalkulator z zaznaczonym rodzajem działalności (00, D43 g) |
 | Transakcyjna | kalkulator oc kosmetyczka, oc kosmetyczki cena | kalkulator, formularz | `/kalkulator/oc`, formularze `/ubezpieczenia/*` | formularz (Turnstile, zgody – 02) |
 | Posprzedażowa | zgłoszenie szkody oc kosmetyczka, owu ergo hestia oc beauty | instrukcja, dokumenty | `/szkoda`, `/dokumenty` | zgłoszenie / pobranie OWU |
 
 Zasada: nie piszemy artykułu pod frazę transakcyjną (odpowiada kalkulator lub strona produktowa) i nie budujemy strony produktowej pod frazę informacyjną.
 
-Lista 52 fraz do jednorazowej weryfikacji (Senuto / Semrush), potem GSC jako źródło prawdy; `sledz=1` oznacza 20 fraz śledzonych tygodniowo od startu. Po eksporcie kolejka jest przeliczana raz.
+Lista 53 fraz do jednorazowej weryfikacji (Senuto / Semrush), potem GSC jako źródło prawdy; `sledz=1` oznacza 20 fraz śledzonych tygodniowo od startu. Po eksporcie kolejka jest przeliczana raz.
 
 ```csv
 fraza,filar,wolumen_hipoteza,sledz
@@ -162,6 +162,7 @@ oc linergistki,A,niski,1
 oc stylistki paznokci,A,niski,0
 oc tatuazysty,A,niski,1
 oc trychologa,A,niski,0
+oc masazysty,A,niski,0
 oc zawodowe kosmetologa,A,niski,0
 suma gwarancyjna oc kosmetyczka,A,niski,0
 lista zabiegow oc kosmetyczka,A,niski,1

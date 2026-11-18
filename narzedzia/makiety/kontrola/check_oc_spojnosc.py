@@ -48,6 +48,7 @@ E. Przykłady zabiegów (K14): w tekstach OC z punktu A (llms.txt – wiersze OC
 
 Uruchomienie: python3 -I narzedzia/makiety/kontrola/check_oc_spojnosc.py [--snippets | --dokumenty] [-v]
 """
+import html
 import json
 import pathlib
 import re
@@ -163,21 +164,52 @@ STARE_OPISY_D45 = ('także razem z gabinetem kosmetycznym lub salonem masażu',
                    'albo salon fryzjerski razem z gabinetem kosmetologicznym',
                    'salon fryzjerski z gabinetem kosmetologicznym')
 # runda 2 weryfikacji (17.11.2026): także formy eliptyczne – same przymiotniki w narzędniku („gabinet kosmetyczny z kosmetologicznym”)
-# i dopełniacz („salon masażu i tatuażu”)
-_L1 = r'(gabinet\w* kosmetyczn\w*|salon\w* fryzjersk\w*|salon\w* masażu|kosmetyczn(?:y|ym)|fryzjersk(?:i|im)|masaż(?:u)?|masaz(?:u)?)'
-_L2 = r'(gabinet\w* kosmetologiczn\w*|salon\w* tatuażu|kosmetologiczn(?:y|ym)|tatuaż(?:u)?|tatuaz(?:u)?)'
-_LACZ = r',? (?:razem z|z|i|oraz|\+) '
-# para w dowolnej kolejności, potem pierwsza nazwa w cudzysłowie w tym samym zdaniu (bez kropki i bez innego „ po drodze)
-PARA_D45 = re.compile(r'(?<![\w-])(?:%s%s%s|%s%s%s)(?![\w-])[^.„\n]*„([^”]+)”' % (_L1, _LACZ, _L2, _L2, _LACZ, _L1), re.I)
+# i dopełniacz („salon masażu i tatuażu”). Runda 3: pełna odmiana (dopełniacz „gabinetu kosmetycznego”, narzędnik „z tatuażem”,
+# liczba mnoga „gabinety kosmetyczne”), rzeczownik „kosmetologia”, bez zawodów („masażysta”, „tatuażysta”)
+_L1 = r'(gabinet\w* kosmetyczn\w*|salon\w* fryzjersk\w*|salon\w* masaż\w*|salon\w* masaz\w*|kosmetyczn\w*|fryzjersk\w*|masaż(?!yst)\w*|masaz(?!yst)\w*)'
+_L2 = r'(gabinet\w* kosmetologiczn\w*|salon\w* tatuaż\w*|salon\w* tatuaz\w*|kosmetologi\w*|tatuaż(?!yst)\w*|tatuaz(?!yst)\w*)'
+# łączniki pary (runda 3: także „wraz z”, „łącznie z”, „ze”, przecinek i ukośnik)
+_LACZ = r'(?:,? (?:razem z|wraz z|łącznie z|ze|z|i|oraz|\+) |, ?| ?/ ?)'
+# wskazanie taryfy po parze w tym samym zdaniu (pierwsze z kolei): nazwa w cudzysłowie, „taryfa kosmetologiczna / pełna” bez
+# cudzysłowu (runda 3) albo stawka programu w zł (runda 3: np. 650 / 790 / 950 zł – stawki taryfy kosmetologicznej)
+def _kwota_txt(x):
+    c, g = divmod(round(x * 100), 100)
+    t = '{:,}'.format(c).replace(',', ' ')
+    return t + (',%02d' % g if g else '')
+
+
+KWOTY_KAT = {}   # „1 250” → klucz kategorii (stawki 1–5 osób i z dopłatą 6–8 osób)
+for _k in T['kategorie']:
+    for _v in _k['skladka'].values():
+        for _x in (_v, _v * 1.25):
+            KWOTY_KAT.setdefault(_kwota_txt(_x), set()).add(_k['klucz'])
+_KWOTY = '|'.join(sorted((re.escape(k) for k in KWOTY_KAT), key=len, reverse=True))
+_WSKAZANIE = r'(?:„(?P<q>[^”]+)”|taryf\w* (?P<adj>kosmetologiczn\w*|pełn\w*)|(?<![\d,])(?<!\d )(?P<kw>%s) ?zł)' % _KWOTY
+# para w dowolnej kolejności, potem pierwsze wskazanie taryfy w tym samym zdaniu (bez kropki i bez innego „ po drodze)
+PARA_D45 = re.compile(r'(?<![\w-])(?:%s%s%s|%s%s%s)(?![\w-])[^.„\n]*?%s' % (_L1, _LACZ, _L2, _L2, _LACZ, _L1, _WSKAZANIE), re.I)
 _PARA_GRUPY = [(1, 2), (4, 3)]  # (rodzaj z listy nr 1, rodzaj z listy nr 2) w obu wariantach kolejności
 DOKUMENTY_D45 = sorted({*DOKUMENTY, '13-przeniesienie-formularzy/README.md'} | {p.relative_to(K).as_posix() for p in K.glob('1[0-4]-*.md')}
                        | {p.relative_to(K).as_posix() for p in K.glob('0[0-9]-*.md')}
                        | {p.relative_to(K).as_posix() for p in (K / '13-przeniesienie-formularzy').glob('*.md')}
                        | {p.relative_to(K).as_posix() for p in (K / 'do-crm').glob('*.md')})
-ZNACZNIKI_CRM = ('CRM', 'D45', 'odstęp', 'dziś', 'sprzed', 'kategoriaZRodzajow')
+# zdanie dokumentu opisuje stan CRM, odstępstwo albo stan sprzed D45 (runda 3: samo słowo „CRM” nie zwalnia zdania – „jak w CRM”,
+# „tak samo jak w CRM” to zgodność z CRM, nie opis jego stanu)
+ZNACZNIKI_CRM = re.compile(r'(?<!jak )\bw CRM\b|\bCRM (?:daje|liczy|pokazuje|wylicza|przypisuje|ma)\b|\bdziś\b|do czasu zmiany|odstęp|sprzed'
+                           r'|D45|kategoriaZRodzajow')
 # zdanie z rozstrzygnięciem (np. 03, pkt 3: „(a) nie – gabinet kosmetyczny z kosmetologicznym to taryfa …”) nie jest opisem CRM,
 # nawet gdy wymienia CRM albo kategoriaZRodzajow – chyba że w tym samym zdaniu jest też D45 albo „dziś” (runda 2 weryfikacji)
 ZNACZNIKI_ROZSTRZYGNIECIA = ('rozstrzygnięt', 'rozstrzyga', '(a) nie', 'kanoniczn')
+# kropki skrótów nie kończą zdania (runda 3: „np.” przerywało dopasowanie) – zamiana na znak tej samej długości
+SKROTY = re.compile(r'\b(?:np|m\.in|poz|nr|tj|tzw|ok|zob|ust|art|pkt|wg|ww|jw|godz|ds|im|ul|sp|ang|por|dot|r)\.', re.I)
+KROPKA_SKROTU = '․'
+
+
+def norm_d45(t):
+    """Tekst do kontroli D45: encje HTML (&bdquo; &rdquo; &nbsp;…) na znaki, cudzysłowy ASCII "…" na „…”, kropki skrótów bez końca
+    zdania. Długość i położenia znaków poza encjami bez zmian."""
+    t = html.unescape(t).replace(NB, ' ').replace('⁠', '')
+    t = re.sub(r'"([^"\n]{1,200})"', '„\\1”', t)
+    return SKROTY.sub(lambda m: m.group(0)[:-1].replace('.', KROPKA_SKROTU) + KROPKA_SKROTU, t)
 
 
 def rodzaj_d45(s):
@@ -189,11 +221,23 @@ def rodzaj_d45(s):
 
 
 class _Para:
-    """Wynik PARA_D45 z grupami (rodzaj z listy nr 1, rodzaj z listy nr 2, nazwa taryfy) niezależnie od kolejności w tekście."""
+    """Wynik PARA_D45 z grupami (rodzaj z listy nr 1, rodzaj z listy nr 2, klucz kategorii ze wskazania albo None) niezależnie od
+    kolejności w tekście; .opis – wskazanie słowami."""
     def __init__(self, m):
         self.m = m
         a, b = next(g for g in _PARA_GRUPY if m.group(g[0]))
-        self.g = (m.group(a), m.group(b), m.group(5))
+        q, adj, kw = m.group('q'), m.group('adj'), m.group('kw')
+        if q is not None:
+            kat = next((k for k, v in KAT_NAZWA.items() if v == q), None)
+            self.opis = '„%s”' % q
+        elif adj is not None:
+            kat = 'kosmetologiczny' if adj.lower().startswith('kosmetolog') else 'pelny'
+            self.opis = 'taryfa %s' % adj
+        else:
+            kats = KWOTY_KAT[kw]
+            kat = 'pelny' if 'pelny' in kats else sorted(kats)[0]
+            self.opis = '%s zł' % kw
+        self.g = (m.group(a), m.group(b), kat)
 
     def group(self, i):
         return self.g[i - 1]
@@ -210,6 +254,12 @@ class _ParaRe:
         return (_Para(m) for m in PARA_D45.finditer(t))
 
 
+def w_cudzyslowie(t, i):
+    """Pozycja i leży w otwartym cudzysłowie „…” w tym samym wierszu (np. nazwa taryfy „Gabinety kosmetyczne, kosmetologiczne, …”)."""
+    a = t.rfind('\n', 0, i) + 1
+    return t.count('„', a, i) > t.count('”', a, i)
+
+
 def zdanie_o_crm(t, m):
     """Zdanie (od kropki / nowego wiersza do kropki / nowego wiersza) z dopasowaniem opisuje CRM, odstępstwo albo stan sprzed D45."""
     a = max(t.rfind('. ', 0, m.start()), t.rfind('\n', 0, m.start()), t.rfind('|', 0, m.start()))
@@ -217,10 +267,10 @@ def zdanie_o_crm(t, m):
     zd = t[a + 1:b]
     if any(z in zd.lower() for z in ZNACZNIKI_ROZSTRZYGNIECIA) and not ('D45' in zd or 'dziś' in zd):
         return False
-    return any(z in zd for z in ZNACZNIKI_CRM)
+    return bool(ZNACZNIKI_CRM.search(zd))
 
 
-# test mutacyjny reguły D45 (runda 2 weryfikacji): zdania, które kontrola musi wykryć, i takie, których nie może zgłosić
+# test mutacyjny reguły D45 (rundy 2 i 3 weryfikacji): zdania, które kontrola musi wykryć, i takie, których nie może zgłosić
 MUTACJE_D45 = (
     # (tekst, czy dokument, czy błąd)
     ('**Punkty (a) i (b) – rozstrzygnięte 15.11.2026 przez CRM (00, D43):** (a) nie – gabinet kosmetyczny z kosmetologicznym to taryfa '
@@ -234,6 +284,27 @@ MUTACJE_D45 = (
     ('W CRM dziś gabinet kosmetyczny z kosmetologicznym to „Gabinety kosmetologiczne” (odstępstwo).', True, False),
     ('Gabinet kosmetyczny z kosmetologicznym: „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”.', False, False),
     ('Salon masażu i tatuażu: taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne”.', False, False),
+    # runda 3: odmiana, łączniki, rzeczownik, wskazanie bez cudzysłowu, cudzysłowy ASCII i encje, skróty, wyjątek CRM
+    ('Dla gabinetu kosmetycznego i kosmetologicznego obowiązuje taryfa „Gabinety kosmetologiczne”.', False, True),
+    ('Salon fryzjerski z tatuażem to taryfa „Gabinety kosmetologiczne”.', False, True),
+    ('Gabinet kosmetyczny z masażem i kosmetologią: taryfa „Gabinety kosmetologiczne”.', True, True),
+    ('Gabinety kosmetyczne i kosmetologiczne płacą według taryfy „Gabinety kosmetologiczne”.', True, True),
+    ('Gabinet kosmetyczny wraz z kosmetologicznym – „Gabinety kosmetologiczne”.', False, True),
+    ('Gabinet kosmetyczny łącznie z kosmetologicznym – „Gabinety kosmetologiczne”.', False, True),
+    ('Salon masażu, salon tatuażu – „Gabinety kosmetologiczne”.', False, True),
+    ('Gabinet kosmetyczny/kosmetologiczny – „Gabinety kosmetologiczne”.', False, True),
+    ('Kosmetologia razem z masażem – taryfa „Gabinety kosmetologiczne”.', False, True),
+    ('Gabinet kosmetyczny z kosmetologicznym to taryfa kosmetologiczna.', True, True),
+    ('Gabinet kosmetyczny z kosmetologicznym zapłaci 650 zł, 790 zł albo 950 zł.', True, True),
+    ('Gabinet kosmetyczny z kosmetologicznym to taryfa "Gabinety kosmetologiczne".', False, True),
+    ('Gabinet kosmetyczny z kosmetologicznym to taryfa &bdquo;Gabinety kosmetologiczne&rdquo;.', False, True),
+    ('Gabinet kosmetyczny z kosmetologicznym (np. linergistka) to taryfa „Gabinety kosmetologiczne”.', True, True),
+    ('Gabinet kosmetyczny z kosmetologicznym to taryfa „Gabinety kosmetologiczne” – tak samo jak w CRM.', True, True),
+    ('Gabinet kosmetyczny z kosmetologicznym to taryfa „Gabinety kosmetologiczne”, jak w CRM.', True, True),
+    ('Gabinet kosmetyczny z kosmetologicznym to taryfa pełna: 850 zł, 980 zł albo 1 250 zł.', False, False),
+    ('Gabinet kosmetyczny z kosmetologicznym – w CRM do czasu zmiany kategoriaZRodzajow taryfa „Gabinety kosmetologiczne”.', True, False),
+    ('Masażysta i tatuażysta – taryfa „Gabinety kosmetologiczne”.', False, False),
+    ('Taryfa „Gabinety kosmetyczne, kosmetologiczne, fryzjerskie i podologiczne” obejmuje też salon masażu.', False, False),
 )
 
 
@@ -248,23 +319,30 @@ def sprawdz_d45(teksty):
     """[(nazwa, tekst, czy dokument)] → lista błędów reguły D45 (osobno, żeby dało się ją sprawdzić na tekstach z mutacjami)."""
     bledy = []
     for nazwa, t, dok in teksty:
+        t = norm_d45(t)
         for s_ in STARE_OPISY_D45:
             for m in re.finditer(re.escape(s_), t, re.I):
                 if not (dok and zdanie_o_crm(t, m)):
                     bledy.append('%s: opis reguły kategorii sprzed D45 („%s”) – reguła: oc_taryfa.OPIS_KATEGORII' % (nazwa, s_))
         for m in _ParaRe().finditer(t):
-            r1, r2, kat_tekst = rodzaj_d45(m.group(1)), rodzaj_d45(m.group(2)), m.group(3)
-            if kat_tekst not in KAT_NAZWA.values() or (dok and zdanie_o_crm(t, m)):
+            r1, r2, kat = rodzaj_d45(m.group(1)), rodzaj_d45(m.group(2)), m.group(3)
+            if kat is None or w_cudzyslowie(t, m.start()) or (dok and zdanie_o_crm(t, m)):
                 continue
-            ocz = KAT_NAZWA[ot.kategoria([r1, r2])]
-            if kat_tekst != ocz:
-                bledy.append('%s: %s + %s – „%s”, według reguły D45 „%s” (…%s…)' % (nazwa, r1, r2, kat_tekst, ocz, t[max(0, m.start() - 30):m.end() + 10]))
+            ocz = ot.kategoria([r1, r2])
+            if kat != ocz:
+                bledy.append('%s: %s + %s – %s, według reguły D45 „%s” (…%s…)' % (nazwa, r1, r2, m.opis, KAT_NAZWA[ocz], t[max(0, m.start() - 30):m.end() + 10]))
     return bledy
 
 
 def teksty_reguly_d45():
     """[(nazwa, tekst bez znaczników, czy dokument)] – teksty publikowane (TEKSTY_PUBLIKOWANE) i dokumenty koncepcji."""
-    out = [(n, re.sub(r'\s+', ' ', norm(re.sub(r'<[^>]+>', '', t))), False) for n, t in TEKSTY_PUBLIKOWANE()]
+    # komentarze w źródle strony (HTML, /* */ i wiersze // w skryptach – np. opis odstępstwa CRM w bloku gen:oc-skladka) nie są
+    # tekstem publikowanym (runda 3: wskazanie „taryfę kosmetologiczną” bez cudzysłowu trafiało w komentarz o CRM)
+    def bez_komentarzy(t):
+        t = re.sub(r'<!--.*?-->', ' ', t, flags=re.S)
+        t = re.sub(r'/\*.*?\*/', ' ', t, flags=re.S)
+        return re.sub(r'(?m)^[ \t]*//.*$', ' ', t)
+    out = [(n, re.sub(r'\s+', ' ', norm(re.sub(r'<[^>]+>', '', bez_komentarzy(t)))), False) for n, t in TEKSTY_PUBLIKOWANE()]
     for n in DOKUMENTY_D45:
         p = K / n
         if p.is_file():
@@ -477,6 +555,13 @@ def snippety_oc():
 
 
 # ------------------------------------------------------------------ C: dane i liczby
+def profession_bez_dla_kogo(ts):
+    """Slugi /dla-kogo/* (DLA_KOGO), których nie ma w enum Profession pliku lead-schema.ts (runda 3 weryfikacji)."""
+    m = re.search(r'export const Profession = z\.enum\(\[([^\]]*)\]\)', ts)
+    prof = set(re.findall(r'"([^"]+)"', m.group(1))) if m else set()
+    return sorted(set(DLA_KOGO) - prof)
+
+
 def dane():
     l1, l2, an = LISTY['lista-1'], LISTY['lista-2'], LISTY['ankieta']
     for k in ('lista-1', 'lista-2', 'ankieta'):
@@ -563,6 +648,28 @@ def dane():
     def enum(nazwa):
         m = re.search(r'export const %s = z\.enum\(\[([^\]]*)\]\)' % nazwa, ts)
         return re.findall(r'"([^"]+)"', m.group(1)) if m else None
+    # runda 3 weryfikacji: enum Profession obejmuje wszystkie publikowane profile /dla-kogo/* (lead z /dla-kogo/masazysta odrzucony przez
+    # z.enum – błąd z rundy 2), lista zawodów w quizie (06, pytanie 4) i odnośniki /dla-kogo/* w stopkach stron v3 – 8 profili
+    brak_prof = profession_bez_dla_kogo(ts)
+    if brak_prof:
+        blad('lead-schema.ts: Profession bez slugów /dla-kogo/: %s' % ', '.join(brak_prof))
+    # test mutacyjny: enum bez „masazysta” musi dać błąd
+    if profession_bez_dla_kogo(re.sub(r'"masazysta",\s*', '', ts)) != ['masazysta']:
+        blad('test mutacyjny Profession: enum bez „masazysta” nie dał błędu')
+    zawody_quiz = {'kosmetolog': 'kosmetolog', 'linergistka': 'linergistka', 'stylistka-paznokci': 'stylistka paznokci', 'fryzjer': 'fryzjer',
+                   'podolog': 'podolog', 'tatuazysta': 'tatuażysta', 'trycholog': 'trycholog', 'masazysta': 'masażysta'}
+    assert set(zawody_quiz) == set(DLA_KOGO)
+    w4 = [l for l in czytaj(K / '06-lead-magnety-lejki-i-kampania.md').split('\n') if l.startswith('| 4 | Twój zawód')]
+    if len(w4) != 1 or any(not re.search(r'(?<!\w)%s(?!\w)' % re.escape(z), w4[0]) for z in zawody_quiz.values()):
+        blad('06: pytanie 4 quizu („Twój zawód”) bez wszystkich profili /dla-kogo/*: %s'
+             % ', '.join(z for z in zawody_quiz.values() if not w4 or not re.search(r'(?<!\w)%s(?!\w)' % re.escape(z), w4[0])))
+    for n in ('makieta-v3.html', 'oc-beauty.html', 'tax-protect.html', 'utrata-dochodu.html', 'nnw-dzieci.html', 'grupowe-ergo.html',
+              'opieka-medyczna.html', 'slownik.html'):
+        stopka = czytaj(K / 'design/v3' / n)
+        stopka = stopka[stopka.rfind('<footer'):]
+        brak = [slug for slug in DLA_KOGO if 'href="/dla-kogo/%s"' % slug not in stopka]
+        if brak:
+            blad('design/v3/%s: stopka bez odnośników /dla-kogo/: %s' % (n, ', '.join(brak)))
     for nazwa, oczek in (('RodzajGabinetu', [r['klucz'] for r in T['rodzaje_gabinetu']]),
                          ('LiczbaOsob', [x['klucz'] for x in T['liczba_osob']]),
                          ('KategoriaOc', [k['klucz'] for k in T['kategorie']])):

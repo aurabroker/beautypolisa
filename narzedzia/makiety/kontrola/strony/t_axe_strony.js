@@ -3,7 +3,8 @@
 //   jeden H1; pierwszy ekran (raport 15): Z1 – hero podstron = 1 ekran, dół panelu ≥ 24 px nad dolną krawędzią okna (1440×900, 1024×768,
 //   820×1180); Z2 – główny przycisk hero w 1. ekranie (320×640, 390×844); Z29 – kwota w 1. ekranie na telefonie (strona główna, Tax, UD);
 //   Z3 – treść panelu hero w jego obrysie przy 320 px; Z37 – jedna skala nagłówków (H2 jeden rozmiar, H3 najwyżej dwa, H1 podstron
-//   jeden rozmiar); runda 2 weryfikacji: Z8–Z10 – sekcje 1 albo 2 ekrany przy 1440×900 i 1280×900 (poza hero i K6).
+//   jeden rozmiar); rundy 2 i 3 weryfikacji: Z8–Z10 – sekcje 1 albo 2 ekrany przy 1440×900, 1280×900, 1366×768 i 1536×864 (poza hero
+//   i K6), przy 1280×720 i 1024×768 1 / 2 ekrany albo "n" z przyciętym paddingiem; H2 sekcji 2-ekranowej u góry, cyfra rozdziału w sekcji.
 // Uruchom: node narzedzia/makiety/kontrola/strony/t_axe_strony.js (kod 1 przy błędzie). Bez zrzutów.
 const { chromium } = require('playwright');
 const path = require('path');
@@ -78,15 +79,30 @@ const ok = (w, opis) => { asercje++; if (!w) bledy.push(opis); };
     for (const s of PODSTRONY) { const p = await strona(s, w, 900); h1.add(await p.evaluate(() => getComputedStyle(document.querySelector('main h1')).fontSize)); await p.close(); }
     ok(h1.size === 1, `Z37 @${w}: H1 podstron w ${h1.size} rozmiarach: ${[...h1]}`);
   }
-  // Z8, Z9, Z10 (runda 2 weryfikacji): przy 1440×900 i 1280×900 każda sekcja główna poza hero i sekcjami-dokumentami z K6
-  // (OC #zabiegi, #ochrona-prawna, słownik #hasla) ma ≈ 1 albo ≈ 2 ekrany (0,98–1,1 albo 1,98–2,02), żadna nie ma więcej niż 2,02
+  // Z8, Z9, Z10 (rundy 2 i 3 weryfikacji): przy 1440×900, 1280×900, 1366×768 i 1536×864 każda sekcja główna poza hero i sekcjami-
+  // dokumentami z K6 (OC #zabiegi, #ochrona-prawna, słownik #hasla) ma ≈ 1 albo ≈ 2 ekrany (0,98–1,1 albo 1,98–2,02). Przy 1280×720
+  // i 1024×768 (wdrożenie częściowe – README makiet) sekcja ma 1 albo 2 ekrany albo data-ekrany="n" (wyższa niż 2,02 ekranu) – zawsze
+  // z przyciętym paddingiem (≤ 96 px), bez powrotu do pełnego clamp(72px,11vw,168px); K6 – "n" z przyciętym paddingiem przy wszystkich
+  // oknach. Runda 3: treść sekcji 2-ekranowej od góry (H2 w pierwszej połowie ekranu – kotwica z menu trafia na nagłówek), duża cyfra
+  // rozdziału (.chapter-no) nie wychodzi ponad górną krawędź sekcji (szew między scenami)
   const K6 = ['zabiegi', 'ochrona-prawna', 'hasla'];
-  for (const [w, h] of [[1440, 900], [1280, 900]]) for (const s of STRONY.slice(0, 8)) {
+  for (const [w, h, pelne] of [[1440, 900, 1], [1280, 900, 1], [1366, 768, 1], [1536, 864, 1], [1280, 720, 0], [1024, 768, 0]]) for (const s of STRONY.slice(0, 8)) {
     const p = await strona(s, w, h); await p.waitForTimeout(250);
-    const r = await p.evaluate((K6) => [...document.querySelectorAll('main section')].filter((x) => !x.parentElement.closest('main section') && !x.matches('.scene--hero,.page-hero') && !K6.includes(x.id))
-      .map((x) => [x.id || x.className, +(x.getBoundingClientRect().height / innerHeight).toFixed(2)]), K6);
-    const zle = r.filter(([, e]) => !((e >= 0.98 && e <= 1.1) || (e >= 1.98 && e <= 2.02)));
-    ok(zle.length === 0, `Z8–Z10 ${s}@${w}×${h}: sekcje poza 1 / 2 ekranami: ${zle.map((x) => x.join(' ')).join(', ')}`);
+    const r = await p.evaluate(() => [...document.querySelectorAll('main section')].filter((x) => !x.parentElement.closest('main section') && !x.matches('.scene--hero,.page-hero'))
+      .map((x) => { const r = x.getBoundingClientRect(), h2 = x.querySelector('h2'), cn = [...x.querySelectorAll('.chapter-no')].filter((c) => c.getClientRects().length);
+        return { id: x.id || x.className, e: +(r.height / innerHeight).toFixed(2), n: x.getAttribute('data-ekrany'), pad: parseFloat(getComputedStyle(x).paddingTop),
+          h2: h2 ? (h2.getBoundingClientRect().top - r.top) / innerHeight : 0, cn: cn.filter((c) => c.getBoundingClientRect().top < r.top - 0.5).length }; }));
+    const k6 = r.filter((x) => K6.includes(x.id)), reszta = r.filter((x) => !K6.includes(x.id));
+    const rytm = (x) => (x.e >= 0.98 && x.e <= 1.1 && x.n === '1') || (x.e >= 1.98 && x.e <= 2.02 && x.n === '2');
+    const zle = reszta.filter((x) => !(rytm(x) || (!pelne && x.n === 'n' && x.e > 2.02)));
+    ok(zle.length === 0, `Z8–Z10 ${s}@${w}×${h}: sekcje poza 1 / 2 ekranami: ${zle.map((x) => x.id + ' ' + x.e + ' ' + x.n).join(', ')}`);
+    const pad = r.filter((x) => x.pad > 96.5);
+    ok(pad.length === 0, `Z10 ${s}@${w}×${h}: sekcje z pełnym paddingiem (> 96 px): ${pad.map((x) => x.id + ' ' + x.pad).join(', ')}`);
+    ok(k6.every((x) => x.n === 'n'), `Z10 ${s}@${w}×${h}: sekcje K6 bez data-ekrany="n": ${k6.map((x) => x.id + ' ' + x.n).join(', ')}`);
+    const nisko = r.filter((x) => x.n === '2' && x.h2 > 0.5);
+    ok(nisko.length === 0, `Z10 ${s}@${w}×${h}: H2 sekcji 2-ekranowej poniżej połowy pierwszego ekranu: ${nisko.map((x) => x.id + ' ' + x.h2.toFixed(2)).join(', ')}`);
+    const cyfry = r.filter((x) => x.cn);
+    ok(cyfry.length === 0, `Z10 ${s}@${w}×${h}: cyfra rozdziału ponad górną krawędzią sekcji: ${cyfry.map((x) => x.id).join(', ')}`);
     await p.close();
   }
   await b.close();

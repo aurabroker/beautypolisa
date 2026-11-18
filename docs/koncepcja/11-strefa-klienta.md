@@ -224,7 +224,7 @@ Konto nie wygasa wraz z polisą (D-B), więc dostęp porządkują kontrole cyklu
 
 Warunek (decyzja P1b, jedna reguła dla wszystkich pracodawców): konto ma aktywny NIP potwierdzony w GUS nie dawniej niż 120 dni temu, a właściciel – telefon potwierdzony SMS i sesję z TOTP (`employer_account_ids()`). Salon z polisą przechodzi te kroki przy pierwszym wejściu do „Dam pracę” (NIP jest już w koncie, serwer sprawdza go w GUS; właściciel potwierdza telefon – 4.12 pkt 3).
 
-„Dam pracę” → „Nowe ogłoszenie”: stanowisko, zawód (lista jak w ikonach: kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta, recepcja, inny), rodzaj umowy, wymiar czasu, miasto i województwo, **widełki wynagrodzenia (obowiązkowe)**, opis, wymagania, oferujemy – tekst zwykły, bez linków, numerów telefonów i adresów e-mail w treści; **zabiegi (opcjonalnie, do 30 z listy zabiegów – 11.10)**: „Wybierz zabiegi, które obejmuje ta praca. Osoby szukające pracy mogą filtrować ogłoszenia po zabiegach”.
+„Dam pracę” → „Nowe ogłoszenie”: stanowisko, zawód (lista: kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta, recepcja, inny – 6 zawodów z ikonami, recepcja i „inny”; tak samo w filtrach tablicy, w „Szukam pracy” i w CHECK-ach `strefa-klienta.sql`. Trycholog i masażysta (00, D46 e) dotyczą profili „Dla kogo” w programie OC, nie listy zawodów w ogłoszeniach – do czasu decyzji o rozszerzeniu tablicy ogłaszają się jako „inny”; rozszerzenie zmienia filtry, formularze i CHECK-i, więc wymaga osobnej decyzji), rodzaj umowy, wymiar czasu, miasto i województwo, **widełki wynagrodzenia (obowiązkowe)**, opis, wymagania, oferujemy – tekst zwykły, bez linków, numerów telefonów i adresów e-mail w treści; **zabiegi (opcjonalnie, do 30 z listy zabiegów – 11.10)**: „Wybierz zabiegi, które obejmuje ta praca. Osoby szukające pracy mogą filtrować ogłoszenia po zabiegach”.
 
 **Jak kandydat ma się skontaktować** (blok kontaktu, wybór pracodawcy):
 
@@ -857,7 +857,7 @@ Niezależnie od tego regulamin „Dam pracę” sprawdzi prawnik pod kątem obow
 | Pole | Zakres | Widzi pracodawca |
 |---|---|---|
 | Imię | jedno słowo (dopuszczalne imię z łącznikiem), bez nazwiska; CHECK w bazie odrzuca spacje i cyfry | tak |
-| Zawód | lista jak w ofertach (kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta, recepcja, inny) | tak |
+| Zawód | lista jak w ofertach – 6 zawodów, recepcja i „inny” (kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta, recepcja, inny; trycholog i masażysta z 00, D46 e – poza listą tablicy, zob. „Nowe ogłoszenie”) | tak |
 | Miasto i województwo | województwo z listy; miasto tekstem – **opcjonalne** (w małej miejscowości imię, zawód, staż i miasto mogą wystarczyć, by obecny pracodawca rozpoznał osobę – PRIV-07) | tak |
 | Forma współpracy | umowa o pracę, umowa zlecenie, B2B, **najem stanowiska/fotela**, inna (1–5) | tak |
 | Doświadczenie | do 1 roku, 1–3 lata, 3–5 lat, powyżej 5 lat | tak |

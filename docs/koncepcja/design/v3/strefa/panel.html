@@ -177,7 +177,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <div>
             <p class="eyebrow">Pulpit</p>
             <h1 id="t-pulpit">Dzień dobry, <em>Salon Przykładowy</em></h1>
-            <p class="lead">Polisy i&nbsp;dokumenty salonu<span data-zakladka="praca">, ogłoszenia w&nbsp;„Dam pracę”</span><span data-zakladka="szkolenia">, szkolenia</span> – w&nbsp;jednym miejscu.</p>
+            <p class="lead">Polisy i&nbsp;dokumenty salonu<span data-zakladka="praca">, ogłoszenia w&nbsp;„Dam pracę”</span><span data-zakladka="szkolenia">, szkolenia</span>&nbsp;– w&nbsp;jednym miejscu.</p>
           </div>
           <p class="asof">Stan na <time datetime="2026-11-12">12&nbsp;listopada 2026&nbsp;r.</time></p>
         </div>
@@ -288,7 +288,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           </div>
           <dl class="kv">
             <div><dt>Numer polisy</dt><dd>BP/2026/000123 (przykład)</dd></div>
-            <div><dt>Okres ochrony</dt><dd><time datetime="2026-01-01">1&nbsp;stycznia</time> – <time datetime="2026-12-31">31&nbsp;grudnia 2026&nbsp;r.</time></dd></div>
+            <div><dt>Okres ochrony</dt><dd><time datetime="2026-01-01">1&nbsp;stycznia</time>&nbsp;– <time datetime="2026-12-31">31&nbsp;grudnia 2026&nbsp;r.</time></dd></div>
             <div><dt>Zakres</dt><dd>Gabinety kosmetologiczne</dd></div>
             <div><dt>Suma gwarancyjna</dt><dd class="money">200&nbsp;000&nbsp;zł</dd></div>
             <div><dt>Klauzula ochrony prawnej</dt><dd>tak<br><a class="link-quiet js-klauzula" href="../oc-beauty.html#ochrona-prawna">Treść klauzuli<span class="sr-only"> ochrony prawnej</span></a></dd></div>
@@ -873,7 +873,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     <aside class="mock-annot" aria-labelledby="t-annot">
       <h2 id="t-annot">Uwagi do makiety</h2>
       <ul>
-        <li><strong>Założenie:</strong> konto aktywuje <span translate="no">Aura&nbsp;Expert</span> po zawarciu polisy dowolnego produktu (D-A). Polisy (numer, okres) pochodzą z&nbsp;CRM <span translate="no">Aura&nbsp;Expert</span> (<code>crm_renewals.nr_polisy</code> / <code>polisa_id</code>; 00, D32), ręczne wprowadzanie w&nbsp;<code>/panel</code> – tryb przejściowy; bez integracji z&nbsp;ubezpieczycielem w&nbsp;MVP.</li>
+        <li><strong>Założenie:</strong> konto aktywuje <span translate="no">Aura&nbsp;Expert</span> po zawarciu polisy dowolnego produktu (D-A). Polisy (numer, okres) pochodzą z&nbsp;CRM <span translate="no">Aura&nbsp;Expert</span> (<code>crm_renewals.nr_polisy</code> / <code>polisa_id</code>; 00, D32), ręczne wprowadzanie w&nbsp;<code>/panel</code>&nbsp;– tryb przejściowy; bez integracji z&nbsp;ubezpieczycielem w&nbsp;MVP.</li>
         <li>„Sprawy w&nbsp;toku” (11 §4.4a; 00, D32): tylko właściciel z&nbsp;sesją <code>aal2</code>, pracownik nie widzi. Etap 1&nbsp;– wyłącznie sprawy OC dla branży beauty. Stan: wysłano → otwarto → APK wypełniona → wniosek złożony. Warianty pokazane pod listą: po terminie <code>wazny_do</code> zamiast „Dokończ” przycisk „Poproś doradcę o&nbsp;nowy link”; po złożeniu wniosku&nbsp;– „Wniosek złożony. Polisa pojawi się tutaj po wystawieniu”; jeden neutralny komunikat dla każdej odmowy. Trasa <code>/strefa-klienta/sprawy</code> pokazuje tę samą listę co karta na pulpicie (w&nbsp;makiecie pozycja menu prowadzi do kotwicy <code>#sprawy</code>). „Dokończ APK i&nbsp;wniosek” to formularz POST <code>/strefa-klienta/sprawy/[id]/dokoncz</code> → 303 na <code>https://portal.beautypolisa.eu/w/XXXXXXXXXX</code>; kod nie trafia do HTML, a&nbsp;makieta nie otwiera tego adresu. Gdy sprawa odnowienia jest otwarta, baner i&nbsp;szuflada polisy prowadzą do „Spraw w&nbsp;toku” zamiast „Odnów z&nbsp;doradcą” (11 §4.5).</li>
         <li>Drugi składnik (00, D28a): bez kodów zapasowych&nbsp;– zapasem jest drugie zarejestrowane urządzenie z&nbsp;aplikacją uwierzytelniającą; po utracie wszystkich urządzeń reset przez doradcę po weryfikacji tożsamości (procedura&nbsp;– Q25, regulamin).</li>
         <li>Klauzula ochrony prawnej na karcie polisy OC i&nbsp;w&nbsp;szczegółach: „Treść klauzuli” otwiera natywny <code>&lt;dialog&gt;</code> z&nbsp;dosłowną treścią z&nbsp;<code>snippets/klauzula-ochrona-prawna.json</code> (znaczniki <code>gen:klauzula</code>); bez JS&nbsp;– odnośnik do <code>oc-beauty.html#ochrona-prawna</code>.</li>
@@ -1103,15 +1103,8 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     /* panel zakładki z adresu (#p-szkody, #p-archiwum – np. link ze słownika): właściwa zakładka, fokus na niej */
     var tabFor = r.el && r.el.getAttribute('role') === 'tabpanel' ? document.getElementById(r.el.getAttribute('aria-labelledby')) : null;
     if (tabFor) { tabFor.closest('[role="tablist"]').selectTab(tabFor, false, true); }
-    /* pierwsze wczytanie z adresem panelu (#p-szkody, #p-archiwum): przeglądarka przewija do samego panelu, a rząd zakładek
-       chowa się pod paskiem górnym (runda 2 weryfikacji) – karta od rzędu zakładek pod paskiem (scroll-padding-top), także po
-       przewinięciu przeglądarki do kotwicy przy zdarzeniu load */
-    if (tabFor && !focus) {
-      var karta = tabFor.closest('.card') || tabFor.closest('[role="tablist"]');
-      var pokazZakladki = function () { if (location.hash === '#' + id) { karta.scrollIntoView({ block: 'start' }); } };
-      pokazZakladki();
-      if (document.readyState !== 'complete') { window.addEventListener('load', function () { requestAnimationFrame(pokazZakladki); }, { once: true }); }
-    }
+    /* pierwsze wczytanie z adresem panelu (#p-szkody, #p-archiwum): rząd zakładek pod paskiem górnym, nie pod nim (strefa.js) */
+    if (tabFor && !focus) { S.pokazZakladki(tabFor, id); }
     if (focus && id !== 'polisa-oc') {
       var target = tabFor || ((r.el && r.el !== r.view && r.el.tabIndex >= -1 && r.el.id !== 'tresc') ? r.el : r.view.querySelector('h1'));
       if (target) { if (!target.hasAttribute('tabindex')) { target.setAttribute('tabindex', '-1'); } target.focus({ preventScroll: false }); }
@@ -1411,7 +1404,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   box.className='bp-dymek';box.id='bp-dymek';box.hidden=true;box.tabIndex=-1;
   box.setAttribute('role','dialog');box.setAttribute('aria-labelledby','bp-dymek-t');box.setAttribute('aria-describedby','bp-dymek-d');
   box.innerHTML='<p class="bp-dymek-t" id="bp-dymek-t"></p><p class="bp-dymek-d" id="bp-dymek-d"></p>'+
-    '<p class="bp-dymek-o" hidden>Objaśnienie ogólne – wiążą OWU produktu i&nbsp;umowa.</p>'+
+    '<p class="bp-dymek-o" hidden>Objaśnienie ogólne&nbsp;– wiążą OWU produktu i&nbsp;umowa.</p>'+
     '<div class="bp-dymek-akcje"><a class="bp-dymek-wiecej" href="#">Więcej w&nbsp;słowniku</a></div>'+
     '<button type="button" class="bp-dymek-x" aria-label="Zamknij objaśnienie"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg></button>';
   document.body.appendChild(box);

@@ -64,6 +64,11 @@
 
 /* ---------- I · dla kogo: dwie kryjące karty (scope-card) ---------- */
 .scope-card{scroll-margin-top:110px}
+/* Z9/Z10 (raport 15; runda 3 weryfikacji): #dla-kogo ≤ 2 ekrany także przy 1366×768 – od 64em ciaśniejsze karty */
+@media (min-width:64em){
+  #dla-kogo .scope-card{padding:40px 44px}
+  #dla-kogo .mind{margin-top:24px;padding:28px 32px}
+}
 .scope-actions{display:flex;flex-wrap:wrap;gap:0 24px}
 .scope-solo{font-size:var(--text-sm);line-height:1.6;color:var(--color-ink)}
 .scope-solo a{color:var(--color-navy);text-decoration-color:var(--color-gold);text-underline-offset:4px}
@@ -843,10 +848,10 @@ var MedForm=(function(){
   function apply(op,team,scope,fromPrices){
     var ok=[];
     if(op&&check('medOperator',op))ok.push('sieć: '+opNames[op]);
-    if(team&&check('medTeam',team))ok.push('zespół: '+MED.teams[team]+(team==='1-2'?' osoby':' osób'));
+    if(team&&check('medTeam',team))ok.push('zespół: '+MED.teams[team]+(team==='1-2'?'\u00a0osoby':'\u00a0osób'));
     if(scope&&check('medScope',scope))ok.push('zakres: '+MED.scopeLabels[scope]);
     if(!ok.length) return;
-    pick.textContent=(fromPrices?'Wybrano przy przykładowych stawkach – ':'Wstępnie wybrano – ')+ok.join(', ')+'. Możesz to zmienić poniżej.';
+    pick.textContent=(fromPrices?'Wybrano przy przykładowych stawkach\u00a0– ':'Wstępnie wybrano\u00a0– ')+ok.join(', ')+'. Możesz to zmienić poniżej.';
   }
   document.addEventListener('click',function(e){
     var a=e.target.closest('[data-to-form]'); if(!a) return;

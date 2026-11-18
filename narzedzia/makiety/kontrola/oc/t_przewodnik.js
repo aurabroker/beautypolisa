@@ -17,6 +17,8 @@
 //     karty w obrębie tafli, tekst karty bez przelewania.
 //   * 320, 390, 768, 1280, 1440 px: brak przewijania w poziomie, axe-core (WCAG 2.2 AA: wcag2a, wcag2aa, wcag21a, wcag21aa,
 //     wcag22aa) na całej stronie – w stanie startowym i z bieżącym krokiem 2 (kalkulator po zaznaczeniu rodzaju działalności).
+//   * runda 3 weryfikacji: od 1200 px rodzaje działalności w trzech kolumnach – kafle bez przelewania treści i ze znacznikiem pola
+//     w ramce (1200, 1280, 1366, 1440, 1920 px).
 // Uruchom: node narzedzia/makiety/kontrola/oc/t_przewodnik.js   (kod wyjścia 1 przy błędzie; wymaga npm install w narzedzia/makiety)
 'use strict';
 const path = require('path');
@@ -302,6 +304,31 @@ const puls = (p) => p.evaluate(() => document.getAnimations().filter((a) => a.an
     await axe('krok 2 bieżący');
     ok((await p.evaluate(() => document.documentElement.scrollWidth - innerWidth)) <= 0, `${w}: przewijanie w poziomie (krok 2)`);
     ok(errs.length === 0, `${w}: błędy JS: ${errs}`);
+    await ctx.close();
+  }
+
+  // ---------- 6. kafle kalkulatora od 1200 px (runda 3 weryfikacji): rodzaje działalności w trzech kolumnach – żaden kafel nie przelewa
+  //     treści (scrollWidth ≤ clientWidth), kwadratowy znacznik pola mieści się w ramce kafla razem z prawym paddingiem; to samo dla
+  //     kafli liczby osób i sumy oraz opcji zakresu dodatkowego
+  for (const w of [1200, 1280, 1366, 1440, 1920]) {
+    const ctx = await b.newContext({ viewport: { width: w, height: 900 }, deviceScaleFactor: 1 });
+    const p = await ctx.newPage();
+    await p.goto(PAGE);
+    await p.waitForTimeout(400);
+    const r = await p.evaluate(() => {
+      const kafle = [...document.querySelectorAll('#kalk-rodzaje .opt label, #kalk-osoby .opt label, #kalk-sumy .opt label, #kalk-zakres .zakres-opcja, #kalk-zakres .check-row')];
+      const przelew = kafle.filter((l) => l.scrollWidth > l.clientWidth).map((l) => l.textContent.trim().slice(0, 30) + ' ' + l.scrollWidth + '/' + l.clientWidth);
+      // znacznik (label::after, margin-left:auto) stoi za tekstem: prawa krawędź tekstu + odstęp + 18 px ≤ prawa krawędź treści kafla
+      const znacznik = [...document.querySelectorAll('#kalk-rodzaje .opt--check label')].filter((l) => {
+        const cs = getComputedStyle(l), sp = l.querySelector('span').getBoundingClientRect(), lr = l.getBoundingClientRect();
+        return sp.right + parseFloat(cs.columnGap) + 18 > lr.right - parseFloat(cs.borderRightWidth) - parseFloat(cs.paddingRight) + 0.5;
+      }).map((l) => l.textContent.trim());
+      const kol = getComputedStyle(document.querySelector('#kalk-rodzaje .opt-grid')).gridTemplateColumns.split(' ').length;
+      return { przelew, znacznik, kol };
+    });
+    ok(r.kol === 3, `${w}: rodzaje działalności w trzech kolumnach: ${r.kol}`);
+    ok(r.przelew.length === 0, `${w}: kafle kalkulatora bez przelewania treści: ${r.przelew.join(', ')}`);
+    ok(r.znacznik.length === 0, `${w}: znacznik pola w ramce kafla: ${r.znacznik.join(', ')}`);
     await ctx.close();
   }
 

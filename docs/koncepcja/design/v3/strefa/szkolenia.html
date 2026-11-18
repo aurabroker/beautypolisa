@@ -745,7 +745,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <p><span class="badge badge--info" data-status>Lista rezerwowa&nbsp;– pozycja 2</span></p>
             <p class="small">Gdy zwolni się miejsce, zapiszemy Cię automatycznie według kolejności zgłoszeń i&nbsp;wyślemy <span class="nowrap">e-mail</span> „Zwolniło się miejsce”. Do tego czasu organizator nie widzi Twoich danych.</p>
             <div class="actions">
-              <button class="btn btn-danger btn-sm js-cancel" type="button" data-msg="Usunięto Cię z&#160;listy rezerwowej.">Zrezygnuj z&nbsp;listy rezerwowej</button>
+              <button class="btn btn-danger btn-sm js-cancel" type="button" data-cofnij="rezygnacja z&#160;listy rezerwowej" data-msg="Usunięto Cię z&#160;listy rezerwowej.">Zrezygnuj z&nbsp;listy rezerwowej</button>
             </div>
             <div class="alert alert--info js-live" role="status" tabindex="-1" hidden>
               <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
@@ -1229,7 +1229,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
               </div>
               <span class="badge badge--info" data-status>Lista rezerwowa&nbsp;– pozycja 2</span>
               <div class="row-actions">
-                <button class="btn btn-quiet btn-sm js-cancel" type="button" data-msg="Usunięto Cię z&#160;listy rezerwowej szkolenia „Pierwsza pomoc w&#160;salonie beauty (przykład)”.">Zrezygnuj z&nbsp;listy<span class="sr-only">: Pierwsza pomoc w&nbsp;salonie beauty</span></button>
+                <button class="btn btn-quiet btn-sm js-cancel" type="button" data-cofnij="rezygnacja z&#160;listy rezerwowej" data-msg="Usunięto Cię z&#160;listy rezerwowej szkolenia „Pierwsza pomoc w&#160;salonie beauty (przykład)”.">Zrezygnuj z&nbsp;listy<span class="sr-only">: Pierwsza pomoc w&nbsp;salonie beauty</span></button>
               </div>
             </li>
           </ul>
@@ -1525,7 +1525,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
           <dl class="kv kv--rows">
             <div><dt>Plan</dt><dd>12&nbsp;miesięcy&nbsp;– 10&nbsp;000&nbsp;zł netto<br><span class="xsmall muted">promocja na otwarcie portalu</span></dd></div>
             <div><dt>Aktywny do</dt><dd><time datetime="2027-10-20">20&nbsp;października 2027&nbsp;r.</time> (przykład)</dd></div>
-            <div><dt>Faktura</dt><dd>od <span translate="no">Aura&nbsp;Expert</span>, poza portalem<br>nr FV/2026/10/042 (przykład) <span class="mock-note">Założenie Z-22</span></dd></div>
+            <div><dt>Faktura</dt><dd>od <span translate="no">Aura&nbsp;Expert</span>, poza portalem<br>nr&nbsp;FV/2026/10/042 (przykład) <span class="mock-note">Założenie Z-22</span></dd></div>
           </dl>
           <a class="link-lux" href="#plan">Profil i&nbsp;plan</a>
         </section>
@@ -1565,7 +1565,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
             <dl class="kv kv--rows">
               <div><dt>Aktywny do</dt><dd><time datetime="2027-10-20">20&nbsp;października 2027&nbsp;r.</time> (przykład)</dd></div>
               <div><dt>Okres planu</dt><dd><time datetime="2026-10-20">20.10.2026</time>&nbsp;– <time datetime="2027-10-20">20.10.2027</time> (przykład)</dd></div>
-              <div><dt>Faktura</dt><dd>nr FV/2026/10/042 (przykład)<br><span class="xsmall muted">Wystawia <span translate="no">Aura&nbsp;Expert</span> poza portalem. Za plan nie płacisz w&nbsp;portalu.</span> <span class="mock-note">Założenie Z-22</span></dd></div>
+              <div><dt>Faktura</dt><dd>nr&nbsp;FV/2026/10/042 (przykład)<br><span class="xsmall muted">Wystawia <span translate="no">Aura&nbsp;Expert</span> poza portalem. Za plan nie płacisz w&nbsp;portalu.</span> <span class="mock-note">Założenie Z-22</span></dd></div>
               <div><dt>W&nbsp;katalogu</dt><dd>opublikowane szkolenia, które zaczynają się w&nbsp;okresie planu <span class="mock-note">Założenie Z-41</span></dd></div>
               <div><dt>Przypomnienie</dt><dd><span class="nowrap">e-mail</span> 14&nbsp;dni przed końcem planu <span class="mock-note">Założenie</span></dd></div>
             </dl>
@@ -2238,10 +2238,12 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
     steps.forEach(function (s) { s.classList.toggle('is-on', s.getAttribute('data-step') === step); });
     /* zamówienie szkolenia płatnego: krok albo stan z adresu (#zamowienie, #zam-platnosc, #zam-oplacone…) */
     if (view.id === 'zamowienie') { showPay(el && el.getAttribute('data-pay') ? el.getAttribute('data-pay') : 'dane'); }
-    /* panel zakładki z adresu (np. #p-zespol) */
+    /* panel zakładki z adresu (np. #p-zespol); przy pierwszym wczytaniu rząd zakładek pod paskiem górnym, nie pod nim – jak
+       w panel.html (strefa.js; runda 3 weryfikacji: #p-nad, #p-rez, #p-zak, #p-zam, #p-zespol) */
     if (el && el.getAttribute('role') === 'tabpanel') {
       var tab = document.getElementById(el.getAttribute('aria-labelledby'));
       tab.closest('[role="tablist"]').selectTab(tab, false, true);
+      if (!focus) { S.pokazZakladki(tab, id); }
     }
     if (focus) {
       var target = view.querySelector('h1');
@@ -2356,12 +2358,15 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
         return;
       }
       S.pokazStatus(live, b.getAttribute('data-msg'), tekst);
-      var kontekst = b.querySelector('.sr-only');
-      S.cofnij({ po: live, nazwa: 'rezygnacja z zapisu' + (kontekst ? ' na „' + kontekst.textContent.replace(/^:\s*/, '') + '”' : ''), cofnij: function () {
+      /* nazwa „Cofnij” = wykonana akcja (runda 3 weryfikacji): zapis – „rezygnacja z zapisu na „…””, lista rezerwowa (data-cofnij) –
+         „rezygnacja z listy rezerwowej szkolenia „…”” */
+      var kontekst = b.querySelector('.sr-only'), tytul = kontekst ? '„' + kontekst.textContent.replace(/^:\s*/, '') + '”' : '';
+      var opis = b.getAttribute('data-cofnij');
+      S.cofnij({ po: live, nazwa: opis ? opis + (tytul ? ' szkolenia ' + tytul : '') : 'rezygnacja z zapisu' + (tytul ? ' na ' + tytul : ''), cofnij: function () {
         if (badge) { badge.className = stary.c; badge.textContent = stary.t; }
         ukryte.forEach(function (x) { x.hidden = false; });
         przyciski.forEach(function (x) { x.hidden = false; });
-        tekst.textContent = 'Rezygnacja cofnięta – zapis bez zmian.';
+        tekst.textContent = opis ? 'Rezygnacja cofnięta – miejsce na liście rezerwowej bez zmian.' : 'Rezygnacja cofnięta – zapis bez zmian.';
         return b;
       } });
     });
@@ -2701,7 +2706,7 @@ a.bp-termin.bp-termin:focus-visible{outline:2px solid currentColor;outline-offse
   box.className='bp-dymek';box.id='bp-dymek';box.hidden=true;box.tabIndex=-1;
   box.setAttribute('role','dialog');box.setAttribute('aria-labelledby','bp-dymek-t');box.setAttribute('aria-describedby','bp-dymek-d');
   box.innerHTML='<p class="bp-dymek-t" id="bp-dymek-t"></p><p class="bp-dymek-d" id="bp-dymek-d"></p>'+
-    '<p class="bp-dymek-o" hidden>Objaśnienie ogólne – wiążą OWU produktu i&nbsp;umowa.</p>'+
+    '<p class="bp-dymek-o" hidden>Objaśnienie ogólne&nbsp;– wiążą OWU produktu i&nbsp;umowa.</p>'+
     '<div class="bp-dymek-akcje"><a class="bp-dymek-wiecej" href="#">Więcej w&nbsp;słowniku</a></div>'+
     '<button type="button" class="bp-dymek-x" aria-label="Zamknij objaśnienie"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg></button>';
   document.body.appendChild(box);

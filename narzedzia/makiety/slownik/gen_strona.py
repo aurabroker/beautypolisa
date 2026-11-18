@@ -373,7 +373,7 @@ CSS_SLOWNIK = r'''<style>
 .sl-pusto-t{font:600 var(--text-serif-md)/1.25 var(--font-serif);color:var(--color-navy)}
 .sl-pusto p{max-width:42rem}
 .sl-pusto-akcje{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px}
-.sl-stopka-uwaga{font-size:var(--text-sm);color:var(--color-ink);max-width:46rem;padding:16px 18px;border-left:2px solid var(--color-gold);background:var(--color-ivory)}
+.sl-stopka-uwaga{font-size:var(--text-sm);color:var(--color-ink);max-width:46rem;padding:16px 18px;border-left:2px solid var(--bp-notka-kreska,var(--color-gold));background:var(--bp-notka-tlo,var(--color-ivory))}   /* notka Z38 (runda 3) */
 /* epilog */
 .sl-end{padding-block:0 clamp(56px,8vw,104px);background:var(--color-parchment)}
 .end-card{position:relative;display:grid;gap:22px;padding:clamp(28px,4.5vw,60px);border-radius:var(--radius-card);background:var(--color-navy);color:var(--color-parchment);box-shadow:0 30px 60px -34px rgba(20,28,51,.75)}

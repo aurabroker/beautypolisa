@@ -20,6 +20,10 @@
 //    ponownej wysyłki kodu bez aria-describedby po odliczaniu, „Zapisz szkic” znowu aktywny po edycji formularza;
 //  - weryfikacja, runda 2: komunikat statusu (≥ 90%) i pasek „Cofnij” w oknie – dam-prace #moje-ogloszenia (Zamknij, Usuń szkic),
 //    szkolenia #moje-szkolenia (Zrezygnuj) przy 320/390/768/1280 px; nazwa „Cofnij: rezygnacja z zapisu na „…”” (jeden dwukropek).
+//  - weryfikacja, runda 3: świeże wejście szkolenia.html#p-nad/#p-rez/#p-zak/#p-zam/#p-zespol (rząd zakładek pod paskiem, 5 rozmiarów
+//    okna), „Cofnij” po rezygnacji z listy rezerwowej (nazwa i komunikat), znaczek statusu po potwierdzeniu w #p-zam (320–1440 px),
+//    potwierdzenie w komórce akcji przewijanej tabeli w widocznej części obszaru (#wyplaty, #organizator; 900–1440 px), stany puste
+//    filtrów „Dam pracę” z twardymi spacjami (R2-18), dymek „drugi-skladnik” z „6-⁠cyfrowy” (R2-20).
 // Tylko odczyt makiet (file://), nic nie zapisuje w repozytorium; zrzuty – kontrola/wyniki/strefa/.
 // Uruchomienie: node narzedzia/makiety/kontrola/strefa/potwierdzenia.js   (kod wyjścia 1 przy błędach)
 const path = require('path');
@@ -445,6 +449,73 @@ const tabeleSzersze = () => [...document.querySelectorAll('.table-wrap')].filter
     await zwBody.locator('button[type=submit]').click(); await czekaj(p, 120);
     const zs = await p.evaluate(() => ({ st: document.activeElement.textContent, role: document.activeElement.getAttribute('role') }));
     ok(zs.role === 'status' && zs.st.startsWith('Zwrot 390,00 zł zlecony'), `szkolenia: zwrot zlecony, kwota przez Intl ${JSON.stringify(zs)}`);
+    // runda 3 weryfikacji: świeże wejście z adresem panelu zakładki (jak panel.html#p-szkody) – rząd zakładek pod paskiem górnym, w oknie
+    for (const [vw, vh] of [[320, 640], [390, 844], [768, 1024], [1280, 900], [1440, 900]]) {
+      for (const [h, t] of [['p-nad', 't-nad'], ['p-rez', 't-rez-tab'], ['p-zak', 't-zak'], ['p-zam', 't-zam-tab'], ['p-zespol', 't-zespol']]) {
+        const cz = await ctxNew(b, { w: vw, h: vh });
+        const pz = await open(cz, 'szkolenia.html#' + h, errs); await czekaj(pz, 200);
+        const z = await pz.evaluate((tt) => { const tab = document.getElementById(tt), r = tab.getBoundingClientRect(), bar = document.querySelector('.topbar').getBoundingClientRect();
+          return { tabTop: Math.round(r.top), tabBottom: Math.round(r.bottom), belka: Math.round(bar.bottom), vh: innerHeight, sel: tab.getAttribute('aria-selected') }; }, t);
+        ok(z.sel === 'true' && z.tabTop >= z.belka && z.tabBottom <= z.vh, `szkolenia: świeże wejście #${h} ${vw}×${vh} – zakładka pod paskiem, w oknie ${JSON.stringify(z)}`);
+        await cz.close();
+      }
+    }
+    // runda 3: „Cofnij” po rezygnacji z listy rezerwowej – nazwa odpowiada akcji (nie „rezygnacja z zapisu”)
+    for (const [url, sel, wz] of [['szkolenia.html#p-rez', '#p-rez .js-cancel', /^Cofnij: rezygnacja z listy rezerwowej szkolenia „Pierwsza pomoc w salonie beauty”$/],
+      ['szkolenia.html#rezerwowa', '#rezerwowa .js-cancel', /^Cofnij: rezygnacja z listy rezerwowej$/]]) {
+      const cz = await ctxNew(b);
+      const pz = await open(cz, url, errs);
+      await pz.locator(sel).first().click(); await czekaj(pz, 150);
+      const a = await pz.evaluate(() => nb0(document.activeElement.textContent));
+      ok(wz.test(a), `${url}: nazwa „Cofnij” po rezygnacji z listy rezerwowej (${a})`);
+      await pz.locator('.undo button').first().click(); await czekaj(pz, 100);
+      const live = await pz.evaluate((s) => nb0(document.querySelector(s).closest('.reg-step, .card').querySelector('.js-live p').textContent), sel);
+      ok(/^Rezygnacja cofnięta – miejsce na liście rezerwowej bez zmian\.$/.test(live), `${url}: komunikat po „Cofnij” (${live})`);
+      await cz.close();
+    }
+    // runda 3: znaczek statusu po potwierdzeniu w „Zamówieniach i fakturach” (#p-zam) łamie się – bez przewijania strony w poziomie
+    // i w obrysie wiersza listy (dawniej „Prośba o rezygnację – czeka na organizatora” 383 px przy 320–390 px)
+    for (const w of [320, 360, 390, 768, 1024, 1280, 1440]) {
+      for (const akcja of ['Odstępuję od umowy', 'Poproś o rezygnację']) {
+        const cz = await ctxNew(b, { w, h: 800 });
+        const pz = await open(cz, 'szkolenia.html#moje-szkolenia', errs);
+        await pz.click('#t-zam-tab'); await czekaj(pz, 50);
+        const det = pz.locator('#p-zam details.mini', { has: pz.locator('summary', { hasText: akcja }) }).first();
+        await det.locator('summary').click(); await czekaj(pz, 50);
+        await det.locator('.js-cancel').click(); await czekaj(pz, 100);
+        const r = await pz.evaluate(() => { const li = [...document.querySelectorAll('#p-zam li')].find((l) => l.querySelector('.badge--off')), bd = li && li.querySelector('.badge--off');
+          const de = document.documentElement; return bd ? { sw: de.scrollWidth, cw: de.clientWidth, badge: Math.round(bd.getBoundingClientRect().right), li: Math.round(li.getBoundingClientRect().right), t: nb0(bd.textContent) } : null; });
+        ok(r && r.sw <= r.cw && r.badge <= r.li, `szkolenia #p-zam „${akcja}” ${w}px: znaczek w wierszu, bez przewijania w poziomie ${JSON.stringify(r)}`);
+        await cz.close();
+      }
+    }
+    // runda 3: potwierdzenie w komórce akcji przewijanej tabeli (tr.mini-pod) – panel w widocznej części obszaru .table-wrap (dawniej
+    // przy prawej krawędzi całego wiersza: przy 900–1240 px wystawał o 4–45 px, pole pliku i „Dodaj fakturę” ucięte), szerokość
+    // przewijania obszaru bez zmian po otwarciu
+    for (const w of [900, 1024, 1240, 1280, 1440]) {
+      for (const v of ['wyplaty', 'organizator']) {
+        const cz = await ctxNew(b, { w, h: 900 });
+        const pz = await open(cz, 'szkolenia.html#' + v, errs);
+        const sum = pz.locator('#' + v + ' td.cell-actions details.mini > summary');
+        const n = await sum.count();
+        let spr = 0;
+        for (let i = 0; i < n; i++) {
+          const s1 = sum.nth(i); if (!(await s1.isVisible())) { continue; }
+          const sw0 = await pz.evaluate((vv) => [...document.querySelectorAll('#' + vv + ' .table-wrap')].map((x) => x.scrollWidth).join(), v);
+          await s1.focus(); await pz.keyboard.press('Enter'); await czekaj(pz, 120);
+          const r = await pz.evaluate(() => { const d = document.querySelector('td.cell-actions details.mini[open]'); if (!d) { return null; }
+            const body = d.querySelector('.mini-body').getBoundingClientRect(), wr = d.closest('.table-wrap').getBoundingClientRect();
+            return { s: nb0(d.querySelector('summary').textContent).slice(0, 24), prawa: Math.round(body.right), obszar: Math.round(wr.right), lewa: Math.round(body.left), obszarL: Math.round(wr.left) }; });
+          const sw1 = await pz.evaluate((vv) => [...document.querySelectorAll('#' + vv + ' .table-wrap')].map((x) => x.scrollWidth).join(), v);
+          ok(r && r.prawa <= r.obszar + 0.5 && r.lewa >= r.obszarL - 0.5 && sw0 === sw1, `szkolenia#${v} ${w}px: potwierdzenie w widocznej części tabeli ${JSON.stringify(r)} (${sw0} → ${sw1})`);
+          spr++;
+          await pz.keyboard.press('Escape'); await czekaj(pz, 60);
+        }
+        ok(spr > 0, `szkolenia#${v} ${w}px: tabela z potwierdzeniami w komórce akcji`);
+        if (w === 1440) { const sz = await pz.evaluate(() => [...document.querySelectorAll('.view.is-active .table-wrap')].every((x) => x.scrollWidth <= x.clientWidth)); ok(sz, `szkolenia#${v} 1440px: tabela bez przewijania w poziomie`); }
+        await cz.close();
+      }
+    }
     // filtry katalogu w adresie (?rola zostaje)
     await p.goto(S + 'szkolenia.html?rola=pracownik#katalog'); await czekaj(p, 150);
     await p.selectOption('#fl-temat', 'techniki'); await czekaj(p, 80);
@@ -530,6 +601,23 @@ const tabeleSzersze = () => [...document.querySelectorAll('.table-wrap')].filter
       if (w === 390) { await p.screenshot({ path: OUT + 'potw-' + u.replace(/[^a-z-]+/g, '-') + '-390.png' }); }
       await p.close();
     }
+    await c.close();
+  }
+
+  // runda 3: teksty składane w JS z twardymi spacjami (runda 2: R2-18) i dymek „Drugi składnik logowania” z „6-⁠cyfrowy” (R2-20)
+  log('\n== 6. Teksty składane w JS i dymek pojęcia');
+  {
+    const c = await ctxNew(b);
+    for (const h of ['oferty', 'szukam-pracy']) {
+      const p = await open(c, 'dam-prace.html?zabieg=g3-30#' + h, errs); await czekaj(p, 200);
+      const t = await p.evaluate(() => ({ o: document.getElementById('ofert-pusto-t').textContent, s: document.getElementById('sp-pusto-t').textContent, p: document.getElementById('ofert-pusto-p').textContent }));
+      ok(t.o.includes('z\u00a0wybranymi') && t.s.includes('z\u00a0wybranymi') && t.p.includes('pracodawca\u00a0–'), `dam-prace#${h} ?zabieg=g3-30: stany puste filtrów z twardymi spacjami ${JSON.stringify(t)}`);
+      await p.close();
+    }
+    const p = await open(c, 'logowanie.html#s-totp', errs); await czekaj(p, 150);
+    await p.click('#s-totp a.bp-termin[data-termin="drugi-skladnik"]'); await czekaj(p, 150);
+    const d = await p.evaluate(() => { const x = document.getElementById('bp-dymek'); return x ? { vis: x.getClientRects().length > 0, t: x.textContent } : null; });
+    ok(d && d.vis && d.t.includes('6-\u2060cyfrowy'), `logowanie: dymek „drugi-skladnik” z „6-⁠cyfrowy” (łącznik słowa po dywizie) ${JSON.stringify(d && d.t.slice(0, 120))}`);
     await c.close();
   }
 

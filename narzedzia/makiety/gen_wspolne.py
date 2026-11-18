@@ -331,18 +331,31 @@ main h4:not(.bp-bez-skali){font-size:var(--text-serif-md)}
 /* Z8: sekcja zamykająca podstron (section#zamkniecie, section--flush-top) – „Inne ubezpieczenia” (H2) i karta końcowa jako bloki
    jednej sekcji; pytania – osobna sekcja przed nią (runda 2 weryfikacji: razem miały 2,23–2,55 ekranu) */
 .zamkniecie-blok{margin-top:clamp(56px,7vw,104px)}
-/* Z10: rytm sekcji – od 64em szerokości i 37.5em wysokości okna każda sekcja główna (poza hero i sekcjami-dokumentami z K6:
-   listy zabiegów, klauzula, hasła słownika) ma dokładnie 1 albo 2 ekrany. Skrypt (gen:wspolne-js) mierzy wysokość treści przy
-   przyciętym padding-block (dawniej clamp(72px,11vw,168px), czyli 158 px przy 1440 px) i ustawia data-ekrany="1" albo "2";
-   sekcja, która mieści się w ekranie dopiero przy 24 px odstępu (data-ciasno), dostaje 1 ekran zamiast 2 (tolerancja ≈ 1 ekran:
-   do 1,1 – raport 15, N1); treść stoi pośrodku sekcji. Bez JS, na telefonie i w niskim oknie – naturalna wysokość jak dotąd */
+/* Z10: rytm sekcji – od 64em szerokości i 37.5em wysokości okna każda sekcja główna (poza hero) ma 1 albo 2 ekrany. Skrypt
+   (gen:wspolne-js) mierzy wysokość treści przy przyciętym padding-block (dawniej clamp(72px,11vw,168px), czyli 158 px przy 1440 px)
+   i ustawia data-ekrany="1" albo "2"; sekcja, która mieści się w 1 / 2 ekranach dopiero przy 16 px odstępu (data-ciasno), dostaje
+   1 / 2 ekrany (tolerancja ≈ 1 ekran: do 1,1 – raport 15, N1). Sekcja wyższa niż 2 ekrany (sekcje-dokumenty z K6 – listy zabiegów,
+   klauzula, hasła słownika – albo treść w niskim oknie, np. 1280×720) dostaje data-ekrany="n": przycięty padding, naturalna wysokość
+   (runda 3 weryfikacji: dawniej wracała do pełnego paddingu i wypadała z rytmu sąsiednich sekcji). Treść 1 ekranu stoi pośrodku,
+   treść 2 ekranów i dłuższa – od góry (kotwica z menu trafia na H2; runda 3). Bez JS, na telefonie i w niskim oknie – naturalna
+   wysokość jak dotąd */
 @media (min-width:64em) and (min-height:37.5em){
-  main section[data-ekrany]{display:flex;flex-direction:column;justify-content:center;padding-block:clamp(48px,7svh,96px)}
-  main section[data-ekrany][data-ciasno]{padding-block:24px}
+  main section[data-ekrany]{--sekcja-pad:clamp(48px,7svh,96px);display:flex;flex-direction:column;justify-content:flex-start;padding-block:var(--sekcja-pad)}
+  main section[data-ekrany][data-ciasno]{--sekcja-pad:16px}
   main section[data-ekrany] > *{flex:none}
-  main section[data-ekrany="1"]{min-height:100svh}
+  main section[data-ekrany="1"]{justify-content:center;min-height:100svh}
   main section[data-ekrany="2"]{min-height:200svh}
+  /* Z8: w sekcji zamykającej odstęp od poprzedniej sekcji daje padding sekcji – pierwszy blok bez górnego marginesu */
+  main section[data-ekrany] > .zamkniecie-blok:first-child{margin-top:0}
+  /* odstęp pod nagłówkiem sekcji liczony od wysokości okna (dawniej od szerokości, do 88 px) – mniej pustego miejsca w niskim oknie */
+  main section[data-ekrany] :is(.section-head,.related-head){margin-bottom:clamp(32px,6svh,64px)}
+  /* duża cyfra rozdziału (.chapter-no, top:-.5em względem nagłówka sekcji) nie wychodzi ponad górną krawędź sekcji przy przyciętym
+     paddingu – nie przechodzi przez szew na sąsiednią scenę (runda 3; dawniej zasłaniał ją padding 158 px). :where – reguły stron
+     z innym położeniem cyfry (np. top:-.2em) zostają */
+  :where(main section[data-ekrany]) .chapter-no{top:max(-.5em,calc(0px - var(--sekcja-pad)))}
 }
+/* Z8: „Inne ubezpieczenia” (5 kart) od 64em w trzech kolumnach – sekcja zamykająca ≤ 2 ekrany także przy 1366×768 (runda 3) */
+@media (min-width:64em){#zamkniecie .related{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .end-card h3{max-width:40rem}
 /* Z38 (raport 15): jedna karta pełna i jedna notka poza szkłem – cztery warianty szkła z D14 bez zmian. Karta: ivory, złota linia 1 px,
    promień 6 px, jeden cień (dawniej 6 wyglądów: z cieniem albo bez, linia 35 / 50% albo żadna, przezroczysta .mind). Notka: pergamin 55%,
@@ -352,10 +365,11 @@ main h4:not(.bp-bez-skali){font-size:var(--text-serif-md)}
   --bp-link-podkreslenie:var(--color-gold);--bp-link-podkreslenie-ciemne:rgba(217,192,137,.7)}
 main :is(.clause,.op-card,.rel-card,.route,.scope-card,.apply,figure.ledger,.mind,.panel,.sl-narzedzia,li.job,.vcard,.cmp-attr,.sl-litera){
   background-color:var(--bp-karta-tlo);border:1px solid var(--bp-karta-linia);border-radius:var(--radius-card);box-shadow:var(--bp-karta-cien)}
-main :is(.scope-extra,.scope-aside,.haslo-przyklad){background:var(--bp-notka-tlo);border:0;border-left:2px solid var(--bp-notka-kreska);border-radius:0;box-shadow:none}
+main :is(.scope-extra,.scope-aside,.haslo-przyklad,.sl-stopka-uwaga){background:var(--bp-notka-tlo);border:0;border-left:2px solid var(--bp-notka-kreska);border-radius:0;box-shadow:none}
 /* Z39 (raport 15): jeden zestaw elementów w roli przycisku – para .btn (bez zmian); jeden chip do nawigacji po liście i filtrów (skok do
    list OC, indeks A–Z słownika, podpowiedzi specjalizacji – dawniej 3 wyglądy); jeden link-akcja: zwykły tekst z podkreśleniem, bez etykiety
-   w wersalikach z kreską („KALKULATOR ——”); jeden token podkreślenia linków na jasnym tle i jeden na ciemnym; linki w tekście granatowe */
+   w wersalikach z kreską („KALKULATOR ——”); jeden token podkreślenia linków na jasnym tle i jeden na ciemnym; linki w tekście granatowe
+   (także odnośniki „także na liście nr …” przy zabiegach OC – a.z-inna, dawniej taupe; runda 3) */
 main :is(.zjump a,.sl-az a[href],.spec-quick button){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;
   border:1px solid var(--bp-karta-linia);border-radius:var(--radius-btn);background:rgba(255,255,255,.55);color:var(--color-navy);
   font:500 var(--text-sm)/1.2 var(--font-sans);letter-spacing:normal;text-transform:none;text-decoration:none;cursor:pointer}
@@ -366,7 +380,7 @@ main :is(.sl-az a:not([href]),.sl-az-off){font:400 var(--text-sm)/1.2 var(--font
 main .link-lux{gap:8px;font:500 var(--text-sm)/1.4 var(--font-sans);letter-spacing:normal;text-transform:none;
   text-decoration:underline;text-decoration-color:var(--bp-link-podkreslenie);text-decoration-thickness:1px;text-underline-offset:5px}
 main .link-lux::after{content:none}
-main :is(p,dd) a:not([class]){color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--bp-link-podkreslenie);text-decoration-thickness:1px;text-underline-offset:4px}
+main :is(p,dd) a:not([class]),main a.z-inna{color:var(--color-navy);text-decoration:underline;text-decoration-color:var(--bp-link-podkreslenie);text-decoration-thickness:1px;text-underline-offset:4px}
 /* na ciemnym tle (sceny .dark, wynik kalkulatora, karta promocji i karta Strefy): tekst parchment, podkreślenie złote 70%; jasne
    powierzchnie wewnątrz ciemnej sceny (kafle produktów .ledger--light, jasne szkło) – jak na jasnym tle */
 main :is(.dark,.result,.promo,.member-card) :is(.link-lux,.link-quiet,p a:not([class]),dd a:not([class])){color:var(--color-parchment);text-decoration-color:var(--bp-link-podkreslenie-ciemne)}
@@ -430,10 +444,10 @@ JS = r'''<script>
 })();
 
 /* Z10 (raport 15): rytm sekcji 1 albo 2 ekrany – od 64em × 37.5em. Pomiar: wszystkie sekcje główne naraz w stanie pomiaru
-   (data-ekrany="0": przycięty padding, bez min-height), odczyt wysokości, potem zapis 1 (do 1,1 ekranu) / 2 (do 2,02 ekranu; powyżej –
-   bez atrybutu,
-   np. listy zabiegów i hasła słownika – K6). Ponownie po wczytaniu fontów, przy zmianie rozmiaru okna; nie przy rozwijaniu
-   treści (pytania, pełne listy), żeby sekcja nie skakała o ekran */
+   (data-ekrany="0": przycięty padding, bez min-height), odczyt wysokości, potem zapis 1 (do 1,1 ekranu) / 2 (do 2,02 ekranu) – także
+   przy 16 px odstępu (data-ciasno); wyższe – "n" (przycięty padding, naturalna wysokość; np. listy zabiegów i hasła słownika – K6).
+   Ponownie po wczytaniu fontów, przy zmianie rozmiaru okna; nie przy rozwijaniu treści (pytania, pełne listy), żeby sekcja nie
+   skakała o ekran */
 (function(){
   var mq=window.matchMedia('(min-width:64em) and (min-height:37.5em)'), raf=0;
   var sekcje=[].slice.call(document.querySelectorAll('main section')).filter(function(s){
@@ -442,14 +456,14 @@ JS = r'''<script>
   if(!sekcje.length) return;
   function licz(){
     raf=0;
-    if(!mq.matches){sekcje.forEach(function(s){s.removeAttribute('data-ekrany')});return}
+    if(!mq.matches){sekcje.forEach(function(s){s.removeAttribute('data-ekrany');s.removeAttribute('data-ciasno')});return}
     sekcje.forEach(function(s){s.setAttribute('data-ekrany','0');s.removeAttribute('data-ciasno')});
     var H=window.innerHeight, T1=1.1*H, T2=2.02*H, m=sekcje.map(function(s){var cs=getComputedStyle(s);
       return {h:s.getBoundingClientRect().height,p:parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom)}});
     sekcje.forEach(function(s,i){
-      var h=m[i].h, t=h-m[i].p+48, n='', c=false;
+      var h=m[i].h, t=h-m[i].p+32, n='n', c=false;
       if(h<=T1)n='1';else if(t<=T1){n='1';c=true}else if(h<=T2)n='2';else if(t<=T2){n='2';c=true}
-      if(n){s.setAttribute('data-ekrany',n);if(c)s.setAttribute('data-ciasno','')}else s.removeAttribute('data-ekrany');
+      s.setAttribute('data-ekrany',n);if(c)s.setAttribute('data-ciasno','');
     });
   }
   function req(){if(!raf)raf=requestAnimationFrame(licz)}

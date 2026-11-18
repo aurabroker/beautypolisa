@@ -348,6 +348,9 @@ html:not(.js) .no-js-only{display:block}
 .list .grow strong{font-weight:500;color:var(--color-ink)}
 .list .meta{font-size:var(--text-sm);color:var(--color-taupe)}
 .list .row-actions{display:flex;flex-wrap:wrap;gap:6px 10px;margin-left:auto}
+/* znaczek statusu w wierszu listy łamie się (np. „Prośba o rezygnację – czeka na organizatora” po potwierdzeniu) – bez przewijania
+   strony w poziomie przy 320–390 px (runda 3 weryfikacji; jak w tabelach .stack i w .kv dd) */
+.list .badge{white-space:normal;max-width:100%}
 .card > .list{margin-inline:calc(-1 * clamp(18px,2.4vw,28px))}
 .card > .list:last-child{margin-bottom:calc(-1 * clamp(18px,2.4vw,28px) + 4px)}
 .doc-row .lux-icon{width:32px;height:32px;stroke-width:3}
@@ -829,7 +832,9 @@ html{-webkit-tap-highlight-color:rgba(42,59,104,.12)}
    weryfikacji: „Sprzedaż i wypłaty” 882 → 995 px po otwarciu „Zwrot”). Komórki wiersza dostają dolny odstęp = wysokość panelu */
 table.data tr.mini-pod{position:relative}
 table.data tr.mini-pod > th,table.data tr.mini-pod > td{vertical-align:top;padding-bottom:calc(var(--mini-h,0px) + 24px)}
-table.data tr.mini-pod .cell-actions details.mini[open] > .mini-body{position:absolute;right:14px;bottom:12px;width:min(calc(100% - 28px),34rem);min-width:0;margin-top:0;box-shadow:var(--shadow-surface)}
+/* runda 3 weryfikacji: gdy tabela jest szersza od obszaru (.table-wrap przewija się w poziomie), panel stoi przy prawej krawędzi
+   WIDOCZNEJ części obszaru, nie całego wiersza (--mini-r, --mini-w ustawia strefa.js przy otwarciu i przewijaniu obszaru) */
+table.data tr.mini-pod .cell-actions details.mini[open] > .mini-body{position:absolute;right:var(--mini-r,14px);bottom:12px;width:min(var(--mini-w,calc(100% - 28px)),34rem);min-width:0;margin-top:0;box-shadow:var(--shadow-surface)}
 .mini-body .field input{min-height:44px}
 .mini-body .actions{gap:8px 10px}
 .mini-body > p{text-wrap:pretty}

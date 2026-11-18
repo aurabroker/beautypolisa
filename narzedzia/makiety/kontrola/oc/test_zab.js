@@ -50,10 +50,10 @@ const bledy = [];
     await p.keyboard.press('Escape'); ma('Esc zamyka listę', (await p.locator('#zab-q').getAttribute('aria-expanded')) === 'false' && (await p.locator('#zab-q').inputValue()) === 'MANICURE');
     await p.keyboard.press('Escape'); ma('drugi Esc czyści pole', (await p.locator('#zab-q').inputValue()) === '');
     await p.keyboard.type('zabiegi z uzyciem nici');
-    ma('bez polskich znaków → poz. g)', (await p.locator('#zab-lista [role=option]').allTextContents()).some((o) => o.includes('nici PDO, PLLA i PLA/CL')));
+    ma('bez polskich znaków → poz. g)', (await p.locator('#zab-lista [role=option]').allTextContents()).some((o) => o.replace(/\u00a0/g, ' ').includes('nici PDO, PLLA i PLA/CL')));
     // „ł” bez polskiego znaku: „wlosow” → pozycje z „włosów” (norm: ł → l, znaki łączące \u0300–\u036f usunięte)
     await p.locator('#zab-q').fill(''); await p.keyboard.type('laminowanie wlosow');
-    ma('„laminowanie wlosow” → Laminowanie włosów', (await p.locator('#zab-lista [role=option]').allTextContents()).some((o) => o.startsWith('Laminowanie włosów')));
+    ma('„laminowanie wlosow” → Laminowanie włosów', (await p.locator('#zab-lista [role=option]').allTextContents()).some((o) => o.replace(/\u00a0/g, ' ').startsWith('Laminowanie włosów')));
     // weryfikacja, runda 2: odnośniki poza listą podpowiedzi; Tab zamyka listę (wzorzec APG combobox) i nie zostawia aktywnej opcji
     ma('odnośniki poza listą podpowiedzi', (await p.locator('#zab-pop a').count()) === 0 && (await p.locator('#zab-wszystkie').count()) === 0);
     ma('odnośnik do sekcji Podologia pod polem', (await p.locator('#zab-search > .zab-more #zab-podologia').getAttribute('href')) === 'oc-beauty.html#podologia');

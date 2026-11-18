@@ -20,7 +20,7 @@ Portal nie sprzedaje polis (01, pkt 8.1). Magnesy mają trzy zadania: **zakwalif
 
 | Litera | Zasada | Jak egzekwujemy w BeautyPolisa |
 |---|---|---|
-| **M** – jedna grupa, jeden problem, jedna szybka wygrana | Magnes nie jest „dla całej branży” | Persony z 05 (właścicielka salonu 1–8 osób, kosmetolog JDG, fryzjer, linergistka, stylistka paznokci, tatuażysta, manager sieci); jeden magnes = jedna persona główna |
+| **M** – jedna grupa, jeden problem, jedna szybka wygrana | Magnes nie jest „dla całej branży” | Persony z 05 (właścicielka salonu 1–8 osób, kosmetolog JDG, fryzjer, linergistka, stylistka paznokci, tatuażysta, trycholog, masażysta, manager sieci); jeden magnes = jedna persona główna |
 | **A** – zakotwiczenie w produkcie płatnym i etapie lejka | Góra: quiz / kalkulator; środek: szablon / checklista; dół: case / ROI | Produkt musi mieć parametry w 01 (cennik, sumy, zakres). Bez parametrów – brak magnesu, tylko treść edukacyjna |
 | **G** – natychmiastowy, interaktywny wynik | Zamiast PDF-a „sprawdź skrzynkę” | Wynik renderowany na stronie; PDF i e-mail to kopia, nie warunek |
 | **N** – nazwa od efektu | Nie „e-book o OC”, lecz „sprawdź, ile kosztuje OC…” | Nazwy w tabeli poniżej; H1 testowane A/B (pkt 4.2) |
@@ -476,7 +476,7 @@ Rama „Canva creator” ma sześć etapów: brief → kalendarz → inwentarz z
 | Pole | Treść |
 |---|---|
 | Cel | (1) Uruchomić portal jako pierwotne źródło informacji o programie OC dla branży beauty (01, pkt 7 – brak publicznych źródeł); (2) zbudować bazę e-mail z potwierdzoną zgodą; (3) pierwsze leady OC przez kalkulator. Mierniki w pkt 4.1 |
-| Grupa | Persony z 05: właścicielka salonu 1–8 osób, kosmetolog JDG, fryzjer, linergistka, stylistka paznokci, tatuażysta; wtórnie manager sieci (LinkedIn) |
+| Grupa | Persony z 05: właścicielka salonu 1–8 osób, kosmetolog JDG, fryzjer, linergistka, stylistka paznokci, tatuażysta, trycholog, masażysta (00, D46 e); wtórnie manager sieci (LinkedIn) |
 | Przekaz główny | „Wiesz, ile kosztuje OC Twojego gabinetu? Sprawdź w 60 sekund.” |
 | Przekazy wspierające | Program OC z ERGO Hestią we współpracy z Fundacją Beauty Razem; dokumenty, których używa się w salonie (zgoda, checklisty); bez sprzedaży online – rozmowa z doradcą wtedy, gdy klient chce |
 | Ton | Ekspercki, ciepły, konkretny. Mówimy „Ty”, unikamy form rodzajowych tam, gdzie się da („Twoje zabiegi”, „wykonujesz”). Zakaz straszenia („jedno roszczenie zrujnuje Twój salon”), pilności, wykrzykników, emoji w nadmiarze |
@@ -549,7 +549,7 @@ Razem: 17 pozycji Canva, 3 e-maile, 4 posty LinkedIn, 3 Reels, 3 posty tekstowe 
 
 | Potrzebny zasób | Ilość | Użycie | Źródło do decyzji |
 |---|---|---|---|
-| Zdjęcia stanowisk pracy wg zawodu (kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta) | 6–8 | `Hero_Image`, okładki karuzel, OG strony `/dla-kogo/*` | sesja własna lub stock z licencją komercyjną; bez generowania osób |
+| Zdjęcia stanowisk pracy wg zawodu – 8 zawodów (kosmetolog, fryzjer, podolog, linergistka, stylistka paznokci, tatuażysta, trycholog, masażysta; 00, D46 e) | 8 | `Hero_Image`, okładki karuzel, OG strony `/dla-kogo/*` | sesja własna lub stock z licencją komercyjną; bez generowania osób |
 | Portret doradcy / zespołu | 2 | Stories dzień 18, nadawca e-maili, `/o-nas` | sesja własna |
 | Zestaw ikon liniowych (rodzaje działalności, dokument, tarcza, kontrola, zespół, kalkulator) | 10–12 | `Slide_Icon`, strony produktowe | biblioteka Canva lub własny zestaw SVG w repo |
 | Logo w wersji białej i monochromatycznej, plik wektorowy | 1 komplet | wszystkie szablony | od właściciela marki |
